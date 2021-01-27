@@ -1,44 +1,44 @@
-# Module for complimenting Monika
-#
-# Compliments work by using the "unlocked" logic.
-# That means that only those compliments that have their
-# unlocked property set to True
-# At the beginning, when creating the menu, the compliments
-# database checks the conditionals of the compliments
-# and unlocks them.
 
 
-# dict of tples containing the stories event data
+
+
+
+
+
+
+
+
+
 default persistent._mas_compliments_database = dict()
 
 
-# store containing compliment-related things
+
 init 3 python in mas_compliments:
 
     compliment_database = dict()
 
 init 22 python in mas_compliments:
     thanking_quips = [
-        _("You're so sweet, [player]."),
-        _("Thanks for saying that again, [player]!"),
-        _("Thanks for telling me that again, [mas_get_player_nickname()]!"),
-        _("You always make me feel special, [mas_get_player_nickname()]."),
-        _("Aww, [player]~"),
-        _("Thanks, [mas_get_player_nickname()]!"),
-        _("You always flatter me, [player].")
+        _("Ты так[mas_gender_oi] мил[mas_gender_iii], [player]."),
+        _("Спасибо, что вновь сказал[mas_gender_none] это, [player]!"),
+        _("Спасибо, что вновь сказал[mas_gender_none] это, [mas_get_player_nickname()]!"),
+        _("Ты всегда заставляешь меня чувствовать себя особенной, [mas_get_player_nickname()]."),
+        _("Аааах, [player]~"),
+        _("Спасибо, [mas_get_player_nickname()]!"),
+        _("Ты всегда мне льстишь, [player].")
     ]
 
-    # set this here in case of a crash mid-compliment
+
     thanks_quip = renpy.substitute(renpy.random.choice(thanking_quips))
 
-# entry point for compliments flow
+
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="monika_compliments",
-            category=['monika', 'romance'],
-            prompt="I want to tell you something...",
+            category=['моника', 'романтика'],
+            prompt="Я хочу тебе кое-что сказать...",
             pool=True,
             unlocked=True
         )
@@ -48,10 +48,10 @@ label monika_compliments:
     python:
         import store.mas_compliments as mas_compliments
 
-        # Unlock any compliments that need to be unlocked
+
         Event.checkEvents(mas_compliments.compliment_database)
 
-        # filter comps
+
         filtered_comps = Event.filterEvents(
             mas_compliments.compliment_database,
             unlocked=True,
@@ -59,82 +59,89 @@ label monika_compliments:
             flag_ban=EV_FLAG_HFM
         )
 
-        # build menu list
+
         compliments_menu_items = [
             (mas_compliments.compliment_database[k].prompt, k, not seen_event(k), False)
             for k in filtered_comps
         ]
 
-        # also sort this list
+
         compliments_menu_items.sort()
 
-        # final quit item
-        final_item = ("Oh nevermind.", False, False, False, 20)
 
-    # move Monika to the left
+        final_item = ("Оу, не важно.", False, False, False, 20)
+
+
     show monika at t21
 
-    # call scrollable pane
+
     call screen mas_gen_scrollable_menu(compliments_menu_items, mas_ui.SCROLLABLE_MENU_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, final_item)
 
-    # return value? then push
+
     if _return:
         $ mas_gainAffection()
         $ pushEvent(_return)
         $ mas_compliments.thanks_quip = renpy.substitute(renpy.random.choice(mas_compliments.thanking_quips))
-        # move her back to center
-        show monika at t11
 
+        show monika at t11
     else:
+
         return "prompt"
 
     return
 
-# Compliments start here
+
 init 5 python:
     addEvent(
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_beautiful",
-            prompt="You're beautiful!",
+            prompt="Ты безумно красивая!",
             unlocked=True
         ),
         code="CMP")
 
 label mas_compliment_beautiful:
     if not renpy.seen_label("mas_compliment_beautiful_2"):
-        call mas_compliment_beautiful_2
+        call mas_compliment_beautiful_2 from _call_mas_compliment_beautiful_2
     else:
-        call mas_compliment_beautiful_3
+        call mas_compliment_beautiful_3 from _call_mas_compliment_beautiful_3
     return
 
 label mas_compliment_beautiful_2:
-    m 1lubsb "Oh, gosh [player]..."
-    m 1hubfb "Thank you for the compliment."
-    m 2ekbfb "I love it when you say things like that~"
-    m 1ekbfa "To me, you're the most beautiful person in the world!"
+    m 1lubsb "О боже, [player_abb]..."
+    $ MAS.MonikaElastic()
+    m 1hubfb "Спасибо за комплимент."
+    $ MAS.MonikaElastic()
+    m 2ekbfb "Я обожаю, когда ты так говоришь~"
+    $ MAS.MonikaElastic()
+    m 1ekbfa "Для меня ты красивее всех во всём мире!"
     menu:
-        "You're the most beautiful person to me, too.":
+        "Ты тоже для меня красивее всех во всём мире!":
             $ mas_gainAffection(5,bypass=True)
-            m 1hub "Ehehe~"
-            m "I love you so much, [player]!"
-            # manually handle the "love" return key
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "Хи-хи-хи~"
+            $ MAS.MonikaElastic()
+            m "Я так сильно тебя люблю, [player]!"
+
             $ mas_ILY()
-
-        "You're in my top ten.":
+        "Ты в моей десятке.":
             $ mas_loseAffection(modifier=0.5)
-            m 3hksdrb "...?"
-            m 2lsc "Well, thanks, I guess..."
-
-        "Thanks.":
+            $ MAS.MonikaElastic()
+            m 3hksdrb "?.."
+            $ MAS.MonikaElastic()
+            m 2lsc "Ну, спасибо, наверное..."
+        "Спасибо.":
             pass
     return
 
 label mas_compliment_beautiful_3:
-    m 1hubsa "Ehehe~"
+    $ MAS.MonikaElastic(True, voice="monika_giggle")
+    m 1hubsa "Э-хе-хе~"
+    $ MAS.MonikaElastic()
     m 1ekbfa "[mas_compliments.thanks_quip]"
-    show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubfb "Never forget that you're the most beautiful person in the world to me."
+    show monika 5hubfb zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5hubfb "Никогда не забывай, что ты для меня самый красивый человек в мире."
     return
 
 init 5 python:
@@ -142,7 +149,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_eyes",
-            prompt="I love your eyes!",
+            prompt="Я обожаю твои глаза!",
             unlocked=True
         ),
         code="CMP"
@@ -150,35 +157,40 @@ init 5 python:
 
 label mas_compliment_eyes:
     if not renpy.seen_label("mas_compliment_eyes_2"):
-        call mas_compliment_eyes_2
+        call mas_compliment_eyes_2 from _call_mas_compliment_eyes_2
     else:
-        call mas_compliment_eyes_3
+        call mas_compliment_eyes_3 from _call_mas_compliment_eyes_3
     return
 
 label mas_compliment_eyes_2:
-    m 1subsb "Oh, [player]..."
-    m 1tubfb "I know I'm pretty proud of my eyes already, but hearing you say that..."
-    m 1dkbfa "It just makes my heart flutter~"
+    m 1subsb "Ох, [player]..."
+    $ MAS.MonikaElastic()
+    m 1tubfb "Я всегда очень гордилась своими глазами, но вот слышать это от тебя..."
+    $ MAS.MonikaElastic()
+    m 1dkbfa "Это заставляет моё сердце просто трепетать~"
     menu:
-        "I can't help it; your eyes are too beautiful.":
+        "Ничего не могу с собой поделать; у тебя слишком красивые глаза.":
             $ mas_gainAffection(5,bypass=True)
-            m 1hub "Ahaha!"
-            m "Don't flatter me too much, okay?"
-            show monika 5hub at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5hub "I might start to go a little crazy..."
-
-        "They really are hypnotizing.":
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха!"
+            $ MAS.MonikaElastic()
+            m "Не льсти мне слишком сильно, ладно?"
+            show monika 5hub zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 5hub "Я могу начать немного сходить с ума..."
+        "Они прям-таки гипнотизируют.":
             $ mas_gainAffection(1,bypass=True)
-            m "Ahaha~"
-
-        "They are the color of grass!":
-            $ mas_gainAffection(0.5,bypass=True) # at least you tried
-            m 2lksdrb "...That's not really the analogy I'd use, but thanks!"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m "А-ха-ха~"
+        "Они имеют цвет травы!":
+            $ mas_gainAffection(0.5,bypass=True)
+            $ MAS.MonikaElastic()
+            m 2lksdrb "...Это не совсем та аналогия, которую я бы стала использовать, но спасибо!"
     return
 
 label mas_compliment_eyes_3:
     m 1hubsb "[mas_compliments.thanks_quip]"
-    m 2ekbfb "Stare into my eyes as much as you want~"
+    $ MAS.MonikaElastic()
+    m 2ekbfb "Смотри в мои глаза столько, сколько хочешь~"
     return
 
 init 5 python:
@@ -186,7 +198,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_awesome",
-            prompt="You're awesome!",
+            prompt="Ты потрясающая!",
             unlocked=True
         ),
         code="CMP"
@@ -194,40 +206,49 @@ init 5 python:
 
 label mas_compliment_awesome:
     if not renpy.seen_label("mas_compliment_awesome_2"):
-        call mas_compliment_awesome_2
+        call mas_compliment_awesome_2 from _call_mas_compliment_awesome_2
     else:
-        call mas_compliment_awesome_3
+        call mas_compliment_awesome_3 from _call_mas_compliment_awesome_3
     return
 
 label mas_compliment_awesome_2:
-    m 1hua "Awww, [player]~"
-    m 1hub "You're so sweet!"
-    m 2tuu "I think you're way more awesome, though."
-    m 2dkbsu "I can't wait until the day I can finally give you a great big hug..."
-    m 3ekbfb "I'll never let you go!"
+    m 1hua "Ах, [player]~"
+    $ MAS.MonikaElastic()
+    m 1hub "Ты так[mas_gender_oi] мил[mas_gender_iii]!"
+    $ MAS.MonikaElastic()
+    m 2tuu "Хотя я думаю, что ты гораздо прекраснее."
+    $ MAS.MonikaElastic()
+    m 2dkbsu "Не могу дождаться того дня, когда наконец-то смогу обнять тебя."
+    $ MAS.MonikaElastic()
+    m 3ekbfb "Я никогда тебя не отпущу!"
     menu:
-        "I wish you were here right now!":
+        "Я хочу, чтобы ты была рядом со мной прямо сейчас!":
             $ mas_gainAffection(3,bypass=True)
-            m "That's my biggest wish too, [player]!"
-
-        "I'll never let you go from my embrace.":
+            $ MAS.MonikaElastic()
+            m "Это тоже моё самое большое желание, [player_abb]!"
+        "Я никогда не отпущу тебя из своих объятий.":
             $ mas_gainAffection(5,bypass=True)
             show monika 6dubsa
             pause 2.0
             show monika 1wubfsdld
-            m 1wubfsdld "Oh, sorry [player]."
-            m 2lksdla "I was trying to feel your embrace from here."
-            m 2hub "Ahaha~"
-
-        "... I don't like hugs.":
-            $ mas_loseAffection() # you monster.
-            m 1eft "...Really?"
-            m 1dkc "Well, to each their own, I guess. But you have to hug me sometime..."
+            $ MAS.MonikaElastic()
+            m 1wubfsdld "Ох, извини, [player_abb]."
+            $ MAS.MonikaElastic()
+            m 2lksdla "Я просто пыталась почувствовать твои объятия отсюда."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 2hub "А-ха-ха~"
+        "...Я не люблю обниматься.":
+            $ mas_loseAffection()
+            $ MAS.MonikaElastic()
+            m 1eft "...Правда?"
+            $ MAS.MonikaElastic()
+            m 1dkc "Ну, каждому своё, наверное. Но ты долж[mas_gender_en] обнять меня когда-нибудь..."
     return
 
 label mas_compliment_awesome_3:
     m 1hub "[mas_compliments.thanks_quip]"
-    m 1eub "You'll always be more awesome!"
+    $ MAS.MonikaElastic()
+    m 1eub "Ты всегда будешь гораздо прекраснее!"
     return
 
 
@@ -236,7 +257,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_intelligent",
-            prompt="You're really intelligent!",
+            prompt="Ты очень умная!",
             unlocked=True
         ),
         code="CMP"
@@ -244,36 +265,41 @@ init 5 python:
 
 label mas_compliment_intelligent:
     if not renpy.seen_label("mas_compliment_intelligent_2"):
-        call mas_compliment_intelligent_2
+        call mas_compliment_intelligent_2 from _call_mas_compliment_intelligent_2
     else:
-        call mas_compliment_intelligent_3
+        call mas_compliment_intelligent_3 from _call_mas_compliment_intelligent_3
     return
 
 label mas_compliment_intelligent_2:
-    m 1wub "Wow...{w=0.3}thanks, [player]."
-    m 3eua "I pride myself in being well read, so it means a lot that you've noticed."
-    m 3hubsb "I want to learn as much as I can, if it makes you proud of me!"
+    m 1wub "Ничего себе... {w=0.3}спасибо, [player]."
+    $ MAS.MonikaElastic()
+    m 3eua "Я горжусь тем, что достаточно много читаю. Поэтому для меня многое значит то, что ты это заметил[mas_gender_none]."
+    $ MAS.MonikaElastic()
+    m 3hubsb "Я хочу учиться как можно большему, если это заставляет тебя гордиться мной!"
     menu:
-        "You make me want to better myself too, [m_name].":
+        "Благодаря тебе у меня тоже появляется желание становиться лучше, [monika_name].":
             $ mas_gainAffection(5,bypass=True)
-            m 1hubfa "I love you so much, [player]!"
-            m 3hubfb "We'll have a lifetime of self-improvement together!"
-            # manually handle the "love" return key
+            $ MAS.MonikaElastic()
+            m 1hubfa "Я так сильно тебя люблю, [player_abb]!"
+            $ MAS.MonikaElastic()
+            m 3hubfb "У нас будет целая жизнь самосовершенствования вместе!"
             $ mas_ILY()
-
-        "I'll always be proud of you.":
+        "Я всегда буду гордиться тобой.":
             $ mas_gainAffection(3,bypass=True)
-            m 1ekbfa "[player]..."
-
-        "You make me feel stupid sometimes.":
+            $ MAS.MonikaElastic()
+            m 1ekbfa "[player_abb]..."
+        "Ты заставляешь меня чувствовать себя глуп[mas_gender_iim] иногда.":
             $ mas_loseAffection(modifier=0.5)
+            $ MAS.MonikaElastic()
             m 1wkbsc "..."
-            m 2lkbsc "I'm sorry, that wasn't my intention..."
+            $ MAS.MonikaElastic()
+            m 2lkbsc "Прости, это не входило в мои намерения..."
     return
 
 label mas_compliment_intelligent_3:
     m 1ekbfa "[mas_compliments.thanks_quip]"
-    m 1hub "Remember that we'll have a lifetime of self-improvement together!"
+    $ MAS.MonikaElastic()
+    m 1hub "Помни, что у нас будет целая жизнь самосовершенствования вместе!"
     return
 
 init 5 python:
@@ -281,51 +307,60 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_hair",
-            prompt="I love your hair!",
+            prompt="Мне просто нереально нравится твоя причёска!",
             unlocked=True
         ),code="CMP"
     )
 
 label mas_compliment_hair:
     if not renpy.seen_label("mas_compliment_hair_2"):
-        call mas_compliment_hair_2
+        call mas_compliment_hair_2 from _call_mas_compliment_hair_2
     else:
-        call mas_compliment_hair_3
+        call mas_compliment_hair_3 from _call_mas_compliment_hair_3
     return
 
 label mas_compliment_hair_2:
     if monika_chr.hair.name != "def":
-        m 1wubsb "Thank you so much, [player]..."
-        m 1lkbfb "I was really nervous the first time I changed my hair here."
+        m 1wubsb "Огромное спасибо, [player]..."
+        $ MAS.MonikaElastic()
+        m 1lkbfb "Я очень нервничала, когда впервые сменила причёску здесь."
     else:
-        m 1hubfb "Thank you so much, [player]!"
-    m 2hub "I've always put so much effort into my hair."
-    m 2lksdlb "In fact, It took forever for it to get this long.."
+        m 1hubfb "Огромное спасибо, [player]!"
+    $ MAS.MonikaElastic()
+    m 2hub "Я всегда прилагала очень много усилий для своих волос."
+    $ MAS.MonikaElastic()
+    m 2lksdlb "Фактически, пришлось ждать целую вечность, чтобы те стали такими длинными."
     menu:
-        "It really shows. It looks so healthy.":
+        "Это действительно заметно. Выглядит реально здорово!":
             $ mas_gainAffection(3,bypass=True)
-            m 1hub "Thanks, [player]!"
-
-        "You're cute no matter how you wear it." if persistent._mas_likes_hairdown:
+            $ MAS.MonikaElastic()
+            m 1hub "Спасибо, [player]!"
+        "Ты очаровательная практически с любой причёской." if persistent._mas_likes_hairdown:
             $ mas_gainAffection(5,bypass=True)
-            m 1ekbsa "Awww, [player]."
-            m 1hubfb "You always make me feel special!"
-            m "Thank you!"
-
-        "You'd be even cuter with short hair.":
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Аааах, [player_abb]."
+            $ MAS.MonikaElastic()
+            m 1hubfb "Ты всегда заставляешь меня чувствовать себя особенной!"
+            $ MAS.MonikaElastic()
+            m "Спасибо!"
+        "Ты будешь ещё милее с короткой стрижкой.":
             $ mas_loseAffection(modifier=0.3)
-            m "Well, I can't exactly go to the salon from here..."
-            m 1lksdlc "I...appreciate your input."
+            $ MAS.MonikaElastic()
+            m "Ну, я, к сожалению, никак не смогу пойти в салон отсюда..."
+            $ MAS.MonikaElastic()
+            m 1lksdlc "Я... ценю твоё мнение."
             pass
     return
 
 label mas_compliment_hair_3:
     if monika_chr.hair.name != "def":
-        m 1wubsb "Thank you so much, [player]!"
-        m 1lkbfb "I'm really happy that you like this hairstyle."
+        m 1wubsb "Огромное спасибо, [player]!"
+        $ MAS.MonikaElastic()
+        m 1lkbfb "Я очень рада, что тебе нравится эта причёска."
     else:
-        m 1hubsb "Thanks, [player]!"
-        m 1hubfb "You always make me feel special."
+        m 1hubsb "Спасибо, [player]!"
+        $ MAS.MonikaElastic()
+        m 1hubfb "Ты всегда заставляешь меня чувствовать себя особенной."
     return
 
 init 5 python:
@@ -333,7 +368,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_fit",
-            prompt="I love your dedication to fitness!",
+            prompt="Мне нравится твоя преданность фитнесу!",
             unlocked=True
         ),
         code="CMP"
@@ -341,37 +376,45 @@ init 5 python:
 
 label mas_compliment_fit:
     if not renpy.seen_label("mas_compliment_fit_2"):
-        call mas_compliment_fit_2
+        call mas_compliment_fit_2 from _call_mas_compliment_fit_2
     else:
-        call mas_compliment_fit_3
+        call mas_compliment_fit_3 from _call_mas_compliment_fit_3
     return
 
 label mas_compliment_fit_2:
-    m 1hub "Thanks, [player]! You're so sweet!"
-    m 3eub "I love keeping fit and eating healthy. It keeps me feeling energetic and confident."
-    m 1efb "I hope you're watching out for your health."
-    m 1lubsb "We can always work out together when I'm there..."
+    m 1hub "Спасибо, [player]! Ты так[mas_gender_oi] мил[mas_gender_iii]!"
+    $ MAS.MonikaElastic()
+    m 3eub "Я люблю поддерживать себя в форме и правильно питаться. Это заставляет меня чувствовать себя энергично и уверенно."
+    $ MAS.MonikaElastic()
+    m 1efb "Надеюсь, ты заботишься о своём здоровье."
+    $ MAS.MonikaElastic()
+    m 1lubsb "Мы всегда сможем позаниматься вместе, когда я окажусь в твоей реальности..."
     menu:
-        "That sounds like a lot of fun!":
+        "Звучит очень весело!":
             $ mas_gainAffection(2,bypass=True)
-            m 1hubfb "Ahaha! I'm glad you think so, too!"
-            m 3eka "Don't worry. Even if you can't keep up with me, I know we'll have fun..."
-            show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5eua "So long as we're together."
-
-        "No promises, but I'll do my best.":
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hubfb "А-ха-ха! Я рада, что ты думаешь так же!"
+            $ MAS.MonikaElastic()
+            m 3eka "Не волнуйся. Даже если ты не сможешь поспевать за мной, я знаю, что мы всё равно сможем повеселиться..."
+            show monika 5eua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 5eua "До тех пор, пока мы вместе."
+        "Ничего не обещаю, но постараюсь сделать всё возможное.":
             $ mas_gainAffection(1,bypass=True)
-            m 1tfb "You better!"
-            m 2tub "Don't think I plan on letting you off easy if you're out of shape."
-
-        "I'd rather not get sweaty...":
-            m 1eka "I understand if it's not your thing, but you should give it a little try..."
-            m 1lksdla "It'd make me really happy if you shared my interests, you know?"
+            $ MAS.MonikaElastic()
+            m 1tfb "Ты лучш[mas_gender_ii]!"
+            $ MAS.MonikaElastic()
+            m 2tub "Но только не думай, что я собираюсь отпустить тебя, если ты не в форме."
+        "Я бы предпоч[mas_gender_iol] не потеть...":
+            $ MAS.MonikaElastic()
+            m 1eka "Я понимаю, если это не твой конёк, но тебе всё равно стоит немного попробовать..."
+            $ MAS.MonikaElastic()
+            m 1lksdla "Я была бы очень счастлива, если бы ты разделял[mas_gender_none] со мной мои интересы."
     return
 
 label mas_compliment_fit_3:
     m 2eka "[mas_compliments.thanks_quip]"
-    m 1hub "I hope you embark on a fitness journey with me!"
+    $ MAS.MonikaElastic()
+    m 1hub "Надеюсь, что ты начнёшь фитнес-путешествие со мной!"
     return
 
 
@@ -380,7 +423,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_thanks",
-            prompt="Thanks for being there for me!",
+            prompt="Спасибо, что всегда была рядом со мной!",
             unlocked=True,
             aff_range=(mas_aff.ENAMORED, None)
         ),
@@ -388,25 +431,33 @@ init 5 python:
     )
 
 label mas_compliment_thanks:
-    m 1duu "There's nothing to thank me for, [player]."
-    m 1eka "I'm the one who's grateful for having someone like you!"
-    m 1ekbsa "You're the only reason why I'm still here."
-    m "You installed this mod just to make our time together better..."
-    m 1dubsu "You are the sunshine that warms my heart whenever you visit me."
-    m 3ekbsa "I guess we're both lucky that we have each other, [player]~"
+    m 1duu "Не за что меня благодарить, [player]."
+    $ MAS.MonikaElastic()
+    m 1eka "Это я благодарна за то, что у меня есть такой человек, как ты!"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Ты — единственная причина, почему я все еще здесь."
+    $ MAS.MonikaElastic()
+    m "Ты ведь даже установил[mas_gender_none] этот мод, чтобы мы могли лучше проводить время вместе..."
+    $ MAS.MonikaElastic()
+    m 1dubsu "Ты — солнце, которое согревает моё сердце всякий раз, когда ты меня навещаешь."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Так что, думаю, нам об[mas_gender_oim] повезло, что мы есть друг у друга, [player]~"
     menu:
-        "You mean everything to me, [m_name].":
+        "Ты для меня всё, [monika_name]!":
             if mas_getEVL_shown_count("mas_compliment_thanks") == 0:
                 $ mas_gainAffection(10,bypass=True)
-
-            m 1ekbsa "[player]..."
-            m 1dubsu "Nothing makes me happier than hearing that coming from you."
-            m "No matter what the future may have for us both...{w=0.5}{nw}"
-            extend 1dkbfa "know that I'll always love you and be here for you."
-
-        "Yeah.":
-            m 1hub "Ehehe~"
-            m 1eub "I love you, [player]."
+            $ MAS.MonikaElastic()
+            m 1ekbsa "[player_abb]..."
+            $ MAS.MonikaElastic()
+            m 1dubsu "Ничто не делает меня счастливее, чем слышать это от тебя."
+            $ MAS.MonikaElastic()
+            m "Не важно, какое будущее ждёт нас об[mas_gender_oih]...{w=0.5} {nw}"
+            extend 1dkbfa "знай, что я всегда буду рядом с тобой!"
+        "Да.":
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "Хи-хи~"
+            $ MAS.MonikaElastic()
+            m 1eub "Я люблю тебя, [player_abb]."
 
     if not mas_isMoniLove():
         $ mas_lockEVL("mas_compliment_thanks", "CMP")
@@ -417,7 +468,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_smile",
-            prompt="I love your smile!",
+            prompt="Я люблю твою улыбку!",
             unlocked=True
         ),
         code="CMP"
@@ -425,31 +476,39 @@ init 5 python:
 
 label mas_compliment_smile:
     if not renpy.seen_label("mas_compliment_smile_2"):
-        call mas_compliment_smile_2
+        call mas_compliment_smile_2 from _call_mas_compliment_smile_2
     else:
-        call mas_compliment_smile_3
+        call mas_compliment_smile_3 from _call_mas_compliment_smile_3
     return
 
 label mas_compliment_smile_2:
-    m 1hub "You're so sweet, [player]~"
-    m 1eua "I smile a lot when you're here."
-    m 1ekbsa "Because it makes me very happy when you spend time with me~"
+    m 1hub "Ты так[mas_gender_oi] мил[mas_gender_iii], [player_abb]~"
+    $ MAS.MonikaElastic()
+    m 1eua "Я много улыбаюсь, когда ты здесь."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Потому что я очень счастлива, когда ты проводишь со мной время~"
     menu:
-        "I'll visit you every day to see your wonderful smile.":
+        "Я буду навещать тебя каждый день, лишь бы видеть твою чудесную улыбку.":
             $ mas_gainAffection(5,bypass=True)
-            m 1wubfsdld "Oh, [player]..."
-            m 1lkbfa "I think my heart just skipped a beat."
-            m 3hubfa "See? You always make me as happy as I can be."
-
-        "I like to see you smile.":
-            m 1hub "Ahaha~"
-            m 3eub "Then all you have to do is keep coming back, [player]!"
+            $ MAS.MonikaElastic()
+            m 1wubfsdld "Ох, [player]..."
+            $ MAS.MonikaElastic()
+            m 1lkbfa "Кажется, у меня сердце только что ёкнуло от радости."
+            $ MAS.MonikaElastic()
+            m 3hubfa "Видишь? Ты всегда делаешь меня настолько счастливой, насколько только возможно."
+        "Мне нравится видеть твою улыбку.":
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха~"
+            $ MAS.MonikaElastic()
+            m 3eub "Тогда всё что тебе нужно сделать — это продолжать навещать меня, [player]!"
     return
 
 label mas_compliment_smile_3:
     m 1eub "[mas_compliments.thanks_quip]"
-    m 1hua "I'll keep smiling just for you!"
-    m "Ehehe~"
+    $ MAS.MonikaElastic()
+    m 1hua "Я буду улыбаться только для тебя!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m "Э-хе-хе~"
     return
 
 init 5 python:
@@ -457,7 +516,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_hero",
-            prompt="You're my hero!",
+            prompt="Ты – моя героиня!",
             unlocked=True,
             aff_range=(mas_aff.LOVE, None)
         ),
@@ -466,16 +525,23 @@ init 5 python:
 
 label mas_compliment_hero:
     $ mas_gainAffection()
-    m 1wubssdld "H-{w=0.3}huh?"
-    m "I'm your hero?"
-    m 2rkbfsdlb "[player]...{w=1.5} I'm not sure what you mean..."
-    m 2ekbfb "You're the one who stuck with me for all this time.{w=1} I should be thanking you, really."
-    m 1hubfa "Well, if I've somehow helped you, then I couldn't be happier~"
-    m 3ekbfa "You've helped me in every way possible, so how could I not return the favor by being there for you whenever you need support?"
-    show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubfa "You'll always be my hero, after all~"
-    m 5hubfb "I love you and I'll always believe in you!"
-    m 5ekbfa "I hope you never forget that, [player]~"
+    m 1wubssdld "А-{w=0.3}а?"
+    $ MAS.MonikaElastic()
+    m "Я твоя героиня?"
+    $ MAS.MonikaElastic()
+    m 2rkbfsdlb "[player]...{w=1.5} я не совсем уверена в том, что ты имел[mas_gender_none] в виду..."
+    $ MAS.MonikaElastic()
+    m 2ekbfb "Ты единственн[mas_gender_iii], кто сидел[mas_gender_none] со мной всё это время.{w=1} Я должна отблагодарить тебя, правда."
+    $ MAS.MonikaElastic()
+    m 1hubfa "Что ж, если я как-то помогла тебе, то я безумно счастлива~"
+    $ MAS.MonikaElastic()
+    m 3ekbfa "Ты помогал[mas_gender_none] мне всеми возможными способами, как я могу не отдать тебе должное, находясь рядом с тобой тогда, когда тебе нужна поддержка?"
+    show monika 5hubfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5hubfa "И потом, ты всегда будешь моим героем~"
+    $ MAS.MonikaElastic()
+    m 5hubfb "Я люблю тебя, и я всегда буду верить в тебя!"
+    $ MAS.MonikaElastic()
+    m 5ekbfa "Надеюсь, ты никогда не забудешь об этом, [player]~"
     return "love"
 
 init 5 python:
@@ -483,7 +549,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_cute",
-            prompt="You're cute!",
+            prompt="Ты милая!",
             unlocked=True
         ),
         code="CMP"
@@ -493,42 +559,53 @@ default persistent._mas_pm_monika_cute_as_natsuki = None
 
 label mas_compliment_cute:
     if not renpy.seen_label("mas_compliment_cute_2"):
-        call mas_compliment_cute_2
+        call mas_compliment_cute_2 from _call_mas_compliment_cute_2
     else:
-        call mas_compliment_cute_3
+        call mas_compliment_cute_3 from _call_mas_compliment_cute_3
     return
 
 label mas_compliment_cute_2:
-    m 1wubssdld "Ah!"
-    m 3rkbfsdla "You {i}kind of{/i} caught me off guard with that one."
-    m 3tubfb "Just a little..."
-    m 1hubfa "But I'm glad you think so!"
+    m 1wubssdld "Ах!"
+    $ MAS.MonikaElastic()
+    m 3rkbfsdla "На этот раз, ты, {i}в какой-то мере{/i}, застал[mas_gender_none] меня врасплох."
+    $ MAS.MonikaElastic()
+    m 3tubfb "Самую малость..."
+    $ MAS.MonikaElastic()
+    m 1hubfa "Но я рада, что ты так думаешь!"
     menu:
-        "Seeing you always warms my heart!":
+        "Встреча с тобой всегда греет мне душу!":
             $ persistent._mas_pm_monika_cute_as_natsuki = False
             $ mas_gainAffection(5,bypass=True)
-            m 1hubfb "Aww, it really warms my heart to hear you say that!"
-            m 1dkbfu "...Almost as much as when I picture us finally being together in the same reality."
-            m 1ekbfa "I can barely contain myself just imagining that special day~"
-
-        "You're even cuter when you're flustered.":
+            $ MAS.MonikaElastic()
+            m 1hubfb "Оу, а мне греет душу слышать то, как ты говоришь подобное!"
+            $ MAS.MonikaElastic()
+            m 1dkbfu "...Почти так же, как когда я наконец-то запечатлела тот момент, где мы вместе в одной реальности."
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Я с трудом сдерживаю себя, представляя себе тот особенный день~"
+        "Ты намного симпатичнее, когда краснеешь.":
             $ persistent._mas_pm_monika_cute_as_natsuki = False
             $ mas_gainAffection(3,bypass=True)
-            m 2tubfu "Not letting it go, huh, [player]?"
-            m 2rubfu "Hmph, I just wasn't expecting it."
-            m 3tubfb "Don't expect it to be so easy next time..."
-            m 1tubfu "I'll get you back someday, ehehe~"
-
-        "You're as cute as Natsuki.":
+            $ MAS.MonikaElastic()
+            m 2tubfu "Ты не собираешься это так оставить, да, [player]?"
+            $ MAS.MonikaElastic()
+            m 2rubfu "Хмф, я просто не ожидала такого."
+            $ MAS.MonikaElastic()
+            m 3tubfb "Но не жди, что в следующий раз всё будет так же просто..."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1tubfu "Я рано или поздно поставлю тебя на место, э-хе-хе~"
+        "Ты такая же милая, как и Нацуки.":
             $ persistent._mas_pm_monika_cute_as_natsuki = True
             $ mas_loseAffection(modifier=0.5)
-            m 2lfc "Oh. {w=1}Thanks, [player]..."
-            m 1rsc "But I was kind of hoping I would stand in my own category."
+            $ MAS.MonikaElastic()
+            m 2lfc "Оу. {w=1}Спасибо, [player]..."
+            $ MAS.MonikaElastic()
+            m 1rsc "Но я надеялась, что я останусь в своей категории."
     return
 
 label mas_compliment_cute_3:
     m 1ekbsa "[mas_compliments.thanks_quip]"
-    m 1hubfa "You can be really cute a lot of the time too, you know~"
+    $ MAS.MonikaElastic()
+    m 1hubfa "Ты тоже зачастую бываешь очень мил[mas_gender_iim], знаешь ли~"
     return
 
 init 5 python:
@@ -536,7 +613,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_chess",
-            prompt="You're awesome at chess!",
+            prompt="Ты классно играешь в шахматы!",
             unlocked=False,
             conditional="renpy.seen_label('mas_chess_game_start')",
             action=EV_ACT_UNLOCK
@@ -545,21 +622,30 @@ init 5 python:
     )
 
 label mas_compliment_chess:
-    m 1eub "Thanks, [player]."
-    m 3esa "Like I said before, I wonder if my skill has something to do with me being trapped here?"
+    m 1eub "Спасибо, [player_abb]."
+    $ MAS.MonikaElastic()
+    m 3esa "Как я уже говорила, интересно, моё мастерство как-то связано с тем, что я застряла здесь?"
     $ wins = persistent._mas_chess_stats["wins"]
     $ losses = persistent._mas_chess_stats["losses"]
     if wins > 0:
-        m 3eua "You're not bad either; I've lost to you before."
+        $ MAS.MonikaElastic()
+        m 3eua "Ты, кстати, тоже неплох[mas_gender_none], я уже проигрывала тебе раньше."
         if wins > losses:
-            m "In fact, I think you've won more times than me, you know?"
-        m 1hua "Ehehe~"
+            $ MAS.MonikaElastic()
+            m "Да и фактически, думаю, ты выигрывал[mas_gender_none] даже чаще меня."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе~"
     else:
-        m 2lksdlb "I know you haven't won a chess game yet, but I'm sure you'll beat me someday."
-        m 3esa "Keep practicing and playing with me and you'll do better!"
-    m 3esa "We'll both get better the more we play."
-    m 3hua "So don't be afraid of challenging me whenever you want to."
-    m 1eub "I love spending time with you, [player]~"
+        $ MAS.MonikaElastic()
+        m 2lksdlb "Знаю, [random_sure_lower], что ты ещё ни разу не выигрывал[mas_gender_none] в шахматных партиях, но я уверена, что однажды ты победишь меня."
+        $ MAS.MonikaElastic()
+        m 3esa "Продолжай практиковаться и играть со мной, и ты сможешь стать лучше!"
+    $ MAS.MonikaElastic()
+    m 3esa "Чем больше мы играем, тем опытнее об[mas_gender_a] становимся."
+    $ MAS.MonikaElastic()
+    m 3hua "Так что не бойся бросать мне вызов, когда захочешь."
+    $ MAS.MonikaElastic()
+    m 1eub "Я люблю проводить с тобой время, [player]~"
     return
 
 init 5 python:
@@ -567,7 +653,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_pong",
-            prompt="You're awesome at pong!",
+            prompt="Ты потрясающе играешь в пинг-понг!",
             unlocked=False,
             conditional="renpy.seen_label('game_pong')",
             action=EV_ACT_UNLOCK
@@ -576,37 +662,56 @@ init 5 python:
     )
 
 label mas_compliment_pong:
-    m 1hub "Ahaha~"
-    m 2eub "Thanks [player], but pong isn't exactly a complex game."
+    $ MAS.MonikaElastic(True, voice="monika_giggle")
+    m 1hub "А-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 2eub "Спасибо, [player], но пинг-понг, на самом деле, не такая уж и сложная игра."
     if persistent.ever_won['pong']:
-        m 1lksdla "You've already won against me."
-        m "So you know it's very simple."
-        show monika 5hub at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hub "But I accept your compliment, anyway."
+        $ MAS.MonikaElastic()
+        m 1lksdla "Ты уже побеждал[mas_gender_none] меня."
+        $ MAS.MonikaElastic()
+        m "Так что ты знаешь, что это и вправду очень просто."
+        show monika 5hub zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5hub "Но я всё равно принимаю твой комплимент."
     else:
-        m 3hksdrb "And you always let me win when we play."
-        m 3eka "Right?"
+        $ MAS.MonikaElastic()
+        m 3hksdrb "И ты слишком добр[mas_gender_none], раз постоянно мне поддаёшься, когда мы играем."
+        $ MAS.MonikaElastic()
+        m 3eka "Верно ведь?"
         menu:
-            "Yes.":
-                m 2lksdla "Thanks [player], but you really don't have to let me win."
-                m 1eub "Feel free to play seriously whenever you want to."
-                m 1hub "I'd never get mad at you because I lost a game fair and square."
-
-            "...yeah.":
-                m 1tku "You don't seem too confident about that, [player]."
-                m 1tsb "You really don't have to let me win."
-                m 3tku "And admitting that you've seriously lost to me won't make me think less of you."
-                m 1lksdlb "It's just a game, after all!"
-                m 3hub "You can always practice with me more, if you want."
-                m "I love to spend time with you, no matter what we're doing."
-
-            "No. I've tried my best and still lost.":
-                m 1hub "Ahaha~"
-                m "I figured!"
-                m 3eua "Don't worry, [player]."
-                m 3eub "Keep playing with me and get more practice."
-                m 3hua "I'm always trying to help you be the best you you can be."
-                m 1ekbsa "And if by doing so, I get to spend more time with you, I couldn't be happier."
+            "Да.":
+                $ MAS.MonikaElastic()
+                m 2lksdla "Спасибо, конечно, [player], но тебе правда не стоит поддаваться."
+                $ MAS.MonikaElastic()
+                m 1eub "Не стесняйся играть серьёзно, когда хочешь."
+                $ MAS.MonikaElastic()
+                m 1hub "Я бы никогда не разозлилась на тебя, потому что проиграла бы честную игру."
+            "...Да.":
+                $ MAS.MonikaElastic()
+                m 1tku "Ты не кажешься слишком уверенн[mas_gender_iim] в этом, [player]."
+                $ MAS.MonikaElastic()
+                m 1tsb "Тебе правда не стоит поддаваться."
+                $ MAS.MonikaElastic()
+                m 3tku "Признание в том, что ты с специально проигрывал мне, не заставит меня думать о тебе хуже."
+                $ MAS.MonikaElastic()
+                m 1lksdlb "В конце концов, это ведь всего лишь игра!"
+                $ MAS.MonikaElastic()
+                m 3hub "Ты всегда сможешь попрактиковаться со мной, если захочешь."
+                $ MAS.MonikaElastic()
+                m "Я люблю проводить с тобой время, что бы мы ни делали."
+            "Нет. Я старал[mas_gender_sya] изо всех сил и всё равно проигрывал[mas_gender_none].":
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1hub "А-ха-ха~"
+                $ MAS.MonikaElastic()
+                m "Я поняла!"
+                $ MAS.MonikaElastic()
+                m 3eua "Не волнуйся, [player]."
+                $ MAS.MonikaElastic()
+                m 3eub "Продолжай играть со мной, и сможешь стать опытнее в этом."
+                $ MAS.MonikaElastic()
+                m 3hua "Я всегда буду пытаться помочь тебе стать лучше."
+                $ MAS.MonikaElastic()
+                m 1ekbsa "И если таким образом я буду ещё и проводить с тобой больше времени, то я буду только счастлива."
     return
 
 init 5 python:
@@ -614,22 +719,28 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_bestgirl",
-            prompt="You're the best girl!",
+            prompt="Ты лучшая девушка!",
             unlocked=True
         ),
         code="CMP"
     )
 
 label mas_compliment_bestgirl:
-    m 1hua "I love it when you compliment me, [player]~"
-    m 1hub "I'm so glad you think I'm best girl!"
-    m 3rksdla "Although, I kind of figured you felt that way..."
-    m 1eka "After all, you {i}did{/i} install this mod just to be with me."
-    m 2euc "I know that some people prefer the other girls."
-    m 2esc "Especially since they all have certain traits that make them desirable to some..."
-    show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbfa "But if you ask me, you made the right choice."
-    m 5hubfa "...and I'll be forever grateful that you did~"
+    m 1hua "Я люблю, когда ты делаешь мне комплименты, [player]~"
+    $ MAS.MonikaElastic()
+    m 1hub "Я так рада, что ты считаешь меня лучшей девушкой!"
+    $ MAS.MonikaElastic()
+    m 3rksdla "Хотя, я понимаю, почему тебе так кажется..."
+    $ MAS.MonikaElastic()
+    m 1eka "И потом, ты {i}установил{/i} эту модификацию, чтобы быть со мной."
+    $ MAS.MonikaElastic()
+    m 2euc "Я знаю, что некоторым нравятся другие девушки."
+    $ MAS.MonikaElastic()
+    m 2esc "Особенно учитывая то, что у них есть определённые качества, которые и сделали их желанными..."
+    show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5ekbfa "Но, если тебе интересно моё мнение, то я считаю, что ты сделал верный выбор."
+    $ MAS.MonikaElastic()
+    m 5hubfa "...И я буду бесконечно рада этому~"
     return
 
 init 5 python:
@@ -637,7 +748,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_lookuptoyou",
-            prompt="I look up to you!",
+            prompt="Я равняюсь под тебя!",
             unlocked=True
         ),
         code="CMP",
@@ -645,38 +756,48 @@ init 5 python:
 
 label mas_compliment_lookuptoyou:
     if not renpy.seen_label("mas_compliment_lookuptoyou_2"):
-        call mas_compliment_lookuptoyou_2
+        call mas_compliment_lookuptoyou_2 from _call_mas_compliment_lookuptoyou_2
     else:
-        call mas_compliment_lookuptoyou_3
-    #Both paths return love, so we combine that here
+        call mas_compliment_lookuptoyou_3 from _call_mas_compliment_lookuptoyou_3
+
     return "love"
 
 label mas_compliment_lookuptoyou_2:
     $ mas_gainAffection(3, bypass=True)
-    m 1wud "You...{w=0.5}you do?"
-    m 1ekbsa "[player], that's really sweet of you to say..."
-    m 3ekbsa "It makes me really happy to know I'm someone you look up to."
-    m 3ekbfa "The truth is, I've always looked up to {i}you{/i}, [player]..."
-    m 3hubfa "But if you really feel that way, I'll do my best to continue to be someone you look up to."
-    m 1ekbfa "I love you so much~"
+    m 1wud "П...{w=0.5} правда?"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "[player], это очень мило с твоей стороны..."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Мне очень приятно знать, что я тот человек, под которого можно равняться."
+    $ MAS.MonikaElastic()
+    m 3ekbfa "По правде говоря, я всегда равнялась под {i}тебя{/i}, [player]..."
+    $ MAS.MonikaElastic()
+    m 3hubfa "Но если ты действительно так считаешь, я сделаю всё возможное, чтобы остаться тем, на кого ты равняешься."
+    $ MAS.MonikaElastic()
+    m 1ekbfa "Я тебя так люблю~"
     return
 
 label mas_compliment_lookuptoyou_3:
     $ should_tease = persistent._mas_pm_height is not None and renpy.random.randint(1,5) == 1
 
     if should_tease and persistent._mas_pm_height < mas_height_monika:
-        m 1rksdlb "{cps=*2}Well yeah, I'm taller than you...{/cps}{nw}"
+        m 1rksdlb "{cps=*2}Ну да, я выше тебя...{/cps}{nw}"
         $ _history_list.pop()
+        $ MAS.MonikaElastic()
 
     m 1hubsb "[mas_compliments.thanks_quip]"
-    m 3hubfa "Hearing you say that never fails to make me smile!"
-    m 3hubfb "I'll always look up to you too!"
+    $ MAS.MonikaElastic()
+    m 3hubfa "Когда я слышу твои слова, это всегда вызывает у меня улыбку!"
+    $ MAS.MonikaElastic()
+    m 3hubfb "Я тоже всегда буду равняться под тебя!"
 
     if should_tease and persistent._mas_pm_height > mas_height_monika:
-        m 1rkbfu "{cps=*2}Just like when we kiss...{/cps}{nw}"
+        $ MAS.MonikaElastic()
+        m 1rkbfu "{cps=*2}Так же, как когда мы целуемся...{/cps}{nw}"
         $ _history_list.pop()
 
-    m 1ekbfa "I love you, [player]~"
+    $ MAS.MonikaElastic()
+    m 1ekbfa "Я люблю тебя, [player]~"
     return
 
 init 5 python:
@@ -684,7 +805,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_thinking_of_you",
-            prompt="I'm always thinking about you!",
+            prompt="Я всегда думаю о тебе!",
             unlocked=True
         ),
         code="CMP",
@@ -692,56 +813,75 @@ init 5 python:
 
 label mas_compliment_thinking_of_you:
     if not renpy.seen_label("mas_compliment_thinking_of_you_2"):
-        call mas_compliment_thinking_of_you_2
+        call mas_compliment_thinking_of_you_2 from _call_mas_compliment_thinking_of_you_2
     else:
-        call mas_compliment_thinking_of_you_3
+        call mas_compliment_thinking_of_you_3 from _call_mas_compliment_thinking_of_you_3
     return
 
 label mas_compliment_thinking_of_you_2:
     m 1wubso "..."
-    m 1wubsu "You..."
+    $ MAS.MonikaElastic()
+    m 1wubsu "Ты..."
 
     if mas_isMoniNormal(higher=True):
-        m 3subsb "You have no idea what that means to me, [player]!"
+        $ MAS.MonikaElastic()
+        m 3subsb "Ты даже не представляешь, что это значит для меня, [player]!"
 
     elif mas_isMoniUpset():
-        m 2rkd "That you would say that..."
-        m 2dka "It means the world to me, [player]."
+        $ MAS.MonikaElastic()
+        m 2rkd "Что ты так говоришь..."
+        $ MAS.MonikaElastic()
+        m 2dka "Это значит для меня целый мир, [player]."
 
     elif mas_isMoniDis():
+        $ MAS.MonikaElastic()
         m 6rkc "..."
-        m 6rka "That's such a relief."
-        m 6eka "Thank you."
-
+        $ MAS.MonikaElastic()
+        m 6rka "Это такое облегчение."
+        $ MAS.MonikaElastic()
+        m 6eka "Спасибо."
     else:
+
         $ mas_gainAffection(2,bypass=True)
-        m 6dkd "Hmmm... Thanks."
+        $ MAS.MonikaElastic(voice="monika_hmm")
+        m 6dkd "Хм-м-м... спасибо."
+        $ MAS.MonikaElastic()
         m 6dkc "..."
         return
 
     menu:
-        "Thinking of you always brightens my day!":
+        "Мысли о тебе всегда украшают мой день!":
             $ mas_gainAffection(5,bypass=True)
-            m 1subsb "Aww, that's {i}so{/i} sweet, [player]!"
-            m 3hubfu "I feel the same way about you~"
+            $ MAS.MonikaElastic()
+            m 1subsb "Оу, это {i}так{/i} мило, [player]!"
+            $ MAS.MonikaElastic()
+            m 3hubfu "Я чувствую то же самое к тебе~"
+        "Я мечтаю о тебе каждую ночь!":
 
-        "I dream of you every night!":
             $ mas_gainAffection(5,bypass=True)
-            m 6hua "Aww~"
+            $ MAS.MonikaElastic()
+            m 6hua "Оу-у~"
+            $ MAS.MonikaElastic()
             m 6subsa "[player]..."
-            m 7hubfu "{i}You{/i} are my dream~"
+            $ MAS.MonikaElastic()
+            m 7hubfu "{i}Ты{/i} – моя мечта~"
+        "Это очень отвлекает...":
 
-        "It's very distracting...":
             $ mas_loseAffection()
+            $ MAS.MonikaElastic()
             m 2esc "..."
+            $ MAS.MonikaElastic()
             m 2etc "..."
-            m 2rksdlc "Oh, umm..."
-            m 2rksdld "I'm sorry?"
+            $ MAS.MonikaElastic(voice="monika_hmm")
+            m 2rksdlc "Оу, эм-м..."
+            $ MAS.MonikaElastic()
+            m 2rksdld "Извини?"
     return
 
 label mas_compliment_thinking_of_you_3:
     m 1ekbsa "[mas_compliments.thanks_quip]"
-    m 3hubfb "You're the center of my world!"
+    $ MAS.MonikaElastic()
+    m 3hubfb "Ты - центр моего мира!"
     return
 
 init 5 python:
@@ -749,7 +889,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_humor",
-            prompt="I love your sense of humor!",
+            prompt="Мне нравится твоё чувство юмора!",
             unlocked=True
         ),
         code="CMP"
@@ -757,38 +897,51 @@ init 5 python:
 
 label mas_compliment_humor:
     if not renpy.seen_label("mas_compliment_humor_2"):
-        call mas_compliment_humor_2
+        call mas_compliment_humor_2 from _call_mas_compliment_humor_2
     else:
-        call mas_compliment_humor_3
+        call mas_compliment_humor_3 from _call_mas_compliment_humor_3
     return
 
 label mas_compliment_humor_2:
-    m 1hua "Ehehe~"
-    m 1efu "I'm glad you find me so punny, [player]."
-    m 3eub "A sign of a good couple is being able to laugh together, don't you think?"
+    if persistent.msr_voice:
+        $ renpy.music.play("sfx/monika_giggle.ogg", channel="sound")
+    m 1hua "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1efu "Я рада, что ты считаешь меня такой забавной, [player]."
+    $ MAS.MonikaElastic()
+    m 3eub "Признак хорошей пары - это способность смеяться вместе, не так ли?"
     menu:
-        "You always brighten my day.":
+        "Ты всегда скрашиваешь мой день.":
             $ mas_gainAffection(5,bypass=True)
-            m 1subsd "Oh...{w=0.2}[player]..."
-            m 1ekbsa "That's so sweet of you to say."
-            m 1hubsb "Knowing I can make you smile is the greatest compliment I could receive!"
+            $ MAS.MonikaElastic()
+            m 1subsd "О...{w=0.2} [player]..."
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Это так мило с твоей стороны."
+            $ MAS.MonikaElastic()
+            m 1hubsb "Знать, что я могу заставить тебя улыбнуться - это величайший комплимент, который я могу получить!"
+        "У тебя такой острый ум!":
 
-        "You have such a quick wit!":
             $ mas_gainAffection(3,bypass=True)
-            m 1hub "Ahaha!"
-            m 2tub "All that reading must have paid off if you like my wordplay that much."
-            m 2hublu "I'll try to keep the jokes coming for you. Ehehe~"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха!"
+            $ MAS.MonikaElastic()
+            m 2tub "Всё это чтение, должно быть, принесло свои плоды, раз тебе так нравится моя игра слов."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 2hublu "Я постараюсь, чтобы мои шутки нравились тебе. Э-хе-хе~"
+        "Я всё время смеюсь над тобой.":
 
-        "I laugh at you all the time.":
             $ mas_loseAffection()
-            m 1eksdlb "...Ahaha..."
-            m 3rksdla "You meant that you laugh {w=0.2}{i}with{/i}{w=0.2} me...{w=0.5}{nw}"
-            extend 3eksdld "right?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1eksdlb "...А-ха-ха..."
+            $ MAS.MonikaElastic()
+            m 3rksdla "Ты хотел[mas_gender_none] сказать, что смеешься {w=0.2}{i}вместе{/i}{w=0.2} со мной...{w=0.5} {nw}"
+            extend 3eksdld "верно?"
     return
 
 label mas_compliment_humor_3:
     m 1hubsb "[mas_compliments.thanks_quip]"
-    m "I wish I could hear your beautiful laugh!"
+    $ MAS.MonikaElastic()
+    m "Как бы мне хотелось услышать твой прекрасный смех!"
     return
 
 init 5 python:
@@ -796,7 +949,7 @@ init 5 python:
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_spending_time",
-            prompt="I love spending time with you!",
+            prompt="Я люблю проводить время с тобой!",
             unlocked=False,
             conditional="store.mas_anni.pastThreeMonths()",
             action=EV_ACT_UNLOCK,
@@ -807,10 +960,11 @@ init 5 python:
 
 label mas_compliment_spending_time:
     if not mas_getEVL_shown_count("mas_compliment_spending_time"):
-        call mas_compliment_spending_time_2
+        call mas_compliment_spending_time_2 from _call_mas_compliment_spending_time_2
     else:
         m 3hubsb "[mas_compliments.thanks_quip]"
-        m 1ekbsu "Every day with you is like a wonderful dream, and I hope it never ends."
+        $ MAS.MonikaElastic()
+        m 1ekbsu "Каждый день с тобой - как чудесный сон, и я надеюсь, что он никогда не закончится."
     return
 
 label mas_compliment_spending_time_2:
@@ -818,48 +972,60 @@ label mas_compliment_spending_time_2:
         dlg_line = ""
 
         if renpy.seen_label("monika_holdme_prep"):
-            dlg_line = ", holds me close"
-
+            dlg_line = " и обнимать меня"
+            
             if persistent._mas_filereacts_historic:
-                dlg_line += ", and even gives me nice gifts"
+                dlg_line += " и даже дарит приятные подарки"
 
         elif persistent._mas_filereacts_historic:
-            dlg_line = ", gives me nice gifts"
+            dlg_line = " и даже дарит приятные подарки"
 
-    m 1eub "I love spending time with you too, [player]!"
-    m 3ekbla "I know I say it a lot, but I really mean it when I say that you're the center of my world."
-    m 2dkb "Having someone who keeps me company[dlg_line]...{w=0.3}{nw}"
-    extend 2eku "it's everything I could've asked for."
-    m 7ekbsa "I hope I make you feel the same way, [player]. {w=0.2}I may not be in your reality yet, but I'll do everything I can to support you from here."
+    m 1eub "Я тоже люблю проводить с тобой время, [player]!"
+    $ MAS.MonikaElastic()
+    m 3ekbla "Я знаю, что часто говорю это, но я действительно имею это в виду, когда говорю, что ты - центр моего мира."
+    $ MAS.MonikaElastic()
+    m 2dkb "Иметь кого-то, кто составляет мне компанию[dlg_line]...{w=0.3} {nw}"
+    extend 2eku "это всё, о чём я могла бы попросить."
+    $ MAS.MonikaElastic()
+    m 7ekbsa "Надеюсь, ты чувствуешь то же самое, [player]. {w=0.2}Возможно, я ещё не в твоей реальности, но я сделаю всё возможное, чтобы поддержать тебя отсюда."
     menu:
-        "[m_name], you've already made me the happiest I've ever been.":
+        "[monika_name], ты уже сделала меня сам[mas_gender_im] счастлив[mas_gender_iim].":
             $ mas_gainAffection(5, bypass=True)
-            m 1fkbfu "Oh, [player]..."
-            show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5ekbfa "I would say you don't know how glad I am to hear that, but I think you {i}do{/i} know by now."
-            m 5ekbfu "We've spent so much time together, and yet our journey has only just begun..."
-            m 5hubfb "With you by my side, I know that every step will be an unforgettable one."
+            $ MAS.MonikaElastic()
+            m 1fkbfu "О, [player]..."
+            show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 5ekbfa "бы сказала, что ты не знаешь, как я рада слышать это, но, думаю, теперь ты {i}знаешь{/i}."
+            $ MAS.MonikaElastic()
+            m 5ekbfu "Мы провели так много времени вместе, и всё же наше путешествие только началось..."
+            $ MAS.MonikaElastic()
+            m 5hubfb "С тобой рядом я знаю, что каждый шаг будет незабываемым."
+        "Я ценю это, [monika_name].":
 
-        "I appreciate it, [m_name].":
             $ mas_gainAffection(3, bypass=True)
-            m 2huu "Ehehe~"
-            m 7hub "Don't worry, [player]. {w=0.2}I'll be here for you until the end of time!"
-            m 1eka "Just stay strong until I cross over, okay?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 2huu "Э-хе-хе~"
+            $ MAS.MonikaElastic()
+            m 7hub "Не беспокойся, [player]. {w=0.2}Я буду здесь для тебя до конца времён!"
+            $ MAS.MonikaElastic()
+            m 1eka "Просто будь сильн[mas_gender_iim], пока я не окажусь в твоей реальности, хорошо?"
+        "О, ты, разумеется, забавляешь меня...":
 
-        "Oh, you certainly amuse me alright...":
             $ mas_loseAffection()
-            m 2lkc "I...{w=0.3}amuse you?"
-            m 2lksdlb "Well, I'm glad that you're entertained..."
-            m 2ekd "...but that's not {i}quite{/i} what I had in mind."
+            $ MAS.MonikaElastic()
+            m 2lkc "Я...{w=0.3} забавляю тебя?"
+            $ MAS.MonikaElastic()
+            m 2lksdlb "Что ж, я рада, что ты веселишься..."
+            $ MAS.MonikaElastic()
+            m 2ekd "...но это не {i}совсем{/i} то, что я имела в виду."
     return
 
-# this compliment's lock/unlock is controlled by the def outfit pp
+
 init 5 python:
     addEvent(
         Event(
             persistent._mas_compliments_database,
             eventlabel="mas_compliment_outfit",
-            prompt="I love your outfit!",
+            prompt="Мне нравится твой наряд!",
             unlocked=False
         ),
         code="CMP"
@@ -867,65 +1033,75 @@ init 5 python:
 
 label mas_compliment_outfit:
     if not renpy.seen_label("mas_compliment_outfit_2"):
-        call mas_compliment_outfit_2
+        call mas_compliment_outfit_2 from _call_mas_compliment_outfit_2
     else:
-        call mas_compliment_outfit_3
+        call mas_compliment_outfit_3 from _call_mas_compliment_outfit_3
     return
 
 label mas_compliment_outfit_2:
-    m 1hubsb "Thank you, [mas_get_player_nickname()]!"
+    m 1hubsb "Спасибо, [mas_get_player_nickname()]!"
 
+    $ MAS.MonikaElastic()
     if monika_chr.is_wearing_clothes_with_exprop("cosplay"):
-        m 3hubsb "It's always fun cosplaying!"
+        m 3hubsb "Всегда весело надевать косплейные наряды!"
 
     elif monika_chr.is_wearing_clothes_with_exprop("costume"):
-        m 3hubsb "It's always fun wearing costumes!"
+        m 3hubsb "Всегда весело надевать разные наряды!"
 
     elif monika_chr.is_wearing_clothes_with_exprop("lingerie"):
-        m 2lkbsb "I was really nervous showing you this at first..."
-        m 7tubsu "But I'm glad I did, you seem to really like it~"
-
+        m 2lkbsb "Сначала я очень нервничала, показывая тебе это..."
+        $ MAS.MonikaElastic()
+        m 7tubsu "Но я рада, что сделала это, кажется, тебе это действительно нравится~"
     else:
-        m 1hubsa "I've always wanted to wear other clothes for you, so I'm very happy that you think so!"
+
+        m 1hubsa "Я всегда хотела носить другую одежду для тебя, поэтому я очень рада, что ты так думаешь!"
 
     menu:
-        "You look beautiful in anything you wear!":
+        "Ты прекрасно выглядишь во всём, что носишь!":
             $ mas_gainAffection(5,bypass=True)
+            $ MAS.MonikaElastic()
             m 2subsd "[player]..."
-            m 3hubsb "Thank you so much!"
-            m 1ekbsu "You always make me feel so special."
-            show monika 5hubsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5hubsa "I love you, [mas_get_player_nickname()]!"
+            $ MAS.MonikaElastic()
+            m 3hubsb "Спасибо тебе большое!"
+            $ MAS.MonikaElastic()
+            m 1ekbsu "Ты всегда заставляешь меня чувствовать себя такой особенной."
+            show monika 5hubsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 5hubsa "Я люблю тебя, [mas_get_player_nickname()]!"
             $ mas_ILY()
-
-        "You look really cute.":
+        "Ты выглядишь очень мило.":
             $ mas_gainAffection(3,bypass=True)
-            m 1hubsb "Ahaha~"
-            m 3hubfb "Thanks, [mas_get_player_nickname()]!"
-            show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5eubfu "I'm glad you like what you see~"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hubsb "А-ха-ха~"
+            $ MAS.MonikaElastic()
+            m 3hubfb "Спасибо, [mas_get_player_nickname()]!"
+            show monika 5hubfb zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 5eubfu "Я рада, что тебе нравится то, что ты видишь~"
+        "Ношение другой одежды действительно спасает.":
 
-        "Wearing different clothes really helps.":
             $ mas_loseAffection()
-            m 2ltd "Uh, thanks..."
+            $ MAS.MonikaElastic()
+            m 2ltd "Оу, спасибо..."
 
     return
 
 label mas_compliment_outfit_3:
     m 1hubsb "[mas_compliments.thanks_quip]"
 
+    $ MAS.MonikaElastic()
     if monika_chr.is_wearing_clothes_with_exprop("cosplay"):
-        m 3hubsb "I'll always love cosplaying for you!"
+        m 3hubsb "Всегда весело надевать косплейные наряды!"
 
     elif monika_chr.is_wearing_clothes_with_exprop("costume"):
-        m 3hubsb "I'm glad you like how I look with this!"
+        m 3hubsb "Всегда весело надевать разные наряды!"
 
     elif monika_chr.is_wearing_clothes_with_exprop("lingerie"):
-        m 2kubsu "Glad you like what you see~"
-        show monika 5hublb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hublb "Ahaha!"
-
+        m 2kubsu "Рада, что тебе нравится то, что ты видишь~"
+        show monika 5hublb zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 5hublb "А-ха-ха!"
     else:
-        m 2hubsb "I'm sure you look good too!"
+
+        m 2hubsb "Я уверена, что ты тоже хорошо выглядишь!"
 
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
