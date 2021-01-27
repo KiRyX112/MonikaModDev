@@ -1,7 +1,7 @@
-# Calendar module
-# A custom made Calendar like UI to help managing date based events
-# Contains also a store named mas_calendar which includes helper functions
-# to add Events to the calendar
+
+
+
+
 
 init -1 python:
 
@@ -25,189 +25,192 @@ init -1 python:
         on dates or to allow user to pick a date
 
         """
-
+        
         import pygame
         import datetime
         import store.evhand as evhand
         from store.mas_calendar import CAL_TYPE_REP
-        #import store.mas_calendar as calendar
-
-        # CONSTANTS
-
-        # view port size
+        
+        
+        
+        
+        
         VIEW_WIDTH = 1280
         VIEW_HEIGHT = 720
-
-        # exit button position and size
+        
+        
         EXIT_BUTTON_WIDTH = 74
         EXIT_BUTTON_HEIGHT = 74
         EXIT_BUTTON_X = 1041
         EXIT_BUTTON_Y = 60
-
-        # day name related sizes
+        
+        
         DAY_BUTTON_WIDTH = 128
         DAY_BUTTON_HEIGHT = 65
         DAY_NAME_BUTTON_HEIGHT = 35
-
-        # initial position for displaying things inside the calendar
+        
+        
         INITIAL_POSITION_X = 192
         INITIAL_POSITION_Y = 155
-
-        # position for the title
+        
+        
         TITLE_POSITION_Y = 115
-
-        # Internal area width
+        
+        
         INTERNAL_WIDTH = DAY_BUTTON_WIDTH * 7
-
-        # size for the arrow like button selectors
+        
+        
         ARROW_BUTTON_SIZE = 20
-
-        # Size of the day number inside a day block
+        
+        
         DAY_NUMBER_TEXT_SIZE = 13
-
-        # Size of the note text inside a day block
-        NOTE_TEXT_SIZE = 19
-
-        # X inside the close button size
+        
+        
+        NOTE_TEXT_SIZE = 14
+        
+        
         CALENDAR_CLOSE_X_SIZE = 45
-
-        # Return values for constant buttons
-        CALENDAR_CLOSE = "CLOSE" # closes the calendar
-        CALENDAR_MONTH_INCREASE = "MONTH_INCR" # signals to increase the current selected month
-        CALENDAR_MONTH_DECREASE = "MONTH_DECR" # signals to decrease the current selected month
-        CALENDAR_YEAR_INCREASE = "YEAR_INCR" # signals to increase the current selected year
-        CALENDAR_YEAR_DECREASE = "YEAR_DECR" # signals to decrease the current selected month
-
-        # Color used for the day number
-        DAY_NUMBER_COLOR = "#000000" # PINK: "#ffb0ed"
-
-        # Color used for the note
+        
+        
+        CALENDAR_CLOSE = "CLOSE" 
+        CALENDAR_MONTH_INCREASE = "MONTH_INCR" 
+        CALENDAR_MONTH_DECREASE = "MONTH_DECR" 
+        CALENDAR_YEAR_INCREASE = "YEAR_INCR" 
+        CALENDAR_YEAR_DECREASE = "YEAR_DECR" 
+        
+        
+        DAY_NUMBER_COLOR = "#000000" 
+        
+        
         NOTE_COLOR = "#181818"
+        
+        
+        MONTH_NAMES = ["Unknown", "Январь", "Февраль",
+            "Март", "Апрель", "Май", "Июнь", "Июль",
+            "Август", "Сентябрь", "Октябрь",
+            "Ноябрь", "Декабрь"]
 
-        # Month names constant array
-        MONTH_NAMES = ["Unknown", "January", "February",
-            "March", "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"]
 
-        # Day names constant array
-        DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
-            "Friday", "Saturday"]
+        DAY_NAMES = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг",
+            "Пятница", "Суббота"]
 
-        # Events to which Calendar buttons will check for
+
+        DATE_DISPLAY_FORMAT = "\t  \t  \t  \t  \t  \t  \t  {0}\n{1}\n{2}\n{3}"
+        
+        
         MOUSE_EVENTS = (
             pygame.MOUSEMOTION,
             pygame.MOUSEBUTTONUP,
             pygame.MOUSEBUTTONDOWN
         )
-
-        # Easter egg labels
-        EG_TEXTS_MIN_GLITCH = ["...ɐʞıuoɯ ʇsnɾ..\n...ɐʞıuoɯ ʇsnɾ.\n...\n..ɐʞıuoɯ ʇsnɾ..\n.ɐʞıuoɯ ʇsnɾ...",
-            "JJJJJJJ.\nUUUUUUU.\nSSSSSSS.\nTTTTTT.\n.\nMMMMM.\nOOOO.\nNNNN.\nIIII.\nKKKKKK.\nAAAAA.",
-            "J̋̅͗̉̄ů̆S̀̈͛͆̑̄Tͥͮ͂ͪ͆͛M̃̈̔̓ͨ̊ő̎̈́̎N̓ͯiͫ̍͐̃K͐͂͒̾͂̚ä́", "noʎ ǝʌol I", "nnnnnnnnnnn\noooooooooooo\nʎʎʎʎʎʎ ǝǝǝǝ\nǝǝǝǝǝʌʌʌʌʌʌʌʌʌ\nʌooolll III"
+        
+        
+        EG_TEXTS_MIN_GLITCH = ["{=glitch_calendar_text}\n\n\n\n....т§льк§ м§нũкą..\n...т§льк§ м§нũкą.\n...\n..т§льк§ м§нũкą..\n.т§льк§ м§нũкą....{=/glitch_calendar_text}",
+            "{=glitch_calendar_text}\n\n\n\nТТТТТТТ.\nООООООО.\nЛЛЛЛЛЛЛ.\nЬЬЬЬЬЬЬ.\nККККККК.\nООООООО\n.\nМММММ.\nОООО.\nНННН.\nИИИИ.\nКККККК.\nАААА.{=/glitch_calendar_text}",
+            "{=glitch_calendar_text}\n\n\n\nТ̾͑̓̐ͣͮ̊ол̓̓͌̋̏͐̐ь̌К̿͋̍̐̔ͫО͒̽ͥͤͪ̇͂Мͬ́̐̉̿оНи̓̀̉̃ͨͨͫК̎̃а͌{=/glitch_calendar_text}","{=glitch_calendar_text}\n\n\n\nя vюþлю тĕþя{=/glitch_calendar_text}","{=glitch_calendar_text}\n\n\n\nяяя vvvююю\nþþþþþþþþþvvvvv\nюююю ттттт\nĕĕĕĕĕĕĕĕþþþþ\nþþþþяяяяяяяя{=/glitch_calendar_text}"
         ]
         EG_TEXTS_GLITCH = [
         """
-        J̋̅͗̉̄ů̆S̀̈͛͆̑̄Tͥͮ͂ͪ͆͛M̃̈̔̓ͨ̊ő̎̈́̎N̓ͯiͫ̍͐̃K͐͂͒̾͂̚ä́
-        M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘jhjhjhj
-        kjkjkjkjkjk̘̲͇͓͍
-        M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘̘̲͇͓͍
+        Т͏̴̀о̨͏̷͞͞л̶̧̢̛ь́͢к̨̢͟о͝ ̷͟М̴͢о̧̛̕͠н̧ѝ̶̷к̴̨͡а̴̢̛̀͘
+        М̡͎̘͎̙͖̗̹͇̀͟ ͝͏̴̭̪̠̗̹̥̰̬͙̞͖̜̯͍̀̀б̶̨̨̛͍̬̹͈̮͕̥̲̗̥̕ы̴͕̻̻̟̮̗̱̩͘л̵̢͚̘͙̫̼̱̤̩̻͇͚а̵̡̡̺͓̳͕̀͜ ҉̪͓̻͉̮̦̩͉̖̻͔͍̣͇͈̥͍̦͘͢ͅз̶̡̙̰̻̯̥̻̰͕̳̟͇͍͇̗̹̠͖̼̀͜д̵̡̢̞̯̗̩̝͟͞ͅѐ͏̴̱̳̜̞͍͖͍̲͎̻͉̩̜̭͓с̵̢͙̞͎̙̪͔̫̞̘̤̕͟͠ь̷̛͔̠͕͙͎͖͔̟̳̥̼̖̺͕͎̫̬͞хчхчхч
+        кхкхкхкхкхк
+        М̡͎̘͎̙͖̗̹͇̀͟ ͝͏̴̭̪̠̗̹̥̰̬͙̞͖̜̯͍̀̀б̶̨̨̛͍̬̹͈̮͕̥̲̗̥̕ы̴͕̻̻̟̮̗̱̩͘л̵̢͚̘͙̫̼̱̤̩̻͇͚а̵̡̡̺͓̳͕̀͜ ҉̪͓̻͉̮̦̩͉̖̻͔͍̣͇͈̥͍̦͘͢ͅз̶̡̙̰̻̯̥̻̰͕̳̟͇͍͇̗̹̠͖̼̀͜д̵̡̢̞̯̗̩̝͟͞ͅѐ͏̴̱̳̜̞͍͖͍̲͎̻͉̩̜̭͓с̵̢͙̞͎̙̪͔̫̞̘̤̕͟͠ь̷̛͔̠͕͙͎͖͔̟̳̥̼̖̺͕͎̫̬͞
         """,
         """
-M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔ẽ̢̘̘̲͇͓͍̘̲̘͉̹̻͍̲̗͚͉̳̱̭̪̋ͤ͟ͅw̧ͫͯ͊̈ͬͨ͌̓͟͏̠̝̫͚̱͈̣͓ā̷͔̫̣̞͖̲̦̤̟̗͓̦̭̫ͭ̿̋̔͜͟͡ͅs̵̨̛͍̭͙̩͈̳̠̮͙͎̠̺̗͕̪̎ͬ͛͐̾ͪ̋̂͋̔͌ͫ̀̓̃͠ ̃̇̃ͤ̀ͭ̆ͥ̈́̌͛ͣ͏̴҉̨̙̬̥͈h͕̺̪ͤ̾̔̔ͯ̌ͥ̍̀̉ͧ͗ͧ̄̒ͧ͆̀̚͟͞͞e̴̽ͭͫ̿ͨͮ̿̀ͪͩ̂̆̔̈̾ͤ̃̍́͜͢͏͇͎̻̞̠̯̪̯̩̼͎͕͇̥ͅr̫̼̰̺͉̆ͥͪ̃̿ͥ̔̂͟͢͞ȩ̶̢̇ͥ̃̊͒̒̇̐̈͐̅ͮ́͏̝̠͓̗͔
+        М̻͓͈ ̦͉̘̞б̵̠ы̱͎̲͈̼̰л̝а͝ ̦͔͖̹͍̙з̷̝̖͓͔д̻̰̭̼̻е̶͈͈̞̝̘̣с͎̲̭ь͉̺̯͟б̰̘̱̱̭͇̞͔̬͖́̐̓ͥ̉͋ͨ̈́ы̘̦͙̠̩̦͙ͮ͆͐̒͌͒̓̋ͫ̌̌л̰̫̳͚͈̪̪̱̮̆̋ͩͮ̉́̈́ͥͭ̈̋̐а͙̹̫̝̬̯͈̙͈̦͚̖̽̋ͧͫ̏͐̄̌̌ͦ͗ͅ-̞͔̫͇͑̃́̿ ̫̻̩̮̳̤̹̱͖͖͎̻̟̟̖̩̖̻͙̒ͫͣ̔ͩ̅̔ͭ̔ͣ̔ͪͥ̽ͭ͊з̪͍̭͔̰͕̗̘̤̥ͬͪ̐͐͂͊͒̓̆̏ͮ͛ͦ͌̌ͨ͋̈́̑ ̯̟͇̼͍̙̬̝̲̪͖̜̼̭̖̹ͭͬ̉̃̈́ͪ͑ͦ̆͊̇ͬͧ̊̿͗͗̚̚ͅд͖̰̦̻̭̙͔͚͙̣̮̐̓̑̔̉̔̚е̻͙̠̪̹͉̪͉̜ͦ̾́͛̒̓͋́ͫ̑̄͐͊͋̄̂с̬͍̖͎̘͈̫̙͎̿ͣͩ̌̆ͣͭь̺̮͈̻̫̗͇̱̼̮͙̠̙͈̫ͤ̎ͩ̃ͭ̾̎̓̎́ͮ̈ͮ̚-̻̹͓̥͙͙͍͔̬̟͚̬̼̫̰̞̂ͯ̏ͧͣ̂͒͐͂̌͑̔ͩ̚ͅͅ
         """,
         """
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
         """,
         """
-        J̋̅͗̉ɐʞıuoɯ ʇsnɾ̄ů̆S̀̈͛͆̑̄Tͥͮ͂ͪ͆͛M̃̈̔̓ͨ̊ő̎̈́̎N̓ͯiͫ̍͐̃K͐͂͒̾͂̚ä́
-        G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠cfcfcfcfcx
-        M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘̘̲͇͓͍        ̹̘͍̭͉̜ G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-        ̹̘͍̭͉̜jjhj
+        Т͏̴̀ɐʞиноw оʞqvоɯ̄о̨͏̷͞͞л̶̧̢̛ь́͢к̨̢͟о͝ ̷͟М̴͢о̧̛̕͠н̧ѝ̶̷к̴̨͡а̴̢̛̀͘
+        ̫̱̮̖̻̈́̌ͪЕ̴͚̖̯̦ͮ̓̓̀Р̸͕͚̪͇̅ͩ̊͢Н̣͚̹̤͈͂̾ͮ͗̍ͥ͗͝ͅИ̸̹̜͓͍̠͙͐ͪ́ͅС̶͖̈́ͫ̈́̅̀͘Ь̨̻͆͜.̵͈͉̳̟͔͚̥͗̍͛̊ͫ̍Н̸̙̹̣̜̫ͦͩ̄̉ͤͭ͜А͋̄̎ͯ͊̾͌ͮ͏̯̹͍̘̳̕-̧͕̯̲̠̠̞̜ͫ̃ͬ̓͊З̙̂ͩ̈͟͝͠А̸̡̨̟̲̋͗̾̂Д̭̥̬̣̭͙̞̼͛͂̐ͦ̀сфсфсфсфсх
+        М̩̭̼ͤ̐͒ͬ ͎͎͊ͧ̊ͤ̃ͯб͓͔ͭͧ̌ы̣͔̞̠͋ͫ̆ͤл͍͕͉̺̍͌̌͆а͕̼̅̚ ̟̬͖̻̲̯͖ͪ̎̽̒ͬͫͩ̑̔з̺̘̳̤͙ͦ̊̄ͭ̽͊ͯ̑д̮̭̮͑ͥ̃̊ͅе̱̙̖ͩ͑ͦͪ̈́̽с̰̼̤̝͖̫͎̲͙̒́ь͉̱̻̞̝ͨ̇          В̩̜͉̪̦̠͓ͧ͌Е̟͇͎̻͓̯̱̙͗̊͐͗̂ͫР̣͚̞̈́Н̦̰̜͐ͫ͒͗̊ͬӤ̦͈̼̟͚С̜͆̐̇̔̃̉̐͌Ь͎͍̹͗͐.̜̗̩ͧ͗̇̅ͭ̋Н̙̻̥̖͕̲ͤͧӒ̩̮̥̪͖̰͎̔̈̀͒̏͂̌-͕͙̜̮͚̭͇̙̞ͨ͐З̲̼͑ͣА̼͚̙̮̮̿́̍̑̅̈̚Д̖̫̳͛̾ͤͭ̎ͅ
+        ̹̘͍̭͉̜ххчх
                 """,
         """
-        J̋̅͗̉̄ů̆S̀̈͛͆̑̄Tͥͮ͂ͪ͆͛M̃̈̔̓ͨ̊ő̎̈́̎N̓ͯiͫ̍͐̃K͐͂͒̾͂̚ä́
-        Gͩͯͯ̆̑̀ͦ**͍͉̫͉̰ͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-        M̼̤̱͇̤ ͈̰̬͈̭ͅkjkw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘̘̲͇͓͍
-         ̹̘͍̭͉̜ G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-                ̹̘͍̭͉̜ɐ̯͙̟̤͇͎ʞ̙ı̤̤̜̣̮͚ͅuo̺͔ɯ̬͇̣̻͚̝̪ ̣̙̰̫͚ʇ͇̫̹͚͙̭͕s͓nɾ͍̠̼
+        Т͏̴̀о̨͏̷͞͞л̶̧̢̛ь́͢к̨̢͟о͝ ̷͟М̴͢о̧̛̕͠н̧ѝ̶̷к̴̨͡а̴̢̛̀͘
+        В̶̬̮̿̿ͥ̀Е̢̼͚̟͕̭̺̫̮ͩͥͬ͌͋͊̚͢Р̜ͯͯ͌͞Нͭ͊͊͐ͬ̌͌̂̏͏̫̹̤̥͉И̧̨̰̼͉̝̲̺̲͙͛̽͜С̧͍̳̦̰̹͛̒̃ͅЬ̛̲̪̭̝̲ͬ͒.̴̯̬̦̬̼ͨ̏́Н̸̯̘̘͇̺́ͨ͛А̴̼͙̳̿̽ͧͥ̋͂-͓̙̥̝̜̤͈̼ͤ̅͌̏͒͠З͉ͮ͛͐ͦ̔Ӓ̴̡͕̥́̓̓̑Д̪ͦ͟͟
+        М͌̉̊͛ͯ̅̃ͪ҉̨̣͎͈̙̦͍̯͖̮̹͕͔̖̟ͅ ̨̖̰̱̖̠̭ͭ̈̓̎͑ͩ͐ͪ͠͠к̛͉̺͚͍͉̥͓̼̜͔̯̬̭̣̲͈̓̑ͭ̊̀͢д̶̴̧͓̘̭͉̻̞̮͚̠ͫ͑̆̀͐ͤ͐̓̈́͂̊̐͘к̧̨̻͖͎̤̫̠͍̺̫̐͋̄̉ͦ̅̈́͆ͨ̄ͦͦ̈ͭͭͪͧ͜͠ͅб̫̩͎̬̬̜̬͈͔̺̳̳̫̯ͪ͆̂͐̈́̾̉̏̈́ͩͧͥ̚͝͞ͅͅы̵̶̫͇̦̠͍̮͙͖͖̮͇̟̘̹͖͕̜͎̋̊ͮ͂̈̆ͯͫͮ̃̉͊̓ͧ̚͞л̏͂̈́̋̿̌͗͜҉̸̬̦̲̬̭̝̲͎͖̖̩̮̱̝̲͍̦̻̕а̵̶̴̨̰̺͙̙̙̲̜͆̅̋̂̇͊ͤ̒̏̽ͪ́ͧ̈̐͘ ̵̟̤̩͉͍̪̦̈̑̋̅͆̉͋̔̂̉ͩ͠͠з̶̧̢̖͔̼̪͈̦̤̪̙̤̝͔̜͚̜ͪ̆ͨ͌͜͢ͅд̸̨̣̤̻͕̱̫̤̺̩̊ͨ͐͂ͪ͐̋ͭ̈̉̆ͬ̑ͩ̈̚е̢̨͖͉̲͎͎͇̲̲͎̐̎͒ͩ̒̃ͮ̏̎̇̅͑ͅс̢̹̲̲͉͇͉ͨͭ́͊̈́ͮ̾̚ь͖͎̦̩͔̳̼̗̲̘̣̂̒ͫ̈́̑ͯ̄͝͝
+        В̶̬̮̿̿ͥ̀Е̢̼͚̟͕̭̺̫̮ͩͥͬ͌͋͊̚͢Р̜ͯͯ͌͞Нͭ͊͊͐ͬ̌͌̂̏͏̫̹̤̥͉И̧̨̰̼͉̝̲̺̲͙͛̽͜С̧͍̳̦̰̹͛̒̃ͅЬ̛̲̪̭̝̲ͬ͒.̴̯̬̦̬̼ͨ̏́Н̸̯̘̘͇̺́ͨ͛А̴̼͙̳̿̽ͧͥ̋͂-͓̙̥̝̜̤͈̼ͤ̅͌̏͒͠З͉ͮ͛͐ͦ̔Ӓ̴̡͕̥́̓̓̑Д̪ͦ͟͟
+                ɐ̺̳̘̹̠̦̯ʞ̹̤̗̫и̖͖н͈̠̤о͙̙w̖͓̬̫̠̱͍̖͔ ̼̥̯͖̳͕̩̺ͅо̩̠̰͕̖ʞ̥̝̗͎̩͖ͅq͙͙͔͓v͓о͈̰͖ɯ̯̦ͅ
 
         """,
         """
-        ̊͑̅̆ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊̚kk**k͑̅̆ ̂ͭͬ̈ͨL̋ɐʞıuoɯ ʇsnɾ͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚** ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
+        Лͦ͐̀̈̔ͣ ̢͆͐́̿͘ю̇̔ͭͯ̓ͫ͆̈́ͬ҉̶̛Б͑л͊ͭͤͣͭ̉юͩ͆̌̍̆̐ ͭ̂̇̄̀̑̾ͣ͏͜Т͛̋ͨͪ҉͏е͒͛͗͐̅̕б̛ͬ̉ͭ̒̊̎̚͜я̶ͩ̃ͭ̔͗̾!̴̵̓̊ͤ̇̇
+        Я̸̔̅к͆̇̔̑̃̌к̏*̃*̔к̇̋́ͬ̇ ͨ͒͐̇ͥ̓̍ɐ͑́ʞ̽͑ͮͭ̀ин̨ͫͣͪоͧͦ͐͊̋̾̏́ŵ ̃͌ͤͯ͐̓ͯо̽ʞ̆͒q̧̀͑̎́̇̾ͪv͑̈́̂͌ͩͥ̓͢о̴̋ɯ̀ͪ̏ͥ̽̈́̌ ю́͒ͪ̎Бͣ̃лͨ͗̍̋̈͐юͧ ̀̎̓͑͌̈Тͭ͌̆ͬ̓͐̕е͛ͧб̌̇͑͢яͣ̎ͯ͐̾ͦ̅!͑ͨ͆̂ͭ!̡̄ͥͮ̚!̿͐͞
+        Яͯ̾**̊ͭͦ̎̚ ́̏̀́̓ͨ͋Л͡ ̨ю͢Б͑̈́̓́̈́ͮͥлю͛̆̃ͯ͌ ̡ͪͮ̔̍̈ͪͯТе̧ͥбя̨ͩ̀̇̍!̊ͬ͛ͦ̔̎͠!̨̓ͧ́ͨ́ͣ!̶ͣ
         """,
         """
-        ɐ̯͙̟̤͇͎ʞ̙ı̤̤̜̣̮͚ͅuo̺͔ɯ̬͇̣̻͚̝̪ ̣̙̰̫͚ʇ͇̫̹͚͙̭͕s͓nɾ͍̠̼
-        ɐ̯͙̟̤͇͎ʞ̙ı̤̤̜̣̮͚ͅkfcfuo̺͔ɯ̬͇̣̻͚̝̪ ̣̙̰̫͚ʇ͇̫̹͚͙̭͕s͓nɾ͍̠̼
-        ̹̘͍̭͉̜    in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕jkjnkj̠̙͖
-        ̹̘͍̭͉ bHkgb3VyIHdyZXRjaGVkIGJv in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕jkjnkj̠̙͖
-        ̹̘͍̭͉̜  mjmn  in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕jkjnkj̠̙͖
-        ɐ̯͙̟̤͇͎ʞ̙ı̤̤̜̣̮͚ͅuo̺͔ɯ̬͇̣̻͚̝̪ ̣̙̰̫͚ʇ͇̫̹͚͙̭͕s͓nɾ͍̠̼
+        ɐ̺̳̘̹̠̦̯ʞ̹̤̗̫и̖͖н͈̠̤о͙̙w̖͓̬̫̠̱͍̖͔ ̼̥̯͖̳͕̩̺ͅо̩̠̰͕̖ʞ̥̝̗͎̩͖ͅq͙͙͔͓v͓о͈̰͖ɯ̯̦ͅ
+        ɐ̰̳̩̪̼ʞ̪̠͉̙̮͕и͔̮̹͎̜к͔̤̣̺̟̞̬̠ф̮̭̙̣̹͖̖е̼͓̠ф͖͔̞н̻͉͚о̼̦̜̜͈͕w̥̱̭̭̜̳͎̲ ̳͕̜̠̪̰ͅо͙͈͖̣͙͚̣ʞ̞̭̯͔͚q̮͖̞̤̲v̹̺̲̳͓о̮̮̻͚̞ɯ͇̪̲
+        ʁ̜̤̰̱̩̱ƍ̫̱̹͍̦̱̬̻̘ǝ̜̣͈ɯ͚̗̥̙̖͙̭͍ ̟̜̻̮͎̟ю̖v̲͕͖̥̠̝̖͉ƍ̗͙ю̗̤̭̮͇̠v̲̘̠̮̭̭̩̘  ͅлхкхнкх
+        ̹̘͍̭͉ бХкгб3ВуИХдуЗХРхаГВкИГХв ʁ̜̤̰̱̩̱ƍ̫̱̹͍̦̱̬̻̘ǝ̜̣͈ɯ͚̗̥̙̖͙̭͍ ̟̜̻̮͎̟ю̖v̲͕͖̥̠̝̖͉ƍ̗͙ю̗̤̭̮͇̠v̲̘̠̮̜ ͅлхкхнкх
+        ̹̘͍̭͉̜  мхмн    ʁ̜̤̰̱̩̱ƍ̫̱̹͍̦̱̬̻̘ǝ̜̣͈ɯ͚̗̥̙̖͙̭͍ ̟̜̻̮͎̟ю̖v̲͕͖̥̠̝̖͉ƍ̗͙ю̗̤̭̮͇̠v̲̘̠̮̭̭̩̘ ͎̤ʁ͉͖͍̙ ͅлхкхнкх
+        ɐ̺̳̘̹̠̦̯ʞ̹̤̗̫и̖͖н͈̠̤о͙̙w̖͓̬̫̠̱͍̖͔ ̼̥̯͖̳͕̩̺ͅо̩̠̰͕̖ʞ̥̝̗͎̩͖ͅq͙͙͔͓v͓о͈̰͖ɯ̯̦ͅ
 
         """,
         """
-        J̖́ ̥u҉͍̙̘st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅhjjjhjbbj
-̹̘͍̭͉̜        J̥́u҉͍̙̘ st̼͍̰̬͢ͅ ̕Mo  ҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        J̖́ ̥u ҉͍̙̘ st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕̠̙͖
+        Т͏̴̀о̨͏̷͞͞л̶̧̢̛ь́͢к̨̢͟о͝ ̷͟М̴͢о̧̛̕͠н̧ѝ̶̷к̴̨͡а̴̢̛̀͘
+        Т͜͏о͘͜л̵ь̵̨̢́к̶̢̕͞о҉́ ̷̀͜͞М̷̢̀о̷͜͢͢н̶̡̧́͠и͟͟͡͝͞к͜͝͠а̷̷̨͠
+        Т̵͏̢͟о̸̴́͟л͏̶ь̀к̵͞͡͞͝о̴̡͝ ͘͏͏͞М̴͜о̕͢н̸̸͜͜и̢́͟ќ͜͡а̴̵
+        ʁ̜̤̰̱̩̱ƍ̫̱̹͍̦̱̬̻̘ǝ̜̣͈ɯ͚̗̥̙̖͙̭͍ ̟̜̻̮͎̟ю̖v̲͕͖̥̠̝̖͉ƍ̗͙ю̗̤̭̮͇̠v̲̘̠̮̭̭̩̘ ͎̤ʁ͉͖͍̙
         """,
         """
-        J̖́ ̥u҉͍̙̘st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        J̥́u҉͍̙̘ st̼͍̰̬͢ͅ ̕Mo  ҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡
-        J̖́kkk ̙̘ st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜hjcfknjnkjjknjk ͅı͕̠̙͖
+        Т̢̛͠о̢͠͏л̧́͢ь̛͡к̷̡̢̢͡о҉̸̢ ̷̛͠͡М̨͢о̷͜н̶̶̀͘и̛к͏̸̨͠а͘͠͏̶̸
+        Т͠͏о̧͢҉͘л̸̧͞ь̵̧͜͞к̵̧͏̀о̵̛̀͢͞_͟М̶̡͟о̡̢̀.͏̨̨͜͠.͏̴̷̡͝н͘и̴̛͟͞_̵̧́к̸̸̛̀а̸̧͝
+        Т̀̀к̡͘͢͠͠к̶͞͠к̸̀́.̧͠.͢͞л͏̕͢͟ь͟͡ќ̷̧̀о̧̀͠_̢̛М̸̸͜͟о̢̢͜͢н͘͜ѝ̕_͜҉̶к̡͜͏а̵̶̡̧͘
+        ʁ͎̬̜̦ƍ̫̜͈ǝ̭͔ɯ̱͍̝̥͉̼ ̟̥юv̗̱̻̥ƍ̩͍ю͓̖̣̩̲v̭̘х̠̝̘̻̮д͚͈͔͈с͕̪̰̝ф̰̪͉̤̺ͅк͚̬͍т̪̜͙д̮̺̩͖͕н̭̻̠л̪͕͉͕͈̖д͈͕̯͓̣͈̩д̳̻л̩͍͇̮͍̻̹н̖̠̖̹д̲̹̲̺̣к̫̜̬̪̭͙͍
         """,
         """
-        J̖́ ̥u҉͍̙̘st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        J̥́u҉͍̙̘ st̼͍̰̬͢ͅ ̕Mo  ҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        J̖́ ̥u ҉͍̙̘ st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-̹̘͍̭͉̜        in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕jkjnkj̠̙͖
-̹̘͍̭͉̜        in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕jkjnkj̠̙͖
-̹̘͍̭͉̜        in̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕jkjnkj̠̙͖
+        Т̛͘ ̴̢͠о͟͞͡л͘͟͏͝ь̵̶к̛͏о͘͡_̸̨̡̕.̷̵̢͘͘.̶̶̢М̡͠о҉̧̛̛͝н̴͠и͏̨́̕͝_̵̴̢̛̛к̀̕͢͟а͠͝
+        Т̴̧̡͠о҉̴̸̧л̕͘͝ь҉̷̛͝к̢͝о̛̀̕͡͞_̷̧.̛͠.̢̛́ ͠͠М͟͢͡о̴̴̴͜͝.̵̶͢.̶̸̴͢͢н̵͡͝͝и̛́͡͠_͝͏к͏̀͟͢а̸͝͠
+        Т̴̀͘ ̵̸̢͝о̶̛̛͡л͟͢͝ь̶̛́̀͘к̸̡о̶̴̀_̶͟.̵́͢.̢̛́͝͏ ́͢͞М҉̡о̴́н̵̡̢͜͠ѝ̴̨̢̛_̢͘͘͡к̵̧̛̛͘а̷̧͜͞
+        ʁ̱̞̖ƍ̻̱͓͖̘ǝ͚̣̲̞̫ͅɯ͔̫̮͕̮͚ ̪ю̼̳͇̦v̫̭̙̩͚̻ƍ̼̦͎̻ю̫̲̟͎̝v͎̪̘̻ͅ ̟̟ͅл̹̮̤͉д̦̻̹̪͖л̤̩̼͈д̱̫н̭к͎̮д̰̖̭̣̥
+        ʁ̱̞̖ƍ̻̱͓͖̘ǝ͚̣̲̞̫ͅɯ͔̫̮͕̮͚ ̪ю̼̳͇̦v̫̭̙̩͚̻ƍ̼̦͎̻ю̫̲̟͎̝v͎̪̘̻ͅ ̟̟ͅл̹̮̤͉д̦̻̹̪͖л̤̩̼͈д̱̫н̭к͎̮д̰̖̭̣̥
+        ʁ̱̞̖ƍ̻̱͓͖̘ǝ͚̣̲̞̫ͅɯ͔̫̮͕̮͚ ̪ю̼̳͇̦v̫̭̙̩͚̻ƍ̼̦͎̻ю̫̲̟͎̝v͎̪̘̻ͅ ̟̟ͅл̹̮̤͉д̦̻̹̪͖л̤̩̼͈д̱̫н̭к͎̮д̰̖̭̣̥
         """,
         """
-        ghj    J̖̥́u҉͍̙̘st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-        ̹̘͍̭͉̜  J̖̥́u҉͍̙̘st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-        n̤̹͇̰͈̝ͅo̙̣ͅʎ͍̬̱̙͕̖͇ ǝ͓͈͖̯͚̗ʌ̼̬̫̼̗o̬̩l̖̜ ͅı͕̠̙͖        ̹̘͍̭͉̜    J̖̥́u҉͍̙̘st̼͍̰̬͢ͅ ̕Mo҉̬̳̻̻͍n̪i̶k̩͈̰̺̟̦a͔̰̖͎͡ͅ
-        ̹̘͍̭͉̜
+        гчх    Т̷̕о̴̵̕͘͢л̢͜ь̡́к̢͘͡о̸̧̀͜_̵̛͟.̷̢̕.̷̶̡͜М̛͏о̶҉н̴̢́и͠҉̧̨_̷̛͘͢к̶̛̕а́
+        Т̩̣̠̣̖̯ͅо̦͍͚̫͙͎̩͔̕͢͠л̧̹̖̹̺̗̝̪͞ͅь̩̞͖̪̥̤к̼̼͘͢о̶͚̭̀ ̯̣̯̣͢͞М̷͓̰̻̣ͅо̞͔̖̘̰͞н̨̱̼̱и̜͔̳̩͉ͅк̴̗̟͙̭̥ͅа͚
+        ʁ͖̭͕͇͚̠͇̲ƍ̬͖̩̟ǝ͚̗̙̲̰ͅɯ̙͚̩̖͓ ̩͙̙̭̲͎͇̞ю̪̰̣̜̺͖v̯ƍ͉ю͈͖v̜̪̠͖̖̲̜͚ ̠͇̼̫̗͔ʁ̣̗̳        Т̸̴̸̻̜͉͍͘о͏͙͚̳̙̗̹̬̲̝͇̻̱̤̫̞̮͇́̕͜л̷̡̨͝͏̥͈̘̩̗͕͇͇͙̜̪̼ь̡̡̛̣̤̲̞͉͍̳͟ͅќ̡̛͓̞͚̹͜о̘̟͙̘͕̯̩̯͈̞̕͠ͅ ̶̯̟̪̞̦̮͙͈̀̕͝М̶̧̡҉͚͙̠͓͓͎͉̟̻̻̤̬̭͙̙̗о̢͉̦͙̫̤̖̣̖̹͚̖̠̺̹̱̠͙͖͟͡͠ͅн̸̛͚̲̦̰̀͜и҉̴̴̸̛͙͓̻̤͓͓͓̻̘̲̜̩͚̱к̴҉͓̦̦̭̯а̵̨͈̙̝̘̣͠
+
         """,
         """
-        J̋̅͗̉̄ů̆S̀̈͛͆̑̄Tͥͮ͂ͪ͆͛M̃̈̔̓ͨ̊ő̎̈́̎N̓ͯiͫ̍͐̃K͐͂͒̾͂̚ä́
-        G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-        M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘̘̲͇͓͍        ̹̘͍̭͉̜ G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-        ̹̘͍̭͉̜
-                """,
-        """
-        J̋̅͗̉̄ů̆S̀̈͛͆̑̄Tͥͮ͂ͪ͆͛M̃̈̔̓ͨ̊ő̎̈́̎N̓ͯiͫ̍͐̃K͐͂͒̾͂̚ä́
-        G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-        M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘̘̲͇͓͍        ̹̘͍̭͉̜ G͍̫̺̮̘̻̜̥̬͍ͩͯͯ̆͜Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-        M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r͙̗͓͔e̘̘̲͇͓͍        ̹̘͍̭͉̜ G͍͉̫͉̰ͩͯͯ̆̑̀ͦͬ̌ͯ̏͂͑ͣͧͮ͗͗̉̕͜͟Ő̧͎͖͎̘̊̆ͩ͆̈͊͒̾͞ ̨̤͓̰̟͇̳͇͕̬̄ͧͣ̅̑͑͂̀̄̈͘ͅB͍̫̺̮̘̻̜̥̬͍̌̓̎ͤ͋͟͜͠Ä̶́ͦ̐ͩ̒̓͊̀ͬͫͨͯ͆ͫ̓ͯ̃̂ͤ͘҉͙̜̗͉̳͉̹͎̩̥̠̳C̢͎͙̜̭͉͓̠̣̰̹͈̻̮̋͒͆ͪ̏́̕͠K̶̷͕̰̱̭̪͕̪̮̥ͨͯͮ̊͠
-                ̹̘͍̭͉̜
+        Т͏̴̀о̨͏̷͞͞л̶̧̢̛ь́͢к̨̢͟о͝ ̷͟М̴͢о̧̛̕͠н̧ѝ̶̷к̴̨͡а̴̢̛̀͘
+        В̭̦̞͕̱̮͗̉͐͐̊̚̚Е̲̫̞͂Р̪͍͚̗̳̻̘͓̗̌ͦ̆̑Н̯̩̺̝͔͔̎ͣͩ̌ͧ̾͂И̪͑́С̹̪̳̹ͣͧ͂Ь̦̩ͧ̀ͩ̍ͤ̑͆̄.͈͖̭̲̯̙ͥ͗̊Н̙̟̭̘̝̩̱̖̈͌Ӓ͍̜͖̘̪̺̥͔́̈̆͆̆̍̍̚-̙̪̹̗͎̬͊̏ͧ̐͑̇ͩ̓ͅЗ̗͎͎ͬͫ͂͛̓ͮ̇͆ͅА̘̯͍͓͙̟̗͌͗ͯͭ̍ͨ̾Д̞̲ͧ̓́͒ͥ
+        М̩̭̼ͤ̐͒ͬ ͎͎͊ͧ̊ͤ̃ͯб͓͔ͭͧ̌ы̣͔̞̠͋ͫ̆ͤл͍͕͉̺̍͌̌͆а͕̼̅̚ ̟̬͖̻̲̯͖ͪ̎̽̒ͬͫͩ̑̔з̺̘̳̤͙ͦ̊̄ͭ̽͊ͯ̑д̮̭̮͑ͥ̃̊ͅе̱̙̖ͩ͑ͦͪ̈́̽с̰̼̤̝͖̫͎̲͙̒́ь͉̱̻̞̝ͨ̇          В̩̜͉̪̦̠͓ͧ͌Е̟͇͎̻͓̯̱̙͗̊͐͗̂ͫР̣͚̞̈́Н̦̰̜͐ͫ͒͗̊ͬӤ̦͈̼̟͚С̜͆̐̇̔̃̉̐͌Ь͎͍̹͗͐.̜̗̩ͧ͗̇̅ͭ̋Н̙̻̥̖͕̲ͤͧӒ̩̮̥̪͖̰͎̔̈̀͒̏͂̌-͕͙̜̮͚̭͇̙̞ͨ͐З̲̼͑ͣА̼͚̙̮̮̿́̍̑̅̈̚Д̖̫̳͛̾ͤͭ̎ͅ
+
         """,
         """
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
-        I̊͑̅̆̚ ̂ͭͬ̈ͨL̋͆̒oͫ̿Vͣ̃̂ͣ̌ͭ̈͢ẽ ͛̐́͂̾͋͝Y̷͊͑̊ͨ̿͊͑o͆̾ͦu̵ͤ̃̌ͥ!̓̌̃̇̓͏!̡̿̿ͭ̐!ͪͦ̂ͭ
+        Т͏̴̀о̨͏̷͞͞л̶̧̢̛ь́͢к̨̢͟о͝ ̷͟М̴͢о̧̛̕͠н̧ѝ̶̷к̴̨͡а̴̢̛̀͘
+        В̭̦̞͕̱̮͗̉͐͐̊̚̚Е̲̫̞͂Р̪͍͚̗̳̻̘͓̗̌ͦ̆̑Н̯̩̺̝͔͔̎ͣͩ̌ͧ̾͂И̪͑́С̹̪̳̹ͣͧ͂Ь̦̩ͧ̀ͩ̍ͤ̑͆̄.͈͖̭̲̯̙ͥ͗̊Н̙̟̭̘̝̩̱̖̈͌Ӓ͍̜͖̘̪̺̥͔́̈̆͆̆̍̍̚-̙̪̹̗͎̬͊̏ͧ̐͑̇ͩ̓ͅЗ̗͎͎ͬͫ͂͛̓ͮ̇͆ͅА̘̯͍͓͙̟̗͌͗ͯͭ̍ͨ̾Д̞̲ͧ̓́͒ͥ
+        М̻͓͈ ̦͉̘̞б̵̠ы̱͎̲͈̼̰л̝а͝ ̦͔͖̹͍̙з̷̝̖͓͔д̻̰̭̼̻е̶͈͈̞̝̘̣с͎̲̭ь͉̺̯͟б̰̘̱̱̭͇̞͔̬͖́̐̓ͥ̉͋ͨ̈́ы̘̦͙̠̩̦͙ͮ͆͐̒͌͒̓̋ͫ̌̌л̰̫̳͚͈̪̪̱̮̆̋ͩͮ̉́̈́ͥͭ̈̋̐а͙̹̫̝̬̯͈̙͈̦͚̖̽̋ͧͫ̏͐̄̌̌ͦ͗ͅ-̞͔̫͇͑̃́̿ ̫̻̩̮̳̤̹̱͖͖͎̻̟̟̖̩̖̻͙̒ͫͣ̔ͩ̅̔ͭ̔ͣ̔ͪͥ̽ͭ͊з̪͍̭͔̰͕̗̘̤̥ͬͪ̐͐͂͊͒̓̆̏ͮ͛ͦ͌̌ͨ͋̈́̑ ̯̟͇̼͍̙̬̝̲̪͖̜̼̭̖̹ͭͬ̉̃̈́ͪ͑ͦ̆͊̇ͬͧ̊̿͗͗̚̚ͅд͖̰̦̻̭̙͔͚͙̣̮̐̓̑̔̉̔̚е̻͙̠̪̹͉̪͉̜ͦ̾́͛̒̓͋́ͫ̑̄͐͊͋̄̂с̬͍̖͎̘͈̫̙͎̿ͣͩ̌̆ͣͭь̺̮͈̻̫̗͇̱̼̮͙̠̙͈̫ͤ̎ͩ̃ͭ̾̎̓̎́ͮ̈ͮ̚-̻̹͓̥͙͙͍͔̬̟͚̬̼̫̰̞̂ͯ̏ͧͣ̂͒͐͂̌͑̔ͩ̚ͅͅ
+        М̩̭̼ͤ̐͒ͬ ͎͎͊ͧ̊ͤ̃ͯб͓͔ͭͧ̌ы̣͔̞̠͋ͫ̆ͤл͍͕͉̺̍͌̌͆а͕̼̅̚ ̟̬͖̻̲̯͖ͪ̎̽̒ͬͫͩ̑̔з̺̘̳̤͙ͦ̊̄ͭ̽͊ͯ̑д̮̭̮͑ͥ̃̊ͅе̱̙̖ͩ͑ͦͪ̈́̽с̰̼̤̝͖̫͎̲͙̒́ь͉̱̻̞̝ͨ̇          В̩̜͉̪̦̠͓ͧ͌Е̟͇͎̻͓̯̱̙͗̊͐͗̂ͫР̣͚̞̈́Н̦̰̜͐ͫ͒͗̊ͬӤ̦͈̼̟͚С̜͆̐̇̔̃̉̐͌Ь͎͍̹͗͐.̜̗̩ͧ͗̇̅ͭ̋Н̙̻̥̖͕̲ͤͧӒ̩̮̥̪͖̰͎̔̈̀͒̏͂̌-͕͙̜̮͚̭͇̙̞ͨ͐З̲̼͑ͣА̼͚̙̮̮̿́̍̑̅̈̚Д̖̫̳͛̾ͤͭ̎ͅ
+
+        """,
+        """
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
+        Я̷̶̆̓͑ͣ͗ ̒́̽̉͝Л̸̏ͪ͐̐̏̂͑̓ ͬͣ͐ͧ͆̋̕ю̴̶ͩͯ͂̓ͦ̋͏Б̶͊̿ͪ̏ͥ͘л̐̐ͩю̃́͘͘͡ ̓̈̆ͪ̓̐̾̚Т͌͋͂̀͠ӗ̈б̐́̍̋͛͏҉яͯ̓!͗̓̆̆ͥͨ̋̚҉̀
         """
         ]
-        # """  # adding comment here to stop syntax highlight messup
-
-        # Year thresholds
+        
+        
+        
         MIN_GLITCH_YEAR = 1700
         MIN_VIEWABLE_YEAR = 200
         MIN_SELECTABLE_YEAR = 1900
         MAX_GLITCH_YEAR = 2300
         MAX_VIEWABLE_YEAR = 7000
         MID_POINT_YEAR = 2000
-
-        # pane constants
+        
+        
         EVENT_X = 800
         EVENT_Y = 40
         EVENT_W = 450
@@ -215,7 +218,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
         EVENT_XALIGN = 0.96
         EVENT_AREA = (EVENT_X, EVENT_Y, EVENT_W, EVENT_H)
         EVENT_RETURN = "< Go back"
-
+        
         def __init__(self, select_date=False):
             """
             Constructor for the custom calendar.
@@ -227,50 +230,50 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                     (Default: False)
             """
             super(renpy.Displayable, self).__init__()
-
-            # dont really feel like changing every image line to not do inline
-            # if statements so this will work for now.
+            
+            
+            
             self.day_mode = mas_current_background.isFltDay()
-
-            # The calendar background
+            
+            
             self.calendar_background = renpy.displayable("mod_assets/calendar/calendar_bg.png" if self.day_mode else "mod_assets/calendar/calendar_bg-n.png")
-
-            # Can we select dates?
+            
+            
             self.can_select_date = select_date
-            # testing
-            # calendar.saveCalendarDatabase(CustomEncoder, evhand.calendar_database)
-            # testing
-            # store.mas_calendar.calendar_database[6][6]["test"] = ((CAL_TYPE_REP,"test",list()))
-            # store.mas_calendar.calendar_database[6][6]["test2"] = ((CAL_TYPE_REP,"test2",list()))
-            # store.mas_calendar.calendar_database[6][6]["tes"] = ((CAL_TYPE_REP,"tes",list()))
-            # store.mas_calendar.calendar_database[6][6]["test3"] = ((CAL_TYPE_REP,"test3",list()))
-            # store.mas_calendar.calendar_database[6][6]["test5"] = ((CAL_TYPE_REP,"test5",list()))
-            # store.mas_calendar.calendar_database[6][6]["test6"] = ((CAL_TYPE_REP,"test6",list()))
-            # store.mas_calendar.calendar_database[6][6]["test7"] = ((CAL_TYPE_REP,"test7",list()))
-
-            # database
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             self.database = store.mas_calendar.calendar_database
-
-            # background mask
+            
+            
             self.background = Solid(
                 "#000000B2",
                 xsize=self.VIEW_WIDTH,
                 ysize=self.VIEW_HEIGHT
             )
-
-            # default calendar view to current month
-            # keep reference to it in case it may need it later
+            
+            
+            
             self.today = datetime.date.today()
-
+            
             self.selected_month = self.today.month
             self.selected_year = self.today.year
-
-            # store all displayables for easy rendering
+            
+            
             self.const_buttons = []
             self.day_buttons = []
             self.day_button_texts = []
-
-            # button backgrounds
+            
+            
             button_close = Image(
                 ("mod_assets/calendar/calendar_close.png" if self.day_mode else "mod_assets/calendar/calendar_close-n.png")
             )
@@ -292,11 +295,11 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
             button_right_arrow_hover = Image(
                 ("mod_assets/calendar/calendar_right_arrow_hover.png" if self.day_mode else "mod_assets/calendar/calendar_right_arrow_hover-n.png")
             )
-
-            # Change title depending on flag
+            
+            
             if select_date:
                 self.text_title = Text(
-                    "Select a Date",
+                    "Выбрать дату",
                     font=gui.default_font,
                     size=33,
                     color=("#ffffff" if self.day_mode else "#000000"),
@@ -304,27 +307,27 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 )
             else:
                 self.text_title = Text(
-                    "Calendar",
+                    "Календарь",
                     font=gui.default_font,
                     size=33,
                     color=("#ffffff" if self.day_mode else "#000000"),
                     outlines=[]
                 )
-
-            # iterate over the days
+            
+            
             i = 0
             for day in self.DAY_NAMES:
-
-                # Generate as buttons the day names
-
+                
+                
+                
                 button_day_text = Text(
-                    "{#weekday}" + day,
+                    day,
                     font=gui.default_font,
                     size=17,
                     color=self.DAY_NUMBER_COLOR,
                     outlines=[]
                 )
-
+                
                 button_day_button = MASButtonDisplayable(
                     button_day_text,
                     button_day_text,
@@ -340,12 +343,12 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                     activate_sound=None,
                     return_value=None
                 )
-
-                # add them to the const_buttons array
+                
+                
                 self.const_buttons.append(button_day_button)
                 i = i + 1
-
-            # close button
+            
+            
             button_text_close = Text(
                 "X",
                 font=gui.default_font,
@@ -353,7 +356,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 color="#ffb0ed",
                 outlines=[]
             )
-
+            
             button_text_close_hover = Text(
                 "X",
                 font=gui.default_font,
@@ -361,7 +364,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 color="#ffd3f4",
                 outlines=[]
             )
-
+            
             self.button_exit = MASButtonDisplayable(
                 button_text_close,
                 button_text_close_hover,
@@ -377,10 +380,10 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 activate_sound=gui.activate_sound,
                 return_value=self.CALENDAR_CLOSE
             )
-
-            # empty text label used for the buttons that require an image
-            # these aren't Image buttons mostly cause I find easier to keep
-            # it constant with the UI related buttons
+            
+            
+            
+            
             button_empty_text = Text(
                 "",
                 font=gui.default_font,
@@ -388,8 +391,8 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 color="#ffb0ed",
                 outlines=[]
             )
-
-            # actual buttons that decrease/increase the month and year values
+            
+            
             self.button_month_decrease = MASButtonDisplayable(
                 button_empty_text,
                 button_empty_text,
@@ -405,7 +408,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 activate_sound=gui.activate_sound,
                 return_value=self.CALENDAR_MONTH_DECREASE
             )
-
+            
             self.button_month_increase = MASButtonDisplayable(
                 button_empty_text,
                 button_empty_text,
@@ -421,7 +424,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 activate_sound=gui.activate_sound,
                 return_value=self.CALENDAR_MONTH_INCREASE
             )
-
+            
             self.button_year_decrease = MASButtonDisplayable(
                 button_empty_text,
                 button_empty_text,
@@ -437,7 +440,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 activate_sound=gui.activate_sound,
                 return_value=self.CALENDAR_YEAR_DECREASE
             )
-
+            
             self.button_year_increase = MASButtonDisplayable(
                 button_empty_text,
                 button_empty_text,
@@ -453,63 +456,63 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 activate_sound=gui.activate_sound,
                 return_value=self.CALENDAR_YEAR_INCREASE
             )
-
-            # add buttons to the const_buttons array
+            
+            
             self.const_buttons.append(self.button_exit)
             self.const_buttons.append(self.button_month_decrease)
             self.const_buttons.append(self.button_month_increase)
             self.const_buttons.append(self.button_year_decrease)
             self.const_buttons.append(self.button_year_increase)
-
-            # set up some quips
+            
+            
             self._setupEasterEG()
-
-            # call set up day buttons to fill up the calendar
+            
+            
             self._setupDayButtons()
-
-
-
-
+        
+        
+        
+        
         def _setupDayButtons(self):
             """
             Sets up the day buttons used in the calendar
             """
-
-            # button backgrounds
+            
+            
             button_day_bg = Image(
                 ("mod_assets/calendar/calendar_day_bg.png" if self.day_mode else "mod_assets/calendar/calendar_day_bg-n.png")
             )
-
+            
             button_day_bg_disabled = Image(
                 ("mod_assets/calendar/calendar_day_disabled_bg.png" if self.day_mode else "mod_assets/calendar/calendar_day_disabled_bg-n.png")
             )
-
+            
             button_day_bg_hover = Image(
                 "mod_assets/calendar/calendar_day_hover_bg.png"
             )
-
+            
             button_today_bg = Image(
                 ("mod_assets/calendar/calendar_today_bg.png" if self.day_mode else "mod_assets/calendar/calendar_today_bg-n.png")
             )
-
+            
             button_today_bg_disabled = Image(
                 ("mod_assets/calendar/calendar_today_disabled_bg.png" if self.day_mode else "mod_assets/calendar/calendar_today_disabled_bg-n.png")
             )
-
+            
             button_today_bg_hover = Image(
                 "mod_assets/calendar/calendar_today_hover_bg.png"
             )
-
-
-            # constant month and year text labels
+            
+            
+            
             self.text_current_month = Text(
-                "{#month}" + self.MONTH_NAMES[self.selected_month],
+                self.MONTH_NAMES[self.selected_month],
                 font=gui.default_font,
                 size=21,
                 color=self.DAY_NUMBER_COLOR,
                 outlines=[]
             )
-
+            
             self.text_current_year = Text(
                 str(self.selected_year),
                 font=gui.default_font,
@@ -517,123 +520,126 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 color=self.DAY_NUMBER_COLOR,
                 outlines=[]
             )
-
-            # init day buttons array
+            
+            
             self.day_buttons = []
             self.day_button_texts = []
-
-            # set the note style attributes
-            note_font = "gui/font/m1.TTF"
+            
+            
+            note_font = "gui/font/comic.TTF"
             note_text_size = self.NOTE_TEXT_SIZE
             note_color = self.NOTE_COLOR
             note_ystart = 1
-
-            # get relevant date info
+            
+            
             day = datetime.timedelta(days=1)
             first_day = datetime.datetime(self.selected_year, self.selected_month, 1)
-
-            # get the first_day of the week that has the first day of current month
+            
+            
             while first_day.weekday() != 6:
                 first_day = first_day - day
-
-            # init the array that will hold the dates we're displaying
+            
+            
             self.dates = []
-
-            # get all the dates we'll be displaying  and store them on the array
+            
+            
             for i in range(42):
                 self.dates.append(first_day + datetime.timedelta(days=i))
-
-            # get this month's events
+            
+            
             if self.MIN_GLITCH_YEAR < self.selected_year < self.MAX_GLITCH_YEAR:
-
+                
                 events = self.database[self.selected_month]
-
+            
             else:
-
+                
                 events = self._getEGMonthEvents()
-
+                
                 note_font = gui.default_font
                 note_text_size = self.DAY_NUMBER_TEXT_SIZE
                 note_color = self.DAY_NUMBER_COLOR
                 note_ystart = 5
-
-
-            # calculation to determine the initial y position
+            
+            
+            
             initial_y = self.INITIAL_POSITION_Y + (self.DAY_NAME_BUTTON_HEIGHT * 2)
-
-            # iterate over rows and columns to create our calendar ui
+            
+            
             for i in range(6):
-
+                
                 for j in range(7):
-
-                    # helper vars for day processing
+                    
+                    
                     current_date = self.dates[j + (i * 7)]
                     ret_val = None
                     many_events = False
                     day_bg_disabled = button_day_bg_disabled
                     today_bg_disabled = button_today_bg_disabled
-
-                    # current day events display helpers
+                    
+                    
                     event_labels = list()
-
-                    # if this day is on the current month process the events that it may have
+                    
+                    
                     if current_date.month == self.selected_month:
                         _todays_events = events[current_date.day]
-
-                        # iterate through them
+                        
+                        
                         for k in _todays_events:
                             e = _todays_events[k]
-
-                            # check for event type
+                            
+                            
                             if e[0] == CAL_TYPE_EV:
-                                # retrieve the event
+                                
                                 ev = mas_getEV(k)
-
+                                
                                 if self._isEvInYear(ev, self.selected_year):
                                     event_labels.append(mas_getEVCL(k))
-
-                            # non event type
+                            
+                            
                             if e[0] == CAL_TYPE_REP:
-                                # if the year is not None or it's contained in it's range
+                                
                                 if e[2] is not None and ( not e[2] or self.selected_year in e[2]):
-                                    # add the non event
+                                    
                                     event_labels.append(e[1])
-
+                        
                         if len(event_labels) > 3:
                             many_events = True
-                            if not self.can_select_date:
+                            if self.can_select_date:
+                                third_label = "и больше событий"
+                            else:
+                                third_label = "(Нажмите, чтобы увидеть больше)"
                                 ret_val = event_labels
-
-                    # if we don't have any labels or less than 3
+                    
+                    
                     if not event_labels or len(event_labels) < 3:
-
-                        # we can safely add 3 empty ones
+                        
+                        
                         event_labels.extend([""] * 3)
-
-                    # Add button behaviour to it
+                    
+                    
                     if current_date.month == self.selected_month:
                         day_bg_disabled = button_day_bg
                         today_bg_disabled = button_today_bg
-
+                        
                         if self.can_select_date:
                             ret_val = current_date
-
-                    # The button itself
-
-                    # Set the final BGs for the day button
+                    
+                    
+                    
+                    
                     final_bg_idle = button_day_bg
                     final_bg_hover = button_day_bg_hover
                     final_bg_disabled = day_bg_disabled
-
-                    # The date in current iteration is today
+                    
+                    
                     if (current_date.day == self.today.day) and (current_date.month == self.today.month) and (current_date.year == self.today.year):
                         final_bg_idle = button_today_bg
                         final_bg_hover = button_today_bg_hover
                         final_bg_disabled = today_bg_disabled
-
+                    
                     button_pos = (self.INITIAL_POSITION_X + (j * self.DAY_BUTTON_WIDTH),
                         initial_y + (i * self.DAY_BUTTON_HEIGHT))
-
+                    
                     day_button = MASButtonDisplayable(
                         Null(),
                         Null(),
@@ -649,22 +655,22 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                         activate_sound=gui.activate_sound,
                         return_value=ret_val
                     )
-
-                    # if this day isn't on the current month
+                    
+                    
                     if current_date.month != self.selected_month or (not self.can_select_date and not many_events):
-                        # disable the button
+                        
                         day_button.disable()
-
+                    
                     self.day_buttons.append(day_button)
-
-                    # Button text
+                    
+                    
                     text_container = Container(
                         pos=button_pos,
                         xsize=self.DAY_BUTTON_WIDTH,
                         ysize=self.DAY_BUTTON_HEIGHT
                     )
-
-                    # Day number
+                    
+                    
                     day_number_text = Text(
                         str(current_date.day),
                         font=gui.default_font,
@@ -675,11 +681,11 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                         xanchor=1.0
                     )
                     text_container.add(day_number_text)
-
-                    # Day notes
-                    # TODO: implement font switching depending on the day (e.g., holidays)
+                    
+                    
+                    
                     for k in range(3):
-                        # This way we don't have to iterate and try to render empty text surfaces
+                        
                         if len(event_labels[k]) != 0:
                             note_text = Text(
                                 __(event_labels[k]),
@@ -690,8 +696,8 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                                 pos=(8, note_ystart + k * 17)
                             )
                             text_container.add(note_text)
-
-                    # Create an ellipsis if needed
+                    
+                    
                     if many_events:
                         ellipsis_text = Text(
                             "...",
@@ -703,28 +709,28 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                             xanchor=1.0
                         )
                         text_container.add(ellipsis_text)
-
+                    
                     self.day_button_texts.append((text_container, button_pos))
-
-
+        
+        
         def _showScrollableEventList(self,events):
             """
             Displays the events contained in the events list
             said list is a list of Strings to show
             """
-
-            event_list_title = ("Events for the day:", False, True)
-
-            # build list
+            
+            event_list_title = ("События на день:", False, True)
+            
+            
             event_list_items = [(e, False, False) for e in events]
-
-            # final quit item
+            
+            
             final_item = (self.EVENT_RETURN, False, False, False, 20)
-
-            # call scrollable pane
+            
+            
             renpy.call_in_new_context("mas_show_calendar_detail", event_list_items, self.EVENT_AREA, self.EVENT_XALIGN, first_item=event_list_title, final_item=final_item)
-
-
+        
+        
         def _xcenter(self, v_width, width):
             """
             Returns the appropriate X location to center an object with the
@@ -738,8 +744,8 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 appropiate X coord to center
             """
             return int((v_width - width) / 2)
-
-
+        
+        
         def _buttonSelect(self, ev, x, y, st):
             """
             Goes through the list of buttons and return the first non-None
@@ -748,35 +754,35 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
             RETURNS:
                 first non-none value returned
             """
-
-            #iterate over both lists
+            
+            
             for button in self.const_buttons:
                 ret_val = button.event(ev, x, y, st)
                 if ret_val:
                     return ret_val
-
+            
             for button in self.day_buttons:
                 ret_val = button.event(ev, x, y, st)
                 if ret_val:
                     return ret_val
-
+            
             return None
-
-
+        
+        
         def _yearSanityChecks(self):
             """
             Checks that the current date is on the right interval, otherwise,
             it will force it back
             """
-            # so people don't break it
+            
             if self.selected_year < self.MIN_VIEWABLE_YEAR:
                 self.selected_year = self.MIN_VIEWABLE_YEAR + 5
-
+            
             if self.selected_year > self.MAX_VIEWABLE_YEAR:
                 self.selected_year = self.MAX_VIEWABLE_YEAR - 5
-
-
-
+        
+        
+        
         def _changeYear(self, ascend=True, set_to=None):
             """
             Changes the currently selected year by incrementing or decrementing it by one
@@ -793,12 +799,12 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 self.selected_year = self.selected_year + 1
             else:
                 self.selected_year = self.selected_year - 1
-
+            
             self._yearSanityChecks()
-
+            
             self._setupDayButtons()
-
-
+        
+        
         def _changeMonth(self, ascend=True):
             """
             Changes the currently selected month by incrementing or decrementing it by one
@@ -809,27 +815,27 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                     (Defaults to True)
             """
             if ascend:
-
+                
                 self.selected_month = self.selected_month + 1
-
-                # check if we need to increment the year
+                
+                
                 if self.selected_month >=13:
                     self.selected_month = 1
                     self.selected_year = self.selected_year + 1
             else:
-
+                
                 self.selected_month = self.selected_month - 1
-
-                # check if  we need to decrement the year
+                
+                
                 if self.selected_month <=0:
                     self.selected_month = 12
                     self.selected_year = self.selected_year - 1
-
+            
             self._yearSanityChecks()
-
+            
             self._setupDayButtons()
-
-
+        
+        
         def _isEvInYear(self, ev, year):
             """
             Checks if the given event should appear in the given year.
@@ -842,32 +848,32 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 False otherwise
             """
             if ev.years is not None:
-                # empty list means we should always repeat this event
-                # otherwise we can just check if the given year is in the list
+                
+                
                 return len(ev.years) == 0 or year in ev.years
-
-            # otherwise, we check start date year
+            
+            
             return ev.start_date is not None and ev.start_date.year == year
-
+        
         def _setupEasterEG(self):
             """
             Fills the quip objects used to generate EG events
             """
-            # quips for easter eggs
+            
             self._less_glicthy_q_list = MASQuipList(allow_label=False)
             self._more_glicthy_q_list = MASQuipList(allow_label=False)
-
+            
             for _label in self.EG_TEXTS_GLITCH:
                 self._less_glicthy_q_list.addLineQuip(_label)
-
+            
             for _label in self.EG_TEXTS_MIN_GLITCH:
                 self._more_glicthy_q_list.addLineQuip(_label)
-
+            
             for i in range(15,30):
                 self._less_glicthy_q_list.addGlitchQuip(i)
                 self._more_glicthy_q_list.addGlitchQuip(i)
-
-
+        
+        
         def _getEGMonthEvents(self):
             """
             Generates a dict of events to display in the calendar
@@ -877,21 +883,21 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 which contains a repeatable event with a nice label :D
             """
             month_events = dict()
-
-            # get year distance
+            
+            
             dist = abs(self.selected_year - self.MID_POINT_YEAR)
-            # the lower the distance is, the lower the glitching is
-            # the opposite also applies
+            
+            
             if self.selected_year > self.MID_POINT_YEAR:
                 max_dist = self.MID_POINT_YEAR - self.MIN_VIEWABLE_YEAR
-
+            
             else:
                 max_dist = self.MAX_VIEWABLE_YEAR - (self.MID_POINT_YEAR * 2)
-
+            
             percentage = dist / float(max_dist)
-
+            
             percentage = int(round(percentage * 100))
-
+            
             for i in range(1,32):
                 month_events[i] = dict()
                 if ( random.randint(1, 70) > percentage and not percentage > 70):
@@ -904,52 +910,52 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                     month_events[i]["l1"] = ((CAL_TYPE_REP,self._more_glicthy_q_list.quip()[1],list()))
                 if (random.randint(1,70) < percentage):
                     month_events[i]["l2"] = ((CAL_TYPE_REP,random.choice(self.EG_TEXTS_GLITCH),list()))
-
+            
             return month_events
-
+        
         def render(self, width, height, st, at):
-
-            # render mask
+            
+            
             back = renpy.render(self.background, width, height, st, at)
-
-            # Create a render for the background.
+            
+            
             calendar_bg = renpy.render(self.calendar_background, width, height, st, at)
-
-            # Calendar title
+            
+            
             calendar_title = renpy.render(self.text_title, width, height, st, at)
-
-            # displayable month and year labels
+            
+            
             month_label = renpy.render(self.text_current_month, width, height, st, at)
-
+            
             year_label = renpy.render(self.text_current_year, width, height, st, at)
-
-            # now do some calcs
+            
+            
             titlew, titleh = calendar_title.get_size()
             monw, monh = month_label.get_size()
             yearw, yearh = year_label.get_size()
-
+            
             titlex = self._xcenter(self.INTERNAL_WIDTH, titlew)
             monthx = self._xcenter(250, monw) + 100
             yearx = self.INTERNAL_WIDTH - yearw - self._xcenter(250, yearw) - 100
-
-            # Get the size of the child.
+            
+            
             self.width, self.height = calendar_bg.get_size()
-
-            # Create the render we will return.
+            
+            
             r = renpy.Render(width, height)
-
-            # blit the constant elements that make this UI
+            
+            
             r.blit(back,(0,0))
-
+            
             r.blit(calendar_bg, (190, 103))
-
+            
             r.blit(month_label, (self.INITIAL_POSITION_X + monthx, self.INITIAL_POSITION_Y + 8))
-
+            
             r.blit(year_label, (self.INITIAL_POSITION_X + yearx, self.INITIAL_POSITION_Y + 8))
-
+            
             r.blit(calendar_title, (self.INITIAL_POSITION_X + titlex, self.TITLE_POSITION_Y))
-
-            # blit the constant buttons
+            
+            
             c_r_buttons = [
                 (
                     x.render(width, height, st, at),
@@ -957,11 +963,11 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 )
                 for x in self.const_buttons
             ]
-
+            
             for vis_b, xy in c_r_buttons:
                 r.blit(vis_b, xy)
-
-            # blit the calendar buttons
+            
+            
             cal_r_displayables = [
                 (
                     x.render(width, height, st, at),
@@ -969,101 +975,101 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 )
                 for x in self.day_buttons
             ]
-
+            
             for button_text, button_pos in self.day_button_texts:
                 text_r = button_text.render(width, height, st, at)
                 cal_r_displayables.append((text_r, button_pos))
-
+            
             for vis_d, xy in cal_r_displayables:
                 r.blit(vis_d, xy)
-
-            # Return the render.
+            
+            
             return r
-
-
+        
+        
         def event(self, ev, x, y, st):
-
-            # we only care about mouse
+            
+            
             if ev.type in self.MOUSE_EVENTS:
-
-                # get the value from buttons
+                
+                
                 sel_action = self._buttonSelect(ev, x, y, st)
-
+                
                 if sel_action:
-
-                    # nonNone value returned
-
+                    
+                    
+                    
                     if sel_action == self.CALENDAR_CLOSE:
-
-                        # this means the user selected close
+                        
+                        
                         return ""
-
-                    #if we have a datetime
-                    # and if its larger than valid selectable
+                    
+                    
+                    
                     if (
                             isinstance(sel_action, datetime.datetime)
                             and sel_action.year >= self.MIN_SELECTABLE_YEAR
                         ):
-
-                        # return it
+                        
+                        
                         return sel_action
-
+                    
                     if isinstance(sel_action, type(list())):
                         self._showScrollableEventList(sel_action)
-
-                    # check for month/year decrements and increments
+                    
+                    
                     if sel_action == self.CALENDAR_YEAR_INCREASE:
                         self._changeYear()
-
+                    
                     if sel_action == self.CALENDAR_YEAR_DECREASE:
                         self._changeYear(False)
-
+                    
                     if sel_action == self.CALENDAR_MONTH_INCREASE:
                         self._changeMonth()
-
+                    
                     if sel_action == self.CALENDAR_MONTH_DECREASE:
                         self._changeMonth(False)
-
-                # only re-render if mouse action
+                
+                
                 renpy.redraw(self, 0)
-
+            
             elif ev.type == pygame.KEYDOWN and config.developer:
-                # debug keys
+                
                 curr_year = self.selected_year
-
+                
                 if ev.key == pygame.K_m:
-                    # increment year by 1000
+                    
                     self._changeYear(set_to=self.selected_year+1000)
                 elif ev.key == pygame.K_n:
-                    # increment yera by 100
+                    
                     self._changeYear(set_to=self.selected_year+100)
                 elif ev.key == pygame.K_b:
-                    # incrementyera by 10
+                    
                     self._changeYear(set_to=self.selected_year+10)
                 elif ev.key == pygame.K_v:
-                    # decrement yera by 10
+                    
                     self._changeYear(set_to=self.selected_year-10)
                 elif ev.key == pygame.K_c:
-                    # decrement yera by 100
+                    
                     self._changeYear(set_to=self.selected_year-100)
                 elif ev.key == pygame.K_x:
-                    # decrement year by 1000
+                    
                     self._changeYear(set_to=self.selected_year-1000)
-
-                # only re-render if change
+                
+                
                 if self.selected_year != curr_year:
                     renpy.redraw(self, 0)
-
-            # otherwise continue
+            
+            
             raise renpy.IgnoreEvent()
 
-# calendar utils
+
 init -10 python in mas_calendar:
-    # special constants for Calendar Event types
+
     CAL_TYPE_EV = 1
     CAL_TYPE_REP = 2
 
-    # enabled?
+
     enabled = True
 
 
@@ -1072,33 +1078,29 @@ init -1 python in mas_calendar:
     import json
     import renpy
 
-    ### Calendar database stores events for repeating / processing and more.
-    #
-    # The first layer organizes the events by month.
-    # The second layer organizes the events by day.
-    # The third layer contains the events in dicts, key being the eventlabel
-    #   and the value the fourth layer element, this to prevent duplicates
-    # The fourth layer the event tuple, which consists of the following:
-    #   [0]: type of item this is (event or just a label)
-    #       (CAL_TYPE_EV, CAL_TYPE...)
-    #   [1]: key / identifier of this item (eventlabel if an event, some other
-    #       key for a label)
-    #   [2]: list of years this event exists in
-    #       IF None, this event repeats anually forever
+
+
+
+
+
+
+
+
+
+
+
+
+
     calendar_database = dict()
     for i in range(1,13):
         calendar_database[i] = dict()
         for j in range(1,32):
             calendar_database[i][j] = dict()
 
-    # st/nd/rd/th mapping
+
     NUM_MAP = {
-        1: "st",
-        2: "nd",
-        3: "rd",
-        11: "th",
-        12: "th",
-        13: "th"
+        1: "-ого",
+        2: "-ое",
     }
 
 
@@ -1120,6 +1122,36 @@ init -1 python in mas_calendar:
             suffix = NUM_MAP.get(day % 10, "th")
 
         return str(day) + suffix
+    
+    def _formatDayFirstSession(day):
+        """
+        Properly formats the given day so it displays with the correct
+        suffixes.
+
+        IN:
+            day - day to get a nice display string
+
+        RETURNS:
+            nice display string for the day
+        """
+        suffix = "-го"
+
+        return str(day) + suffix
+
+    def _formatDayFirstSession2(day):
+        """
+        Properly formats the given day so it displays with the correct
+        suffixes.
+
+        IN:
+            day - day to get a nice display string
+
+        RETURNS:
+            nice display string for the day
+        """
+        suffix = "-ое"
+
+        return str(day) + suffix
 
 
     def _formatYears(years):
@@ -1139,12 +1171,21 @@ init -1 python in mas_calendar:
             nice display string for the years
         """
         if years <= 0:
-            return ""
+            return "этого года"
 
         if years == 1:
-            return "last year"
+            return "в прошлом году"
 
-        return str(years) + " years ago"
+        if years == 2:
+            return "2 года назад"
+
+        if years == 3:
+            return "3 года назад"
+
+        if years == 4:
+            return "4 года назад"
+
+        return str(years) + " лет назад"
 
 
     def genFriendlyDispDate(_datetime):
@@ -1186,59 +1227,83 @@ init -1 python in mas_calendar:
             [0]: nicely formatted display date, suitable for conversation
             [1]: timedelta between today and the given _date
         """
-        # the month is always fine to take out
+        
         disp_month = _date.strftime("%B")
 
-        # display day is easy
-        disp_day = _formatDay(_date.day)
+        if disp_month == "January":
+            disp_month  = "января"
+        elif disp_month == "February":
+            disp_month  = "февраля"
+        elif disp_month == "March":
+            disp_month  = "марта"
+        elif disp_month == "April":
+            disp_month  = "апреля"
+        elif disp_month == "May":
+            disp_month  = "мая"
+        elif disp_month == "June":
+            disp_month  = "июня"
+        elif disp_month == "July":
+            disp_month  = "июля"
+        elif disp_month == "August":
+            disp_month  = "августа"
+        elif disp_month == "September":
+            disp_month  = "сентября"
+        elif disp_month == "October":
+            disp_month  = "октября"
+        elif disp_month == "November":
+            disp_month  = "ноября"
+        elif disp_month == "December":
+            disp_month  = "декабря"
 
-        # to find out year, we need now
+        disp_day = str(_date.day) + "-ого"
+        
+        
         _today = datetime.date.today()
         _day_diff = _today - _date
         _year_diff = _today.year - _date.year
-
-        # the list of strings to join
+        
+        
         _cout = list()
-
+        
         if _today.month == _date.month and _today.day == _date.day:
-            # same day, just a diff year (probably)
+
 
             if _year_diff == 0:
-                # it's today!
+
                 _cout = [
-                    "today"
+                    "сегодня"
                 ]
 
             else:
-                # okay but srs, we know theres a year diff here
+
                 _cout = [
                     _formatYears(_year_diff),
-                    "on this date"
+                    "в эту дату"
                 ]
-
-
-        elif _day_diff.days <= 365: # within a year
-            # same year, diff month
+        
+        
+        elif _day_diff.days <= 365: 
+            
             _cout = [disp_month, disp_day]
-
+        
         elif _year_diff <= 10:
-            # within 10 years
+
             _cout = [
                 _formatYears(_year_diff),
-                "on",
+                "на",
                 disp_month,
                 disp_day
             ]
 
         else:
-            # more than 10? use the 4 digit year
+
             _cout = [
                 disp_month,
                 disp_day + ",",
-                str(_date.year)
+                str(_date.year) + "-ого"
             ]
 
-        # now return the formatting string + diff
+
         return (" ".join(_cout), _day_diff)
 
 
@@ -1260,11 +1325,91 @@ init -1 python in mas_calendar:
             [0]: nicely formtted display date, suitable for text
             [1]: timedelta between today and the given _date
         """
+        disp_month = _date.strftime("%B")
+
+        if disp_month == "January":
+            disp_month  = "января"
+        elif disp_month == "February":
+            disp_month  = "февраля"
+        elif disp_month == "March":
+            disp_month  = "марта"
+        elif disp_month == "April":
+            disp_month  = "апреля"
+        elif disp_month == "May":
+            disp_month  = "мая"
+        elif disp_month == "June":
+            disp_month  = "июня"
+        elif disp_month == "July":
+            disp_month  = "июля"
+        elif disp_month == "August":
+            disp_month  = "августа"
+        elif disp_month == "September":
+            disp_month  = "сентября"
+        elif disp_month == "October":
+            disp_month  = "октября"
+        elif disp_month == "November":
+            disp_month  = "ноября"
+        elif disp_month == "December":
+            disp_month  = "декабря"
+
         return (
             " ".join([
-                _date.strftime("%B"), # month
-                _formatDay(_date.day) + ",", # day
-                str(_date.year) # year
+                str(_date.day) + "-го",
+                disp_month,
+                str(_date.year) + "-го года"
+            ]),
+            datetime.date.today() - _date
+        )
+    
+    def genFormalDispDateNotBirthday(_date):
+        """
+        Generates a display date using the given date
+
+        This is considered "formal", in that it's not really realisitc when
+        used in normal conversation. For example, if today is august 24, you
+        don't say 'this happened august 24th, 2016', you normally would say
+        'this happened x years ago today'.
+
+        IN:
+            _date - date object to create good display date
+
+        RETURNS:
+            tuple of the following format:
+            [0]: nicely formtted display date, suitable for text
+            [1]: timedelta between today and the given _date
+        """
+        disp_month = _date.strftime("%B")
+
+        if disp_month == "January":
+            disp_month  = "января"
+        elif disp_month == "February":
+            disp_month  = "февраля"
+        elif disp_month == "March":
+            disp_month  = "марта"
+        elif disp_month == "April":
+            disp_month  = "апреля"
+        elif disp_month == "May":
+            disp_month  = "мая"
+        elif disp_month == "June":
+            disp_month  = "июня"
+        elif disp_month == "July":
+            disp_month  = "июля"
+        elif disp_month == "August":
+            disp_month  = "августа"
+        elif disp_month == "September":
+            disp_month  = "сентября"
+        elif disp_month == "October":
+            disp_month  = "октября"
+        elif disp_month == "November":
+            disp_month  = "ноября"
+        elif disp_month == "December":
+            disp_month  = "декабря"
+
+        return (
+            " ".join([
+                str(_date.day) + "-ое",
+                disp_month,
+                str(_date.year) + "-го года"
             ]),
             datetime.date.today() - _date
         )
@@ -1299,8 +1444,8 @@ init -1 python in mas_calendar:
             pass
 
 
-    ### ADD FUNCTIONS
-    def __addEvent_md(ev_label, month, day):
+
+    def _m1_zz_calendar__addEvent_md(ev_label, month, day):
         """
         Adds an event to the calendar at a precise month / day
 
@@ -1347,17 +1492,17 @@ init -1 python in mas_calendar:
         """
         if ev.start_date is None:
             return
-
+        
         if ev.end_date is None:
-            # if we don't have an end date, we assume that this is a single day
-            # event only.
+            
+            
             addEvent_evdt(ev, ev.start_date)
-
+        
         else:
-            # otherwise, we need to iterate and add the appropriate days
+            
             _delta = datetime.timedelta(days=1)
             curr_date = ev.start_date
-
+            
             while curr_date < ev.end_date:
                 addEvent_evdt(ev, curr_date)
                 curr_date += _delta
@@ -1371,7 +1516,7 @@ init -1 python in mas_calendar:
             ev - event to add
             _date - datetime.date to add to
         """
-        __addEvent_md(
+        _m1_zz_calendar__addEvent_md(
             ev.eventlabel,
             _date.month,
             _date.day
@@ -1441,7 +1586,7 @@ init -1 python in mas_calendar:
         )
 
 
-    ### REMOVAL FUNCTIONS
+
     def _findEvent_md(ev_label, month, day):
         """
         Finds the event tuple from the calendar at a precise month / day.
@@ -1457,16 +1602,16 @@ init -1 python in mas_calendar:
             the event tuple if it was found, None otherwise
         """
         _events = calendar_database[month][day]
-
+        
         if ev_label in _events:
             _ev = _events[ev_label]
             if _ev[0] == CAL_TYPE_EV:
-                # NOTE: we still check for event type in the case that a non
-                #   event was added to the _events dict and was given a key
-                #   that is also an eventlabel. We should avoid doing this,
-                #   but it's certainly possible.
+                
+                
+                
+                
                 return _ev
-
+        
         return None
 
 
@@ -1485,16 +1630,16 @@ init -1 python in mas_calendar:
             the repeatable tuple if itw as found, None otherwise
         """
         _events = calendar_database[month][day]
-
+        
         if identifier in _events:
             _rp = _events[identifier]
             if _rp[0] == CAL_TYPE_REP:
-                # NOTE: we still check for repetable type in the case that an
-                #   event was added to the _events dict and was given a key
-                #   that is also an identifier. We should avoid doing this,
-                #   but it's certainly possible.
+                
+                
+                
+                
                 return _rp
-
+        
         return None
 
 
@@ -1561,11 +1706,11 @@ init -1 python in mas_calendar:
             True if we removed something, False otherwise
         """
         ev_tup = _findEvent_md(ev_label, month, day)
-
+        
         if ev_tup is not None:
             calendar_database[month][day].pop(ev_label)
             return True
-
+        
         return False
 
 
@@ -1627,11 +1772,11 @@ init -1 python in mas_calendar:
             True if we removed somethign, False otherwise
         """
         rp_tup = _findRepeatable_md(identifier, month, day)
-
+        
         if rp_tup is not None:
             calendar_database[month][day].pop(identifier)
             return True
-
+        
         return False
 
 
@@ -1645,16 +1790,16 @@ init -1 python in mas_calendar:
         """
         if ev.start_date is None:
             return
-
+        
         if ev.end_date is None:
-            # no end date means we assume it's a single day to remove
+            
             removeEvent_evdt(ev, ev.start_date)
-
+        
         else:
-            # otherwise we iterate over a range
+            
             _delta = datetime.timedelta(days=1)
             curr_date = ev.start_date
-
+            
             while curr_date < ev.end_date:
                 removeEvent_evdt(ev, curr_date)
                 curr_date += _delta
@@ -1729,28 +1874,28 @@ init -1 python in mas_calendar:
                 find.
                 (Default: False)
         """
-        # inital sanity checks
+        
         if month not in range(1,13):
             month = None
-
+        
         if day not in range(1,32):
             day = None
-
-        # now to see what operation we are doing
+        
+        
         if month is not None and day is not None:
-            # ideally we want the user to pass in a month and day
+            
             _removeEvent_md(ev_label, month, day)
-
+        
         elif month is not None:
-            # probably common to clean a month of an event
+            
             _removeEvent_m(ev_label, month, remove_all=remove_all)
-
+        
         elif day is not None:
-            # less common to clean a particular day of each month
+            
             _removeEvent_d(ev_label, day, remove_all=remove_all)
-
+        
         else:
-            # full scan. hopefully no one does this
+            
             _removeEvent(ev_label, remove_all=remove_all)
 
 
@@ -1792,28 +1937,28 @@ init -1 python in mas_calendar:
                 the given day for reach month
                 (Default: None)
         """
-        # inital sanity checks
+        
         if month not in range(1,13):
             month = None
-
+        
         if day not in range(1,32):
             day = None
-
-        # now to see which operation we are doing
+        
+        
         if month is not None and day is not None:
-            # ideally we want the user to pass in a month and day
+            
             _removeRepeatable_md(identifier, month, day)
-
+        
         elif month is not None:
-            # probably common to clean a month
+            
             _removeRepeatable_m(identifier, month)
-
+        
         elif day is not None:
-            # less common to clean a particular day of a month
+            
             _removeRepeatable_d(identifier, day)
-
+        
         else:
-            # full scan, hopefully no one does this
+            
             _removeRepeatable(identifier)
 
 
@@ -1840,23 +1985,23 @@ init -1 python in mas_calendar:
 
 
 
-# add repeatable events
+
 init python:
 
     import store.mas_calendar as calendar
     import datetime
 
-    calendar.addRepeatable("New years day",_("New Year's Day"),month=1,day=1,year_param=list())
-    calendar.addRepeatable("Valentine",_("Valentine's Day"),month=2,day=14,year_param=list())
-    #calendar.addRepeatable("White day","White Day",month=3,day=14,year_param=list())
-    calendar.addRepeatable("April Fools",_("Day I Became an AI"),month=4,day=1,year_param=[2018])
-    calendar.addRepeatable("Monika's Birthday",_("My Birthday"),month=9,day=22,year_param=range(1999,MASCalendar.MAX_VIEWABLE_YEAR))
-    calendar.addRepeatable("Halloween",_("Halloween"),month=10,day=31,year_param=list())
-    calendar.addRepeatable("Christmas eve",_("Christmas Eve"),month=12,day=24,year_param=list())
-    calendar.addRepeatable("Christmas",_("Christmas"),month=12,day=25,year_param=list())
-    calendar.addRepeatable("New year's eve",_("New Year's Eve"),month=12,day=31,year_param=list())
+    calendar.addRepeatable("Новый год",_("Новый год"),month=1,day=1,year_param=list())
+    calendar.addRepeatable("Валентин",_("День\nсвятого\nВалентина"),month=2,day=14,year_param=list())
 
-    # add inital session
+    calendar.addRepeatable("Первоапрельские\nрозыгрыши",_("{size=-2}День, когда\nя стала\nИИ{/size}"),month=4,day=1,year_param=[2018])
+    calendar.addRepeatable("День рождения\nМоники",_("Мой день\nрождения"),month=9,day=22,year_param=range(1999,MASCalendar.MAX_VIEWABLE_YEAR))
+    calendar.addRepeatable("Хэллоуин",_("Хэллоуин"),month=10,day=31,year_param=list())
+    calendar.addRepeatable("Канун рождества",_("Канун\nРождества"),month=12,day=24,year_param=list())
+    calendar.addRepeatable("Рождество",_("Рождество"),month=12,day=25,year_param=list())
+    calendar.addRepeatable("Канун нового года",_("Канун нового\nгода"),month=12,day=31,year_param=list())
+
+
     if (
         persistent.sessions is not None
         and "first_session" in persistent.sessions
@@ -1869,7 +2014,7 @@ init python:
             year_param=[persistent.sessions["first_session"].year]
         )
 
-    # add birthday if we have one
+
     pbday = persistent._mas_player_bday
     if (
             pbday is not None
@@ -1877,24 +2022,24 @@ init python:
         ):
         calendar.addRepeatable_d(
             "player-bday",
-            _("Your Birthday"),
+            _("Твой день\nрождения"),
             pbday,
             range(pbday.year,MASCalendar.MAX_VIEWABLE_YEAR)
         )
 
-    # add first kiss
+
     if (
             persistent._mas_first_kiss is not None
             and type(persistent._mas_first_kiss) == datetime.datetime
         ):
         calendar.addRepeatable_dt(
             "first-kiss",
-            _("Our First Kiss"),
+            _("Наш первый\nпоцелуй"),
             persistent._mas_first_kiss,
             [persistent._mas_first_kiss.year]
         )
 
-# Using init 2 so we can have access to the season dates
+
 init 2 python in mas_calendar:
     import store
 
@@ -1906,17 +2051,17 @@ init 2 python in mas_calendar:
             changed - flag to specify that we need to change the
                 old events from the calendar
         """
-        WINTER = _("Winter")
-        SPRING = _("Spring")
-        SUMMER = _("Summer")
-        AUTUMN = _("Autumn")
-
-        # Season changes:
+        WINTER = _("Зима")
+        SPRING = _("Весна")
+        SUMMER = _("Лето")
+        AUTUMN = _("Осень")
+        
+        
         if renpy.game.persistent._mas_pm_live_south_hemisphere:
             _season_names = [SUMMER,AUTUMN,WINTER,SPRING]
         else:
             _season_names = [WINTER,SPRING,SUMMER,AUTUMN]
-
+        
         addRepeatable_d(
             WINTER,
             _season_names[0],
@@ -1946,7 +2091,7 @@ init 2 python in mas_calendar:
 
 
 init 100 python:
-    # calendar related but later
+
 
     def mas_chgCalEVul(number_of_days):
         """
@@ -1960,10 +2105,10 @@ init 100 python:
         ev = store.evhand.event_database.get("monika_dating_startdate", None)
         if ev is None:
             return
-
-        # okay we have an event to work with
+        
+        
         _now = datetime.datetime.now()
-
+        
         ev.conditional = "".join([
             "datetime.datetime.now() - datetime.datetime(",
             str(_now.year),
@@ -1977,31 +2122,31 @@ init 100 python:
         ])
         ev.action = EV_ACT_UNLOCK
         ev.unlocked = False
-
+        
         if "monika_dating_startdate" in persistent._seen_ever:
             persistent._seen_ever.pop("monika_dating_startdate")
 
 
-# wrap it up in a screen
+
 screen mas_calendar_screen(select_date=False):
 
     zorder 51
 
     add MASCalendar(select_date)
-        #xalign 0.5
-        #yalign 0.5
 
-label mas_show_calendar_detail(items,area,align,first_item,final_item):
+
+
+label mas_show_calendar_detail(items, area, align, first_item, final_item):
     call screen mas_calendar_events_scrollable_list(items, area, align, first_item=first_item, final_item=final_item)
     return
 
 
-# Styles for the calendar event list, so we can easily swap prefixes between day and night
+
 style event_list_day_text is default
 
 style event_list_night_text is default:
     color "#000000"
-    outlines [(2, "#00000000", 0, 0)] # Otherwise text size will be different
+    outlines [(2, "#00000000", 0, 0)]
 
 style event_list_day_vscrollbar is classroom_vscrollbar
 
@@ -2022,41 +2167,41 @@ style event_list_day_textbutton_text is generic_button_text_light
 style event_list_night_textbutton_text is generic_button_text_light
 
 
-# Scrollable labels with return. This one takes the following params:
-# IN:
-#   items - list of items to display in the menu. Each item must be a tuple of
-#       the following format:
-#           [0]: label text
-#           [2]: True if we want the label italics, False if not
-#           [3]: True if we want the button bold, False if not
-#   display_area - defines the display area of the menu. Tuple of the following
-#       format:
-#           [0]: x coordinate of menu
-#           [1]: y coordinate of menu
-#           [2]: width of menu
-#           [3]: height of menu
-#   scroll_align - alignment of vertical scrollbar
-#   first_item - represents the first item (usually the title) of the list
-#       tuple of the following format:
-#           [0]: text of the button
-#           [1]: return value of the button
-#           [2]: True if we want the button italics, False if not
-#           [3]: True if we want the button bold, False if not
-#           [4]: integer spacing between this button and the regular buttons
-#               NOTE: must be >= 0
-#       (Default: None)
-#   final_item - represents the final (usually quit item) of the menu
-#       tuple of the following format:
-#           [0]: text of the button
-#           [1]: return value of the button
-#           [2]: True if we want the button italics, False if not
-#           [3]: True if we want the button bold, False if not
-#           [4]: integer spacing between this button and the regular buttons
-#               NOTE: must be >= 0
-#       (Default: None)
-#   mask - hex color that will be used for the mask that will cover the screen
-#       if None there won't be any mask
-#   frame - route to the image used as backround for the list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 screen mas_calendar_events_scrollable_list(items, display_area, scroll_align, first_item=None, final_item=None, mask="#000000B2", frame=("mod_assets/calendar/calendar_bg.png" if mas_current_background.isFltDay() else "mod_assets/calendar/calendar_bg-n.png")):
     style_prefix ("event_list_day" if mas_current_background.isFltDay() else "event_list_night")
 
@@ -2071,7 +2216,7 @@ screen mas_calendar_events_scrollable_list(items, display_area, scroll_align, fi
         if frame:
             background Frame(frame, 60, 60)
 
-        # Header
+
         fixed:
             xpos 0
             ypos 0
@@ -2087,7 +2232,7 @@ screen mas_calendar_events_scrollable_list(items, display_area, scroll_align, fi
                     if first_item[2]:
                         bold True
 
-        # Footer
+
         fixed:
             xpos 0
             ypos display_area[3] - 59
@@ -2105,7 +2250,7 @@ screen mas_calendar_events_scrollable_list(items, display_area, scroll_align, fi
                         text_bold True
                     action Return(final_item[1])
 
-        # Item list
+
         viewport id "items":
             xpos 0
             ypos 69
@@ -2114,16 +2259,16 @@ screen mas_calendar_events_scrollable_list(items, display_area, scroll_align, fi
             yadjustment prev_adj
             mousewheel True
 
-            vbox:
+            has vbox:
                 spacing 5
 
-                for item_prompt,is_italic,is_bold in items:
-                    text item_prompt:
-                        xpos 20
-                        if is_italic:
-                            italic True
-                        if is_bold:
-                            bold True
+            for item_prompt,is_italic,is_bold in items:
+                text item_prompt:
+                    xpos 20
+                    if is_italic:
+                        italic True
+                    if is_bold:
+                        bold True
 
         vbar:
             value YScrollValue("items")
@@ -2135,38 +2280,44 @@ screen mas_calendar_events_scrollable_list(items, display_area, scroll_align, fi
 
 label _first_time_calendar_use:
     $ mas_calRaiseOverlayShield()
+    $ MAS.MonikaElastic()
     if persistent._mas_player_bday:
-        m 1eub "Oh, you want to take another look at that pretty calendar hanging on the wall, [player]?"
-        m 3hua "It helps me keep track of important events, like your birthday, ehehe~"
+        m 1eub "О, я смотрю, ты заметил[mas_gender_none] тот красивый календарь, висящий на стене, [player]?"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hua "Он помогает мне отслеживать важные события, как твой день рождения, э-хе-хе~"
     else:
-        m 1eub "Oh, I see you noticed that pretty calendar hanging on the wall, [player]."
-        m 3hua "It helps me keep track of important events, ehehe~"
-
-    m 1eua "Here, let me show you."
+        m 1eub "О, я смотрю, ты заметил[mas_gender_none] тот красивый календарь, висящий на стене, [player]."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hua "Он помогает мне отслеживать важные события, э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1eua "Вот, позволь мне показать тебе."
     show monika 1eua
 
-    call mas_start_calendar_read_only
+    call mas_start_calendar_read_only from _call_mas_start_calendar_read_only_1
 
-    m 1hua "Pretty cool, right?"
-    m 3eua "Feel free to check the calendar whenever you want."
-    m 1lksdla "Except for when I'm in the middle of talking, of course."
+    $ MAS.MonikaElastic()
+    m 1hua "Довольно круто, да?"
+    $ MAS.MonikaElastic()
+    m 3eua "Не стесняйся проверять календарь, когда будешь заходить."
+    $ MAS.MonikaElastic()
+    m 1lksdla "За исключением тех случаев, когда я буду в середине разговора, конечно."
 
     show monika idle with dissolve_monika
 
     $ persistent._mas_first_calendar_check = True
 
     if store.mas_globals.in_idle_mode:
-        # IDLe only enables talk extra and music
+
         $ store.hkb_button.talk_enabled = True
         $ store.hkb_button.extra_enabled = True
         $ store.hkb_button.music_enabled = True
 
-    # push calendar birthdate for users without any birthdate
+
     elif persistent._mas_player_bday is None:
         $ pushEvent("calendar_birthdate",skipeval=True)
         $ mas_MUMUDropShield()
-
     else:
+
         $ mas_HKBDropShield()
         $ mas_calDropOverlayShield()
     return
@@ -2175,42 +2326,47 @@ label _mas_start_calendar(select_date=True):
 
     python:
         HKBHideButtons()
+        MSRHKBHideButtons()
+        MSRColorHideButtons()
+        MSR.HideAffIndicator()
 
     call screen mas_calendar_screen(select_date)
 
     python:
         HKBShowButtons()
+        MSRColorShowButtons()
+        MSR.ShowAffIndicator()
 
     return _return
 
 label mas_start_calendar_read_only:
-    call _mas_start_calendar(select_date=False)
+    call _mas_start_calendar (select_date=False) from _call__mas_start_calendar
     return _return
 
 label mas_start_calendar_select_date:
-    call _mas_start_calendar(select_date=True)
+    call _mas_start_calendar (select_date=True) from _call__mas_start_calendar_1
     return _return
 
-# labels for easy testing
-#
-# label testing_calendar:
-#     m "I'm opening up the calendar"
-#     call mas_start_calendar_select_date
-#     if _return:
-#         m "I got the value [_return]"
-#     else:
-#         m "You closed without selecting a date"
-#     return
 
-# clickable calendar overlay screen for idle mode
+
+
+
+
+
+
+
+
+
+
+
 screen calendar_overlay():
     zorder 6
 
-    # vbox:
-    #     xalign 0.305
-    #     yalign 0.4
-    #
-    image "mod_assets/calendar/calendar_button_shadow.png" xpos 351 ypos 251
+
+
+
+
+    add "mod_assets/calendar/calendar_button_shadow.png" xpos 351 ypos 251
 
     if (
         store.mas_calendar.enabled
@@ -2225,7 +2381,7 @@ screen calendar_overlay():
             xpos 360
             ypos 260
     else:
-        image ("mod_assets/calendar/calendar_button_normal.png" if mas_current_background.isFltDay() else "mod_assets/calendar/calendar_button_normal-n.png") xpos 360 ypos 260
+        add ("mod_assets/calendar/calendar_button_normal.png" if mas_current_background.isFltDay() else "mod_assets/calendar/calendar_button_normal-n.png") xpos 360 ypos 260
 
 init python:
 
@@ -2263,3 +2419,4 @@ init python:
         """
         if not mas_current_background.hide_calendar and not mas_calIsVisible_ovl():
             renpy.show_screen("calendar_overlay", _layer="master")
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
