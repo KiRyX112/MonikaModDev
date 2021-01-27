@@ -1,10 +1,10 @@
-# Module that is just for hotkeys and other keymaps
-#
+
+
 
 init -10 python in mas_hotkeys:
-    # earlier store for some hotkey related state
 
-    # True means allow Dismiss, False means do not
+
+
     allow_dismiss = True
 
     def allowdismiss():
@@ -15,35 +15,35 @@ init -10 python in mas_hotkeys:
 
 
 init -1 python in mas_hotkeys:
-    # store for the main 3 hotkeys.
 
-    # True means the talk hotkey is enabled, False means it is not
+
+
     talk_enabled = False
 
-    # True means the eextra hotkey is enabled, False means it is not
+
     extra_enabled = False
 
-    # True means the music hotkey is enabled, False means its not
+
     music_enabled = False
 
-    # True means the play hotkey is enabled, False means its not
+
     play_enabled = False
 
-    # True means the derandom hotkey is enabled, False means its not
+
     derandom_enabled = False
 
-    # True means the bookmark hotkey is enabled, False means its not
+
     bookmark_enabled = False
 
-    ## other keys
-    # True means the music lowering / stopping functions will work.
-    # False means they will not
+
+
+
     mu_stop_enabled = True
 
-    # True means music controlling hotkeys are enabled, False means not
+
     mu_ctrl_enabled = True
 
-    # True means dont allow windows to be hidden
+
     no_window_hiding = False
 
 
@@ -198,7 +198,6 @@ init python:
         if store.mas_hotkeys.bookmark_enabled and not _windows_hidden:
             mas_bookmark_topic()
 
-
     def _mas_game_menu_start(scope):
         """
         Runs code prior to opening the game menu in any way.
@@ -218,16 +217,12 @@ init python:
         IN:
             scope - temp space used in `_mas_game_menu_start`
         """
-        # call backs for the game menu
-
-        # if we are changing animation state, re-draw spaceroom masks
+        
         if scope.get("disb_ani") != persistent._mas_disable_animations:
             mas_drawSpaceroomMasks(dissolve_masks=False)
-
-        # always clean current suntimes so they are not invalid
+        
         store.mas_validate_suntimes()
-
-        # rebuild backgrounds if the suntime has changed
+        
         if (
                 scope.get("sr_time") != store.mas_suntime.sunrise
                 or scope.get("ss_time") != store.mas_suntime.sunset
@@ -242,9 +237,9 @@ init python:
         if not _windows_hidden:
             temp_space = {}
             _mas_game_menu_start(temp_space)
-
+            
             _invoke_game_menu()
-
+            
             _mas_game_menu_end(temp_space)
 
 
@@ -256,12 +251,12 @@ init python:
         if not _windows_hidden:
             temp_space = {}
             _mas_game_menu_start(temp_space)
-
+            
             renpy.call_in_new_context(
                 "_game_menu",
                 _game_menu_screen=screen_name
             )
-
+            
             _mas_game_menu_end(temp_space)
 
 
@@ -274,37 +269,38 @@ init python:
 
 
     def set_keymaps():
-        #
-        # Sets the keymaps
-        #
-        # ASSUMES:
-        #   config.keymap
-        #   config.underlay
-        #Add keys for new functions
-        config.keymap["open_dialogue"] = ["t","T"]
-        config.keymap["mas_extra_menu"] = ["e", "E"]
-        config.keymap["change_music"] = ["noshift_m","noshift_M"]
-        config.keymap["play_game"] = ["p","P"]
-        config.keymap["mute_music"] = ["shift_m","shift_M"]
+        
+        
+        
+        
+        
+        
+        
+        config.keymap["open_dialogue"] = ["п","П","g","G"]
+        config.keymap["mas_extra_menu"] = ["noshift_э","noshift_Э","noshift_'"]
+        config.keymap["change_music"] = ["noshift_м","noshift_М","noshift_v","noshift_V"]
+        config.keymap["play_game"] = ["и","И","b","B"]
+        config.keymap["mute_music"] = ["shift_м","shift_М","shift_v","shift_V"]
         config.keymap["inc_musicvol"] = [
             "shift_K_PLUS","K_EQUALS","K_KP_PLUS"
         ]
         config.keymap["dec_musicvol"] = [
             "K_MINUS","shift_K_UNDERSCORE","K_KP_MINUS"
         ]
-        config.keymap["derandom_topic"] = ["x","X"]
-        config.keymap["bookmark_topic"] = ["b","B"]
+        if not renpy.android:
+            config.keymap["derandom_topic"] = ["х","Х"]
+            config.keymap["bookmark_topic"] = ["з","З","p","P"]
 
-        # get replace the game menu with our version (to block certain
-        # workflows correctly)
+
+
         config.keymap["mas_game_menu"] = list(config.keymap["game_menu"])
         config.keymap["game_menu"] = []
 
-        # get and replcae the hide_windows with our version
+
         config.keymap["mas_hide_windows"] = list(config.keymap["hide_windows"])
         config.keymap["hide_windows"] = []
 
-        # Define what those actions call
+
         config.underlay.append(
             renpy.Keymap(open_dialogue=_mas_hk_show_dialogue_box)
         )
@@ -318,5 +314,7 @@ init python:
         config.underlay.append(renpy.Keymap(dec_musicvol=_mas_hk_dec_musicvol))
         config.underlay.append(renpy.Keymap(mas_game_menu=_mas_game_menu))
         config.underlay.append(renpy.Keymap(mas_hide_windows=_mas_hide_windows))
-        config.underlay.append(renpy.Keymap(derandom_topic=_mas_hk_derandom_topic))
-        config.underlay.append(renpy.Keymap(bookmark_topic=_mas_hk_bookmark_topic))
+        if not renpy.android:
+            config.underlay.append(renpy.Keymap(derandom_topic=_mas_hk_derandom_topic))
+            config.underlay.append(renpy.Keymap(bookmark_topic=_mas_hk_bookmark_topic))
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
