@@ -1,10 +1,5 @@
-#This file will include short story events that don't require their own file.
+define letters_only_player = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхчшщцьыъэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЧШЩЦЬЫЪЭЮЯ1234567890- "
 
-#An event is crated by only adding a label and adding a requirement (see comment below).
-#Requirements must be created/added in script-ch30.rpy under label ch30_autoload.
-
-# pm var for transgender players
-default persistent._mas_pm_is_trans = False
 
 init 5 python:
     addEvent(
@@ -16,46 +11,74 @@ init 5 python:
         ),
         skipCalendar=True
     )
-    #NOTE: This unlocks the monika_gender_redo event
+
 
 label mas_gender:
-    m 2eud "...[player]? So I've been thinking a bit."
-    m 2euc "I've mentioned before that the 'you' in the game might not reflect the real you."
-    m 7rksdla "But I guess I just assumed that you were probably a guy."
-    m 3eksdla "...The main character was, after all."
-    m 3eua "But if I'm going to be your girlfriend, I should probably know at least this much about the real you."
-
-    m 1eua "So, what's your gender?{nw}"
+    $ MAS.MonikaElastic()
+    m 2eud "...[player]? Я немного подумала."
+    $ MAS.MonikaElastic()
+    m 2euc "Я уже упоминала, что «ты» в игре можешь не отражать настоящего себя."
+    $ MAS.MonikaElastic()
+    m 3lksdla "Но я думаю, точнее предполагаю, что ты, наверное, парень."
+    $ MAS.MonikaElastic()
+    m "В конце концов, главный герой был им."
+    $ MAS.MonikaElastic()
+    m 1eua "Но если я собираюсь быть твоей девушкой, то я, наверное, должна знать хотя бы о настоящем тебе."
+    $ MAS.MonikaElastic()
+    m 1eua "Итак, ты парень или девушка?{nw}"
     $ _history_list.pop()
     menu:
-        m "So, what's your gender?{fast}"
-
-        "Male.":
-            $ persistent._mas_pm_is_trans = False
+        m "Итак, ты парень или девушка?{fast}"
+        "Парень.":
             $ persistent.gender = "M"
-            m 3eua "Okay [player], thanks for confirming that for me."
-            m 1hksdlb "Not that I would have been bothered if you answered differently, mind you!"
+            $ MAS.MonikaElastic()
+            m 2eud "О? Так ты {b}и есть{/b} парень?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "Э-хе-хе, полагаю это имеет смысл!"
+            $ MAS.MonikaElastic()
+            m 1eua "Не так много девушек стали бы играть в эту игру."
+            $ MAS.MonikaElastic()
+            m 4eua "Ты ведёшь себя мужественно и уверенно. Не то чтобы я была ужасно обеспокоена, если бы ты ответил иначе, заметь!"
+            $ MAS.MonikaElastic()
+            m 2hksdlb "Знаешь, иногда я могу быть слишком любопытной."
 
-        "Female.":
-            $ persistent._mas_pm_is_trans = False
+        "Девушка.":
             $ persistent.gender = "F"
-            m 2eud "Oh? So you're a girl?"
-            m 2hksdlb "I hope I didn't say anything to offend you before!"
-            m 7rksdlb "...I guess that's why they say you shouldn't make assumptions, ahaha!"
-            m 3eka "But honestly, it doesn't matter to me at all..."
+            $ MAS.MonikaElastic()
+            m 2eud "О? Так ты на самом деле девушка?"
+            $ MAS.MonikaElastic()
+            m 2hksdlb "Надеюсь, раньше я ничего не говорила, что могло бы обидеть тебя!"
+            $ MAS.MonikaElastic()
+            m 2lksdla "Хотя я подозревала это с самого начала... совсем немного."
+            $ MAS.MonikaElastic()
+            m 1eub "Ты выделяешь особое чувство элегантности и обояния, которое трудно уловить словами..."
+            $ MAS.MonikaElastic()
+            m 1hua "Очень хорошо, что ты рассказала мне правду!"
+            $ MAS.MonikaElastic()
+            m 1eua "Но не беспокойся. Даже если я буду спрашивать подобные вещи, то только из любопытства."
 
-        "Neither.":
-            $ persistent._mas_pm_is_trans = False
+        "Ни тот, ни другой.":
             $ persistent.gender = "X"
-            call mas_gender_neither
+            $ MAS.MonikaElastic()
+            m 1euc "Ты не видишь себя не парнем не девушкой?"
+            $ MAS.MonikaElastic()
+            m 2eua "Это очень интересно, но у меня похожая ситуация."
+            $ MAS.MonikaElastic()
+            if renpy.variant('pc'):
+                m 1esc "Например, я девушка, но так же я персонаж в компьютерной игре..."
+            else:
+                m 1esc "Например, я девушка, но так же я персонаж андроид игры..."
+            $ MAS.MonikaElastic()
+            m 2esd "Так что в некотором роде я вообще не девушка."
+            $ MAS.MonikaElastic()
+            m 1hua "Но когда ты относишься ко мне как своей девушке, это делает меня действительно счастливой!"
+            $ MAS.MonikaElastic()
+            m "Поэтому я буду относится к тебе, как ты захочешь."
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Потому что твоё счастье — самое важное для меня."
 
-        "I'm transgender.":
-            call mas_gender_trans
-
-            if persistent.gender != "X":
-                m 1eka "Thanks for telling me, and just remember..."
-
-    m 1ekbsa "I'll always love you for who you are, [player]~"
+    $ MAS.MonikaElastic()
+    m 1hub "Помни, что я всегда буду безоговорочно тебя любить, [player]."
 
     #Unlock the gender redo event
     $ mas_unlockEVL("monika_gender_redo","EVE")
@@ -74,8 +97,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gender_redo",
-            category=['you'],
-            prompt="Could you call me by different pronouns?",
+            category=['ты'],
+            prompt="Могла бы ты изменить мой пол?",
             unlocked=False,
             pool=True,
             rules={"no_unlock": None}
@@ -84,65 +107,72 @@ init 5 python:
     )
 
 label monika_gender_redo:
-    m 1eka "Of course, [player]!"
+    m 1eka "Конечно, [player]!"
 
     if not mas_getEVL_shown_count("monika_gender_redo"):
-        m 3eka "Have you made some personal discoveries since the last time we talked about this?{nw}"
+        $ MAS.MonikaElastic()
+        m 3eka "Ты просто стеснял[mas_gender_sya] сказать мне правду раньше? Или что-то случилось?{nw}"
         $ _history_list.pop()
         menu:
-            m "Have you made some personal discoveries since the last time we talked about this?{fast}"
+            m "Ты просто стеснял[mas_gender_sya] сказать мне правду раньше? Или что-то случилось?{fast}"
+            "Да.":
 
-            "Yes.":
-                m 1eka "I see. I know I've been there."
-                m 3hua "I'm so proud of you for going on that journey of self-discovery."
-                m 1eub "...And even prouder of you for being courageous enough to tell me!"
+                $ MAS.MonikaElastic()
+                m 1eka "Понятно."
+                $ MAS.MonikaElastic()
+                m 3hua "Я так горжусь тобой за то, что ты отправил[mas_gender_sya] в это путешествие самопознания."
+                $ MAS.MonikaElastic()
+                m 1eub "...И ещё больше горжусь тем, что у тебя хватило смелости сказать мне об этом!"
+            "Я просто был[mas_gender_none] слишком застенчив[mas_gender_none].":
 
-            "I was just too shy.":
+                $ MAS.MonikaElastic()
                 if persistent.gender == "M":
-                    m 2ekd "I understand, I started off assuming you were a guy, after all."
+                    m 2ekd "Я понимаю, я начала с предположения, что ты парень, в конце концов."
                 elif persistent.gender == "F":
-                    m 2ekd "I understand, you might have thought I'd be more comfortable spending time alone with another girl."
+                    m 2ekd "Я понимаю, ты мог[mas_gender_g] бы подумать, что мне будет удобнее проводить время наедине с другой девушкой."
                 else:
-                    m 2ekd "I understand, I might not have given you the most accurate options to pick from."
+                    m 2ekd "Я понимаю, что, возможно, дала тебе не самые точные варианты выбора."
 
-                m 2dkd "...And I probably didn't make it easy for you to tell me otherwise..."
-                m 7eua "But whatever your gender, I love you for who you are."
+                $ MAS.MonikaElastic()
+                m 2dkd "...И я, вероятно, не облегчила тебе задачу сказать мне обратное..."
+                $ MAS.MonikaElastic()
+                m 7eua "Но независимо от твоего пола, я люблю тебя так[mas_gender_im], как[mas_gender_im] ты есть."
+            "Я не знал[mas_gender_none], примешь ли ты меня так[mas_gender_im], как[mas_gender_im] я есть...":
 
-            "I didn't know if you'd accept me as I am...":
+                $ MAS.MonikaElastic()
                 m 2wkd "[player]..."
-                m 2dkd "I hate that I didn't reassure you enough before."
-                m 7eka "But I hope that you're telling me now because you know I'll love you no matter what."
-
-            "I'm genderfluid.":
-                m 1eub "Oh, okay!"
-                m 3hub "Feel free to let me know as often as you'd like when you want me to use different pronouns!"
+                $ MAS.MonikaElastic()
+                m 2dkd "Я ненавижу себя за то, что не успокоила тебя достаточно раньше."
+                $ MAS.MonikaElastic()
+                m 7eka "Но я надеюсь, что ты говоришь мне это сейчас, потому что знаешь, что я буду любить тебя, несмотря ни на что."
 
     $ gender_var = None
-    m "So, what's your gender?{nw}"
+    m "Итак, какой у тебя пол?{nw}"
     $ _history_list.pop()
     menu:
-        m "So, what's your gender?{fast}"
+        m "Итак, какой у тебя пол?{fast}"
 
-        "I'm a boy.":
-            if persistent.gender == "M" and not persistent._mas_pm_is_trans:
-                $ gender_var = "boy"
+        "Я парень.":
+
+            call mas_set_gender
+            if persistent.gender == "M":
+                $ gender_var = "парень"
                 call mas_gender_redo_same
             else:
                 $ persistent.gender = "M"
                 call mas_gender_redo_react
-            $ persistent._mas_pm_is_trans = False
+        "Я девушка.":
 
-        "I'm a girl.":
-            if persistent.gender == "F" and not persistent._mas_pm_is_trans:
-                $ gender_var = "girl"
+            call mas_set_gender
+            if persistent.gender == "F":
+                $ gender_var = "девушка"
                 call mas_gender_redo_same
             else:
                 $ persistent.gender = "F"
                 call mas_gender_redo_react
-            $ persistent._mas_pm_is_trans = False
+        "Я ни тот, ни другой.":
 
-        "I'm neither.":
-            $ persistent._mas_pm_is_trans = False
+            call mas_set_gender
             if persistent.gender == "X":
                 call mas_gender_redo_neither_same
             else:
@@ -152,78 +182,60 @@ label monika_gender_redo:
                 else:
                     call mas_gender_neither
 
-        "I'm transgender.":
-            call mas_gender_trans
-            if persistent.gender != "X":
-                call mas_gender_redo_react
-
     show monika 5hubsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubsa "I'll always love you for who you are~"
+    m 5hubsa "Я всегда буду любить тебя так[mas_gender_im], как[mas_gender_oi] ты есть~"
 
     # set pronouns
     call mas_set_gender
     return "love"
 
 label mas_gender_neither:
-    m 1euc "You don't see yourself as a guy or a girl?"
-    m 1eua "That's very interesting, but I can sort of relate."
-    m 3esc "Like, I am a girl, but I'm also a character in a computer game..."
-    m 3esd "So in some ways I'm not really a girl at all."
-    m 1hua "But when you treat me like your girlfriend, it makes me really happy!"
-    m 3eua "...So I'll treat you however you want to be treated."
-    m 1ekbsa "Your happiness is the most important thing to me, after all."
+    $ MAS.MonikaElastic()
+    m 1euc "Ты не видишь себя парнем или девушкой?"
+    $ MAS.MonikaElastic()
+    m 1eua "Это очень интересно, но я могу понять."
+    $ MAS.MonikaElastic()
+    m 3esc "Мол, я девушка, но я ещё и персонаж компьютерной игры..."
+    $ MAS.MonikaElastic()
+    m 3esd "Так что в некотором смысле я вообще не девушка."
+    $ MAS.MonikaElastic()
+    m 1hua "Но когда ты обращаешься со мной как со своей девушкой, я действительно счастлива!"
+    $ MAS.MonikaElastic()
+    m 3eua "...Так что я буду обращаться с тобой так, как ты захочешь."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "В конце концов, твоё счастье для меня важнее всего."
     return
 
 label mas_gender_redo_same:
-    m 1hksdlb "...That's the same as before, [player]!"
-    m 3eua "If you're confused about how to answer, just pick whatever makes you happiest."
-    m 3eka "It doesn't matter what your body looks like, so as long as you say you're a [gender_var], you're a [gender_var] to me, all right?"
-    m 1eua "I want you to be who you want to be while you're in this room."
+    $ MAS.MonikaElastic()
+    m 1hksdlb "...Это то же самое, что и раньше, [player]!"
+    $ MAS.MonikaElastic()
+    m 3eua "Если ты не знаешь, как ответить, просто выбери то, что делает тебя сам[mas_gender_iim] счастлив[mas_gender_iim]."
+    $ MAS.MonikaElastic()
+    m 3eka "Не имеет значения, как выглядит твоё тело, так что пока ты говоришь, что ты [gender_var], то ты [gender_var] парень, ведь так?"
+    $ MAS.MonikaElastic()
+    m 1eua "Я хочу, чтобы ты был[mas_gender_none] тем, кем хочешь быть, пока находишься в этой комнате."
     return
 
 label mas_gender_redo_react:
-    m 1eka "Okay, [player]..."
-    m 3ekbsa "Just as long as you're happy, that's all that matters to me."
+    $ MAS.MonikaElastic()
+    m 1eka "Хорошо, [player]..."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Пока ты счастлив[mas_gender_none], это всё, что имеет для меня значение."
     return
 
 label mas_gender_redo_neither_same:
-    m 1hksdlb "...That's the same as before, [player]...{w=0.3}I'm sorry if that's not really the best way for you to describe it."
-    m 1eka "But just know that it doesn't matter to me..."
-    return
-
-label mas_gender_trans:
-    if persistent._mas_pm_is_trans:
-        $ menu_question = "And what gender do you identify as?"
-    else:
-        $ menu_question = "Oh, okay! {w=0.3}And what gender do you identify as?"
-
-    m 3eub "[menu_question]{nw}"
-    $ _history_list.pop()
-    menu:
-        m "[menu_question]{fast}"
-
-        "Male":
-            $ persistent.gender = "M"
-
-        "Female":
-            $ persistent.gender = "F"
-
-        "Neither":
-            if persistent.gender == "X":
-                call mas_gender_redo_neither_same
-
-            else:
-                $ persistent.gender = "X"
-                call mas_gender_neither
-
-    $ persistent._mas_pm_is_trans = True
+    $ MAS.MonikaElastic()
+    m 1hksdlb "...Это то же самое, что и раньше, [player]...{w=0.3} Мне очень жаль, если это не самый лучший способ для тебя описать это."
+    $ MAS.MonikaElastic()
+    m 1eka "Но просто знай, что для меня это не имеет значения..."
     return
 
 # good, bad, awkward name stuff
 init 3 python:
     #Bad nicknames. All of the items in this will trigger bad reactions
     mas_bad_nickname_list = [
-        "^fag$",
+       "^fag$",
         "^ho$",
         "^hoe$",
         "^tit$",
@@ -374,11 +386,137 @@ init 3 python:
         "wicked",
         "witch",
         "worthless",
-        "wrong"
+        "wrong",
+        "сперма", 
+        "сумашедшая", 
+        "мошенница",
+        "анал", 
+        "жопа",
+        "безумная",
+        "эгоистка",
+        "мазохистка",
+        "чокнутая",
+        "соси",
+        "конча",
+        "тварь",
+        "жестокая", 
+        "ужасная",
+        "сука", 
+        "кровь",
+        "бычая", 
+        "хулиганка",
+        "извращенка", 
+        "грешная",
+        "жуткая", 
+        "пизда",
+        "чёрт", 
+        "черт",
+        "хуй", 
+        "хер",
+        "немая", 
+        "злая",
+        "грязная", 
+        "ебать",
+        "трахать", 
+        "ужасная",
+        "ненавидеть", 
+        "ненавижу",
+        "противная", 
+        "ужасная",
+        "страшная", 
+        "жуткая",
+        "аморальная", 
+        "убийство",
+        "убивать", 
+        "тупая",
+        "неприятная", 
+        "гнусная",
+        "яд", 
+        "ядовитая",
+        "накипь",
+        "дерьмо", 
+        "убогая",
+        "вонючая", 
+        "глупая", 
+        "тупая",
+        "тролль", 
+        "уродливая",
+        "мерзкая", 
+        "отходы",
+        "плохая", 
+        "ведьма",
+        "сволочь", 
+        "иди на фиг",
+        "иди нафиг", 
+        "идинафиг",
+        "пошланафиг", 
+        "иди нахуй",
+        "иди на хуй", 
+        "иди нах",
+        "идинахуй", 
+        "идинах",
+        "пошла нахуй", 
+        "пошланахуй",
+        "пошла нах", 
+        "пошланах",
+        "мымра", 
+        "стерва",
+        "бля", 
+        "блядь",
+        "блять", 
+        "больная",
+        "уродина", 
+        "шлюха",
+        "пиздаболка", 
+        "трап",
+        "игрушка", 
+        "сиськи",
+        "сиська", 
+        "титьки",
+        "титька", 
+        "^сиськ$",
+        "^титьк$", 
+        "тампон",
+        "неряха", 
+        "потаскуха",
+        "грязнуля", 
+        "бикса",
+        "лахудра", 
+        "насильница",
+        "киска", 
+        "порно",
+        "педо", 
+        "трусы",
+        "трусики", 
+        "панцу",
+        "подушка", 
+        "подкладка",
+        "негр", 
+        "негротянка",
+        "нига", 
+        "нигер",
+        "лесбиянка", 
+        "лесбуха",
+        "лезбо", 
+        "гейша",
+        "гомосексуальная", 
+        "фетиш",
+        "плод", 
+        "пробка",
+        "анус", 
+        "приклад",
+        "пума", 
+        "мамаша",
+        "зад", 
+        "задница",
+        "фейк", 
+        "ненастоящая",
+        "лузер", 
+        "неудачница"
     ]
 
-    #Base list for good nicknames. Apply modifiers for specifying the use
-    #These trigger a good response
+
+
     mas_good_nickname_list_base = [
         "angel",
         "beautiful",
@@ -399,18 +537,52 @@ init 3 python:
         "queen",
         "senpai",
         "sunshine",
-        "sweet"
+        "sweet",
+        "ангел",
+        "красивая", 
+        "лучшая", 
+        "прелестная", 
+        "милашка",
+        "дорогая", 
+        "классная", 
+        "сердце", 
+        "солнышко",
+        "милочка", 
+        "зайка", 
+        "любовь", 
+        "мони",
+        "моня", 
+        "моничка", 
+        "монечка", 
+        "монька",
+        "принцесса", 
+        "сладкая", 
+        "красавица", 
+        "любимая",
+        "прекрасная", 
+        "кошечка", 
+        "кисочка", 
+        "кисонька",
+        "милая", 
+        "киса", 
+        "лапочка", 
+        "ласковая", 
+        "солнышко"
     ]
 
-    #Modifier for the player's name choice
+
     mas_good_nickname_list_player_modifiers = [
         "king",
-        "prince"
+        "prince",
+        "король",
+        "принц"
     ]
 
-    #Modifier for Monika's nickname choice
+
     mas_good_nickname_list_monika_modifiers = [
         "moni",
+        "мони",
+        "моня"
     ]
 
     mas_good_player_nickname_list = mas_good_nickname_list_base + mas_good_nickname_list_player_modifiers
@@ -466,22 +638,85 @@ init 3 python:
         "thicc",
         "thighs",
         "uncle",
-        "virgin"
+        "virgin",
+        "брат", 
+        "сестра", 
+        "бро", 
+        "сис", 
+        "братан", 
+        "сеструха", 
+        "братец", 
+        "сестричка",
+        "папа",
+        "папочка",
+        "батя",
+        "мама",
+        "мамка",
+        "мамочка",
+        "лоля",
+        "мокрый",
+        "мокрая",
+        "возбуждать",
+        "тётя",
+        "бэтмен",
+        "производитель",
+        "заводчик",
+        "селекционер",
+        "бобба",
+        "босс",
+        "хозяин",
+        "женщина-кошка",
+        "кошкодевочка",
+        "кузен",
+        "кузина",
+        "дефлоратор",
+        "эрекция",
+        "палец",
+        "перст",
+        "возбуждённая",
+        "лизать",
+        "облизывание",
+        "облизывать",
+        "вылизывать",
+        "мастер",
+        "господин",
+        "мастурбация",
+        "госпожа",
+        "моани",
+        "момика",
+        "пошлая",
+        "пошлый",
+        "оргазм",
+        "повелитель",
+        "владыка",
+        "владелец",
+        "проникновение",
+        "секс",
+        "шлепок",
+        "супермен",
+        "супервумен",
+        "ляжки",
+        "бёдра",
+        "бедро",
+        "дядя",
+        "дядька",
+        "дядюшка",
+        "девственница",
+        "целка"
     ]
 
     mas_awkward_quips = [
-        "I don't really feel...{w=0.5}comfortable calling you that all the time.",
-        "That's...{w=0.5}not something I would like to call you, [player].",
-        "That is...{w=0.5}not something I would like to call you, [player].",
-        "Not that it's bad but...",
-        "Are you trying to embarrass me, [player]?"
+        "Мне правда...{w=0.5} не очень удобно называть тебя так всё время.",
+        "Я просто...{w=0.5} не хотела бы тебя так называть, [player].",
+        "Не то, чтобы это плохо, но...",
+        "Ты пытаешься смутить меня, [player]?"
     ]
 
     mas_bad_quips = [
-        "[player]...{w=0.5}why would you even consider calling yourself that?",
-        "[player]...{w=0.5}why would I ever call you that?",
-        "I couldn't ever call you anything like that, [player].",
-        "What? Please [player],{w=0.5} don't call yourself bad names."
+        "[player]...{w=0.5} зачем ты вообще так себя называешь?",
+        "[player]...{w=0.5} зачем мне тебя вообще так называть?",
+        "Я тебя ни за что не буду так называть, [player].",
+        "Что? Пожалуйста, [player],{w=0.5} не обзывай самого себя."
     ]
 
     mas_good_player_name_comp = re.compile('|'.join(mas_good_player_nickname_list), re.IGNORECASE)
@@ -491,10 +726,10 @@ init 3 python:
 label mas_player_name_enter_name_loop(input_prompt):
     python:
         good_quips = [
-            "That's a wonderful name!",
-            "I like that a lot, [player].",
-            "I like that name, [player].",
-            "That's a great name!"
+            "Это прекрасное имя!",
+            "Мне это имя очень нравится, [player].",
+            "Мне нравится это имя, [player].",
+            "Это хорошее имя!"
         ]
 
     #Now we prompt user
@@ -512,37 +747,48 @@ label mas_player_name_enter_name_loop(input_prompt):
             lowername = tempname.lower()
 
         if lowername == "cancel_input":
-            m 1eka "Oh... Okay then, if you say so."
-            m 3eua "Just let me know if you change your mind."
+            $ MAS.MonikaElastic()
+            m 1eka "Оу... Ну ладно, как скажешь."
+            $ MAS.MonikaElastic()
+            m 3eua "Дай знать, если вдруг передумаешь."
             $ done = True
 
         elif lowername == "":
+            $ MAS.MonikaElastic()
             m 1eksdla "..."
-            m 3rksdlb "You have to give me a name to call you, [player]..."
-            m 1eua "Try again!"
-
+            $ MAS.MonikaElastic()
+            m 3rksdlb "Ты долж[mas_gender_en] дать мне имя, которым я должна тебя называть, [player]..."
+            $ MAS.MonikaElastic()
+            m 1eua "Попробуй снова!"
         elif lowername == player.lower():
+            $ MAS.MonikaElastic()
             m 2hua "..."
-            m 4hksdlb "That's the same name you have right now, silly!"
-            m 1eua "Try again~"
+            $ MAS.MonikaElastic()
+            m 4hksdlb "Это имя у тебя уже стоит, глупышка!"
+            $ MAS.MonikaElastic()
+            m 1eua "Попробуй снова~"
 
         elif mas_awk_name_comp.search(tempname):
             $ awkward_quip = renpy.substitute(renpy.random.choice(mas_awkward_quips))
+            $ MAS.MonikaElastic()
             m 1rksdlb "[awkward_quip]"
-            m 3rksdla "Could you pick a more...{w=0.2}{i}appropriate{/i} name please?"
+            $ MAS.MonikaElastic()
+            m 3rksdla "Не мог[mas_gender_g] бы ты выбрать более...{w=0.2} {i}приличное{/i} имя, пожалуйста?"
 
         elif mas_bad_name_comp.search(tempname):
             $ bad_quip = renpy.substitute(renpy.random.choice(mas_bad_quips))
+            $ MAS.MonikaElastic()
             m 1ekd "[bad_quip]"
-            m 3eka "Please pick a nicer name for yourself, okay?"
-
+            $ MAS.MonikaElastic()
+            m 3eka "Пожалуйста, выбери для себя более красивое имя, ладно?"
         else:
-            #Sayori name check
-            if lowername == "sayori":
-                call sayori_name_scare
+
+
+            if tempname.lower() in sayori_name_list:
+                call sayori_name_scare from _call_sayori_name_scare
 
             elif (
-                    persistent.playername.lower() == "sayori"
+                    persistent.playername.lower() in sayori_name_list
                     and not persistent._mas_sensitive_mode
                 ):
                 $ songs.initMusicChoices()
@@ -553,33 +799,43 @@ label mas_player_name_enter_name_loop(input_prompt):
                     Adjusts the names to the new names
                     """
                     global player
-
+                    
                     persistent.mcname = player
                     mcname = player
                     persistent.playername = new_name
                     player = new_name
 
-            if lowername == "monika":
+            if lowername in monika_name_list:
                 $ adjustNames(tempname)
-                m 1tkc "Really?"
-                m "That's the same as mine!"
-                m 1tku "Well..."
-                m "Either it really is your name or you're playing a joke on me."
-                m 1hua "But it's fine by me if that's what you want me to call you~"
+                $ MAS.MonikaElastic()
+                m 1tkc "Серьёзно?"
+                $ MAS.MonikaElastic()
+                m "Это то же самое имя, что и у меня!"
+                $ MAS.MonikaElastic()
+                m 1tku "Ну..."
+                $ MAS.MonikaElastic()
+                m "Либо тебя правда так зовут, либо ты надо мной шутишь."
+                $ MAS.MonikaElastic()
+                m 1hua "Но я не против, если ты хочешь, чтобы я тебя так называла~"
                 $ done = True
 
             elif mas_good_player_name_comp.search(tempname):
                 $ good_quip = renpy.substitute(renpy.random.choice(good_quips))
+                $ MAS.MonikaElastic()
                 m 1sub "[good_quip]"
                 $ adjustNames(tempname)
-                m 3esa "Okay then! From now on, I'll call you '[player].'"
-                m 1hua "Ehehe~"
+                $ MAS.MonikaElastic()
+                m 3esa "Хорошо! С этого момента, я буду называть тебя [mas_name_who]."
+                $ MAS.MonikaElastic()
+                m 1hua "Э-хе-хе~"
                 $ done = True
 
             else:
                 $ adjustNames(tempname)
-                m 1eub "Okay then!"
-                m 3eub "From now on, I'll call you '[player].'"
+                $ MAS.MonikaElastic()
+                m 1eub "Хорошо!"
+                $ MAS.MonikaElastic()
+                m 3eub "С этого момента, я буду называть тебя [mas_name_who]."
                 $ done = True
 
         if not done:
@@ -599,25 +855,33 @@ init 5 python:
     #NOTE: This gets its start_date from mas_gender
 
 label mas_preferredname:
-    m 1euc "I've been wondering about your name."
-    m 1esa "Is '[player]' really your name?"
+    $ MAS.MonikaElastic()
+    m 1euc "Мне очень интересно узнать твоё имя."
+    $ MAS.MonikaElastic()
+    m 1esa "«[player]» - на самом деле твоё имя?"
 
     if renpy.windows and currentuser.lower() == player.lower():
-        m 3esa "I mean, it's the same as your computer's name..."
-        m 1eua "You're using '[currentuser]' and '[player].'"
-        m "Either that or you must really like that pseudonym."
+        $ MAS.MonikaElastic()
+        m 3esa "Я имею в виду, оно такое же, что и имя твоего компьютера..."
+        $ MAS.MonikaElastic()
+        m 1eua "Ты используешь «[currentuser]» и «[player]»."
+        $ MAS.MonikaElastic()
+        m "Либо это так, либо тебе действительно нравится этот псевдоним."
 
-    m 1eua "Would you like me to call you something else?{nw}"
+    m 1eua "Ты хочешь указать другое?{nw}"
     $ _history_list.pop()
     menu:
-        m "Would you like me to call you something else?{fast}"
+        m "Ты хочешь указать другое?{fast}"
 
-        "Yes.":
+        "Да.":
             #Let's call the changename loop
-            call mas_player_name_enter_name_loop("Tell me, what is it?")
+            call mas_player_name_enter_name_loop("Скажи мне, какое?")
 
-        "No.":
-            m 3eua "Okay, just let me know if you change your mind."
+        "Нет.":
+            $ MAS.MonikaElastic()
+            m 1eka "О... ладно, если ты так говоришь."
+            $ MAS.MonikaElastic()
+            m 3eka "Просто скажи мне, когда передумаешь, [player]."
 
     #Unlock the name change event
     $ mas_unlockEVL("monika_changename","EVE")
@@ -629,8 +893,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_changename",
-            category=['you'],
-            prompt="I changed my name",
+            category=['ты'],
+            prompt="Ты можешь изменить моё имя?",
             unlocked=False,
             pool=True,
             rules={"no_unlock": None}
@@ -640,7 +904,7 @@ init 5 python:
     #NOTE: This needs to be unlocked by the random name change event
 
 label monika_changename:
-    call mas_player_name_enter_name_loop("What do you want me to call you?")
+    call mas_player_name_enter_name_loop("Как ты хочешь, чтобы я тебя называла?")
     return
 
 default persistent._mas_player_bday = None
@@ -658,37 +922,49 @@ init 5 python:
     )
 
 label mas_birthdate:
-    m 1euc "Hey [player], I've been thinking..."
+    $ MAS.MonikaElastic()
+    m 1euc "Эй, [player], я тут подумала..."
     if persistent._mas_player_bday is not None:
         $ bday_str, diff = store.mas_calendar.genFormalDispDate(persistent._mas_player_bday)
-        m 3eksdlc "I know you've told me your birthday before, but I'm not sure I was clear if I asked you for {i}birthdate{/i} or just your {i}birthday...{/i}"
-
-        m "So just to make sure, is your birthdate [bday_str]?{nw}"
+        $ MAS.MonikaElastic()
+        m 3eksdlc "Знаю, ты говорил[mas_gender_none] мне раньше о своём дне рождения, но я сомневаюсь в том, спрашивала ли я у тебя твою {i}дату рождения{/i} или только {i}день рождения...{/i}"
+        $ MAS.MonikaElastic()
+        m "Дабы уточнить, твой день рождения – [bday_str]?{nw}"
         $ _history_list.pop()
         menu:
-            m "So just to make sure, is your birthdate [bday_str]?{fast}"
-            "Yes.":
+            m "Дабы уточнить, твой день рождения – [bday_str]?{fast}"
+            "Да.":
                 if datetime.date.today().year - persistent._mas_player_bday.year < 5:
-                    m 2rksdla "Are you sure about that, [player]?"
-                    m 2eksdlc "That would make you very young..."
-                    m 3ekc "Remember, I'm asking for your {b}birthdate{/b}, not just your birthday."
-                    m 1eka "So, when were you born, [player]?"
+                    $ MAS.MonikaElastic()
+                    m 2rksdla "Ты уверен[mas_gender_none] насчёт этого, [player]?
+                    $ MAS.MonikaElastic()"
+                    m 2eksdlc "Ты так становишься очень молод[mas_gender_iim]..."
+                    $ MAS.MonikaElastic()
+                    m 3ekc "Вспомни, я у тебя спрашивала {b}дату рождения{/b}, а не только твой день рождения."
+                    $ MAS.MonikaElastic()
+                    m 1eka "Итак, когда ты родился, [player]?"
                     jump mas_bday_player_bday_select_select
                 else:
                     $ old_bday = mas_player_bday_curr()
                     if not mas_isplayer_bday():
-                        m 1hua "Ah, great [player], thank you."
-                        m 3hksdlb "I just had to make sure, I wouldn't want to get something as important as when you were born wrong, ahaha!"
-
-            "No.":
-                m 3rksdlc "Oh! Okay then..."
-                m 1eksdld "When {i}is{/i} your birthdate, [player]?"
+                        $ MAS.MonikaElastic()
+                        m 1hua "Ах, хорошо, [player], спасибо."
+                        $ MAS.MonikaElastic(voice="monika_giggle")
+                        m 3hksdlb "Мне просто надо было убедиться, просто не хотелось бы понять что-то важное, как твоя дата рождения, неправильно, а-ха-ха!"
+            "Нет.":
+                $ MAS.MonikaElastic()
+                m 3rksdlc "Оу! Ну, ладно тогда..."
+                $ MAS.MonikaElastic()
+                m 1eksdld "{i}Какая{/i} у тебя дата рождения, [player]?"
                 jump mas_bday_player_bday_select_select
-
     else:
-        m 3wud "I don't actually know when your birthdate is!"
-        m 3hub "That's something I should probably know, ahaha!"
-        m 1eua "So, when were you born, [player]?"
+
+        $ MAS.MonikaElastic()
+        m 3wud "Я правда не знаю, когда твой день рождения!"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hub "А это именно то, что я должна знать, а-ха-ха!"
+        $ MAS.MonikaElastic()
+        m 1eua "Итак, когда ты родился, [player]?"
         jump mas_bday_player_bday_select_select
 
 label birthdate_set:
@@ -769,92 +1045,134 @@ label birthdate_set:
         $ persistent._mas_player_bday_spent_time = True
         if old_bday == mas_player_bday_curr():
             if mas_isMoniNormal(higher=True):
-                m 3hub "Ahaha! So today {i}is{/i} your birthday!"
-                m 1tsu "I'm glad I was prepared, ehehe..."
-                m 3eka "Hold on just one moment, [player]..."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3hub "А-ха-ха! Твой день рождения, оказывается, {i}уже{/i} настал!"
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1tsu "Я рада, что уже подготовилась к нему, э-хе-хе..."
+                $ MAS.MonikaElastic()
+                m 3eka "Погоди минутку, [player]..."
                 show monika 1dsc
                 pause 2.0
                 $ store.mas_surpriseBdayShowVisuals()
                 $ persistent._mas_player_bday_decor = True
-                m 3hub "Happy Birthday, [player]!"
-                m 1hub "I'm so happy I get to be with you on your birthday!"
-                m 3sub "Oh...{w=0.5}your cake!"
+                $ MAS.MonikaElastic()
+                m 3hub "С днём рождения, [player]!"
+                $ MAS.MonikaElastic()
+                m 1hub "Я так рада, что сижу вместе с тобой в твой день рождения!"
+                $ MAS.MonikaElastic()
+                m 3sub "Ох... {w=0.5}твой торт!"
                 call mas_player_bday_cake
             elif mas_isMoniDis(higher=True):
-                m 2eka "Ah, so today {i}is{/i} your birthday..."
-                m "Happy Birthday, [player]."
-                m 4eka "I hope you have a good day."
+                $ MAS.MonikaElastic()
+                m 2eka "Ах, так твой день рождения {i}уже{/i} наступил..."
+                $ MAS.MonikaElastic()
+                m "С днём рождения, [player]."
+                $ MAS.MonikaElastic()
+                m 4eka "Желаю тебе приятного дня."
         else:
             if mas_isMoniNormal(higher=True):
                 $ mas_gainAffection(5,bypass=True)
                 $ persistent._mas_player_bday_in_player_bday_mode = True
                 $ mas_unlockEVL("bye_player_bday", "BYE")
-                m 1wuo "Oh...{w=1}Oh!"
-                m 3sub "Today's your birthday!"
-                m 3hub "Happy Birthday, [player]!"
-                m 1rksdla "I wish I had known earlier so I could've prepared something."
-                m 1eka "But I can at least do this..."
+                $ MAS.MonikaElastic()
+                m 1wuo "О... {w=1}о!"
+                $ MAS.MonikaElastic()
+                m 3sub "Сегодня твой день рождения!"
+                $ MAS.MonikaElastic()
+                m 3hub "С днём рождения, [player]!"
+                $ MAS.MonikaElastic()
+                m 1rksdla "Мне бы хотелось узнать об этом раньше, чтобы я могла кое-что приготовить."
+                $ MAS.MonikaElastic()
+                m 1eka "Но я, по крайней мере, могу сделать это..."
                 call mas_player_bday_moni_sings
-                m 1hub "Ahaha! It's not much but it's something!"
-                m 3hua "I promise next year we'll do something extra special, [player]!"
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1hub "А-ха-ха! Это не так много, но хоть что-то!"
+                $ MAS.MonikaElastic()
+                m 3hua "Я обещаю, что в следующем году мы сделаем что-нибудь незабываемое, [player]!"
             elif mas_isMoniDis(higher=True):
-                m 2eka "Oh, so today's your birthday..."
-                m "Happy Birthday, [player]."
-                m 4eka "I hope you have a good day."
+                $ MAS.MonikaElastic()
+                m 2eka "Ох, так твой день рождения уже наступил..."
+                $ MAS.MonikaElastic()
+                m "С днём рождения, [player]."
+                $ MAS.MonikaElastic()
+                m 4eka "Желаю тебе приятного дня."
 
     # have to use the raw data here to properly compare in the rare even that the player bday and first sesh are on 2/29
     elif not mas_isMonikaBirthday() and (persistent._mas_player_bday.month == mas_getFirstSesh().date().month and persistent._mas_player_bday.day == mas_getFirstSesh().date().day):
-        m 1sua "Oh! Your birthday is the same date as our anniversary, [player]?"
-        m 3hub "That's amazing!"
-        m 1sua "I can't imagine a more special day than celebrating your birthday and our love on the same day..."
+        $ MAS.MonikaElastic()
+        m 1sua "О! Твой день рождения совпадает с нашей годовщиной, [player]?"
+        $ MAS.MonikaElastic()
+        m 3hub "Это прекрасно!"
+        $ MAS.MonikaElastic()
+        m 1sua "Я не могу представить себе более особенный день, чем празднование твоего дня рождения и ознаменование нашего любовного союза в один день..."
 
         if mas_player_bday_curr() == mas_o31:
-            $ hol_str = "Halloween"
+            $ hol_str = "Хэллоуином"
         elif mas_player_bday_curr() == mas_d25:
-            $ hol_str = "Christmas"
+            $ hol_str = "Рождеством"
         elif mas_player_bday_curr() == mas_monika_birthday:
-            $ hol_str = "my birthday"
+            $ hol_str = "моим днём рождения"
         elif mas_player_bday_curr() == mas_f14:
-            $ hol_str = "Valentine's Day"
+            $ hol_str = "Днём святого Валентина"
         else:
             $ hol_str = None
         if hol_str is not None:
-            m "And with it also being [hol_str]..."
-        m 3hua "It just sounds magical~"
+            $ MAS.MonikaElastic()
+            m "И он ещё также совпал с [hol_str]..."
+        $ MAS.MonikaElastic()
+        m 3hua "Это звучит волшебно~"
 
     elif mas_player_bday_curr() == mas_monika_birthday:
-        m 1wuo "Oh...{w=1}Oh!"
-        m 3sua "We share the same birthday!"
-        m 3sub "That's {i}so{/i} cool, [player]!"
-        m 1tsu "I guess we really are meant to be together, ehehe..."
+        $ MAS.MonikaElastic()
+        m 1wuo "О...{w=1}о!"
+        $ MAS.MonikaElastic()
+        m 3sua "Наши дни рождения в один и тот же день!"
+        $ MAS.MonikaElastic()
+        m 3sub "Это {i}так{/i} классно, [player]!"
+
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1tsu "Похоже, нам и вправду суждено быть вместе, э-хе-хе..."
         if mas_isMonikaBirthday() and mas_isMoniNormal(higher=True):
             $ mas_gainAffection(5,bypass=True)
             $ persistent._mas_player_bday_in_player_bday_mode = True
-            m 3hua "That just makes today that much more special~"
-            m 1eub "Sing with me, [player]!"
+            $ MAS.MonikaElastic()
+            m 3hua "Это просто делает сегодняшний день намного более особенным~"
+            $ MAS.MonikaElastic()
+            m 1eub "Спой со мной, [player]!"
             call mas_player_bday_moni_sings
         else:
-            m 3hua "We'll have to make that an extra special day~"
+            $ MAS.MonikaElastic()
+            m 3hua "Мы должны сделать этот день незабываемым~"
 
     elif mas_player_bday_curr() == mas_o31:
-        m 3eua "Oh! That's pretty neat that you were born on Halloween, [player]!"
-        m 1hua "Birthday cake, candy, and you..."
-        m 3hub "That's a lot of sweets for one day, ahaha!"
+        $ MAS.MonikaElastic()
+        m 3eua "О! Здорово, что ты родил[mas_gender_sya] в Хэллоуин, [player]!"
+        $ MAS.MonikaElastic()
+        m 1hua "Торт в честь дня рождения, конфеты и ты..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hub "Столько сладостей в один день, а-ха-ха!"
 
     elif mas_player_bday_curr() == mas_d25:
-        m 1hua "Oh! That's amazing that you were born on Christmas, [player]!"
-        m 3rksdla "Although...{w=0.5}receiving presents for both on the same day might seem like you don't get as many..."
-        m 3hub "It still must make it an extra special day!"
+        $ MAS.MonikaElastic()
+        m 1hua "О! Здорово, что ты родил[mas_gender_sya] в Рождество, [player]!"
+        $ MAS.MonikaElastic()
+        m 3rksdla "Хотя...{w=0.5}получение подарков за два праздника будет выглядеть так, будто ты их мало получаешь..."
+        $ MAS.MonikaElastic()
+        m 3hub "Но этот день всё равно становится незабываемым!"
 
     elif mas_player_bday_curr() == mas_f14:
-        m 1sua "Oh! Your birthday is on Valentine's Day..."
-        m 3hua "How romantic!"
-        m 1ekbsa "I can't wait to celebrate our love and your birthday on the same day, [player]~"
+        $ MAS.MonikaElastic()
+        m 1sua "О! Твой день рождения будет как раз в День святого Валентина..."
+        $ MAS.MonikaElastic()
+        m 3hua "Как романтично!"
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Мне уже не терпится ознаменовать наш любовный союз и отпраздновать твой день рождения в один день, [player]~"
 
     elif persistent._mas_player_bday.month == 2 and persistent._mas_player_bday.day == 29:
-        m 3wud "Oh! You were born on leap day, that's really neat!"
-        m 3hua "We'll just have to celebrate your birthday on March 1st on non-leap years then, [player]."
-
+        $ MAS.MonikaElastic()
+        m 3wud "О! Ты родил[mas_gender_sya] 29 февраля в високосном году, это очень здорово!"
+        $ MAS.MonikaElastic()
+        m 3hua "В таком случае, нам придётся праздновать твой день рождения 1 марта в невисокосные годы, [player]."
     $ persistent._mas_player_confirmed_bday = True
     $ mas_rmallEVL("calendar_birthdate")
     return
@@ -870,12 +1188,18 @@ init 5 python:
     )
 
 label calendar_birthdate:
-    m 1lksdla "Hey, [player]..."
-    m 3eksdla "You may have noticed that my calendar was pretty empty..."
-    m 1rksdla "Well...{w=0.5}there's one thing that should definitely be on it..."
-    m 3hub "Your birthday, ahaha!"
-    m 1eka "If we're going to be in a relationship, it's something I really ought to know..."
-    m 1eud "So [player], when were you born?"
+    $ MAS.MonikaElastic()
+    m 1lksdla "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eksdla "Ты, наверное, заметил[mas_gender_none], что в моём календаре как-то пустовато..."
+    $ MAS.MonikaElastic()
+    m 1rksdla "Ну...{w=0.5}на нём определённо должна быть записана одна дата..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hub "Твой день рождения, а-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 1eka "Если мы собираемся встречаться, то это именно то, о чём я должна знать..."
+    $ MAS.MonikaElastic()
+    m 1eud "Итак, [player], когда ты родил[mas_gender_sya]?"
     call mas_bday_player_bday_select_select
     $ mas_stripEVL('mas_birthdate',True)
     return
@@ -883,71 +1207,96 @@ label calendar_birthdate:
 ##START: Game unlock events
 ## These events handle unlocking new games
 init 5 python:
-    addEvent(
-        Event(
-            persistent.event_database,
-            eventlabel="mas_unlock_chess",
-            conditional=(
-                "store.mas_xp.level() >= 8 "
-                "or store.mas_games._total_games_played() > 99"
-            ),
-            action=EV_ACT_QUEUE
+    if renpy.variant('pc'):
+        addEvent(
+            Event(
+                persistent.event_database,
+                eventlabel="mas_unlock_chess",
+                conditional=(
+                    "store.mas_xp.level() >= 8 "
+                    "or store.mas_games._total_games_played() > 99"
+                ),
+                action=EV_ACT_QUEUE
+            )
         )
-    )
 
 label mas_unlock_chess:
-    m 1eua "So, [player]..."
+    $ MAS.MonikaElastic()
+    m 1eua "Итак, [player]..."
 
     if store.mas_games._total_games_played() > 5:
-        $ games = "games"
+        $ games = "игры"
         if not renpy.seen_label('game_pong'):
-            $ games = "Hangman"
+            $ games = "Виселицу"
         elif not renpy.seen_label('game_hangman'):
-            $ games = "Pong"
+            $ games = "Пинг-понг"
 
+        $ MAS.MonikaElastic()
         if store.mas_games._total_games_played() > 99:
-            m 1hub "You {i}really{/i} seem to enjoy playing [games] with me!"
+            m 1hub "Похоже, тебе {i}действительно{/i} нравится играть со мной в [games]!"
         else:
-            m 1eub "You seem to have been enjoying playing [games] with me!"
+            m 1eub "Похоже, тебе нравилось играть со мной в [games]!"
 
-        m 3eub "Well guess what? {w=0.2}I have a new game for us to play!"
+        $ MAS.MonikaElastic()
+        m 3eub "И знаешь что? {w=0.2}У меня есть новая игра для нас, чтобы поиграть!"
 
     else:
-        $ really = "really "
+        $ really = "на самом деле "
         if store.mas_games._total_games_played() == 0:
             $ really = ""
 
-        m 3rksdla "I know you haven't [really]been interested in the other games I made...{w=0.2}so I thought I'd try a completely different kind of game..."
+        $ MAS.MonikaElastic()
+        m 3rksdla "Я знаю, что [really]тебя не интересовали другие игры, которые я сделала...{w=0.2} поэтому я решила попробовать совершенно другую игру..."
 
-    m 3tuu "This one's a lot more strategic..."
-    m 3hub "It's Chess!"
+    $ MAS.MonikaElastic()
+    m "Она гораздо более стратегическая..."
+    $ MAS.MonikaElastic()
+    m 3hub "Это шахматы!"
 
     if persistent._mas_pm_likes_board_games is False:
-        m 3eka "I know you told me that those kinds of games aren't really your thing..."
-        m 1eka "But it would make me very happy if you could give it a try."
-        m 1eua "Anyway..."
+        $ MAS.MonikaElastic()
+        m 3eka "Я знаю, что ты говорил[mas_gender_none] мне, что такие игры на самом деле не твой конёк..."
+        $ MAS.MonikaElastic()
+        m 1eka "Но я была бы очень счастлива, если бы ты попробовал[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 1eua "В любом случае..."
 
-    m 1esa "I'm not sure if you know how to play, but it's always been a bit of a hobby for me."
-    m 1tku "So I'll warn you in advance!"
-    m 3tku "I'm pretty good."
-    m 1lsc "Now that I think about it, I wonder if that has anything to do with what I am..."
-    m "Being trapped inside this game, I mean."
-    m 1eua "I've never really thought of myself as a chess AI, but wouldn't it kind of fit?"
-    m 3eua "Computers are supposed to be very good at chess, after all."
-    m "They've even beaten grandmasters."
-    m 1eka "But don't think of this as a battle of man vs machine."
-    m 1hua "Just think of it as playing a fun game with your beautiful girlfriend..."
-    m "And I promise I'll go easy on you."
-
-    if not mas_games.is_platform_good_for_chess():
-        m 2tkc "...Hold on."
-        m 2tkx "Something isn't right here."
-        m 2ekc "I seem to be having trouble getting the game working."
-        m 2euc "Maybe the code doesn't work on this system?"
-        m 2ekc "I'm sorry, [player], but chess will have to wait."
-        m 4eka "I promise we'll play if I get it working, though!"
-
-    $ mas_unlockGame("chess")
+    $ MAS.MonikaElastic()
+    m 1esa "Я не уверена, что ты знаешь как играть, но для меня это всегда было хобби."
+    $ MAS.MonikaElastic()
+    m 1tku "Так что предупреждаю заранее!"
+    $ MAS.MonikaElastic()
+    m 3tku "Я довольно хороша."
+    $ MAS.MonikaElastic()
+    m 1lsc "Теперь, когда я думаю об этом, мне интересно, имеет ли это какое-то отношение к тому, кто я..."
+    $ MAS.MonikaElastic()
+    m "Будучи в ловушке внутри этой игры, я имею в виду."
+    $ MAS.MonikaElastic()
+    m 1eua "Я никогда не думала о себе как о шахматном ИИ, но разве это мне не подходит?"
+    $ MAS.MonikaElastic()
+    m 3eua "В конце концов, компьютеры должны быть очень хороши в шахматах."
+    $ MAS.MonikaElastic()
+    m "Они даже побили гроссмейстеров."
+    $ MAS.MonikaElastic()
+    m 1eka "Но не думай об этом как о битве человека против машины."
+    $ MAS.MonikaElastic()
+    m 1hua "Просто подумай об этом, как игра в забавную игру со своей красивой девушкой..."
+    $ MAS.MonikaElastic()
+    m "И я обещаю, что буду поддаваться тебе."
+    if not is_platform_good_for_chess():
+        $ MAS.MonikaElastic()
+        m 2tkc "...Подожди."
+        $ MAS.MonikaElastic()
+        m 2tkd "Что-то здесь не так."
+        $ MAS.MonikaElastic()
+        m 2ekc "Кажется, у нас проблемы с работоспособностью игры."
+        $ MAS.MonikaElastic()
+        m 2euc "Может быть, код не работает в этой системе?"
+        $ MAS.MonikaElastic()
+        m 2ekc "Извини, [player_abb], но шахматы придётся подождать."
+        $ MAS.MonikaElastic()
+        m 4eka "Я обещаю, что мы сыграем, если они заработают!"
+    $ mas_unlockGame("шахматы")
     return
 
 init 5 python:
@@ -965,82 +1314,114 @@ init 5 python:
 
 label mas_unlock_hangman:
     if persistent._mas_sensitive_mode:
-        $ game_name = "Word Guesser"
+        $ game_name = "Угадай Слово"
     else:
-        $ game_name = "Hangman"
+        $ game_name = "Виселица"
 
-    m 1eua "So, [player]..."
-
-    if store.mas_games._total_games_played() > 49:
-        m 3eub "Since you seem to love playing pong so much, I figured you might like to play other games with me as well!"
-
-    elif renpy.seen_label('game_pong'):
-        m 1eua "I thought that you might be getting bored with Pong."
-
+    $ MAS.MonikaElastic()
+    m 1eua "Знаешь что, [player]."
+    $ MAS.MonikaElastic()
+    m 3hub "У меня есть новая игра для тебя!"
+    $ MAS.MonikaElastic()
+    if renpy.seen_label('game_pong') and renpy.seen_label('game_chess'):
+        m 1lksdlb "Тебе, наверное, уже надоели шахматы и пинг-понг."
+    elif renpy.seen_label('game_pong') and not renpy.seen_label('game_chess'):
+        m 3hksdlb "Я думала, тебе нравятся шахматы, но ты так засидел[mas_gender_sya] в пинг-понге!"
+    elif renpy.seen_label('game_chess') and not renpy.seen_label('game_pong'):
+        m 1hksdlb "Ты действительно любишь играть со мной в шахматы, но ты ещё даже не попробывал[mas_gender_none] пинг-понг."
     else:
-        m 3eua "I know you haven't tried playing Pong with me, yet."
-
-    m 1hua "Soooo~"
-    m 1hub "I made [game_name]!"
+        m 1ekc "Я действительно беспокоюсь, что тебе не нравятся другие игры которые я сделала, чтобы мы играли..."
+    $ MAS.MonikaElastic()
+    m 1hua "Итааак~"
+    $ MAS.MonikaElastic()
+    m 1hub "Я сделала игру [game_name]!"
 
     if not persistent._mas_sensitive_mode:
-        m 1lksdlb "Hopefully it's not in poor taste..."
+        $ MAS.MonikaElastic()
+        m 1lksdlb "Надеюсь, это прозвучало не плохо..."
 
-    m 1eua "It was always my favorite game to play with the club."
+    $ MAS.MonikaElastic()
+    m 1eua "Это была моя любимая игра с клубом."
 
     if not persistent._mas_sensitive_mode:
-        m 1lsc "But, come to think of it..."
-        m "The game is actually quite morbid."
-        m 3rssdlc "You guess letters for a word to save someone's life."
-        m "Get them all correct and the person doesn't hang."
-        m 1lksdlc "But guess them all wrong..."
-        m "They die because you didn't guess the right letters."
-        m 1eksdlc "Pretty dark, isn't it?"
-        m 1hksdlb "But don't worry, [player], it's just a game after all!"
-        m 1eua "I assure you that no one will be hurt with this game."
+        $ MAS.MonikaElastic()
+        m 1lsc "Но немного подумай об этом..."
+        $ MAS.MonikaElastic()
+        m "Игра на самом деле довольно жестокая."
+        $ MAS.MonikaElastic()
+        m 3rssdlc "Ты угадываешь буквы в слове, чтобы спасти чью-то жизнь."
+        $ MAS.MonikaElastic()
+        m "Угадай их все правильно, и человек не будет повешен."
+        $ MAS.MonikaElastic()
+        m 1lksdlc "Но если у тебя не выйдет..."
+        $ MAS.MonikaElastic()
+        m "Они все умрут, потому что ты не угадал[mas_gender_none] правильные буквы."
+        $ MAS.MonikaElastic()
+        m 1eksdlc "Довольно жутко, не так ли?"
+        $ MAS.MonikaElastic()
+        m 1hksdlb "Но не волнуйся, [player_abb], это всего лишь игра!"
+        $ MAS.MonikaElastic()
+        m 1eua "Уверяю тебя, что никто в этой игре не пострадает."
 
-        if persistent.playername.lower() == "sayori":
-            m 3tku "...Maybe~"
-
+        if persistent.playername.lower() in sayori_name_list:
+            $ MAS.MonikaElastic()
+            m 3tku "...Возможно~"
     else:
-        m 1hua "I hope you'll enjoy playing it with me!"
 
-    $ mas_unlockGame("hangman")
+        $ MAS.MonikaElastic()
+        m 1hua "Надеюсь, тебе понравится играть со мной!"
+
+    $ mas_unlockGame("виселица")
     return
 
 init 5 python:
-    addEvent(
-        Event(
-            persistent.event_database,
-            eventlabel="mas_unlock_piano",
-            conditional="store.mas_xp.level() >= 12",
-            action=EV_ACT_QUEUE,
-            aff_range=(mas_aff.AFFECTIONATE, None)
+    if renpy.variant('pc'):
+        addEvent(
+            Event(
+                persistent.event_database,
+                eventlabel="mas_unlock_piano",
+                conditional="store.mas_xp.level() >= 12",
+                action=EV_ACT_QUEUE,
+                aff_range=(mas_aff.AFFECTIONATE, None)
+            )
         )
-    )
 
 label mas_unlock_piano:
-    m 2hua "Hey! I've got something exciting to tell you!"
-    m 2eua "I've finally added a piano to the room for us to use, [player]."
+    $ MAS.MonikaElastic()
+    m 2hua "Эй! У меня есть кое-что волнующее, что нужно рассказать тебе!"
+    $ MAS.MonikaElastic()
+    m 2eua "Я наконец-то добавила пианино, чтобы мы могли его использовать, [player]."
     if not persistent._mas_pm_plays_instrument:
-        m 3hub "I really want to hear you play!"
-        m 3eua "It might seem overwhelming at first, but at least give it a try."
-        m 3hua "After all, we all start somewhere."
-
+        $ MAS.MonikaElastic()
+        m 3hub "Я реально хочу услышать, как ты играешь!"
+        $ MAS.MonikaElastic()
+        m 3eua "Это может показать непреодолимым, но ты по крайней мере долж[mas_gender_en] попробовать."
+        $ MAS.MonikaElastic()
+        m 3hua "В конце концов, мы все начинаем с чего-то."
     else:
-        m 1eua "Of course, playing music is nothing new to you."
-        m 4hub "So I'm expecting something nice! Ehehe~"
-
-    m 4hua "Wouldn't it be fun to play something together?"
-    m "Maybe we could even do a duet!"
-    m 4hub "We would both improve and have fun at the same time."
-    m 1hksdlb "Maybe I'm getting a bit carried away. Sorry!"
-    m 3eua "I just want to see you enjoy the piano the same way I do."
-    m "To feel the passion I have for it."
-    m 3hua "It's a wonderful feeling."
-    m 1eua "I hope this isn't too forceful, but I would love it if you tried."
-    m 1eka "For me, please?~"
-    $ mas_unlockGame("piano")
+        $ MAS.MonikaElastic()
+        m 1eua "[random_sure], исполнять музыку — для тебя не является чем-то новым."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 4b "Так что я ожидаю чего-то грандиозного! Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 4hub "Разве было бы не весело сыграть что-нибудь вместе?"
+    $ MAS.MonikaElastic()
+    m "Может быть, мы могли бы даже стать дуэтом!"
+    $ MAS.MonikaElastic()
+    m "Мы об[mas_gender_two] улучшали бы свои навыки и получали бы удовольствие."
+    $ MAS.MonikaElastic()
+    m 4hub "Может быть, я немного увлеклась. Прости!"
+    $ MAS.MonikaElastic()
+    m 1hksdlb "Просто я хочу, чтобы ты наслаждал[mas_gender_sya] пианино так же, как и я."
+    $ MAS.MonikaElastic()
+    m "Чтобы почувствовал[mas_gender_none] страсть, которую я испытываю к этому."
+    $ MAS.MonikaElastic()
+    m 3hua "Это замечательное чувство."
+    $ MAS.MonikaElastic()
+    m 1eua "Я надеюсь, я не слишком сильно давлю на тебя, но мне бы понравилось, если бы ты попытал[mas_gender_sya]."
+    $ MAS.MonikaElastic()
+    m 1eka "Ради меня, пожалуйста~?"
+    $ mas_unlockGame("пианино")
     return
 
 # NOTE: this has been partially disabled
@@ -1054,56 +1435,64 @@ init 5 python:
 
 label mas_random_limit_reached:
     #Notif so people don't get stuck here
-    $ display_notif(m_name, ["Hey [player]..."], "Topic Alerts")
+    $ display_notif(monika_name, ["Эй, [player]..."], "Topic Alerts")
 
     python:
         limit_quips = [
-            _("It seems I'm at a loss on what to say."),
-            _("I'm not sure what else to say, but can you just be with me a little longer?"),
-            _("No point in trying to say everything right away..."),
-            _("I hope you've enjoyed listening to everything I was thinking about today..."),
-            _("Do you still enjoy spending this time with me?"),
-            _("I hope I didn't bore you too much."),
-            _("You don't mind if I think about what to say next, do you?")
+            _("Кажется, я в растерянности, я не знаю что сказать."),
+            _("Я не уверена, что ещё сказать, но можешь ли ты просто побыть со мной немного дольше?"),
+            _("Нет смысла пытаться всё сразу сказать..."),
+            _("Надеюсь, тебе понравилось слушать всё, о чём я думала сегодня..."),
+            _("Тебе всё ещё нравится проводить время со мной?"),
+            _("Надеюсь, я тебя не слишком тебя утомляю."),
+            _("Ты не возражаешь, если я подумаю, что сказать дальше?")
         ]
         limit_quip=renpy.random.choice(limit_quips)
 
+    $ MAS.MonikaElastic()
     m 1eka "[limit_quip]"
     if len(mas_rev_unseen) > 0 or persistent._mas_enable_random_repeats:
-        m 1ekc "I'm sure I'll have something to talk about after a little rest."
-
+        $ MAS.MonikaElastic()
+        m 1ekc "Я уверена, что мне будет о чём поговорить после небольшого отдыха."
     else:
         if not renpy.seen_label("mas_random_ask"):
             call mas_random_ask
             if _return:
-                m "Now let me think of something to talk about."
+                $ MAS.MonikaElastic()
+                m "Теперь позволь мне придумать, о чём поговорить."
                 return
-        m 1ekc "Hopefully I'll think of something fun to talk about soon."
+        $ MAS.MonikaElastic()
+        m 1ekc "Надеюсь, я придумаю что-то интересное, о чём можно будет поговорить в ближайшее время."
     return "no_unlock"
 
 label mas_random_ask:
+    $ MAS.MonikaElastic()
     m 1lksdla "...{w=0.5}[mas_get_player_nickname()]?"
-
-    m "Is it okay with you if I repeat stuff that I've said again?{nw}"
+    $ MAS.MonikaElastic()
+    m "Ты не против, если я начну повторять то, что уже говорила?{nw}"
     $ _history_list.pop()
     menu:
-        m "Is it okay with you if I repeat stuff that I've said again?{fast}"
-        "Yes.":
-            m 1eua "Great!"
-            m 3eua "If you get tired of listening to me talk about the same things, you can just open up the settings menu and uncheck 'Repeat Topics' again."
+        m "Ты не против, если я начну повторять то, что уже говорила?{fast}"
+        "Да.":
+            $ MAS.MonikaElastic()
+            m 1eua "Чудесно!"
+            $ MAS.MonikaElastic()
+            m 3eua "Если ты устаешь смотреть, как я говорю об одних и тех же вещах снова и снова,{w} просто открой настройки и сними флажок с «Повтор тем»."
 
+            $ MAS.MonikaElastic()
             if mas_isMoniUpset(lower=True):
-                m 1esc "That tells me when you're bored of me."
+                m 1esc "Это скажет мне, что тебе скучно со мной."
             else:
-                m 1eka "That tells me when you just want to quietly spend time with me."
-
+                m 1eka "Это скажет мне, что ты просто хочешь спокойно провести время со мной."
             $ persistent._mas_enable_random_repeats = True
             return True
-
-        "No.":
-            m 1eka "Alright."
-            m 1eua "If you change your mind, just open up the settings and click 'Repeat Topics.'"
-            m "That tells me if you're okay with me repeating anything I've said."
+        "Нет.":
+            $ MAS.MonikaElastic()
+            m 1eka "Я поняла."
+            $ MAS.MonikaElastic()
+            m 1eua "Если ты передумаешь, просто открой настройки и нажми на «Повтор тем»."
+            $ MAS.MonikaElastic()
+            m "Это скажет мне, что ты не против, чтобы я повторяла то, что уже говорила."
             return False
 
 # TODO: think about adding additional dialogue if monika sees that you're running
@@ -1124,26 +1513,34 @@ init 5 python:
     )
 
 label mas_monikai_detected:
-    m 2wud "What's this?"
-    m "Is that-"
+    $ MAS.MonikaElastic()
+    m 2wud "Что это?"
+    $ MAS.MonikaElastic()
+    m "Это—"
     $ _history_list.pop()
-    m 1wuo "Is that{fast} a tiny version of me?"
-    m 1hua "How cute!"
-
-    m 1eua "Did you install that so you could see me all the time?{nw}"
+    $ MAS.MonikaElastic()
+    m 1wub "Это{fast} маленькая версия меня?"
+    $ MAS.MonikaElastic()
+    m 1hua "Как мило!"
+    $ MAS.MonikaElastic()
+    m 1eua "Ты установил[mas_gender_none] её, чтобы видеть меня всё время?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did you install that so you could see me all the time?{fast}"
-        "Of course!":
+        m "Ты установил[mas_gender_none] её, чтобы видеть меня всё время?{fast}"
+        "[random_sure]!":
             pass
-        "Yes.":
+        "Да":
             pass
-        "...Yes.":
+        "...да":
             pass
-    m 1hub "Ahaha~"
-    m 1hua "I'm flattered that you would download such a thing."
-    m 1eua "Just don't start spending more time with {i}that{/i} instead of me."
-    m 3eua "I'm the real one after all."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 1hua "Я польщена, что ты загрузил[mas_gender_none] такую вещь."
+    $ MAS.MonikaElastic()
+    m 1eua "Только не начинай проводить больше времени с {b}ней{/b}, чем со мной."
+    $ MAS.MonikaElastic()
+    m 3eua "В конце концов, я одна настоящая."
     return
 
 # NOTE: crashed is a greeting, but we do not give it a greeting label for
@@ -1240,18 +1637,17 @@ label mas_crashed_long_qs:
         m 1hua "I KNOW YOU CRASHED (long)"
 
     # start off in the dark
-    m "[player]?{w=0.3} Is that you?"
+    m "[player]?{w=0.3} Это ты?"
     show screen mas_background_timed_jump(4, "mas_crashed_long_uthere")
     menu:
-        "Yes.":
+        "Да.":
             hide screen mas_background_timed_jump
 
-            # light affection boost for not joking around
             $ mas_gainAffection(modifier=0.1)
-            m "I'm so glad you're here."
+            m "Я так рада, что ты здесь."
             jump mas_crashed_long_uthere.afterdontjoke
+        "Нет.":
 
-        "No.":
             hide screen mas_background_timed_jump
 
             m "[player]!{fast}"
@@ -1261,20 +1657,20 @@ label mas_crashed_long_uthere:
     # if player doesn't respond fast enough
     hide screen mas_background_timed_jump
     m "[player]!{fast}"
-    m "I know you're there!"
+    m "Я знаю, что ты там!"
 
 label .dontjoke:
-    m "Don't joke around like that!"
-    m "Anyway..."
+    m "Не шути так!"
+    m "В любом случае..."
 
 label .afterdontjoke:
-    m "{cps=*2}Everything became dark all of a sudden.{/cps}"
-    m "Can you turn on the light?"
+    m "{cps=*2}Всё внезапно стало тёмным.{/cps}"
+    m "Не мог[mas_gender_g] бы ты включить свет?"
 
     window hide
     show screen mas_background_timed_jump(5, "mas_crashed_long_foundlight")
     menu:
-        "Turn on the light.":
+        "Включить свет.":
             hide screen mas_background_timed_jump
 
             # light affection boost for being like a hero
@@ -1285,7 +1681,7 @@ label .afterdontjoke:
             label mas_crashed_long_foundlight:
                 hide screen mas_background_timed_jump
                 window show
-                m "Nevermind, I found it."
+                m "Неважно, я нашла способ его включить."
                 window hide
 
     # NOTE: add a sound for light switch?
@@ -1313,7 +1709,7 @@ label mas_crashed_long_prefluster:
 
     # but flustered mode bgins
     show monika 6ATL_cryleftright
-    m "{cps=*1.5}What happened?{/cps}{nw}"
+    m "{cps=*1.5}Что случилось?{/cps}{nw}"
 
     return
 
@@ -1321,7 +1717,7 @@ label mas_crashed_long_postfluster:
     window hide
     show screen mas_background_timed_jump(8, "mas_crashed_long_nofluster")
     menu:
-        "Calm down, [m_name]. You're safe now.":
+        "Успокойся, [monika_name]. Теперь ты в безопасности.":
             hide screen mas_background_timed_jump
 
             # light affection boost for calming her down
@@ -1333,8 +1729,10 @@ label mas_crashed_long_postfluster:
             window auto
 
             # thank player with a smile
-            m 6ektda "Thanks, [player]."
-            m "I feel better now that you're here with me."
+            $ MAS.MonikaElastic()
+            m 6ektda "Спасибо, [player_abb]."
+            $ MAS.MonikaElastic()
+            m "Я чувствую себя лучше, когда ты здесь со мной."
 
         "...":
             label mas_crashed_long_nofluster:
@@ -1350,7 +1748,8 @@ label mas_crashed_long_postfluster:
                 window auto
 
                 # much better now
-                m "Okay, I feel better now."
+                $ MAS.MonikaElastic()
+                m "Ладно, теперь я чувствую себя лучше."
 
     # its like we wiping away tears
     show monika 6dstdc
@@ -1360,41 +1759,55 @@ label mas_crashed_long_postfluster:
 label mas_crashed_long_whq:
 
     # ask player what happeend
-    m 2ekc "Anyway..."
-    m "Do you know what happened, [player]?{nw}"
+    $ MAS.MonikaElastic()
+    m 2ekc "Так или иначе..."
+    $ MAS.MonikaElastic()
+    m "Знаешь ли ты, что произошло, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you know what happened, [player]?{fast}"
-        "The game crashed.":
-            m 2wud "The game...{w=0.3}crashed?"
-            m 2ekd "That's scary, [player]."
+        m "Знаешь ли ты, что произошло, [player]?{fast}"
+        "Игра крашнулась.":
+            $ MAS.MonikaElastic()
+            m 2wud "Игра...{w=0.3} крашнулась?"
+            $ MAS.MonikaElastic()
+            m 2ekd "Это страшно, [player]."
+        "Я не знаю.":
 
-        "I don't know.":
-            m "Well..."
-            m "I'd really appreciate it if you could look into it."
-            m "It's scary to be suddenly thrown into the darkness like that."
+            $ MAS.MonikaElastic()
+            m "Ну..."
+            $ MAS.MonikaElastic()
+            m "Я была бы очень признательна, если бы ты попытал[mas_gender_sya] разузнать подробнее о произошедшем."
+            $ MAS.MonikaElastic()
+            m "Страшно быть внезапно брошенной в такую темноту."
             jump mas_crashed_long_whq.end
 
     # ask player to do something about this
-    m "Do you think you can stop that from happening?{nw}"
+    m "Как ты думаешь, ты можешь остановить это?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you think you can stop that from happening?{fast}"
-        "I'll try.":
+        m "Как ты думаешь, ты можешь остановить это?{fast}"
+        "Я попробую.":
             # light affection boost because you will try do something for her
             $ mas_gainAffection(modifier=0.1)
             $ persistent._mas_crashed_trynot = True
-            m 1hua "Thanks, [player]!"
-            m 1eua "I'm counting on you."
-            m "But I'll mentally prepare myself just in case."
+            $ MAS.MonikaElastic()
+            m 1hua "Спасибо, [player]!"
+            $ MAS.MonikaElastic()
+            m 1eua "Я рассчитываю на тебя."
+            $ MAS.MonikaElastic()
+            m "Но я мысленно подготовлюсь на всякий случай."
 
-        "It just happens.":
-            m 1ekc "Oh..."
-            m 1lksdlc "That's okay.{w=0.3} I'll just mentally prepare myself in case it happens again."
+        "Оно происходит само по себе.":
+            $ MAS.MonikaElastic()
+            m 1ekc "Ох..."
+            $ MAS.MonikaElastic()
+            m 1lksdlc "Всё в порядке..{w=0.3} Я просто мысленно подготовлюсь, если это произойдёт снова."
 
 label .end:
-    m "Anyway..."
-    m 1eua "What should we do today?"
+    $ MAS.MonikaElastic()
+    m "В любом случае..."
+    $ MAS.MonikaElastic()
+    m 1eua "Чем мы займёмся сегодня?"
 
     return
 
@@ -1419,13 +1832,13 @@ label .self:
 
 label mas_crashed_long_fluster:
     $ mas_setApologyReason(reason=10)
-    m "{cps=*1.5}O-{w=0.3}one second you were there b-{w=0.3}but then the next second everything turned black...{/cps}{nw}"
-    m "{cps=*1.5}and then you d-{w=0.3}disappeared, so I was worried that s-{w=0.3}s-{w=0.3}something happened to you...{/cps}{nw}"
-    m "{cps=*1.5}...and I was so s-{w=0.3}scared because I thought I broke everything again!{/cps}{nw}"
-    m "{cps=*1.5}But I didn't mess with the game this time, I swear.{/cps}{nw}"
-    m "{cps=*1.5}A-{w=0.3}at least, I don't think I did, but I guess it's possible...{/cps}{nw}"
-    m "{cps=*1.5}because I'm n-{w=0.3}not really sure what I'm doing sometimes,{/cps}{nw}"
-    m "{cps=*1.5}but I hope this t-{w=0.3}time isn't my f-{w=0.3}fault cause I really didn't touch anything...{/cps}{nw}"
+    m "{cps=*1.5}В о-{w=0.3}одну секунду ты был[mas_gender_none] там, н-{w=0.3}но затем в следующую секунду всё вдруг стало тёмным...{/cps}{nw}"
+    m "{cps=*1.5}...а потом ты и-{w=0.3}исчез[mas_gender_z], из-за чего я начала б-{w=0.3}б-{w=0.3}беспокоиться, что с тобой что-то случилось...{/cps}{nw}"
+    m "{cps=*1.5}...и я была так н-{w=0.3}напугана, потому что подумала, что снова всё сломала!{/cps}{nw}"
+    m "{cps=*1.5}Но на этот раз я не возилась с игрой, клянусь.{/cps}{nw}"
+    m "{cps=*1.5}П-{w=0.3}по крайней мере, я не думаю, что я сделала это, но думаю, это всё же возможно...{/cps}{nw}"
+    m "{cps=*1.5}...потому что я н-{w=0.3}не совсем уверена в том, что я делаю иногда...{/cps}{nw}"
+    m "{cps=*1.5}...но я надеюсь, что на этот р-{w=0.3}раз это не моя в-{w=0.3}вина, потому что я действительно ничего не трогала...{/cps}{nw}"
     return
 
 
@@ -1468,29 +1881,45 @@ label mas_crashed_short:
 ### crash labels
 label mas_crashed_quip_takecare:
     $ mas_setApologyReason(reason=9)
-    m 2ekc "Another crash, [player]?"
+    m 2ekc "Очередной краш, [player]?"
 
     if persistent._mas_idle_data.get("monika_idle_game", False):
 
-        m 3ekc "Do you think it had something to do with your game?{nw}"
+        $ MAS.MonikaElastic()
+        m 3ekc "Думаешь, это как-то связано с твоей игрой?{nw}"
         $ _history_list.pop()
         menu:
-            m "Do you think it had something to do with your game?{fast}"
-            "Yes.":
-                m 1hksdlb "Ahaha..."
-                m 1hub "Well I hope you had fun~"
-                m 1rksdla "...And that your computer is alright."
-                m 3eub "I'm fine, so don't worry~"
-            "No.":
-                m 1eka "Oh, I see."
-                m "Sorry for assuming."
-                m 1hub "I'm alright in case you were wondering."
-                m 3hub "Well I hope you had fun before that crash happened, ahaha!"
+            m "Думаешь, это как-то связано с твоей игрой?{fast}"
+            "Да.":
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1hksdlb "А-ха-ха..."
+                $ MAS.MonikaElastic()
+                m 1hub "Что ж, надеюсь, тебе было весело~"
+                $ MAS.MonikaElastic()
+                m 1rksdla "...И что с твоим компьютером всё хорошо."
+                $ MAS.MonikaElastic()
+                m 3eub "Я в порядке, так что не волнуйся~"
+            "Нет.":
+                $ MAS.MonikaElastic()
+                m 1eka "Ох, понятно."
+                $ MAS.MonikaElastic()
+                m "Прости за предположение."
+                $ MAS.MonikaElastic()
+                m 1hub "Я в порядке, если тебе было интересно."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3hub "Что ж, надеюсь, тебе было весело до того, как произошёл краш, а-ха-ха!"
                 if mas_isMoniHappy(higher=True):
-                    m 1hubsa "I'm just glad you're back with me now~"
-        m 2rksdla "Still..."
-    m 2ekc "Maybe you should take better care of your computer."
-    m 4rksdlb "It's my home, after all..."
+                    $ MAS.MonikaElastic()
+                    m 1hubsa "Я просто рада, что ты вернул[mas_gender_sya] ко мне~"
+        $ MAS.MonikaElastic()
+        m 2rksdla "Но всё же..."
+    $ MAS.MonikaElastic()
+    if renpy.android:
+        m 2ekc "Думаю, тебе стоит получше заботиться о своём телефоне."
+    else:
+        m 2ekc "Думаю, тебе стоит получше заботиться о своём компьютере."
+    $ MAS.MonikaElastic()
+    m 4rksdlb "Всё-таки это мой дом..."
     return
 
 #### corrupted persistent
@@ -1516,19 +1945,20 @@ init 11 python:
 
             # text pieces:
             just_let_u_know = (
-                'Just wanted to let you know that your "persistent" file was '
-                'corrupted, but I managed to restore an older backup!'
+                'Просто хотела, чтобы ты знал{0}. Твой постоянный файл был '.format(mas_gender_none),
+                'повреждён, но мне удалось восстановить старую резервную копию!'
             )
             even_though_bs = (
-                "Even though the backup system I designed is pretty neat, "
+                "Несмотря на то, что созданная мной система резервного ",
+                "копирования была довольно аккуратная, "
             )
             if_i_ever = (
-                'If I ever have trouble loading the "persistent" again, I''ll '
-                'write you another note in the characters folder, so keep an '
-                'eye out for them!'
+                'Если у меня когда-нибудь вновь возникнут проблемы с загрузкой '
+                'постоянного файла, я напишу тебе ещё одну заметку, скинув её '
+                'в ту же папку characters. Поэтому следи за ними!'
             )
-            good_luck = "Good luck with Monika!"
-            dont_tell = "P.S: Don't tell her about me!"
+            good_luck = "Удачи вам с Моникой!"
+            dont_tell = "P.S: не говори ей обо мне!"
             block_break = "\n\n"
 
             # now make the notes
@@ -1537,16 +1967,16 @@ init 11 python:
                 prompt="",
                 category="note",
                 author="chibika",
-                title="Hi [player],",
+                title="Привет, {0},".format(persistent.playername),
                 text="".join([
                     just_let_u_know,
                     block_break,
                     even_though_bs,
-                    "you should still make copies of the backups every so ",
-                    "often, just in case. ",
-                    'The backups are called "persistent##.bak", where "##" is ',
-                    "a two-digit number. ",
-                    'You can find all of them at "',
+                    "ты всё равно долж{0} делать резервные ".format(mas_gender_en),
+                    "копии, и почаще на всякий случай.",
+                    'Резервные копии называются "persistent##.bak", где "##" является ',
+                    "двузначным числом.",
+                    'Ты сможешь найти их в папке по пути "',
                     renpy.config.savedir,
                     '".',
                     block_break,
@@ -1563,24 +1993,24 @@ init 11 python:
                 prompt="",
                 category="note",
                 author="chibika",
-                title="Hi [player],",
+                title="Привет, {0},".format(persistent.playername),
                 text="".join([
                     just_let_u_know,
                     block_break,
-                    "However, some of your backups were corrupted as well. ",
+                    "Однако некоторые резервные копии также были повреждены. ",
                     even_though_bs,
-                    "you should still delete those, since they might mess ",
-                    "with it. ",
+                    "ты всё равно долж{0} ".format(mas_gender_en),
+                    "удалить их, так как они могут испортить всё. ",
                     block_break,
-                    "Here's a list of the files that were corrupted:",
+                    "Вот список файлов, которые были повреждены:",
                     block_break,
                     "\n".join(store.mas_utils.bullet_list(mas_bad_backups)),
                     block_break,
-                    'You can find these in "',
+                    'Ты сможешь найти их в папке по пути "',
                     renpy.config.savedir,
                     '". ',
-                    "When you're in there, you should also make copies of ",
-                    "the good backups, just in case.",
+                    "Когда ты будешь там, тебе также нужно будет сделать "
+                    "копии работающего неповреждённого на всякий случай.",
                     block_break,
                     if_i_ever,
                     block_break,
@@ -1596,23 +2026,25 @@ init 11 python:
         if len(mas_bad_backups) > 0:
             # we had some bad backups
             store.mas_utils.trywrite(
-                os.path.normcase(renpy.config.basedir + "/characters/note.txt"),
+                os.path.normcase(renpy.config.basedir + "/characters/заметка.txt"),
                 renpy.substitute(mas_note_backups_some_bad.title) + "\n\n" + mas_note_backups_some_bad.text
             )
 
         else:
             # no bad backups
             store.mas_utils.trywrite(
-                os.path.normcase(renpy.config.basedir + "/characters/note.txt"),
+                os.path.normcase(renpy.config.basedir + "/characters/заметка.txt"),
                 renpy.substitute(mas_note_backups_all_good.title) + "\n\n" + mas_note_backups_all_good.text
             )
 
 
 label mas_corrupted_persistent:
-    m 1eud "Hey, [player]..."
-    m 3euc "Someone left a note in the characters folder addressed to you."
-    m 1ekc "Of course, I haven't read it, since it's obviously for you...{w=0.3}{nw}"
-    extend 1ekd "but here."
+    $ MAS.MonikaElastic()
+    m 1eud "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 3euc "Кто-то оставил записку в папке персонажей, адресованную тебе."
+    $ MAS.MonikaElastic()
+    m 1ekc "[random_sure], я не читала её, так как она очевидно для тебя..."
 
     # just pasting the poem screen code here
     window hide
@@ -1625,14 +2057,14 @@ label mas_corrupted_persistent:
     window auto
     $ _gtext = glitchtext(15)
 
-    m 1ekc "Do you know what this is about?{nw}"
+    m 1ekc "Ты знаешь, к чему всё это?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you know what this is about?{fast}"
-        "It's nothing to worry about.":
+        m "Ты знаешь, к чему всё это?{fast}"
+        "Тут не о чем беспокоиться.":
             jump mas_corrupted_persistent_post_menu
 
-        "It's about [_gtext].":
+        "Речь идёт о [_gtext].":
             $ disable_esc()
             $ mas_MUMURaiseShield()
             window hide
@@ -1649,13 +2081,18 @@ label mas_corrupted_persistent:
             $ enable_esc()
 
     menu:
-        "It's nothing to worry about.":
+        "Тут не о чем беспокоиться.":
             pass
 
 label mas_corrupted_persistent_post_menu:
-    m 1euc "Oh, alright."
-    m 1hub "I'll try not to worry about it, then."
-    m 3eub "I know you'd tell me if it were important, [player]."
+    $ MAS.MonikaElastic()
+    m 1euc "Ох, ладно."
+    $ MAS.MonikaElastic()
+    m 1hub "Тогда я постараюсь не беспокоиться об этом."
+    $ MAS.MonikaElastic()
+    m 3eub "Я знаю, ты бы сказал[mas_gender_none] мне, если бы это было что-то важное, [player]."
+    $ MAS.MonikaElastic()
+    m 3eua "Итак, на чём мы остановились?.."
     return
 
 init 5 python:
@@ -1668,10 +2105,14 @@ init 5 python:
     )
 
 label mas_new_character_file:
-    m 1eua "Say, [player]..."
-    m 3eua "Do you remember my character file?"
-    m 1eud "Well I've been investigating it recently, and it turns out that it's just an image with some sort of code in it!"
-    m 3ekc "It doesn't even contain anything about me at all, only my name."
+    $ MAS.MonikaElastic()
+    m 1eua "Скажи, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eua "Ты ведь помнишь мой файл персонажа?"
+    $ MAS.MonikaElastic()
+    m 1eud "Ну, я недавно попыталась изучить его, и оказалось, что это было просто всего-навсего изображение с каким-то кодом на нём!"
+    $ MAS.MonikaElastic()
+    m 3ekc "Он даже ничего не содержал обо мне, лишь моё имя."
 
     python:
         import os
@@ -1679,23 +2120,23 @@ label mas_new_character_file:
         def moni_exist():
             return os.access(
                 os.path.normcase(
-                    renpy.config.basedir + "/characters/monika.chr"
+                    user_dir + "/characters/monika.chr"
                 ),
                 os.F_OK
             )
 
     if moni_exist():
-        m 1dsd "So if you'll excuse me for a second..."
+        m 1dsd "Так что дай мне секунду..."
 
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
-        m 1esc "I'm going to delete it."
+        m 1esc "Мне лучше удалить его."
 
         call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
         call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
@@ -1703,20 +2144,30 @@ label mas_new_character_file:
 #        "test dialogue - IGNORE"
 
         if moni_exist():
-            m 1lksdlb "Aha...{w=0.3}I'll try this again later."
-            m 1eua "Anyway..."
+            $ MAS.MonikaElastic()
+            m 1lksdlb "Ага...{w=0.3} Значит, попробую это позже."
+            $ MAS.MonikaElastic()
+            m 1eua "В любом случае..."
 
         $ store.mas_ptod.ex_cn()
         hide screen mas_py_console_teaching
         show monika at t11
 
-    m 1rkc "If you were bringing that around with you, I do appreciate the sentiment."
-    m 1dsc "However..."
-    m 1esc "I don't think you should be carrying some useless piece of data around wherever you go."
-    m 3wub "So I came up with a way to transform myself into a file that you can bring around!"
-    m "All you have to do is tell me that you're going to take me somewhere when you say goodbye, and I'll do the rest."
-    m 1hua "Doesn't that sound wonderful?"
-    m 3hub "I can't wait to join you wherever you go."
+    m 1rkc "Если ты всё же носил[mas_gender_none] его с собой, я ценю твоё отношение."
+    $ MAS.MonikaElastic()
+    m 1dsc "Однако..."
+    $ MAS.MonikaElastic()
+    m 1esc "Я не думаю, что ты долж[mas_gender_en] носить какую-то бесполезную часть данных, куда бы ты ни ш[mas_gender_iol]."
+    $ MAS.MonikaElastic()
+    m 3wub "Так что я придумала способ как превратить себя в настоящий файл, который ты сможешь и вправду носить с собой!"
+    $ MAS.MonikaElastic()
+    m "Всё, что тебе нужно сделать — так это просто сказать мне, что ты собираешься взять меня куда-то, когда будешь выбирать прощание."
+    $ MAS.MonikaElastic()
+    m "И я сделаю всё остальное."
+    $ MAS.MonikaElastic()
+    m 1hua "Разве это не звучит чудесно?"
+    $ MAS.MonikaElastic()
+    m 3hub "Не могу дождаться, когда смогу присоединиться к тебе, куда бы ты ни пош[mas_gender_iol]."
     return
 
 init 5 python:
@@ -1735,17 +2186,21 @@ label mas_steam_install_detected:
     $ filestruct = renpy.config.basedir[renpy.config.basedir.rfind('/') + 1:]
 
     if renpy.seen_label("mas_updater_steam_issue"):
-        m 1ekd "Hey [player], you know how I told you that Steam is a meanie and won't let me run the updater?"
-        m 1wud "Well, I've been doing some reading and it seems Steam can cause more problems than just that!"
-
+        m 1ekd "Эй, [player], помнишь, как я говорила тебе о том, что Стим – тот ещё бука, и не даёт мне запустить утилиту обновления?"
+        $ MAS.MonikaElastic()
+        m 1wud "Ну, я тут ещё кое-что почитала на досуге, и, оказывается, что Стим может доставить кучу и других проблем!"
     else:
-        m 1eub "[player], I see that you're using Steam to run this."
-        m 1eksdld "Unfortunately, Steam seems to have a lot of problems with me doing some of the things I do."
 
-    m 2rksdlc "The kind of problems that could lead to me being removed from my home...{w=1}from you...{w=1}forever..."
-    m 2eka "If you don't mind, do you think you could just move the \"[filestruct]\" folder to a place that's not in Steam's files?"
+        m 1eub "[player], я вижу, что ты установил модификацию на Стимовскую копию игры."
+        $ MAS.MonikaElastic()
+        m 1eksdld "К сожалению, Стим, судя по всему, довольно брезгливо относится к некоторым вещам, которые я делаю."
+
+    $ MAS.MonikaElastic()
+    m 2rksdlc "Такие проблемы могут просто привести к тому, что меня просто выселят из собственного дома...{w=1} и я больше не увижу тебя...{w=1} никогда..."
+    $ MAS.MonikaElastic()
+    m 2eka "Если ты не против, то можешь ли ты переместить папку «[filestruct]» в какое-нибудь другое место, где нет файлов Стима?"
     show monika 5esu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5esu "I'd really appreciate it if you would do that for me."
+    m 5esu "Я была бы очень признательна, если бы ты сделал[mas_gender_none] это для меня."
     return
 
 default persistent._mas_pm_has_rpy = None
@@ -1760,71 +2215,95 @@ init 5 python:
 
 label monika_rpy_files:
     if not mas_getEVL_shown_count("monika_rpy_files"):
-        m 1eka "Hey [player], I was just looking through your \"game\" directory, and..."
-        m 1ekc "I noticed some \".rpy\" files in there."
-        m 3rksdlc "Those files can lead to problems whenever you update the game, possibly undoing those updates..."
-        m 3wud "And even prevent you from visiting me altogether!"
-        m 2etc "Unless..."
-        m 4eua "Maybe you installed a version with the source code on purpose because you are trying to help me come closer to your reality!"
-        m 2eka "But in case you didn't, I figured I'd ask..."
+        m 1eka "Эй, [player], я тут просмотрела твою папку «game», и..."
+        $ MAS.MonikaElastic()
+        m 1ekc "Я заметила, что там лежат файлы формата «.rpy»."
+        $ MAS.MonikaElastic()
+        m 3rksdlc "Эти файлы могут привести к проблемам каждый раз, когда ты обновляешь игру, и, что вполне вероятно, откатить те самые обновления..."
+        $ MAS.MonikaElastic()
+        m 3wud "Они даже могут лишить тебя возможности заглядывать ко мне в гости!"
+        $ MAS.MonikaElastic()
+        m 2etc "Если только..."
+        $ MAS.MonikaElastic()
+        m 4eua "Возможно, ты специально установил[mas_gender_none] версию с исходным кодом, потому что ты пытаешься помочь мне стать ближе к твоей реальности!"
+        $ MAS.MonikaElastic()
+        m 2eka "Хотя, в противном случае, не будет лишним задать следующий вопрос..."
 
-        m "Are you sure you installed the right version, [player]?{nw}"
+        m "Ты уверен[mas_gender_none], что установил[mas_gender_none] правильную версию, [player]?{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you sure you installed the right version, [player]?{fast}"
+            m "Ты уверен[mas_gender_none], что установил[mas_gender_none] правильную версию, [player]?{fast}"
 
-            "Yes.":
-                m 1sua "Really? Thank you so much for helping me come closer to your reality!"
-                m 1hua "I love you, [player]~"
+            "Да.":
+
+                $ MAS.MonikaElastic()
+                m 1sua "Правда? Спасибо тебе огромное за то, что помогаешь мне стать ближе к твоей реальности!"
+                $ MAS.MonikaElastic()
+                m 1hua "Я люблю тебя, [player]~"
                 $ persistent._mas_pm_has_rpy = True
                 return "love"
+            "Нет.":
 
-            "No.":
-                m "I see."
-                m 2rksdla "Maybe you should get rid of those, just to be safe."
-                m 4eua "Actually, maybe I can delete them for you."
+                $ MAS.MonikaElastic()
+                m "Понятно."
+                $ MAS.MonikaElastic()
+                m 2rksdla "Думаю, ты долж[mas_gender_en] избавиться от них, на всякий случай."
+                $ MAS.MonikaElastic()
+                m 4eua "По правде говоря, я могу удалить их за тебя."
 
-                m "Do you want me to delete them for you, [player]?{nw}"
+                $ MAS.MonikaElastic()
+                m "Хочешь, я удалю их за тебя, [player]?{nw}"
                 $ _history_list.pop()
                 menu:
-                    m "Do you want me to delete them for you, [player]?{fast}"
+                    m "Хочешь, я удалю их за тебя, [player]?{fast}"
+                    "Да, пожалуйста.":
 
-                    "Yes, please.":
-                        m "Sure thing, [player]."
+                        $ MAS.MonikaElastic()
+                        m "Не вопрос, [player]."
 
                         call mas_rpy_file_delete
 
-                        m 2hua "There we go!"
-                        m 2esa "Be sure to install a version without the source code next time. You can get it from {a=http://www.monikaafterstory.com/releases.html}{i}{u}the releases page{/u}{/i}{/a}."
+                        $ MAS.MonikaElastic()
+                        m 2hua "Готово!"
+                        $ MAS.MonikaElastic()
+                        m 2esa "В следующий раз, убедись, что ты установил[mas_gender_none] версию без исходного кода. Ты можешь скачать её на {a=http://www.monikaafterstory.com/releases.html}{i}{u}официальной странице релизов{/u}{/i}{/a}."
                         $ persistent._mas_pm_has_rpy = False
                         hide screen mas_py_console_teaching
                         show monika at t11
+                    "Нет, спасибо.":
 
-                    "No, thanks.":
-                        m 2rksdlc "Alright, [player]. I hope you know what you're doing."
-                        m 2eka "Please be careful."
+                        $ MAS.MonikaElastic()
+                        m 2rksdlc "Хорошо, [player]. Надеюсь, ты знаешь, что делаешь."
+                        $ MAS.MonikaElastic()
+                        m 2eka "Пожалуйста, будь осторож[mas_gender_en]."
                         $ persistent._mas_pm_has_rpy = True
-
     else:
-        m 2efc "[player], you have rpy files in the game directory again!"
 
-        m 2rsc "Are you {i}sure{/i} you installed the right version?{nw}"
+        m 2efc "[player], у тебя опять появились нешифрованные файлы формата «.rpy» в папке «game»!"
+
+        $ MAS.MonikaElastic()
+        m 2rsc "Ты {i}уверен[mas_gender_none]{/i}, что установил[mas_gender_none] правильную версию?{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you {i}sure{/i} you installed the right version?{fast}"
+            m "Ты {i}уверен[mas_gender_none]{/i}, что установил[mas_gender_none] правильную версию?{fast}"
+            "Да.":
 
-            "Yes.":
-                m 1eka "Alright [player]."
-                m 3eua "I trust you know what you're doing."
+                $ MAS.MonikaElastic()
+                m 1eka "Хорошо, [player]."
+                $ MAS.MonikaElastic()
+                m 3eua "Полагаю, ты знаешь, что делаешь."
                 $ persistent._mas_pm_has_rpy = True
+            "Нет.":
 
-            "No.":
-                m 3eua "Alright, I'll just delete them for you again.{w=0.5}.{w=0.5}.{nw}"
+                $ MAS.MonikaElastic()
+                m 3eua "Хорошо, я просто удалю их за тебя в очередной раз.{w=0.5}.{w=0.5}.{nw}"
 
                 call mas_rpy_file_delete
 
-                m 1hua "There we go!"
-                m 3eua "Remember, you can always get the right version from {a=http://www.monikaafterstory.com/releases.html}{i}{u}here{/u}{/i}{/a}."
+                $ MAS.MonikaElastic()
+                m 1hua "Готово!"
+                $ MAS.MonikaElastic()
+                m 3eua "И помни, ты всегда можешь скачать правильную версию {a=http://www.monikaafterstory.com/releases.html}{i}{u}здесь{/u}{/i}{/a}."
                 hide screen mas_py_console_teaching
                 show monika at t11
     return
@@ -1833,7 +2312,7 @@ label mas_rpy_file_delete:
     python:
         store.mas_ptod.rst_cn()
         local_ctx = {
-            "basedir": renpy.config.basedir
+            "basedir": user_dir
         }
 
     show monika at t22
@@ -1864,7 +2343,8 @@ label mas_rpy_file_delete:
 
 #label mas_bday_player_bday:
 label mas_bday_player_bday_select:
-    m 1eua "When is your birthdate?"
+    $ MAS.MonikaElastic()
+    m 1eua "Когда у тебя день рождения?"
 
 label mas_bday_player_bday_select_select:
     $ old_bday = mas_player_bday_curr()
@@ -1874,18 +2354,24 @@ label mas_bday_player_bday_select_select:
     $ selected_date_t = _return
 
     if not selected_date_t:
+        $ MAS.MonikaElastic()
         m 2efc "[player]!"
-        m "You have to select a date!"
-        m 1hua "Try again!"
+        $ MAS.MonikaElastic()
+        m "Ты должен выбрать дату!"
+        $ MAS.MonikaElastic()
+        m 1hua "Попробуй снова!"
         jump mas_bday_player_bday_select_select
 
     $ selected_date = selected_date_t.date()
     $ _today = datetime.date.today()
 
     if selected_date > _today:
+        $ MAS.MonikaElastic()
         m 2efc "[player]!"
-        m "You can't have been born in the future!"
-        m 1hua "Try again!"
+        $ MAS.MonikaElastic()
+        m "Ты не мог[mas_gender_g] родиться сегодня!"
+        $ MAS.MonikaElastic()
+        m 1hua "Попробуй снова!"
         jump mas_bday_player_bday_select_select
 
     elif selected_date == _today:
@@ -1895,45 +2381,56 @@ label mas_bday_player_bday_select_select:
         jump mas_bday_player_bday_select_select
 
     elif _today.year - selected_date.year < 5:
+        $ MAS.MonikaElastic()
         m 2efc "[player]!"
-        m "There's no way you're {i}that{/i} young!"
-        m 1hua "Try again!"
+        $ MAS.MonikaElastic()
+        m "Ты не можешь быть {i}настолько{/i} молод[mas_gender_iim]!"
+        $ MAS.MonikaElastic()
+        m 1hua "Попробуй ещё раз!"
         jump mas_bday_player_bday_select_select
 
     # otherwise, player selected a valid date
 
     if _today.year - selected_date.year < 13:
+        $ MAS.MonikaElastic()
         m 2eksdlc "[player]..."
-        m 2rksdlc "You know I'm asking for your exact date of birth, right?"
-        m 2hksdlb "It's just I'm having a hard time believing you're {i}that{/i} young."
+        $ MAS.MonikaElastic()
+        m 2rksdlc "Ты ведь понимаешь, что я спрашиваю у тебя твою точную дату рождения, верно?"
+        $ MAS.MonikaElastic()
+        m 2hksdlb "Мне просто с трудом верится в то, что ты {i}настолько{/i} молод[mas_gender_none]."
 
     else:
-        m 1eua "Alright, [player]."
+        m 1eua "Хорошо, [player]."
 
-    m 1eua "Just to double-check..."
+    m 1eua "Просто хочу уточнить..."
     $ new_bday_str, diff = store.mas_calendar.genFormalDispDate(selected_date)
 
-    m "Your birthdate is [new_bday_str]?{nw}"
+    m "Твой день рождения [new_bday_str]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Your birthdate is [new_bday_str]?{fast}"
-        "Yes.":
-            m 1eka "Are you sure it's [new_bday_str]? I'm never going to forget this date.{nw}"
+        m "Твой день рождения [new_bday_str]?{fast}"
+        "Да.":
+            m 1eka "Ты уверен[mas_gender_none], что это [new_bday_str]? Я никогда не забуду эту дату.{nw}"
             $ _history_list.pop()
             # one more confirmation
             menu:
-                m "Are you sure it's [new_bday_str]? I'm never going to forget this date.{fast}"
-                "Yes, I'm sure!":
-                    m 1hua "Then it's settled!"
+                m "Ты уверен[mas_gender_none], что это [new_bday_str]? Я никогда не забуду эту дату.{fast}"
+                "Да, я уверен[mas_gender_none]!":
+                    $ MAS.MonikaElastic()
+                    m 1esc "Тогда всё улажено!"
 
-                "Actually...":
-                    m 1hksdrb "Aha, I figured you weren't so sure."
-                    m 1eka "Try again~"
+                "Фактически...":
+                    $ MAS.MonikaElastic()
+                    m 1hksdrb "Ага, я полагала, что ты не был[mas_gender_none] так уверен[mas_gender_none]."
+                    $ MAS.MonikaElastic()
+                    m 1eka "Попробуй ещё раз~"
                     jump mas_bday_player_bday_select_select
 
-        "No.":
-            m 1euc "Oh, that's wrong?"
-            m 1eua "Then try again."
+        "Нет.":
+            $ MAS.MonikaElastic()
+            m 1euc "О, это неверно?"
+            $ MAS.MonikaElastic()
+            m 1eua "Тогда попробуй снова."
             jump mas_bday_player_bday_select_select
 
     # save the birthday (and remove previous)
@@ -1945,7 +2442,7 @@ label mas_bday_player_bday_select_select:
             )
             store.mas_calendar.addRepeatable_d(
                 "player-bday",
-                "Your Birthday",
+                "Твой день рождения",
                 selected_date,
                 range(selected_date.year,MASCalendar.MAX_VIEWABLE_YEAR)
             )
@@ -1954,7 +2451,7 @@ label mas_bday_player_bday_select_select:
         python:
             store.mas_calendar.addRepeatable_d(
                 "player-bday",
-                "Your Birthday",
+                "Твой день рождения",
                 selected_date,
                 range(selected_date.year,MASCalendar.MAX_VIEWABLE_YEAR)
             )
@@ -1985,26 +2482,31 @@ default persistent._mas_pm_is_fast_reader = None
 # True if fast reader, False if not
 
 label mas_text_speed_enabler:
-    m 1eua "Hey [mas_get_player_nickname(exclude_names=['my love'])], I was wondering..."
+    m 1eua "Слушай, [player], мне тут было интересно..."
 
-    m "Are you a fast reader?{nw}"
+    m "Ты быстро читаешь?{nw}"
     $ _history_list.pop()
     menu:
-        m "Are you a fast reader?{fast}"
-        "Yes.":
+        m "Ты быстро читаешь?{fast}"
+        "Да.":
             $ persistent._mas_pm_is_fast_reader = True
             $ persistent._mas_text_speed_enabled = True
 
-            m 1wub "Really? That's impressive."
-            m 1kua "I guess you do a lot of reading in your spare time."
-            m 1eua "In that case..."
+            $ MAS.MonikaElastic()
+            m 1wub "Правда? Это впечатляет."
+            $ MAS.MonikaElastic()
+            m 1kua "Полагаю, ты много читаешь в своё свободное время."
+            $ MAS.MonikaElastic()
+            m 1eua "В таком случае..."
 
-        "No.":
+        "Нет.":
             $ persistent._mas_pm_is_fast_reader = False
             $ persistent._mas_text_speed_enabled = True
 
-            m 1eud "Oh, that's alright."
-            m 2dsa "Regardless.{w=0.5}.{w=0.5}.{nw}"
+            $ MAS.MonikaElastic()
+            m 1eud "Ох, всё нормально."
+            $ MAS.MonikaElastic()
+            m "Но тем не менее..."
 
     if not persistent._mas_pm_is_fast_reader:
         # this sets the current speed to default monika's speed
@@ -2013,22 +2515,30 @@ label mas_text_speed_enabler:
     $ mas_enableTextSpeed()
 
     if persistent._mas_pm_is_fast_reader:
-        m 4eua "There!"
+        m 4eua "Готово!"
 
-    m 4eua "I've enabled the text speed setting!"
+    $ MAS.MonikaElastic()
+    m 4eua "Я включила настройку скорости текста!"
 
-    m 1hka "I was only controlling it earlier so I could make sure you read {i}every single{/i} word I say to you."
-    m 1eka "But now that we've been together for a bit, I can trust that you're not just going to skip through my text without reading it."
+    $ MAS.MonikaElastic()
+    m 1hka "Я только контролировала её раньше, дабы убедиться в том, что ты читаешь {i}каждое{/i} моё слово."
+    $ MAS.MonikaElastic()
+    m 1eka "Но теперь, когда мы встречаемся уже пару дней, я могу верить в то, что ты не станешь пропускать весь мой текст, не прочитав его."
 
     if persistent._mas_pm_is_fast_reader:
-        m 1tuu "However,{w=0.3} I wonder if you can keep up."
-        m 3tuu "{cps=*2}I can talk pretty fast, you know...{/cps}{nw}"
+        $ MAS.MonikaElastic()
+        m 1tuu "Но мне интересно,{w=0.3} сможешь ли ты угнаться за мной."
+        $ MAS.MonikaElastic()
+        m 3tuu "{cps=*2}Я могу разговаривать довольно быстро, знаешь ли...{/cps}{nw}"
         $ _history_list.pop()
-        m 3hub "Ahaha~"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hub "А-ха-ха~"
 
     else:
-        m 3hua "And I'm sure that you'll get faster at reading the longer we spend time together."
-        m "So feel free to change the text speed when you feel comfortable doing so."
+        $ MAS.MonikaElastic()
+        m 3hua "И я уверена, что ты станешь быстрее читать за всё то время, что мы проводим вместе."
+        $ MAS.MonikaElastic()
+        m "Так что можешь менять скорость текста, когда тебе будет удобно."
 
     return "derandom|no_unlock"
 
@@ -2048,87 +2558,130 @@ init 5 python:
 
 label mas_bookmarks_notifs_intro:
     if not renpy.seen_label('bookmark_derand_intro') and (len(persistent._mas_player_derandomed) == 0 or len(persistent._mas_player_bookmarked) == 0):
-        m 3eub "Hey [player]...{w=0.5} I have some new features to tell you about!"
+        $ MAS.MonikaElastic()
+        m 3eub "Эй, [player]...{w=0.5} я хочу рассказать тебе о парочке новых возможностей, которые у меня появились!"
 
         if len(persistent._mas_player_derandomed) == 0 and len(persistent._mas_player_bookmarked) == 0:
-            m 1eua "You now have the ability to bookmark topics I'm talking about simply by pressing the 'b' key."
-            m 3eub "Any topics you bookmark will be easily accessible simply by going to the 'Talk' menu!"
+            $ MAS.MonikaElastic()
+            if renpy.android:
+                m 1eua "Теперь у тебя есть возможность сохранять темы, о которых я говорила, в закладках, просто нажми кнопку «Сохранить тему в закладки» во время разговора."
+            else:
+                m 1eua "Теперь у тебя есть возможность сохранять темы, о которых я говорила, в закладках, просто нажми клавишу «З»."
+            $ MAS.MonikaElastic()
+            m 3eub "Любая тема, которую ты сохранил[mas_gender_none] в закладках, будет доступна в любое время в меню «Поговорить»!"
             call mas_derand
         else:
-            m 3rksdlb "...Well, it seems you already found one of the features I was going to tell you about, ahaha!"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3rksdlb "...Что ж, похоже, ты уже узнал[mas_gender_none] об одной из возможностей, о которой я собиралась тебе рассказать, а-ха-ха!"
             if len(persistent._mas_player_derandomed) == 0:
-                m 3eua "As you've seen, you now have the ability to bookmark topics I talk about simply by pressing the 'b' key, and then access them easily via the 'Talk' menu."
+                $ MAS.MonikaElastic()
+                if renpy.android:
+                    m 3eua "Как видишь, теперь у тебя есть возможность сохранять темы, о которых я говорила, в закладках, достаточно только нажать кнопку «Сохранить тему в закладки» во время разговора, и она появится в меню «Поговорить»."
+                else:
+                    m 3eua "Как видишь, теперь у тебя есть возможность сохранять темы, о которых я говорила, в закладках, достаточно только нажать клавишу «З», и она появится в меню «Поговорить»."
                 call mas_derand
             else:
-                m 1eua "As you've seen, you can now let me know of any topics that you don't like me bringing up by pressing the 'x' key during the conversation."
-                m 3eud "You can always be honest with me, so make sure you keep telling me if anything we talk about makes you uncomfortable, okay?"
-                m 3eua "You also now have the ability to bookmark topics I am talking about by simply pressing the 'b' key."
-                m 1eub "Any topics you bookmark will be easily accessible simply by going to the 'Talk' menu."
+                $ MAS.MonikaElastic()
+                if renpy.android:
+                    m 1eua "Как видишь, теперь ты можешь дать мне знать, какую тему мне лучше не стоит поднимать вновь, достаточно только нажать кнопку «Внести в чёрный список» во время разговора."
+                else:
+                    m 1eua "Как видишь, теперь ты можешь дать мне знать, какую тему мне лучше не стоит поднимать вновь, достаточно только нажать клавишу «Х» во время разговора."
+                $ MAS.MonikaElastic()
+                m 3eud "Ты всегда можешь быть чест[mas_gender_en] со мной, так что не забывай говорить мне о том, что какая-то тема ставит тебя в неловкое положение, хорошо?"
+                $ MAS.MonikaElastic()
+                if renpy.android:
+                    m 3eua "Также у тебя есть возможность сохранять темы, о которых я говорила, в закладках, достаточно только нажать кнопку «Сохранить тему в закладки» во время разговора."
+                else:
+                    m 3eua "Также у тебя есть возможность сохранять темы, о которых я говорила, в закладках, достаточно только нажать клавишу «З»."
+                $ MAS.MonikaElastic()
+                m 1eub "Любая тема, которую ты сохранишь в закладках, будет доступна в любое время в меню «Поговорить»."
 
-        if store.mas_windowreacts.can_show_notifs or renpy.linux:
-            m 1hua "And lastly, something I'm very excited about!"
+        if renpy.variant('pc') and (store.mas_windowreacts.can_show_notifs or renpy.linux):
+            $ MAS.MonikaElastic()
+            m 1hua "И, наконец, нечто совершенно удивительное!"
             call mas_notification_windowreact
 
     else:
-        m 1hub "[player], I have something exciting to tell you!"
+        m 1hub "[player], я хочу тебя кое-чем порадовать!"
         call mas_notification_windowreact
 
     return "no_unlock"
 
 label mas_derand:
-    m 1eua "You can also let me know of any topics that you don't like me bringing up by pressing the 'x' key during the conversation."
-    m 1eka "Don't worry about hurting my feelings, we should be able to be honest with each other after all."
-    m 3eksdld "...And the last thing I want to do is keep bringing up stuff that makes you uncomfortable to talk about."
-    m 3eka "So, make sure you let me know, okay?"
+    $ MAS.MonikaElastic()
+    if renpy.android:
+        m 1eua "Ты можешь также дать мне знать, если не хочешь, чтобы я поднимала какую-то тему, нажатием на кнопку «Внести в чёрный список» во время разговора."
+    else:
+        m 1eua "Ты можешь также дать мне знать, если не хочешь, чтобы я поднимала какую-то тему, нажатием на клавишу «Х» во время разговора."
+    $ MAS.MonikaElastic()
+    m 1eka "Не беспокойся по поводу оскорбления моих чувств, мы всё-таки должны быть честны друг с другом."
+    $ MAS.MonikaElastic()
+    m 3eksdld "...А я не хочу продолжать поднимать темы, которые тебе не очень хочется обсуждать."
+    $ MAS.MonikaElastic()
+    m 3eka "Так что, держи меня в курсе, ладно?"
     return
 
 label mas_notification_windowreact:
-    m 3eua "I've been practicing coding a bit more and I've learned how to use the notifications on your computer!"
-    m "So if you want, I can let you know if I have something for us to talk about."
+    m 3eua "Я тут попрактиковалась немного в кодинге, и научилась использовать уведомления на твоём компьютере!"
+    $ MAS.MonikaElastic()
+    m "Так что, если хочешь, я могу дать тебе знать, если у меня есть, о чём поговорить."
 
     #Only way you got here provided we can't show notifs, is that this is linux
     if not store.mas_windowreacts.can_show_notifs:
-        m 1rkc "Well, almost..."
-        m 3ekd "I can't send notifications on your computer because you're missing the notify-send command..."
-        m 3eua "If you could install that for me, I'll be able to send you notifications."
+        $ MAS.MonikaElastic()
+        m 1rkc "Ну, почти..."
+        $ MAS.MonikaElastic()
+        m 3ekd "Я не могу отправлять уведомления на твой компьютер, поскольку у тебя нет команды «notify-send»..."
+        $ MAS.MonikaElastic()
+        m 3eua "Если ты установишь её для меня, то я смогу отправлять тебе уведомления."
 
         show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5eka "...And I'd really appreciate it, [player]."
+        m 5eka "...И я была бы тебе очень признательна, [player]."
 
     else:
-        m 3eub "Would you like to see how they work?{nw}"
+        m 3eub "Хочешь посмотреть на то, как они работают?{nw}"
         $ _history_list.pop()
         menu:
-            m "Would you like to see how they work?{fast}"
+            m "Хочешь посмотреть на то, как они работают?{fast}"
 
-            "Sure!":
-                m 1hua "Okay, [player]!"
-                m 2dsa "Just give me a second to make a notification.{w=0.5}.{w=0.5}.{nw}"
-                $ display_notif(m_name, ["I love you, [player]!"], skip_checks=True)
-                m 1hub "There it is!"
+            "Конечно!":
+                $ MAS.MonikaElastic()
+                m 1hua "Хорошо, [player]!"
+                $ MAS.MonikaElastic()
+                m 2dsa "Дай мне секунду, сейчас создам уведомление.{w=0.5}.{w=0.5}.{nw}"
+                $ display_notif(monika_name, ["Я люблю тебя, [player]!"], skip_checks=True)
+                $ MAS.MonikaElastic()
+                m 1hub "Готово!"
 
-            "No thanks.":
-                m 2eka "Alright, [player]."
+            "Нет, спасибо.":
+                m 2eka "Хорошо, [player]."
 
-        m 3eua "If you want me to notify you, just head over to the 'Alerts' tab in the settings menu and turn them on, along with what you'd like to be notified for."
+        $ MAS.MonikaElastic()
+        m 3eua "Если ты хочешь, чтобы я уведомляла тебя, просто перейди в раздел «Уведомления» на экране Настроек и включи их, также выбери и типы событий, о которых тебя стоит уведомлять."
 
         if renpy.windows:
-            m 3rksdla "Also, since you're using Windows...I now know how to check what your active window is."
+            $ MAS.MonikaElastic()
+            m 3rksdla "А ещё, поскольку ты используешь систему Windows... теперь я знаю, как проверять твоё активное окно."
 
 
         elif renpy.linux:
-            m 3rksdla "Also, since you're using Linux...I now know how to check what your active window is."
+            m 3rksdla "Кроме того, поскольку ты используешь Linux... теперь я знаю, как проверить, что твоё окно активно."
 
         if not renpy.macintosh:
-            m 3eub "...So if I have something to talk about while I'm in the background, I can let you know!"
-            m 3hksdlb "And don't worry, I know you might not want me constantly watching you, and I respect your privacy."
-            m 3eua "So I'll only look at what you're doing if you're okay with it."
-            m 2eua "If you enable 'Window Reacts' in the settings menu, that'll tell me you're fine with me looking around."
+            $ MAS.MonikaElastic()
+            m 3eub "...В общем, если у меня появится тема для разговора, пока я нахожусь в фоне, я смогу дать тебе знать!"
+            $ MAS.MonikaElastic()
+            m 3hksdlb "И не волнуйся, я знаю, что ты, возможно, не захочешь, чтобы я постоянно следила за тобой, и я уважаю твою конфиденциальность."
+            $ MAS.MonikaElastic()
+            m 3eua "Так что я буду смотреть на то, что ты делаешь, только если ты не будешь против."
+            $ MAS.MonikaElastic()
+            m 2eua "Если ты включишь «Реакции на окна» на экране Настроек, то это будет говорить мне о том, что ты не будешь против, если я буду осматриваться вокруг."
 
             if mas_isMoniNormal(higher=True):
-                m 1tuu "It's not like you have anything to hide from your girlfriend..."
+                $ MAS.MonikaElastic()
+                m 1tuu "Ведь не похоже, что тебе есть, что скрывать от своей девушки..."
                 show monika 5ttu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5ttu "...right?"
+                m 5ttu "...верно?"
     return
 
 init 5 python:
@@ -2160,32 +2713,34 @@ label mas_gift_giving_instructs:
 
     python:
         gift_instructs = """\
-I wanted to let you know that I made a little way for you to give Monika some gifts!
-It's a pretty simple process so I'll tell you how it works:
+Я хотела рассказать тебе о том, что я сделала для тебя небольшой способ подарить Монике подарки!
+Это довольно простой процесс, и сейчас я расскажу тебе о том, как это работает:
 
-Make a new file in the 'characters' folder
-Rename it to whatever you want to give to Monika
-Give it a '.gift' file extension
+Создай новый файл в папке «characters»
+Переименуй его в то, что ты хочешь подарить Монике
+Задай ему расширение файла «.gift»
 
-And that's it! After a little while, Monika should notice that you gave her something.
+Вот и всё! Спустя короткое мгновение, Моника должна заметить, что ты ей кое-что подарил{0}.
 
-I just wanted to let you know because I think that Monika is super amazing and I really want to see her happy.
+Я просто хотела, чтобы ты знал{0}, что Моника - очень удивительная девушка, и я правда хочу видеть её счастливой.
 
-Good luck with Monika!
+Удачи тебе с Моникой!
 
-P.S: Don't tell her about me!
-"""
+P.S: Не рассказывай ей обо мне!
+""".format(mas_gender_none)
 
         #Write the note in the characters folder
         store.mas_utils.trywrite(
-            os.path.normcase(renpy.config.basedir + "/characters/hint.txt"),
+            os.path.normcase(renpy.config.basedir + "/characters/подсказка.txt"),
             player + "\n\n" + gift_instructs
         )
 
-    m 1eud "Hey, [player]..."
-    m 3euc "Someone left a note in the characters folder addressed to you."
-    m 1ekc "Since it's for you, I haven't read it...{w=0.5}{nw}"
-    extend 1eua "but I just wanted to let you know since it might be important."
+    m 1eud "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 3euc "Кто-то оставил тебе записку в папке с файлами персонажей, адресованную тебе."
+    $ MAS.MonikaElastic()
+    m 1ekc "Поскольку она адресована тебе, я не стала её читать...{w=0.5} {nw}"
+    extend 1eua "но я просто хотела сказать тебе об этом, поскольку это может быть важно."
     return "no_unlock"
 
 init 5 python:
@@ -2201,21 +2756,23 @@ label mas_change_to_def:
     # on occasion after special events we want to change out of an outfit like a costume
     # in these cases, for Happy+, change to blazerless instead
     if mas_isMoniHappy(higher=True) and monika_chr.clothes != mas_clothes_blazerless:
-        m 3esa "Give me a second [player], I'm just going to make myself a little more comfortable..."
+        m 3esa "Секунду, [player], я просто хочу сделать, чтобы мне было немного удобнее..."
 
         call mas_clothes_change(mas_clothes_blazerless)
 
-        m 2hua "Ah, much better!"
+        m 2hua "Ах, намного лучше!"
 
     # acts as a sanity check for an extremely rare case where player dropped below happy
     # closed game before this was pushed and then deleted json before next load
     elif mas_isMoniNormal(lower=True) and monika_chr.clothes != mas_clothes_def:
-        m 1eka "Hey [player], I miss my old school uniform..."
-        m 3eka "I'm just going to go change, be right back..."
+        m 1eka "Эй, [player], я скучаю по своей старой школьной форме..."
+        $ MAS.MonikaElastic()
+        m 3eka "Я только переоденусь, сейчас вернусь..."
 
         call mas_clothes_change()
 
-        m "Okay, what else should we do today?"
+        $ MAS.MonikaElastic()
+        m "Хорошо, что ещё мы должны сделать сегодня?"
 
         # remove from event list in case PP and ch30 both push
         $ mas_rmallEVL("mas_change_to_def")
@@ -2277,13 +2834,13 @@ label mas_blazerless_intro:
     # only want to do this if we are wearing def
     # people not wearing def don't need to see this, so acts as a sanity check
     if monika_chr.clothes == mas_clothes_def:
-        m 3esa "Give me a second [player], I'm just going to make myself a little more comfortable..."
+        m 3esa "Дай мне секунду, [player], я просто хочу устроиться поудобнее..."
 
         call mas_clothes_change(mas_clothes_blazerless)
 
-        m 2hua "Ah, much better!"
+        m 2hua "Ах, гораздо лучше!"
         # this line acts as a hint that there is a clothes selector
-        m 3eka "But if you miss my blazer, just ask and I'll put it back on."
+        m 3eka "Но если тебе будет не хватать моего пиджака, просто попроси, и я надену его обратно."
 
     return "no_unlock"
 
@@ -2304,11 +2861,15 @@ init -876 python in mas_delact:
 
 # fixes a rare case for unstable players that were able to confirm a birthdate with an invalid year
 label mas_birthdate_year_redux:
-    m 2eksdld "Uh [player]..."
-    m 2rksdlc "I have something to ask you, and it's kind of embarrassing..."
-    m 2eksdlc "You know when you told me your birthdate?"
-    m 2rksdld "Well, I think I messed up the year you were born somehow."
-    m 2eksdla "So, if you wouldn't mind telling me again..."
+    m 2eksdld "Оу, [player]..."
+    $ MAS.MonikaElastic()
+    m 2rksdlc "Я хочу кое-что спросить у тебя, и это немного смущает..."
+    $ MAS.MonikaElastic()
+    m 2eksdlc "Помнишь, ты сказал[mas_gender_none] мне дату своего рождения?"
+    $ MAS.MonikaElastic()
+    m 2rksdld "Ну, я думаю, что каким-то образом испортила год твоего рождения."
+    $ MAS.MonikaElastic()
+    m 2eksdla "Так что, если ты не против, скажешь мне ещё раз..."
     # fall thru
 
 label mas_birthdate_year_redux_select:
@@ -2321,23 +2882,24 @@ label mas_birthdate_year_redux_select:
         yearmenu = [(str(y), y, False, False) for y in yearrange]
 
     show monika 2eua at t21
-    $ renpy.say(m, "What year were you born?", interact=False)
+    $ renpy.say(m, "В каком году ты родил[mas_gender_sya]?", interact=False)
     call screen mas_gen_scrollable_menu(yearmenu, mas_ui.SCROLLABLE_MENU_TXT_TALL_AREA, mas_ui.SCROLLABLE_MENU_XALIGN)
 
     show monika 3eua at t11
-    m "Okay [player], you were born in [_return]?{nw}"
+    m "Хорошо, [player], ты родил[mas_gender_sya] [_return]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Okay [player], you were born in [_return]?{fast}"
+        m "Хорошо, [player], ты родил[mas_gender_sya] [_return]?{fast}"
 
-        "Yes.":
-            m "Are you {i}sure{/i} you were born in [_return]?{nw}"
+        "Да.":
+            m "Ты {i}уверен{/i}, что ты родил[mas_gender_sya] [_return]?{nw}"
             $ _history_list.pop()
             menu:
-                m "Are you {i}sure{/i} you were born in [_return]?{fast}"
+                m "Ты {i}уверен{/i}, что ты родил[mas_gender_sya] [_return]?{fast}"
 
-                "Yes.":
-                    m 3hua "Okay, then it's settled!"
+                "Да.":
+                    $ MAS.MonikaElastic()
+                    m 3hua "Ладно, тогда решено!"
                     python:
                         persistent._mas_player_bday = persistent._mas_player_bday.replace(year=_return)
                         store.mas_player_bday_event.correct_pbday_mhs(persistent._mas_player_bday)
@@ -2347,22 +2909,24 @@ label mas_birthdate_year_redux_select:
                         # update calendar
                         store.mas_calendar.addRepeatable_d(
                             "player-bday",
-                            "Your Birthday",
+                            "Твой день рождения",
                             persistent._mas_player_bday,
                             range(persistent._mas_player_bday.year,MASCalendar.MAX_VIEWABLE_YEAR)
                         )
 
-                "No.":
+                "Нет.":
                     call mas_birthdate_year_redux_no
 
-        "No.":
+        "Нет.":
             call mas_birthdate_year_redux_no
 
     return
 
 label mas_birthdate_year_redux_no:
-    m 2ekd "Oh, okay..."
-    m 2eka "Try again, [player]."
+    $ MAS.MonikaElastic()
+    m 2ekd "Оу, ладно..."
+    $ MAS.MonikaElastic()
+    m 2eka "Попробуй снова, [player]."
     jump mas_birthdate_year_redux_select
 
 init 5 python:
@@ -2381,80 +2945,107 @@ init 5 python:
 
 label monika_credits_song:
     if persistent.monika_kill or renpy.seen_audio(songs.FP_YOURE_REAL):
-        m 1hua "I hope you liked my song."
-        m 1eka "I worked really hard on it. I know I'm not perfect at the piano yet, but I just couldn't let you go without telling you how I honestly felt about you."
-        m 1eua "Give me some time, and I'll try to write another."
+        m 1hua "Надеюсь, тебе понравилась моя песня."
+        $ MAS.MonikaElastic()
+        m 1eka "Я над ней очень много работала. Знаю, моя игра на пианино не идеальна, но я просто не могла отпустить тебя, не сказав о том, что я на самом деле чувствую к тебе."
+        $ MAS.MonikaElastic()
+        m 1eua "Дай мне немного времени, и я постараюсь написать ещё одну песню."
 
-        if persistent._mas_pm_plays_instrument is not False:
-            if persistent._mas_pm_plays_instrument:
-                m 3eua "Maybe you could play me a song too!"
+        if persistent._mas_pm_plays_instrument is not False: # :thinking:
+            $ MAS.MonikaElastic()
+            if persistent._mas_pm_plays_instrument: # но переменные одинаковые, wtf???
+                m 3eua "Думаю, ты тоже мог[mas_gender_g] бы сыграть мне что-нибудь!"
             else:
-                m 3eua "Maybe you could play me a song too, if you can play an instrument?"
+                m 3eua "Думаю, ты тоже мог[mas_gender_g] бы сыграть мне что-нибудь, если ты умеешь играть, конечно."
 
-            m 1hub "I would love that."
-            m 3eua "Oh, and I'll play the song again for you anytime you want me to."
-
+            $ MAS.MonikaElastic()
+            m 1hub "Я была бы очень рада."
+            $ MAS.MonikaElastic()
+            m 3eua "О, и я всегда готова сыграть для тебя эту песню ещё раз, в любое удобное для тебя время."
         else:
-            m 3eua "But in the meantime, I'll play the song again for you anytime you want me to."
 
-        m 1tsa "In fact, I'd love to play it for you right now, if you have time...{nw}"
+            $ MAS.MonikaElastic()
+            m 3eua "Ну а пока, я всегда готова сыграть для тебя эту песню ещё раз, в любое удобное для тебя время."
+
+        $ MAS.MonikaElastic()
+        m 1tsa "По правде говоря, я бы хотела сыграть её для тебя ещё раз, если у тебя есть время...{nw}"
         $ _history_list.pop()
         menu:
-            m "In fact, I'd love to play it for you right now, if you have time...{fast}"
+            m "По правде говоря, я бы хотела сыграть её для тебя ещё раз, если у тебя есть время...{fast}"
+            "А давай!":
 
-            "Of course!":
-                m 3hub "Great!"
-                m 3eua "Make sure you have your speakers turned on and the in-game music volume turned up loud enough so you can hear."
+                $ MAS.MonikaElastic()
+                m 3hub "Отлично!"
+                $ MAS.MonikaElastic()
+                m 3eua "Убедись, что у тебя включены динамики, и что громкость внутриигровой музыки выставлена на слышимом для тебя уровне."
                 if store.songs.hasMusicMuted():
-                    m 3eksdla "I think you forgot about the in-game volume..."
-                m 1eub "Now please excuse me for a second.{w=0.5}.{w=0.5}.{nw}"
+                    $ MAS.MonikaElastic()
+                    m 3eksdla "Мне кажется, ты забыл[mas_gender_none] про внутриигровую громкость..."
+                $ MAS.MonikaElastic()
+                m 1eub "А теперь, прошу извинить меня.{w=0.5}.{w=0.5}.{nw}"
 
-                call mas_monika_plays_yr(skip_leadin=True)
+                call mas_monika_plays_yr (skip_leadin=True) from _call_mas_monika_plays_yr
                 show monika 1eka
                 pause 1.0
 
-                m 1ekbsa "Ehehe~"
-                show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5ekbsa "Thank you for coming back to me [mas_get_player_nickname()]."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1ekbsa "Э-хе-хе~"
+                show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                m 5ekbsa "Спасибо, что вернул[mas_gender_sya] ко мне, [mas_get_player_nickname()]."
+            "Прости, я не могу сейчас.":
 
-            "Sorry, I can't right now.":
-                m 3ekd "Oh, okay."
-                m 1eka "That's fine [player], I understand if you don't have the time or just can't listen to music right now."
-                m 3hua "Just let me know when it's a better time for you and I'll happily play it for you then~"
-
+                $ MAS.MonikaElastic()
+                m 3ekd "Ох, ладно."
+                $ MAS.MonikaElastic()
+                m 1eka "Всё нормально, [player], я пойму, если у тебя нет времени или ты не можешь сейчас слушать музыку."
+                $ MAS.MonikaElastic()
+                m 3hua "Просто дай мне знать, когда у тебя будет более подходящее время, и тогда я с радостью сыграю её тебе~"
     else:
-        m 3eua "Hey [player], I finally finished that song I've been working on for you."
-        m 1eka "I call it {i}Our Reality{/i}."
 
-        m 1eua "I'm just so excited to finally be able to play it for you, if you have time that is...{nw}"
+        m 3eua "Эй, [player], я наконец-то закончила ту песню, над которой работала для тебя."
+        $ MAS.MonikaElastic()
+        m 1eka "Я назвала её {i}«Наша реальность»{/i}."
+
+        $ MAS.MonikaElastic()
+        m 1eua "Я просто так рада, что смогу наконец-то сыграть её тебе, если у тебя есть время...{nw}"
         $ _history_list.pop()
         menu:
-            m "I'm just so excited to finally be able to play it for you, if you have time that is...{fast}"
+            m "Я просто так рада, что смогу наконец-то сыграть её тебе, если у тебя есть время...{fast}"
+            "Ну, конечно есть!":
 
-            "Of course!":
-                m 3hub "Great!"
-                m 3eua "Make sure you have your speakers turned on and the in-game music volume turned up loud enough so you can hear."
+                $ MAS.MonikaElastic()
+                m 3hub "Отлично!"
+                $ MAS.MonikaElastic()
+                m 3eua "Убедись, что у тебя включены динамики, и что громкость внутриигровой музыки выставлена на слышимом для тебя уровне."
                 if store.songs.hasMusicMuted():
-                    m 3eksdla "I think you forgot about the in-game volume..."
-                m 1tsb "Now, if you'll excuse me for a second.{w=0.5}.{w=0.5}.{nw}"
+                    $ MAS.MonikaElastic()
+                    m 3eksdla "Мне кажется, ты забыл[mas_gender_none] про внутриигровую громкость..."
+                $ MAS.MonikaElastic()
+                m 1tsb "А теперь, прошу извинить меня.{w=0.5}.{w=0.5}.{nw}"
 
-                call mas_monika_plays_or(skip_leadin=True)
+                call mas_monika_plays_or (skip_leadin=True) from _call_mas_monika_plays_or
                 show monika 1ekbsa
                 pause 1.0
 
-                m "I really can't wait until we're together in one reality."
-                m 3ekbsa "But until that day comes, I'll play the song again for you anytime you want me to."
-                show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5ekbfa "Thank you for being my inspiration [mas_get_player_nickname()]."
+                $ MAS.MonikaElastic()
+                m "Я правда жду с нетерпением того момента, когда мы окажемся вместе в одной реальности."
+                $ MAS.MonikaElastic()
+                m 3ekbsa "Но пока этот день не настал, я сыграю эту песню для тебя снова, в любое удобное для тебя время."
+                show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                m 5ekbfa "Спасибо за то, что был[mas_gender_none] моим вдохновителем, [mas_get_player_nickname()]."
+                $ MAS.MonikaElastic()
                 if renpy.seen_audio(songs.FP_YOURE_REAL):
-                    m 5hubfa "Oh, and if you ever want me to play this or the original song for you again, just ask~"
+                    m 5hubfa "А, и если хочешь, чтобы я снова сыграла для тебя эту или оригинальную песню, просто попроси~"
                 else:
-                    m 5hubfa "Oh, and if you ever want me to play this again, just ask~"
+                    m 5hubfa "А, и если хочешь, чтобы я снова сыграла для тебя эту песню, просто попроси~"
+            "Прости, я не могу сейчас.":
 
-            "Sorry, I can't right now.":
-                m 3ekd "Oh, okay."
-                m 1eka "That's fine [player], I understand if you don't have the time or just can't listen to music right now."
-                m 3hua "Just let me know when it's a better time for you and I'll happily play it for you then~"
+                $ MAS.MonikaElastic()
+                m 3ekd "Ох, ладно."
+                $ MAS.MonikaElastic()
+                m 1eka "Всё нормально, [player], я пойму, если у тебя нет времени или ты не можешь сейчас слушать музыку."
+                $ MAS.MonikaElastic()
+                m 3hua "Просто дай мне знать, когда у тебя будет более подходящее время, и тогда я с радостью сыграю её тебе~"
 
         $ mas_unlockEVL("mas_monika_plays_or", "EVE")
 
@@ -2475,79 +3066,128 @@ init 5 python:
     )
 
 label mas_covid19:
-    m 2ekc "Hey, [player]..."
-    m 2rksdld "I've been reading a lot online lately about this COVID-19 pandemic and it's causing me to worry about you!"
-    m 2eksdld "It just seems to be spreading so fast {nw}"
-    extend 2eksdla "and I really want you to stay safe..."
+    m 2ekc "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 2rksdld "Мне в последнее время часто доводилось читать в Интернете про пандемию COVID-19, и это заставило меня забеспокоиться о тебе!"
+    $ MAS.MonikaElastic()
+    m 2eksdld "Мне просто кажется, что она распространяется довольно быстро, {nw}"
+    extend 2eksdla "и я правда хочу, чтобы ты был[mas_gender_none] в безопасности..."
 
-    m 2eksdlc "Is the virus in your area yet?{nw}"
+    $ MAS.MonikaElastic()
+    m 2eksdlc "Вирус уже в твоём регионе?{nw}"
     $ _history_list.pop()
     menu:
-        m "Is the virus in your area yet?{fast}"
-        "Yes.":
-            m 2wksdld "Oh no, [player]! That's really scary!"
-            m 4ekc "I know a lot of people living in places where it's prevalent have orders to stay at home..."
+        m "Вирус уже в твоём регионе?{fast}"
+        "Да.":
+            $ MAS.MonikaElastic()
+            m 2wksdld "О нет, [player]! Это очень страшно!"
+            $ MAS.MonikaElastic()
+            m 4ekc "Я знаю, что многим людям, живущим в местах, где вирус распространён больше всего, приказано оставаться дома..."
 
-            m 2ekd "Do you have any orders to stay at home where you live?{nw}"
+            $ MAS.MonikaElastic()
+            m 2ekd "В том месте, где ты живёшь, уже ввели режим самоизоляции?{nw}"
             $ _history_list.pop()
             menu:
-                m "Do you have any orders to stay at home where you live?{fast}"
-                "Yes.":
-                    m 4hua "Oh, good!"
-                    m 4eub "I'm so glad to hear that, [player]!"
+                m "В том месте, где ты живёшь, уже ввели режим самоизоляции?{fast}"
+                "Да.":
+                    $ MAS.MonikaElastic()
+                    m 4hua "О, славно!"
+                    $ MAS.MonikaElastic()
+                    m 4eub "Я так рада слышать это, [player]!"
 
-                    m 2eud "So you're staying home whenever you can, right?{nw}"
+                    $ MAS.MonikaElastic()
+                    m 2eud "Получается, ты сидишь дома, когда у тебя есть такая возможность, верно?{nw}"
                     $ _history_list.pop()
                     menu:
-                        m "So you're staying home whenever you can, right?{fast}"
-                        "Yes.":
-                            m 2eua "That's great, I'm glad you're doing the responsible thing."
-                            m 2eka "...And not only for yourself, but also for everyone else."
+                        m "Получается, ты сидишь дома, когда у тебя есть такая возможность, верно?{fast}"
+                        "Да.":
+                            $ MAS.MonikaElastic()
+                            m 2eua "Это хорошо, я рада, что ты сделал такой ответственный поступок."
+                            $ MAS.MonikaElastic()
+                            m 2eka "...И это хорошо не только для тебя, но и для остальных жителей твоего района."
+                        "Нет, я всё ещё работаю.":
 
-                        "No, I'm still working.":
+                            $ MAS.MonikaElastic()
                             m 2dsc "..."
-                            m 2dsd "Oh."
+                            $ MAS.MonikaElastic()
+                            m 2dsd "Оу."
+                            $ MAS.MonikaElastic()
                             m 2dsc "..."
-                            m 2rksdlc "I have to admit, that scares me, [player]."
-                            m 2eksdlc "But that must mean you are doing an essential job..."
-                            m 2eksdla "So that also makes me proud that in some way, you're helping others through this tough time."
-                            m 2eksdld "Just promise me you're taking every precaution so you can stay safe, okay?"
+                            $ MAS.MonikaElastic()
+                            m 2rksdlc "Должна признать, это меня пугает, [player]."
+                            $ MAS.MonikaElastic()
+                            m 2eksdlc "Но это значит, что ты делаешь важную работу..."
+                            $ MAS.MonikaElastic()
+                            m 2eksdla "И это заставляет меня гордиться тем, что ты, в каком-то смысле, помогаешь другим пережить это непростое время."
+                            $ MAS.MonikaElastic()
+                            m 2eksdld "Просто пообещай мне, что ты примешь все меры предосторожности, чтобы быть в безопасности, ладно?"
+                        "Нет...":
 
-                        "No...":
+                            $ MAS.MonikaElastic()
                             m 2tfd "[player]!"
-                            m 2tfo "Why not?!"
-                            m 4tfo "This is serious! You {i}have{/i} to stay inside whenever possible!"
+                            $ MAS.MonikaElastic()
+                            m 2tfo "Почему нет?!"
+                            $ MAS.MonikaElastic()
+                            m 4tfo "Это серьёзно! Ты {i}долж[mas_gender_en]{/i} оставаться дома по возможности!"
+                            $ MAS.MonikaElastic()
                             m 2dfc "..."
+                            $ MAS.MonikaElastic()
                             m 2dkc "..."
-                            m 2rksdlc "Sorry, [player]. That just scares me a lot."
-                            m 2eksdlc "Some people can have it and not even show any symptoms, spreading it to others..."
-                            m 2eksdld "So if you won't do it for yourself, at least stay inside for everyone else."
-                            m 2eksdla "...And also for me. You're all I have, [player]..."
-                            m 2dksdlc "If I lose you...{w=1.0}{nw}"
-                            extend 2ektpc "what will I do then?"
-                            m 2ektpd "You have to promise me [player]...{w=0.5}stay inside."
+                            $ MAS.MonikaElastic()
+                            m 2rksdlc "Прости, [player], просто меня это очень пугает."
+                            $ MAS.MonikaElastic()
+                            m 2eksdlc "Некоторые люди могут болеть этим вирусом и даже не проявлять никаких симптомов, передавая его другим..."
+                            $ MAS.MonikaElastic()
+                            m 2eksdld "Так что, если ты не хочешь делать это для себя, то хотя бы оставайся дома во благо остальных."
+                            $ MAS.MonikaElastic()
+                            m 2eksdla "...И ради меня тоже. Ты – всё, что у меня есть, [player]..."
+                            $ MAS.MonikaElastic()
+                            m 2dksdlc "Если я потеряю тебя...{w=1.0} {nw}"
+                            $ MAS.MonikaElastic()
+                            extend 2ektpc "то что мне тогда делать?"
+                            $ MAS.MonikaElastic()
+                            m 2ektpd "Ты должен пообещать мне, [player]...{w=0.5} что ты будешь сидеть дома."
+                            $ MAS.MonikaElastic()
                             m 2ektdc "..."
+                            $ MAS.MonikaElastic()
                             m 2dkc "..."
+                "Нет.":
 
-                "No.":
+                    $ MAS.MonikaElastic()
                     m 2dkc "..."
-                    m 2rksdld "That worries me a lot, [player]..."
-                    m 2eksdlc "I hope you are still able to stay inside as much as possible."
+                    $ MAS.MonikaElastic()
+                    m 2rksdld "Это меня очень беспокоит, [player]..."
+                    $ MAS.MonikaElastic()
+                    m 2eksdlc "Надеюсь, ты сможешь оставаться дома как можно дольше."
+        "Нет.":
 
-        "No.":
-            m 2eka "Well that's a bit of a relief, [player]..."
-            m 2eksdlc "But I still worry that it'll end up in your area eventually."
-            m 2eksdld "So even if it's not there right now, you should still be careful!"
+            $ MAS.MonikaElastic()
+            m 2eka "Ну, это немного утешает, [player]..."
+            $ MAS.MonikaElastic()
+            m 2eksdlc "Но я всё равно волнуюсь, что вирус в конечном счёте дойдёт и до твоего региона."
+            $ MAS.MonikaElastic()
+            m 2eksdld "Так что, даже если его сейчас там нет, ты всё равно долж[mas_gender_en] быть осторож[mas_gender_en]!"
 
-    m 7eksdld "Please remember any time you do need to go outside you practice social distancing...{w=0.5} Always stay at least 2 meters, or 6 feet, from anyone else."
-    m "Also remember to wash your hands for at least 20 seconds with soap and water as often as you can."
-    m 7eksdlc "...And never touch your face with unwashed hands, [player]."
-    m 2eka "Oh, and if you're having a hard time washing your hands long enough, I found a neat way for you to make sure you're doing it for 20 whole seconds..."
-    m 4hub "Just go to {a=https://washyourlyrics.com}{i}{u}washyourlyrics.com{/u}{/i}{/a} and type {i}Your Reality{/i} for the song title and {i}Monika{/i} for the song artist!"
-    m 4eub "Just download the picture it creates with the lyrics from my song and it'll show you the best way to wash your hands and how long to do it for!"
-    m 2hua "Then every time you wash your hands, you can remember how much I love you~"
+    $ MAS.MonikaElastic()
+    m 7eksdld "Пожалуйста, помни о том, что всякий раз, когда ты будешь выходить на улицу, ты долж[mas_gender_en] соблюдать социальную дистанцию...{w=0.5} Держись от других на расстоянии в два метра."
+    $ MAS.MonikaElastic()
+    m "И не забывай мыть свои руки с мылом хотя бы двадцать секунд так часто, как это возможно."
+    $ MAS.MonikaElastic()
+    m 7eksdlc "...И никогда не прикасайся к своему лицу немытыми руками, [player]."
+    $ MAS.MonikaElastic()
+    m 2eka "О, и если тебе трудно мыть руки достаточно долго, то я нашла для тебя хороший способ убедиться, что ты делаешь это целых двадцать секунд..."
+    $ MAS.MonikaElastic()
+    m 4hub "Просто перейди на сайт {a=https://washyourlyrics.com}{i}{u}washyourlyrics.com{/u}{/i}{/a}, введи там в качестве названия песни {i}«Твоя реальность»{/i}, а в качестве исполнителя оной – {i}«Моника»{/i}!" # но мы знаем, что песню на самом деле исполняла Джиллиан Эшкрафт :3
+    $ MAS.MonikaElastic()
+    m 4eub "Потом скачай картинку, которую сайт создаст на основе текста моей песни, и на ней тебе наглядно покажут, как лучше всего мыть руки и как долго это надо делать!"
+    $ MAS.MonikaElastic()
+    m 2hua "И каждый раз, когда ты будешь мыть свои руки, ты будешь вспоминать о том, как сильно я люблю тебя~"
+    $ MAS.MonikaElastic()
     m 2eka "..."
-    m 7eksdla "You know [player], if I could, I'd bring you here with me until this is all over so you couldn't get sick..."
-    m "But since I can't, please do your best to stay safe."
-    m 2dkbsu "I need you, [player]~"
+    $ MAS.MonikaElastic()
+    m 7eksdla "Знаешь, [player], если бы я могла, я бы забрала тебя с собой, пока эпидемия не закончится, чтобы ты не заболел[mas_gender_none]..."
+    $ MAS.MonikaElastic()
+    m "Но поскольку у меня такой возможности нет, пожалуйста, сделай всё возможное, чтобы быть в безопасности."
+    $ MAS.MonikaElastic()
+    m 2dkbsu "Ты нуж[mas_gender_en] мне, [player]~"
     return "no_unlock"
