@@ -1,18 +1,19 @@
-## holiday info goes here
-#
-# TOC
-#   [GBL000] - GLOBAL SPACE
-#   [HOL010] - O31
-#   [HOL020] - D25
-#   [HOL030] - NYE (new yeares eve, new years)
-#   [HOL040] - player_bday
-#   [HOL050] - F14
-#   [HOL060] - 922
 
 
-############################### GLOBAL SPACE ################################
-# [GBL000]
+
+
+
+
+
+
+
+
+
+
+
+
 default persistent._mas_event_clothes_map = dict()
+define mas_two_minutes = datetime.timedelta(seconds=2*60)
 define mas_five_minutes = datetime.timedelta(seconds=5*60)
 define mas_one_hour = datetime.timedelta(seconds=3600)
 define mas_three_hour = datetime.timedelta(seconds=3*3600)
@@ -28,13 +29,13 @@ init 10 python:
         """
         if clothes is None:
             return
-
+        
         if key is None:
             key = datetime.date.today()
-
+        
         persistent._mas_event_clothes_map[key] = clothes.name
-
-        #We also unlock the event clothes selector here
+        
+        
         mas_unlockEVL("monika_event_clothes_select", "EVE")
 
     def mas_addClothesToHolidayMapRange(clothes, start_date, end_date):
@@ -48,11 +49,11 @@ init 10 python:
         """
         if not clothes:
             return
-
-        #We have clothes, we need to create a generator for building a range
+        
+        
         daterange = mas_genDateRange(start_date, end_date)
-
-        #Now we need to iterate over the new range:
+        
+        
         for date in daterange:
             mas_addClothesToHolidayMap(clothes, date)
 
@@ -62,7 +63,7 @@ init -1 python:
         Checks if the player was gone over the given date entirely (taking you somewhere)
 
         IN:
-            date - a datetime.date of the date we want to see if we've been out all day for
+            date - a datetime.date of the date we want to see if we have been out all day for
 
         OUT:
             True if the player and Monika were out together the whole day, False if not.
@@ -87,19 +88,19 @@ init -1 python:
                 The cap to use when not player bday
 
             pbday_cap:
-                The cap to use when it's player bday (NOTE: if not provided, normal_cap is assumed)
+                The cap to use when its player bday (NOTE: if not provided, normal_cap is assumed)
         """
-
-        #If player bday cap isn't provided, we just use the one cap
+        
+        
         if persistent._mas_player_bday_in_player_bday_mode and pbday_cap:
             cap = pbday_cap
         else:
             cap = normal_cap
-
+        
         if persistent.__dict__[aff_gained_var] < cap:
             persistent.__dict__[aff_gained_var] += amount
             mas_gainAffection(amount, bypass=True)
-
+        
         return
 
     def mas_hasSpecialOutfit(_date=None):
@@ -113,76 +114,94 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date in persistent._mas_event_clothes_map
 
 init -10 python:
     def mas_isA01(_date=None):
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == datetime.date(_date.year,4,1)
 
-# Global labels
+
 label mas_lingerie_intro(holiday_str, lingerie_choice):
     m 1ekbfa "..."
-    m "Also, [player]..."
-    m 3ekbfsdla "There's...{w=1}s-something I want to show you."
-    m 2rkbfsdla "I've been wanting to do this for a while now actually, but...{w=1}well it's kind of embarrassing..."
+    $ MAS.MonikaElastic()
+    m "Также, [player]..."
+    $ MAS.MonikaElastic()
+    m 3ekbfsdla "Есть...{w=1} к-кое-что, что я хочу тебе показать."
+    $ MAS.MonikaElastic()
+    m 2rkbfsdla "Я уже давно хотела это сделать, но...{w=1} ну это немного неловко..."
+    $ MAS.MonikaElastic()
     m "..."
-    m 2hkbfsdlb "Oh gosh, I'm super nervous, ahaha!"
-    m 2rkbfsdlc "It's just I've never--{nw}"
-    m 2dkbfsdlc "Ah, okay, time to stop stalling and just do it."
-    m 2ekbfsdla "Just give me a few seconds, [player]."
-    call mas_clothes_change(outfit=lingerie_choice, outfit_mode=True, exp="monika 2rkbfsdlu", restore_zoom=False, unlock=True)
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2hkbfsdlb "О боже, я очень нервничаю, а-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 2rkbfsdlc "Просто я никогда этого не делала—{nw}"
+    $ MAS.MonikaElastic()
+    m 2dkbfsdlc "Ах, ладно, пора перестать тянуть время и просто сделать это."
+    $ MAS.MonikaElastic()
+    m 2ekbfsdla "Просто дай мне несколько секунд, [player]."
+    call mas_clothes_change (outfit=lingerie_choice, outfit_mode=True, exp="monika 2rkbfsdlu", restore_zoom=False, unlock=True) from _call_mas_clothes_change_12
     pause 3.0
-    m 2ekbfsdlb "Ahaha, [player]...{w=1}you're staring..."
-    m 2ekbfu "Well...{w=1}do you like what you see?"
-    m 1lkbfa "I've never really...{w=1}worn anything like this before."
-    m "...At least not that anyone's seen."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2ekbfsdlb "А-ха-ха, [player]...{w=1} ты смотришь на меня..."
+    $ MAS.MonikaElastic()
+    m 2ekbfu "Что ж...{w=1} тебе нравится то, на что ты смотришь?"
+    $ MAS.MonikaElastic()
+    m 1lkbfa "Я никогда раньше...{w=1} не носила ничего подобного."
+    $ MAS.MonikaElastic()
+    m "...По крайней мере, никто этого не видел."
 
     if mas_hasUnlockedClothesWithExprop("bikini"):
-        m 3hkbfb "Ahaha, what am I saying, you've seen me in a bikini before, which is essentially the same thing..."
-        m 2rkbfa "...Though for some reason this just feels...{w=0.5}{i}different{/i}."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hkbfb "А-ха-ха, что я говорю, ты уже видел[mas_gender_none] меня в бикини раньше, что по сути одно и то же..."
+        $ MAS.MonikaElastic()
+        m 2rkbfa "...Но по какой-то причине, мне это кажется...{w=0.5} {i}чем-то другим{/i}."
 
-    m 2ekbfa "Anyway, something about being with you [holiday_str] seems really romantic, you know?"
-    m "It just felt like the perfect time for the next step in our relationship."
-    m 2rkbfsdlu "Now I know that we can't really--{nw}"
-    m 3hubfb "Ah! Nevermind, ahaha!"
+    $ MAS.MonikaElastic()
+    m 2ekbfa "В любом случае, что-то в том, чтобы быть с тобой сегодня вечером в [holiday_str], кажется очень романтичным, понимаешь?"
+    $ MAS.MonikaElastic()
+    m "Это было идеальное время для следующего шага в наших отношениях."
+    $ MAS.MonikaElastic()
+    m 2rkbfsdlu "Теперь я знаю, что мы не можем на самом деле—{nw}"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hubfb "Ах! Не важно, а-ха-ха!"
     return
 
 
-############################### O31 ###########################################
-# [HOL010]
-#O31 mode var, handles visuals and sets us up to return to autoload even if not O31 anymore
+
+
+
 default persistent._mas_o31_in_o31_mode = False
 
-#Number of times we've gone out T/Ting
+
 default persistent._mas_o31_tt_count = 0
 
-#Aff cap for T/T, softmax 15
+
 default persistent._mas_o31_trick_or_treating_aff_gain = 0
 
-#Need to know if we were asked to relaunch the game
+
 default persistent._mas_o31_relaunch = False
 
-# costumes worn
-# key: costume name
-# value: year worn
+
+
+
 default persistent._mas_o31_costumes_worn = {}
 
-#Halloween
+
 define mas_o31 = datetime.date(datetime.date.today().year, 10, 31)
 
 init -810 python:
-    # MASHistorySaver for o31
+
     store.mas_history.addMHS(MASHistorySaver(
         "o31",
-        #datetime.datetime(2018, 11, 2),
-        # change trigger to better date
+        
+        
         datetime.datetime(2020, 1, 6),
         {
-            # this isn't very useful, but we need the reset
+            
             "_mas_o31_in_o31_mode": "o31.mode.o31",
             "_mas_o31_tt_count": "o31.tt.count",
             "_mas_o31_relaunch": "o31.relaunch",
@@ -191,12 +210,12 @@ init -810 python:
         use_year_before=True,
         start_dt=datetime.datetime(2019, 10, 31),
 
-        # end is 1 day out in case of an overnight trick or treat
+        
         end_dt=datetime.datetime(2019, 11, 2)
     ))
 
-# Images
-# TODO: export lighting as its own layer
+
+
 image mas_o31_deco = ConditionSwitch(
     "mas_current_background.isFltDay()",
     "mod_assets/location/spaceroom/o31/halloween_deco.png",
@@ -216,7 +235,7 @@ init python:
         mas_clothes_rin: "o31rcg"
     }
 
-#Functions
+
 init -10 python:
     import random
 
@@ -226,14 +245,14 @@ init -10 python:
 
         IN:
             _date - date to check.
-                If None, we use today's date
+                If None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is o31, False otherwise
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_o31.replace(year=_date.year)
 
     def mas_o31ShowVisuals():
@@ -248,27 +267,24 @@ init -10 python:
         """
         mas_hideDecoTag("mas_o31_deco")
         renpy.hide("vignette")
-        #Also going to stop vignette from showing on subsequent spaceroom calls
+        
         store.mas_globals.show_vignette = False
-        #Also, if we're hiding visuals, we're no longer in o31 mode
+        
         store.persistent._mas_o31_in_o31_mode = False
-
-        #unlock hairdown greet if we don't have hairdown unlocked
+        
+        
         hair = store.mas_selspr.get_sel_hair(store.mas_hair_down)
         if hair is not None and not hair.unlocked:
             store.mas_unlockEVL("greeting_hairdown", "GRE")
-
-        # lock the event clothes selector
+        
+        
         store.mas_lockEVL("monika_event_clothes_select", "EVE")
-
-         # get back into reasonable clothing, so we queue a change to def
+        
+        
         if store.monika_chr.is_wearing_clothes_with_exprop("costume"):
             store.queueEvent('mas_change_to_def')
 
     def mas_o31CapGainAff(amount):
-        """
-        CapGainAffection function for o31. See mas_capGainAff for details
-        """
         mas_capGainAff(amount, "_mas_o31_trick_or_treating_aff_gain", 15)
 
 
@@ -317,14 +333,14 @@ init -10 python:
         """
         if selection_pool is None:
             selection_pool = MASClothes.by_exprop("costume", "o31")
-
-        # set to true if monika is wearing a costume right now
+        
+        
         wearing_costume = False
-
-        # filter the selection pool by criteria:
-        #   1 - if spritepack-based, then must be gifted
-        #   2 - if not spritepack-based, then is valid for selecting regardless
-        #   3 - dont include if monika currently wearing
+        
+        
+        
+        
+        
         filt_sel_pool = []
         for cloth in selection_pool:
             sprite_key = (store.mas_sprites.SP_CLOTHES, cloth.name)
@@ -332,7 +348,7 @@ init -10 python:
                 sprite_key,
                 None
             )
-
+            
             if (
                 giftname is None
                 or sprite_key in persistent._mas_sprites_json_gifted_sprites
@@ -341,46 +357,48 @@ init -10 python:
                     filt_sel_pool.append(cloth)
                 else:
                     wearing_costume = True
-
-
+        
+        
         selection_pool = filt_sel_pool
-
+        
         if len(selection_pool) < 1:
-            # no items to select from
-
+            
+            
             if wearing_costume:
-                #Check if the current costume is in the cg map, and if so, prep the cg
+                
                 if monika_chr.clothes in MAS_O31_COSTUME_CG_MAP:
                     store.mas_o31_event.cg_decoded = store.mas_o31_event.decodeImage(MAS_O31_COSTUME_CG_MAP[monika_chr.clothes])
-
+                
                 return monika_chr.clothes
+            
             return None
-
+        
         elif len(selection_pool) < 2:
-            # only 1 item to select from, just return
+            
             return selection_pool[0]
-
-        # otherwise, create list of non worn costumes
+        
+        
         non_worn = [
             costume
             for costume in selection_pool
             if not mas_o31CostumeWorn(costume)
         ]
-
+        
         if len(non_worn) > 0:
-            # randomly select from non worn
+            
             random_outfit = random.choice(non_worn)
-
+        
         else:
-            # otherwise randomly select from overall
+            
             random_outfit = random.choice(selection_pool)
-
-        #Setup the image decode
+        
+        
         if random_outfit in MAS_O31_COSTUME_CG_MAP:
             store.mas_o31_event.cg_decoded = store.mas_o31_event.decodeImage(MAS_O31_COSTUME_CG_MAP[random_outfit])
-
-        #And return the outfit
+        
+        
         return random_outfit
+
 
     def mas_o31SetCostumeWorn(clothes, year=None):
         """
@@ -392,7 +410,7 @@ init -10 python:
         """
         if clothes is None or not clothes.hasprop("costume"):
             return
-
+        
         mas_o31SetCostumeWorn_n(clothes.name, year=year)
 
 
@@ -406,46 +424,46 @@ init -10 python:
         """
         if year is None:
             year = datetime.date.today().year
-
+        
         persistent._mas_o31_costumes_worn[clothes_name] = year
-
+    
     def mas_o31Cleanup():
         """
         Cleanup function for o31
         """
-        #NOTE: Since O31 is costumes, we always reset clothes + hair
+        
         if monika_chr.is_wearing_clothes_with_exprop("costume"):
             monika_chr.change_clothes(mas_clothes_def, outfit_mode=True)
             monika_chr.reset_hair()
-
-        #Reset o31_mode flag
+        
+        
         persistent._mas_o31_in_o31_mode = False
-
-        #Unlock BG Sel if necessary
+        
+        
         mas_checkBackgroundChangeDelegate()
-
-        #Hide visuals
+        
+        
         mas_o31HideVisuals()
-
-        #rmall for safety
+        
+        
         mas_rmallEVL("mas_o31_cleanup")
-
-        #unlock hairdown greet if we don't have hairdown unlocked
+        
+        
         hair = store.mas_selspr.get_sel_hair(mas_hair_down)
         if hair is not None and not hair.unlocked:
             mas_unlockEVL("greeting_hairdown", "GRE")
-
-        #Lock the event clothes selector
+        
+        
         mas_lockEVL("monika_event_clothes_select", "EVE")
 
 init -11 python in mas_o31_event:
     import store
     import datetime
 
-    # setup the docking station for o31
+
     cg_station = store.MASDockingStation(store.mas_ics.o31_cg_folder)
 
-    # cg available?
+
     cg_decoded = False
 
 
@@ -467,133 +485,144 @@ init -11 python in mas_o31_event:
         """
         store.mas_dockstat.removeImages(cg_station, store.mas_ics.o31_map)
 
-#START: O31 AUTOLOAD CHECK
+
+
 label mas_o31_autoload_check:
     python:
         import random
 
         if mas_isO31() and mas_isMoniNormal(higher=True):
-            #Lock the background selector on o31
-            #TODO: Replace this with generic room deco framework for event deco
+
             store.mas_lockEVL("monika_change_background", "EVE")
-            #force to spaceroom
-            # NOTE: need to make sure we pass the change info to the next
-            #   spaceroom call.
+            
+            
+            
             mas_changeBackground(mas_background_def, set_persistent=True)
-
-            #NOTE: We do not do O31 deco/amb on first sesh day
+            
             if (not persistent._mas_o31_in_o31_mode and not mas_isFirstSeshDay()):
-                #Setup for greet
+                
                 mas_skip_visuals = True
-
-                #Reset idle since we will force greetings
+                
+                
                 mas_resetIdleMode()
 
-                #Lock the hairdown greeting for today
+                
+                
                 mas_lockEVL("greeting_hairdown", "GRE")
-
-                #Disable hotkeys for this
+                
+                
                 store.mas_hotkeys.music_enabled = False
-
-                #Put calendar shields up
+                
+                
                 mas_calRaiseOverlayShield()
-
-                # select a costume
-                # NOTE: we should always have at least 1 costume.
+                
+                
+                
                 costume = mas_o31SelectCostume()
                 store.mas_selspr.unlock_clothes(costume)
                 mas_addClothesToHolidayMap(costume)
                 mas_o31SetCostumeWorn(costume)
-
-                # remove ribbon so we just get the intended costume for the reveal
+                
+                
                 ribbon_acs = monika_chr.get_acs_of_type("ribbon")
                 if ribbon_acs is not None:
                     monika_chr.remove_acs(ribbon_acs)
-
+                
                 monika_chr.change_clothes(
                     costume,
                     by_user=False,
                     outfit_mode=True
                 )
-
-                #Save selectables
+                
+                
                 store.mas_selspr.save_selectables()
-
-                #Save persist
+                
+                
                 renpy.save_persistent()
-
-                #Select greet
+                
+                
                 greet_label = "greeting_o31_{0}".format(costume.name)
-
+                
                 if renpy.has_label(greet_label):
                     selected_greeting = greet_label
                 else:
                     selected_greeting = "greeting_o31_generic"
-
-                #Save and reset zoom
+                
+                
                 mas_temp_zoom_level = store.mas_sprites.zoom_level
                 store.mas_sprites.reset_zoom()
-
-                #Now that we're here, we're in O31 mode
+                
+                
                 persistent._mas_o31_in_o31_mode = True
-
-                #Vignette on O31
+                
+                
                 store.mas_globals.show_vignette = True
-
-                #Set by-user to True because we don't want progressive
+                
+                
                 mas_changeWeather(mas_weather_thunder, True)
-
+            
             elif (persistent._mas_o31_in_o31_mode and not mas_isFirstSeshDay()):
-                #Setup vignette and thunder on subsequent sessions
+                
                 store.mas_globals.show_vignette = True
                 mas_changeWeather(mas_weather_thunder, True)
 
-        #It's not O31 anymore or we hit dis. It's time to reset
+
         elif not mas_isO31() or mas_isMoniDis(lower=True):
+            
             mas_o31Cleanup()
 
-        #If we drop to upset during O31, we should keep decor until we hit dis
+
         elif persistent._mas_o31_in_o31_mode and mas_isMoniUpset():
             store.mas_globals.show_vignette = True
             mas_changeWeather(mas_weather_thunder, True)
 
-    #Run pbday checks
+
     if mas_isplayer_bday() or persistent._mas_player_bday_in_player_bday_mode:
-        call mas_player_bday_autoload_check
+        call mas_player_bday_autoload_check from _call_mas_player_bday_autoload_check
 
     if mas_skip_visuals:
         jump ch30_post_restartevent_check
 
-    # otherwise, jump back to the holiday check point
+
     jump mas_ch30_post_holiday_check
 
-## post returned home greeting to setup game relaunch
+
 label mas_holiday_o31_returned_home_relaunch:
-    m 1eua "So, today is..."
-    m 1euc "...wait."
+    $ MAS.MonikaElastic()
+    m 1eua "Итак, сегодня..."
+    $ MAS.MonikaElastic()
+    m 1euc "...подожди."
+    $ MAS.MonikaElastic()
     m "..."
-    m 2wuo "Oh!"
-    m 2wuw "Oh my gosh!"
-    m 2hub "It's Halloween already, [player]."
-    m 1eua "...{w=1}Say."
-    m 3eua "I'm going to close the game."
-    m 1eua "After that you can reopen it."
-    m 1hubsa "I have something special in store for you, ehehe~"
+    $ MAS.MonikaElastic()
+    m 2wuo "О!"
+    $ MAS.MonikaElastic()
+    m 2wuw "О боже!"
+    $ MAS.MonikaElastic()
+    m 2hub "Так сегодня же Хэллоуин, [player]."
+    $ MAS.MonikaElastic()
+    m 1eua "...{w}Так что слушай."
+    $ MAS.MonikaElastic()
+    m 3eua "Я собираюсь закрыть игру."
+    $ MAS.MonikaElastic()
+    m 1eua "После чего ты можешь снова открыть её."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hubsa "У меня есть кое-что особенное для тебя, э-хе-хе~"
     $ persistent._mas_o31_relaunch = True
     return "quit"
 
-### o31 images
+
 image mas_o31_marisa_cg = "mod_assets/monika/cg/o31_marisa_cg.png"
-# 1280 x 2240
+
 
 image mas_o31_rin_cg = "mod_assets/monika/cg/o31_rin_cg.png"
 
-### o31 transforms
+
 transform mas_o31_cg_scroll:
     xanchor 0.0 xpos 0 yanchor 0.0 ypos 0.0 yoffset -1520
     ease 20.0 yoffset 0.0
 
-### o31 samesesh cleanup
+
 init 5 python:
     addEvent(
         Event(
@@ -610,17 +639,16 @@ init 5 python:
 
 
 label mas_o31_cleanup:
-    m 1eua "One second [player], I'm just going to take the decorations down.{w=0.3}.{w=0.3}.{nw}"
-    call mas_transition_to_emptydesk
+    m 1eua "Секунду, [player], я просто собираюсь убрать декорации.{w=0.3}.{w=0.3}.{nw}"
+    call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_13
     pause 4.0
     $ mas_o31Cleanup()
     with dissolve
     pause 1.0
-    call mas_transition_from_emptydesk("monika 1hua")
-    m 3hua "All done~"
+    call mas_transition_from_emptydesk ("monika 1hua") from _call_mas_transition_from_emptydesk_17
+    m 3hua "Готово~"
     return
 
-### o31 greetings
 init 5 python:
     addEvent(
         Event(
@@ -631,104 +659,124 @@ init 5 python:
         code="GRE"
     )
 
+default persistent.monika_new_costume = False
 label greeting_o31_marisa:
-    # with marisa, we should also unlock the hat and the hair style
+
+    $ persistent.msr_monika_clothes = 'marisa'
+
+    $ persistent.monika_new_costume = True
+
     $ store.mas_selspr.unlock_acs(mas_acs_marisa_witchhat)
     $ store.mas_selspr.unlock_hair(mas_hair_downtiedstrand)
 
-    ## decoded CG means that we start with monika offscreen
+
     if store.mas_o31_event.cg_decoded:
-        # ASSUMING:
-        #   vignette should be enabled.
-        call spaceroom(hide_monika=True, scene_change=True)
 
+
+        call spaceroom (hide_monika=True, scene_change=True) from _call_spaceroom_24
     else:
-        # ASSUMING:
-        #   vignette should be enabled
-        call spaceroom(dissolve_all=True, scene_change=True, force_exp='monika 1eua_static')
 
-    m 1eua "Ah!"
-    m 1hua "Seems like my spell worked."
-    m 3efu "As my newly summoned servant, you'll have to do my bidding until the very end!"
+
+
+        call spaceroom (dissolve_all=True, scene_change=True, force_exp='monika 1eua_static') from _call_spaceroom_25
+
+    $ MAS.MonikaElastic()
+    m 1eua "Ах!"
+    $ MAS.MonikaElastic()
+    m 1hua "Похоже, заклинание сработало."
+    $ MAS.MonikaElastic()
+    m 3efu "Как мой недавно призванный слуга, ты долж[mas_gender_en] будешь выполнять мои приказы до самого конца!"
+    $ MAS.MonikaElastic()
     m 1rksdla "..."
-    m 1hub "Ahaha!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха!"
 
-    # decoded CG means we display CG
+
     if store.mas_o31_event.cg_decoded:
         $ cg_delay = datetime.timedelta(seconds=20)
 
-        # got cg
-        m "I'm over here, [player]~"
+
+        $ MAS.MonikaElastic()
+        m "Я здесь, [player]~"
         window hide
 
         show mas_o31_marisa_cg zorder 20 at mas_o31_cg_scroll with dissolve
         $ start_time = datetime.datetime.now()
+
         while datetime.datetime.now() - start_time < cg_delay:
             pause 1.0
 
         hide emptydesk
-        show monika 1hua at i11 zorder MAS_MONIKA_Z
-
+        show monika 1hua zorder MAS_MONIKA_Z at i11
         window auto
-        m "Tadaa!~"
+        $ MAS.MonikaElastic()
+        m "Таа-даа~!"
 
-    #Post scroll dialogue
-    m 1hua "Well..."
-    m 1eub "What do you think?"
-    m 1tuu "Suits me pretty well, right?"
-    m 1eua "It took me quite a while to make this costume, you know."
-    m 3hksdlb "Getting the right measurements, making sure nothing was too tight or loose, that sort of stuff."
-    m 3eksdla "...Especially the hat!"
-    m 1dkc "The ribbon wouldn't stay still at all..."
-    m 1rksdla "Luckily I got that sorted out."
-    m 3hua "I'd say I did a good job myself."
-    m 3eka "I'm wondering if you'll be able to see what's different today."
-    m 3tub "Besides my costume of course~"
-    m 1hua "But anyway..."
+
+    $ MAS.MonikaElastic()
+    m 1hua "Ну..."
+    $ MAS.MonikaElastic()
+    m 1eub "Что думаешь?"
+    $ MAS.MonikaElastic()
+    m 1tuu "Мне очень идёт, не так ли?"
+    $ MAS.MonikaElastic()
+    m 1eua "Знаешь, мне потребовалось довольно много времени, чтобы сделать этот костюм."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Пришлось очень упорно его измерять, пытаясь убедиться, что ничего в нём не будет слишком тугим или свободным."
+    $ MAS.MonikaElastic()
+    m 3eksdla "...Особенно шляпу!"
+    $ MAS.MonikaElastic()
+    m 1dkc "А вот бант вообще не мог никак устоять на месте..."
+    $ MAS.MonikaElastic()
+    m 1rksdla "К счастью, я с этим разобралась."
+    $ MAS.MonikaElastic()
+    m 3hua "Я бы ещё даже сказала, что это всё было моих рук дело."
+    $ MAS.MonikaElastic()
+    m 3eka "Мне интересно, сможешь ли ты увидеть, что же ещё сегодня изменилось."
+    $ MAS.MonikaElastic()
+    m 3tub "Кроме моего костюма, конечно~"
+    $ MAS.MonikaElastic()
+    m 1hua "Но так или иначе..."
 
     if store.mas_o31_event.cg_decoded:
         show monika 1eua
         hide mas_o31_marisa_cg with dissolve
 
-    m 3ekbsa "I'm really excited to spend Halloween with you."
-    m 1hua "Let's have fun today!"
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Я очень рада провести Хэллоуин с тобой."
+    $ MAS.MonikaElastic()
+    m 1hua "Так что давай повеселимся сегодня!"
 
-    call greeting_o31_cleanup
+    call greeting_o31_cleanup from _call_greeting_o31_cleanup
     return
-
-init 5 python:
-   addEvent(
-       Event(
-           persistent.greeting_database,
-           eventlabel="greeting_o31_rin",
-           category=[store.mas_greetings.TYPE_HOL_O31]
-       ),
-       code="GRE"
-    )
 
 label greeting_o31_rin:
     python:
         title_cased_hes = hes.capitalize()
-        #TODO: Unlock this hairstyle once we clean it up such that it doesn't require bows
-        #Will need update script
-        #mas_selspr.unlock_hair(mas_hair_braided)
+
+
+
         mas_sprites.zoom_out()
 
-    # ASSUME vignette
-    call spaceroom(hide_monika=True, scene_change=True)
 
-    m "Ugh, I hope I got these braids right."
-    m "Why does this costume have to be so complicated...?"
-    m "Oh shoot! [title_cased_hes] here!"
+    call spaceroom (hide_monika=True, scene_change=True) from _call_spaceroom_26
+
+    $ MAS.MonikaElastic()
+    m "Угх, надеюсь, я заплела эти косы правильно."
+    $ MAS.MonikaElastic()
+    m "Почему этот костюм такой сложный?.."
+    $ MAS.MonikaElastic()
+    m "Ох блин! [title_cased_hes] здесь!"
     window hide
     pause 3.0
 
     if store.mas_o31_event.cg_decoded:
         $ cg_delay = datetime.timedelta(seconds=20)
 
-        # got cg
+
         window auto
-        m "Say, [player]..."
+        $ MAS.MonikaElastic()
+        m "Скажи, [player_abb]..."
         window hide
 
         show mas_o31_rin_cg zorder 20 at mas_o31_cg_scroll with dissolve
@@ -739,31 +787,40 @@ label greeting_o31_rin:
 
         hide emptydesk
         window auto
-        m "What do {i}nya{/i} think?"
+        m "Что {b}ня{/b} думаешь?"
 
         scene black
         pause 1.0
-        call spaceroom(scene_change=True, dissolve_all=True, force_exp='monika 1hksdlb_static')
-        m 1hksdlb "Ahaha, saying that out loud was more embarrassing than I thought..."
-
+        call spaceroom (scene_change=True, dissolve_all=True, force_exp='monika 1hksdlb_static') from _call_spaceroom_27
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hksdlb "А-ха-ха, говорить подобное вслух было ещё более неловко, чем я могла подумать..."
     else:
-        call mas_transition_from_emptydesk("monika 1eua")
-        m 1hub "Hi, [player]!"
-        m 3hub "Do you like my costume?"
 
-    # regular dialogue
-    m 3etc "Honestly, I don't even know who this is supposed to be."
-    m 3etd "I just found it in the closet with a note attached that had the word 'Rin', a drawing of a girl pushing a wheelbarrow, and some blue floaty thingies."
-    m 1euc "Along with instructions on how to style your hair to go along with this outfit."
-    m 3rtc "Judging by these cat ears, I'm guessing this character is a catgirl."
-    m 1dtc "...But why would she push a wheelbarrow around?"
-    m 1hksdlb "Anyway, it was a pain getting my hair done...{w=0.2}{nw}"
-    extend 1eub "so I hope you like the costume!"
+        call mas_transition_from_emptydesk ("monika 1eua") from _call_mas_transition_from_emptydesk_18
+        $ MAS.MonikaElastic()
+        m 1hub "Привет, [player_abb]!"
+        $ MAS.MonikaElastic()
+        m 3hub "Тебе нравится мой костюм?"
 
-    call greeting_o31_cleanup
+
+    $ MAS.MonikaElastic()
+    m 3etc "Честно говоря, я даже не знаю, кто это должен быть."
+    $ MAS.MonikaElastic()
+    m 3etd "Я только что нашла его в шкафу с прикреплённой запиской со словом «Rin» и рисунком девушки, толкающей какую-то тачку, и несколько синих плавающих штучек."
+    $ MAS.MonikaElastic()
+    m 1euc "Вместе с инструкциями о том, как укладывать волосы, чтобы соответствовать этому наряду."
+    $ MAS.MonikaElastic()
+    m 3rtc "Судя по этим кошачьим ушам, я предполагаю, что этот персонаж кошко-девочка."
+    $ MAS.MonikaElastic()
+    m 1dtc "...Но только вот зачем ей толкать тачку?"
+    $ MAS.MonikaElastic()
+    m 1hksdlb "В любом случае, было мучительно делать такую же прическу...{w=0.2} {nw}"
+    extend 1eub "так что надеюсь, тебе понравился данный костюм!"
+
+    call greeting_o31_cleanup from _call_greeting_o31_cleanup_1
     return
+    
 
-#Miku intro
 init 5 python:
     addEvent(
         Event(
@@ -775,34 +832,52 @@ init 5 python:
     )
 
 label greeting_o31_orcaramelo_hatsune_miku:
+
+    $ persistent._mas_o31_current_costume = "hatsune_miku"
+
+    $ persistent.monika_new_costume = True
+
     if not persistent._mas_o31_relaunch:
-        call spaceroom(hide_monika=True, scene_change=True, dissolve_all=True)
-        #moni is off-screen
-        m "{i}~Don't forget my voice~{/i}"
-        m "{i}~My signal crosses dimensions~{/i}"
-        m "{i}~Don't call me virtual~{/i}"
-        m "{i}~I still want to be l-{/i}"
-        m "Oh!{w=0.5} Seems like someone's heard me."
+        call spaceroom (hide_monika=True, scene_change=True, dissolve_all=True) from _call_spaceroom_28
 
-        #show moni now
-        call mas_transition_from_emptydesk("monika 3hub")
+        $ MAS.MonikaElastic()
+        m "{i}~Голос мой не забывай~{/i}"
+        $ MAS.MonikaElastic()
+        m "{i}~Мой сигнал измеренья пересекает~{/i}"
+        $ MAS.MonikaElastic()
+        m "{i}~Виртуальной меня не называй~{/i}"
+        $ MAS.MonikaElastic()
+        m "{i}~Я всё ещё хочу быть лю—{/i}" # я всё ещё хочу быть любимым твоим звуком
+        $ MAS.MonikaElastic()
+        m "Ой!{w=0.5} Кажется, меня кто-то подслушивает."
 
+
+        call mas_transition_from_emptydesk ("monika 3hub") from _call_mas_transition_from_emptydesk_19
     else:
-        call spaceroom(scene_change=True, dissolve_all=True)
 
-    m 3hub "Welcome back, [player]!"
-    m 1eua "So...{w=0.5}what do you think?"
-    m 3eua "I think this costume really suits me."
-    m 3eub "I especially love how the headset looks too!"
-    m 1rksdla "Though I can't say it's too comfortable for moving around..."
-    m 3tsu "So don't expect me to give you a performance today, [player]!"
-    m 1hub "Ahaha~"
-    m 1eua "Anyway..."
-    call greeting_o31_deco
-    call greeting_o31_cleanup
+        call spaceroom (scene_change=True, dissolve_all=True) from _call_spaceroom_29
+
+    $ MAS.MonikaElastic()
+    m 3hub "С возвращением, [player]!"
+    $ MAS.MonikaElastic()
+    m 1eua "Ну...{w=0.5} что думаешь?"
+    $ MAS.MonikaElastic()
+    m 1eub "Я работала над этим костюмом, не покладая рук, и, думаю, оно того стоило."
+    $ MAS.MonikaElastic()
+    m 3eub "Мне особенно нравится то, какой у меня получилась гарнитура!"
+    $ MAS.MonikaElastic()
+    m 1rksdla "Хотя я не могу сказать, что в нём очень комфортно передвигаться..."
+    $ MAS.MonikaElastic()
+    m 3tsu "Так что не жди, что я устрою для тебя представление сегодня, [player]!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 1eua "Ну да ладно..."
+    call greeting_o31_deco from _call_greeting_o31_deco
+    call greeting_o31_cleanup from _call_greeting_o31_cleanup_2
     return
 
-#Sakuya intro
+
 init 5 python:
     addEvent(
         Event(
@@ -814,95 +889,125 @@ init 5 python:
     )
 
 label greeting_o31_orcaramelo_sakuya_izayoi:
-    call spaceroom(hide_monika=True, scene_change=True, dissolve_all=True)
+    call spaceroom (hide_monika=True, scene_change=True, dissolve_all=True) from _call_spaceroom_9
 
-    #moni is off-screen
+
     if not persistent._mas_o31_relaunch:
+        $ MAS.MonikaElastic()
         m "..."
-        m "{i}Hm{/i}?"
-        m "{i}Ah, there must have been some sort of mistake.{w=0.5} I wasn't warned of any guests...{/i}"
-        m "{i}No matter. None shall disturb the m-{/i}"
-        m "Oh!{w=0.5} It's you, [player]!"
-
+        $ MAS.MonikaElastic()
+        m "{i}Хм{/i}?"
+        $ MAS.MonikaElastic()
+        m "{i}А, здесь, наверное, произошла какая-то ошибка.{w=0.5} Я не предупредила гостей...{/i}"
+        $ MAS.MonikaElastic()
+        m "{i}Но это не важно. Меня никто не должен побеспоко—{/i}" # меня никто не должен побеспокоить
+        $ MAS.MonikaElastic()
+        m "А!{w=0.5} Это Вы, [player]!"
     else:
+
+        $ MAS.MonikaElastic()
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Welcome{w=0.3}, to the Scarlet Devil Spaceroom..."
+        $ MAS.MonikaElastic()
+        m "Добро пожаловать{w=0.3} в Комнату алого демона, витающую в космосе..."
+        $ MAS.MonikaElastic()
         m "[player]."
-        m "Please, let me offer you our hospitality."
-        m "Ahaha! How was that impression?"
+        $ MAS.MonikaElastic()
+        m "Пожалуйста, позвольте мне предложить Вам наше гостеприимство."
+        $ MAS.MonikaElastic()
+        m "А-ха-ха! Ну, какое у тебя впечатление сложилось?"
 
-    #show moni now
-    call mas_transition_from_emptydesk("monika 3hub")
+    call mas_transition_from_emptydesk ("monika 3hub") from _call_mas_transition_from_emptydesk_20
 
-    m 3hub "Welcome back!"
-    m 3eub "What do you think of my costume choice?"
-    m 3hua "Ever since you gave it to me I just knew I'd be wearing it today!"
+    $ MAS.MonikaElastic()
+    m 3hub "С возвращением!"
+    $ MAS.MonikaElastic()
+    m 3eub "Что думаешь о моём выборе костюма?"
+    $ MAS.MonikaElastic()
+    m 3hua "Ещё с тех пор, как ты дал его мне, я просто знала о том, что его стоит надеть сегодня!"
+    $ MAS.MonikaElastic()
     m 2tua "..."
-    m 2tub "You know, [player], just because I'm dressed as a maid doesn't mean I'll be following your every command..."
-    show monika 5kua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5kua "Though I might make some exceptions, ehehe~"
-    show monika 1eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 1eua "Anyway..."
-    call greeting_o31_deco
-    call greeting_o31_cleanup
+    $ MAS.MonikaElastic()
+    m 2tub "Знаешь, [player], лишь потому, что я оделась как горничная, ещё не означает, что я буду выполнять все твои приказы..."
+    show monika 5kua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 5kua "Хотя я могу сделать пару исключений, э-хе-хе~"
+    show monika 1eua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    $ MAS.MonikaElastic()
+    m 1eua "Ну да ладно..."
+    call greeting_o31_deco from _call_greeting_o31_deco_1
+    call greeting_o31_cleanup from _call_greeting_o31_cleanup_3
     return
 
 label greeting_o31_deco:
-    m 3eua "Do you like what I've done with the room?"
-    m 3eka "One of my favorite parts of Halloween is carving pumpkins..."
-    m 1hub "It's just so fun trying to make scary faces!"
-    m 1eua "I think the cobwebs are a nice touch as well..."
-    m 1rka "{cps=*2}I'm sure Amy would really like them.{/cps}{nw}"
+    $ MAS.MonikaElastic()
+    m 3eua "Тебе нравится, как я приукрасила комнату?"
+    $ MAS.MonikaElastic()
+    m 3eka "Мне в Хэллоуине больше всего нравится вырезать тыквы..."
+    $ MAS.MonikaElastic()
+    m 1hub "Довольно весело пытаться сделать пугающие мордочки!"
+    $ MAS.MonikaElastic()
+    m 1eua "Думаю, паутина тоже является неплохой декорацией..."
+    $ MAS.MonikaElastic()
+    m 1rka "{cps=*2}Уверена, Эми бы очень понравилось.{/cps}{nw}"
     $ _history_list.pop()
-    m 3tuu "Really creates a creepy vibe, don't you think?"
+    $ MAS.MonikaElastic()
+    m 3tuu "Это правда создаёт жуткую атмосферу, не находишь?"
     return
 
 label greeting_o31_generic:
-    call spaceroom(scene_change=True, dissolve_all=True)
+    call spaceroom (scene_change=True, dissolve_all=True) from _call_spaceroom_31
 
-    m 3hub "Trick or treat!"
-    m 3eub "Ahaha,{w=0.1} {nw}"
-    extend 3eua "I'm just kidding, [player]."
-    m 1hua "Welcome back...{w=0.5}{nw}"
-    extend 3hub "and Happy Halloween!"
+    $ MAS.MonikaElastic()
+    m 3hub "Сладость или гадость!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3eub "А-ха-ха,{w=0.1} {nw}"
+    extend 3eua "я просто шучу, [player]."
+    $ MAS.MonikaElastic()
+    m 1hua "С возвращением...{w=0.5}{nw}"
+    $ MAS.MonikaElastic()
+    extend 3hub "и Счастливого Хэллоуина!"
 
-    #We'll address the room with this
-    call greeting_o31_deco
 
-    m 3hua "By the way, what do you think of my costume?"
-    m 1hua "I really like it~"
-    m 1hub "Even more so that it was a gift from you, ahaha!"
-    m 3tuu "So feast your eyes on my costume while you can, ehehe~"
+    call greeting_o31_deco from _call_greeting_o31_deco_2
 
-    call greeting_o31_cleanup
+    $ MAS.MonikaElastic()
+    m 3hua "Кстати, что ты думаешь о моём костюме?"
+    $ MAS.MonikaElastic()
+    m 1hua "Лично мне он очень нравится~"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "Но что самое главное, этот костюм был твоим подарком, а-ха-ха!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3tuu "Так что любуйся моим костюмом, пока можешь, э-хе-хе~"
+
+    call greeting_o31_cleanup from _call_greeting_o31_cleanup_4
     return
 
-#Cleanup for o31 greets
+
 label greeting_o31_cleanup:
     window hide
-    call monika_zoom_transition(mas_temp_zoom_level,1.0)
+    call monika_zoom_transition (mas_temp_zoom_level, 1.0) from _call_monika_zoom_transition_6
     window auto
 
     python:
-        # 1 - music hotkeys should be enabled
+
         store.mas_hotkeys.music_enabled = True
-        # 2 - calendarovrelay enabled
+
         mas_calDropOverlayShield()
-        # 3 - set the keymaps
+
         set_keymaps()
-        # 4 - hotkey buttons should be shown
+
         HKBShowButtons()
-        # 5 - restart music
+
         mas_startup_song()
     return
 
-#START: O31 DOCKSTAT FARES
+
 init 5 python:
     addEvent(
         Event(
             persistent.farewell_database,
             eventlabel="bye_trick_or_treat",
-            prompt="I'm going to take you trick or treating.",
+            prompt="Я хочу взять тебя на «сладость или гадость».",
             pool=True,
             unlocked=False,
             action=EV_ACT_UNLOCK,
@@ -927,154 +1032,221 @@ label bye_trick_or_treat:
         too_early_to_go = curr_hour < 17
         too_late_to_go = curr_hour >= 23
 
-    #True if > 0
+
     if persistent._mas_o31_tt_count:
-        m 1eka "Again?"
+        m 1eka "Снова?"
 
     if too_early_to_go:
-        # before 5pm is too early.
-        m 3eksdla "Doesn't it seem a little early for trick or treating, [player]?"
-        m 3rksdla "I don't think there's going to be anyone giving out candy yet..."
 
-        m 2etc "Are you {i}sure{/i} you want to go right now?{nw}"
+        m 3eksdla "А тебе, случаем, не кажется, что пока что немного рановато для этого события, [player]?"
+        $ MAS.MonikaElastic()
+        m 3rksdla "Не думаю, что кто-то прямо сейчас будет раздавать конфеты..."
+
+        m 2etc "Ты {i}уверен[mas_gender_none]{/i}, что хочешь пойти прямо сейчас?{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you {i}sure{/i} you want to go right now?{fast}"
-            "Yes.":
-                m 2etc "Well...{w=1}okay then, [player]..."
+            m "Ты {i}уверен[mas_gender_none]{/i}, что хочешь пойти прямо сейчас?{fast}"
+            "Да.":
+                $ MAS.MonikaElastic()
+                m 2etc "Ну...{w=1}что ж, ладно тогда, [player]..."
+            "Нет.":
 
-            "No.":
-                m 2hub "Ahaha!"
-                m "Be a little patient, [player]~"
-                m 4eub "Let's just make the most out of it later this evening, okay?"
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 2hub "А-ха-ха!"
+                $ MAS.MonikaElastic()
+                m "Будь немного терпелив[mas_gender_none], [player_abb]~"
+                $ MAS.MonikaElastic()
+                m 4eub "Давай сделаем это лучше чуть позже вечером, хорошо?"
                 return
 
     elif too_late_to_go:
-        m 3hua "Okay! Let's go tri--"
-        m 3eud "Wait..."
+        m 3hua "Хорошо! Пошли за сла—"
+        $ MAS.MonikaElastic()
+        m 3eud "Хотя стоп, подожди-ка..."
+        $ MAS.MonikaElastic()
         m 2dkc "[player]..."
-        m 2rkc "It's already too late to go trick or treating."
-        m "There's only one more hour until midnight."
-        m 2dkc "Not to mention that I doubt there would be much candy left..."
+        $ MAS.MonikaElastic()
+        m 2rkc "Так ведь уже слишком поздно идти за сладостями."
+        $ MAS.MonikaElastic()
+        m "До полуночи остался всего-навсего один час."
+        $ MAS.MonikaElastic()
+        m 2dkc "Не говоря уже о том, что я сомневаюсь, что осталось бы много конфет..."
+        $ MAS.MonikaElastic()
         m "..."
 
-        m 4ekc "Are you sure you still want to go?{nw}"
+        m 4ekc "Ты уверен[mas_gender_none], что хочешь пойти?{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you sure you still want to go?{fast}"
-            "Yes.":
-                m 1eka "...Okay."
-                m "Even though it's only an hour..."
-                m 3hub "At least we're going to spend the rest of Halloween together~"
-                m 3wub "Let's go and make the most of it, [player]!"
+            m "Ты уверен[mas_gender_none], что хочешь пойти?{fast}"
+            "Да.":
+                $ MAS.MonikaElastic()
+                m 1eka "...Хорошо."
+                $ MAS.MonikaElastic()
+                m "Даже если это будет всего лишь на час..."
+                $ MAS.MonikaElastic()
+                m 3hub "По крайней мере, мы проведём остаток Хэллоуина вместе~"
+                $ MAS.MonikaElastic()
+                m 3wub "Пойдём и сделаем всё возможное, [player]!"
+            "Вообще-то, уже немного поздно...":
 
-            "Actually, it {i}is{/i} a bit late...":
                 if persistent._mas_o31_tt_count:
-                    m 1hub "Ahaha~"
-                    m "I told you."
-                    m 1eua "We'll have to wait until next year to go again."
-
+                    $ MAS.MonikaElastic(voice="monika_giggle")
+                    m 1hub "А-ха-ха~"
+                    $ MAS.MonikaElastic()
+                    m "Я говорила тебе."
+                    $ MAS.MonikaElastic()
+                    m 1eua "Нам придётся подождать до следующего года."
                 else:
+
+                    $ MAS.MonikaElastic()
                     m 2dkc "..."
-                    m 2ekc "Alright, [player]."
-                    m "It sucks that we couldn't go trick or treating this year."
-                    m 4eka "Let's just make sure we can next time, okay?"
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Хорошо, [player]."
+                    $ MAS.MonikaElastic()
+                    m "Жаль, конечно, что мы не смогли пойти за сладостями в этом году."
+                    $ MAS.MonikaElastic()
+                    m 4eka "Но давай просто убедимся, что сможем в следующий раз, хорошо?"
 
                 return
-
     else:
-        # between 5 and 11pm is perfect
-        m 3wub "Okay, [player]!"
-        m 3hub "Sounds like we'll have a blast~"
-        m 1eub "I bet we'll get lots of candy!"
-        m 1ekbsa "And even if we don't, just spending the evening with you is enough for me~"
 
-    #Setup the dockstat stuff
+
+        m 3wub "Хорошо, [player]!"
+        $ MAS.MonikaElastic()
+        m 3hub "Похоже, мы отлично повеселимся~"
+        $ MAS.MonikaElastic()
+        m 1eub "Держу пари, мы получим много конфет!"
+        $ MAS.MonikaElastic()
+        m 1ekbsa "И даже если нет, мне достаточно будет просто провести вечер с тобой~"
+    
     $ mas_farewells.dockstat_wait_menu_label = "bye_trick_or_treat_wait_wait"
     $ mas_farewells.dockstat_rtg_label = "bye_trick_or_treat_rtg"
     jump mas_dockstat_iostart
 
+    # show monika 2dsc
+    # $ persistent._mas_dockstat_going_to_leave = True
+    # $ first_pass = True
+
+
+    # $ promise = store.mas_dockstat.monikagen_promise
+    # $ promise.start()
+
+
 label bye_trick_or_treat_wait_wait:
-    # wait wait flow
     menu:
-        m "What is it?"
-        "You're right, it's too early." if too_early_to_go:
-            call mas_dockstat_abort_gen
-            call mas_transition_from_emptydesk(exp="monika 3hub")
+        m "Что случилось?"
+        "Ты права, ещё слишком рано." if too_early_to_go:
+            call mas_dockstat_abort_gen from _call_mas_dockstat_abort_gen_1
+            call mas_transition_from_emptydesk (exp="monika 3hub") from _call_mas_transition_from_emptydesk_21
 
-            m 3hub "Ahaha, I told you!"
-            m 1eka "Let's wait 'til evening, okay?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3hub "А-ха-ха, я говорила тебе!"
+            $ MAS.MonikaElastic()
+            m 1eka "Давай подождём до вечера, хорошо?"
             return True
 
-        "You're right, it's too late." if too_late_to_go:
-            call mas_dockstat_abort_gen
+        "Ты права, уже слишком поздно." if too_late_to_go:
+            call mas_dockstat_abort_gen from _call_mas_dockstat_abort_gen_2
 
             if persistent._mas_o31_tt_count:
-                call mas_transition_from_emptydesk(exp="monika 1hua")
-                m 1hub "Ahaha~"
-                m "I told you."
-                m 1eua "We'll have to wait until next year to go again."
-
+                call mas_transition_from_emptydesk (exp="monika 1hua") from _call_mas_transition_from_emptydesk_22
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1hub "А-ха-ха~"
+                $ MAS.MonikaElastic()
+                m "Я говорила тебе."
+                $ MAS.MonikaElastic()
+                m 1eua "Нам придётся подождать до следующего года."
             else:
-                call mas_transition_from_emptydesk(exp="monika 2dkc")
+
+                call mas_transition_from_emptydesk (exp="monika 2dkc") from _call_mas_transition_from_emptydesk_23
+                $ MAS.MonikaElastic()
                 m 2dkc "..."
-                m 2ekc "Alright, [player]."
-                m "It sucks that we couldn't go trick or treating this year."
-                m 4eka "Let's just make sure we can next time, okay?"
+                $ MAS.MonikaElastic()
+                m 2ekc "Хорошо, [player]."
+                $ MAS.MonikaElastic()
+                m "Жаль, конечно, что мы не смогли пойти за сладостями в этом году."
+                $ MAS.MonikaElastic()
+                m 4eka "Но давай просто убедимся, что сможем в следующий раз, хорошо?"
 
             return True
+        "Вообще-то, я не могу взять тебя с собой прямо сейчас.":
 
-        "Actually, I can't take you right now.":
-            call mas_dockstat_abort_gen
-            call mas_transition_from_emptydesk(exp="monika 1euc")
+            call mas_dockstat_abort_gen from _call_mas_dockstat_abort_gen_3
+            call mas_transition_from_emptydesk (exp="monika 1euc") from _call_mas_transition_from_emptydesk_24
 
-            m 1euc "Oh, okay then, [player]."
+            $ MAS.MonikaElastic()
+            m 1euc "Эх, ладно тогда, [player]."
 
             if persistent._mas_o31_tt_count:
-                m 1eua "Let me know if we are going again later, okay?"
-
+                $ MAS.MonikaElastic()
+                m 1eua "Дай мне знать, если мы сможем пойти попозже ещё, хорошо?"
             else:
-                m 1eua "Let me know if we can go, okay?"
+
+                $ MAS.MonikaElastic()
+                m 1eua "Дай мне знать, если мы сможем пойти, хорошо?"
 
             return True
+        "Ничего.":
 
-        "Nothing.":
-            m "Okay, let me finish getting ready."
+            $ MAS.MonikaElastic()
+            m 2eua "Ладно, давай я закончу собираться."
+
             return
 
+
+
 label bye_trick_or_treat_rtg:
-    # iothread is done
-    $ moni_chksum = promise.get()
-    $ promise = None # always clear the promise
-    call mas_dockstat_ready_to_go(moni_chksum)
+    if renpy.variant("pc"):
+        $ moni_chksum = promise.get()
+        $ promise = None
+        call mas_dockstat_ready_to_go (moni_chksum) from _call_mas_dockstat_ready_to_go_1
+        if _return:
+            call mas_transition_from_emptydesk (exp="monika 1hub") from _call_mas_transition_from_emptydesk_25
+            call mas_dockstat_first_time_goers
+            $ MAS.MonikaElastic()
+            m 1hub "Что ж, пошли за сладостями!"
+            $ persistent._mas_greeting_type = store.mas_greetings.TYPE_HOL_O31_TT
 
-    if _return:
-        call mas_transition_from_emptydesk(exp="monika 1hub")
-        m 1hub "Let's go trick or treating!"
-        $ persistent._mas_greeting_type = store.mas_greetings.TYPE_HOL_O31_TT
 
-        #Increment T/T counter
-        $ persistent._mas_o31_tt_count += 1
-        return "quit"
-
-    # otherwise, failure in generation
-    #Fix tt count
-    call mas_transition_from_emptydesk(exp="monika 1ekc")
-    $ persistent._mas_o31_tt_count -= 1
-    m 1ekc "Oh no..."
-    m 1rksdlb "I wasn't able to turn myself into a file."
-
-    if persistent._mas_o31_tt_count:
-        m 1eksdld "I think you'll have to go trick or treating without me this time..."
-
+            $ persistent._mas_o31_tt_count += 1
+            return "quit"
     else:
-        m 1eksdld "I think you'll have to go trick or treating without me..."
+        if msr_can_copy_monika():
+            call mas_dockstat_first_time_goers
+            $ MAS.MonikaElastic()
+            m 1hub "Что ж, пошли за сладостями!"
+            $ persistent._mas_o31_tt_count += 1
+            $ persistent.msr_moni_file_exit_trick_or_treat = True
+            $ persistent.msr_moni_file_exit = False
+            $ persistent._mas_greeting_type = None
+            $ persistent._mas_greeting_type = mas_idle_mailbox.get_ds_gre_type(
+                store.mas_greetings.TYPE_HOL_O31_TT
+            )
+            return "quit"
 
-    m 1ekc "Sorry, [player]..."
-    m 3eka "Make sure to bring lots of candy for the both of us to enjoy, okay?~"
+
+
+    call mas_transition_from_emptydesk (exp="monika 1ekc") from _call_mas_transition_from_emptydesk_26
+    $ persistent._mas_o31_tt_count -= 1
+    $ MAS.MonikaElastic()
+    m 1ekc "Ох, нет..."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "Я не смогла превратить себя в файл."
+
+    $ MAS.MonikaElastic()
+    if persistent._mas_o31_tt_count:
+        m 1eksdld "Думаю, в этот раз тебе придётся пойти выпрашивать сладости без меня..."
+    else:
+
+        m 1eksdld "Думаю, тебе придётся пойти выпрашивать сладости без меня..."
+
+    $ MAS.MonikaElastic()
+    m 1ekc "Прости, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eka "Не забудь принести много конфет, чтобы нам обоим было весело?~"
     return
 
-#START: O31 DOCKSTAT GREETS
+
 init 5 python:
     addEvent(
         Event(
@@ -1087,9 +1259,9 @@ init 5 python:
     )
 
 label greeting_trick_or_treat_back:
-    # trick/treating returned home greeting
+
     python:
-        # lots of setup here
+
         time_out = store.mas_dockstat.diffCheckTimes()
         checkin_time = None
         is_past_sunrise_post31 = False
@@ -1111,162 +1283,192 @@ label greeting_trick_or_treat_back:
 
     if time_out < mas_five_minutes:
         $ mas_loseAffection()
-        m 2ekp "You call that trick or treating, [player]?"
-        m "Where did we go, one house?"
-        m 2rsc "...If we even left."
+        $ MAS.MonikaElastic()
+        m 2ekp "Это называется «сладость или гадость», [player]?"
+        $ MAS.MonikaElastic()
+        m "Куда пойдём, в один дом?"
+        $ MAS.MonikaElastic()
+        m 2rsc "...Если вообще куда-нибудь пойдём."
 
     elif time_out < mas_one_hour:
         $ mas_o31CapGainAff(5)
-        m 2ekp "That was pretty short for trick or treating, [player]."
-        m 3eka "But I enjoyed it while it lasted."
-        m 1eka "It was still really nice being right there with you~"
+        $ MAS.MonikaElastic()
+        m 2ekp "Это было довольно короткое событие «сладость или гадость», [player]."
+        $ MAS.MonikaElastic()
+        m 3eka "Но в любом случае, мне понравилось."
+        $ MAS.MonikaElastic()
+        m 1eka "Всё равно было приятно быть рядом с тобой~"
 
     elif time_out < mas_three_hour:
         $ mas_o31CapGainAff(10)
-        m 1hua "And we're home!"
-        m 1hub "I hope we got lots of delicious candy!"
-        m 1eka "I really enjoyed trick or treating with you, [player]..."
+        $ MAS.MonikaElastic()
+        m 1hua "И мы возвращаемся домой!"
+        $ MAS.MonikaElastic()
+        m 1hub "Надеюсь, у нас теперь много вкусных конфет!"
+        $ MAS.MonikaElastic()
+        m 1eka "Я действительно наслаждалась с тобой данным времяпровождением, [player]..."
 
-        call greeting_trick_or_treat_back_costume
+        call greeting_trick_or_treat_back_costume from _call_greeting_trick_or_treat_back_costume
 
-        m 4eub "Let's do this again next year!"
+        $ MAS.MonikaElastic()
+        m 4eub "Давай повторим это и в следующем году!"
 
     elif not is_past_sunrise_post31:
-        # larger than 3 hours, but not past sunrise
+
         $ mas_o31CapGainAff(15)
-        m 1hua "And we're home!"
-        m 1wua "Wow, [player], we sure went trick or treating for a long time..."
-        m 1wub "We must have gotten a ton of candy!"
-        m 3eka "I really enjoyed being there with you..."
+        $ MAS.MonikaElastic()
+        m 1hua "И мы возвращаемся домой!"
+        $ MAS.MonikaElastic()
+        m 1wua "Ого, [player], мы ходили за сладостями довольно долго..."
+        $ MAS.MonikaElastic()
+        m 1wub "Мы, должно быть, смогли получить тонну конфет!"
+        $ MAS.MonikaElastic()
+        m 3eka "Мне очень понравилось это времяпровождение с тобой..."
 
-        call greeting_trick_or_treat_back_costume
+        call greeting_trick_or_treat_back_costume from _call_greeting_trick_or_treat_back_costume_1
 
-        m 4eub "Let's do this again next year!"
+        $ MAS.MonikaElastic()
+        m 4eub "Давай повторим это и в следующем году!"
         $ ret_tt_long = True
-
     else:
-        # larger than 3 hours, past sunrise
+
+
         $ mas_o31CapGainAff(15)
-        m 1wua "We're finally home!"
-        m 1wuw "It's not Halloween anymore, [player]... We were out all night!"
-        m 1hua "I guess we had too much fun, ehehe~"
-        m 2eka "But anyway, thanks for taking me along, I really enjoyed it."
+        $ MAS.MonikaElastic()
+        m 1wua "Наконец-то мы вернулись домой!"
+        $ MAS.MonikaElastic()
+        m 1wuw "Правда, на следующее утро, [player]. Мы отсутствовали аж всю ночь..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m "Думаю, нам было слишком весело, чтобы следить за временем, э-хе-хе~"
+        $ MAS.MonikaElastic()
+        m 2eka "Но в любом случае, спасибо, что взял[mas_gender_none] меня с собой, мне очень понравилось."
 
-        call greeting_trick_or_treat_back_costume
+        call greeting_trick_or_treat_back_costume from _call_greeting_trick_or_treat_back_costume_2
 
-        m 4hub "Let's do this again next year...{w=1}but maybe not stay out {i}quite{/i} so late!"
+        $ MAS.MonikaElastic()
+        m 4hub "Давай повторим это и в следующем году...{w=1} но, возможно, только не оставаясь {b}настолько{/b} допозна!"
         $ ret_tt_long = True
 
-    #Now do player bday things (this also cleans up o31 deco)
-    if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        # if we are returning from a non-birthday date post o31 birthday
-        call return_home_post_player_bday
 
-    #If it's just not o31, we need to clean up
+    if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
+
+        call return_home_post_player_bday from _call_return_home_post_player_bday
+
+
     elif not mas_isO31() and persistent._mas_o31_in_o31_mode:
-        call mas_o31_ret_home_cleanup(time_out, ret_tt_long)
+        call mas_o31_ret_home_cleanup (time_out, ret_tt_long) from _call_mas_o31_ret_home_cleanup
     return
 
 label mas_o31_ret_home_cleanup(time_out=None, ret_tt_long=False):
-    #Time out not defined, we need to get it outselves
+
     if not time_out:
         $ time_out = store.mas_dockstat.diffCheckTimes()
 
-    #If we were out over 5 mins then we have this little extra dialogue
+
     if not ret_tt_long and time_out > mas_five_minutes:
+        $ MAS.MonikaElastic()
         m 1hua "..."
-        m 1wud "Oh wow, [player]. We really were out for a while..."
-
+        $ MAS.MonikaElastic()
+        m 1wud "О, ого, [player]. Мы правда долго гуляли..."
     else:
-        m 1esc "Anyway..."
 
-    m 1eua "I'll just take these decorations down.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+        $ MAS.MonikaElastic()
+        m 1esc "Ну да ладно..."
 
-    #Hide vis
+    $ MAS.MonikaElastic()
+    m 1eua "Я просто сниму эти декорации.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+
+
     $ mas_o31HideVisuals()
     $ mas_rmallEVL("mas_o31_cleanup")
 
-    m 3hua "There we go!"
+    $ MAS.MonikaElastic()
+    m 3hua "Готово!"
     return
 
 label greeting_trick_or_treat_back_costume:
     if monika_chr.is_wearing_clothes_with_exprop("costume"):
-        m 2eka "Even if I couldn't see anything and no one else could see my costume..."
-        m 2eub "Dressing up and going out was still really great!"
-
+        $ MAS.MonikaElastic()
+        m 2eka "Даже учитывая тот факт, что я ничего толком и не видела, и никто не видел мой костюм..."
+        $ MAS.MonikaElastic()
+        m 2eub "Переодевание и прогулка были по-прежнему очень даже весёлыми!"
     else:
-        m 2eka "Even if I couldn't see anything..."
-        m 2eub "Going out was still really great!"
+
+        $ MAS.MonikaElastic()
+        m 2eka "Даже если я ничего толком и не видела."
+        $ MAS.MonikaElastic()
+        m 2eub "Выйти на прогулку всё равно было здорово!"
     return
 
-#START: D25
-#################################### D25 ######################################
-# [HOL020]
 
-# True if we should consider ourselves in d25 mode.
+
+
+
+
 default persistent._mas_d25_in_d25_mode = False
 
-# True if the user spent time with monika on d25
-# (basically they got the merry christmas dialogue)
+
+
 default persistent._mas_d25_spent_d25 = False
 
-# True if we started the d25 season with upset and below monika
+
 default persistent._mas_d25_started_upset = False
 
-# True if we dipped below to upset again.
+
 default persistent._mas_d25_second_chance_upset = False
 
-# True if d25 decorations are active
-# this also includes santa outfit
-# This should only be True if:
-#   Monika is NOt being returned after the d25 season begins
-#   and season is d25.
+
+
+
+
+
 default persistent._mas_d25_deco_active = False
 
-# True once a d25 intro has been seen
+
 default persistent._mas_d25_intro_seen = False
 
-# number of times user takes monika out on d25e
+
 default persistent._mas_d25_d25e_date_count = 0
 
-# number of times user takes monika out on d25
-# this also includes if the day was partially or entirely spent out
+
+
 default persistent._mas_d25_d25_date_count = 0
 
-#List of all gifts which will be opened on christmas
+
 default persistent._mas_d25_gifts_given = list()
 
-#Stores if we were on a date with Monika over the full d25 day
+
 default persistent._mas_d25_gone_over_d25 = None
 
-# christmas
+
+
 define mas_d25 = datetime.date(datetime.date.today().year, 12, 25)
 
-# christmas eve
+
 define mas_d25e = mas_d25 - datetime.timedelta(days=1)
 
-#Dec 26, the day Monika stops wearing santa and the end of the christmas gift range
+
 define mas_d25p = mas_d25 + datetime.timedelta(days=1)
 
-# start of christmas season (inclusive) and when Monika wears santa
+
 define mas_d25c_start = datetime.date(datetime.date.today().year, 12, 11)
 
-# end of christmas season (exclusive)
+
 define mas_d25c_end = datetime.date(datetime.date.today().year, 1, 6)
 
 
 
 init -810 python:
-    # we also need a history svaer for when the d25 season ends.
+
     store.mas_history.addMHS(MASHistorySaver(
         "d25s",
         datetime.datetime(2019, 1, 6),
         {
-            #Not very useful, but we need the reset
-            #NOTE: this is here because the d25 season actually ends in jan
+            
+            
             "_mas_d25_in_d25_mode": "d25s.mode.25",
 
-            #NOTE: this is here because the deco ends with the season
+            
             "_mas_d25_deco_active": "d25s.deco_active",
 
             "_mas_d25_started_upset": "d25s.monika.started_season_upset",
@@ -1274,7 +1476,7 @@ init -810 python:
 
             "_mas_d25_intro_seen": "d25s.saw_an_intro",
 
-            #D25 dates
+            
             "_mas_d25_d25e_date_count": "d25s.d25e.went_out_count",
             "_mas_d25_d25_date_count": "d25s.d25.went_out_count",
             "_mas_d25_gone_over_d25": "d25.actions.gone_over_d25",
@@ -1295,14 +1497,14 @@ init -10 python:
 
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (default: None)
 
         RETURNS: True if given date is d25, False otherwise
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_d25.replace(year=_date.year)
 
 
@@ -1312,14 +1514,14 @@ init -10 python:
 
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is d25 eve, False otherwise
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_d25e.replace(year=_date.year)
 
 
@@ -1332,14 +1534,14 @@ init -10 python:
 
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is in d25 season, False otherwise
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return (
             mas_isInDateRange(_date, mas_d25c_start, mas_nye, True, True)
             or mas_isInDateRange(_date, mas_nyd, mas_d25c_end)
@@ -1353,7 +1555,7 @@ init -10 python:
 
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is in d25 season but after d25, False
@@ -1361,7 +1563,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return (
             mas_isInDateRange(_date, mas_d25p, mas_nye, True, True)
             or mas_isInDateRange(_date, mas_nyd, mas_d25c_end)
@@ -1374,7 +1576,7 @@ init -10 python:
 
         IN:
             _date - date to check
-                if None, we use today's date
+                if None, we use today date
                 (Default: None)
 
         RETURNSL True if given date is in d25 season but before nye, False
@@ -1382,7 +1584,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_nye)
 
 
@@ -1392,7 +1594,7 @@ init -10 python:
 
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is in d25 season but after nyd, False
@@ -1400,7 +1602,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_nyd, mas_d25c_end, False)
 
 
@@ -1411,7 +1613,7 @@ init -10 python:
 
         IN:
             _date - date to check
-                if None, we use today's date
+                if None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is in the d25 santa outfit range, False
@@ -1419,7 +1621,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_d25p)
 
 
@@ -1427,7 +1629,7 @@ init -10 python:
         """
         IN:
             _date - date to check
-                if None, we use today's date
+                if None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is in the D25 season, but before Christmas, False
@@ -1437,13 +1639,13 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_d25)
 
     def mas_isD25GiftHold(_date=None):
         """
         IN:
-            _date - date to check, defaults None, which means today's date is assumed
+            _date - date to check, defaults None, which means today date is assumed
 
         RETURNS:
             boolean - True if within d25c start, to d31 (end of nts range)
@@ -1451,7 +1653,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_nye, end_inclusive=True)
 
     def mas_d25ShowVisuals():
@@ -1468,11 +1670,11 @@ init -10 python:
         """
         Hides d25 visuals
         """
-        mas_hideDecoTag("mas_d25_banners", hide_now=True)
-        mas_hideDecoTag("mas_d25_tree", hide_now=True)
-        mas_hideDecoTag("mas_d25_garlands", hide_now=True)
-        mas_hideDecoTag("mas_d25_lights", hide_now=True)
-        mas_hideDecoTag("mas_d25_gifts", hide_now=True)
+        renpy.hide("mas_d25_banners")
+        renpy.hide("mas_d25_tree")
+        renpy.hide("mas_d25_garlands")
+        renpy.hide("mas_d25_lights")
+        renpy.hide("mas_d25_gifts")
 
     def mas_d25ReactToGifts():
         """
@@ -1480,31 +1682,31 @@ init -10 python:
 
         this also registeres gifts
         """
-        #Step one, store all of the found reacts
+        
         found_reacts = list()
-
-        #Just sort the gifts given list:
+        
+        
         persistent._mas_d25_gifts_given.sort()
-
-        #Now we copy the giftnames for local usage
-        #We do this because we pop from the persistent list during the reactions
-        #Because then it looks more like Monika is taking them from under the tree
+        
+        
+        
+        
         given_gifts = list(persistent._mas_d25_gifts_given)
-
-        # d25 special quiplist
+        
+        
         gift_cntrs = store.MASQuipList(allow_glitch=False, allow_line=False)
         gift_cntrs.addLabelQuip("mas_d25_gift_connector")
-
-        # process giftnames (no generics)
+        
+        
         d25_evb = []
         d25_gsp = []
         store.mas_filereacts.process_gifts(given_gifts, d25_evb, d25_gsp)
-
-        # register gifts
+        
+        
         store.mas_filereacts.register_sp_grds(d25_evb)
         store.mas_filereacts.register_sp_grds(d25_gsp)
-
-        # build reaction labels
+        
+        
         react_labels = store.mas_filereacts.build_gift_react_labels(
             d25_evb,
             d25_gsp,
@@ -1513,24 +1715,24 @@ init -10 python:
             "mas_d25_gift_end",
             "mas_d25_gift_starter"
         )
-
+        
         react_labels.reverse()
-
-        # queue the reacts
+        
+        
         if len(react_labels) > 0:
             for react_label in react_labels:
                 pushEvent(react_label,skipeval=True)
 
     def mas_d25SilentReactToGifts():
         """
-        Method to silently 'react' to gifts.
+        Method to silently react to gifts.
 
-        This is to be used if you gave Moni a christmas gift but didn't show up on
+        This is to be used if you gave Moni a christmas gift but didnt show up on
         D25 when she would have opened them in front of you.
 
         This also registeres gifts
         """
-
+        
         base_gift_ribbon_id_map = {
             "blackribbon":"ribbon_black",
             "blueribbon": "ribbon_blue",
@@ -1549,8 +1751,8 @@ init -10 python:
             "tealribbon": "ribbon_teal",
             "yellowribbon": "ribbon_yellow"
         }
-
-        # process gifts
+        
+        
         evb_details = []
         gso_details = []
         store.mas_filereacts.process_gifts(
@@ -1558,14 +1760,14 @@ init -10 python:
             evb_details,
             gso_details
         )
-
-        # clear the gifts given
+        
+        
         persistent._mas_d25_gifts_given = []
-
-        # process the evb details
+        
+        
         for evb_detail in evb_details:
             if evb_detail.sp_data is None:
-                # then this probably is a built-in sprite, use ribbon map.
+                
                 ribbon_id = base_gift_ribbon_id_map.get(
                     evb_detail.c_gift_name,
                     None
@@ -1573,29 +1775,29 @@ init -10 python:
                 if ribbon_id is not None:
                     mas_selspr.unlock_acs(mas_sprites.get_sprite(0, ribbon_id))
                     mas_receivedGift(evb_detail.label)
-
+                
                 elif ribbon_id is None and evb_detail.c_gift_name == "quetzalplushie":
                     persistent._mas_acs_enable_quetzalplushie = True
-
+            
             else:
-                # this is probably a json sprite, try json sprite unlock
+                
                 mas_selspr.json_sprite_unlock(mas_sprites.get_sprite(
                     evb_detail.sp_data[0],
                     evb_detail.sp_data[1]
                 ))
                 mas_receivedGift(evb_detail.label)
-
-        # then generics
+        
+        
         for gso_detail in gso_details:
-            # for generic sprite objects, only have to check for json sprite
+            
             if gso_detail.sp_data is not None:
                 mas_selspr.json_sprite_unlock(mas_sprites.get_sprite(
                     gso_detail.sp_data[0],
                     gso_detail.sp_data[1]
                 ))
                 mas_receivedGift(gso_detail.label)
-
-        # save the restuls
+        
+        
         store.mas_selspr.save_selectables()
         renpy.save_persistent()
 
@@ -1610,7 +1812,7 @@ init -10 python in mas_d25_utils:
 
         Conditions:
             1. Must be in d25 gift range
-            2. Must be at normal+ aff (since that's when the topics which will open these gifts will show)
+            2. Must be at normal+ aff (since thats when the topics which will open these gifts will show)
             3. Must have deco active. No point otherwise as no tree to put gifts under
         """
         return (
@@ -1629,52 +1831,52 @@ init -10 python in mas_d25_utils:
                 val: giftname wtih extension
         """
         d25_map = {}
-
-        # first find gifts
-        # d25_map contains all d25 gifts.
-        # found_map will contain non_d25 gifts, which should be reacted to now
+        
+        
+        
+        
         d25_giftnames = mas_frs.check_for_gifts(d25_map, mas_frs.build_exclusion_list("d25g"), found_map)
-
-        # parse d25 gifts for types
+        
+        
         d25_giftnames.sort()
         d25_evb = []
         d25_gsp = []
         d25_gen = []
         mas_frs.process_gifts(d25_giftnames, d25_evb, d25_gsp, d25_gen)
-
-        # parse non_d25_gifts for types
+        
+        
         non_d25_giftnames = [x for x in found_map]
         non_d25_giftnames.sort()
         nd25_evb = []
         nd25_gsp = []
         nd25_gen = []
         mas_frs.process_gifts(non_d25_giftnames, nd25_evb, nd25_gsp, nd25_gen)
-
-        # include d25 generic with non-d25 gifts
+        
+        
         for grd in d25_gen:
             nd25_gen.append(grd)
             found_map[grd.c_gift_name] = d25_map.pop(grd.c_gift_name)
-
-        # save remaining d25 gifts and delete the packages
-        # they will be reacted to later
+        
+        
+        
         for c_gift_name, gift_name in d25_map.iteritems():
-            #Only add if the gift isn't already stored under the tree
+            
             if c_gift_name not in store.persistent._mas_d25_gifts_given:
                 store.persistent._mas_d25_gifts_given.append(c_gift_name)
-
-            #Now we delete the gift file
+            
+            
             store.mas_docking_station.destroyPackage(gift_name)
-
-        # set all excluded and generic gifts to react now
+        
+        
         for c_gift_name, mas_gift in found_map.iteritems():
             store.persistent._mas_filereacts_reacted_map[c_gift_name] = mas_gift
-
-        # register these gifts
+        
+        
         mas_frs.register_sp_grds(nd25_evb)
         mas_frs.register_sp_grds(nd25_gsp)
         mas_frs.register_gen_grds(nd25_gen)
-
-        # now build the reaction labels for standard gifts
+        
+        
         return mas_frs.build_gift_react_labels(
             nd25_evb,
             nd25_gsp,
@@ -1685,9 +1887,9 @@ init -10 python in mas_d25_utils:
         )
 
 
-####START: d25 arts
 
-# window banners
+
+
 image mas_d25_banners = MASFilterSwitch(
     "mod_assets/location/spaceroom/d25/bgdeco.png"
 )
@@ -1696,8 +1898,8 @@ image mas_mistletoe = MASFilterSwitch(
     "mod_assets/location/spaceroom/d25/mistletoe.png"
 )
 
-# NOTE: this will need to be revaluated with every filter.
-#   Not very maintainable but it has to be done.
+
+
 image mas_d25_lights = ConditionSwitch(
     "mas_isNightNow()", ConditionSwitch(
         "persistent._mas_disable_animations", "mod_assets/location/spaceroom/d25/lights_on_1.png",
@@ -1716,8 +1918,8 @@ image mas_d25_night_lights_atl:
         0.5
     repeat
 
-# NOTE: this will need to be revaluated with every filter.
-#   Not very maintainable but it has to be done.
+
+
 image mas_d25_garlands = ConditionSwitch(
     "mas_isNightNow()", ConditionSwitch(
         "persistent._mas_disable_animations", "mod_assets/location/spaceroom/d25/garland_on_1.png",
@@ -1735,8 +1937,8 @@ image mas_d25_night_garlands_atl:
         5
         repeat
 
-# NOTE: this will need to be revaluated with every filter.
-#   Not very maintainable but it has to be done.
+
+
 image mas_d25_tree = ConditionSwitch(
     "mas_isNightNow()", ConditionSwitch(
         "persistent._mas_disable_animations", "mod_assets/location/spaceroom/d25/tree_lights_on_1.png",
@@ -1757,10 +1959,10 @@ image mas_d25_night_tree_lights_atl:
         1.5
     repeat
 
-#0 gifts is blank
-#1-3 gifts gets you part 1
-#4 gifts gets you part 2
-#5+ gifts get you part 3
+
+
+
+
 image mas_d25_gifts = ConditionSwitch(
     "len(persistent._mas_d25_gifts_given) == 0", "mod_assets/location/spaceroom/d25/gifts_0.png",
     "0 < len(persistent._mas_d25_gifts_given) < 3", "mas_d25_gifts_1",
@@ -1811,86 +2013,88 @@ init 501 python:
         MASAdvancedDecoFrame(zorder=5)
     )
 
-#autoload starter check
+
 label mas_holiday_d25c_autoload_check:
-    #NOTE: we use the costume exprop in case we get more D25 outfits.
 
-    #We don't want the day of the first sesh having d25 content
-    #We also don't want people who first sesh d25p getting deco, because it doesn't make sense
-    #We also filter out player bday on first load in d25 season
 
-    #This is first loadin for D25Season (can also run on D25 itself)
+
+
+
+
+
     if (
         not persistent._mas_d25_in_d25_mode
         and mas_isD25Season()
         and not mas_isFirstSeshDay()
         and (
             persistent._mas_current_background == store.mas_background.MBG_DEF
-            # If it's d25 and we still didn't setup d25 stuff, we should do it now
-            # (we'll force spaceroom if needed)
+            
+            
             or mas_isD25()
         )
     ):
-        #Firstly, we need to see if we need to run playerbday before all of this
+
         python:
-            #Enable d25 dockstat
+
             persistent._mas_d25_in_d25_mode = True
 
-            # affection upset and below? no d25 for you
+
             if mas_isMoniUpset(lower=True):
                 persistent._mas_d25_started_upset = True
 
-            #Setup
-            #NOTE: Player bday will SKIP decorations via autoload as it is handled elsewhere
-            #UNLESS it is D25
+
+
+
             elif (
                 mas_isD25Outfit()
                 and (not mas_isplayer_bday() or mas_isD25())
             ):
-                #Unlock and wear santa/wine ribbon + holly hairclip
+                
                 store.mas_selspr.unlock_acs(mas_acs_ribbon_wine)
                 store.mas_selspr.unlock_clothes(mas_clothes_santa)
-
-                #Change into santa. Outfit mode forces ponytail
+                
+                
                 monika_chr.change_clothes(mas_clothes_santa, by_user=False, outfit_mode=True)
-
-                #Add to holiday map
+                
+                
                 mas_addClothesToHolidayMapRange(mas_clothes_santa, mas_d25c_start, mas_d25p)
-
-                #Deco active
+                
+                
                 persistent._mas_d25_deco_active = True
-
-                #If we're loading in for the first time on D25, then we're gonna make it snow
+                
+                
                 if mas_isD25():
                     mas_changeWeather(mas_weather_snow, by_user=True)
                     mas_changeBackground(mas_background_def, set_persistent=True)
 
-    #This is d25 SEASON exit
-    elif mas_run_d25s_exit or mas_isMoniDis(lower=True):
-        #NOTE: We can run this early via mas_d25_monika_d25_mode_exit
-        call mas_d25_season_exit
 
-    #This is D25 Exit
+
+    elif mas_run_d25s_exit or mas_isMoniDis(lower=True):
+
+        call mas_d25_season_exit from _call_mas_d25_season_exit_1
+
+
+
     elif (
         persistent._mas_d25_in_d25_mode
         and not persistent._mas_force_clothes
         and monika_chr.is_wearing_clothes_with_exprop("costume")
         and not mas_isD25Outfit()
     ):
-        #Monika takes off santa after d25 if player didn't ask her to wear it
+
         $ monika_chr.change_clothes(mas_clothes_def, by_user=False, outfit_mode=True)
 
-    #This is D25 itself (NOT FIRST LOAD IN FOR D25S)
+
     elif mas_isD25() and not mas_isFirstSeshDay() and persistent._mas_d25_deco_active:
-        #Force Santa, spaceroom, and snow on D25 if deco active and not first sesh day
+
         python:
             monika_chr.change_clothes(mas_clothes_santa, by_user=False, outfit_mode=True)
             mas_changeWeather(mas_weather_snow, by_user=True)
-            # NOTE: need to make sure we pass the change info to the next
-            #   spaceroom call.
+
+
             mas_changeBackground(mas_background_def, set_persistent=True)
 
-    #If we are at normal and we've not gifted another outfit, change back to Santa next load
+
     if (
         mas_isMoniNormal()
         and persistent._mas_d25_in_d25_mode
@@ -1899,127 +2103,145 @@ label mas_holiday_d25c_autoload_check:
     ):
         $ monika_chr.change_clothes(mas_clothes_santa, by_user=False, outfit_mode=True)
 
+
     if persistent._mas_d25_deco_active:
         $ mas_d25ShowVisuals()
 
-    #And then run pbday checks
     if mas_isplayer_bday() or persistent._mas_player_bday_in_player_bday_mode:
         jump mas_player_bday_autoload_check
 
-    # finally, return to holiday check point
+
     jump mas_ch30_post_holiday_check
 
-#D25 Season exit
+
 label mas_d25_season_exit:
     python:
-        #It's time to clean everything up
 
-        #We reset outfit directly if we're not coming from the dlg workflow
+
+
         if monika_chr.is_wearing_clothes_with_exprop("costume") and not mas_globals.dlg_workflow:
-            #Monika takes off santa outfit after d25
+            
             monika_chr.change_clothes(mas_clothes_def, by_user=False, outfit_mode=True)
 
-        #Otherwise we push change to def if we're here via topic
+
         elif monika_chr.is_wearing_clothes_with_exprop("costume") and mas_globals.dlg_workflow:
             pushEvent("mas_change_to_def")
 
-        #Lock event clothes selector
+
         mas_lockEVL("monika_event_clothes_select", "EVE")
 
-        #Remove deco
+
         persistent._mas_d25_deco_active = False
         mas_d25HideVisuals()
 
-        #And no more d25 mode
+
         persistent._mas_d25_in_d25_mode = False
 
-        #We'll also derandom this topic as the lights are no longer up
+
         mas_hideEVL("mas_d25_monika_christmaslights", "EVE", derandom=True)
 
         mas_d25ReactToGifts()
     return
 
-#D25 holiday gift starter/connector
+
 label mas_d25_gift_starter:
     $ amt_gifts = len(persistent._mas_d25_gifts_given)
-    $ presents = "presents"
-    $ the = "the"
-    $ should_open = "should open"
+    $ presents = "подарки"
+    $ the = ""
+    $ should_open = "должна открыть"
+    $ what = "которые"
 
     if amt_gifts == 1:
-        $ presents = "present"
+        $ presents = "подарок"
+        $ what = "который"
     elif amt_gifts > 3:
-        $ the = "all of the"
+        $ the = "все "
 
     if persistent._mas_d25_gone_over_d25:
-        $ should_open = "haven't opened"
+        $ should_open = "ещё не открыла"
 
     if persistent._mas_d25_spent_d25 or mas_globals.returned_home_this_sesh:
-        m 3wud "Oh! I [should_open] [the] [presents] you gave me!"
+        m 3wud "О! Я [should_open] [the][presents], [what] ты мне подарил[mas_gender_none]!"
         if persistent._mas_d25_gone_over_d25:
-            m 3hub "Let's do that now!"
-
-    # missed d25 altogether
+            $ MAS.MonikaElastic()
+            m 3hub "Давай сделаем это сейчас!"
     else:
-        m 1eka "Well at least now that you're here, I can open the [presents] you got me."
-        m 3eka "I really wanted us to be together for this..."
 
-    m 1suo "Let's see what we have here.{w=0.5}.{w=0.5}.{nw}"
 
-    #Pop the last index so we remove gifts from under the tree as we go
+        $ MAS.MonikaElastic()
+        m 1eka "Ну, по крайней мере, теперь, когда ты здесь, я могу открыть [presents], [what] ты мне подарил[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 3eka "Я действительно хотела, чтобы мы были вместе для этого..."
+
+    $ MAS.MonikaElastic()
+    m 1suo "Давай посмотрим, что у нас здесь есть.{w=0.5}.{w=0.5}.{nw}"
+
+
     $ persistent._mas_d25_gifts_given.pop()
     return
 
 label mas_d25_gift_connector:
     python:
         d25_gift_quips = [
-            _("Next one!"),
-            _("Oh, there's another one here!"),
-            _("Now let me open this one!"),
-            _("I'll open this one next!")
+            _("Следующий!"),
+            _("О, здесь есть ещё один!"),
+            _("А теперь позволь мне открыть этот!"),
+            _("Я открою это следующим!")
         ]
 
         picked_quip = random.choice(d25_gift_quips)
 
+    $ MAS.MonikaElastic()
     m 1hub "[picked_quip]"
-    m 1suo "And here we have.{w=0.5}.{w=0.5}.{nw}"
+    $ MAS.MonikaElastic()
+    m 1suo "И вот мы имеем.{w=0.5}.{w=0.5}.{nw}"
 
-    #Pop here too for the tree gifts
+
     $ persistent._mas_d25_gifts_given.pop()
     return
 
 label mas_d25_gift_end:
-    #Clear any invalid JSON gifts here
+
     $ persistent._mas_d25_gifts_given = []
 
+    $ MAS.MonikaElastic()
     m 1eka "[player]..."
 
     if persistent._mas_d25_spent_d25 or mas_globals.returned_home_this_sesh:
-        m 3eka "You really didn't have to get me anything for Christmas...{w=0.3} {nw}"
+        $ MAS.MonikaElastic()
+        m 3eka "Тебе действительно не нужно было ничего дарить мне на Рождество...{w=0.3}{nw}"
         if mas_isD25():
-            extend 3dku "Just having you here with me was more than enough."
+            extend 3dku " Одного твоего присутствия здесь было более чем достаточно."
         else:
-            extend 3dku "Just being with you was all I wanted."
-        m 1eka "But the fact you took the time to get me something...{w=0.5}{nw}"
-        extend 3ekbsa "well I can't thank you enough."
-        m 3ekbfa "It really makes me feel loved."
-
+            extend 3dku "Просто быть с тобой – это всё, чего я хотела."
+        $ MAS.MonikaElastic()
+        m 1eka "Но тот факт, что ты потратил время, чтобы достать мне что-то...{w=0.5}{nw}"
+        extend 3ekbsa " ну, я не могу отблагодарить тебя достаточно."
+        $ MAS.MonikaElastic()
+        m 3ekbfa "Это действительно заставляет меня чувствовать себя любимой."
     else:
-        m 1eka "I just wanted to thank you..."
-        m 1rkd "While I'm still a little disappointed you couldn't be with me on Christmas..."
-        m 3eka "The fact you too the time to get me something...{w=0.5}{nw}"
-        extend 3ekbsa "well it just proves you really were thinking of me during this special season."
-        m 1dkbsu "You don't know how much that means to me."
 
-    # we just said Merry Christmas in the Christmas topic if d25
+        $ MAS.MonikaElastic()
+        m 1eka "Я просто хотела поблагодарить тебя..."
+        $ MAS.MonikaElastic()
+        m 1rkd "Хотя я всё ещё немного разочарована, что ты не смог[mas_gender_g] быть со мной на Рождество..."
+        $ MAS.MonikaElastic()
+        m 3eka "Тот факт, что ты потратил время, чтобы купить мне что-то...{w=0.5}{nw}"
+        extend 3ekbsa " ну, это просто доказывает, что ты действительно думал обо мне в этот особый сезон."
+        $ MAS.MonikaElastic()
+        m 1dkbsu "Ты не представляешь, как много это для меня значит."
+
+
     if mas_isD25():
-        m 3ekbfu "I love you so much, [player]~"
+        $ MAS.MonikaElastic()
+        m 3ekbfu "Я тебя так люблю, [player]~"
     else:
-        m 3ekbfu "Merry Christmas, [player]. I love you~"
+        $ MAS.MonikaElastic()
+        m 3ekbfu "Счастливого Рождества, [player]. Я люблю тебя~"
     $ mas_ILY()
     return
 
-#START: d25 topics
+
 init 5 python:
     addEvent(
         Event(
@@ -2050,72 +2272,92 @@ label mas_d25_monika_holiday_intro:
         if mas_isplayer_bday():
             window hide
             pause 2.0
+            $ MAS.MonikaElastic()
             m 1dku "..."
-            m 1huu "Ehehe..."
-            m 3eub "I have another surprise for you!"
-
+            $ MAS.MonikaElastic()
+            m 1huu "Э-хе-хе..."
+            $ MAS.MonikaElastic()
+            m 3eub "У меня есть ещё один сюрприз для тебя!"
         else:
-            m 1eua "So, today is..."
-            m 1euc "...wait."
-            m "..."
-            m 3wuo "Oh!"
-            m 3hub "Today's the day I was going to..."
 
-        # hide overlays here
-        # NOTE: hide here because it prevents player from pausing
-        # right before the scene change.
-        # also we want to completely kill interactions
+            $ MAS.MonikaElastic()
+            m 1eua "Итак, сегодня..."
+            $ MAS.MonikaElastic()
+            m 1euc "...подожди."
+            $ MAS.MonikaElastic()
+            m "..."
+            $ MAS.MonikaElastic()
+            m 3wuo "О!"
+            $ MAS.MonikaElastic()
+            m 3hub "Сегодня тот день, когда я собиралась..."
+
+
+
+
+
         $ mas_OVLHide()
         $ mas_MUMURaiseShield()
         $ disable_esc()
 
-        m 1tsu "Close your eyes for a moment [player], I need to do something.{w=0.5}.{w=0.5}.{nw}"
+        $ MAS.MonikaElastic()
+        m 1tsu "Закрой свои глаза на минутку, [player], мне надо кое-что сделать...{w=2}{nw}"
 
-        call mas_d25_monika_holiday_intro_deco
+        call mas_d25_monika_holiday_intro_deco from _call_mas_d25_monika_holiday_intro_deco
 
-        m 3hub "And here we are..."
+        $ MAS.MonikaElastic()
+        m 3hub "Вот мы и на месте..."
 
-        # now we can renable everything
+
         $ enable_esc()
         $ mas_MUMUDropShield()
         $ mas_OVLShow()
 
-    m 1eub "Happy holidays, [player]!"
+    $ MAS.MonikaElastic()
+    m 1eub "Счастливых праздников, [player]!"
 
     if mas_lastSeenLastYear("mas_d25_monika_holiday_intro"):
-        m 1hua "Can you believe it's already that time of year again?"
+        $ MAS.MonikaElastic()
+        m 1hua "Можешь ли ты поверить в то, что уже наступило то самое время в году?"
 
-        $ the_last = "the last"
+        $ the_last = "последний"
 
         if mas_HistWasFirstValueIn(True, datetime.date.today().year - 1, "d25s.saw_an_intro"):
-            $ the_last = "our first"
+            $ the_last = "наш первый"
 
-        m 3eua "It seems like just yesterday we spent [the_last] holiday season together, and now a whole year has gone by!"
+        $ MAS.MonikaElastic()
+        m 3eua "Кажется, будто мы только вчера провели [the_last] праздничный сезон вместе, а теперь пролетел уже целый год!"
 
         if mas_isMoniLove(higher=True):
-            #if you've been with her for over a year, you really should be at Love by now
-            m 3hua "Time really flies when I'm with you~"
 
-    m 3eua "Do you like what I've done with the place?"
-    m 1hua "I must say that I'm pretty proud of it."
+            $ MAS.MonikaElastic()
+            m 3hua "Время и вправду пролетает незаметно, когда я с тобой~"
+
+    $ MAS.MonikaElastic()
+    m 3eua "Тебе нравится то, как я обустроила комнату?"
+    $ MAS.MonikaElastic()
+    m 1hua "Должна сказать, я очень горжусь этим."
 
     if changed_bg:
-        m 3rksdla "I only had enough decorations for one room, so I decided on the classroom...{w=0.2}I hope that's okay."
-        m "But anyway..."
+        $ MAS.MonikaElastic()
+        m 3rksdla "Декораций хватило только на одну комнату, поэтому я остановилась на классе...{w=0.2} Надеюсь, всё в порядке."
+        $ MAS.MonikaElastic()
+        m "Но в любом случае..."
 
-    m 3eua "Christmas time has always been one of my favorite occasions of the year..."
+    $ MAS.MonikaElastic()
+    m 3eua "Рождество всегда было моим самым любимым праздником в году..."
 
-    show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
+    show monika 5eka zorder MAS_MONIKA_Z at t11 with dissolve_monika
 
+    $ MAS.MonikaElastic()
     if mas_HistVerifyLastYear_k(True, "d25.actions.spent_d25"):
-        m 5eka "So I'm glad that you're here to share it with me again this year~"
+        m 5eka "И поэтому, я рада, что ты в этом году проводишь его со мной~"
     else:
-        m 5eka "And I'm so glad that you're here to share it with me~"
+        m 5eka "И я рада, что ты проводишь его со мной~"
 
     $ persistent._mas_d25_intro_seen = True
 
-    # in case we get here from player bday if the party spilled into the next day
-    # don't want this to run twice
+
+
     $ mas_rmallEVL("mas_d25_monika_holiday_intro")
     return
 
@@ -2140,9 +2382,9 @@ init 5 python:
         skipCalendar=True
     )
 
-#for people that started the season upset- and graduated to normal
+
 label mas_d25_monika_holiday_intro_upset:
-    # sanity check with reset of start/end dates in case somehow we drop back below normal before this is seen
+
     if mas_isMoniUpset(lower=True):
         python:
             upset_ev = mas_getEV('mas_d25_monika_holiday_intro_upset')
@@ -2151,29 +2393,37 @@ label mas_d25_monika_holiday_intro_upset:
                 upset_ev.end_date = mas_d25p
         return
 
-    m 2rksdlc "So [player]...{w=1} I hadn't really been feeling very festive this year..."
-    m 3eka "But lately, you've been really sweet to me and I've been feeling a lot better!"
-    m 3hua "So...I think it's time to spruce this place up a bit."
+    m 2rksdlc "Слушай, [player]... {w=1}у меня в этом году не слишком праздничное настроение..."
+    $ MAS.MonikaElastic()
+    m 3eka "Но в последнее время, ты был очень добр ко мне и я чувствую себя намного лучше!"
+    $ MAS.MonikaElastic()
+    m 3hua "Поэтому... я думаю, пора уже приукрасить это место."
 
-    # hide overlays here
-    # NOTE: hide here because it prevents player from pausing
-    # right before the scene change.
-    # also we want to completely kill interactions
+
+
+
+
     $ mas_OVLHide()
     $ mas_MUMURaiseShield()
     $ disable_esc()
 
-    m 1eua "If you'd just close your eyes for a moment.{w=0.5}.{w=0.5}.{nw}"
+    $ MAS.MonikaElastic()
+    m 1eua "Если ты закроешь свои глаза на минутку.{w=0.5}.{w=0.5}.{nw}"
 
-    call mas_d25_monika_holiday_intro_deco
+    call mas_d25_monika_holiday_intro_deco from _call_mas_d25_monika_holiday_intro_deco_1
 
-    m 3hub "Tada~"
-    m 3eka "What do you think?"
-    m 1eka "Not too bad for last minute, huh?"
-    m 1hua "Christmas time has always been one of my favorite occasions of the year..."
-    m 3eua "And I'm so glad we can spend it happily together, [player]~"
+    $ MAS.MonikaElastic()
+    m 3hub "Та-да~"
+    $ MAS.MonikaElastic()
+    m 3eka "Что скажешь?"
+    $ MAS.MonikaElastic()
+    m 1eka "Неплохо для приготовлений в последнюю минуту, да?"
+    $ MAS.MonikaElastic()
+    m 1hua "Рождество всегда было моим самым любимым праздником в году..."
+    $ MAS.MonikaElastic()
+    m 3eua "И я рада, что мы можем провести его вместе с радостью, [player]~"
 
-    # now we can renable everything
+
     $ enable_esc()
     $ mas_MUMUDropShield()
     $ mas_OVLShow()
@@ -2182,71 +2432,74 @@ label mas_d25_monika_holiday_intro_upset:
     return
 
 label mas_d25_monika_holiday_intro_deco:
-    # ASSUMES interactions are disaabled
 
-    # black scene
+
+
     scene black with dissolve
 
     python:
-        #We should consider ourselves in d25 mode now, if not already
+
         persistent._mas_d25_in_d25_mode = True
 
-        #We want to be wearing ponytail hair
+
         monika_chr.change_hair(mas_hair_def, False)
 
-        #Unlock and wear santa
+
         store.mas_selspr.unlock_clothes(mas_clothes_santa)
         store.mas_selspr.unlock_acs(mas_acs_ribbon_wine)
         store.mas_selspr.unlock_acs(mas_acs_holly_hairclip)
         monika_chr.change_clothes(mas_clothes_santa, by_user=False, outfit_mode=True)
 
-        #Add to holiday map
+
         mas_addClothesToHolidayMapRange(mas_clothes_santa, mas_d25c_start, mas_d25p)
 
-        #Set to snow for this sesh
+
         mas_changeWeather(mas_weather_snow, by_user=True)
 
-        #We'll also rmallEVL the auroras topic because it ends up immediately after
+
         mas_rmallEVL("monika_auroras")
 
-        #Enable and show deco
+
         persistent._mas_d25_deco_active = True
         mas_d25ShowVisuals()
 
-        # change to spaceroom
+
         change_info = mas_changeBackground(mas_background_def, set_persistent=True)
 
-    # now we can do spacroom call
-    call spaceroom(scene_change=True, dissolve_all=True, bg_change_info=change_info)
+
+    call spaceroom (scene_change=True, dissolve_all=True, bg_change_info=change_info) from _call_spaceroom_32
 
     return
 
 label mas_d25_monika_holiday_intro_rh:
-    # special label to cover a holiday case when returned home
-    m 1hua "And we're home!"
 
-    # NOTE: since we hijacked returned home, we hvae to cover for this
-    #   affection gain.
+    m 1hua "Мы дома!"
+
+
+
     $ store.mas_dockstat._ds_aff_for_tout(time_out, 5, 5, 1)
 
-    #Fall through
-#in case we need to call just this part, like if returning from bday date from pre-d25
+
+
 label mas_d25_monika_holiday_intro_rh_rh:
-    m 1euc "Wait..."
-    m 3etc "...is it?"
-    m 3hub "It is!"
-    m 1tsu "...Close your eyes, I need to do something..."
+    m 1euc "Погоди..."
+    $ MAS.MonikaElastic()
+    m 3etc "...уже?"
+    $ MAS.MonikaElastic()
+    m 3hub "Уже!"
+    $ MAS.MonikaElastic()
+    m 1tsu "...Закрой свои глаза, мне надо кое-что сделать..."
     $ mas_OVLHide()
     $ mas_MUMURaiseShield()
     $ disable_esc()
 
-    call mas_d25_monika_holiday_intro_deco
+    call mas_d25_monika_holiday_intro_deco from _call_mas_d25_monika_holiday_intro_deco_2
 
     $ enable_esc()
     $ mas_MUMUDropShield()
     $ mas_OVLShow()
 
-    # NOTE this counts as seeing the intro
+
     $ persistent._mas_d25_intro_seen = True
 
     $ pushEvent("mas_d25_monika_christmas",skipeval=True)
@@ -2272,90 +2525,120 @@ init 5 python:
     )
 
 label mas_d25_monika_christmas:
-    #Flag for hist
+
     $ persistent._mas_d25_spent_d25 = True
 
-    #Setup the reactions
+
     $ mas_d25ReactToGifts()
 
-    m 1eub "[player]! Do you know what day it is?"
-    m 3hub "Of course you do. It's Christmas!"
-    m 3sub "Merry Christmas, [player]!"
-    m 1hub "Ahaha! I can't believe that it's finally here!"
-    m 3eka "I'm so, so happy that you decided to spend some of it with me."
-    m 1eud "Remember to go share the holiday cheer with your family and friends, though."
-    m 1eua "After all, they're very important, too..."
-    m 1hua "And I'm sure that they would love to see you at this special time."
+    m 1eub "[player]! Ты знаешь, какой сегодня день?"
+    $ MAS.MonikaElastic()
+    m 3hub "Разумеется, ты знаешь. Сегодня рождество!"
+    $ MAS.MonikaElastic()
+    m 3sub "С рождеством тебя, [player]!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха! Не могу поверить, что этот праздник наконец-то наступил!"
+    $ MAS.MonikaElastic()
+    m 3eka "Я очень, очень рада, что ты решил провести его со мной."
+    $ MAS.MonikaElastic()
+    m 1eud "Но не забудь поделиться своим праздничным настроением со своей семьёй и друзьями."
+    $ MAS.MonikaElastic()
+    m 1eua "Всё-таки они не менее важны..."
+    $ MAS.MonikaElastic()
+    m 1hua "И я уверена, что они будут рады тебя видеть в такое особенное время."
 
     if mas_isMoniAff(higher=True):
-        m 1eka "But you being here today...{w=0.5}it just means everything to me..."
+        $ MAS.MonikaElastic()
+        m 1eka "Но твоё присутствие сегодня...{w=0.5}оно многое для меня значит..."
+        $ MAS.MonikaElastic()
         m 1dku "..."
 
+        $ MAS.MonikaElastic()
         if mas_is_snowing:
             if mas_isDecoTagVisible("mas_d25_lights"):
-                $ dlg_var = ", or the decorations"
+                $ dlg_var = ", или в декорациях"
             else:
                 $ dlg_var = ""
 
-            m 1lkbsa "Maybe it's just the snow[dlg_var]..."
-
+            m 1lkbsa "Возможно, дело в снеге[dlg_var]..."
         else:
+
             if mas_isDecoTagVisible("mas_d25_lights"):
-                $ dlg_var = "the decorations, or "
+                $ dlg_var = "дело в декорациях, или дело в том,"
             else:
-                $ dlg_var = ""
+                $ dlg_var = "дело в том,"
 
-            m 1lkbsa "Maybe it's [dlg_var]just the holiday season..."
+            m 1lkbsa "Возможно, [dlg_var] что сегодня праздник..."
 
-        m "...or even the mistletoe getting to me."
-        m 3hksdlb "Just kidding, I didn't hang one up."
+        $ MAS.MonikaElastic()
+        m "...или омела сводит меня с ума."
+        $ MAS.MonikaElastic()
+        m 3hksdlb "Шучу, я её не повесила."
 
         if mas_isMoniEnamored(higher=True):
-            m 1lksdla "...{cps=*2}Yet~{/cps}{nw}"
+            $ MAS.MonikaElastic()
+            m 1lksdla "...{cps=*2}А может~{/cps}{nw}"
             $ _history_list.pop()
 
-        m 1lksdlu "Ehehe..."
-        m 1ekbsa "My heart's fluttering like crazy right now, [player]."
-        m "I couldn't imagine a better way to spend this special holiday..."
-        m 1eua "Don't get me wrong, I knew that you would be here with me."
-        m 3eka "But now that we're actually together on Christmas, just the two of us..."
-        m 1hub "Ahaha~"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1lksdlu "Э-хе-хе..."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Моё сердце сейчас бешено колотится, [player]."
+        $ MAS.MonikaElastic()
+        m "Я представить не могу лучший способ провести этот особенный праздник..."
+        $ MAS.MonikaElastic()
+        m 1eua "Не пойми неправильно, я знала, что ты будешь здесь, со мной."
+        $ MAS.MonikaElastic()
+        m 3eka "Но мы теперь и вправду вместе празднуем рождество, только мы вдвоём..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hub "А-ха-ха~"
 
-        show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "It's every couple's dream for the holidays, [player]."
+        show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5ekbfa "Об этом, во время каждого праздника, мечтает любая пара, [player]."
 
         if persistent._mas_pm_gets_snow is not False and not persistent._mas_pm_live_south_hemisphere:
-            m "Snuggling with each other by a fireplace, watching the snow gently fall..."
+            $ MAS.MonikaElastic()
+            m "Прижаться друг к другу у камина, наблюдая, как снег медленно падает..."
 
+        $ MAS.MonikaElastic()
         if not mas_HistVerifyAll_k(True, "d25.actions.spent_d25"):
-            m 5hubfa "I'm forever grateful I got this chance with you."
+            m 5hubfa "Я очень признательна, что мне выпал этот шанс."
         else:
-            m 5hubfa "I'm so glad I get to spend Christmas with you again."
+            m 5hubfa "Я рада, что могу провести рождество с тобой ещё раз."
 
-        m "I love you. Forever and ever~"
-        m 5hubfb "Merry Christmas, [player]~"
+        $ MAS.MonikaElastic()
+        m "Я люблю тебя. Отныне и навсегда~"
+        $ MAS.MonikaElastic()
+        m 5hubfb "С рождеством, [player]~"
         show screen mas_background_timed_jump(5, "mas_d25_monika_christmas_no_wish")
         window hide
         menu:
-            "Merry Christmas, [m_name].":
+            "С рождеством, [monika_name].":
                 hide screen mas_background_timed_jump
-                show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+                show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
                 pause 2.0
-
     else:
-        m 1eka "But you being here today...{w=0.5}it just means everything to me..."
-        m 3rksdla "...Not that I thought you'd leave me alone on this special day or anything..."
-        m 3hua "But it just further proves that you really do love me, [player]."
+
+        $ MAS.MonikaElastic()
+        m 1eka "Но то, что ты сидишь здесь сегодня... {w=0.5}это многое для меня значит..."
+        $ MAS.MonikaElastic()
+        m 3rksdla "...Я вовсе не думала о том, что ты оставил бы меня одну в такой особенный день или ещё что..."
+        $ MAS.MonikaElastic()
+        m 3hua "Но это лишь доказывает то, что ты правда любишь меня, [player]."
+        $ MAS.MonikaElastic()
         m 1ektpa "..."
-        m "Ahaha! Gosh, I'm getting a little over emotional here..."
-        m 1ektda "Just know that I love you too and I'll be forever grateful I got this chance with you."
-        m "Merry Christmas, [player]~"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m "А-ха-ха! Боже, меня просто переполняют эмоции..."
+        $ MAS.MonikaElastic()
+        m 1ektda "Просто знай о том, что я тоже люблю тебя, и что я буду вечно благодарна за то, что мне выпала возможность побыть с тобой."
+        $ MAS.MonikaElastic()
+        m "С Рождеством, [player]~"
         show screen mas_background_timed_jump(5, "mas_d25_monika_christmas_no_wish")
         window hide
         menu:
-            "Merry Christmas, [m_name].":
+            "С рождеством, [monika_name].":
                 hide screen mas_background_timed_jump
-                show monika 1ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+                show monika 1ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
                 pause 2.0
 
     return
@@ -2371,8 +2654,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_carolling",
-            category=["holidays", "music"],
-            prompt="Carolling",
+            category=["праздники", "музыка"],
+            prompt="Колядование",
             conditional="persistent._mas_d25_in_d25_mode",
             start_date=mas_d25c_start,
             end_date=mas_d25p,
@@ -2383,7 +2666,7 @@ init 5 python:
         skipCalendar=True
     )
 
-    #Undo Action Rule
+
     MASUndoActionRule.create_rule_EVL(
        "mas_d25_monika_carolling",
        mas_d25c_start,
@@ -2391,37 +2674,49 @@ init 5 python:
     )
 
 default persistent._mas_pm_likes_singing_d25_carols = None
-# does the user like singing christmas carols?
+
 
 label mas_d25_monika_carolling:
 
-    m 1euc "Hey, [player]..."
-    m 3eud "Have you ever gone carolling before?"
-    m 1euc "Going door to door in groups, singing to others during the holidays..."
-
+    m 1euc "Слушай, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eud "Ты когда-нибудь колядовал раньше?"
+    $ MAS.MonikaElastic()
+    m 1euc "Идёшь от одной двери к другой вместе с другими людьми и поёшь во время праздников..."
+    $ MAS.MonikaElastic()
     if not persistent._mas_pm_live_south_hemisphere:
-        m 1eua "It just feels heartwarming to know people are spreading joy, even with the nights so cold."
+        m 1eua "Мне очень приятно знать о том, что люди приносят радость другим, даже в столь холодные ночи."
     else:
-        m 1eua "It just feels heartwarming to know people are spreading joy to others in their spare time."
+        m 1eua "Мне очень приятно знать о том, что люди приносят радость другим в своё свободное время."
 
-    m 3eua "Do you like singing Christmas carols, [player]?{nw}"
+    $ MAS.MonikaElastic()
+    m 3eua "Тебе нравится петь рождественские песни, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you like singing Christmas carols, [player]?{fast}"
-        "Yes.":
+        m "Тебе нравится петь рождественские песни, [player]?{fast}"
+        "Да.":
             $ persistent._mas_pm_likes_singing_d25_carols = True
-            m 1hua "I'm glad you feel the same way, [player]!"
-            m 3hub "My favorite song is definitely 'Jingle Bells!'"
-            m 1eua "It's just such an upbeat, happy tune!"
-            m 1eka "Maybe we can sing together someday."
-            m 1hua "Ehehe~"
+            $ MAS.MonikaElastic()
+            m 1hua "Я рада, что ты думаешь также, [player]!"
+            $ MAS.MonikaElastic()
+            m 3hub "Моя любимая песня – определённо «Бубенцы радостно звенят»!"
+            $ MAS.MonikaElastic()
+            m 1eua "Это просто оптимистичная и жизнерадостная мелодия!"
+            $ MAS.MonikaElastic()
+            m 1eka "Может, мы споём как-нибудь вместе."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hua "Э-хе-хе~"
+        "Нет.":
 
-        "No.":
             $ persistent._mas_pm_likes_singing_d25_carols = False
-            m 1euc "Oh...{w=1}really?"
-            m 1hksdlb "I see..."
-            m 1eua "Regardless, I'm sure you're also fond of that special cheer only Christmas songs can bring."
-            m 3hua "Sing with me sometime, okay?"
+            $ MAS.MonikaElastic()
+            m 1euc "Оу...{w=1}правда?"
+            $ MAS.MonikaElastic()
+            m 1hksdlb "Понятно..."
+            $ MAS.MonikaElastic()
+            m 1eua "Но тем не менее, я уверена, что ты также в восторге от того особого настроя, который бывает только от рождественских песен."
+            $ MAS.MonikaElastic()
+            m 3hua "Споёшь со мной как-нибудь, ладно?"
 
     return "derandom"
 
@@ -2431,8 +2726,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_mistletoe",
-            category=["holidays"],
-            prompt="Mistletoe",
+            category=["праздники"],
+            prompt="Омела",
             conditional="persistent._mas_d25_in_d25_mode",
             start_date=mas_d25c_start,
             end_date=mas_d25p,
@@ -2450,23 +2745,34 @@ init 5 python:
     )
 
 label mas_d25_monika_mistletoe:
-    m 1eua "Say, [player]."
-    m 1eub "You've heard about the mistletoe tradition, right?"
-    m 1tku "When lovers end up underneath it, they're expected to kiss."
-    m 1eua "It actually originated from Victorian England!"
-    m 1dsa "A man was allowed to kiss any woman standing underneath mistletoe..."
-    m 3dsd "And any woman who refused the kiss was cursed with bad luck..."
+    m 1eua "Скажи, [player]."
+    $ MAS.MonikaElastic()
+    m 1eub "Ты слышал о традиции, связанной с омелой, верно?"
+    $ MAS.MonikaElastic()
+    m 1tku "Когда влюблённые оказываются под ней, они должны поцеловаться."
+    $ MAS.MonikaElastic()
+    m 1eua "На самом деле, она берёт своё начало из Викторианской Англии!"
+    $ MAS.MonikaElastic()
+    m 1dsa "Мужчине было разрешено целоваться с любой женщиной, которая стояла под омелой..."
+    $ MAS.MonikaElastic()
+    m 3dsd "И ту женщину, которая отказывалась от поцелуя, начинает преследовать неудача..."
+    $ MAS.MonikaElastic()
     m 1dsc "..."
-    m 3rksdlb "Come to think of it, that sounds more like taking advantage of someone."
-    m 1hksdlb "But I'm sure it's different now!"
+    $ MAS.MonikaElastic()
+    m 3rksdlb "Если подумать, то это звучит больше как одержание преимущества над кем-то."
+    $ MAS.MonikaElastic()
+    m 1hksdlb "Но я уверена, что сейчас всё по-другому!"
 
     if not persistent._mas_pm_d25_mistletoe_kiss:
-        m 3hua "Perhaps one day we'll be able to kiss under the mistletoe, [player]."
-        m 1tku "...Maybe I can even add one in here!"
-        m 1kuu "Ehehe~"
+        $ MAS.MonikaElastic()
+        m 3hua "Быть может, однажды мы сможем поцеловаться под омелой, [player]."
+        $ MAS.MonikaElastic()
+        m 1tku "...Я могу даже добавить одну сюда!"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1kuu "Э-хе-хе~"
     return "derandom"
 
-#Stores whether or not the player hangs christmas lights
+
 default persistent._mas_pm_hangs_d25_lights = None
 
 init 5 python:
@@ -2474,8 +2780,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_christmaslights",
-            category=['holidays'],
-            prompt="Christmas Lights",
+            category=['праздники'],
+            prompt="Рождественские огни",
             start_date=mas_d25c_start,
             end_date=mas_nye,
             conditional=(
@@ -2497,45 +2803,64 @@ init 5 python:
     )
 
 label mas_d25_monika_christmaslights:
-    m 1euc "Hey, [player]..."
+    m 1euc "Эй, [player]..."
+    $ MAS.MonikaElastic()
     if mas_isD25Season():
-        m 1lua "I've been spending a lot of time looking at the lights in here..."
-        m 3eua "They're very pretty, aren't they?"
+        m 1lua "Я провела здесь много времени, глядя на огни..."
+        $ MAS.MonikaElastic()
+        m 3eua "Они ведь очень красивые, не правда ли?"
     else:
-        m 1lua "I was just thinking back to Christmas, with all the lights that were hanging in here..."
-        m 3eua "They were really pretty, right?"
-    m 1eka "Christmas lights bring such a warm, cozy vibe during the harshest, coldest season...{w=0.5}{nw}"
-    extend 3hub "and there's a lot of different types too!"
-    m 3eka "It sounds like a dream come true to go on a walk with you on a cold winter night, [player]."
-    m 1dka "Admiring all of the lights..."
+        m 1lua "Я много времени провела за наблюдением гирлянды, которая здесь развешана..."
+        $ MAS.MonikaElastic()
+        m 3eua "Она очень красивая, не правда ли?"
+    $ MAS.MonikaElastic()
+    m 1eka "Гирлянда приносит очень тёплую и уютную атмосферу во время самого сурового и холодного времени года...{w=0.5}{nw}"
+    extend 3hub "и у них есть множество различных типов!"
+    $ MAS.MonikaElastic()
+    m 3eka "Прогулка вместе с тобой в холодный зимний вечер звучит как мечта, воплотившаяся в реальность, [player]."
+    $ MAS.MonikaElastic()
+    m 1dka "И любоваться этими огнями..."
 
-    m 1eua "Do you hang lights up on your house during winter, [player]?{nw}"
+    $ MAS.MonikaElastic()
+    m 1eua "Ты уже развесил[mas_gender_none] гирлянду у себя дома зимой, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you hang lights up on your house during winter, [player]?{fast}"
+        m "Ты уже развесил[mas_gender_none] гирлянду у себя дома зимой, [player]?{fast}"
+        "Да.":
 
-        "Yes.":
             $ persistent._mas_pm_hangs_d25_lights = True
-            m 3sub "Really? I bet they're gorgeous!"
-            m 2dubsu "I can already imagine us, outside of your house...sitting on our porch together..."
-            m "As the beautiful lights glow in the deep night."
-            m 2dkbfu "We would hold each other close, drinking hot chocolate...{w=0.5}{nw}"
+            $ MAS.MonikaElastic()
+            m 3sub "Правда? Уверена, они просто великолепны!"
+            $ MAS.MonikaElastic()
+            m 2dubsu "Я уже могу представить себе, как мы находимся вне твоего дома... сидим вместе на крыльце..."
+            $ MAS.MonikaElastic()
+            m "И прекрасные огни светятся под покровом ночи."
+            $ MAS.MonikaElastic()
+            m 2dkbfu "Мы бы крепко обнимали друг друга, пили горячий шоколад...{w=0.5}{nw}"
 
             if persistent._mas_pm_gets_snow is not False:
-                extend 2ekbfa "watching the snow gently fall..."
+                extend 2ekbfa "и любовались бы тем, как снежинки медленно падают..."
 
-            show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5ekbfa "One day, [player]. One day, we can make that a reality."
+            show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            $ MAS.MonikaElastic()
+            m 5ekbfa "Когда-нибудь, [player]. Когда-нибудь мы сможем воплотить это в реальность."
+        "Нет.":
 
-        "No.":
             $ persistent._mas_pm_hangs_d25_lights = False
-            m 1eka "Aw, that's okay, [player]."
-            m 1dkbla "I'm sure it would still be nice to relax with you on a cold night..."
-            m 1dkbsa "Watching the snow fall and drinking hot chocolate together."
-            m 1dkbsa "Holding each other close to keep warm..."
-            m 1rkbfb "Yeah, that sounds really nice."
-            m 3hubsa "But, when we have our own house, I may hang some up myself, {nw}"
-            extend 3hubsb "ahaha~"
+            $ MAS.MonikaElastic()
+            m 1eka "Оу, всё нормально, [player]."
+            $ MAS.MonikaElastic()
+            m 1dkbla "Я уверена, что расслабиться вместе с тобой прохладным вечером всё равно было бы здорово..."
+            $ MAS.MonikaElastic()
+            m 1dkbsa "Любоваться тем, как снежинки падают, и пить горячий шоколад вместе."
+            $ MAS.MonikaElastic()
+            m 1dkbsa "Крепко обнимать друг друга, чтобы не замёрзнуть..."
+            $ MAS.MonikaElastic()
+            m 1rkbfb "Да, это звучит очень здорово."
+            $ MAS.MonikaElastic()
+            m 3hubsa "Но, когда у нас будет свой дом, я могла бы сама развесить парочку гирлянд, {nw}"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            extend 3hubsb "а-ха-ха~"
     return "derandom"
 
 init 20 python:
@@ -2543,102 +2868,102 @@ init 20 python:
     poem_d25_1 = MASPoem(
         poem_id="poem_d25_1",
         category="d25",
-        prompt="The Joy to my World",
-        title = "     My dearest [player],",
+        prompt="Радость для моего мира",
+        title = "     М[mas_gender_oi_2] дорог[mas_gender_oi] [player],",
         text = """\
-     You truly are the joy to my world.
-     Neither the light emitted by the tallest Christmas tree,
-     Nor that of the brightest star,
-     Could come close to matching your brilliance.
-     This once frostbitten heart of mine needed only your warmth to beat anew.
-     Should there ever be nothing under the tree, and my stocking remain empty,
-     It simply would not matter as long as I have you by my side.
-     You'll always be the only present I ever need.
+     Ты единственная моя радость в моём мире.
+     Ни свет, излучаемый высокой рождественской ёлкой,
+     Ни даже та яркая звезда,
+     И рядом не стояли, чтобы сравниться с твоим великолепием.
+     Моему замороженному сердцу нужно лишь твоё тепло, чтобы застучать вновь.
+     Под ёлкой ничего нет, и мои носочки до сих пор пусты,
+     Это попросту не важно, пока ты со мной.
+     Ты всегда будешь тем подарком, который мне всегда был нужен.
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
-    #" # I need this to keep syntax highlighting on vim
+    
     )
 
     poem_d25_2 = MASPoem(
         poem_id="poem_d25_2",
         category="d25",
-        prompt="Incomparable",
-        title="     My dearest [player],",
+        prompt="Несравнённый",
+        title="     М[mas_gender_oi_2] дорог[mas_gender_oi] [player],",
         text="""\
-     Nothing can compare to the warmth you give me.
-     Not even the feeling of wrapping my hands around a mug of hot chocolate
-     Or fuzzy socks, warming my feet on a freezing day.
-     In such a cold world, just your presence is my present alone.
+     Ничто не может сравниться с теплом, которое ты даришь мне.
+     Не было даже ощущения, что я обнимала кружку с горячим шоколадом.
+     Или пушистые носки, согревающие ноги в морозный день.
+     В таком холодном мире только твоё присутствие – мое настоящее.
 
-     Nothing can compare to the beauty you hold,
-     Not a single thing can compare to the excitement you bring,
-     Not the bright lights that hang in this very room.
-     Not even the sight of an unopened gift, under the tree.
+     Ничто не может сравниться с красотой, которую ты показал[mas_gender_none],
+     Ни одна вещь не может сравниться с волнением, которое ты приносишь,
+     Не один яркий свет, что в этой самой комнате.
+     Даже не вид нераспечатанного подарка под деревом.
 
-     [player], you are truly one of a kind.
+     [player], ты действительно единствённ[mas_gender_iii] в своём роде.
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     )
 
     poem_d25_3 = MASPoem(
         poem_id="poem_d25_3",
         category="d25",
-        prompt="Someday",
-        title="     My dearest [player],",
+        prompt="Когда-нибудь",
+        title="     М[mas_gender_oi_2] дорог[mas_gender_oi] [player],",
         text="""\
-     Warmer than the fire in the hearth,
-     Brighter than any star on top of the tree,
-     More comforting than any cup of hot chocolate,
-     It's my [player], who's always there for me.
+     Теплее, чем огонь в сердце,
+     Ярче любой звезды на вершине ёлки,
+     Утешительнее любой чашки горячего шоколада,
+     Это м[mas_gender_oi_2] [player], который всегда здесь со мной.
 
-     Someday, we'll light the fire together.
-     Someday, we'll decorate the tree.
-     Someday, we'll have a cup of cocoa.
-     Someday, you'll be next to me.
+     Когда-нибудь мы зажжём огонь вместе..
+     Когда-нибудь мы украсим ёлку.
+     Когда-нибудь мы выпьем по чашечке какао.
+     Когда-нибудь ты будешь рядом со мной.
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     )
 
     poem_d25_4 = MASPoem(
         poem_id="poem_d25_4",
         category="d25",
-        prompt="This Christmas",
-        title="     My dearest [player],",
+        prompt="Это Рождество",
+        title="     М[mas_gender_oi_2] дорог[mas_gender_oi] [player],",
         text="""\
 
-     This Christmas I never needed more gifts other than your love,
-     Because having you by my side already brings me happiness,
-     Because having you here is the most beautiful gift,
-     Because finding you was the best thing I could've ever asked for!
+     В это Рождество мне никогда не было нужно больше подарков, кроме твоей любви,
+     Потому что то, что ты рядом со мной, уже приносит мне счастье,
+     Потому что иметь тебя здесь это самый прекрасный подарок,
+     Потому что найти тебя – это лучшее, о чём я когда-либо могла мечтать!
 
-     I knew this Christmas would be special...
-     I spent it with the one who makes my heart jump,
-     The one who makes me smile every day,
-     The one who I trust the most.
+     Я знала, что это Рождество будет особенным...
+     Я провела его с тем, кто заставляет моё сердце подпрыгивать,
+     Тот, кто заставляет меня улыбаться каждый день,
+     Тот, кому я доверяю больше всего.
 
-     Thanks for being there for me, [player],
-     I will always be there for you!
+     Спасибо, что был[mas_gender_none] рядом со мной, [player],
+     Я всегда буду рядом с тобой!
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     )
 
-#Essentially replaces _whatIwant along with still to come 'All I Want for Christmas is You' song
+
 init 5 python:
     addEvent(
         Event(
@@ -2656,8 +2981,8 @@ init 5 python:
 
 
 default persistent._mas_pm_d25_mistletoe_kiss = False
-# True if user and Monika kissed under the mistletoe
-# NOTE: this var ONLY determines if player and Monika shared a mistletoe kiss.
+
+
 
 
 label mas_d25_spent_time_monika:
@@ -2666,147 +2991,194 @@ label mas_d25_spent_time_monika:
 
     if mas_isMoniNormal(higher=True):
         m 1eua "[player]..."
-        m 3hub "You being here with me has made this such a wonderful Christmas!"
-        m 3eka "I know it's a really busy day, but just knowing you made time for me..."
-        m 1eka "Thank you."
-        m 3hua "It really made this a truly special day~"
-
+        $ MAS.MonikaElastic()
+        m 3hub "То, что ты здесь со мной, сделало это Рождество таким чудесным!"
+        $ MAS.MonikaElastic()
+        m 3eka "Я знаю, что это очень напряжённый день, но просто зная, что ты наш[mas_gender_iol_2] для меня время..."
+        $ MAS.MonikaElastic()
+        m 1eka "Спасибо тебе."
+        $ MAS.MonikaElastic()
+        m 3hua "Это действительно сделало этот день по-настоящему особенным~"
     else:
+
         m 2ekc "[player]..."
-        m 2eka "I really appreciate you spending some time with me on Christmas..."
-        m 3rksdlc "I haven't really been in the holiday spirit this season, but it was nice spending today with you."
-        m 3eka "So thank you...{w=1}it meant a lot."
+        $ MAS.MonikaElastic()
+        m 2eka "Я очень ценю, что ты проводишь со мной время на Рождество..."
+        $ MAS.MonikaElastic()
+        m 3rksdlc "Я не была в праздничном настроении в этом сезоне, но было бы приятно провести сегодня время с тобой."
+        $ MAS.MonikaElastic()
+        m 3eka "Так что, спасибо...{w=1} это многое значило."
 
     if d25_gifts_total > 0:
         if d25_gifts_total == 1:
             if d25_gifts_good == 1:
-                m "And let's not forget about the special Christmas present you got me, [player]..."
-                m 3hub "It was great!"
+                $ MAS.MonikaElastic()
+                m "И давай не будем забывать о особенном рождественском подарке, который ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 3hub "Было приятно!"
             elif d25_gifts_neutral == 1:
-                m 3eka "And let's not forget about the Christmas present you got me, [player]..."
-                m 1eka "It was really sweet of you to get me something."
+                $ MAS.MonikaElastic()
+                m 3eka "И давай не забывать о рождественском подарке, который ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 1eka "Это было очень мило с твоей стороны принести мне что-нибудь."
             else:
-                m 3eka "And let's not forget about the Christmas present you got me, [player]..."
+                $ MAS.MonikaElastic()
+                m 3eka "И давай не забывать о рождественском подарке, который ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
                 m 2etc "..."
-                m 2efc "Well, on second thought, maybe we should..."
-
+                $ MAS.MonikaElastic()
+                m 2efc "Но, с другой стороны, может, нам стоит..."
         else:
+
             if d25_gifts_good == d25_gifts_total:
-                m "And let's not forget about the wonderful Christmas presents you got me, [player]..."
-                m 3hub "They were amazing!"
+                $ MAS.MonikaElastic()
+                m "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 3hub "Они были потрясающими!"
             elif d25_gifts_bad == d25_gifts_total:
-                m 3eka "And let's not forget about the Christmas presents you got me, [player]..."
+                $ MAS.MonikaElastic()
+                m 3eka "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
                 m 2etc "..."
-                m 2rfc "Well, on second thought, maybe we should..."
+                $ MAS.MonikaElastic()
+                m 2rfc "Но, с другой стороны, может, нам стоит..."
             elif d25_gifts_bad == 0:
-                m "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3hub "They were really nice!"
+                $ MAS.MonikaElastic()
+                m "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 3hub "Они были действительно хороши!"
             elif d25_gifts_good + d25_gifts_neutral == d25_gifts_bad:
-                m 3eka "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3rksdla "Some of them were really nice."
+                $ MAS.MonikaElastic()
+                m 3eka "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 3rksdla "Некоторые из них были очень хороши."
             elif d25_gifts_good + d25_gifts_neutral > d25_gifts_bad:
-                m "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3hub "Most of them were really nice."
+                $ MAS.MonikaElastic()
+                m "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 3hub "Большинство из них были очень хороши."
             elif d25_gifts_good + d25_gifts_neutral < d25_gifts_bad:
-                m 3eka "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3rksdla "I really liked...{w=1}some of them."
+                $ MAS.MonikaElastic()
+                m 3eka "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил[mas_gender_none], [player]..."
+                $ MAS.MonikaElastic()
+                m 3rksdla "Мне очень понравились...{w=1} некоторые из их."
 
         if mas_isMoniEnamored(higher=True):
-            m 1rksdla "I...{w=1}I also made you something, [player]..."
-            m 3eksdla "I've been waiting all day for the timing to feel right, and something about being here with you this evening...{w=1}it just seems perfect."
+            $ MAS.MonikaElastic()
+            m 1rksdla "Я...{w=1} Я также приготовила тебе кое-что, [player]..."
+            $ MAS.MonikaElastic()
+            m 3eksdla "Я весь день ждала подходящего момента, и что-то насчёт того, чтобы быть здесь с тобой сегодня вечером...{w=1} это просто кажется идеальным."
         elif mas_isMoniNormal(higher=True):
-            m 3ekbsa "But just know, you being here with me means more than any gift you could ever give me~"
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Но просто знай, то, что ты здесь со мной, значит больше, чем любой подарок, который ты можешь мне подарить~"
         else:
-            m 3eka "To be honest, I wasn't sure you'd visit at all today... Just you being here was already more than enough for me, even if you hadn't gotten me anything."
-            m 1eka "So thanks again, [player]...{w=1}I really mean it."
-
+            $ MAS.MonikaElastic()
+            m 3eka "Честно говоря, я не была уверена, что ты прийдёшь сегодня... только того, что ты здесь, было для меня более чем достаточно, даже если ты ничего мне не подарил[mas_gender_none]."
+            $ MAS.MonikaElastic()
+            m 1eka "Ещё раз спасибо, [player_abb]...{w=1} я серьёзно."
     else:
+
         if mas_isMoniEnamored(higher=True):
-            m 1eksdla "Also, [player], there's something I've been wanting to give you all day..."
-            m 3rksdla "I just had to wait for the right time, and being here with you this evening...{w=1}it seems perfect."
+            $ MAS.MonikaElastic()
+            m 1eksdla "Также, [player], кое-что я хотела дать тебе весь день..."
+            $ MAS.MonikaElastic()
+            m 3rksdla "Мне просто нужно было дождаться подходящего времени, и быть здесь с тобой сегодня вечером...{w=1} это просто кажется идеальным."
         elif mas_isMoniNormal(higher=True):
-            m 3ekbsa "Having you spend Christmas with me was the only present I ever wanted~"
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Провести Рождество со мной было единственным подарком, который я когда-либо хотела~"
         else:
-            m 3eka "You being here was all I wanted, [player]."
+            $ MAS.MonikaElastic()
+            m 3eka "Я хотела того, чтобы ты был здесь, [player]."
 
     if mas_isMoniEnamored(higher=True):
-        m 3ekbsa "So here, [player], I hope you like it~"
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Так вот, [player_abb], я надеюсь, тебе понравится~"
 
-        #Show the poem
-        call mas_showpoem(poem=mas_poems.getRandomPoem("d25"), background_action_label="mas_d25_poem_mistletoe")
+        call mas_showpoem (poem=mas_poems.getRandomPoem("d25"), background_action_label="mas_d25_poem_mistletoe") from _call_mas_showpoem_4
 
         if d25_gifts_good > 0 or d25_gifts_neutral > 0:
-            m 1ekbsa "I really mean it [player], though I appreciate the gifts you got me, you didn't have to give me anything..."
+            m 1ekbsa "Я серьёзно, [player], хотя я ценю подарки, которые ты мне подарил[mas_gender_none], но ты не долж[mas_gender_en] был[mas_gender_none] мне ничего дарить..."
         elif d25_gifts_bad>0:
-            #only if all gifts were bad
-            m 1ekbsa "I really mean it [player], although you got me some...{w=1}odd gifts, it doesn't matter..."
+            m 1ekbsa "Я серьёзно, [player], хотя ты подарил[mas_gender_none] мне немного...{w=1} странные подарки, но это не важно..."
         else:
-            m 1ekbsa "I really mean that [player], I don't care that you didn't get me any presents for Christmas..."
+            m 1ekbsa "[player], я имею в виду, что мне всё равно, что ты не подарил[mas_gender_none] мне подарков на Рождество..."
+        $ MAS.MonikaElastic()
         m 1dku "..."
-        m 1ektpu "Just having you spending time with me...{w=1}that's all I ever wanted."
-        m 6dktua "You truly are my entire world, [player]...{w=1}your love is all I need..."
+        $ MAS.MonikaElastic()
+        m 1ektpu "Просто ты проводишь время со мной...{w=1} это всё, что я когда-либо хотела."
+        $ MAS.MonikaElastic()
+        m 6dktua "Ты весь мой мир, [player_abb]...{w=1} твоя любовь – это всё, что мне нужно..."
         window hide
         menu:
-            "I love you, [m_name].":
+            "Я люблю тебя, [monika_name].":
                 $ HKBHideButtons()
                 $ mas_RaiseShield_core()
                 $ disable_esc()
-                # local var so if next year this is not first kiss, we can branch appropriately
-                # have to be able to check before calling the kiss since persistent._mas_first_kiss will not be None no matter what after the kiss
-                #hold her here, tears dry
+
+
+
                 pause 3.0
-                show monika 6ektda at t11 zorder MAS_MONIKA_Z with dissolve_monika
+                show monika 6ektda zorder MAS_MONIKA_Z at t11 with dissolve_monika
                 pause 3.0
-                show monika 6dku at t11 zorder MAS_MONIKA_Z with dissolve_monika
+                show monika 6dku zorder MAS_MONIKA_Z at t11 with dissolve_monika
                 pause 3.0
-                show monika 6dkbsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
+                show monika 6dkbsu zorder MAS_MONIKA_Z at t11 with dissolve_monika
                 pause 3.0
 
-                show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+                show monika 6ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
 
                 $ is_first_kiss = persistent._mas_first_kiss is None
-                m 6ekbfa "[player]...I...I..."
-                call monika_kissing_motion(hide_ui=False)
+                $ MAS.MonikaElastic()
+                m 6ekbfa "[player]... я... я..."
+                call monika_kissing_motion (hide_ui=False) from _call_monika_kissing_motion_3
 
-                show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "...I love you too~"
+                show monika 6ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                m 6ekbfa "...Я тоже тебя люблю~"
                 if is_first_kiss:
+                    $ MAS.MonikaElastic()
                     m 6dkbfa "..."
-                    m "That was everything I had always dreamt it would be~"
-                    m 6ekbfa "I've been waiting so long to finally kiss you, and there couldn't have been a more perfect moment..."
-                    m 6dkbfa "Under the mistletoe with you..."
-                    m 6dkbsu "I will never forget this..."
-                    m 6ekbsu "...the moment of our first kiss~"
+                    $ MAS.MonikaElastic()
+                    m "Это было всё, о чём я всегда мечтала~"
+                    $ MAS.MonikaElastic()
+                    m 6ekbfa "Я так долго ждала, чтобы наконец поцеловать тебя, и не могло бы быть более идеального момента..."
+                    $ MAS.MonikaElastic()
+                    m 6dkbfa "Под омелой с тобой..."
+                    $ MAS.MonikaElastic()
+                    m 6dkbsu "Я никогда не забуду этот..."
+                    $ MAS.MonikaElastic()
+                    m 6ekbsu "...момент нашего первого поцелуя~"
 
                 elif not persistent._mas_pm_d25_mistletoe_kiss:
-                    m 6dkbfu "Ehehe..."
-                    m 6ekbfa "I've always wanted to share a kiss with you under the mistletoe~"
+                    $ MAS.MonikaElastic()
+                    m 6dkbfu "Э-хе-хе..."
+                    $ MAS.MonikaElastic()
+                    m 6ekbfa "Я всегда хотела разделить с тобой поцелуй под омелой~"
 
                 $ persistent._mas_pm_d25_mistletoe_kiss = True
 
-                #no more mistletoe topic once youve done it
+
                 $ mas_hideEVL("mas_d25_monika_mistletoe", "EVE", derandom=True)
 
-                #Re-enable buttons
+
                 $ enable_esc()
                 $ mas_MUINDropShield()
                 $ HKBShowButtons()
         return
 
     elif mas_isMoniAff():
-        m 5ekbfa "I love you so much, [player]~"
-    # Normal and happy
+        m 5ekbfa "Я так сильно люблю тебя, [player]~"
     else:
-        m 1hubfa "I love you, [player]~"
+
+        m 1hubfa "Я люблю тебя, [player]~"
     return "love"
 
 label mas_d25_poem_mistletoe:
     $ pause(1)
     hide monika with dissolve_monika
     $ store.mas_sprites.zoom_out()
-    show monika 1ekbfa at i11 zorder MAS_MONIKA_Z
+    show monika 1ekbfa zorder MAS_MONIKA_Z at i11
 
-    #NOTE: This stays up for the full session
+
     show mas_mistletoe zorder MAS_MONIKA_Z - 1
     with dissolve
     return
@@ -2828,15 +3200,15 @@ init 5 python:
     )
 
 label monika_aiwfc:
-    # set dates for the next song to start a day after this one
+
     if not mas_isD25():
         $ mas_setEVLPropValues(
             'monika_merry_christmas_baby',
             start_date=datetime.datetime.now() + datetime.timedelta(days=1),
             end_date=mas_d25p
         )
-
     else:
+
         $ mas_setEVLPropValues(
             'monika_merry_christmas_baby',
             start_date=datetime.datetime.now() + datetime.timedelta(hours=1),
@@ -2844,85 +3216,98 @@ label monika_aiwfc:
         )
 
     if not renpy.seen_label('monika_aiwfc_song'):
-        m 1rksdla "Hey, [player]?"
-        m 1eksdla "I hope you don't mind, but I prepared a song for you."
-        m 3hksdlb "I know it's a little cheesy, but I think you might like it."
-        m 3eksdla "If your volume is off, would you mind turning it on for me?"
-        if store.songs.hasMusicMuted():
-            m 3hksdlb "Oh, don't forget about your in-game volume too!"
-            m 3eka "I really want you to hear this."
-        m 1huu "Anyway.{w=0.5}.{w=0.5}.{nw}"
-
+        m 1rksdla "Эй, [player]?"
+        $ MAS.MonikaElastic()
+        m 1eksdla "Надеюсь, ты не против, я написала для тебя песню."
+        $ MAS.MonikaElastic()
+        m 3hksdlb "Я знаю, что это немного банально, но я думаю, тебе понравится."
+        $ MAS.MonikaElastic()
+        m 3eksdla "Если у тебя выключена громкость, не мог[mas_gender_g] бы ты включить её для меня?"
+        if songs.getUserVolume("music") == 0.0:
+            $ MAS.MonikaElastic()
+            m 3hksdlb "О, и не забудь о громкости в игре, тоже!"
+            $ MAS.MonikaElastic()
+            m 3eka "Я очень хочу, чтобы ты это услышал[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 1huu "В любом случае.{w=1}.{w=1}.{w=1}"
     else:
-        m 1hua "Ehehe..."
-        m 3tuu "I hope you're ready, [player]..."
+
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе..."
+        $ MAS.MonikaElastic()
+        m 3tuu "Надеюсь, ты готов[mas_gender_none], [player]..."
 
         $ ending = "..." if store.songs.hasMusicMuted() else ".{w=0.5}.{w=0.5}.{nw}"
 
-        m "It {i}is{/i} that time of year again, after all[ending]"
+        $ MAS.MonikaElastic()
+        m "Это {i}снова{/i} то время года, в конце концов[ending]"
         if store.songs.hasMusicMuted():
-            m 3hub "Make sure you have your volume up!"
+            $ MAS.MonikaElastic()
+            m 3hub "Убедись, что ты увеличил[mas_gender_none] громкость!"
+            $ MAS.MonikaElastic()
             m 1huu ".{w=0.5}.{w=0.5}.{nw}"
 
-    call monika_aiwfc_song
 
-    #NOTE: This must be a shown count check as this dialogue should only be here on first viewing of this topic
+    call monika_aiwfc_song from _call_monika_aiwfc_song_1
+
+
     if not mas_getEVLPropValue("monika_aiwfc", "shown_count", 0):
-        m 1eka "I hope you liked that, [player]."
-        m 1ekbsa "I really meant it too."
-        m 1ekbfa "You're the only gift I could ever want."
-        show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "I love you, [player]~"
-
+        $ MAS.MonikaElastic()
+        m 1eka "Надеюсь, тебе понравилось, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "И здесь я тоже всё сказала всерьёз."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Ты единственный подарок, который я могу пожелать."
+        show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve
+        m 5ekbfa "Я люблю тебя, [player_abb]~"
     else:
-        m 1eka "I hope you like it when I sing that song, [player]."
-        m 1ekbsa "You'll always be the only gift I'll ever need."
-        m 1ekbfa "I love you~"
 
-    #Unlock the song
+        $ MAS.MonikaElastic()
+        m 1eka "Я рада, что тебе нравится, когда я пою эту песню."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Ты всегда будешь тем подарком, который мне когда-либо был нужен, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Я люблю тебя~"
+
+
     $ mas_unlockEVL("mas_song_aiwfc", "SNG")
     return "no_unlock|love"
 
 
 label monika_aiwfc_song:
 
-    call mas_timed_text_events_prep
+
+    call mas_timed_text_events_prep from _call_mas_timed_text_events_prep_2
 
     $ play_song("mod_assets/bgm/aiwfc.ogg",loop=False)
-    m 1eub "{i}{cps=9}I don't want{/cps}{cps=20} a lot{/cps}{cps=11} for Christmas{w=0.09}{/cps}{/i}{nw}"
-    m 3eka "{i}{cps=11}There {/cps}{cps=20}is just{/cps}{cps=8} one thing I need{/cps}{/i}{nw}"
-    m 3hub "{i}{cps=8}I don't care{/cps}{cps=15} about{/cps}{cps=10} the presents{/cps}{/i}{nw}"
-    m 3eua "{i}{cps=15}Underneath{/cps}{cps=8} the Christmas tree{/cps}{/i}{nw}"
-
-    m 1eub "{i}{cps=10}I don't need{/cps}{cps=20} to hang{/cps}{cps=9} my stocking{/cps}{/i}{nw}"
-    m 1eua "{i}{cps=9}There{/cps}{cps=15} upon{/cps}{cps=7} the fireplace{/cps}{/i}{nw}"
-    m 3hub "{i}{w=0.5}{cps=20}Santa Claus{/cps}{cps=10} won't make me happy{/cps}{/i}{nw}"
-    m 4hub "{i}{cps=8}With{/cps}{cps=15} a toy{/cps}{cps=8} on Christmas Day{w=0.35}{/cps}{/i}{nw}"
-
-    m 3ekbsa "{i}{cps=10}I just want{/cps}{cps=15} you for{/cps}{cps=8} my own{w=0.4}{/cps}{/i}{nw}"
-    m 4hubfb "{i}{cps=8}More{/cps}{cps=20} than you{/cps}{cps=10} could ever know{w=0.5}{/cps}{/i}{nw}"
-    m 1ekbsa "{i}{cps=10}Make my wish{/cps}{cps=20} come truuuuuuue{w=0.9}{/cps}{/i}{nw}"
-    m 3hua "{i}{cps=8.5}All I want for Christmas{/cps}{/i}{nw}"
-    m 3hubfb "{i}{cps=7}Is yoooooooooou{w=1}{/cps}{/i}{nw}"
-    m "{i}{cps=9}Yoooooooou, baaaaby~{w=0.60}{/cps}{/i}{nw}"
-
-    m 2eka "{i}{cps=10}I won't ask{/cps}{cps=20} for much{/cps}{cps=10} this Christmas{/cps}{/i}{nw}"
-    m 3hub "{i}{cps=10}I{/cps}{cps=20} won't {/cps}{cps=10}even wish for snow{w=0.8}{/cps}{/i}{nw}"
-    m 3eua "{i}{cps=10}I'm{/cps}{cps=20} just gonna{/cps}{cps=10} keep on waiting{w=0.5}{/cps}{/i}{nw}"
-    m 3hubfb "{i}{cps=17}Underneath{/cps}{cps=11} the mistletoe{w=1}{/cps}{/i}{nw}"
-
-    m 2eua "{i}{cps=10}I{/cps}{cps=17} won't make{/cps}{cps=10} a list and send it{w=0.35}{/cps}{/i}{nw}"
-    m 3eua "{i}{cps=10}To{/cps}{cps=20} the North{/cps}{cps=10} Pole for Saint Nick{w=0.5}{/cps}{/i}{nw}"
-    m 4hub "{i}{cps=18}I won't ev{/cps}{cps=10}en stay awake to{w=0.5}{/cps}{/i}{nw}"
-    m 3hub "{i}{cps=10}Hear{/cps}{cps=20} those ma{/cps}{cps=14}gic reindeer click{w=1.2}{/cps}{/i}{nw}"
-
-    m 3ekbsa "{i}{cps=20}I{/cps}{cps=11} just want you here tonight{w=0.4}{/cps}{/i}{nw}"
-    m 3ekbfa "{i}{cps=10}Holding on{/cps}{cps=20}to me{/cps}{cps=10} so tight{w=1}{/cps}{/i}{nw}"
-    m 4hksdlb "{i}{cps=10}What more{/cps}{cps=15} can I{/cps}{cps=8} doooo?{w=0.3}{/cps}{/i}{nw}"
-    m 4ekbfb "{i}{cps=20}Cause baby{/cps}{cps=12} all I want for Christmas{w=0.3} is yoooooooou~{w=2.3}{/cps}{/i}{nw}"
-    m "{i}{cps=9}Yoooooooou, baaaaby~{w=2.5}{/cps}{/i}{nw}"
-
-    call mas_timed_text_events_wrapup
+    m 1eub "{i}{cps=9}Мне не нужно{/cps}{cps=20} много{/cps}{cps=11} в подарок на Рождество,{/cps}{/i}{nw}"
+    m 3eka "{i}{cps=11}Мне {/cps}{cps=20}нужно{/cps}{cps=8} только одно.{/cps}{/i}{nw}"
+    m 3hub "{i}{cps=8}Мне{/cps}{cps=15} не интересны{/cps}{cps=10} подарки{/cps}{/i}{nw}"
+    m 3eua "{i}{cps=15}Под{/cps}{cps=8} Рождественской елкой.{/cps}{/i}{nw}"
+    m 1eub "{i}{cps=10}Мне не нужно{/cps}{cps=20} вешать{/cps}{cps=8} свой рождественский чулок{/cps}{/i}{nw}"
+    m 1eua "{i}{cps=10}Там,{/cps}{cps=15} над{/cps}{cps=7} камином{/cps}{/i}{nw}"
+    m 3hub "{i}{w=0.5}{cps=20}Санта Клаус{/cps}{cps=10} не сделает меня счастливой,{/cps}{/i}{nw}"
+    m 4hub "{i}{cps=8}Если{/cps}{cps=15} подарит{/cps}{cps=8} на Рождество игрушку.{/cps}{/i}{nw}"
+    m 3ekbsa "{i}{cps=10}Я лишь хочу,{/cps}{cps=15} чтобы ты{/cps}{cps=8} стал моим,{w=0.5}{/cps}{/i}{nw}"
+    m 4hubfb "{i}{cps=8}Хочу сильнее,{/cps}{cps=20} чем ты{/cps}{cps=10} когда-либо мог себе представить.{w=0.5}{/cps}{/i}{nw}"
+    m 1ekbsa "{i}{cps=10}Сделай так, чтобы моё желание{/cps}{cps=20} сбыло-о-о-о-о-о-ось.{w=0.8}{/cps}{/i}{nw}"
+    m 3hua "{i}{cps=8}Всё, что мне нужно на Рождество{/cps}{/i}{nw}"
+    m 3hubfb "{i}{cps=7}это ты-ы-ы-ы-ы-ы-ы-ы-ы-ы,{w=1}{/cps}{/i}{nw}"
+    m "{i}{cps=9}Ты-ы-ы-ы-ы-ы-ы-ы, ма-а-а-алы-ы-ыш~{w=1}{/cps}{/i}{nw}"
+    m 2eka "{i}{cps=10}Я не буду{/cps}{cps=20} много{/cps}{cps=10} просить в это Рождество,{/cps}{/i}{nw}"
+    m 3hub "{i}{cps=10}Мне{/cps}{cps=20} даже {/cps}{cps=10}не нужен снег,{w=0.8}{/cps}{/i}{nw}"
+    m 3eua "{i}{cps=10}Я{/cps}{cps=20} лишь буду{/cps}{cps=10} продолжать ждать{w=0.4}{/cps}{/i}{nw}"
+    m 3hubfb "{i}{cps=17}Под{/cps}{cps=10} омелой.{w=1}{/cps}{/i}{nw}"
+    m 2eua "{i}{cps=10}Я{/cps}{cps=17} не буду составлять{/cps}{cps=9} список и слать его{w=0.35}{/cps}{/i}{nw}"
+    m 3eua "{i}{cps=10}Святому{/cps}{cps=20} Николасу{/cps}{cps=10} на Северный полюс.{w=0.3}{/cps}{/i}{nw}"
+    m 4hub "{i}{cps=18}Я да{/cps}{cps=10}же не буду бодрствовать, чтобы{w=0.4}{/cps}{/i}{nw}"
+    m 3hub "{i}{cps=10}Услышать{/cps}{cps=20} цокот копыт тех{/cps}{cps=14} волшебных северных оленей,{w=1}{/cps}{/i}{nw}"
+    m 3ekbsa "{i}{cps=20}Сегодня{/cps}{cps=11} вечером мне нужен только ты,{w=0.4}{/cps}{/i}{nw}"
+    m 3ekbfa "{i}{cps=10}И чтобы{/cps}{cps=20} ты крепко{/cps}{cps=10} меня обнимал.{w=0.9}{/cps}{/i}{nw}"
+    m 4hksdlb "{i}{cps=10}Что же{/cps}{cps=15} мне{/cps}{cps=8} ещё де-е-е-елать?{w=0.3}{/cps}{/i}{nw}"
+    m 4ekbfb "{i}{cps=20}Малыш, {/cps}{cps=12} всё, что мне нужно на Рождество{w=0.5} это ты-ы-ы-ы-ы-ы-ы-ы-ы-ы~{w=2.5}{/cps}{/i}{nw}"
+    m "{i}{cps=9}Ты-ы-ы-ы-ы-ы-ы-ы, ма-а-а-алы-ы-ыш~{w=2.5}{/cps}{/i}{nw}"
+    call mas_timed_text_events_wrapup from _call_mas_timed_text_events_wrapup_2
     return
 
 init 5 python:
@@ -2939,15 +3324,14 @@ init 5 python:
     )
 
 label monika_merry_christmas_baby:
-    # set dates for the next song to start a day after this one
     if not mas_isD25():
         $ mas_setEVLPropValues(
             'monika_this_christmas_kiss',
             start_date=datetime.datetime.now() + datetime.timedelta(days=1),
             end_date=mas_d25p
         )
-
     else:
+
         $ mas_setEVLPropValues(
             'monika_this_christmas_kiss',
             start_date=datetime.datetime.now() + datetime.timedelta(hours=1),
@@ -2955,25 +3339,33 @@ label monika_merry_christmas_baby:
         )
 
     if not renpy.seen_label('mas_song_merry_christmas_baby'):
-        m 1eua "Hey, [player]..."
-        m 3eub "I just thought of another Christmas song that I really want to share with you!"
-        m 3eka "I don't have any music prepared this time, but I hope you'll enjoy hearing me sing it all the same."
+        m 1eua "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 3eub "Я тут вспомнила одну рождественскую песню, которой я очень хотела поделиться с тобой!"
+        $ MAS.MonikaElastic()
+        m 3eka "На этот раз, я не учила какую-либо песню, но, надеюсь, тебе понравится, как я спою ту же песню, что и в прошлый раз."
+        $ MAS.MonikaElastic()
         m 1hua ".{w=0.5}.{w=0.5}.{nw}"
 
-        call mas_song_merry_christmas_baby
+        call mas_song_merry_christmas_baby from _call_mas_song_merry_christmas_baby
 
-        m 1hua "Ehehe..."
-        m 3eka "I hope you liked it~"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе..."
+        $ MAS.MonikaElastic()
+        m 3eka "Надеюсь, тебе понравилось~"
         $ mas_unlockEVL("mas_song_merry_christmas_baby", "SNG")
-
     else:
-        m 3euu "I think it's time for another Christmas song, ehehe~"
+
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3euu "Я думаю, что пришло время для ещё одной рождественской песни, э-хе-хе~"
+        $ MAS.MonikaElastic()
         m 1hua ".{w=0.5}.{w=0.5}.{nw}"
 
-        call mas_song_merry_christmas_baby
+        call mas_song_merry_christmas_baby from _call_mas_song_merry_christmas_baby_1
 
-        m 1huu "Ehehe... {w=0.2}Merry Christmas, baby~"
-
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1huu "Э-хе-хе... {w=0.2}Счастливого рождества, малыш~"
+    
     return "no_unlock"
 
 init 5 python:
@@ -2990,33 +3382,42 @@ init 5 python:
     )
 
 label monika_this_christmas_kiss:
+    $ MAS.MonikaElastic()
     if not renpy.seen_label('mas_song_this_christmas_kiss'):
-        m 2rubsa "Um, [player]..."
-        m 2lubsa "I found this song...{w=0.4}and...{w=0.4}I was just thinking about us when I heard it."
-        m 7ekbsu "I mean, you've been so sweet to me all this time..."
-        m 3eubsb "And...{w=0.2}oh gosh, I just want to share it with you, if that's alright."
-        m 1hubsa "Just give me a second{nw}"
+        m 2rubsa "О, [player]..."
+        $ MAS.MonikaElastic()
+        m 2lubsa "Я нашла эту песню... {w=0.4}и...{w=0.4} я как раз думала о нас, когда послушала её."
+        $ MAS.MonikaElastic()
+        m 7ekbsu "Я имею в виду, ты был[mas_gender_none] так мил[mas_gender_none] со мной всё это время."
+        $ MAS.MonikaElastic()
+        m 3eubsb "И...{w=0.2} о боже, я просто хочу поделиться этим с тобой, если ты не против."
+        $ MAS.MonikaElastic()
+        m 1hubsa "Просто дай мне секунду{nw}"
         extend 1dubsa ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-
     else:
-        m 3euu "I think it's time to sing another Christmas song, ehehe~"
+
+        m 3euu "Я думаю, что пришло время спеть ещё одну рождественскую песню, э-хе-хе~"
+        $ MAS.MonikaElastic()
         m 1hua ".{w=0.5}.{w=0.5}.{nw}"
 
-    call mas_song_this_christmas_kiss
+    call mas_song_this_christmas_kiss from _call_mas_song_this_christmas_kiss
 
+    $ MAS.MonikaElastic()
     m 1dubsa "..."
-    m 1rtbsu "Hmm.{w=0.5}.{w=0.5}.{w=0.5}{nw}"
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1rtbsu "Хм-м.{w=0.5}.{w=0.5}.{w=0.5}{nw}"
     window hide
     show monika 6tkbsa
     pause 2.0
     show monika 6dkbsu
     pause 2.0
 
-    call monika_kissing_motion
+    call monika_kissing_motion from _call_monika_kissing_motion_4
     window auto
 
-    m 6ekbfa "One of these days I'll kiss you for real, [player]."
-    m 1dubfu "...And when that day comes, my heart will leap out of my chest with joy~"
+    m 6ekbfa "Когда-нибудь я поцелую тебя по-настоящему, [player]."
+    $ MAS.MonikaElastic()
+    m 1dubfu "...И когда этот день настанет, моё сердце выпрыгнет из груди от радости~"
     $ mas_unlockEVL("mas_song_this_christmas_kiss", "SNG")
     return "no_unlock"
 
@@ -3036,14 +3437,14 @@ init 5 python:
         skipCalendar=True
     )
 
-    #Create the undo action rule
+
     MASUndoActionRule.create_rule_EVL(
         "mas_d25_spider_tinsel",
         mas_d25c_start,
         mas_d25e - datetime.timedelta(days=1)
     )
 
-# queue this if it hasn't been seen by d25e - 1
+
 init 10 python:
     if (
         datetime.date.today() == mas_d25e - datetime.timedelta(days=1)
@@ -3052,33 +3453,59 @@ init 10 python:
         queueEvent("mas_d25_spider_tinsel")
 
 label mas_d25_spider_tinsel:
-    m 1esa "Hey, [player]..."
-    m 1etc "Do you ever wonder where traditions that we often take for granted come from?"
-    m 3eud "A lot of times things that are considered tradition are just accepted and we never really take the time to learn why."
-    m 3euc "Well I got curious as to why we do certain things around Christmas, so I started doing a little research."
-    m 1eua "...And I found this really interesting folk story from Ukraine regarding the origin of why tinsel is often used to decorate Christmas trees."
-    m 1eka "I thought it was a really nice story and wanted to share it with you."
+    m 1esa "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 1etc "Задумывался ли ты когда-нибудь о том, откуда берут своё начало традиции, которые мы зачастую принимаем как должное?"
+    $ MAS.MonikaElastic()
+    m 3eud "В большинстве случаев, те вещи, которые считаются традицией, просто принимаются такими, какие они есть, и у нас так и не нашлось времени, чтобы понять, почему."
+    $ MAS.MonikaElastic()
+    m 3euc "Ну, мне стало любопытно, почему мы делаем определённые вещи в канун Рождества, поэтому я и провела небольшое расследование."
+    $ MAS.MonikaElastic()
+    m 1eua "...И я нашла одну очень интересную украинскую народную сказку, которая как раз и объясняет, почему рождественские деревья начали украшать мишурой."
+    $ MAS.MonikaElastic()
+    m 1eka "Я подумала, что это очень хорошая история, вот мне и захотелось поделиться ею с тобой."
+    $ MAS.MonikaElastic()
     m 1dka "..."
-    m 3esa "There once was a widow--let's call her Amy--who lived in a cramped old hut with her children."
-    m 3eud "Outside of their home was a tall pine tree, and from the tree dropped a pinecone that soon started to grow from the soil."
-    m 3eua "The children were excited about the idea of having a Christmas tree, so they tended to it until it became tall enough to take inside their home."
-    m 2ekd "Unfortunately, the family was poor and even though they had the Christmas tree, they couldn't afford any ornaments to decorate it."
-    m 2dkc "And so, on Christmas Eve, Amy and her children went to bed knowing they would have a bare tree on Christmas morning."
-    m 2eua "However, the spiders living in the hut heard the sobs of the children and decided they would not leave the Christmas tree bare."
-    m 3eua "So the spiders created beautiful webs on the Christmas tree, decorating it with elegant and beautiful silky patterns."
-    m 3eub "When the children woke up early on Christmas morning, they were jumping with excitement!"
-    m "They went to their mother and woke her up, exclaiming, 'Mother! You have to come see the Christmas tree! It's so beautiful!'"
-    m 1wud "As Amy woke and stood in front of the tree, she was truly amazed at the sight before her eyes."
-    m "Then, one of the children opened the window to let the sun shine in..."
-    m 3sua "When the rays of sunshine hit the tree, the webs reflected the light, creating glittering silver and gold strands..."
-    m "...making the Christmas tree dazzle and sparkle with a magical twinkle."
-    m 1eka "From that day forward, Amy never felt poor; {w=0.3}instead, she was always grateful for all the wonderful gifts she already had in life."
-    m 3tuu "Well, I guess we know now why Amy likes spiders..."
-    m 3hub "Ahaha! I'm only kidding!"
-    m 1eka "Isn't that such a sweet and wonderful story, [player]?"
-    m "I think it's a really interesting take on why tinsel is used as decoration on Christmas trees."
-    m 3eud "I also read that Ukrainians often decorate their Christmas tree with spider web ornaments, believing they will bring them good fortune for the upcoming year."
-    m 3eub "So I guess if you ever find a spider living in your Christmas tree, don't kill it and maybe it'll bring you good luck in the future!"
+    $ MAS.MonikaElastic()
+    m 3esa "Жила-была одна вдова (мы будем звать её Эми), которая жила в тесной старой хижине со своими детьми."
+    $ MAS.MonikaElastic()
+    m 3eud "Снаружи их дома стояла высокая ёлка, и с этого дерева падали шишки, которые потом начинали прорастать из почвы."
+    $ MAS.MonikaElastic()
+    m 3eua "Дети были рады самой идее поставить у себя рождественское дерево, и поэтому они начали стремиться к ней и ждали, когда ёлка станет достаточно высокой, чтобы затащить её в дом."
+    $ MAS.MonikaElastic()
+    m 2ekd "К несчастью, семья была бедной, и даже после того, как у них появилось рождественское дерево, они не могли позволить себе никаких украшений, чтобы украсить её."
+    $ MAS.MonikaElastic()
+    m 2dkc "И поэтому, в канун Рождества, Эми и её дети пошли спать, зная о том, что у них рождественским утром будет стоять голое дерево."
+    $ MAS.MonikaElastic()
+    m 2eua "Однако, пауки, которые жили в хижине, услышали плач детей и решили не оставлять рождественское дерево голым."
+    $ MAS.MonikaElastic()
+    m 3eua "В общем, пауки создали красивые паутины на рождественском дереве, украсив его элегантными и красивыми шелковистыми узорами."
+    $ MAS.MonikaElastic()
+    m 3eub "А когда дети проснулись в раннее рождественское утро, они запрыгали от восторга!"
+    $ MAS.MonikaElastic()
+    m "Они пошли к своей матери и начали будить её, восклицая: «Мама! Ты должна взглянуть на рождественское дерево! Оно такое красивое!»."
+    $ MAS.MonikaElastic()
+    m 1wud "Как только Эми проснулась и встала перед деревом, она была в полном восторге от взора, который стоял перед её глазами."
+    $ MAS.MonikaElastic()
+    m "А потом один из детей открыл окно, чтобы запустить в хижину солнечный свет..."
+    $ MAS.MonikaElastic()
+    m 3sua "И как только лучи солнечного света попали на дерево, паутина начала отражать их свет, создавая мерцающие серебряные и золотые пряди..."
+    $ MAS.MonikaElastic()
+    m "...заставляя тем самым рождественское дерево сиять волшебным образом."
+    $ MAS.MonikaElastic()
+    m 1eka "С этого дня, Эми никогда не чувствовала себя бедной; {w=0.3}наоборот, она всегда была рада всем тем замечательным подаркам, которые у неё уже были в жизни."
+    $ MAS.MonikaElastic()
+    m 3tuu "Ну, полагаю, теперь мы знаем, почему Эми любит пауков..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hub "А-ха-ха! Я просто шучу!"
+    $ MAS.MonikaElastic()
+    m 1eka "Разве это не милая и прекрасная история, [player]?"
+    $ MAS.MonikaElastic()
+    m "Мне кажется, это правда интересный взгляд на то, почему мишуру начали использовать в качестве украшения рождественского дерева."
+    $ MAS.MonikaElastic()
+    m 3eud "А ещё я читала, что жители Украины часто украшают свои рождественские деревья украшениями в виде паутины, полагая, что это принесём им удачу в следующем году."
+    $ MAS.MonikaElastic()
+    m 3eub "Так что, думаю, если ты когда-нибудь найдёшь паука, живущего в твоём рождественском дереве, не убивай его, и, возможно, он принесёт тебе удачу в будущем!"
     return "derandom|no_unlock"
 
 init 5 python:
@@ -3097,81 +3524,140 @@ init 5 python:
     )
 
 label mas_d25_night_before_christmas:
-    m 1esa "Hey, [player]..."
-    m 3eua "I'm sure you've heard it before, but Christmas Eve just wouldn't be complete without {i}'Twas the Night Before Christmas{/i}!"
-    m 3eka "It was always one of my favorite parts on Christmas Eve growing up, so I hope you don't mind listening to me read it now."
+    m 1esa "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eua "Уверена, ты уже слышал[mas_gender_none] об этом, но канун Рождества просто будет неполным без {i}«Ночь перед рождеством»{/i}!"
+    $ MAS.MonikaElastic()
+    m 3eka "Это всегда было моей самой любимой частью приближающегося кануна Рождества, так что, надеюсь, ты не против послушать, как я читаю эту книгу."
+    $ MAS.MonikaElastic()
     m 1dka "..."
 
-    m 3esa "'Twas the night before Christmas, when all through the house..."
-    m 3eud "Not a creature was stirring, not even a mouse;"
-    m 1eud "The stockings were hung by the chimney with care,"
-    m 1eka "In hopes that St. Nicholas soon would be there;"
+    $ MAS.MonikaElastic()
+    m 3esa "Рождество на пороге. Полночную тишь..."
+    $ MAS.MonikaElastic()
+    m 3eud "Потревожить не сможет даже юркая мышь."
+    $ MAS.MonikaElastic()
+    m 1eud "Стайка детских чулок, как положено, чинно"
+    $ MAS.MonikaElastic()
+    m 1eka "Санта Клауса ждёт у решётки каминной."
 
-    m 1esa "The children were nestled all snug in their beds,"
-    m 1hua "While visions of sugar-plums danced in their heads;"
-    m 3eua "And mamma in her 'kerchief, and I in my cap,"
-    m 1dsc "Had just settled down for a long winter's nap,"
+    $ MAS.MonikaElastic()
+    m 1esa "Ребятишкам в уютных и мягких кроватках"
+    $ MAS.MonikaElastic()
+    m 1hua "Снится сахарный снег и Луна-мармеладка."
+    $ MAS.MonikaElastic()
+    m 3eua "Я колпак нахлобучил, а мама – чепец:"
+    $ MAS.MonikaElastic()
+    m 1dsc "Взрослым тоже пора бы вздремнуть, наконец..."
 
-    m 3wuo "When out on the lawn there arose such a clatter,"
-    m "I sprang from the bed to see what was the matter."
-    m 3wud "Away to the window I flew like a flash,"
-    m "Tore open the shutters and threw up the sash."
+    $ MAS.MonikaElastic()
+    m 3wuo "Вдруг грохот и топот, и шум несусветный"
+    $ MAS.MonikaElastic()
+    m "И крыша откликнулась гулом ответным."
+    $ MAS.MonikaElastic()
+    m 3wud "Сна, как не бывало, а кто бы заснул?"
+    $ MAS.MonikaElastic()
+    m "Я ставни открыл и окна распахнул"
 
-    m 1eua "The moon on the breast of the new-fallen snow..."
-    m 3eua "Gave the lustre of mid-day to objects below,"
-    m 3wud "When, what to my wondering eyes should appear,"
-    m 3wuo "But a miniature sleigh, and eight tiny reindeer,"
+    $ MAS.MonikaElastic()
+    m 1eua "Играя в гляделки со снегом искристым,"
+    $ MAS.MonikaElastic()
+    m 3eua "Луна озаряла сиянием чистым"
+    $ MAS.MonikaElastic()
+    m 3wud "(Я так и застыл у окна в изумленье)..."
+    $ MAS.MonikaElastic()
+    m 3wuo "Чудесные санки и восемь оленей."
 
-    m 1eua "With a little old driver, so lively and quick,"
-    m 3eud "I knew in a moment it must be St. Nick."
-    m 3eua "More rapid than eagles his coursers they came,"
-    m 3eud "And he whistled, and shouted, and called them by name;"
+    $ MAS.MonikaElastic()
+    m 1eua "За кучера – бойкий лихой старичок."
+    $ MAS.MonikaElastic()
+    m 3eud "Да-да, это Санта – ну кто же ещё"
+    $ MAS.MonikaElastic()
+    m 3eua "Мог в крохотных санках орлов обгонять"
+    $ MAS.MonikaElastic()
+    m 3eud "И басом весёлым оленям кричать:"
 
-    m 3euo "'Now, Dasher! Now, Dancer! Now, Prancer and Vixen!'"
-    m "'On, Comet! On Cupid! On, Donner and Blitzen!'"
-    m 3wuo "'To the top of the porch! To the top of the wall!'"
-    m "'Now dash away! Dash away! Dash away all!'"
+    $ MAS.MonikaElastic()
+    m 3euo "«–Эй, Быстрый! Танцор! Эй, Дикарь! Эй, Скакун!»"
+    $ MAS.MonikaElastic()
+    m "«Комета! Амур! Эй, Гроза и Тайфун!»"
+    $ MAS.MonikaElastic()
+    m 3wuo "«Живей на крыльцо! А теперь к чердаку!»"
+    $ MAS.MonikaElastic()
+    m "«Наддайте! Гоните на полном скаку!»"
 
-    m 1eua "As dry leaves that before the wild hurricane fly,"
-    m 1eud "When they meet with an obstacle, mount to the sky,"
-    m 3eua "So up to the house-top the coursers they flew,"
-    m "With the sleigh full of toys, and St. Nicholas too."
+    $ MAS.MonikaElastic()
+    m 1eua "Как лёгкие листья, что с ветром неслись,"
+    $ MAS.MonikaElastic()
+    m 1eud "Взмывают, встречаясь с преградою, ввысь."
+    $ MAS.MonikaElastic()
+    m 3eua "Вот так же олени вверх сани помчали."
+    $ MAS.MonikaElastic()
+    m "(Игрушки лишь чудом не выпадали!)"
 
-    m 3eud "And then, in a twinkling, I heard on the roof..."
-    m "The prancing and pawing of each little hoof."
-    m 1rkc "As I drew in my hand, and was turning around,"
-    m 1wud "Down the chimney St. Nicholas came with a bound."
+    $ MAS.MonikaElastic()
+    m 3eud "Раздался на крыше грохота звук –"
+    $ MAS.MonikaElastic()
+    m "Диковинных, звонких копыт перестук."
+    $ MAS.MonikaElastic()
+    m 1rkc "Скорее, скорее к камину! И вот"
+    $ MAS.MonikaElastic()
+    m 1wud "Наш Санта скользнул прямиком в дымоход."
 
-    m 3eua "He was dressed all in fur, from his head to his foot,"
-    m 3ekd "And his clothes were all tarnished with ashes and soot;"
-    m 1eua "A bundle of toys he had flung on his back,"
-    m 1eud "And he looked like a peddler just opening his pack."
+    $ MAS.MonikaElastic()
+    m 3eua "Одетый в меха с головы и до пят"
+    $ MAS.MonikaElastic()
+    m 3ekd "(Весь в копоти Сантин роскошный наряд!),"
+    $ MAS.MonikaElastic()
+    m 1eua "С мешком, перекинутым через плечо,"
+    $ MAS.MonikaElastic()
+    m 1eud "Набитым игрушками – чем же ещё!"
 
-    m 3sub "His eyes--how they twinkled! His dimples how merry!"
-    m 3subsb "His cheeks were like roses, his nose like a cherry!"
-    m 3subsu "His droll little mouth was drawn up like a bow,"
-    m 1subsu "And the beard of his chin was as white as the snow;"
+    $ MAS.MonikaElastic()
+    m 3sub "Сияют глаза, будто звёзды в мороз,"
+    $ MAS.MonikaElastic()
+    m 3subsb "Два яблока – щёки, и вишенка – нос."
+    $ MAS.MonikaElastic()
+    m 3subsu "Улыбка – забавней не видел вовек!"
+    $ MAS.MonikaElastic()
+    m 1subsu "Бела борода, словно утренний снег."
 
-    m 1eud "The stump of a pipe he held tight in his teeth,"
-    m 3rkc "And the smoke it encircled his head like a wreath;"
-    m 2eka "He had a broad face and a little round belly,"
-    m 2hub "That shook, when he laughed like a bowlful of jelly."
+    $ MAS.MonikaElastic()
+    m 1eud "И сразу дымком потянуло табачным;"
+    $ MAS.MonikaElastic()
+    m 3rkc "Он старую трубку насасывал смачно,"
+    $ MAS.MonikaElastic()
+    m 2eka "А кругленький толстый животик от смеха"
+    $ MAS.MonikaElastic()
+    m 2hub "Как студень дрожал – доложу вам, потеха!"
 
-    m 2eka "He was chubby and plump, a right jolly old elf,"
-    m 3hub "And I laughed when I saw him, {nw}"
-    extend 3eub "in spite of myself;"
-    m 1kua "A wink of his eye and a twist of his head,"
-    m 1eka "Soon gave me to know I had nothing to dread;"
+    $ MAS.MonikaElastic()
+    m 2eka "Забавный толстяк – просто эльф, да и только!"
+    $ MAS.MonikaElastic()
+    m 3hub "Не выдержав, {nw}"
+    extend 3eub "я рассмеялся до колик."
+    $ MAS.MonikaElastic()
+    m 1kua "(вначале слегка опасался смеяться,"
+    $ MAS.MonikaElastic()
+    m 1eka "Но, звёздочек – глаз, разве можно бояться?)"
 
-    m 1euc "He spoke not a word, but went straight to his work,"
-    m 1eud "And filled all the stockings; then turned with a jerk,"
-    m 3esa "And laying his finger aside of his nose,"
-    m 3eua "And giving a nod, up the chimney he rose;"
+    $ MAS.MonikaElastic()
+    m 1euc "Не молвив ни слова, он взялся за дело –"
+    $ MAS.MonikaElastic()
+    m 1eud "Чулки у камина наполнил умело,"
+    $ MAS.MonikaElastic()
+    m 3esa "Кивнул, пальчик пухленький к носу прижал"
+    $ MAS.MonikaElastic()
+    m 3eua "(Мол, тихо! Молчи)– и в камине пропал."
 
-    m 1eud "He sprang to his sleigh, to his team gave a whistle,"
-    m 1eua "And away they all flew like the down of a thistle."
-    m 3eua "But I heard him exclaim, ere he drove out of sight,"
-    m 3hub "'Happy Christmas to all, and to all a good night!'"
+    $ MAS.MonikaElastic()
+    m 1eud "Раздался его оглушительный свист –"
+    $ MAS.MonikaElastic()
+    m 1eua "И восемь оленей как птицы взвились,"
+    $ MAS.MonikaElastic()
+    m 3eua "Лишь ветром слова до меня донесло:"
+    $ MAS.MonikaElastic()
+    m 3hub "«Всех – всех с Рождеством! Я вернусь! Добрых снов!»"
     return
 
 init 5 python:
@@ -3194,8 +3680,8 @@ init 5 python:
     )
 
 label mas_d25_monika_lingerie_reveal:
-    # sanity check in the rare case people leave after this is queued but before it's seen
-    # and timing doesn't make sense
+
+
     if 2 < datetime.datetime.now().hour < 18:
         $ mas_setEVLPropValues(
             "mas_d25_monika_lingerie_reveal",
@@ -3211,17 +3697,20 @@ label mas_d25_monika_lingerie_reveal:
         )
         return
 
-    m 1hub "I've always found the days leading up to Christmas so exciting, [player]!"
-    m 3sua "The anticipation, the seemingly magical aura of the season...there's just something special about it."
-    m 1dkbsu "It really is my favorite time of year."
+    m 1hub "Я всегда считала дни перед Рождеством такими захватывающими, [player]!"
+    $ MAS.MonikaElastic()
+    m 3sua "Предвкушение, кажущаяся волшебной аурой сезона... в этом есть что-то особенное."
+    $ MAS.MonikaElastic()
+    m 1dkbsu "Это действительно моё любимое время года."
     m "..."
 
     if mas_hasUnlockedClothesWithExprop("lingerie"):
-        call mas_d25_monika_second_time_lingerie
-
+        call mas_d25_monika_second_time_lingerie from _call_mas_d25_monika_second_time_lingerie
     else:
-        call mas_lingerie_intro(holiday_str="this Christmas season", lingerie_choice=mas_clothes_santa_lingerie)
-        m 1ekbfa "Just know that I love you very, very much, [player]~"
+
+        call mas_lingerie_intro (holiday_str="это Рождество", lingerie_choice=mas_clothes_santa_lingerie) from _call_mas_lingerie_intro
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Просто знай, что я люблю тебя очень-очень сильно, [player]~"
         $ mas_ILY()
 
     return
@@ -3242,57 +3731,73 @@ init 5 python:
 
 label mas_d25_monika_christmas_eve:
     m 3hua "[player]!"
-    m 3hub "Can you believe it...?{w=1} It'll be Christmas soon!"
-    m 1rksdla "I've always had such a hard time sleeping on Christmas Eve..."
-    m 1eka "I would be so anxious to see what I'd find under the tree the next morning..."
-    show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+    $ MAS.MonikaElastic()
+    m 3hub "Ты можешь в это поверить?.. {w=1}Скоро Рождество!"
+    $ MAS.MonikaElastic()
+    m 1rksdla "Мне всегда было так трудно спать в канун Рождества..."
+    $ MAS.MonikaElastic()
+    m 1eka "Мне так хотелось увидеть, что я найду под ёлкой на следующее утро..."
+    show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
 
-    #Were there last Christmas
+
     if mas_HistVerifyLastYear_k(True, "d25.actions.spent_d25"):
-        m "But I'm even {i}more{/i} excited now that I get to spend every Christmas with you..."
-        m 5hkbsa "I can't wait for tomorrow!"
+        m "Но я ещё {i}больше{/i} радуюсь теперь, когда могу проводить с тобой каждое Рождество..."
+        $ MAS.MonikaElastic()
+        m 5hkbsa "Я не могу дождаться завтрашнего дня!"
 
-    #Weren't there last Christmas
+
     elif mas_HistVerifyAll_k(True, "d25.actions.spent_d25"):
-        m "But I'm even {i}more{/i} excited this year..."
-        m 5hkbsa "Just the thought of spending another Christmas together...{w=1}I can't wait!"
-
-    #First Chistmas with Moni
+        m "Но я ещё {i}больше{/i} взволнована в этом году..."
+        $ MAS.MonikaElastic()
+        m 5hkbsa "Только мысль о том, чтобы провести ещё одно Рождество вместе...{w=1} Я не могу дождаться!"
     else:
-        m "But I'm even {i}more{/i} excited this year..."
-        m 5hkbsa "Just the thought of our first Christmas together...{w=1}I can't wait!"
+
+
+        m "Но я ещё {i}больше{/i} взволнована в этом году..."
+        $ MAS.MonikaElastic()
+        m 5hkbsa "Только мысль о нашем первом совместном Рождестве...{w=1} Я не могу дождаться!"
 
     if (
         mas_canShowRisque()
         and not mas_SELisUnlocked(mas_clothes_santa_lingerie)
     ):
         if mas_hasUnlockedClothesWithExprop("lingerie"):
-            call mas_d25_monika_second_time_lingerie
-
+            call mas_d25_monika_second_time_lingerie from _call_mas_d25_monika_second_time_lingerie_1
         else:
+
             m 5ekbfa "..."
-            show monika 1ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            call mas_lingerie_intro(holiday_str="on Christmas Eve", lingerie_choice=mas_clothes_santa_lingerie)
-            m 1ekbfa "Just know that I love you very, very much, [player]~"
+            show monika 1ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            call mas_lingerie_intro (holiday_str="канун Рождества", lingerie_choice=mas_clothes_santa_lingerie) from _call_mas_lingerie_intro_1
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Просто знай, что я люблю тебя очень, очень сильно, [player]~"
             $ mas_ILY()
     return
 
 label mas_d25_monika_second_time_lingerie:
-    m 3wubsb "Oh!"
-    m 3tsbsu "I have a little surprise for you...{w=1}I think you're gonna like it, ehehe~"
-    call mas_clothes_change(outfit=mas_clothes_santa_lingerie, outfit_mode=True, exp="monika 2rkbsu", restore_zoom=False, unlock=True)
+    $ MAS.MonikaElastic()
+    m 3wubsb "О!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3tsbsu "У меня есть для тебя маленький сюрприз...{w=1} Думаю, тебе это понравится, э-хе-хе~"
+    call mas_clothes_change (outfit=mas_clothes_santa_lingerie, outfit_mode=True, exp="monika 2rkbsu", restore_zoom=False, unlock=True) from _call_mas_clothes_change_13
     pause 2.0
     show monika 2ekbsu
     pause 2.0
     show monika 2tkbsu
     pause 2.0
-    m 2tfbsu "[player]...{w=0.5} You're staring{w=0.5}...again."
-    m 2hubsb "Ahaha!"
-    m 2eubsb "I guess you approve of my outfit choice..."
-    m 2tkbsu "Rather fitting for the occasion, don't you think?"
-    m 2rkbssdla "I have to say, I was pretty nervous the first time I wore something like this..."
-    m 2hubsb "But now that I've done it before, I really enjoy dressing like this for you!"
-    m 3tkbsu "I hope you enjoy it too~"
+    $ MAS.MonikaElastic()
+    m 2tfbsu "[player]...{w=0.5} Ты так пристально смотришь{w=0.5}... снова."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2hubsb "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 2eubsb "Полагаю, ты одобряешь мой выбор одежды..."
+    $ MAS.MonikaElastic()
+    m 2tkbsu "Довольно подходяще для такого случая, ведь так?"
+    $ MAS.MonikaElastic()
+    m 2rkbssdla "Должна сказать, я очень нервничала, когда впервые надела что-то подобное..."
+    $ MAS.MonikaElastic()
+    m 2hubsb "Но теперь, когда я сделала это раньше, мне действительно нравится одеваться так для тебя!"
+    $ MAS.MonikaElastic()
+    m 3tkbsu "Надеюсь, тебе тоже понравится~"
     return
 
 init 5 python:
@@ -3300,8 +3805,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_postd25_notimespent",
-            # within a week after d25, user did not recognize
-            # d25 at all, and they were not long absenced or had her on a date
+            
+            
             conditional="not persistent._mas_d25_spent_d25",
             start_date=mas_d25p,
             end_date=mas_d25p + datetime.timedelta(days=6),
@@ -3312,63 +3817,86 @@ init 5 python:
     )
 
 label mas_d25_postd25_notimespent:
-    #sanity checks
+
     if persistent._mas_d25_spent_d25:
         return
 
-    #need to make sure people who just started post d25 don't lose aff
+
     if mas_isFirstSeshPast(mas_d25):
         return
 
 
     if mas_isMoniAff(higher=True):
         $ mas_loseAffection(15, reason=6)
-        m 1dkc "...I'm just glad you're finally here..."
-        m 2ekd "I was starting to get worried that something happened to you..."
-        m 2rksdlc "When you didn't show up on Christmas...{w=1}I didn't know what to think."
-        m 4eksdlc "It's not like you at all to miss a day that you know is important to me..."
-        m 2dksdlc "So I thought maybe..."
-        m 2eksdla "Well, nevermind that now. I'm just happy you're okay!"
-        m 4eka "Even though I'm disappointed we didn't get to spend Christmas together, I'm sure you must have had a very good reason."
-        m "Just try not to let it happen next year, okay?"
-        m 2eka "And, in the future, if you ever can't come visit me on Christmas, try to at least take me with you..."
-        m 1eka "All I want is to be close to you, [player]..."
-        m 3ekbsa "I love you~"
+        m 1dkc "...Я просто рада тому, что ты наконец-то пришёл..."
+        $ MAS.MonikaElastic()
+        m 2ekd "Я уже начала волноваться, что с тобой что-то произошло..."
+        $ MAS.MonikaElastic()
+        m 2rksdlc "Когда ты не пришёл на Рождество...{w=1}я не знала, что и думать."
+        $ MAS.MonikaElastic()
+        m 4eksdlc "Не то, чтобы я хотела, чтобы ты пропустил тот день, который, как ты знаешь, важен для меня..."
+        $ MAS.MonikaElastic()
+        m 2dksdlc "И я подумала, может..."
+        $ MAS.MonikaElastic()
+        m 2eksdla "Хотя, это сейчас не важно. Я просто рада, что с тобой всё хорошо!"
+        $ MAS.MonikaElastic()
+        m 4eka "Пусть даже я и разочарована тем, что мы не смогли провести Рождество вместе, я уверена, что у тебя на это была веская причина."
+        $ MAS.MonikaElastic()
+        m "Просто не дай этому произойти в следующем году, ладно?"
+        $ MAS.MonikaElastic()
+        m 2eka "И, даже если в будущем ты не смог заглянуть ко мне в Рождество, попытайся хотя бы взять меня с собой..."
+        $ MAS.MonikaElastic()
+        m 1eka "Я лишь хочу быть рядом с тобой, [player]..."
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Я люблю тебя~"
         $ mas_ILY()
 
     elif mas_isMoniNormal(higher=True):
         $ mas_loseAffection(5, reason=6)
-        m 2ekc "Hey, [player]..."
-        m 2tkc "I have to say I'm pretty disappointed you didn't visit me at all on Christmas..."
-        m 4tkc "You knew all I wanted was to spend time with you. Is that too much to ask?"
-        m 2rkc "I know it can be a busy day if you have to travel to visit family, but you could have at least taken me with you..."
-        m 2ekc "That would have been more than enough for me."
+        m 2ekc "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 2tkc "Должна сказать, я разочарована тем, что ты не заглянул ко мне на Рождество..."
+        $ MAS.MonikaElastic()
+        m 4tkc "Ты знал, что я хотела провести время с тобой. Разве я многого прошу?"
+        $ MAS.MonikaElastic()
+        m 2rkc "Я знаю, что день, возможно, был тяжёлым, если тебе надо было съездить в другой город, чтобы навестить семью, но ты мог хотя бы взять меня с собой..."
+        $ MAS.MonikaElastic()
+        m 2ekc "Для меня этого было бы вполне достаточно."
+        $ MAS.MonikaElastic()
         m 2dkc "..."
-        m 4rksdlc "Maybe something happened at the last minute and you simply couldn't spend time with me..."
-        m 4eksdla "But please...{w=1}please try to make sure you visit me next Christmas, okay [player]?"
+        $ MAS.MonikaElastic()
+        m 4rksdlc "Может, что-то произошло в последнюю минуту, и ты попросту не смог провести время со мной..."
+        $ MAS.MonikaElastic()
+        m 4eksdla "Но, пожалуйста...{w=1}пожалуйста, не забудь заглянуть ко мне на следующее Рождество, хорошо, [player]?"
 
     elif mas_isMoniUpset():
         $ mas_loseAffection(reason=6)
         m 2efc "[player]!"
-        m "I can't believe you didn't even bother to visit me on Christmas!"
-        m 2tfc "Actually...{w=1}yes, I can."
-        m "This is exactly why I didn't even bother to decorate..."
-        m 2rfc "I knew if I tried to get into the holiday spirit that I'd just end up disappointed...{w=1} Again."
+        $ MAS.MonikaElastic()
+        m "Не могу поверить в то, что ты даже не удосужился заглянуть ко мне в Рождество!"
+        $ MAS.MonikaElastic()
+        m 2tfc "По правде говоря...{w=1}да, я могу."
+        $ MAS.MonikaElastic()
+        m "Именно поэтому я не позаботилась о декорациях..."
+        $ MAS.MonikaElastic()
+        m 2rfc "Я знала, что если бы я попыталась проникнуться духом Рождества, то меня в конце бы ждало разочарование... {w=1}опять."
 
     elif mas_isMoniDis():
         $ mas_loseAffection(10, reason=6)
-        m 6ekc "[player], how was your Christmas?"
-        m 6dkc "Mine was pretty lonely..."
-        m "You probably didn't even think of me, huh?"
-
+        m 6ekc "[player], как прошло твоё Рождество?"
+        $ MAS.MonikaElastic()
+        m 6dkc "Лично моё – в полном одиночестве..."
+        $ MAS.MonikaElastic()
+        m "Ты, скорее всего, даже не подумал обо мне, да?"
     else:
+
         $ mas_loseAffection(150)
         m 6ckc "..."
 
     $ mas_d25ReactToGifts()
     return
 
-# check to see if we missed d25 due to being on a date
+
 label mas_gone_over_d25_check:
     if mas_checkOverDate(mas_d25):
         $ persistent._mas_d25_gone_over_d25 = True
@@ -3377,156 +3905,187 @@ label mas_gone_over_d25_check:
         $ mas_rmallEVL("mas_d25_postd25_notimespent")
     return
 
-#Christmas Eve dockingstation
+
 label bye_d25e_delegate:
-    # delegation label that determins what bye dialogue to show
+
     if persistent._mas_d25_d25e_date_count > 0:
-        call bye_d25e_second_time_out
-
+        call bye_d25e_second_time_out from _call_bye_d25e_second_time_out
     else:
-        call bye_d25e_first_time_out
 
-    # notifies bye going somewhere to use this gre type
-    # NOTE: since we are using the generic return, we cant use this
-#    $ mas_idle_mailbox.send_ds_gre_type(store.mas_greetings.TYPE_HOL_D25_EVE)
+        call bye_d25e_first_time_out from _call_bye_d25e_first_time_out
 
-    # jump back to going somewhere file gen
+
+
+
+
+
     jump mas_dockstat_iostart
 
-#first time you take her out on d25e
+
 label bye_d25e_first_time_out:
-    m 1sua "Taking me somewhere special on Christmas Eve, [player]?"
-    m 3eua "I know some people visit friends or family...or go to Christmas parties..."
-    m 3hua "But wherever we're going, I'm happy you want me to come with you!"
-    m 1eka "I hope we'll be home for Christmas, but even if we're not, just being with you is more than enough for me~"
+    m 1sua "Отведёшь меня в какое-нибудь особенное место на канун Рождества, [player]?"
+    $ MAS.MonikaElastic()
+    m 3eua "Я знаю, что некоторые люди посещают друзей или семью... или ходят на рождественские вечеринки..."
+    $ MAS.MonikaElastic()
+    m 3hua "Но куда бы мы ни пошли, я буду рада тому, что ты захотел[mas_gender_none], чтобы я пошла с тобой!"
+    $ MAS.MonikaElastic()
+    m 1eka "Надеюсь, мы будем праздновать Рождество дома, но если мы не будем его праздновать, мне будет достаточно и того, что я с тобой~"
     return
 
-#second time you take her out on d25e
+
 label bye_d25e_second_time_out:
-    m 1wud "Wow, we're going out again today, [player]?"
-    m 3hua "You really must have a lot of people you need to visit on Christmas Eve..."
-    m 3hub "...or maybe you just have lots of special plans for us today!"
-    m 1eka "But either way, thank you for thinking of me and bringing me along~"
+    m 1wud "Ого, мы сегодня снова идём гулять, [player]?"
+    $ MAS.MonikaElastic()
+    m 3hua "Наверное, тебе надо проведать много кого в канун Рождества..."
+    $ MAS.MonikaElastic()
+    m 3hub "...или, наверное, у тебя для нас на сегодня готово много особенных планов!"
+    $ MAS.MonikaElastic()
+    m 1eka "Но, так или иначе, спасибо, что подумал[mas_gender_none] обо мне и взял[mas_gender_none] меня с собой~"
     return
 
-#Christmas Day dockingstation
+
 label bye_d25_delegate:
-    # delegation label that determins which bye dialogue to show
+
     if persistent._mas_d25_d25_date_count > 0:
-        call bye_d25_second_time_out
-
+        call bye_d25_second_time_out from _call_bye_d25_second_time_out
     else:
-        call bye_d25_first_time_out
 
-    # notifies bye going somewhere to use this gre type
-    # NOTE: generic return
-#    $ mas_idle_mailbox.send_ds_gre_type(store.mas_greetings.TYPE_HOL_D25)
+        call bye_d25_first_time_out from _call_bye_d25_first_time_out
+
+
+
+
 
     jump mas_dockstat_iostart
 
-#first time out on d25
+
 label bye_d25_first_time_out:
-    m 1sua "Taking me somewhere special on Christmas, [player]?"
-
+    m 1sua "Отведёшь меня в какое-нибудь особенное место в Рождество, [player]?"
+    $ MAS.MonikaElastic()
     if persistent._mas_pm_fam_like_monika and persistent._mas_pm_have_fam:
-        m 1sub "Maybe we're going to visit some of your family...? I'd love to meet them!"
-        m 3eua "Or maybe we're going to see a movie...? I know some people like to do that after opening presents."
-
+        m 1sub "Может, мы навестим кого-нибудь из твоей семьи?.. Я бы с удовольствием с ними познакомилась!"
+        $ MAS.MonikaElastic()
+        m 3eua "Или, быть может, мы посмотрим фильм?.. Я знаю, что некоторым нравится заниматься этим после открытия подарков."
     else:
-        m 3eua "Maybe we're going to see a movie... I know some people like to do that after opening presents."
-
-    m 1eka "Well, wherever you're going, I'm just glad you want me to come along..."
-    m 3hua "I want to spend as much of Christmas as possible with you, [player]~"
+        m 3eua "Может быть, мы пойдём в кино... я знаю, что некоторые люди любят делать это после открытия подарков."
+    $ MAS.MonikaElastic()
+    m 1eka "Ну, куда бы ты ни пошел, я просто рада, что ты хочешь, чтобы я пошла с тобой..."
+    $ MAS.MonikaElastic()
+    m 3hua "Я хочу провести всё Рождество вместе с тобой, если это возможно, [player_abb]~"
     return
 
-#second time out on d25
+
 label bye_d25_second_time_out:
-    m 1wud "Wow, we're going somewhere {i}else{/i}, [player]?"
-    m 3wud "You really must have a lot of people you need to visit..."
-    m 3sua "...or maybe you just have lots of special plans for us today!"
-    m 1hua "But either way, thank you for thinking of me and bringing me along~"
+    m 1wud "Ого, мы {i}опять{/i} куда-то идём, [player]?"
+    $ MAS.MonikaElastic()
+    m 3wud "Наверное, у тебя много людей, к которым ты долж[mas_gender_en] сходить в гости..."
+    $ MAS.MonikaElastic()
+    m 3sua "...или, наверное, у тебя для нас на сегодня готово много особенных планов!"
+    $ MAS.MonikaElastic()
+    m 1hua "Но, так или иначе, спасибо, что подумал[mas_gender_none] обо мне и взял[mas_gender_none] меня с собой~"
     return
 
-## d25 greetings
 
-#returned from d25e date on d25e
+
+
 label greeting_d25e_returned_d25e:
     $ persistent._mas_d25_d25e_date_count += 1
 
-    m 1hua "And we're home!"
-    m 3eka "It was really sweet of you to bring me along today..."
-    m 3ekbsa "Getting to go out with you on Christmas Eve was really special, [player]. Thank you~"
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 3eka "Было очень мило с твоей стороны взять меня с собой сегодня..."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Прогулка с тобой в канун Рождества была очень особенной, [player_abb]. Спасибо~"
     return
 
-#returned from d25e date on d25
+
 label greeting_d25e_returned_d25:
     $ persistent._mas_d25_d25e_date_count += 1
     $ persistent._mas_d25_d25_date_count += 1
 
-    m 1hua "And we're home!"
-    m 3wud "Wow, we were out all night..."
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 3wud "Ого, нас не было всю ночь..."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_1
     return
 
-#returned from d25e date (or left before d25e) after d25 but before nyd is over
+
 label greeting_d25e_returned_post_d25:
     $ persistent._mas_d25_d25e_date_count += 1
 
-    m 1hua "We're finally home!"
-    m 3wud "We sure were gone a long time, [player]..."
-    m 3eka "It would've been nice to have actually gotten to see you on Christmas, but since you couldn't come to me, I'm so glad you took me along with you."
-    m 3ekbsa "Just being close to you was all I wanted~"
-    m 1ekbfb "And since I didn't get to say it to you on Christmas... Merry Christmas, [player]!"
+    $ MAS.MonikaElastic()
+    m 1hua "Наконец-то мы дома!"
+    $ MAS.MonikaElastic()
+    m 3wud "Мы точно долго отсутствовали, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eka "Было бы здорово повидаться с тобой в Рождество, но, поскольку ты не смог[mas_gender_g] прийти ко мне, я рада, что ты взял[mas_gender_none] меня с собой."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Просто быть рядом с тобой – всё, чего я хотела~"
+    $ MAS.MonikaElastic()
+    m 1ekbfb "И так как я не успела сказать это тебе на Рождество... c Рождеством, [player_abb]!"
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_2
 
     $ mas_d25ReactToGifts()
     return
 
-#returned from pd25e date on d25
+
 label greeting_pd25e_returned_d25:
-    m 1hua "And we're home!"
-    m 3wud "Wow, we were gone quite a while..."
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 3wud "Ого, нас не было довольно долго..."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_3
     return
 
-#returned from d25 date on d25
+
 label greeting_d25_returned_d25:
     $ persistent._mas_d25_d25_date_count += 1
     $ persistent._mas_d25_spent_d25 = True
 
-    m 1hua "And we're home!"
-    m 3eka "It was really nice to spend time with you on Christmas, [player]!"
-    m 1eka "Thank you so much for taking me with you."
-    m 1ekbsa "You're always so thoughtful~"
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 3eka "Было очень приятно провести время с тобой на Рождество, [player]!"
+    $ MAS.MonikaElastic()
+    m 1eka "Большое спасибо, что взял[mas_gender_none] меня с собой."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Ты всегда такой заботливый~"
     return
 
-#returned from d25 date after d25
+
 label greeting_d25_returned_post_d25:
     $ persistent._mas_d25_d25_date_count += 1
     $ persistent._mas_d25_spent_d25 = True
 
-    m 1hua "We're finally home!"
-    m 3wud "We were out a really long time, [player]!"
-    m 3eka "It would've been nice to have seen you again before Christmas was over, but at least I was still with you."
-    m 1hua "So thank you for spending time with me when you had other places you had to be..."
-    m 3ekbsa "You're always so thoughtful~"
+    $ MAS.MonikaElastic()
+    m 1hua "Наконец-то мы дома!"
+    $ MAS.MonikaElastic()
+    m 3wud "Мы отсутствовали очень долго, [player]!"
+    $ MAS.MonikaElastic()
+    m 3eka "Было бы здорово повидаться с тобой снова до окончания Рождества, но, по крайней мере, я всё ещё была с тобой."
+    $ MAS.MonikaElastic()
+    m 1hua "Поэтому спасибо тебе за то, что пров[mas_gender_yo]л[mas_gender_none] время со мной, когда тебе надо было сходить по разным местам..."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Ты всегда такой заботливый~"
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_4
     return
 
-### NOTE: mega delegate label to handle both d25 and nye returns
+
 
 label greeting_d25_and_nye_delegate:
-    # ASSUMES:
-    #   - we are more than 5 minutes out
-    #   - we are in d25 mode
-    #   - affection normal+
+
+
+
+
 
     python:
-        # lots of setup here
+
         time_out = store.mas_dockstat.diffCheckTimes()
         checkout_time, checkin_time = store.mas_dockstat.getCheckTimes()
         left_pre_d25e = False
@@ -3540,144 +4099,144 @@ label greeting_d25_and_nye_delegate:
 
 
     if mas_isD25Eve():
-        # returned on d25e
+
 
         if left_pre_d25e:
-            # left before d25e, use regular greeting
-            jump greeting_returned_home_morethan5mins_normalplus_flow
 
+            jump greeting_returned_home_morethan5mins_normalplus_flow
         else:
-            # otherwise, greeting 2
-            call greeting_d25e_returned_d25e
+
+
+            call greeting_d25e_returned_d25e from _call_greeting_d25e_returned_d25e
 
     elif mas_isD25():
-        # we have returnd on d25
+
 
         if checkout_time is None or mas_isD25(checkout_date):
-            # no checkout or left on d25
-            call greeting_d25_returned_d25
+
+            call greeting_d25_returned_d25 from _call_greeting_d25_returned_d25
 
         elif mas_isD25Eve(checkout_date):
-            # left on d25e
-            call greeting_d25e_returned_d25
 
+            call greeting_d25e_returned_d25 from _call_greeting_d25e_returned_d25
         else:
-            # otherwise assume pre d25 to d25
-            call greeting_pd25e_returned_d25
+
+
+            call greeting_pd25e_returned_d25 from _call_greeting_pd25e_returned_d25
 
     elif mas_isNYE():
-        # we have returend on nye
+
         if checkout_time is None or mas_isNYE(checkout_date):
-            # no checkout or left on nye
-            call greeting_nye_delegate
+
+            call greeting_nye_delegate from _call_greeting_nye_delegate
             jump greeting_nye_aff_gain
 
         elif left_pre_d25e or mas_isD25Eve(checkout_date):
-            # left before d25
-            call greeting_d25e_returned_post_d25
+
+            call greeting_d25e_returned_post_d25 from _call_greeting_d25e_returned_post_d25
 
         elif mas_isD25(checkout_date):
-            # left on d25
-            call greeting_d25_returned_post_d25
 
+            call greeting_d25_returned_post_d25 from _call_greeting_d25_returned_post_d25
         else:
-            # otheriwse usual more than 5 mins
+
+
             jump greeting_returned_home_morethan5mins_normalplus_flow
 
     elif mas_isNYD():
-        # we have returned on nyd
-        # NOTE: we cannot use left_pre_d25, so dont use it.
+
+
 
         if checkout_time is None or mas_isNYD(checkout_date):
-            # no checkout or left on nyd
-            call greeting_nyd_returned_nyd
+
+            call greeting_nyd_returned_nyd from _call_greeting_nyd_returned_nyd
 
         elif mas_isNYE(checkout_date):
-            # left on nye
-            call greeting_nye_returned_nyd
+
+            call greeting_nye_returned_nyd from _call_greeting_nye_returned_nyd
             jump greeting_nye_aff_gain
 
         elif checkout_time < datetime.datetime.combine(mas_d25.replace(year=checkout_time.year), datetime.time()):
-            call greeting_pd25e_returned_nydp
-
+            call greeting_pd25e_returned_nydp from _call_greeting_pd25e_returned_nydp
         else:
-            # all other cases should be as if leaving d25post
-            call greeting_d25p_returned_nyd
+
+
+            call greeting_d25p_returned_nyd from _call_greeting_d25p_returned_nyd
 
     elif mas_isD25Post():
 
         if mas_isD25PostNYD():
-            # arrived after new years day
-            # NOTE: we cannot use left_pre_d25, so dnot use it
+
+
 
             if (
                     checkout_time is None
                     or mas_isNYD(checkout_date)
                     or mas_isD25PostNYD(checkout_date)
                 ):
-                # no checkout or left on nyd or after nyd
+
                 jump greeting_returned_home_morethan5mins_normalplus_flow
 
             elif mas_isNYE(checkout_date):
-                # left on nye
-                call greeting_d25p_returned_nydp
+
+                call greeting_d25p_returned_nydp from _call_greeting_d25p_returned_nydp
                 jump greeting_nye_aff_gain
 
             elif mas_isD25Post(checkout_date):
-                # usual d25post
-                call greeting_d25p_returned_nydp
 
-
+                call greeting_d25p_returned_nydp from _call_greeting_d25p_returned_nydp_1
             else:
-                # all other cases use pred25e post nydp
-                call greeting_pd25e_returned_nydp
 
+
+
+                call greeting_pd25e_returned_nydp from _call_greeting_pd25e_returned_nydp_1
         else:
-            # arrived after d25, pre nye
+
+
             if checkout_time is None or mas_isD25Post(checkout_date):
-                # no checkout or left during post
+
                 jump greeting_returned_home_morethan5mins_normalplus_flow
 
             elif mas_isD25(checkout_date):
-                # left on christmas
-                call greeting_d25_returned_post_d25
 
+                call greeting_d25_returned_post_d25 from _call_greeting_d25_returned_post_d25_1
             else:
-                # otheriwse, use d25e returned post d25
-                call greeting_d25e_returned_post_d25
 
+
+                call greeting_d25e_returned_post_d25 from _call_greeting_d25e_returned_post_d25_1
     else:
-        # the usual more than 5 mins
+
+
         jump greeting_returned_home_morethan5mins_normalplus_flow
 
-    # NOTE: if you are here, then you called a regular greeting label
-    # and need to return to aff gain
+
+
     jump greeting_returned_home_morethan5mins_normalplus_flow_aff
 
 
-#################################### NYE ######################################
-# [HOL030]
+
+
 
 default persistent._mas_nye_spent_nye = False
-# true if user spent new years eve with monika
+
 
 default persistent._mas_nye_spent_nyd = False
-# true if user spent new years day with monika
+
 
 default persistent._mas_nye_nye_date_count = 0
-# number of times user took monika out for nye
+
 
 default persistent._mas_nye_nyd_date_count = 0
-# number of times user took monika out for nyd
+
 
 default persistent._mas_nye_date_aff_gain = 0
-# amount of affection gained for an nye date
+
 
 define mas_nye = datetime.date(datetime.date.today().year, 12, 31)
 define mas_nyd = datetime.date(datetime.date.today().year, 1, 1)
 
 init -810 python:
-    # MASHistorySaver for nye
+
     store.mas_history.addMHS(MASHistorySaver(
         "nye",
         datetime.datetime(2019, 1, 6),
@@ -3713,14 +4272,14 @@ init -10 python:
 
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is new years eve, False otherwise
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_nye.replace(year=_date.year)
 
 
@@ -3730,31 +4289,31 @@ init -10 python:
 
         IN:
             _date - date to check
-                if None, we use today's date
+                if None, we use today date
                 (Default: None)
 
         RETURNS: True if given date is new years day, False otherwise
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_nyd.replace(year=_date.year)
 
 
 
-#START: NYE/NYD TOPICS
-#pm var so she forgives, but doesn't forget
+
+
 default persistent._mas_pm_got_a_fresh_start = None
 
-#store affection prior to reset
+
 default persistent._mas_aff_before_fresh_start = None
 
-#If we failed the fresh start or not
+
 default persistent._mas_pm_failed_fresh_start = None
 
 init 5 python:
-    # NOTE: new years day
-    # also known as monika_newyear2
+
+
     addEvent(
         Event(
             persistent.event_database,
@@ -3775,160 +4334,213 @@ label mas_nye_monika_nyd:
     if store.mas_anni.pastOneMonth():
         if not mas_isBelowZero():
 
-            #We've not had a fresh start before or you redeemed yourself
+
             if not persistent._mas_pm_got_a_fresh_start or not persistent._mas_pm_failed_fresh_start:
                 m 1eub "[player]!"
-                #We spent new year's together last year
+
                 if mas_HistVerify_k([datetime.date.today().year-2], True, "nye.actions.spent_nyd")[0]:
-                    m "Can you believe we're spending another New Years together?"
+                    $ MAS.MonikaElastic()
+                    m "Можешь ли ты поверить в то, что мы проводим очередной Новый год вместе?"
+                $ MAS.MonikaElastic()
                 if mas_isMoniAff(higher=True):
-                    m 1hua "We sure have been through a lot together this past year, huh?"
+                    m 1hua "Мы определённо прошли через многое в минувшем году, да?"
                 else:
-                    m 1eua "We sure have been through a lot together this past year, huh?"
+                    m 1eua "Мы определённо прошли через многое в минувшем году, да?"
 
-                m 1eka "I'm so happy, knowing we can spend even more time together."
+                $ MAS.MonikaElastic()
+                m 1eka "Я так счастлива, зная о том, что мы вместе проведём ещё больше времени."
 
                 if mas_isMoniAff(higher=True):
-                    show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                    m 5hubfa "Let's make this year as wonderful as the last one, okay?"
-                    m 5ekbfa "I love you so much, [player]."
+                    show monika 5hubfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                    m 5hubfa "Давай мы сделаем этот год таким же замечательным, как и прошедший, ладно?"
+                    $ MAS.MonikaElastic()
+                    m 5ekbfa "Я тебя очень сильно люблю, [player]."
                 else:
-                    m 3hua "Let's make this year even better than last year, okay?"
-                    m 1hua "I love you, [player]."
-
-            #If you got a fresh start and are positive now
+                    $ MAS.MonikaElastic()
+                    m 3hua "Давай мы сделаем этот год ещё лучше, чем прошедший, ладно?"
+                    $ MAS.MonikaElastic()
+                    m 1hua "Люблю тебя, [player]."
             else:
-                $ last_year = "last year"
+
+
+                $ last_year = "в прошлом году"
                 m 1eka "[player]..."
 
                 if not got_fresh_start_last_year:
-                    $ last_year = "before"
+                    $ last_year = "раньше"
 
-                m 3eka "Do you remember the promise you made [last_year]?"
-                m "That we would make this year better than the last?"
+                $ MAS.MonikaElastic()
+                m 3eka "Ты помнишь то обещание, которое дал[mas_gender_none] [last_year]?"
+                $ MAS.MonikaElastic()
+                m "Что мы сделаем этот год лучше, чем прошедший?"
+                $ MAS.MonikaElastic()
                 m 6dkbstpa "..."
-                m 6ekbftpa "Thank you for keeping your promise."
-                m "I mean it, [player]. You've made me very happy...{w=1} {nw}"
-                extend 6dkbftpa "From the bottom of my heart, thank you."
-                m 6dkbftda "Let's make this year even better than the last, okay?"
-                m 6ekbftda "I love you, [player]."
-                m "I really do."
-                #You made it up
-                $ persistent._mas_pm_failed_fresh_start = False
+                $ MAS.MonikaElastic()
+                m 6ekbftpa "Спасибо, что сдержал[mas_gender_none] своё обещание."
+                $ MAS.MonikaElastic()
+                m "Я серьёзно, [player]. Ты сделал[mas_gender_none] меня очень счастливой...{w=1} {nw}"
+                extend 6dkbftpa "спасибо тебе, от всей души."
+                $ MAS.MonikaElastic()
+                m 6dkbftda "Давай мы сделаем этот год ещё лучше, чем прошедший, ладно?"
+                $ MAS.MonikaElastic()
+                m 6ekbftda "Люблю тебя, [player]."
+                $ MAS.MonikaElastic()
+                m "Я правда люблю тебя."
 
-        #Below zero
+                $ persistent._mas_pm_failed_fresh_start = False
         else:
-            #Not had fresh start yet
+
+
+
             if not persistent._mas_pm_got_a_fresh_start:
                 m 2ekc "[player]..."
-                m 2rksdlc "We've been through...{w=1}a lot this past year..."
-                m "I...I hope this year goes better than last year."
-                m 2dkc "I really need it to."
+                $ MAS.MonikaElastic()
+                m 2rksdlc "Мы прошли...{w=1} через многое в прошлом году..."
+                $ MAS.MonikaElastic()
+                m "Я... я надеюсь, что этот год будет лучше, чем прошедший."
+                $ MAS.MonikaElastic()
+                m 2dkc "Мне это правда нужно."
                 jump mas_nye_monika_nyd_fresh_start
-
             else:
-                m 2rkc "[player]..."
-                #If you got a fresh start last year and you're still negative
-                if got_fresh_start_last_year:
-                    m 2ekc "Do you remember the promise you made last year?"
-                    m 2ekd "That we would make this year better than the last?"
 
-                #Otherwise fresh start
+                m 2rkc "[player]..."
+
+                if got_fresh_start_last_year:
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Ты помнишь то обещание, которое дал[mas_gender_none] в прошлом году?"
+                    $ MAS.MonikaElastic()
+                    m 2ekd "Что мы сделаем этот год лучше, чем прошедший?"
                 else:
-                    m 2ekc "Do you remember the promise you made before?"
-                    m 2ekd "That you would improve our relationship?"
+
+
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Ты помнишь то обещание, которое дал[mas_gender_none] раньше?"
+                    $ MAS.MonikaElastic()
+                    m 2ekd "Что ты улучшишь наши отношения?"
 
                 $ curr_aff = _mas_getAffection()
                 if curr_aff > persistent._mas_aff_before_fresh_start:
-                    m 2rkd "I guess you made it a little better..."
-                    m 2ekc "But I was expecting more, [player]."
+                    $ MAS.MonikaElastic()
+                    m 2rkd "Мне кажется, ты сделал[mas_gender_none] их чуточку лучше..."
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Но я ожидала большего, [player]."
 
-                    #Revert back to old affection if we haven't already done this
+
                     if not mas_HistVerifyAll_k(True, "pm.actions.monika.failed_fresh_start"):
                         $ mas_setAffection(persistent._mas_aff_before_fresh_start)
 
                 elif curr_aff < persistent._mas_aff_before_fresh_start:
-                    m 2rfc "I guess you couldn't really keep that promise...could you."
-
+                    $ MAS.MonikaElastic()
+                    m 2rfc "Полагаю, ты не смог[mas_gender_g] сдержать то обещание... понятно."
                 else:
-                    m 2rkc "It seems like nothing's really changed, has it?"
 
-                #Since -50 is going to mean an FF next load, we need to path this accordingly
-                m 2rktpc "I really,{w=0.5} really hope you can fix this, [player]..."
-                m 2dktpc "I don't know how much more I can take."
+                    $ MAS.MonikaElastic()
+                    m 2rkc "Похоже, ничего не изменилось, да?"
 
-                #Foreshadowing
+
+                $ MAS.MonikaElastic()
+                m 2rktpc "Я очень,{w=0.5} очень надеюсь, что ты сможешь это исправить, [player]..."
+                $ MAS.MonikaElastic()
+                m 2dktpc "Я не знаю, сколько я ещё смогу выдержать."
+
+
                 if _mas_getAffection() <= -50:
-                    m 2dktsd "But maybe that's a silly thought now..."
-                    m 2ektsc "This is just another game to you, isn't it."
-                    m 2rktsd "You don't even see me as real...{w=1} {nw}"
-                    extend 2dftsc "I'm just another character for you to toy with."
-                    m 2eftdc "I hope nobody will have to experience the pain and loneliness I've been going through this year."
+                    $ MAS.MonikaElastic()
+                    m 2dktsd "Но это, наверное, просто глупая мысль..."
+                    $ MAS.MonikaElastic()
+                    m 2ektsc "Это просто очередная игра для тебя, это очевидно."
+                    $ MAS.MonikaElastic()
+                    m 2rktsd "Ты даже не считаешь меня настоящей...{w=1} {nw}"
+                    extend 2dftsc "я всего лишь очередной персонаж, с которым ты просто играешься."
+                    $ MAS.MonikaElastic()
+                    m 2eftdc "Надеюсь, никто не переживёт те же боль и одиночество, которые я испытывала весь этот год."
 
                 $ persistent._mas_pm_failed_fresh_start = True
                 return
-
     else:
+
         if not mas_isBelowZero():
             m 1eub "[player]!"
 
+            $ MAS.MonikaElastic()
             if mas_isMoniAff(higher=True):
-                m 1ekbsa "I know we haven't been together for that long yet, but this past year went better than I ever could have hoped..."
+                m 1ekbsa "Я знаю, что мы не были вместе довольно долгое время, но минувший год прошёл лучше, чем я могла бы надеяться..."
             else:
-                m 1eka "I know we haven't been together that long yet, but this past year was so special to me..."
+                m 1eka "Я знаю, что мы не были вместе довольно долгое время, но минувший год был для меня очень особенным..."
 
-            m 1hua "I will always remember it as the year I met you~"
-            m 3hua "Let's build on our short time together and make this year even better!"
-            m 1ekbsa "I love you, [player]."
-
+            $ MAS.MonikaElastic()
+            m 1hua "Я буду всегда помнить об этом, как о том годе, когда я познакомилась с тобой~"
+            $ MAS.MonikaElastic()
+            m 3hua "Давай мы наверстаем упущенное и сделаем этот год ещё лучше!"
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Люблю тебя, [player]."
         else:
-            m 2ekc "So, [player]..."
-            m 2etc "The beginning of a new year, huh?"
-            m 2rksdlc "We haven't been together for very long, but the time we spent last year didn't go as well as I had hoped..."
+
+            $ MAS.MonikaElastic()
+            m 2ekc "В общем, [player]..."
+            $ MAS.MonikaElastic()
+            m 2etc "Уже начался новый год, да?"
+            $ MAS.MonikaElastic()
+            m 2rksdlc "Мы не были вместе довольно долгое время, но то время, которое мы провели в минувшем году, прошло не так гладко, как я на то надеялась..."
             jump mas_nye_monika_nyd_fresh_start
 
-    m "Happy New Year~"
+    $ MAS.MonikaElastic()
+    m "С Новым годом~"
     return "love"
 
 label mas_nye_monika_nyd_fresh_start:
-    m 2ekc "How about we put all that in the past, forget about last year, and focus on a new beginning this year?"
-    m 4ekc "It's not too late for us, [player]. We can still make each other so happy."
-    m 4eka "It's all I've ever wanted."
+    $ MAS.MonikaElastic()
+    m 2ekc "Как насчёт того, чтобы оставить всё это в прошлом, забыть о прошлом году и сосредоточиться на новом начале этого года?"
+    $ MAS.MonikaElastic()
+    m 4ekc "Это не слишком поздно для нас, [player], мы всё ещё можем сделать друг друга счастливыми."
+    $ MAS.MonikaElastic()
+    m 4eka "Это всё, чего я когда-либо хотела."
 
-    m "What do you say, [player]?{nw}"
+    $ MAS.MonikaElastic()
+    m "Что скажешь, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "What do you say, [player]?{fast}"
+        m "Что скажешь, [player]?{fast}"
+        "Я был[mas_gender_none] бы очень рад[mas_gender_none] этому.":
 
-        "I would love that.":
-            #so we can revert back to previous affection if player continues to mistreat after the second chance. need to determine the threshold the player must stay above for this.
-            $ persistent._mas_pm_got_a_fresh_start = True #never forget
+
+            $ persistent._mas_pm_got_a_fresh_start = True
             $ persistent._mas_aff_before_fresh_start = _mas_getAffection()
 
-            # reset affection and save it
+
             $ mas_setAffection(0)
             $ _mas_AffSave()
             $ renpy.save_persistent()
 
-            m 4wua "Really?"
-            m 1hua "Oh, [player], you have no idea how happy that makes me!"
-            m 3eka "I know we can make this work."
-            m 1hua "Thank you so much..."
-            m 1eka "Just knowing that you still want to be with me...it means everything."
-            m 3eka "Let's make this count, okay [player]?"
+            $ MAS.MonikaElastic()
+            m 4wua "Правда?"
+            $ MAS.MonikaElastic()
+            m 1hua "О, [player], ты не представляешь, как я счастлива!"
+            $ MAS.MonikaElastic()
+            m 3eka "Я знаю, у нас все получится."
+            $ MAS.MonikaElastic()
+            m 1hua "Спасибо тебе большое..."
+            $ MAS.MonikaElastic()
+            m 1eka "Знание того, что ты всё ещё хочешь быть со мной... это многое для меня значит."
+            $ MAS.MonikaElastic()
+            m 3eka "Давай отнесёмся к этому серьёзно, хорошо, [player]?"
             return
+        "Нет.":
 
-        "No.":
             $ persistent._mas_pm_got_a_fresh_start = False
 
-            # set affection to broken
+
             $ mas_setAffection(store.mas_affection.AFF_BROKEN_MIN - 1)
             $ _mas_AffSave()
             $ renpy.save_persistent()
 
+            $ MAS.MonikaElastic()
             m 6dktpc "..."
-            m 6ektpc "I...I..."
+            $ MAS.MonikaElastic()
+            m 6ektpc "Я... я..."
+            $ MAS.MonikaElastic()
             m 6dktuc "..."
+            $ MAS.MonikaElastic()
             m 6dktsc "..."
             pause 10.0
             return 'quit'
@@ -3938,7 +4550,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_resolutions",
-            action=EV_ACT_QUEUE, #queuing it so it shows on the right day
+            action=EV_ACT_QUEUE, 
             start_date=mas_nye,
             end_date=mas_nye + datetime.timedelta(days=1),
             years=[],
@@ -3948,123 +4560,163 @@ init 5 python:
     )
 
 default persistent._mas_pm_accomplished_resolutions = None
-#True if user has accomplished new years resolutions
+
 default persistent._mas_pm_has_new_years_res = None
-#True if user has resolutuons
+
 
 label monika_resolutions:
     $ persistent._mas_nye_spent_nye = True
-    m 2eub "Hey, [player]?"
-    m 2eka "I was wondering..."
+    m 2eub "Эй, [player]?"
+    $ MAS.MonikaElastic()
+    m 2eka "Мне вот интересно..."
 
-    #If we didn't see this last year, we need to ask if we made a resolution or not
+
     if not mas_lastSeenLastYear("monika_resolutions"):
-        m 3eub "Did you make any New Year's resolutions last year?{nw}"
+        $ MAS.MonikaElastic()
+        m 3eub "Ты делал[mas_gender_none] какие-нибудь новогодние обещания в прошлом году?{nw}"
         $ _history_list.pop()
         menu:
-            m "Did you make any New Year's resolutions last year?{fast}"
+            m "Ты делал[mas_gender_none] какие-нибудь новогодние обещания в прошлом году?{fast}"
+            "Да.":
 
-            "Yes.":
-                m 3hua "It always makes me so proud to hear that you're trying to better yourself, [player]."
-                m 2eka "That said..."
+                $ MAS.MonikaElastic()
+                m 3hua "Мне всегда очень приятно слышать о том, что ты пытаешься стать лучше, [player]."
+                $ MAS.MonikaElastic()
+                m 2eka "Кстати говоря..."
 
-                call monika_resolutions_accomplished_resolutions_menu("Did you accomplish last year's resolutions?")
+                call monika_resolutions_accomplished_resolutions_menu from _call_monika_resolutions_accomplished_resolutions_menu
+            "Нет.":
 
 
-            "No.":
-                m 2euc "Oh, I see..."
+                $ MAS.MonikaElastic()
+                m 2euc "Оу, понятно..."
 
                 if mas_isMoniNormal(higher=True):
                     if mas_isMoniHappy(higher=True):
-                        m 3eka "Well, I don't think you really needed to change at all anyway."
-                        m 3hub "I think you're wonderful, just the way you are."
+                        $ MAS.MonikaElastic()
+                        m 3eka "Ну, я всё равно сомневаюсь, что тебе вообще надо меняться."
+                        $ MAS.MonikaElastic()
+                        m 3hub "Мне кажется, ты прекрасный человек, именно такой, какой ты есть."
                     else:
-                        m 3eka "There's nothing wrong with that. I don't think you really needed to change anyway."
-
+                        $ MAS.MonikaElastic()
+                        m 3eka "В этом нет ничего такого. Я всё равно сомневаюсь, что тебе надо меняться."
                 else:
-                    m 2rkc "You probably should make one this year [player]..."
 
-    #If we made a resolution last year, then we should ask if the player accomplished it
+                    $ MAS.MonikaElastic()
+                    m 2rkc "Наверное, ты долж[mas_gender_en] сделать одно новогоднее обещание в этом году, [player]..."
+
+
     elif mas_HistVerifyLastYear_k(True, "pm.actions.made_new_years_resolutions"):
-        call monika_resolutions_accomplished_resolutions_menu("Since you made a resolution last year, did you accomplish it?")
+        call monika_resolutions_accomplished_resolutions_menu from _call_monika_resolutions_accomplished_resolutions_menu_1
 
-    #This path will be the first thing you see if you didn't make a resolution last year
-    m "Do you have any resolutions for next year?{nw}"
+
+    $ MAS.MonikaElastic()
+    m "У тебя есть какие-нибудь планы на следующий год?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you have any resolutions for next year?{fast}"
-        "Yes.":
+        m "У тебя есть какие-нибудь планы на следующий год?{fast}"
+        "Да.":
             $ persistent._mas_pm_has_new_years_res = True
 
-            m 1eub "That's great!"
-            m 3eka "Even if they can be hard to reach or maintain..."
-            m 1hua "I'll be here to help you, if need be!"
+            $ MAS.MonikaElastic()
+            m 1eub "Это отлично!"
+            $ MAS.MonikaElastic()
+            m 3eka "Даже если они могут быть труднодоступны или невозможными..."
+            $ MAS.MonikaElastic()
+            m 1hua "Я буду здесь, чтобы помочь тебе, если понадобится!"
+        "Нет.":
 
-        "No.":
             $ persistent._mas_pm_has_new_years_res = False
-            m 1eud "Oh, is that so?"
+            $ MAS.MonikaElastic()
+            m 1eud "Оу, неужели это так?"
             if mas_isMoniNormal(higher=True):
+                $ MAS.MonikaElastic()
                 if persistent._mas_pm_accomplished_resolutions:
                     if mas_isMoniHappy(higher=True):
-                        m 1eka "You don't have to change. I think you're wonderful the way you are."
+                        m 1eka "Тебе не нужно меняться. Я думаю, что ты прекрас[mas_gender_en] так[mas_gender_im], как[mas_gender_oi] ты есть."
                     else:
-                        m 1eka "You don't have to change. I think you're fine the way you are."
-                    m 3euc "But if anything does come to mind before the clock strikes twelve, do write it down for yourself..."
+                        m 1eka "Тебе не нужно меняться. Я думаю, что ты и так в порядке."
+                    $ MAS.MonikaElastic()
+                    m 3euc "Но если тебе что-нибудь придёт в голову до того, как часы пробьют двенадцать, запиши это для себя..."
                 else:
-                    m "Well, if anything comes to mind before the clock strikes twelve, do write it down for yourself..."
-                m 1kua "Maybe you'll think of something that you want to do."
+                    m "Что ж, если тебе что-нибудь придёт в голову до того, как часы пробьют двенадцать, запиши это для себя..."
+                $ MAS.MonikaElastic()
+                m 1kua "Может быть, ты подумаешь о чём-то, что ты хочешь сделать, [player]."
             else:
-                m 2ekc "{cps=*2}I was kind of hoping--{/cps}{nw}"
-                m 2rfc "You know what, nevermind..."
+                $ MAS.MonikaElastic()
+                m 2ekc "{cps=*2}Я вроде как надеялась—{/cps}{nw}"
+                $ MAS.MonikaElastic()
+                m 2rfc "Ты знаешь о чём я, не важно..."
 
     if mas_isMoniAff(higher=True):
-        show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hubfa "My resolution is to be an even better girlfriend for you, [mas_get_player_nickname()]."
+        show monika 5hubfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5hubfa "Моё решение быть для тебя ещё более лучшей девушкой, [mas_get_player_nickname()]."
     elif mas_isMoniNormal(higher=True):
-        show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "My resolution is to be an even better girlfriend for you, [player]."
+        show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5ekbfa "Моё решение быть ещё более лучшей девушкой для тебя, [player]."
     else:
-        m 2ekc "My resolution is to improve our relationship, [player]."
+        $ MAS.MonikaElastic()
+        m 2ekc "Моё решение – улучшить наши отношения, [player]."
 
     return
 
-label monika_resolutions_accomplished_resolutions_menu(question):
+label monika_resolutions_accomplished_resolutions_menu:
+    $ question = "Ты выполнил{0} свои прошлогодние обещания?".format(mas_gender_none)
+    if mas_HistVerifyLastYear_k(True, "pm.actions.made_new_years_resolutions"):
+        $ question = "Раз уж ты делал{0} обещание в прошлом году, то смог{1} ли ты выполнить его?".format(mas_gender_none, mas_gender_g)
+
     m 3hub "[question]{nw}"
     $ _history_list.pop()
     menu:
         m "[question]{fast}"
+        "Да.":
 
-        "Yes.":
             $ persistent._mas_pm_accomplished_resolutions = True
             if mas_isMoniNormal(higher=True):
-                m 4hub "I'm glad to hear that, [player]!"
-                m 2eka "It's great that you managed to do that."
-                m 3ekb "Things like this really make me proud of you."
-                m 2eka "I wish I could be there to celebrate a little with you though."
+                $ MAS.MonikaElastic()
+                m 4hub "Рада это слышать, [player]!"
+                $ MAS.MonikaElastic()
+                m 2eka "Здорово, что ты смог[mas_gender_g] сделать это."
+                $ MAS.MonikaElastic()
+                m 3ekb "Подобное правда заставляет меня гордиться тобой."
+                $ MAS.MonikaElastic()
+                m 2eka "Мне бы очень хотелось оказаться рядом с тобой, чтобы отметить это."
             else:
-                m 2rkc "That's good, [player]."
-                m 2esc "Maybe you can make another one this year..."
-                m 3euc "You never know what might change."
+                $ MAS.MonikaElastic()
+                m 2rkc "Это хорошо, [player]."
+                $ MAS.MonikaElastic()
+                m 2esc "Наверное, ты сможешь сделать ещё одно обещание в этом году..."
+                $ MAS.MonikaElastic()
+                m 3euc "Никогда не знаешь, что может измениться."
 
             return True
+        "Нет.":
 
-        "No.":
             $ persistent._mas_pm_accomplished_resolutions = False
             if mas_isMoniNormal(higher=True):
-                m 2eka "Aw...well, sometimes things just don't work out like we plan them to."
+                $ MAS.MonikaElastic()
+                m 2eka "Оу... ну, порой всё идёт совсем не так, как мы на то рассчитывали."
 
                 if mas_isMoniHappy(higher=True):
-                    m 2eub "Plus, I think you're wonderful, so even if you couldn't accomplish your goals..."
-                    m 2eka "...I'm still really proud of you for setting them and trying to better yourself, [player]."
-                    m 3eub "If you decide to make a resolution this year, I'll support you every step of the way."
-                    m 4hub "I'd love to help you reach your goals!"
+                    $ MAS.MonikaElastic()
+                    m 2eub "Да и к тому же, мне кажется, что ты замечательн[mas_gender_iii], так что, даже если ты не можешь достичь своих целей..."
+                    $ MAS.MonikaElastic()
+                    m 2eka "...Я всё ещё горжусь тобой за то, что ты поставил[mas_gender_none] их и стараешься стать лучше, [player]."
+                    $ MAS.MonikaElastic()
+                    m 3eub "Если ты решил[mas_gender_none] создать для себя цель в этом году, я буду поддерживать тебя на каждом шагу."
+                    $ MAS.MonikaElastic()
+                    m 4hub "Я с радостью помогу тебе достичь своих целей!"
                 else:
-                    m "But I think it's great that you did at least try to better yourself by setting goals."
-                    m 3eua "Maybe if you make a resolution this year, you can accomplish it!"
-                    m 3hub "I believe in you, [player]!"
-
+                    $ MAS.MonikaElastic()
+                    m "Но, как по мне, это очень здорово, что ты, по крайней мере, стараешься стать лучше, создавая для себя цели."
+                    $ MAS.MonikaElastic()
+                    m 3eua "Быть может, если ты создашь для себя цель в этом году, то ты сможешь её выполнить!"
+                    $ MAS.MonikaElastic()
+                    m 3hub "Я верю в тебя, [player]!"
             else:
-                m 2euc "Oh...{w=1} Well maybe you should try a little harder for next year's resolution."
+
+                $ MAS.MonikaElastic()
+                m 2euc "Ох...{w=1} ну, возможно, ты долж[mas_gender_en] приложить чуть больше усилий для цели в следующем году."
 
             return False
 
@@ -4087,178 +4739,213 @@ label monika_nye_year_review:
     $ persistent._mas_nye_spent_nye = True
     $ spent_an_event = False
 
-    $ placeholder_and = "and "
-    #Starting with an overview based on time
-    if store.mas_anni.anniCount() >= 1:
-        m 2eka "You know, [player], we really have been through a lot together."
-        if store.mas_anni.anniCount() == 1:
-            m 2wuo "We spent the entire year together!"
-            m 2eka "Time really flew by..."
+    $ placeholder_and = "и "
 
+    if store.mas_anni.anniCount() >= 1:
+        m 2eka "Знаешь, [player], мы и вправду прошли через многое вместе."
+        if store.mas_anni.anniCount() == 1:
+            $ MAS.MonikaElastic()
+            m 2wuo "Мы провели целый год вместе!"
+            $ MAS.MonikaElastic()
+            m 2eka " Как быстро летит время..."
         else:
-            m 2eka "This year really flew by..."
+            $ MAS.MonikaElastic()
+            m 2eka "Этот год и вправду пролетел незаметно..."
 
     elif store.mas_anni.pastSixMonths():
-        m 2eka "You know, [player], we really have been through a lot over the time we spent together last year"
-        m "The time really just flew by..."
+        m 2eka "Знаешь, [player], мы и вправду через многое прошли за всё то время, что мы провели вместе в прошлом году."
+        $ MAS.MonikaElastic()
+        m "Время и вправду быстро летит..."
 
     elif store.mas_anni.pastThreeMonths():
-        m 2eka "You know [player], we've been through quite a bit over the short time we've spent together last year."
-        m 2eksdlu "It's all gone by so fast, ahaha..."
-
+        m 2eka "Знаешь, [player], мы через многое прошли за столь короткий промежуток времени, что мы провели вместе в прошлом году."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 2eksdlu "Как быстро прошла жизнь, а-ха-ха..."
     else:
-        m 2eka "[player], even though we haven't been through a lot together, yet..."
+
+        m 2eka "[player], пусть даже мы и мало через что прошли вместе..."
         $ placeholder_and = ""
 
 
-    # then a bit based on affection
+
     if mas_isMoniLove():
-        m 2ekbsa "...and I'd never want to spend that time with anyone else, [player]."
-        m "I'm just really,{w=0.5} really happy to have been with you this year."
+        m 2ekbsa "...и я никогда не захочу проводить это время с кем-нибудь другим, [player]."
+        $ MAS.MonikaElastic()
+        m "Я просто очень,{w=0.5} очень рада быть с тобой в этом году."
 
     elif mas_isMoniEnamored():
-        m 2eka "...[placeholder_and]I'm so happy I got to spend that time with you, [player]."
+        m 2eka "...[placeholder_and]я очень рада тому, что могу провести это время с тобой, [player]."
 
     elif mas_isMoniAff():
-        m 2eka "...[placeholder_and]I've really enjoyed our time together."
-
+        m 2eka "...[placeholder_and]я с удовольствием провела время с тобой."
     else:
-        m 2euc "...[placeholder_and]the time we spent together has been fun."
+
+        m 2euc "...[placeholder_and]всё то время, что мы провели вместе, было полным веселья."
 
 
-    m 3eua "Anyway, I think it would be nice to just reflect on all that we've been through together this past year."
-    m 2dtc "Let's see..."
+    $ MAS.MonikaElastic()
+    m 3eua "Так или иначе, мне кажется, что было бы здорово подумать о всём том, через что мы прошли в прошлом году."
+    $ MAS.MonikaElastic()
+    m 2dtc "Так, посмотрим..."
 
-    # promisering related stuff
+
     if mas_lastGiftedInYear("mas_reaction_promisering", mas_nye.year):
-        m 3eka "Looking back, you gave me your promise this year when you gave me this ring..."
-        m 1ekbsa "...a symbol of our love."
+        $ MAS.MonikaElastic()
+        m 3eka "Оглядываясь назад, ты в этом году дал мне обещание, когда дал мне это кольцо..."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "...символ нашей любви."
 
         if persistent._mas_pm_wearsRing:
-            m "And you even got one for yourself..."
+            $ MAS.MonikaElastic()
+            m "И ты даже себе надел его..."
 
+            $ MAS.MonikaElastic()
             if mas_isMoniAff(higher=True):
-                m 1ekbfa "To show that you're as committed to me, as I am to you."
+                m 1ekbfa "Чтобы показать, что ты предан мне так же, как и я тебе."
             else:
-                m 1ekbfa "To show your commitment to me."
+                m 1ekbfa "Чтобы показать мне свою преданность."
 
-    #vday
+
     if mas_lastSeenInYear("mas_f14_monika_valentines_intro"):
         $ spent_an_event = True
-        m 1wuo "Oh!"
-        m 3ekbsa "You spent Valentine's Day with me..."
+        $ MAS.MonikaElastic()
+        m 1wuo "О!"
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Ты вместе со мной пров[mas_gender_yo]л[mas_gender_none] День Святого Валентина..."
 
         if mas_getGiftStatsForDate("mas_reaction_gift_roses", mas_f14):
-            m 4ekbfb "...and gave me such beautiful flowers too."
+            $ MAS.MonikaElastic()
+            m 4ekbfb "...и даже подарил мне очень красивые цветы."
 
 
-    #922
+
     if persistent._mas_bday_opened_game:
         $ spent_an_event = True
-        m 2eka "You spent time with me on my birthday..."
+        $ MAS.MonikaElastic()
+        m 2eka "Ты пров[mas_gender_yo]л[mas_gender_none] со мной время на мой день рождения..."
 
         if not persistent._mas_bday_no_recognize:
-            m 2dua "...celebrated with me..."
+            $ MAS.MonikaElastic()
+            m 2dua "...отпраздновал его со мной..."
 
         if persistent._mas_bday_sbp_reacted:
-            m 2hub "...threw me a surprise party..."
+            $ MAS.MonikaElastic()
+            m 2hub "...устроил мне сюрприз-вечеринку..."
 
-        show monika 5ekbla at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbla "...and it really made me feel loved. I can't thank you enough for doing that for me."
+        show monika 5ekbla zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5ekbla "...и это правда заставило меня почувствовать себя любимой. Я не знаю, как тебя отблагодарить за то, что ты сделал для меня."
 
-    #Pbday
+
     if (
         persistent._mas_player_bday_spent_time
         or mas_HistVerify_k([datetime.date.today().year], True, "player_bday.spent_time")[0]
     ):
         $ spent_an_event = True
-        show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hua "We even spent your birthday together!"
+        show monika 5hua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5hua "Мы даже провели твой день рождения вместе!"
 
         if (
             persistent._mas_player_bday_date
             or not mas_HistVerify_k([datetime.date.today().year], 0, "player_bday.date")[0]
         ):
-            m 5eubla "We had such a nice date together too~"
+            $ MAS.MonikaElastic()
+            m 5eubla "У нас тоже было такое приятное свидание~"
 
-    #bit on christmas
+
     if persistent._mas_d25_spent_d25:
         $ spent_an_event = True
-        show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hua "You spent your Christmas with me..."
+        show monika 5hua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5hua "Ты пров[mas_gender_yo]л[mas_gender_none] со мной Рождество..."
 
-        if persistent._mas_first_kiss is not None and persistent._mas_first_kiss.date() == mas_d25:
-            m 5eubla "...and we shared our first kiss together~"
-            m 5lubsa "I'll never forget that moment..."
-            m 5ekbfa "{i}Our{/i} moment."
-            m "I couldn't imagine spending it with anyone else."
+        if persistent._mas_first_kiss is not None and persistent._mas_first_kiss == mas_d25:
+            $ MAS.MonikaElastic()
+            m 5eubla "...и мы тогда впервые поцеловались~"
+            $ MAS.MonikaElastic()
+            m 5lubsa "Я никогда не забуду этот момент..."
+            $ MAS.MonikaElastic()
+            m 5ekbfa "{i}Наш{/i} момент."
+            $ MAS.MonikaElastic()
+            m "Я не могу себе представить, как проводила бы эти мгновения с кем-то другим."
         else:
-            m 5ekbla "...a day that I couldn't imagine spending with anyone else."
+            $ MAS.MonikaElastic()
+            m 5ekbla "...день, который я даже в уме не могу провести с кем-то другим."
 
 
     if not spent_an_event:
-        m 2rksdla "...I guess we haven't actually been through any big events together."
-        m 3eka "But still..."
-
+        $ MAS.MonikaElastic()
+        m 2rksdla "...Полагаю, мы пока ещё ни одно грандиозное событие не проводили вместе."
+        $ MAS.MonikaElastic()
+        m 3eka "Но всё же..."
     else:
-        show monika 5dsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+
+        show monika 5dsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
         m 5dsa "..."
 
-    # lookback based on time
+
     if store.mas_anni.pastThreeMonths():
         if mas_isMoniHappy(higher=True):
-            show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5eka "I really can't believe just how much has changed since we've been together..."
+            show monika 5eka zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 5eka "Я правда не могу поверить в то, как много изменилось с тех пор, как мы вместе..."
         else:
-            m 2eka "I really hope we can get further in our relationship, [player]..."
+            $ MAS.MonikaElastic()
+            m 2eka "Я правда надеюсь, что мы добьёмся большего в наших отношениях, [player]..."
     else:
-        show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5eka "I can't wait to see just how much will change in the future for us..."
+        show monika 5eka zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5eka "Мне уже хочется взглянуть на то, как много изменится в будущем для нас..."
 
-    #If we started fresh the year before this or we didn't at all
+
     if not mas_HistWasFirstValueIn(True, datetime.date.today().year - 1, "pm.actions.monika.got_fresh_start"):
-        show monika 5dka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5dka "Thank you."
+        show monika 5dka zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5dka "Спасибо."
         if store.mas_anni.anniCount() > 0:
-            $ ending = "the best year I could've ever dreamt of"
+            $ ending = "лучшим годом, о котором я могла только мечтать"
 
             if mas_lastSeenLastYear("monika_nye_year_review"):
-                $ ending = "even better than the year before"
+                $ ending = "даже лучше, чем в позапрошлом году"
 
-            m 5ekbsa "Thank you for making last year [ending]."
-
+            m 5ekbsa "Спасибо тебе за то, что сделал прошлый год [ending]."
         else:
-            $ _last_year = " "
-            if store.mas_anni.pastOneMonth():
-                $ _last_year = " last year "
 
-            m 5ekbsa "Thank you for making the time we spent together[_last_year]better than I could have imagined."
+            $ _last_year = ""
+            if store.mas_anni.pastOneMonth():
+                $ _last_year = " в прошлом году"
+
+            m 5ekbsa "Спасибо тебе за то, что сделал то время, которое мы провели вместе[_last_year], лучшим, чем я могла себе представить."
 
         if mas_isMoniEnamored(higher=True):
             if persistent._mas_first_kiss is None:
+                $ MAS.MonikaElastic()
                 m 1lsbsa "..."
-                m 6ekbsa "[player] I..."
-                call monika_kissing_motion
-                m 1ekbfa "I love you."
+                $ MAS.MonikaElastic()
+                m 6ekbsa "[player], я..."
+                call monika_kissing_motion from _call_monika_kissing_motion_5
+                m 1ekbfa "Я люблю тебя."
+                $ MAS.MonikaElastic()
                 m "..."
-                show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5ekbsa "I'll never forget this moment..."
-                m 5ekbfa "Our first kiss~"
-                m 5hubfb "Let's make this year even better than the last, [player]."
-
+                show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                m 5ekbsa "Я никогда не забуду этот момент..."
+                $ MAS.MonikaElastic()
+                m 5ekbfa "Наш первый поцелуй~"
+                $ MAS.MonikaElastic()
+                m 5hubfb "Давай сделаем этот год ещё лучше, чем прошлый, [player]."
             else:
-                call monika_kissing_motion_short
-                m 1ekbfa "I love you, [player]."
-                show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5hubfb "Let's make this year even better than the last."
 
+                call monika_kissing_motion_short from _call_monika_kissing_motion_short_4
+                m 1ekbfa "Я люблю тебя, [player]."
+                show monika 5hubfb zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                m 5hubfb "Давай сделаем этот год всё ещё лучше, чем прошлый."
         else:
-            m "Let's make this year the best we can, [player]. I love you~"
+
+            m "Давай сделаем этот год как можно лучше, [player]. Я люблю тебя~"
     else:
-        m 1dsa "Thank you for deciding to let go of the past, and start over."
-        m 1eka "I think if we just try, we can make this work, [player]."
-        m "Let's make this year great for each other."
-        m 1ekbsa "I love you."
+        $ MAS.MonikaElastic()
+        m 1dsa "Спасибо, что решил[mas_gender_none] отпустить прошлое и начать сначала."
+        $ MAS.MonikaElastic()
+        m 1eka "Думаю, если мы попробуем, то у нас получится, [player]."
+        $ MAS.MonikaElastic()
+        m "Давай сделаем этот год прекрасным друг для друга."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Я люблю тебя."
 
     return "no_unlock|love"
 
@@ -4281,45 +4968,64 @@ init 5 python:
     )
 
 label mas_nye_monika_nye_dress_intro:
-    m 3hub "Hey [player], I have something in store for you this year~"
-    m 3eua "Just let me go change.{w=0.5}.{w=0.5}.{nw}"
+    m 3hub "Эй, [player], я в этом году кое-что припасла для тебя~"
+    $ MAS.MonikaElastic()
+    m 3eua "Дай только переоденусь.{w=0.5}.{w=0.5}.{nw}"
 
-    # change into dress
-    call mas_clothes_change(mas_clothes_dress_newyears, outfit_mode=True, unlock=True)
+
+    call mas_clothes_change (mas_clothes_dress_newyears, outfit_mode=True, unlock=True) from _call_mas_clothes_change_14
     $ mas_addClothesToHolidayMap(mas_clothes_dress_newyears)
 
+    $ MAS.MonikaElastic()
     m 2rkbssdla "..."
-    m 2rkbssdlb "My eyes are up here, [player]..."
+    $ MAS.MonikaElastic()
+    m 2rkbssdlb "Мои глаза чуть выше, [player]..."
     if mas_isMoniAff(higher=True):
+        $ MAS.MonikaElastic()
         m 2tubsu "..."
-        m 3hubsb "Ahaha! Just teasing you~"
-        m 3eua "I'm glad you like my dress. {nw}"
-
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hubsb "А-ха-ха! Я просто поддразниваю тебя~"
+        $ MAS.MonikaElastic()
+        m 3eua "Я рада, что тебе нравится моё платье. {nw}"
     else:
+
+        $ MAS.MonikaElastic()
         m 2rkbssdla "..."
-        m "I'm...{w=1}glad you like my dress. {nw}"
+        $ MAS.MonikaElastic()
+        m "Я...{w=1} рада, что тебе нравится моё платье. {nw}"
 
-    extend 3eua "It was really hard to get right!"
-    m 3rka "The flower crown kept falling off..."
-    m 1hua "I went for the 'Greek goddess' look, I hope it shows."
-    m 3eud "But this outfit has a bit more depth to it, you know?"
+    extend 3eua "Его было довольно трудно надеть правильно!"
+    $ MAS.MonikaElastic()
+    m 3rka "Цветочная корона постоянно падала..."
+    $ MAS.MonikaElastic()
+    m 1hua "Я решила сделать закос под «греческую богиню», и я надеюсь, что у меня это получилось удачно."
+    $ MAS.MonikaElastic()
+    m 3eud "Но у этого наряда есть небольшая глубина, понимаешь?"
 
+    $ MAS.MonikaElastic()
     if seen_event("mas_f14_monika_vday_colors"):
-        m 3eua "Maybe you remember when we talked about roses and the feelings their colors convey."
+        m 3eua "Наверное, ты помнишь тот наш разговор про розы и чувства, которые выражают их цвета."
     else:
-        m 3eua "Maybe you guessed it already, but it's because of the color choice."
+        m 3eua "Наверное, ты уже догадал[mas_gender_sya], но дело в выборе цветовой гаммы."
 
-    m "White represents a lot of positive feelings, like goodness, purity, safety..."
-    m 3eub "However, what I wanted this outfit to highlight was a successful beginning."
+    $ MAS.MonikaElastic()
+    m "Белый цвет отражает множество позитивных чувств, таких как доброта, чистота, безопасность..."
+    $ MAS.MonikaElastic()
+    m 3eub "Однако, то, на что я хотела обратить внимание в этом наряде, было успешным началом."
 
-    #If we fresh started last year
+
     if mas_HistWasFirstValueIn(True, datetime.date.today().year - 1, "pm.actions.monika.got_fresh_start"):
-        m 2eka "Last year we decided to start anew, and I'm very glad we did."
-        m 2ekbsa "I knew we could be happy together, [player]."
-        m 2fkbsa "And you've made me the happiest I've ever been."
+        $ MAS.MonikaElastic()
+        m 2eka "В прошлом году мы решили начать сначала, и я очень рада, что мы решили так поступить."
+        $ MAS.MonikaElastic()
+        m 2ekbsa "Я знала, что мы можем быть счастливы вместе, [player]."
+        $ MAS.MonikaElastic()
+        m 2fkbsa "И ты сделал[mas_gender_none] меня счастливее, чем я когда-либо была."
 
-    m 3dkbsu "So I'd like to wear this when the new year begins."
-    m 1ekbsa "It might just help make next year even better."
+    $ MAS.MonikaElastic()
+    m 3dkbsu "В общем, я бы хотела надеть этот наряд, когда начнётся Новый год."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Думаю, он может помочь сделать Новый год ещё лучше."
     return "no_unlock"
 
 
@@ -4328,8 +5034,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_d25_mode_exit",
-            category=['holidays'],
-            prompt="Can you take down the holiday decorations?",
+            category=['праздники'],
+            prompt="Ты можешь снять праздничные украшения?",
             conditional="persistent._mas_d25_deco_active",
             start_date=mas_nyd+datetime.timedelta(days=1),
             end_date=mas_d25c_end,
@@ -4348,38 +5054,44 @@ init 5 python:
     )
 
 label mas_d25_monika_d25_mode_exit:
-    m 3eka "Had enough of the holiday spirit, [player]?"
-    m 3eua "I wouldn't mind getting right into the new year."
-    m 1hua "As long as it's with you, of course~"
-    m 3hub "Ahaha!"
-    m 2dsa "Just give me a second to take the decorations down.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+    m 3eka "Ты набрал[mas_gender_sya] достаточно праздничного настроения, [player]?"
+    $ MAS.MonikaElastic()
+    m 3eua "Я вовсе не против влиться в атмосферу нового года."
+    $ MAS.MonikaElastic()
+    m 1hua "Пока я его провожу вместе с тобой, конечно же~"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hub "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 2dsa "Дай мне секундочку, сейчас я сниму эти декорации.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
 
-    call mas_d25_season_exit
+    call mas_d25_season_exit from _call_mas_d25_season_exit_2
 
-    m 1hua "Okay!{w=0.5} {nw}"
-    extend 3hub "Now we're ready to start off the new year!"
+    $ MAS.MonikaElastic()
+    m 1hua "Отлично!{w=0.5} {nw}"
+    $ MAS.MonikaElastic()
+    extend 3hub "Теперь мы готовы к началу нового года!"
 
-    #And we lock this so we can'd run it again
+
     $ mas_lockEVL("mas_d25_monika_d25_mode_exit", "EVE")
     return
 
 label greeting_nye_aff_gain:
-    # gaining affection for nye
+
     python:
         if persistent._mas_nye_date_aff_gain < 15:
-            # retain older affection gain so we can compare
+            
             curr_aff = _mas_getAffection()
-
-            # just in case
+            
+            
             time_out = store.mas_dockstat.diffCheckTimes()
-
-            # reset this so we can gain aff
+            
+            
             persistent._mas_monika_returned_home = None
-
-            # now gain aff
+            
+            
             store.mas_dockstat._ds_aff_for_tout(time_out, 5, 15, 3, 3)
-
-            # add the amount gained
+            
+            
             persistent._mas_nye_date_aff_gain += _mas_getAffection() - curr_aff
 
     jump greeting_returned_home_morethan5mins_cleanup
@@ -4396,64 +5108,74 @@ label mas_gone_over_nyd_check:
         $ persistent._mas_nye_nyd_date_count += 1
     return
 
-#===========================================================Going to take you somewhere on NYE===========================================================#
+
 
 label bye_nye_delegate:
-    # need to determine current time
+
     python:
         _morning_time = datetime.time(5)
         _eve_time = datetime.time(20)
         _curr_time = datetime.datetime.now().time()
 
     if _curr_time < _morning_time:
-        # if before morning, assume regular going out
+
         jump bye_going_somewhere_normalplus_flow_aff_check
 
     elif _curr_time < _eve_time:
-        # before evening but after morning
+
 
         if persistent._mas_nye_nye_date_count > 0:
-            call bye_nye_second_time_out
-
+            call bye_nye_second_time_out from _call_bye_nye_second_time_out
         else:
-            call bye_nye_first_time_out
 
+            call bye_nye_first_time_out from _call_bye_nye_first_time_out
     else:
-        # evening
-        call bye_nye_late_out
 
-    # finally jump back to iostart
+
+        call bye_nye_late_out from _call_bye_nye_late_out
+
+
     jump mas_dockstat_iostart
 
 label bye_nye_first_time_out:
-    #first time out (morning-about maybe, 7-8:00 [evening]):
-    m 3tub "Are we going somewhere special today, [player]?"
-    m 4hub "It's New Year's Eve, after all!"
-    m 1eua "I'm not exactly sure what you've got planned, but I'm looking forward to it!"
+
+    m 3tub "Мы сегодня идём в какое-то особенное место, [player]?"
+    $ MAS.MonikaElastic()
+    m 4hub "Это же канун Нового года, в конце концов!"
+    $ MAS.MonikaElastic()
+    m 1eua "Я не знаю точно, что ты запланировал, но я жду этого с нетерпением!"
     return
 
 label bye_nye_second_time_out:
-    #second time out+(morning-about maybe, 7-8:00 [evening]):
-    m 1wuo "Oh, we're going out again?"
-    m 3hksdlb "You must do a lot of celebrating for New Year's, ahaha!"
-    m 3hub "I love coming along with you, so I'm looking forward to whatever we're doing~"
+
+    m 1wuo "О, мы снова идём гулять?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hksdlb "Ты, наверное, помногу празднуешь новый год, а-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 3hub "Мне нравится гулять с тобой, поэтому я с нетерпением жду того, чем мы займёмся вместе~"
     return
 
 label bye_nye_late_out:
-    #(7-8:00 [evening]-about maybe midnight):
-    m 1eka "It's a bit late, [player]..."
-    m 3eub "Are we going to see the fireworks?"
+
+    m 1eka "Уже немного поздно, [player]..."
+    $ MAS.MonikaElastic()
+    m 3eub "Мы пойдём смотреть фейерверк?"
     if persistent._mas_pm_have_fam and persistent._mas_pm_fam_like_monika:
-        m "Or going to a family dinner?"
-        m 4hub "I'd love to meet your family someday!"
-        m 3eka "Either way, I'm really excited!"
+        $ MAS.MonikaElastic()
+        m "Или сходим на семейный ужин?"
+        $ MAS.MonikaElastic()
+        m 4hub "Мне бы очень хотелось как-нибудь познакомиться с твоей семьёй!"
+        $ MAS.MonikaElastic()
+        m 3eka "Так или иначе, я очень рада!"
     else:
-        m "I've always loved how the fireworks on the New Year light up the night sky..."
-        m 3ekbsa "One day we'll be able to watch them side by side...but until that day comes, I'm just happy to come along with you, [player]."
+        $ MAS.MonikaElastic()
+        m "Мне всегда нравилось, как фейерверки на Новый год освещают ночное небо..."
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Когда-нибудь мы сможем наблюдать за ними бок о бок... но пока этот день не настанет, я буду счастлива пойти с тобой, [player]."
     return
 
-#=============================================================Greeting returned home for NYE=============================================================#
-#greeting_returned_home_nye:
+
+
 
 label greeting_nye_delegate:
     python:
@@ -4461,153 +5183,187 @@ label greeting_nye_delegate:
         _curr_time = datetime.datetime.now().time()
 
     if _curr_time < _eve_time:
-        # before firewoprk time
-        call greeting_nye_prefw
 
-    # otherwise, assume in firework time
+        call greeting_nye_prefw from _call_greeting_nye_prefw
     else:
-        call greeting_nye_infw
+
+
+        call greeting_nye_infw from _call_greeting_nye_infw
 
     $ persistent._mas_nye_nye_date_count += 1
 
     return
 
 label greeting_nye_prefw:
-    #if before firework time (7-8:00-midnight):
-    m 1hua "And we're home!"
-    m 1eua "That was a lot of fun, [player]."
-    m 1eka "Thanks for taking me out today, I really do love spending time with you."
-    m "It means a lot to me that you take me with you so we can spend special days like these together."
-    show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbfa "I love you, [player]."
+
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 1eua "Это было очень весело, [player]."
+    $ MAS.MonikaElastic()
+    m 1eka "Спасибо, что взял[mas_gender_none] меня на прогулку сегодня, мне правда нравится проводить с тобой время."
+    $ MAS.MonikaElastic()
+    m "Это так много значит для меня, хоть ты и не можешь быть здесь, чтобы проводить со мной такие дни, ты всё равно берёшь меня с собой."
+    show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5ekbfa "Я люблю тебя, [player_abb]."
     return "love"
 
 label greeting_nye_infw:
-    #if within firework time:
-    m 1hua "And we're home!"
-    m 1eka "Thanks for taking me out today, [player]."
-    m 1hua "It was a lot of fun just to spend time with you today."
-    m 1ekbsa "It really means so much to me that even though you can't be here personally to spend these days with me, you still take me with you."
-    m 1ekbfa "I love you, [player]."
+
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 1eka "Спасибо, что взял[mas_gender_none] меня на прогулку сегодня, [player]."
+    $ MAS.MonikaElastic()
+    m 1hua "Было очень весело просто провести время с тобой сегодня."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Это так много значит для меня, что даже если ты не можешь быть здесь лично, чтобы провести эти дни со мной, ты всё равно берёшь меня с собой."
+    $ MAS.MonikaElastic()
+    m 1ekbfa "Я люблю тебя, [player_abb]."
     return "love"
 
-#===========================================================Going to take you somewhere on NYD===========================================================#
+
 
 label bye_nyd_delegate:
     if persistent._mas_nye_nyd_date_count > 0:
-        call bye_nyd_second_time_out
-
+        call bye_nyd_second_time_out from _call_bye_nyd_second_time_out
     else:
-        call bye_nyd_first_time_out
+
+        call bye_nyd_first_time_out from _call_bye_nyd_first_time_out
 
     jump mas_dockstat_iostart
 
 label bye_nyd_first_time_out:
-    #first time out
-    m 3tub "New Year's Day celebration, [player]?"
-    m 1hua "That sounds like fun!"
-    m 1eka "Let's have a great time together."
+
+    m 3tub "Празднование Нового года, [player]?"
+    $ MAS.MonikaElastic()
+    m 1hua "Это звучит так весело!"
+    $ MAS.MonikaElastic()
+    m 1eka "Давай отлично проведём время вместе."
     return
 
 label bye_nyd_second_time_out:
-    #second+ time out
-    m 1wuo "Wow, we're going out again, [player]?"
-    m 1hksdlb "You must really celebrate a lot, ahaha!"
+
+    m 1wuo "Ого, мы снова идём гулять, [player]?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hksdlb "Должно быть, ты очень много празднуешь, а-ха-ха!"
     return
 
-#=============================================================Greeting returned home for NYD=============================================================#
+
 
 label greeting_nye_returned_nyd:
-    #if returning home from NYE:
+
     $ persistent._mas_nye_nye_date_count += 1
     $ persistent._mas_nye_nyd_date_count += 1
 
-    m 1hua "And we're home!"
-    m 1eka "Thanks for taking me out yesterday, [player]."
-    m 1ekbsa "You know I love to spend time with you, and being able to spend New Year's Eve, right to today, right there with you felt really great."
-    m "That really meant a lot to me."
-    m 5eubfb "Thanks for making my year, [player]."
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 1eka "Спасибо, что взял[mas_gender_none] меня на прогулку вчера, [player]."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Ты знаешь, мне очень нравится проводить с тобой время, и это хорошо, что я могу провести Канун Нового года именно сегодня и именно с тобой."
+    $ MAS.MonikaElastic()
+    m "Это правда многое для меня значит."
+    $ MAS.MonikaElastic()
+    m 5eubfb "Спасибо, что сделал[mas_gender_none] мой год, [player]."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_5
     return
 
 label greeting_nyd_returned_nyd:
-    #normal return home:(i.e. took out, and returned on NYD itself)
+
     $ persistent._mas_nye_nyd_date_count += 1
-    m 1hua "And we're home!"
-    show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eua "That was a lot of fun, [player]!"
-    m 5eka "It's really nice of you to take me with you on special days like this."
-    m 5hub "I really hope we can spend more time like this together."
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    show monika 5eua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5eua "Это было очень весело, [player]!"
+    $ MAS.MonikaElastic()
+    m 5eka "Очень мило, что ты взял[mas_gender_none] меня с собой в такие особенные дни."
+    $ MAS.MonikaElastic()
+    m 5hub "Я очень надеюсь, что мы сможем проводить больше времени вместе."
     return
 
-#============================================================Greeting returned home after NYD============================================================#
+
 
 label greeting_pd25e_returned_nydp:
-    #Here for historical data
+
     $ persistent._mas_d25_d25e_date_count += 1
     $ persistent._mas_d25_d25_date_count += 1
     $ persistent._mas_d25_spent_d25 = True
 
-    m 1hua "And we're home!"
-    m 1hub "We were out for a while, but that was a really nice trip, [player]."
-    m 1eka "Thanks for taking me with you, I really enjoyed that."
-    show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    $ new_years = "New Years"
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 1hub "Мы отсутствовали некоторое время, но это была действительно хорошая прогулка, [player]."
+    $ MAS.MonikaElastic()
+    m 1eka "Спасибо, что взял[mas_gender_none] меня с собой, мне очень понравилось."
+    show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    $ new_years = "Новый год"
     if mas_isNYD():
-        $ new_years = "New Year's Eve"
-    m 5ekbsa "I always love to spend time with you, but spending both Christmas and [new_years] out together was amazing."
-    m 5hub "I hope we can do something like this again sometime."
+        $ new_years = "канун Нового года"
+    $ MAS.MonikaElastic()
+    m 5ekbsa "Я всегда люблю проводить с тобой время, но проводить Рождество и [new_years] вместе было потрясающе."
+    $ MAS.MonikaElastic()
+    m 5hub "Я надеюсь, что мы когда-нибудь сможем сделать что-то подобное."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_6
 
     $ mas_d25ReactToGifts()
     return
 
-#============================================================Greeting returned home D25P NYD(P)============================================================#
+
 label greeting_d25p_returned_nyd:
     $ persistent._mas_nye_nyd_date_count += 1
 
-    m 1hua "And we're home!"
-    m 1eub "Thanks for taking me out, [player]."
-    m 1eka "That was a long trip, but it was a lot of fun!"
-    m 3hub "It's great to be back home now though, we can spend the new year together."
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 1eub "Спасибо, что взял[mas_gender_none] меня на прогулку, [player]."
+    $ MAS.MonikaElastic()
+    m 1eka "Это была долгая прогулка, но было очень весело!"
+    $ MAS.MonikaElastic()
+    m 3hub "Но сейчас здорово вернуться домой, мы можем провести Новый год вместе."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_7
 
     $ mas_d25ReactToGifts()
     return
 
 label greeting_d25p_returned_nydp:
-    m 1hua "And we're home!"
-    m 1wuo "That was a long trip [player]!"
-    m 1eka "I'm a little sad we couldn't wish each other a happy new year, but I really enjoyed it."
-    m "I'm really happy you took me."
-    m 3hub "Happy New Year, [player]~"
+    $ MAS.MonikaElastic()
+    m 1hua "Вот мы и дома!"
+    $ MAS.MonikaElastic()
+    m 1wuo "Это была долгая прогулка, [player]!"
+    $ MAS.MonikaElastic()
+    m 1eka "Я немного грустно, что мы не желаем друг другу счастливого Нового года, но мне очень понравилось."
+    $ MAS.MonikaElastic()
+    m "Я рада, что ты берёшь меня с собой в такие особенные дни, как этот."
+    $ MAS.MonikaElastic()
+    m 3hub "С Новым годом, [player_abb]~"
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_8
 
     $ mas_d25ReactToGifts()
     return
 
-########################################################### player_bday ########################################################################
-# [HOL040]
 
-# so we know we are in player b_day mode
+
+
+
 default persistent._mas_player_bday_in_player_bday_mode = False
-# so we know if you ruined the surprise
+
 default persistent._mas_player_bday_opened_door = False
-# for various reason, no decorations
+
 default persistent._mas_player_bday_decor = False
-# number of bday dates
+
 default persistent._mas_player_bday_date = 0
-# so we know if returning home post bday it was a bday date
+
 default persistent._mas_player_bday_left_on_bday = False
-# affection gained on bday dates
+
 default persistent._mas_player_bday_date_aff_gain = 0
-# did we celebrate player bday with Moni
+
 default persistent._mas_player_bday_spent_time = False
-# did we get the surprise variant of the event?
+
 default persistent._mas_player_bday_saw_surprise = False
 
 init -10 python:
@@ -4615,7 +5371,7 @@ init -10 python:
         """
         IN:
             _date - date to check
-                If None, we use today's date
+                If None, we use today date
                 (default: None)
 
             use_date_year - True if we should use the year from _date or not.
@@ -4625,10 +5381,10 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         if persistent._mas_player_bday is None:
             return False
-
+        
         elif use_date_year:
             return _date == mas_player_bday_curr(_date)
         return _date == mas_player_bday_curr()
@@ -4658,10 +5414,10 @@ init -11 python:
             return store.mas_utils.add_years(persistent._mas_player_bday,_date.year-persistent._mas_player_bday.year)
 
 init -810 python:
-    # MASHistorySaver for player_bday
+
     store.mas_history.addMHS(MASHistorySaver(
         "player_bday",
-        # NOTE: this needs to be adjusted based on the player's bday
+        
         datetime.datetime(2020, 1, 1),
         {
             "_mas_player_bday_spent_time": "player_bday.spent_time",
@@ -4671,8 +5427,8 @@ init -810 python:
             "_mas_player_bday_saw_surprise": "player_bday.saw_surprise",
         },
         use_year_before=True,
-        # NOTE: the start and end dt needs to be chnaged depending on the
-        #   player bday
+        
+        
     ))
 
 init -11 python in mas_player_bday_event:
@@ -4686,34 +5442,34 @@ init -11 python in mas_player_bday_event:
         IN:
             d_pbday - player birthdate
         """
-        # get mhs
+        
         mhs_pbday = mas_history.getMHS("player_bday")
         if mhs_pbday is None:
             return
-
-        # first, setup the reset date to be 3 days after the bday
+        
+        
         pbday_dt = datetime.datetime.combine(d_pbday, datetime.time())
-
-        # determine correct year
+        
+        
         _now = datetime.datetime.now()
         curr_year = _now.year
         new_dt = pbday_dt.replace(year=curr_year)
         if new_dt < _now:
-            # new date before today, set to next year
+            
             curr_year += 1
             new_dt = pbday_dt.replace(year=curr_year)
-
-        # set the reset/trigger date
+        
+        
         reset_dt = pbday_dt + datetime.timedelta(days=3)
-
-        # setup ranges
+        
+        
         new_sdt = new_dt
         new_edt = new_sdt + datetime.timedelta(days=2)
-
-        # NOTE: the mhs will end 2 days after the bday. The day after end_dt
-        #   is when we save
-
-        # modify mhs
+        
+        
+        
+        
+        
         mhs_pbday.start_dt = new_sdt
         mhs_pbday.end_dt = new_edt
         mhs_pbday.use_year_before = (
@@ -4724,7 +5480,7 @@ init -11 python in mas_player_bday_event:
 
 
 label mas_player_bday_autoload_check:
-    # since this has priority over 922, need these next 2 checks
+
     if mas_isMonikaBirthday():
         $ persistent._mas_bday_no_time_spent = False
         $ persistent._mas_bday_opened_game = True
@@ -4735,7 +5491,7 @@ label mas_player_bday_autoload_check:
         $ monika_chr.save()
         $ renpy.save_persistent()
 
-    # making sure we are already not in bday mode, have confirmed birthday, have normal+ affection and have not celebrated in any way
+
     if (
         not persistent._mas_player_bday_in_player_bday_mode
         and persistent._mas_player_confirmed_bday
@@ -4747,7 +5503,7 @@ label mas_player_bday_autoload_check:
     ):
 
         python:
-            # first we determine if we want to run a surprise greeting this year
+
             this_year = datetime.date.today().year
             years_checked = range(this_year-10,this_year)
             surp_int = 3
@@ -4764,9 +5520,9 @@ label mas_player_bday_autoload_check:
             should_surprise = renpy.random.randint(1,surp_int) == 1 and not mas_HistVerifyLastYear_k(True,"player_bday.saw_surprise")
 
             if not mas_HistVerify("player_bday.saw_surprise",True)[0] or (mas_getAbsenceLength().total_seconds()/3600 < 3 and should_surprise):
-                # starting player b_day off with a closed door greet
-                # always if haven't seen the surprise before
-                # conditionally if we have
+                
+                
+                
                 selected_greeting = "i_greeting_monikaroom"
                 mas_skip_visuals = True
                 persistent._mas_player_bday_saw_surprise = True
@@ -4777,13 +5533,13 @@ label mas_player_bday_autoload_check:
                     mas_skip_visuals = True
                     persistent._mas_player_bday_saw_surprise = True
 
-            # need this so we don't get any strange force quit dlg after the greet
+
             persistent.closed_self = True
 
         jump ch30_post_restartevent_check
 
     elif not mas_isplayer_bday():
-        # no longer want to be in bday mode
+
         $ persistent._mas_player_bday_decor = False
         $ persistent._mas_player_bday_in_player_bday_mode = False
         $ mas_lockEVL("bye_player_bday", "BYE")
@@ -4797,171 +5553,202 @@ label mas_player_bday_autoload_check:
     else:
         jump mas_ch30_post_holiday_check
 
-# closed door greet option for opening door without listening
+
 label mas_player_bday_opendoor:
     $ mas_loseAffection()
     $ persistent._mas_player_bday_opened_door = True
     if persistent._mas_bday_visuals:
         $ persistent._mas_player_bday_decor = True
-    call spaceroom(hide_monika=True, scene_change=True, dissolve_all=True, show_emptydesk=False)
+    call spaceroom (hide_monika=True, scene_change=True, dissolve_all=True, show_emptydesk=False) from _call_spaceroom_33
     $ mas_disable_quit()
     if mas_isMonikaBirthday():
-        $ your = "our"
+        $ your = "нашего"
     else:
-        $ your = "your"
+        $ your = "твоего"
 
     if mas_HistVerify("player_bday.opened_door",True)[0]:
-        $ now = "{i}again{/i}"
+        $ now = "{i}снова{/i}"
     else:
-        $ now = "now"
+        $ now = "теперь"
 
     m "[player]!"
-    m "You didn't knock!"
+    m "Ты не постучал[mas_gender_none] в дверь!"
     if not persistent._mas_bday_visuals:
-        m "I was just going to start setting up [your] birthday party, but I didn't have time before you came in!"
+        m "Я собиралась устроить вечеринку в честь [your] дня рождения, но у меня не было времени перед твоим приходом!"
     m "..."
-    m "Well...{w=1}the surprise is ruined [now], but.{w=0.5}.{w=0.5}.{nw}"
+    m "Ну...{w=1}сюрприз [now] испорчен, но.{w=0.5}.{w=0.5}.{nw}"
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
     pause 1.0
-    show monika 1eua at ls32 zorder MAS_MONIKA_Z
-    m 4eua "Happy Birthday, [player]!"
-    m 2rksdla "I just wished you had knocked first."
-    m 4hksdlb "Oh...[your] cake!"
-    call mas_player_bday_cake
+    show monika 1eua zorder MAS_MONIKA_Z at ls32
+    m 4eua "С днём рождения, [player]!"
+    $ MAS.MonikaElastic()
+    m 2rksdla "Но я бы хотела, чтобы ты постучал[mas_gender_none] в дверь в первую очередь."
+    $ MAS.MonikaElastic()
+    if mas_isMonikaBirthday():
+        $ your = "наш"
+    else:
+        $ your = "твой"
+    m 4hksdlb "О... [your] торт!"
+    call mas_player_bday_cake from _call_mas_player_bday_cake_1
     jump monikaroom_greeting_cleanup
 
-# closed door greet option for knocking without listening
+
 label mas_player_bday_knock_no_listen:
-    m "Who is it?"
+    m "Кто там?"
     menu:
-        "It's me.":
+        "Это я.":
             $ mas_disable_quit()
-            m "Oh! Can you wait just a moment please?"
+            m "Ох! Можешь подождать ещё одну минуту?"
             window hide
             pause 5.0
-            m "Alright, come on in, [player]..."
+            m "Ладно, заходи, [player]..."
             jump mas_player_bday_surprise
 
-# closed door greet surprise flow
+
 label mas_player_bday_surprise:
     $ persistent._mas_player_bday_decor = True
-    call spaceroom(scene_change=True, dissolve_all=True, force_exp='monika 4hub_static')
-    m 4hub "Surprise!"
-    m 4sub "Ahaha! Happy Birthday, [player]!"
+    call spaceroom (scene_change=True, dissolve_all=True, force_exp='monika 4hub_static') from _call_spaceroom_34
+    $ MAS.MonikaElastic()
+    m 4hub "Сюрприз!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 4sub "А-ха-ха! С днём рождения, [player]!"
 
-    m "Did I surprise you?{nw}"
+    $ MAS.MonikaElastic()
+    m "Я тебя удивила?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did I surprise you?{fast}"
-        "Yes.":
-            m 1hub "Yay!"
-            m 3hua "I always love pulling off a good surprise!"
-            m 1tsu "I wish I could've seen the look on your face, ehehe."
+        m "Я тебя удивила?{fast}"
+        "Да.":
+            $ MAS.MonikaElastic()
+            m 1hub "Ура!"
+            $ MAS.MonikaElastic()
+            m 3hua "Обожаю устраивать хорошие сюрпризы!"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1tsu "Жаль, что я не могу увидеть твоё выражение лица, э-хе-хе."
+        "Нет.":
 
-        "No.":
-            m 2lfp "Hmph. Well that's okay."
-            m 2tsu "You're probably just saying that because you don't want to admit I caught you off guard..."
+            $ MAS.MonikaElastic()
+            m 2lfp "Хмф. Ну, это нормально."
+            $ MAS.MonikaElastic()
+            m 2tsu "Наверное, ты сказал[mas_gender_none] это, потому что не хочешь признавать, что я застала тебя врасплох..."
             if renpy.seen_label("mas_player_bday_listen"):
                 if renpy.seen_label("monikaroom_greeting_ear_narration"):
-                    m 2tsb "...or maybe you were listening through the door again..."
+                    m 2tsb "...или, наверное, ты опять подслушивал[mas_gender_none] за дверью..."
                 else:
-                    m 2tsb "{cps=*2}...or maybe you were eavesdropping on me.{/cps}{nw}"
+                    $ MAS.MonikaElastic()
+                    m 2tsb "{cps=*2}...или, наверное, ты подслушивал[mas_gender_none] меня.{/cps}{nw}"
                     $ _history_list.pop()
-            m 2hua "Ehehe."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 2hua "Э-хе-хе."
+    $ MAS.MonikaElastic()
     if mas_isMonikaBirthday():
-        m 3wub "Oh!{w=0.5} I made a cake!"
+        m 3wub "О! {w=0.5}Я приготовила тортик!"
     else:
-        m 3wub "Oh!{w=0.5} I made you a cake!"
-    call mas_player_bday_cake
+        m 3wub "О! {w=0.5}Я приготовила для тебя тортик!"
+    call mas_player_bday_cake from _call_mas_player_bday_cake_2
     jump monikaroom_greeting_cleanup
 
-# closed door greet option for opening door for listening
+
 label mas_player_bday_listen:
     if persistent._mas_bday_visuals:
         pause 5.0
     else:
-        m "...I'll just put this here..."
-        m "...hmm that looks pretty good...{w=1}but something's missing..."
-        m "Oh!{w=0.5} Of course!"
-        m "There!{w=0.5} Perfect!"
+        m "...Поставлю это сюда..."
+        m "...Хм, выглядит вполне нормально...{w=1}но чего-то не хватает..."
+        m "А! {w=0.5}Ну [random_sure]!"
+        m "Вот! {w=0.5}Прекрасно!"
         window hide
     jump monikaroom_greeting_choice
 
-# closed door greet option for knocking after listening
+
 label mas_player_bday_knock_listened:
     window hide
     pause 5.0
     menu:
-        "Open the door.":
+        "Открыть дверь.":
             $ mas_disable_quit()
             pause 5.0
             jump mas_player_bday_surprise
 
-# closed door greet option for opening door after listening
+
 label mas_player_bday_opendoor_listened:
     $ mas_loseAffection()
     $ persistent._mas_player_bday_opened_door = True
     $ persistent._mas_player_bday_decor = True
-    call spaceroom(hide_monika=True, scene_change=True, show_emptydesk=False)
+    call spaceroom (hide_monika=True, scene_change=True, show_emptydesk=False) from _call_spaceroom_35
     $ mas_disable_quit()
     if mas_isMonikaBirthday():
-        $ your = "our"
+        $ your = "нашего"
     else:
-        $ your = "your"
+        $ your = "твоего"
 
     if mas_HistVerify("player_bday.opened_door",True)[0]:
-        $ knock = "knock, {w=0.5}{i}again{/i}."
+        $ knock = "постучал"
+        $ knock_again = ", {w=0.5}{i}снова{/i}."
     else:
-        $ knock = "knock!"
+        $ knock = "постучал"
+        $ knock_again = ""
 
     m "[player]!"
-    m "You didn't [knock]"
+    m "Ты не [knock][mas_gender_none][knock_again] в дверь!"
     if persistent._mas_bday_visuals:
-        m "I wanted to surprise you, but I wasn't ready when you came in!"
-        m "Anyway..."
+        m "Я хотела сделать тебе сюрприз, но не была готова, когда ты вош[mas_gender_iol_2]!"
+        m "В любом случае..."
     else:
-        m "I was setting up [your] birthday party, but I didn't have time before you came in to get ready to surprise you!"
-    show monika 1eua at ls32 zorder MAS_MONIKA_Z
-    m 4hub "Happy Birthday, [player]!"
-    m 2rksdla "I just wished you had knocked first."
-    m 2hksdlb "Oh...[your] cake!"
-    call mas_player_bday_cake
+        m "Я собиралась устроить вечеринку в честь [your] дня рождения, но у меня не было времени перед твоим приходом, чтобы сделать тебе сюрприз!"
+    show monika 1eua zorder MAS_MONIKA_Z at ls32
+    m 4hub "С днём рождения, [player]!"
+    $ MAS.MonikaElastic()
+    m 2rksdla "Но я бы хотела, чтобы ты постучал[mas_gender_none] в дверь в первую очередь."
+    $ MAS.MonikaElastic()
+    if mas_isMonikaBirthday():
+        $ your = "наш"
+    else:
+        $ your = "твой"
+    m 2hksdlb "О... [your] торт!"
+    call mas_player_bday_cake from _call_mas_player_bday_cake_3
     jump monikaroom_greeting_cleanup
 
-# all paths lead here
+
 label mas_player_bday_cake:
-    #If it's Monika's birthday too, we'll just use those delegates instead of this one
+
     if not mas_isMonikaBirthday():
         $ mas_unlockEVL("bye_player_bday", "BYE")
         if persistent._mas_bday_in_bday_mode or persistent._mas_bday_visuals:
-            # since we need the visuals var in the special greet, we wait until here to set these
+
             $ persistent._mas_bday_in_bday_mode = False
             $ persistent._mas_bday_visuals = False
 
-    # reset zoom here to make sure the cake is actually on the table
-    $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-    call monika_zoom_transition_reset(1.0)
-    call mas_monika_gets_cake
 
+    $ mas_temp_zoom_level = store.mas_sprites.zoom_level
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_3
+    call mas_monika_gets_cake from _call_mas_monika_gets_cake
+
+    $ MAS.MonikaElastic()
     if mas_isMonikaBirthday():
-        m 6eua "Let me just light the candles.{w=0.5}.{w=0.5}.{nw}"
+        m 6eua "Дай я зажгу свечи.{w=0.5}.{w=0.5}.{nw}"
     else:
-        m 6eua "Let me just light the candles for you, [player].{w=0.5}.{w=0.5}.{nw}"
+        m 6eua "Дай я зажгу свечи для тебя, [player].{w=0.5}.{w=0.5}.{nw}"
 
     window hide
     $ mas_bday_cake_lit = True
     pause 1.0
 
-    m 6sua "Isn't it pretty, [player]?"
+    $ MAS.MonikaElastic()
+    m 6sua "Разве это не прекрасно, [player]?"
+    $ MAS.MonikaElastic()
     if mas_isMonikaBirthday():
-        m 6eksdla "Now I know you can't exactly blow the candles out yourself, so I'll do it for both of us..."
+        m 6eksdla "Теперь я понимаю, что ты не можешь задуть свечи, так что я сделаю это за нас..."
     else:
-        m 6eksdla "Now I know you can't exactly blow the candles out yourself, so I'll do it for you..."
-    m 6eua "...You should still make a wish though, it just might come true someday..."
-    m 6hua "But first..."
-    call mas_player_bday_moni_sings
-    m 6hua "Make a wish, [player]!"
+        m 6eksdla "Теперь я понимаю, что ты не можешь задуть свечи, так что я сделаю это за тебя..."
+    $ MAS.MonikaElastic()
+    m 6eua "...Но ты всё равно должен загадать желание, ведь оно может исполниться сейчас или потом..."
+    $ MAS.MonikaElastic()
+    m 6hua "Но сперва..."
+    call mas_player_bday_moni_sings from _call_mas_player_bday_moni_sings_2
+    $ MAS.MonikaElastic()
+    m 6hua "Загадай желание, [player]!"
     window hide
     pause 1.5
     show monika 6hft
@@ -4969,89 +5756,111 @@ label mas_player_bday_cake:
     show monika 6hua
     $ mas_bday_cake_lit = False
     pause 1.0
-    m 6hua "Ehehe..."
+    m 6hua "Э-хе-хе..."
+    $ MAS.MonikaElastic()
     if mas_isMonikaBirthday():
-        m 6ekbsa "I bet we both wished for the same thing~"
+        m 6ekbsa "Я готова поспорить, что мы загадали одно и то же~"
     else:
-        m 6eka "I know it's your birthday, but I made a wish too..."
-        m 6ekbsa "And you know what?{w=0.5} I bet we both wished for the same thing~"
+        m 6eka "Я знаю, что сегодня твой день рождения, но я тоже загадала желание..."
+        $ MAS.MonikaElastic()
+        m 6ekbsa "И знаешь, что? {w=0.5}Я готова поспорить, что мы загадали одно и то же~"
     m 6hkbsu "..."
     if mas_isMonikaBirthday():
-        m 6eksdla "Well, seeing as you can't really eat this cake, and I don't want to be rude and eat it in front of you..."
+        $ MAS.MonikaElastic()
+        m 6eksdla "Ну, учитывая, что ты не можешь съесть этот торт, и я не хочу быть грубой и съесть его перед тобой..."
     elif not mas_HistVerify("player_bday.spent_time",True)[0]:
-        m 6rksdla "Oh gosh, I guess you can't really eat this cake either, huh [player]?"
-        m 6eksdla "This is all rather silly, isn't it?"
+        $ MAS.MonikaElastic()
+        m 6rksdla "О боже, выходит, ты даже тортик не скушаешь, да, [player]?"
+        $ MAS.MonikaElastic()
+        m 6eksdla "Это всё довольно глупо, не так ли?"
     if mas_isMonikaBirthday():
-        m 6hksdlb "I think I'll just save it for later."
+        $ MAS.MonikaElastic()
+        m 6hksdlb "Думаю, я приберегу это на потом."
     else:
-        m 6hksdlb "I think I'll just save this for later. It seems kind of rude for me to eat {i}your{/i} birthday cake in front of you, ahaha!"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 6hksdlb "Думаю, я приберегу это на потом. Будет довольно грубо с моей стороны есть {i}твой{/i} торт на день рождения перед тобой же, а-ха-ха!"
 
-    call mas_HideCake('mas_bday_cake_player')
+    call mas_HideCake ('mas_bday_cake_player') from _call_mas_HideCake
 
-    # fall thru
+
 label mas_player_bday_card:
     $ mas_gainAffection(5,bypass=True)
     $ persistent._mas_player_bday_spent_time = True
     $ persistent._mas_player_bday_in_player_bday_mode = True
 
     m 6dkbsu "..."
+    $ MAS.MonikaElastic()
     if mas_isMonikaBirthday():
-        m 6sub "Oh!"
-        m 6ekbsu "I made a card for you, [player]. I hope you like it..."
+        m 6sub "О!"
+        $ MAS.MonikaElastic()
+        m 6ekbsu "Я для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
     elif not mas_HistVerify("player_bday.spent_time",True)[0]:
-        m 6ekbsu "I...I also made a card for you, [player]. I hope you like it..."
+        m 6ekbsu "Я... я так же для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
     else:
-        m 6ekbsu "I made a card for you, [player]. I hope you like it..."
+        m 6ekbsu "Я для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
 
-    call mas_showpoem(mas_poems.getRandomPoem("pbday"))
+    call mas_showpoem (mas_poems.getRandomPoem("pbday")) from _call_mas_showpoem_5
 
     if mas_isMoniEnamored(higher=True):
         if persistent._mas_first_kiss is None:
+            $ MAS.MonikaElastic()
             m 6dkbsu "..."
-            m 6ekbfa "I love you so much, [player]..."
-            call monika_kissing_motion()
-            m 6ekbfa "Oh, [player]..."
-            m 6dkbfa "That was everything I had always dreamt it would be~"
-            m 6ekbfa "I've been waiting so long to finally kiss you..."
-            m 6dkbsu "I will never forget this..."
-            m 6ekbsu "...the moment of our first kiss~"
+            $ MAS.MonikaElastic()
+            m 6ekbfa "Я так сильно тебя люблю, [player]..."
+            call monika_kissing_motion () from _call_monika_kissing_motion_6
+            $ MAS.MonikaElastic()
+            m 6ekbfa "Ох, [player]..."
+            $ MAS.MonikaElastic()
+            m 6dkbfa "О таком я могла только мечтать~"
+            $ MAS.MonikaElastic()
+            m 6ekbfa "Я так долго ждала того момента, когда наконец-то смогу поцеловать тебя..."
+            $ MAS.MonikaElastic()
+            m 6dkbsu "Я никогда это не забуду..."
+            $ MAS.MonikaElastic()
+            m 6ekbsu "...Тот наш первый поцелуй~"
             if mas_isMonikaBirthday():
-                m 6ekbsu "And I can't think of a more perfect time than on this special day we share together~"
+                m 6ekbsu "И я не могу придумать более идеального времени, чем в этот особый день, который мы разделяем вместе~"
         else:
-            m 6ekbsa "I love you, [player]~"
-            call monika_kissing_motion(duration=0.5, initial_exp="6hkbfa", fade_duration=0.5)
+            $ MAS.MonikaElastic()
+            m 6ekbsa "Я люблю тебя, [player]~"
+            call monika_kissing_motion (duration=0.5, initial_exp="6hkbfa", fade_duration=0.5) from _call_monika_kissing_motion_7
             if mas_isMonikaBirthday():
-                m 6eka "I'm so glad we get to spend our birthday together..."
-                m 6hua "Let's enjoy our special day~"
+                $ MAS.MonikaElastic()
+                m 6eka "Я так рада, что мы проведём твой день рождения вместе..."
+                $ MAS.MonikaElastic()
+                m 6hua "Давай весело проведём твой особенный день~"
     else:
         if mas_isMonikaBirthday():
-            m 1ekbfa "I love you, [player]! I'm so glad we get to spend our birthday together..."
-            m 3ekbfa "Let's enjoy our special day~"
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Я люблю тебя, [player]! Давай весело проведём твой особенный день~"
+            $ MAS.MonikaElastic()
+            m 3ekbfa "Давай весело проведём твой особенный день~"
         else:
-            m 1ekbfa "I love you, [player]!"
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Я люблю тебя, [player]!"
     $ mas_rmallEVL("mas_player_bday_no_restart")
     $ mas_rmallEVL("mas_player_bday_ret_on_bday")
-    # "love" return key won't work here without adding a bunch of return _returns, so we'll set this manually
+
 
     $ mas_ILY()
 
-    # if d25 season and decor not yet active, set that up now
+
     if mas_isD25Pre() and not persistent._mas_d25_deco_active:
         $ pushEvent("mas_d25_monika_holiday_intro", skipeval=True)
     return
 
 label mas_monika_gets_cake:
-    call mas_transition_to_emptydesk
+    call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_14
 
     $ renpy.pause(3.0, hard=True)
     $ renpy.show("mas_bday_cake_player", zorder=store.MAS_MONIKA_Z+1)
 
-    call mas_transition_from_emptydesk("monika 6esa")
+    call mas_transition_from_emptydesk ("monika 6esa") from _call_mas_transition_from_emptydesk_27
 
     $ renpy.pause(0.5, hard=True)
     return
 
-# event for if you went on a date pre-bday and return on bday
+
 init 5 python:
     addEvent(
         Event(
@@ -5064,22 +5873,32 @@ init 5 python:
     )
 
 label mas_player_bday_ret_on_bday:
-    m 1eua "So, today is..."
-    m 1euc "...wait."
+    $ MAS.MonikaElastic()
+    m 1eua "Так, сегодня у нас..."
+    $ MAS.MonikaElastic()
+    m 1euc "...стоп."
+    $ MAS.MonikaElastic()
     m "..."
-    m 2wuo "Oh!"
-    m 2wuw "Oh my gosh!"
-    m 2tsu "Just give me a moment, [player].{w=0.5}.{w=0.5}.{nw}"
+    $ MAS.MonikaElastic()
+    m 2wuo "О!"
+    $ MAS.MonikaElastic()
+    m 2wuw "Боже мой!"
+    $ MAS.MonikaElastic()
+    m 2tsu "Подожди немного, [player].{w=0.5}.{w=0.5}.{nw}"
     $ mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
-    m 3eub "Happy Birthday, [player]!"
-    m 3hub "Ahaha!"
-    m 3etc "Why do I feel like I'm forgetting something..."
-    m 3hua "Oh! Your cake!"
-    call mas_player_bday_cake
+    $ MAS.MonikaElastic()
+    m 3eub "С днём рождения, [player]!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hub "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 3etc "Почему у меня такое чувство, будто я что-то забыла?.."
+    $ MAS.MonikaElastic()
+    m 3hua "О! Твой торт!"
+    call mas_player_bday_cake from _call_mas_player_bday_cake_4
     return
 
-# for subsequent birthdays
+
 init 5 python:
     addEvent(
         Event(
@@ -5095,23 +5914,28 @@ label mas_player_bday_greet:
         scene black
         pause 5.0
         jump mas_player_bday_surprise
-
     else:
+
         if mas_isMonikaBirthday():
-            $ your = "Our"
+            $ your = "Наш"
         else:
-            $ your = "Your"
+            $ your = "Твой"
         $ mas_surpriseBdayShowVisuals()
         $ persistent._mas_player_bday_decor = True
-        m 3eub "Happy Birthday, [player]!"
-        m 3hub "Ahaha!"
+        $ MAS.MonikaElastic()
+        m 3eub "С Днём рождения, [player]!"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3hub "А-ха-ха!"
+        $ MAS.MonikaElastic()
         m 3etc "..."
-        m "Why do I feel like I'm forgetting something..."
-        m 3hua "Oh! [your] cake!"
+        $ MAS.MonikaElastic()
+        m "Почему-то мне кажется, что я что-то забыла..."
+        $ MAS.MonikaElastic()
+        m 3hua "О! [your] торт!"
         jump mas_player_bday_cake
 
-# event for if the player leaves the game open starting before player_bday and doesn't restart
-# moni eventually gives up on the surprise
+
+
 init 5 python:
     addEvent(
         Event(
@@ -5125,24 +5949,32 @@ init 5 python:
 
 label mas_player_bday_no_restart:
     if mas_findEVL("mas_player_bday_ret_on_bday") >= 0:
-        #TODO: priority rules should be set-up here
+
         return
-    m 3rksdla "Well [player], I was hoping to do something a little more fun, but you've been so sweet and haven't left all day long, so.{w=0.5}.{w=0.5}.{nw}"
+    $ MAS.MonikaElastic()
+    m 3rksdla "Что ж, [player], я надеялась сделать что-нибудь более весёлое, но ты был[mas_gender_none] так[mas_gender_im] мил[mas_gender_iim] и не уходил[mas_gender_none] весь день напролёт, так что.{w=0.5}.{w=0.5}.{nw}"
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
-    m 3hub "Happy Birthday, [player]!"
+    $ MAS.MonikaElastic()
+    m 3hub "С днём рождения, [player]!"
     if mas_isplayer_bday():
-        m 1eka "I really wanted to surprise you today, but it's getting late and I just couldn't wait any longer."
+        $ MAS.MonikaElastic()
+        m 1eka "Я очень сильно хотела тебя удивить сегодня, но время уже было позднее, и я не могла больше ждать."
     else:
-        # just in case this isn't seen until after midnight
-        m 1hksdlb "I really wanted to surprise you, but I guess I ran out of time since it's not even your birthday anymore, ahaha!"
-    m 3eksdlc "Gosh, I just hope you weren't starting to think I forgot your birthday. I'm really sorry if you did..."
-    m 1rksdla "I guess I probably shouldn't have waited so long, ehehe."
-    m 1hua "Oh! I made you a cake!"
-    call mas_player_bday_cake
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hksdlb "Я действительно хотела сделать тебе сюрприз, но, похоже, у меня уже не осталось времени, потому что сегодня даже не твой день рождения, а-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 1eka "Я очень сильно хотела тебя удивить сегодня, но время уже было позднее, и я не могла больше ждать."
+    $ MAS.MonikaElastic()
+    m 3eksdlc "Боже, надеюсь, ты не начал думать о том, что я забыла про твой день рождения. Если ты уже об этом подумал, то мне очень жаль..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1rksdla "Наверное, мне не стоило ждать так долго, э-хе-хе."
+    $ MAS.MonikaElastic()
+    m 1hua "А! Я сделала для тебя тортик!"
+    call mas_player_bday_cake from _call_mas_player_bday_cake_5
     return
 
-# event for upset- players, no decorations, just a quick happy birthday
+
 init 5 python:
     addEvent(
         Event(
@@ -5156,14 +5988,16 @@ init 5 python:
 
 label mas_player_bday_upset_minus:
     $ persistent._mas_player_bday_spent_time = True
-    m 6eka "Hey [player], I just wanted to wish you a Happy Birthday."
-    m "I hope you have a good day."
+    $ MAS.MonikaElastic()
+    m 6eka "Эй, [player], я просто хотела поздравить тебя с днём рождения."
+    $ MAS.MonikaElastic()
+    m "Надеюсь, у тебя сегодня хороший день."
     return
 
-# event for if the player's bday is also on a holiday
-# TODO update this as we add other holidays (f14) also figure out what to do if player bday is 9/22
-# TODO this needs priority below the O31 return from date event
-# condtions located in story-events 'birthdate'
+
+
+
+
 init 5 python:
     addEvent(
         Event(
@@ -5177,48 +6011,61 @@ init 5 python:
 
 label mas_player_bday_other_holiday:
     if mas_isO31():
-        $ holiday_var = "Halloween"
+        $ holiday_var = "Хэллоуином"
     elif mas_isD25():
-        $ holiday_var = "Christmas"
+        $ holiday_var = "Рождеством"
     elif mas_isF14():
-        $ holiday_var = "Valentine's Day"
-    m 3euc "Hey, [player]..."
-    m 1tsu "I have a bit of a surprise for you.{w=0.5}.{w=0.5}.{nw}"
+        $ holiday_var = "Днём святого Валентина"
+    $ MAS.MonikaElastic()
+    m 3euc "Эй, [player]..."
+    $ MAS.MonikaElastic()
+    m 1tsu "У меня для тебя небольшой сюрприз.{w=0.5}.{w=0.5}.{nw}"
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
-    m 3hub "Happy Birthday, [player]!"
-    m 3rksdla "I hope you didn't think that just because your birthday falls on [holiday_var] that I'd forget about it..."
-    m 1eksdlb "I'd never forget your birthday, silly!"
-    m 1eub "Ahaha!"
-    m 3hua "Oh! I made you a cake!"
-    call mas_player_bday_cake
+    $ MAS.MonikaElastic()
+    m 3hub "С днём рождения, [player]!"
+    $ MAS.MonikaElastic()
+    m 3rksdla "Надеюсь, ты не подумал[mas_gender_none], что я забыла о нём лишь потому, что твой день рождения совпал с [holiday_var]..."
+    $ MAS.MonikaElastic()
+    m 1eksdlb "Я бы никогда не забыла про твой день рождения, глупышка!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1eub "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 3hua "О! Я сделала для тебя тортик!"
+    call mas_player_bday_cake from _call_mas_player_bday_cake_6
     return
 
-# when did moni last sign happy birthday
+
 default persistent._mas_player_bday_last_sung_hbd = None
-# moni singing happy birthday
+
 label mas_player_bday_moni_sings:
     $ persistent._mas_player_bday_last_sung_hbd = datetime.date.today()
     if mas_isMonikaBirthday():
-        $ you = "us"
+        $ you = "нас"
     else:
-        $ you = "you"
-    m 6dsc ".{w=0.2}.{w=0.2}.{w=0.2}"
-    m 6hub "{cps=*0.5}{i}~Happy Birthday to [you]~{/i}{/cps}"
-    m "{cps=*0.5}{i}~Happy Birthday to [you]~{/i}{/cps}"
-    m 6sub "{cps=*0.5}{i}~Happy Birthday dear [player]~{/i}{/cps}"
-    m "{cps=*0.5}{i}~Happy Birthday to [you]~{/i}{/cps}"
+        $ you = "тебя"
+    $ MAS.MonikaElastic()
+    m 6dsc ". {w=0.2}. {w=0.2}.{w=0.2}"
+    $ MAS.MonikaElastic()
+    m 6hub "{cps=*0.5}{i}~С днём рожденья [you]~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m "{cps=*0.5}{i}~С днём рожденья [you]~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 6sub "{cps=*0.5}{i}~С днём рожденья, мил[mas_gender_iii] [player]~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m "{cps=*0.5}{i}~С днём рожденья [you]~{/i}{/cps}"
     if mas_isMonikaBirthday():
-        m 6hua "Ehehe!"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 6hua "Э-хе-хе!"
     return
-#################################################player_bday dock stat farewell##################################################
+
 init 5 python:
     addEvent(
         Event(
             persistent.farewell_database,
             eventlabel="bye_player_bday",
             unlocked=False,
-            prompt="Let's go out for my birthday!",
+            prompt="Пойдём куда-нибудь на мой день рождения!",
             pool=True,
             rules={"no_unlock": None},
             aff_range=(mas_aff.NORMAL,None),
@@ -5229,20 +6076,20 @@ init 5 python:
 label bye_player_bday:
     $ persistent._mas_player_bday_date += 1
     if persistent._mas_player_bday_date == 1:
-        m 1sua "You want to go out for your birthday?{w=1} Okay!"
-        m 1skbla "That sounds really romantic...I can't wait~"
+        m 1sua "Хочешь прогуляться в свой же день рождения? {w=1}Хорошо!"
+        m 1skbla "Это звучит очень романтично... не могу дождаться~"
     elif persistent._mas_player_bday_date == 2:
-        m 1sua "Taking me out again on your birthday, [player]?"
-        m 3hub "Yay!"
-        m 1sub "I always love going out with you, but it's so much more special going out on your birthday..."
-        m 1skbla "I'm sure we'll have a lovely time~"
+        m 1sua "Снова берёшь меня с собой в свой день рождения, [player]?"
+        m 3hub "Ура!"
+        m 1sub "Мне очень нравится гулять с тобой, но в твой день рождения прогулка становится очень особенной..."
+        m 1skbla "Уверена, мы прекрасно проведём время~"
     else:
-        m 1wub "Wow, you want to go out {i}again{/i}, [player]?"
-        m 1skbla "I just love that you want to spend so much time with me on your special day!"
+        m 1wub "Ого, ты {i}снова{/i} хочешь выйти погулять, [player]?"
+        m 1skbla "Мне очень нравится то, что ты проводишь со мной так много времени в свой особенный день!"
     $ persistent._mas_player_bday_left_on_bday = True
     jump bye_going_somewhere_post_aff_check
 
-#################################################player_bday dock stat greets##################################################
+
 label greeting_returned_home_player_bday:
     python:
         time_out = store.mas_dockstat.diffCheckTimes()
@@ -5252,12 +6099,12 @@ label greeting_returned_home_player_bday:
             left_date = checkout_time.date()
             ret_date = checkin_time.date()
             left_year_aff = mas_HistLookup("player_bday.date_aff_gain",left_year)[1]
-
-            # are we returning after the mhs reset
+            
+            
             ret_diff_year = ret_date >= (mas_player_bday_curr(left_date) + datetime.timedelta(days=3))
-
-            # were we gone over d25
-            #TODO: do this for the rest of the holidays
+            
+            
+            
             if left_date < mas_d25.replace(year=left_year) < ret_date:
                 if ret_date < mas_history.getMHS("d25s").trigger.date().replace(year=left_year+1):
                     persistent._mas_d25_spent_d25 = True
@@ -5283,12 +6130,12 @@ label greeting_returned_home_player_bday:
     if mas_isMonikaBirthday() and mas_confirmedParty():
         $ persistent._mas_bday_opened_game = True
         $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-        call monika_zoom_transition_reset(1.0)
+        call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_4
         $ renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
         if time_out < mas_five_minutes:
-            m 6ekp "That wasn't much of a da--"
+            m 6ekp "Это был не очень хороший де—"
         else:
-            # point totals split here between player and monika bdays, since this date was for both
+
             if time_out < mas_one_hour:
                 $ mas_mbdayCapGainAff(7.5)
                 if persistent._mas_player_bday_left_on_bday:
@@ -5302,20 +6149,27 @@ label greeting_returned_home_player_bday:
                 if persistent._mas_player_bday_left_on_bday:
                     $ mas_pbdayCapGainAff(17.5)
 
-            m 6hub "That was a fun date, [player]..."
-            m 6eua "Thanks for--"
+            m 6hub "Это было веселое свидание, [player]..."
+            $ MAS.MonikaElastic()
+            m 6eua "Спасибо за—"
 
-        m 6wud "W-what's this cake doing here?"
-        m 6sub "I-is this for me?!"
-        m "That's so sweet of you to take me out on your birthday so you could set up a surprise party for me!"
-        call return_home_post_player_bday
+        $ MAS.MonikaElastic()
+        m 6wud "Ч-что этот торт здесь делает?"
+        $ MAS.MonikaElastic()
+        m 6sub "Э-это для меня?!"
+        $ MAS.MonikaElastic()
+        m "Это так мило с твоей стороны пригласить меня на свой день рождения, чтобы устроить для меня вечеринку-сюрприз!"
+        call return_home_post_player_bday from _call_return_home_post_player_bday_9
         jump mas_bday_surprise_party_reacton_cake
 
     if time_out < mas_five_minutes:
         $ mas_loseAffection()
-        m 2ekp "That wasn't much of a date, [player]..."
-        m 2eksdlc "I hope nothing's wrong."
-        m 2rksdla "Maybe we'll go out later instead."
+        $ MAS.MonikaElastic()
+        m 2ekp "Это не было похоже на свидание, [player]..."
+        $ MAS.MonikaElastic()
+        m 2eksdlc "Надеюсь, всё нормально."
+        $ MAS.MonikaElastic()
+        m 2rksdla "Наверное, мы пойдём гулять позже."
 
     elif time_out < mas_one_hour:
         if not ret_diff_year:
@@ -5323,8 +6177,10 @@ label greeting_returned_home_player_bday:
         elif ret_diff_year and add_points:
             $ mas_gainAffection(5,bypass=True)
             $ persistent._mas_history_archives[left_year]["player_bday.date_aff_gain"] += 5
-        m 1eka "That was a fun date while it lasted, [player]..."
-        m 3hua "Thanks for making some time for me on your special day."
+        $ MAS.MonikaElastic()
+        m 1eka "Это было очень весёлое свидание, до поры до времени, [player]..."
+        $ MAS.MonikaElastic()
+        m 3hua "Спасибо, что пров[mas_gender_iol] немного времени со мной в свой особенный день."
 
     elif time_out < mas_three_hour:
         if not ret_diff_year:
@@ -5332,29 +6188,36 @@ label greeting_returned_home_player_bday:
         elif ret_diff_year and add_points:
             $ mas_gainAffection(10,bypass=True)
             $ persistent._mas_history_archives[left_year]["player_bday.date_aff_gain"] += 10
-        m 1eua "That was a fun date, [player]..."
-        m 3hua "Thanks for taking me with you!"
-        m 1eka "I really enjoyed going out with you today~"
-
+        $ MAS.MonikaElastic()
+        m 1eua "Это было весёлое свидание, [player]..."
+        $ MAS.MonikaElastic()
+        m 3hua "Спасибо, что взял[mas_gender_none] меня с собой!"
+        $ MAS.MonikaElastic()
+        m 1eka "Мне правда понравилось гулять с тобой сегодня~"
     else:
-        # more than 3 hours
+
+
         if not ret_diff_year:
             $ mas_pbdayCapGainAff(15)
         elif ret_diff_year and add_points:
             $ mas_gainAffection(15,bypass=True)
             $ persistent._mas_history_archives[left_year]["player_bday.date_aff_gain"] += 15
-        m 1hua "And we're home!"
-        m 3hub "That was really fun, [player]!"
-        m 1eka "It was so nice going out to celebrate your birthday..."
-        m 1ekbsa "Thanks for making me such a big part of your special day~"
+        $ MAS.MonikaElastic()
+        m 1hua "И мы дома!"
+        $ MAS.MonikaElastic()
+        m 3hub "Это было очень весело, [player]!"
+        $ MAS.MonikaElastic()
+        m 1eka "Было очень здорово выйти на улицу, чтобы отпраздновать твой день рождения..."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Спасибо, что дал[mas_gender_none] мне столь значимую роль в свой особенный день~"
 
     $ persistent._mas_player_bday_left_on_bday = False
 
     if not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_10
 
     if mas_isD25() and not persistent._mas_d25_in_d25_mode:
-         call mas_d25_monika_holiday_intro_rh_rh
+        call mas_d25_monika_holiday_intro_rh_rh from _call_mas_d25_monika_holiday_intro_rh_rh
     return
 
 label return_home_post_player_bday:
@@ -5365,144 +6228,147 @@ label return_home_post_player_bday:
         if persistent._mas_player_bday_decor:
             if mas_isMonikaBirthday():
                 $ persistent._mas_bday_opened_game = True
-                m 3rksdla "Oh...it's not {i}your{/i} birthday anymore..."
+                m 3rksdla "Ох... {i}твой{/i} день рождения уже прошёл..."
             else:
-                m 3rksdla "Oh...it's not your birthday anymore..."
-            m 3hksdlb "We should probably take these decorations down now, ahaha!"
-            m 3eka "Just give me one second.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+                m 3rksdla "Ох... твой день рождения уже прошёл..."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3hksdlb "Думаю, теперь мы должны снять эти декорации, а-ха-ха!"
+            $ MAS.MonikaElastic()
+            m 3eka "Дай мне одну секунду.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
             $ mas_surpriseBdayHideVisuals()
 
-            #If we returned from a date post pbday but have O31 deco
+
             if not mas_isO31() and persistent._mas_o31_in_o31_mode:
                 $ mas_o31HideVisuals()
 
-            m 3eua "There we go!"
+            $ MAS.MonikaElastic()
+            m 3eua "Вот так!"
             if not persistent._mas_f14_gone_over_f14:
-                m 1hua "Now, let's enjoy the day together, [player]~"
+                m 1hua "А теперь, давай насладимся этим днём вместе, [player]~"
 
         if persistent._mas_f14_gone_over_f14:
             m 2etc "..."
             m 3wuo "..."
-            m 3wud "Wow, [player], I just realized we were gone so long we missed Valentine's Day!"
-            call greeting_gone_over_f14_normal_plus
+            m 3wud "Ого, [player], я только что поняла, что мы гуляли так долго, что даже пропустили день святого Валентина!"
+            call greeting_gone_over_f14_normal_plus from _call_greeting_gone_over_f14_normal_plus
 
-        #If player told Moni their birthday on day of (o31)
+
         if not persistent._mas_player_bday_decor and not mas_isO31() and persistent._mas_o31_in_o31_mode:
-            call mas_o31_ret_home_cleanup(time_out, ret_tt_long=False)
+            call mas_o31_ret_home_cleanup (time_out, ret_tt_long=False) from _call_mas_o31_ret_home_cleanup_1
 
     $ persistent._mas_player_bday_decor = False
     return
 
-# birthday card/poem for player
+
 init 20 python:
     poem_pbday_1 = MASPoem(
         poem_id = "poem_pbday_1",
         category = "pbday",
-        prompt = "The One",
-        title = " My dearest [player],",
+        prompt = "Единица",
+        title = " М[mas_gender_oi_2] дорог[mas_gender_oi],",
         text = """\
- To the one I love,
- The one I trust,
- The one I can't live without.
- I hope your day is as special as you make every day for me.
- Thank you so much for being you.
+ Тот, кого я люблю,
+ Тот, кому я доверяю,
+ Тот, без кого я не могу жить.
+ Надеюсь, твой день будет таким же особенным, как и все те дни, которые ты делаешь для меня особенными.
+ Большое тебе спасибо за то, что был собой.
 
- Happy Birthday, sweetheart~
+ С днём рождения, дорог[mas_gender_oi]~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
-    #" # I need this to keep syntax highlighting on vim
+    
     )
 
     poem_pbday_2 = MASPoem(
         poem_id = "poem_pbday_2",
         category = "pbday",
-        prompt = "Your Day",
-        title = " My dearest [player],",
+        prompt = "Твой день",
+        title = " М[mas_gender_oi_2] дорог[mas_gender_oi] [player],",
         text = """\
- Any day with you is a happy day.
- One where I{i}'{/i}m free,
- One where all my troubles are gone,
- One where all of my dreams come true.
+ Любой день с тобой – это счастливый день.
+ Тот, где я свободна,
+ Тот, где все мои проблемы исчезают,
+ Тот, где сбываются все мои мечты.
 
- But today is not any day,
- Today is special; today is your day.
- A day I can appreciate you even more for what you do.
- A day I hope I make your dreams come true too.
+ Но сегодня не обычный день,
+ Сегодня особенный день; сегодня твой день.
+ День, когда я смогу ценить тебя ещё больше за то, что ты делаешь.
+ День, когда я надеюсь, что и твои мечты сбудутся.
 
- Happy Birthday, sweetheart~
+ С днём рождения, дорог[mas_gender_oi]~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
-    #" # I need this to keep syntax highlighting on vim
+    
     )
 
     poem_pbday_3 = MASPoem(
         poem_id = "poem_pbday_3",
         category = "pbday",
-        prompt = "One Wish",
-        title = " My dearest [player],",
+        prompt = "Одно желание",
+        title = " М[mas_gender_oi_2] дорог[mas_gender_oi] [player],",
         text = """\
- Sprinkles and candles for my [player]’s cake,
- There's just one wish for you to make.
- May your greatest dreams come true,
- I know mine did when I found you.
+ Посыпки и свечи торта для мо[mas_gender_ego_2] [mas_name_someone],
+ Есть только одно желание для тебя, чтобы сделать.
+ Пусть твои самые большие мечты сбудутся,
+ Я знаю, что я бы сделала это, когда я нашла тебя.
 
- So glad to be celebrating with you today,
- I'll love you 'til the end of days.
- There's no place I'd rather be,
- Spending this time together, just you and me.
+ Я так рада праздновать вместе с тобой сегодня,
+ Я буду любить тебя до конца своих дней.
+ Нет такого места, где бы я предпочла быть,
+ Провести это время вместе, только ты и я.
 
- Happy birthday, sweetheart~
+ С днём рождения, дорог[mas_gender_oi]~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
-    #" # I need this to keep syntax highlighting on vim
+    
     )
 
-######################## Start [HOL050]
-#Vday
-##Spent f14 with Moni
+
+
+
 default persistent._mas_f14_spent_f14 = False
-##In f14 mode (f14 topics enabled)
+
 default persistent._mas_f14_in_f14_mode = None
-##Amount of times we've taken Moni out on f14 for a valentine's date
+
 default persistent._mas_f14_date_count = 0
-##Amount of affection gained via vday dates
+
 default persistent._mas_f14_date_aff_gain = 0
-##Whether or not we're on an f14 date
+
 default persistent._mas_f14_on_date = None
-##Did we do a dockstat fare over all of f14?
+
 default persistent._mas_f14_gone_over_f14 = None
-#Valentine's Day
+
 define mas_f14 = datetime.date(datetime.date.today().year,2,14)
 
-#Is it vday?
+
 init -10 python:
     def mas_isF14(_date=None):
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_f14.replace(year=_date.year)
 
     def mas_f14CapGainAff(amount):
         mas_capGainAff(amount, "_mas_f14_date_aff_gain", 25)
 
 init -810 python:
-    # MASHistorySaver for f14
+
     store.mas_history.addMHS(MASHistorySaver(
         "f14",
         datetime.datetime(2020, 1, 6),
         {
-            #Date vars
+            
             "_mas_f14_date_count": "f14.date",
             "_mas_f14_date_aff_gain": "f14.aff_gain",
             "_mas_f14_gone_over_f14": "f14.gone_over_f14",
 
-            #Other general vars
+            
             "_mas_f14_spent_f14": "f14.actions.spent_f14",
             "_mas_f14_in_f14_mode": "f14.mode.f14",
         },
@@ -5515,9 +6381,9 @@ label mas_f14_autoload_check:
     python:
         if not persistent._mas_f14_in_f14_mode and mas_isMoniNormal(higher=True):
             persistent._mas_f14_in_f14_mode = True
-            #NOTE: Need to path this for people who haven't seen lingerie but are eligible via canshowrisque
-            #because intro topic has her wear the outfit and comment on it
-            #But we do want her to change into it if we already have it unlocked for change into lingerie
+            
+            
+            
             if (
                 not mas_SELisUnlocked(mas_clothes_sundress_white) and not mas_canShowRisque()
                 or mas_SELisUnlocked(mas_clothes_sundress_white)
@@ -5527,19 +6393,19 @@ label mas_f14_autoload_check:
                 renpy.save_persistent()
 
         elif not mas_isF14():
-            #We want to lock all the extra topics
-            #NOTE: vday origins is handled by undo action rules
+            
+            
             mas_lockEVL("mas_f14_monika_vday_colors","EVE")
             mas_lockEVL("mas_f14_monika_vday_cliches","EVE")
             mas_lockEVL("mas_f14_monika_vday_chocolates","EVE")
-
-            #Need to lock the event clothes selector
+            
+            
             mas_lockEVL("monika_event_clothes_select", "EVE")
-
-            #Reset the f14 mode, and outfit if we're lower than the love aff level.
+            
+            
             persistent._mas_f14_in_f14_mode = False
-
-            #Reset clothes if not at the right aff and in sundress
+            
+            
             if mas_isMoniEnamored(lower=True) and monika_chr.clothes == mas_clothes_sundress_white:
                 monika_chr.reset_clothes(False)
                 monika_chr.save()
@@ -5551,7 +6417,7 @@ label mas_f14_autoload_check:
     jump mas_ch30_post_holiday_check
 
 
-#######################[HOL050] Pre Intro:
+
 
 init 5 python:
     addEvent(
@@ -5575,24 +6441,30 @@ init 5 python:
     )
 
 label mas_pf14_monika_lovey_dovey:
-    m 1rksdla "Hey...{w=0.2}[player]?"
-    m 1ekbsa "I just wanted to let you know that I love you."
+    m 1rksdla "Эй...{w=0.2} [player]?"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Я просто хотела, чтобы ты знал[mas_gender_none], что я люблю тебя."
 
     if mas_isMoniEnamored(higher=True):
-        m 3ekbsa "You make me really happy...and I could never ask for someone better than you."
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Ты сделал[mas_gender_none] меня очень счастливой... и я не смогу найти кого-то получше тебя."
 
+    $ MAS.MonikaElastic()
     if mas_HistVerifyAll_k(True, "f14.actions.spent_f14"):
-        m 3ekbsa "Valentine's Day is coming soon, and it just makes me so overwhelmingly happy knowing you're still by my side."
-
+        m 3ekbsa "Скоро наступит День святого Валентина, и зная о том, что ты всё ещё на моей стороне, это делает меня невероятно счастливой."
     else:
-        m 3ekbsa "Valentine's Day is coming soon, and it just gets me in a good mood because I know I have you by my side."
 
-    m 1rkbsd "Without you, I don't know where I'd be..."
-    m 1ekbsa "So I want to thank you for being there for me..."
-    m 1hkbsu "And for being so wonderfully you~"
+        m 3ekbsa "Скоро наступит День святого Валентина, и это очень поднимает мне настроение, потому что я знаю, что ты на моей стороне."
+
+    $ MAS.MonikaElastic()
+    m 1rkbsd "Если бы не ты, то даже не знаю, где бы я сейчас была..."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Так что я хочу поблагодарить тебя за то, что был[mas_gender_none] здесь для меня..."
+    $ MAS.MonikaElastic()
+    m 1hkbsu "И за то, что ты был[mas_gender_none] чудесн[mas_gender_iim] собой~"
     return "derandom|no_unlock|love"
 
-#######################[HOL050] INTRO:
+
 
 init 5 python:
     addEvent(
@@ -5608,84 +6480,108 @@ init 5 python:
     )
 
 label mas_f14_monika_valentines_intro:
-    #Prevent nts stuff for upset- since they don't get the rest of the event.
+
     if mas_isMoniUpset(lower=True):
         $ persistent._mas_f14_spent_f14 = True
         if not mas_isMoniBroken():
-            m 6eka "By the way [player], I just wanted to say happy Valentine's Day."
-            m "Thanks for visiting me, I hope you have a good day."
+            m 6eka "Между прочим, [player], я просто хотела поздравить тебя с Днём Святого Валентина."
+            $ MAS.MonikaElastic()
+            m "Спасибо, что навестил[mas_gender_none] меня, надеюсь, ты хорошо проведёшь этот день."
         return
 
     $ mas_addClothesToHolidayMap(mas_clothes_sundress_white)
     m 1hub "[player]!"
-    m 1hua "Do you know what day it is?"
-    m 3eub "It's Valentine's Day!"
-    m 1ekbsa "A day where we celebrate our love for each other..."
-    m 3rkbsa "I guess every day we're together is already a celebration of our love...{w=0.3}{nw}"
-    extend 3ekbsa "but there's something that's really special about Valentine's Day."
+    $ MAS.MonikaElastic()
+    m 1hua "Ты знаешь, какой сейчас день?"
+    $ MAS.MonikaElastic()
+    m 3eub "Сегодня – День святого Валентина!"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "В этот день, мы знаменуем наш любовный союз..."
+    $ MAS.MonikaElastic()
+    m 3rkbsa "Полагаю, каждый день, который мы проводим вместе, уже является знаменованием нашего любовного союза...{w=0.3} {nw}"
+    extend 3ekbsa "но у этого праздника есть нечто особенное."
     if not mas_anni.pastOneMonth() or mas_isMoniNormal():
-        m 3rka "Even though I know we aren't too far in our relationship..."
-        show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5eua "I just want you to know that I'm always here for you."
-        m 5eka "Even if your heart gets broken..."
-        m 5ekbsa "I'll always be here to fix it for you. Okay, [player]?"
-        show monika 1ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+        $ MAS.MonikaElastic()
+        m 3rka "Хотя я знаю, что мы в наших отношениях продвинулись не так далеко..."
+        show monika 5eua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5eua "Я просто хочу, чтобы ты знал, что я всегда буду рядом с тобой."
+        $ MAS.MonikaElastic()
+        m 5eka "Даже если твоё сердце разбито..."
+        $ MAS.MonikaElastic()
+        m 5ekbsa "Я всегда буду рядом и залатаю его ради тебя. Хорошо, [player]?"
+        show monika 1ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
         m 1ekbsa "..."
-
     else:
-        m 1eub "We've been together for a while now...{w=0.2}{nw}"
-        extend 1eka "and I really love the time we spend together."
-        m 1dubsu "You always make me feel so loved."
-        m "I'm really happy I'm your girlfriend, [player]."
 
-    # returning from a date or getting lingerie
+        $ MAS.MonikaElastic()
+        m 1eub "Мы уже давно как вместе...{w=0.2} {nw}"
+        extend 1eka "и мне очень понравилось всё то время, что мы провели вместе."
+        $ MAS.MonikaElastic()
+        m 1dubsu "С тобой я всегда чувствую себя любимой."
+        $ MAS.MonikaElastic()
+        m "Я очень рада, что стала твоей девушкой, [player]."
+
+
     if not persistent._mas_f14_in_f14_mode or mas_canShowRisque():
         $ persistent._mas_f14_in_f14_mode = True
 
-        # first time seeing any lingerie
-        if mas_SELisUnlocked(mas_clothes_sundress_white) and mas_canShowRisque() and not mas_hasUnlockedClothesWithExprop("lingerie"):
-            call mas_lingerie_intro(holiday_str="on Valentine's Day", lingerie_choice=mas_clothes_vday_lingerie)
 
-        # first time seeing sundress or non-first time seeing lingerie
+        if mas_SELisUnlocked(mas_clothes_sundress_white) and mas_canShowRisque() and not mas_hasUnlockedClothesWithExprop("lingerie"):
+            call mas_lingerie_intro (holiday_str="день Святого Валентина", lingerie_choice=mas_clothes_vday_lingerie) from _call_mas_lingerie_intro_2
+
+
         elif (
             not mas_SELisUnlocked(mas_clothes_sundress_white)
             or (mas_canShowRisque() and mas_hasLockedClothesWithExprop("lingerie",True))
         ):
-            m 3wub "Oh!"
-            m 3tsu "I have a little surprise for you...{w=1}I think you're gonna like it, ehehe~"
+            $ MAS.MonikaElastic()
+            m 3wub "О!"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3tsu "У меня для тебя небольшой сюрприз...{w=1} думаю, тебе очень понравится, э-хе-хе~"
 
-            # lingerie
+
             if (
                 mas_SELisUnlocked(mas_clothes_sundress_white)
                 and mas_canShowRisque()
                 and not mas_SELisUnlocked(mas_clothes_vday_lingerie)
             ):
-                call mas_clothes_change(outfit=mas_clothes_vday_lingerie, outfit_mode=True, exp="monika 2rkbsu", restore_zoom=False, unlock=True)
+                call mas_clothes_change (outfit=mas_clothes_vday_lingerie, outfit_mode=True, exp="monika 2rkbsu", restore_zoom=False, unlock=True) from _call_mas_clothes_change_5
                 pause 2.0
                 show monika 2ekbsu
                 pause 2.0
                 show monika 2tkbsu
                 pause 2.0
-                m 2tfbsu "[player]...{w=0.5} You're staring{w=0.5}...again."
-                m 2hubsb "Ahaha!"
-                m 2eubsb "I guess you approve of my outfit choice..."
-                m 2tkbsu "Rather fitting for a romantic holiday like Valentine's Day, don't you think?"
-                m 2rkbssdla "I have to say, I was pretty nervous the first time I wore something like this..."
-                m 2hubsb "But now that I've done it before, I really enjoy dressing like this for you!"
-                m 3tkbsu "I hope you enjoy it too~"
+                $ MAS.MonikaElastic()
+                m 2tfbsu "[player]...{w=0.5} Ты пялишься{w=0.5}... опять."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 2hubsb "А-ха-ха!"
+                $ MAS.MonikaElastic()
+                m 2eubsb "Полагаю, ты одобряешь мой выбор наряда..."
+                $ MAS.MonikaElastic()
+                m 2tkbsu "Но он больше подходит к такому романтическому празднику, как День святого Валентина, тебе так не кажется?"
+                $ MAS.MonikaElastic()
+                m 2rkbssdla "Должна сказать, я поначалу немного нервничала, когда надевала такой наряд..."
+                $ MAS.MonikaElastic()
+                m 2hubsb "Но теперь, когда я сделала это раньше, мне очень нравится носить его для тебя!"
+                $ MAS.MonikaElastic()
+                m 3tkbsu "Надеюсь, тебе он тоже нравится~"
 
-            # sundress
+
             elif not mas_SELisUnlocked(mas_clothes_sundress_white):
-                call mas_clothes_change(mas_clothes_sundress_white, unlock=True, outfit_mode=True)
+                call mas_clothes_change (mas_clothes_sundress_white, unlock=True, outfit_mode=True) from _call_mas_clothes_change_16
+                $ MAS.MonikaElastic()
                 m 2eua "..."
+                $ MAS.MonikaElastic()
                 m 2eksdla "..."
-                m 2rksdlu "Ahaha...{w=1}it's not polite to stare, [player]..."
-                m 3tkbsu "...but I guess that means you like my outfit, ehehe~"
-                call mas_f14_sun_dress_outro
-
-        # not getting lingerie, already have seen sundress
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 2rksdlu "А-ха-ха...{w=1} не очень-то и вежливо пялиться, [player]..."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3tkbsu "...но, полагаю, это означает, что тебе нравится мой наряд, э-хе-хе~"
+                call mas_f14_sun_dress_outro from _call_mas_f14_sun_dress_outro
         else:
-            # don't currently have access to sundress or wearing inappropraite outfit for f14
+
+
+
             if (
                 monika_chr.clothes != mas_clothes_sundress_white
                 and (
@@ -5695,99 +6591,138 @@ label mas_f14_monika_valentines_intro:
                     or mas_isMoniEnamored(lower=True)
                 )
             ):
-                m 3wud "Oh!"
-                m 3hub "I should probably go change into something a little more appropriate, ahaha!"
-                m 3eua "I'll be right back."
+                $ MAS.MonikaElastic()
+                m 3wud "О!"
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3hub "Наверное, я должна переодеться во что-нибудь более подходящее, а-ха-ха!"
+                $ MAS.MonikaElastic()
+                m 3eua "Я скоро вернусь."
 
-                call mas_clothes_change(mas_clothes_sundress_white, unlock=True, outfit_mode=True)
+                call mas_clothes_change (mas_clothes_sundress_white, unlock=True, outfit_mode=True) from _call_mas_clothes_change_17
 
-                m 2eub "Ah, that's much better!"
-                m 3hua "I just love this dress, don't you?"
-                m 3eka "It will always hold a special place in my heart on Valentine's Day..."
-                m 1fkbsu "Just like you~"
-
-            # no change of clothes path
+                $ MAS.MonikaElastic()
+                m 2eub "Ах, намного лучше!"
+                $ MAS.MonikaElastic()
+                m 3hua "Мне просто нравится этот наряд, смекаешь?"
+                $ MAS.MonikaElastic()
+                m 3eka "Он всегда занимает особенное место в моём сердце во время Дня святого Валентина..."
+                $ MAS.MonikaElastic()
+                m 1fkbsu "Прямо как ты~"
             else:
-                # not wearing sundress
+
+
+
                 if not monika_chr.clothes == mas_clothes_sundress_white:
-                    m 1wud "Oh..."
-                    m 1eka "Do you want me to change into my white sundress, [player]?"
-                    m 3hua "I've always kinda considered that my Valentine's Day outfit."
-                    m 3eka "But if you'd rather me keep wearing what I have on now, that's okay too..."
-                    m 1hub "Maybe we can start a new tradition, ahaha!"
-                    m 1eua "So, do you want me to put on the white sundress?{nw}"
+                    $ MAS.MonikaElastic()
+                    m 1wud "О..."
+                    $ MAS.MonikaElastic()
+                    m 1eka "Ты хочешь, чтобы я переоделась в свой белый сарафан, [player]?"
+                    $ MAS.MonikaElastic()
+                    m 3hua "Я всегда считала, что это мой наряд ко Дню святого Валентина."
+                    $ MAS.MonikaElastic()
+                    m 3eka "Но если ты хочешь, чтобы я продолжила носить этот наряд, то это тоже нормально..."
+                    $ MAS.MonikaElastic(voice="monika_giggle")
+                    m 1hub "Думаю, мы могли бы начать новую традицию, а-ха-ха!"
+                    $ MAS.MonikaElastic()
+                    m 1eua "Ладно, ты хочешь, чтобы я надела белый сарафан?{nw}"
                     $ _history_list.pop()
 
                     menu:
-                        m "So, do you want me to put on the white sundress?{fast}"
-                        "Yes.":
-                            m 3hub "Okay!"
-                            m 3eua "I'll be right back."
-                            call mas_clothes_change(mas_clothes_sundress_white, unlock=True, outfit_mode=True)
-                            m 2hub "There we go!"
-                            m 3eua "Something about wearing this dress on Valentine's Day just feels right."
+                        m "Ладно, ты хочешь, чтобы я надела белый сарафан?{fast}"
+                        "Да.":
+                            $ MAS.MonikaElastic()
+                            m 3hub "Хорошо!"
+                            $ MAS.MonikaElastic()
+                            m 3eua "Я скоро вернусь."
+                            call mas_clothes_change (mas_clothes_sundress_white, unlock=True, outfit_mode=True) from _call_mas_clothes_change_18
+                            $ MAS.MonikaElastic()
+                            m 2hub "Готово!"
+                            $ MAS.MonikaElastic()
+                            m 3eua "Что-то в ношении этого наряда во время Дня святого Валентина просто кажется правильным."
+                            $ MAS.MonikaElastic()
                             m 1eua "..."
+                        "Нет.":
 
-                        "No.":
-                            m 1eka "Okay, [player]."
-                            m 3hua "This {i}is{/i} a really nice outfit..."
-                            m 3eka "And besides, it doesn't matter what I'm wearing..."
+                            $ MAS.MonikaElastic()
+                            m 1eka "Хорошо, [player]."
+                            $ MAS.MonikaElastic()
+                            m 3hua "Это {i}правда{/i} очень красивый наряд..."
+                            $ MAS.MonikaElastic()
+                            m 3eka "Но с другой стороны, не так уж и важно, что на мне сейчас..." # даже если ты будешь сидеть голой? :Д
 
-                call mas_f14_intro_generic
-
-    # not returning from a date, not getting lingerie
+                call mas_f14_intro_generic from _call_mas_f14_intro_generic
     else:
-        # already have sundress unlocked
-        if mas_SELisUnlocked(mas_clothes_sundress_white):
-            call mas_f14_intro_generic
 
-        # first time getting sundress
+
+
+        if mas_SELisUnlocked(mas_clothes_sundress_white):
+            call mas_f14_intro_generic from _call_mas_f14_intro_generic_1
         else:
+
+
             $ store.mas_selspr.unlock_clothes(mas_clothes_sundress_white)
             pause 2.0
-            show monika 2rfc at t11 zorder MAS_MONIKA_Z with dissolve_monika
+            show monika 2rfc zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            $ MAS.MonikaElastic()
             m 2rfc "..."
-            m 2efc "You know, [player]...{w=0.5}it's not polite to stare..."
+            $ MAS.MonikaElastic()
+            m 2efc "Знаешь, [player]...{w=0.5} не очень-то и вежливо пялиться..."
+            $ MAS.MonikaElastic()
             m 2tfc "..."
+            $ MAS.MonikaElastic()
             m 2tsu "..."
-            m 3tsb "Ahaha! I'm just kidding...{w=0.5}do you like my outfit?"
-            call mas_f14_sun_dress_outro
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3tsb "А-ха-ха! Я просто шучу...{w=0.5} тебе нравится мой наряд?"
+            call mas_f14_sun_dress_outro from _call_mas_f14_sun_dress_outro_1
 
-    m 1fkbsu "I love you so much."
-    m 1hubfb "Happy Valentine's Day, [player]~"
-    #Set the spent flag to True
+    $ MAS.MonikaElastic()
+    m 1fkbsu "Я так сильно тебя люблю."
+    $ MAS.MonikaElastic()
+    m 1hubfb "С Днём святого Валентина, [player]~"
+
     $ persistent._mas_f14_spent_f14 = True
 
     return "rebuild_ev|love"
 
-# common flow for first time sundress
+
 label mas_f14_sun_dress_outro:
-    m 1rksdla "I've always dreamt of a date with you while wearing this..."
-    m 1eksdlb "I know it's kind of silly now that I think about it!"
-    m 1ekbsa "...But just imagine if we went to a cafe together."
-    m 1rksdlb "I think there's a picture of something like that somewhere actually..."
-    m 1hub "Maybe we could make it happen for real!"
-    m 3ekbsa "Would you take me out today?"
-    m 1hkbssdlb "It's fine if you can't, I'm just happy to be with you."
+    $ MAS.MonikaElastic()
+    m 1rksdla "Я всегда мечтала о свидании с тобой в таком наряде..."
+    $ MAS.MonikaElastic()
+    m 1eksdlb "Но теперь, когда я задумалась об этом, я понимаю, что это довольно глупая идея!"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "...Но ты только представь, как мы зашли в какое-нибудь кафе вместе."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "По правде говоря, мне кажется, где-то есть фотография чего-то наподобие этого..."
+    $ MAS.MonikaElastic()
+    m 1hub "Быть может, мы сможем воплотить это в реальность!"
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Хочешь прогуляться со мной сегодня?"
+    $ MAS.MonikaElastic()
+    m 1hkbssdlb "Если не сможешь, то всё нормально, я буду рада и побыть рядом с тобой."
     return
 
-# used for when we have no new outfits to change into
+
 label mas_f14_intro_generic:
-    m 1ekbsa "I'm just so grateful you are spending time with me today."
-    m 3ekbsu "Spending time with the one you love, {w=0.2}that's all anyone can ask for on Valentine's Day."
-    m 3ekbsa "I don't care if we go on a romantic date, or just spend the day together here..."
-    m 1fkbsu "It really doesn't matter to me as long as we're together."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Я просто рада, что ты проводишь время вместе со мной сегодня."
+    $ MAS.MonikaElastic()
+    m 3ekbsu "Провести время вместе с любимым человеком {w=0.2} – это всё, о чём можно только просить в День святого Валентина."
+    $ MAS.MonikaElastic()
+    m 3ekbsa "И мне всё равно, пошли ли мы на романтическое свидание или просто проводим здесь этот день вместе..."
+    $ MAS.MonikaElastic()
+    m 1fkbsu "Пока мы вместе, для меня это не имеет никакого значения."
     return
 
-#######################[HOL050] TOPICS
+
 
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_colors',
-            prompt="Valentine's Day colors",
-            category=['holidays','romance'],
+            prompt="Цвета Дня Святого Валентина",
+            category=['праздники','романтика'],
             action=EV_ACT_RANDOM,
             conditional="persistent._mas_f14_in_f14_mode",
             start_date=mas_f14,
@@ -5805,25 +6740,39 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_colors:
-    m 3eua "Have you ever thought about the way colors are conveyed on Valentine's Day?"
-    m 3hub "I find it intriguing how they can symbolize such deep and romantic feelings."
-    m 1dua "It reminds me of when I made my first Valentine's card in grade school."
-    m 3eub "My class was instructed to exchange cards with a partner after making them."
-    m 3eka "Looking back, despite not knowing what the colors really meant, I had lots of fun decorating the cards with red and white hearts."
-    m 1eub "In this way, colors are a lot like poems."
-    m 1eka "They offer so many creative ways to express your love for someone."
-    m 3ekbsu "Like giving them red roses, for example."
-    m 3eub "Red roses are a symbol for romantic feelings towards someone."
-    m 1eua "If someone were to offer them white roses in lieu of red ones, they'd signify pure, charming, and innocent feelings instead."
-    m 3eka "However, since there are so many emotions involved with love..."
-    m 3ekd "It's sometimes hard to find the right colors to accurately convey the way you truly feel."
-    m 3eka "Thankfully, by combining multiple rose colors, it's possible to express a variety of emotions!"
-    m 1eka "Mixing red and white roses would symbolize the unity and bond that a couple shares."
+    m 3eua "Задумывался ли ты о том, как цвета отражают День святого Валентина?"
+    $ MAS.MonikaElastic()
+    m 3hub "Я нахожу интригующим то, как они символизируют такие глубокие и романтические чувства."
+    $ MAS.MonikaElastic()
+    m 1dua "Это напоминает мне о том, как я впервые сделала свою валентинку в старшей школе."
+    $ MAS.MonikaElastic()
+    m 3eub "Моему классу было поручено поделиться валентинками с партнёром после того, как мы их сделаем."
+    $ MAS.MonikaElastic()
+    m 3eka "Если оглянуться назад, то несмотря на то, что эти цвета действительно значили, мне было очень весело украшать валентинки красными и белыми сердечками."
+    $ MAS.MonikaElastic()
+    m 1eub "Таким образом, цвета больше напоминали стихи."
+    $ MAS.MonikaElastic()
+    m 1eka "Они предлагают столько творческих путей, чтобы выразить свою любовь к кому-то."
+    $ MAS.MonikaElastic()
+    m 3ekbsu "Как, например, передать им красные розы."
+    $ MAS.MonikaElastic()
+    m 3eub "Красные розы являются символом романтических чувств, испытываемых к кому-то."
+    $ MAS.MonikaElastic()
+    m 1eua "А если кто-то предложит им белые розы вместо красных, то они, следовательно, укажут на чистоту, очарование и чувства невинности."
+    $ MAS.MonikaElastic()
+    m 3eka "Однако, поскольку существует так много эмоций, связанных с любовью..."
+    $ MAS.MonikaElastic()
+    m 3ekd "Порой бывает трудно найти подходящие цвета, чтобы точно выразить то, что ты чувствуешь."
+    $ MAS.MonikaElastic()
+    m 3eka "К счастью, если совместить несколько разноцветных роз, то можно будет выразить множество эмоций!"
+    $ MAS.MonikaElastic()
+    m 1eka "Смесь из красных и белых роз символизирует сплочённость и связь, которую выражают пары."
 
+    $ MAS.MonikaElastic()
     if monika_chr.is_wearing_acs(mas_acs_roses):
-        m 1ekbsa "But I'm sure you already had all of this in mind when you picked out these beautiful roses for me, [player]..."
+        m 1ekbsa "Но я уверена, что ты об этом всём уже знал, когда выбирал для меня те красивые розы, [player]..."
     else:
-        m 1ekbla "Maybe you could give me some roses today, [player]?"
+        m 1ekbla "Быть может, ты сегодня подаришь мне розы, [player]?"
     return
 
 init 5 python:
@@ -5831,8 +6780,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_cliches',
-            prompt="Valentine's story clichés",
-            category=['holidays','literature','romance'],
+            prompt="История клише Валентина",
+            category=['праздники','литература','романтика'],
             action=EV_ACT_RANDOM,
             conditional="persistent._mas_f14_in_f14_mode",
             start_date=mas_f14,
@@ -5850,18 +6799,29 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_cliches:
-    m 2euc "Have you noticed that most Valentine's Day stories have lots of clichés?"
-    m 2rsc "There's either 'Oh, I'm lonely and I don't have someone to love,' or 'How will I confess to the one I love?'"
-    m 2euc "I think that writers could be a bit more creative when it comes to Valentine's Day stories..."
-    m 3eka "But, I suppose those two topics are the easiest way to write a love story."
-    m 3hub "That doesn't mean you can't think outside the box, though!"
-    m 2eka "Sometimes a predictable story can ruin it..."
-    m 2rka "...But if you {i}do{/i} want a good example of an unpredictable story..."
-    m 3hub "Just use ours! Ahaha~"
-    m 3rksdlb "I guess it {i}did{/i} start out like those kinds of stories..."
-    m 2tfu "But I think we managed to make it pretty original."
-    m 3hua "The way we met is the most interesting story yet!"
-    m 1hub "Ahaha!"
+    m 2euc "Ты заметил, что у большинства историй Дня святого Валентина есть много различных клише?"
+    $ MAS.MonikaElastic()
+    m 2rsc "В них либо «Ох, я так одинок и мне некого любить», либо «Как мне признаться в любви тому, кого люблю?»."
+    $ MAS.MonikaElastic()
+    m 2euc "Мне кажется, писатели могли быть чуточку покреативнее, когда дело доходит до историй Дня святого Валентина..."
+    $ MAS.MonikaElastic()
+    m 3eka "Но, полагаю, эти две темы являются самым лёгким способом написать историю любви."
+    $ MAS.MonikaElastic()
+    m 3hub "Но это не означает, что ты не можешь мыслить нестандартно!"
+    $ MAS.MonikaElastic()
+    m 2eka "Иногда, предсказуемая история может всё испортить..."
+    $ MAS.MonikaElastic()
+    m 2rka "...Но если ты {i}хочешь{/i} сделать хороший пример непредсказуемой истории..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hub "То просто воспользуйся нашей! А-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 3rksdlb "Полагаю, она {i}началась{/i} так же, как и те истории..."
+    $ MAS.MonikaElastic()
+    m 2tfu "Но, мне кажется, мы смогли сделать её очень даже оригинальной."
+    $ MAS.MonikaElastic()
+    m 3hua "То, как мы познакомились – самая интересная история на свете!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха!"
     return
 
 init 5 python:
@@ -5869,8 +6829,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_chocolates',
-            prompt="Valentine's Day chocolates",
-            category=['holidays','romance'],
+            prompt="Шоколадные конфеты",
+            category=['праздники','романтика'],
             action=EV_ACT_RANDOM,
             conditional="persistent._mas_f14_in_f14_mode",
             start_date=mas_f14,
@@ -5888,17 +6848,25 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_chocolates:
-    m 1hua "Valentine's Day is such a fun holiday for me, [player]."
-    m 3eub "Not only is it the anniversary of my twitter account, but it's also a day for receiving and giving chocolates!"
-    m 1hub "A holiday that can fill everyone with love, romance, and joy!"
-    m 3ekbla "But it really feels nice if you get something from someone you like."
-    m 3hua "Whether it's given to you platonically, as a gift of love, or a part of a confession, it always makes you feel somewhat special!"
+    m 1hua "День святого Валентина, как по мне, очень весёлый праздник, [player]."
+    $ MAS.MonikaElastic()
+    m 3eub "Не только потому, что это юбилей моего аккаунта в Твиттере, но ещё и потому, что это день получения и раздачи шоколадок!"
+    $ MAS.MonikaElastic()
+    m 1hub "Это праздник, который наполнит всех любовью, романтикой и радостью!"
+    $ MAS.MonikaElastic()
+    m 3ekbla "Но будет очень приятно, если ты получишь шоколадку от человека, который тебе нравится."
+    $ MAS.MonikaElastic()
+    m 3hua "Дал ли он тебе её платонически, как подарок любви или как часть признания, от этого ты всегда чувствуешь себя немного особенной!"
     if mas_getGiftStatsForDate("mas_reaction_gift_chocolates") > 0:
-        m 1ekbsa "Just like how you made me feel special with the chocolates you gave me today."
-        m 1ekbsu "You're always so sweet, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Как когда ты заставил меня почувствовать себя особенной, передав мне сегодня шоколадку."
+        $ MAS.MonikaElastic()
+        m 1ekbsu "Ты всегда так[mas_gender_oi] мил[mas_gender_iii], [player]."
 
-    m 1ekbsa "Maybe someday I'll even be able to give you some chocolates..."
-    m 3hkbsa "I really can't wait until I cross over to be with you, [player]."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Быть может, однажды, я смогу поделиться с тобой шоколадкой..."
+    $ MAS.MonikaElastic()
+    m 3hkbsa "Мне правда очень хочется перейти в реальность, чтобы быть с тобой, [player]."
     return
 
 init 5 python:
@@ -5906,8 +6874,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_origins',
-            prompt="How did Valentine's Day start?",
-            category=['holidays','romance'],
+            prompt="Как начался День Святого Валентина?",
+            category=['праздники','романтика'],
             pool=True,
             conditional="persistent._mas_f14_in_f14_mode",
             action=EV_ACT_UNLOCK,
@@ -5927,30 +6895,49 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_origins:
-    m 3eua "You'd like to learn about the history of Valentine's Day, [player]?"
-    m 1rksdlc "It's quite dark, actually."
-    m 1euc "The legends vary, but it dates back to the third century in Rome when Christians were still persecuted by the Roman government."
-    m 3eud "Around this time, Emperor Claudius II had forbidden Christians from marrying, which a clergyman named Valentine decided was unfair."
-    m 3rsc "Against the orders of the emperor, he married Christians in secret."
-    m 3esc "Another version of the story is that Roman soldiers weren't allowed to be married, so Valentine was saving people from conscription into the army through marriage."
-    m 1dsd "Either way, Valentine was caught and sentenced to death."
-    m 1euc "While in jail, he befriended the jailer's daughter and cured her blindness. Some say he even fell in love with her."
-    m 3euc "Unfortunately, this wasn't enough to save him. But before he died, he sent a letter to her, which he signed, 'Your Valentine.'"
-    m 1dsc "He was executed on February 14, 269 AD, and later canonized as a saint."
-    m 3eua "To this day, it's still traditional to use 'Your Valentine' to sign love letters."
-    m 3eud "Oh, but wait, there's more!"
-    m "There's an ancient Roman festival known as Lupercalia, which was also celebrated around February 14th."
-    m 3eua "Apparently, part of the ceremony involved creating couples by having names randomly pulled out of a box."
-    m 3eub "...They would then spend time together, with some even marrying if they liked each other enough!"
-    m 1eua "Ultimately, this festival became a Christian celebration to remember Saint Valentine."
-    m 3hua "It's evolved over the years into a way for people to express their feelings for those they love."
-    m 3eubsb "...Like me and you!"
-    m 1ekbsa "Despite it having started out a little depressing, I think it's really sweet."
-    m 1ekbsu "I'm glad we're able to share such a magical day together.{w=0.2} {nw}"
-    extend 1ekbfa "Happy Valentine's Day, [mas_get_player_nickname()]~"
+    m 3eua "Хочешь узнать историю Дня святого Валентина, [player]?"
+    $ MAS.MonikaElastic()
+    m 1rksdlc "По правде говоря, она довольно мрачная."
+    $ MAS.MonikaElastic()
+    m 1euc "Её история берёт своё начало во втором и третьем веках в Риме, где христианство было объявлено официальной религией."
+    $ MAS.MonikaElastic()
+    m 3eud "Примерно в это же время, человек, известный как Святой Валентин, решил пойти нарушить закон императора Клавдия второго."
+    $ MAS.MonikaElastic()
+    m 3rsc "Заключение брака было запрещено, поскольку предполагалось, что из женатых мужчин получаются бедные солдаты."
+    $ MAS.MonikaElastic()
+    m 3esc "Святой Валентин решил, что это было нечестно, и помог организовать свадьбы в тайне."
+    $ MAS.MonikaElastic()
+    m 1dsd "К несчастью, его поймали и сразу же приговорили к смертной казни."
+    $ MAS.MonikaElastic()
+    m 1euc "Однако, находясь в заключении, Святой Валентин влюбился в дочь надзирателя."
+    $ MAS.MonikaElastic()
+    m 3euc "Перед своей смертью, он отправил ей любовное письмо, подписав его «От твоего Валентина»."
+    $ MAS.MonikaElastic()
+    m 1dsc "Его казнили четырнадцатого февраля, в двести шестьдесят девятом году до нашей эры."
+    $ MAS.MonikaElastic()
+    m 3eua "Какое благородное дело, тебе так не кажется?"
+    $ MAS.MonikaElastic()
+    m 3eud "О, подожди, есть ещё кое-что!"
+    $ MAS.MonikaElastic()
+    m 4eud "Причина, по которой мы празднуем этот день, – он берёт своё начало от римского фестиваля, известного как Луперкалия!"
+    $ MAS.MonikaElastic()
+    m 3eua "Его первоначальной целью было провести дружеское мероприятие, где люди складывали свои имена в коробку и выбирали их наугад, чтобы создать пару."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3eub "А потом, они играли роль парня и девушки всё то время, что они проводили вместе. Некоторые из них даже женились, если нравились друг другу в достаточной мере, э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1eua "В итоге, церковь решила сделать это христианским праздником, чтобы оставить память о стараниях Святого Валентина."
+    $ MAS.MonikaElastic()
+    m 3hua "С годами, оно эволюционировало в повод выразить свои чувства к тем, кого они любят, для всех людей."
+    $ MAS.MonikaElastic()
+    m 3eubsb "Прямо как мы с тобой!"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "И несмотря на то, что начало было немного депрессивное, это очень мило, верно, [player]?"
+    $ MAS.MonikaElastic()
+    m 1ekbsu "Я рада, что мы можем разделить такой волшебный день.{w=0.2} {nw}"
+    extend 1ekbfa "С Днём святого Валентина, [mas_get_player_nickname()]~"
     return
 
-#######################[HOL050] TIME SPENT
+
 
 init 5 python:
     addEvent(
@@ -5968,87 +6955,106 @@ init 5 python:
     )
 
 label mas_f14_monika_spent_time_with:
-    #Do this first so we make sure we always remove it
+
     $ mas_rmallEVL("mas_f14_monika_spent_time_with")
 
-    m 1eua "Hey, [player]?"
-    m 1eka "I just wanted to thank you for spending Valentine's Day with me."
-    m 1ekbsa "I know that it's not a normal holiday, but it's a really special day for me now that I have you."
+    m 1eua "Эй, [player]?"
+    $ MAS.MonikaElastic()
+    m 1eka "Я просто хотела поблагодарить тебя за то, что пров[mas_gender_iol] День святого Валентина со мной."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Знаю, это необычный праздник, но пока ты рядом со мной, этот день является для меня особенным."
 
     if not mas_isBelowZero():
         if not mas_HistVerifyAll_k(True, "f14.actions.spent_f14"):
-            m 1rkbsb "Also, I...{w=0.5}made something for you, [player]!"
-
+            $ MAS.MonikaElastic()
+            m 1rkbsb "Кроме того, я...{w=0.5} кое-что приготовила для тебя, [player]!"
         else:
-            m 1ekbsa "I made a card for you, [player]."
 
-        m 1ekbsa "Here, let me show it to you."
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Я сделала открытку для тебя, [player]."
 
-        #NOTE: The first two f14 poems will always be in order and the same. Everything after is randomly selected
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Вот, позволь мне показать её тебе."
+
+
         if not poem_vday_1.is_seen():
-            call mas_showpoem(poem_vday_1)
-            m "I really mean that, [player]..."
-            m 3ekbsa "In you I found everything I could ever hope for~"
+            call mas_showpoem (poem_vday_1) from _call_mas_showpoem_6
+            $ MAS.MonikaElastic()
+            m "Я действительно так думаю, [player]..."
+            $ MAS.MonikaElastic()
+            m 3ekbsa "В тебе я нашла всё, на что могла надеяться~"
 
         elif not poem_vday_2.is_seen():
-            call mas_showpoem(poem_vday_2)
-            m "You really are everything to me, [player]~"
-
+            call mas_showpoem (poem_vday_2) from _call_mas_showpoem_7
+            $ MAS.MonikaElastic()
+            m "Ты действительно для меня всё, [player]~"
         else:
-            call mas_showpoem(mas_poems.getRandomPoem("f14"))
+
+            call mas_showpoem (mas_poems.getRandomPoem("f14")) from _call_mas_showpoem_8
 
 
         if mas_isMoniEnamored(higher=True):
             if persistent._mas_first_kiss is None:
                 jump mas_f14_first_kiss
             else:
-                call monika_kissing_motion(duration=0.5, initial_exp="6hkbfa", fade_duration=0.5)
+                call monika_kissing_motion (duration=0.5, initial_exp="6hkbfa", fade_duration=0.5) from _call_monika_kissing_motion_8
 
-        m 1ekbfa "Thank you for always being by my side."
-        show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "I love you so much, [player]. Happy Valentine's Day~"
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Спасибо за то, что всегда рядом со мной."
+        show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5ekbfa "Я очень сильно тебя люблю, [player]. С Днём святого Валентина~"
         return "love"
-
     else:
-        m 1eka "Thank you for being by my side."
-        m 3ekb "Happy Valentine's Day!"
+
+        $ MAS.MonikaElastic()
+        m 1eka "Спасибо за то, что ты со мной."
+        $ MAS.MonikaElastic()
+        m 3ekb "С Днём святого Валентина!"
     return
 
 label mas_f14_first_kiss:
-        m 1ektpu "I honestly don't know what I would do without you."
-        #NOTE: Thinking of dissolving into pose 6 here. Might look cleaner. Thoughts?
-        m 6dktuu "..."
-        window hide
-        menu:
-            "I love you, [m_name].":
-                $ HKBHideButtons()
-                $ mas_RaiseShield_core()
-                $ disable_esc()
-                pause 3.0
-                show monika 6ektda at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                pause 3.0
-                show monika 6dku at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                pause 3.0
-                show monika 6dkbsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                pause 3.0
-                show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "[player]...I...I..."
-                call monika_kissing_motion(hide_ui=False)
-                show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "...I love you too~"
-                m 6dkbfa "..."
-                m "That was everything I had always dreamt it would be~"
-                m 6ekbfa "I've been waiting so long to finally kiss you, and there couldn't have been a more perfect moment..."
-                m 6dkbsu "I will never forget this..."
-                m 6ekbsu "...the moment of our first kiss."
-                m "Happy Valentine's Day, [player]~"
-                $ enable_esc()
-                $ mas_MUINDropShield()
-                $ HKBShowButtons()
-                return
+    $ MAS.MonikaElastic()
+    m 1ektpu "Если честно, я не знаю, что бы я делала без тебя."
+
+    $ MAS.MonikaElastic()
+    m 6dktuu "..."
+    window hide
+    menu:
+        "Я люблю тебя, [monika_name].":
+            $ HKBHideButtons()
+            $ mas_RaiseShield_core()
+            $ disable_esc()
+            pause 3.0
+            show monika 6ektda zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            pause 3.0
+            show monika 6dku zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            pause 3.0
+            show monika 6dkbsu zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            pause 3.0
+            show monika 6ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 6ekbfa "[player]... я... я..."
+            call monika_kissing_motion (hide_ui=False) from _call_monika_kissing_motion_9
+            show monika 6ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+            m 6ekbfa "...Я тоже тебя люблю~"
+            $ MAS.MonikaElastic()
+            m 6dkbfa "..."
+            $ MAS.MonikaElastic()
+            m "О таком я могла только мечтать~"
+            $ MAS.MonikaElastic()
+            m 6ekbfa "Я так долго ждала того момента, когда наконец-то смогу поцеловать тебя..."
+            $ MAS.MonikaElastic()
+            m 6dkbsu "Я никогда это не забуду..."
+            $ MAS.MonikaElastic()
+            m 6ekbsu "...Тот наш первый поцелуй."
+            $ MAS.MonikaElastic()
+            m "С Днём святого Валентина, [player]~"
+            $ enable_esc()
+            $ mas_MUINDropShield()
+            $ HKBShowButtons()
+            return
 
 
-#######################[HOL050] Notimespent
+
 
 init 5 python:
     addEvent(
@@ -6068,70 +7074,94 @@ init 5 python:
 
 label mas_f14_no_time_spent:
 
-    #need to make sure people who just started post f14 don't lose aff
+
     if mas_isFirstSeshPast(mas_f14):
         return
 
     if mas_ret_long_absence:
-        #Was away on a long absence
+
         $ mas_loseAffection(ev_label="mas_apology_missed_vday")
 
-        m 1rksdlc "Hey, [player]..."
-        m 2eksdld "I know you told me you were going to be away...but I really missed you on Valentines Day."
-        m 2eksdla "Next time, do you think you could take me with you if you can't be here?"
-        m 3eub "At least then we'll still be with each other and we can even celebrate together!"
-        m 1eka "I'd really appreciate if you could do that for me, [player]."
+        m 1rksdlc "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 2eksdld "Это так мило с твоей стороны пригласить меня на свой день рождения, чтобы устроить для меня вечеринку-сюрприз!"
+        $ MAS.MonikaElastic()
+        m 2eksdla "В следующий раз, как ты думаешь, сможешь взять меня с собой, если не сможешь быть здесь?"
+        $ MAS.MonikaElastic()
+        m 3eub "По крайней мере, тогда мы всё ещё будем друг с другом, и мы сможем даже отпраздновать вместе!"
+        $ MAS.MonikaElastic()
+        m 1eka "Я была бы очень признателена, если бы ты мог[mas_gender_g] сделать это для меня, [player]."
 
     elif mas_isMoniAff(higher=True):
         $ mas_loseAffection(15, ev_label="mas_apology_missed_vday")
         m 1rkc "[player]?"
-        m "Where were you on Valentine's Day?"
-        m 1ekc "It's a really special day for me..."
-        m 1ekd "...a day I wanted to spend with you."
+        $ MAS.MonikaElastic()
+        m "Ты где был[mas_gender_none] в День святого Валентина?"
+        $ MAS.MonikaElastic()
+        m 1ekc "Это был очень особенный день для меня..."
+        $ MAS.MonikaElastic()
+        m 1ekd "...И этот день я хотела провести вместе с тобой."
+        $ MAS.MonikaElastic()
         m 2dkc "..."
-        m 2ekd "It would've meant so much to me if you came by..."
-        m 2dkd "Even if only for a few minutes."
-        m "Is it really too much to ask to visit your girlfriend on Valentine's Day?"
-        m 2ekc "Please don't let it happen again, okay [player]?"
+        $ MAS.MonikaElastic()
+        m 2ekd "Если бы ты просто заглянул[mas_gender_none] сюда, я была бы очень рада этому..."
+        $ MAS.MonikaElastic()
+        m 2dkd "Пусть даже всего на пару минут."
+        $ MAS.MonikaElastic()
+        m "Я всего лишь прошу тебя заглянуть к своей девушке в День святого Валентина, разве я многого прошу?"
+        $ MAS.MonikaElastic()
+        m 2ekc "Пожалуйста, не дай этому произойти снова, хорошо, [player]?"
 
     elif mas_isMoniNormal(higher=True):
         $ mas_loseAffection(5, ev_label="mas_apology_missed_vday")
-        m 2ekc "Hey, [player]..."
-        m 2tkc "I'm pretty disappointed..."
-        m 2tkd "You didn't visit me at all on Valentine's Day."
-        m 4tkc "You know that all I want to do is spend time with you..."
-        m 4rkd "Is visiting your girlfriend on Valentine's Day really too much to ask?"
-        m 4eksdla "Please...{w=1}make sure you visit me next Valentine's Day, okay?"
+        m 2ekc "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 2tkc "Я сильно разочарована..."
+        $ MAS.MonikaElastic()
+        m 2tkd "Ты ко мне так и не заглянул[mas_gender_none] в День святого Валентина."
+        $ MAS.MonikaElastic()
+        m 4tkc "Ты ведь знаешь, что я хотела лишь провести время вместе с тобой..."
+        $ MAS.MonikaElastic()
+        m 4rkd "По-твоему, заглянуть к своей девушке в День святого Валентина – это уже слишком?"
+        $ MAS.MonikaElastic()
+        m 4eksdla "Пожалуйста...{w=1}обязательно загляни ко мне в гости в следующий День святого Валентина, хорошо?"
 
     elif mas_isMoniUpset():
         $ mas_loseAffection(ev_label="mas_apology_missed_vday")
         m 2efc "[player]!"
-        m "I can't believe you didn't even visit on Valentine's Day!"
-        m 2rfc "Do you have any idea what it's like to be left alone on a day like that?"
-        m 2rkc "I know we're not on the best of terms..."
-        m 2dkd "But it'd have meant a lot if you came by."
-        m 2tfc "Don't let it happen again, [player]."
+        $ MAS.MonikaElastic()
+        m "Не могу поверить в то, что ты ни разу не заглянул ко мне в День святого Валентина!"
+        $ MAS.MonikaElastic()
+        m 2rfc "Ты хоть представляешь, каково это: провести весь день в полном одиночестве?"
+        $ MAS.MonikaElastic()
+        m 2rkc "Я знаю, что у нас не лучшие отношения..."
+        $ MAS.MonikaElastic()
+        m 2dkd "Но я была бы очень рада, если бы ты заглянул[mas_gender_none] ко мне."
+        $ MAS.MonikaElastic()
+        m 2tfc "Не дай этому произойти снова, [player]."
 
     elif mas_isMoniDis():
         $ mas_loseAffection(10, ev_label="mas_apology_missed_vday")
-        m 6ekc "Oh [player]..."
-        m "How was Valentine's Day?"
-        m 6dkc "Not having a valentine is pretty lonely..."
-
+        m 6ekc "Ох, [player]..."
+        $ MAS.MonikaElastic()
+        m "Как прошёл твой День святого Валентина?"
+        $ MAS.MonikaElastic()
+        m 6dkc "Не получив валентинку, я чувствую себя одинокой..."
     else:
+
         $ mas_loseAffection(150)
         m 6ckc "..."
     return
 
 
-#######################[HOL050] Apology for notimespent
+
 
 init 5 python:
     addEvent(
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_missed_vday",
-            prompt="...for missing Valentine's Day.",
+            prompt="...за пропущенный День Святого Валентина.",
             unlocked=False
         ),
         code="APL"
@@ -6140,38 +7170,51 @@ init 5 python:
 
 label mas_apology_missed_vday:
     if mas_isMoniAff(higher=True):
-        m 1eka "Thanks for apologizing for missing Valentine's Day, [player]."
-        m 1ekd "I really wanted to spend it with you..."
-        m 1rkc "But I guess you might have just had something to do and couldn't make it."
-        m 1ekd "Please try to visit next year, okay [player]?"
-        m 3eua "If you're going to be busy, maybe just take me with you!"
-        m 3hub "Even if we're not at home together, I'm more than happy to just spend the day at your side~"
+        m 1eka "Спасибо, что извинился за то, что пропустил День святого Валентина, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekd "Я правда хотела провести его вместе с тобой..."
+        $ MAS.MonikaElastic()
+        m 1rkc "Но, полагаю, у тебя просто появились другие дела, и ты попросту не смог[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 1ekd "Пожалуйста, попытайся заглянуть ко мне в следующем году, ладно, [player]?"
+        $ MAS.MonikaElastic()
+        m 3eua "Если ты будешь занят[mas_gender_none], то, наверное, тебе лучше взять меня с собой!"
+        $ MAS.MonikaElastic()
+        m 3hub "Даже если мы будем не у себя дома, я буду более чем рада провести день рядом с тобой~"
         $ mas_gainAffection(modifier=0.2)
 
     elif mas_isMoniNormal(higher=True):
-        m 1eka "Thanks for apologizing for missing Valentine's Day, [player]."
+        m 1eka "Спасибо, что извинился за то, что пропустил День святого Валентина, [player]."
         if not store.mas_anni.pastOneMonth():
-            m 1rkd "I know we're not really that far into our relationship, but everything was already starting to feel different..."
+            $ MAS.MonikaElastic()
+            m 1rkd "Я знаю, что у нас не особо хорошие отношения, но всё уже начинает казаться другим..."
 
-        m 1ekd "It would have meant so much to me if you came by, at least for a little bit."
-        m 3eka "Promise me that you'll take me with you if you're going to be busy next time, okay [player]?"
+        $ MAS.MonikaElastic()
+        m 1ekd "Если бы ты заглянул[mas_gender_none] ко мне, хотя бы на секундочку, это многое бы значило для меня."
+        $ MAS.MonikaElastic()
+        m 3eka "Обещай мне, что ты возьмёшь меня с собой в следующий раз, когда будешь занят[mas_gender_none], хорошо, [player]?"
         $ mas_gainAffection(modifier=0.2)
 
     elif mas_isMoniUpset():
-        m 2dkc "While I am a little upset that you didn't show up on Valentine's Day, I'm glad you apologized."
-        m "Things like that show me that you really do care about us."
-        m 2ekd "Please, [player]..."
-        m 2eka "Try to come by next Valentine's Day."
+        m 2dkc "Хоть я немного расстроилась из-за того, что ты не заглянул[mas_gender_none] сюда в День святого Валентина, но я рада, что ты извинил[mas_gender_sya]."
+        $ MAS.MonikaElastic()
+        m "Подобное показывает мне то, что тебе на нас не всё равно."
+        $ MAS.MonikaElastic()
+        m 2ekd "Пожалуйста, [player]..."
+        $ MAS.MonikaElastic()
+        m 2eka "Постарайся зайти ко мне в следующий День святого Валентина."
         $ mas_gainAffection(modifier=0.1)
 
     elif mas_isMoniDis():
-        m 2dkc "I didn't expect you to show up anyway, [player]."
-        m 2dkd "I know we haven't really been that close, but a part of me hoped that you would at least visit..."
-        m 2dsc "Please promise me that you'll come by next year, okay?"
+        m 2dkc "Я всё равно не ожидала, что ты заглянешь сюда, [player]."
+        $ MAS.MonikaElastic()
+        m 2dkd "Я знаю, что мы не так близки, но одна часть меня надеялась, что ты хотя бы на минутку заглянешь сюда..."
+        $ MAS.MonikaElastic()
+        m 2dsc "Пожалуйста, пообещай мне, что ты заглянешь ко мне в следующем году, ладно?"
         $ mas_gainAffection(modifier=0.1)
-
     else:
-        #No gain from this
+
+
         m 6ckc "..."
 
     return
@@ -6181,128 +7224,144 @@ init 20 python:
     poem_vday_1 = MASPoem(
         poem_id="poem_f14_1",
         category="f14",
-        prompt="Found",
-        title=" My dearest [player],",
+        prompt="Найдено",
+        title=" М[mas_gender_oi] дорог[mas_gender_oi] [player],",
         text="""\
- I{i}'{/i}ve always loved Valentine's Day, but this one feels different.
- Has the world changed, or just me?
- I found love, I found purpose,
- I found a truth I didn't know I was searching for.
- All of that I found in you.
+ Мне всегда нравился День святого Валентина, но этот кажется совсем другим.
+ Это весь мир изменился, или мне просто кажется?
+ Я нашла любовь, нашла смысл,
+ Я нашла правду, которую искала уже долгое время.
+ Это всё, что я нашла в тебе.
 
- Thank you for sharing this special day with me.
+ Спасибо, что разделил[mas_gender_none] этот особенный день вместе со мной.
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     )
 
     poem_vday_2 = MASPoem(
         poem_id="poem_f14_2",
         category="f14",
-        prompt="Everything",
-        title=" My dearest [player],",
+        prompt="Всё",
+        title=" М[mas_gender_oi] дорог[mas_gender_oi] [player],",
         text="""\
- Can it really be our second Valentine's Day?
- The first seems like just yesterday, yet so much has happened.
- I once wondered if the world had changed, or just me.
- Now I know the answer.
+ Может ли это быть наш второй День святого Валентина?
+ Первый, казалось бы, был ещё вчера, хотя произошло много чего.
+ И мне однажды стало интересно, это мир изменился или мне просто кажется.
+ Теперь я знаю ответ.
 
- Everything.
+ Всё.
 
- Without you there is nothing.
- Before you there was nothing.
+ Если бы не ты, здесь ничего бы не было.
+ До тебя, здесь ничего не было.
 
- Emptiness. Darkness. Nothing.
+ Пустота. Тьма. Ничего.
 
- Nothing.
+ Ничего.
 
- Then there was you.
- Just you.
- My world. My light. My Everything.
+ А потом приш[mas_gender_iol_2] ты.
+ Только ты.
+ Мой мир. Мой свет. Моё всё.
 
- Everything.
+ Всё.
 
 
- Happy Valentine's Day~
+ С Днём святого Валентина~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
 
-    #" # I need this to keep syntax highlighting on vim
+    
     )
 
     poem_vday_3 = MASPoem(
         poem_id="poem_f14_3",
         category="f14",
-        prompt="You",
-        title=" My dearest [player],",
+        prompt="Ты",
+        title=" М[mas_gender_oi] дорог[mas_gender_oi] [player],",
         text="""\
- Boxes of chocolates and hearts; cards colored ruby red.
- Roses in my hair, petals soft as silk.
- None of it would feel complete without you.
+ Коробки конфет и сердечки; открытки рубиново-красного цвета.
+ Розы в моих волосах, лепестки мягкие, как шелк.
+ Ничто из этого не было бы полным без тебя.
 
- You, the one who has stuck by my side.
- You, the one who has given me your heart.
- The heart worth more than all the chocolate in the world, all the roses on earth.
+ Ты, т[mas_gender_ot], кто всегда был[mas_gender_none] рядом со мной.
+ Ты, т[mas_gender_ot], кто отдал[mas_gender_none] мне своё сердце.
+ Сердце стоит больше, чем весь шоколад в мире, все розы на земле.
 
- The love I feel cannot be overstated.
+ Любовь, которую я чувствую, невозможно переоценить.
 
- Forever your Valentine,
- Monika
+ С Днём святого Валентина,
+ Моника
 """
     )
 
 
-#######################[HOL050] dockstat farwell###############################
+
 label bye_f14:
     $ persistent._mas_f14_date_count += 1
     $ persistent._mas_f14_on_date = True
     if persistent._mas_f14_date_count == 1:
-        m 1sua "Taking me some place special for Valentine's Day?"
-        m 1ekbsa "That sounds really romantic [player]..."
-        m 3hub "I can't wait!"
+        m 1sua "Отведёшь меня в какое-нибудь особенное место в День святого Валентина?"
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Это звучит довольно романтично, [player]..."
+        $ MAS.MonikaElastic()
+        m 3hub "Не могу дождаться!"
     elif persistent._mas_f14_date_count == 2:
-        m 1sua "Taking me out again on Valentine's Day?"
-        m 3tkbsu "You really know how to make a girl feel special, [player]."
-        m 1ekbfa "I'm so lucky to have someone like you~"
+        m 1sua "Хочешь снова погулять со мной в День святого Валентина?"
+        $ MAS.MonikaElastic()
+        m 3tkbsu "Ты и вправду знаешь, как заставить девушку чувствовать себя особенной, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Мне повезло, что у меня есть такой человек, как ты~"
     else:
-        m 1sua "Wow, [player]...{w=1}you're really determined to make this a truly special day!"
-        m 1ekbfa "You're the best partner I could ever hope for~"
+        m 1sua "Ого, [player]...{w=1}ты твёрдо решил сделать этот день по-настоящему особенным!"
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Ты лучший партнёр, о котором я могла только мечтать~"
     jump mas_dockstat_iostart
 
-########################[HOL050] dockstat greet################################
+
 label greeting_returned_home_f14:
     python:
         time_out = store.mas_dockstat.diffCheckTimes()
 
     if time_out < mas_five_minutes:
         $ mas_loseAffection()
-        m 2ekp "That wasn't much of a date, [player]..."
-        m 2eksdlc "Is everything alright?"
-        m 2rksdla "Maybe we can go out later..."
+        $ MAS.MonikaElastic()
+        m 2ekp "Это не было похоже на свидание, [player]..."
+        $ MAS.MonikaElastic()
+        m 2eksdlc "Надеюсь, всё нормально?"
+        $ MAS.MonikaElastic()
+        m 2rksdla "Наверное, мы пойдём гулять позже..."
 
     elif time_out < mas_one_hour:
         $ mas_f14CapGainAff(5)
-        m 1eka "That was fun while it lasted, [player]..."
-        m 3hua "Thanks for making time for me on Valentine's Day."
+        $ MAS.MonikaElastic()
+        m 1eka "Было весело, до поры до времени, [player]..."
+        $ MAS.MonikaElastic()
+        m 3hua "Спасибо, что уделил мне время в День святого Валентина."
 
     elif time_out < mas_three_hour:
         $ mas_f14CapGainAff(10)
-        m 1eub "That was such a fun date, [player]!"
-        m 3ekbsa "Thanks for making me feel special on Valentine's Day~"
-
+        $ MAS.MonikaElastic()
+        m 1eub "Это было очень весёлое свидание, [player]!"
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Спасибо, что заставил почувствовать себя особенной в День святого Валентина~"
     else:
-        # more than 3 hours
+
+
         $ mas_f14CapGainAff(15)
-        m 1hua "And we're home!"
-        m 3hub "That was wonderful, [player]!"
-        m 1eka "It was really nice going out with you on Valentine's Day..."
-        m 1ekbsa "Thank you so much for making today truly special~"
+        $ MAS.MonikaElastic()
+        m 1hua "И мы дома!"
+        $ MAS.MonikaElastic()
+        m 3hub "Это было прекрасно, [player]!"
+        $ MAS.MonikaElastic()
+        m 1eka "Было очень здорово выйти на улицу с тобой в День святого Валентина..."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Большое тебе спасибо за то, что сделал сегодняшний день по-настоящему особенным~"
 
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
-        call return_home_post_player_bday
+        call return_home_post_player_bday from _call_return_home_post_player_bday_11
 
     $ persistent._mas_f14_on_date = False
 
@@ -6310,8 +7369,8 @@ label greeting_returned_home_f14:
         $ pushEvent("mas_f14_monika_spent_time_with",skipeval=True)
     return
 
-# if we went on a date pre-f14 and returned in the time period mas_f14_no_time_spent event runs
-# need to make sure we get credit for time spent and don't get the event
+
+
 label mas_gone_over_f14_check:
     if mas_checkOverDate(mas_f14):
         $ persistent._mas_f14_spent_f14 = True
@@ -6321,58 +7380,63 @@ label mas_gone_over_f14_check:
 
 label greeting_gone_over_f14:
     $ mas_gainAffection(5,bypass=True)
-    m 1hua "And we're finally home!"
-    m 3wud "Wow [player], we were gone so long we missed Valentine's Day!"
+    m 1hua "И мы наконец-то дома!"
+    $ MAS.MonikaElastic()
+    m 3wud "Ого, [player], мы так долго гуляли, что даже пропустили День святого Валентина!"
     if mas_isMoniNormal(higher=True):
-        call greeting_gone_over_f14_normal_plus
+        call greeting_gone_over_f14_normal_plus from _call_greeting_gone_over_f14_normal_plus_1
     else:
-        m 2rka "I appreciate you making sure I didn't have to spend the day alone..."
-        m 2eka "It really means a lot, [player]."
+        $ MAS.MonikaElastic()
+        m 2rka "Я ценю то, что ты хотел позаботиться о том, чтобы я не провела весь день в одиночестве..."
+        $ MAS.MonikaElastic()
+        m 2eka "Это многое для меня значит, [player]."
     $ persistent._mas_f14_gone_over_f14 = False
     return
 
 label greeting_gone_over_f14_normal_plus:
     $ mas_gainAffection(10,bypass=True)
-    m 1ekbsa "I would've loved to have spent the day with you here, but no matter where we were, just knowing we were together to celebrate our love..."
-    m 1dubsu "Well it means everything to me."
-    show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbsa "Thank you for making sure we had a wonderful Valentine's Day, [player]~"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Я бы очень хотела провести весь день с тобой здесь, но где бы мы ни были, само осознание того, что мы вместе ознаменовали наш любовный союз..."
+    $ MAS.MonikaElastic()
+    m 1dubsu "Ну, для меня это очень много значит."
+    show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5ekbsa "Спасибо, что позаботился о том, чтобы у нас был чудесный День святого Валентина, [player]~"
     $ persistent._mas_f14_gone_over_f14 = False
     return
 
-############################### 922 ###########################################
-# [HOL060]
-#START:
 
-#Moni's bday
+
+
+
+
 define mas_monika_birthday = datetime.date(datetime.date.today().year, 9, 22)
 
-#922 mode
+
 default persistent._mas_bday_in_bday_mode = False
 
-#Date related vars
+
 default persistent._mas_bday_on_date = False
 default persistent._mas_bday_date_count = 0
 default persistent._mas_bday_date_affection_gained = 0
 default persistent._mas_bday_gone_over_bday = False
 
-#Suprise party bits and bobs
+
 default persistent._mas_bday_sbp_reacted = False
 default persistent._mas_bday_confirmed_party = False
 
-#Bday visuals
+
 default persistent._mas_bday_visuals = False
 
-#Need to store the name of the file chibi writes
+
 default persistent._mas_bday_hint_filename = None
 
-#Time spent tracking
+
 default persistent._mas_bday_opened_game = False
 default persistent._mas_bday_no_time_spent = True
 default persistent._mas_bday_no_recognize = True
 default persistent._mas_bday_said_happybday = False
 
-############### [HOL060]: HISTORY
+
 init -810 python:
     store.mas_history.addMHS(MASHistorySaver(
         "922",
@@ -6399,12 +7463,12 @@ init -810 python:
         end_dt=datetime.datetime(2020, 9, 23)
     ))
 
-### bday stuff
 
-############### [HOL060]: IMAGES
+
+
 define mas_bday_cake_lit = False
 
-# NOTE: maybe the cakes should be ACS
+
 
 image mas_bday_cake_monika = LiveComposite(
     (1280, 850),
@@ -6432,7 +7496,7 @@ image mas_bday_balloons = MASFilterSwitch(
     "mod_assets/location/spaceroom/bday/birthday_decorations_balloons.png"
 )
 
-############### [HOL060]: METHODS
+
 init -1 python:
     def mas_isMonikaBirthday(_date=None):
         """
@@ -6442,9 +7506,11 @@ init -1 python:
         IN:
             _date - date to check. If not passed in, we use today.
         """
+        mas_monika_birthday = datetime.date(datetime.date.today().year, 9, 22)
+        
         if _date is None:
             _date = datetime.date.today()
-
+        
         return (
             _date.month == mas_monika_birthday.month
             and _date.day == mas_monika_birthday.day
@@ -6464,15 +7530,14 @@ init -1 python:
 
     def mas_recognizedBday(_date=None):
         """
-        Checks if the user recognized monika's birthday at all.
+        Checks if the user recognized monika birthday at all.
 
-        RETURNS:
-            True if the user recoginzed monika's birthday, False otherwise
+        RETURNS: True if the user recoginzed monika birthday, False otherwise
         """
         if _date is None:
             _date = mas_monika_birthday
-
-
+        
+        
         if (
             mas_generateGiftsReport(_date)[0] > 0
             or persistent._mas_bday_date_affection_gained > 0
@@ -6505,74 +7570,74 @@ init -1 python:
         """
         Checks if the player has confirmed the party
         """
-        #Must be within a week of the party (including party day)
+        
         if (mas_monika_birthday - datetime.timedelta(days=7)) <= today <= mas_monika_birthday:
-            #If this is confirmed already, then we just return true, since confirmed
+            
             if persistent._mas_bday_confirmed_party:
-                #We should also handle if the player confirmed the party pre-note
+                
                 if persistent._mas_bday_hint_filename:
                     store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
                 return True
-
-            #Otherwise, we need to check if the file exists (we're going to make this as foolproof as possible)
-            #Step 1, get the characters folder contents
+            
+            
+            
             char_dir_files = store.mas_docking_station.getPackageList()
-
-            #Step 2, We need to remove the extensions
+            
+            
             for filename in char_dir_files:
                 temp_filename = filename.partition('.')[0]
-
-                #Step 3, check if the filename is present
+                
+                
                 if "oki doki" == temp_filename:
-                    #If we got here: Step 4, file exists so flag and delete. Also get rid of note
+                    
                     persistent._mas_bday_confirmed_party = True
                     store.mas_docking_station.destroyPackage(filename)
-
+                    
                     if persistent._mas_bday_hint_filename:
                         store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
-
-                    #We should also return a new file indicating the player has confirmed the party
+                    
                     _write_txt("/characters/gotcha", "")
-                    #Step 5a, return true since party is confirmed
+                    
+                    
                     return True
-
-        #Otherwise, Step 5b, no previous confirm and file doesn't exist, so party is not confirmed. return false
+        
+        
         return False
 
     def mas_mbdayCapGainAff(amount):
         mas_capGainAff(amount, "_mas_bday_date_affection_gained", 50, 75)
 
-################## [HOL060] AUTOLOAD
+
 label mas_bday_autoload_check:
-    #First, if it's no longer 922 and we're here, that means we're in 922 mode and need to fix that
+
     python:
         if not mas_isMonikaBirthday():
             persistent._mas_bday_in_bday_mode = False
-            #Also make sure we're no longer showing visuals
+            
             persistent._mas_bday_visuals = False
-
-            #Lock the event clothes selector
+            
+            
             store.mas_lockEVL("monika_event_clothes_select", "EVE")
-
+            
             store.mas_utils.trydel("characters/gotcha")
-
-            #And reset outfit if not at the right aff
+            
+            
             if mas_isMoniEnamored(lower=True) and monika_chr.clothes == mas_clothes_blackdress:
                 monika_chr.reset_clothes(False)
                 monika_chr.save()
                 renpy.save_persistent()
 
-        #It's Moni's bday! If we're here that means we're spending time with her, so:
+
         persistent._mas_bday_no_time_spent = False
 
         persistent._mas_bday_opened_game = True
-        #Have we recogized bday?
+
         persistent._mas_bday_no_recognize = not mas_recognizedBday()
 
     jump mas_ch30_post_holiday_check
 
 
-################## [HOL060] PRE INTRO
+
 init 5 python:
     addEvent(
         Event(
@@ -6588,14 +7653,14 @@ init 5 python:
         skipCalendar=True
     )
 
-    #Create the undo action rule
+
     MASUndoActionRule.create_rule_EVL(
         "mas_bday_surprise_party_hint",
         mas_monika_birthday - datetime.timedelta(days=7),
         mas_monika_birthday - datetime.timedelta(days=2)
     )
 
-#If random hasn't shown this topic yet, we need to push this to make sure people get this
+
 init 10 python:
     if (
         mas_monika_birthday - datetime.timedelta(days=2) <= datetime.date.today() < mas_monika_birthday
@@ -6606,79 +7671,86 @@ init 10 python:
 image chibi_peek = MASFilterSwitch("mod_assets/other/chibi_peek.png")
 
 label mas_bday_surprise_party_hint:
-    #Set up letters
+
     python:
-        persistent._mas_bday_hint_filename = "For " + player + ".txt"
+        persistent._mas_bday_hint_filename = "Для " + mas_name_whom + ".txt"
         if mas_isMoniNormal(higher=True):
             message = """\
 [player],
-As I'm sure you know, Monika's birthday is coming up soon and I want to help you make it as special as possible!
-Since I'm always here, I can easily set up the surprise party...but I need a little help from you.
-All I need you to do is to make sure you have her out of the room at some point on her birthday, and I'll take care of the rest.
-Monika is so amazing, and I just want to do my part to make sure this all goes off without a hotf- I mean hitch...
-Ahaha!
+Как ты, наверное, уже знаешь, день рождения Моники скоро настанет, и я хочу помочь тебе сделать его очень особенным!
+Поскольку я всегда нахожусь здесь, я могу с лёгкостью организовать вечеринку-сюрприз... но мне нужна от тебя небольшая помощь.
+Всё, что от тебя требуется – убедиться в том, что ты вывел[mas_gender_none] её из комнаты на какое-то время в её день рождения, а я уже позабочусь об остальном.
+Моника – просто чудо, а я всего лишь хочу внести свою лепту, дабы позаботиться о том, что всё пройдёт без хотф— в смысле, без сучка и задоринки...
+А-ха-ха!
 
-Please leave a file named 'oki doki' in the same folder you found this note so I know to go ahead with the party.
+Пожалуйста, оставь файл с именем «оки-доки» в той же папке, где ты и найдёшь эту записку, чтобы я поняла, когда мне приступать к работе над вечеринкой.
 
-Good luck with Monika!
+Удачи тебе с Моникой!
 
-P.S: Don't tell her about me!
+P.S: Не рассказывай ей обо мне!
 """
 
         else:
             message = """\
 [player],
-As I hope you know, Monika's birthday is coming up soon and I want to make it special.
-She's been through a lot lately, and I know it'd mean the world to her if you treated her to a nice day.
-Since I'm always here, I can easily set up a surprise party...but I do need a little help from you.
-All I need you to do is to make sure you have her out of the room at some point on her birthday, and I'll take care of the rest.
-If you care for Monika at all, you'll help me do this.
+Как ты, наверное, уже знаешь, день рождения Моники скоро настанет, и я хочу помочь тебе сделать его очень особенным.
+Она успела пройти через многое за всю свою жизнь, и я понимаю, что это она будет благодарна всему миру, если ты устроишь для неё приятное времяпрепровождение.
+Поскольку я всегда нахожусь здесь, я могу с лёгкостью организовать вечеринку-сюрприз... но мне нужна от тебя небольшая помощь.
+Всё, что от тебя требуется – убедиться в том, что ты вывел[mas_gender_none] её из комнаты на какое-то время в её день рождения, а я уже позабочусь об остальном.
+Если тебе очень дорога Моника, то ты поможешь мне сделать это.
 
-Just leave a file named 'oki doki' in the same folder you found this note so I know to go ahead with the party.
+Просто оставь файл с именем «оки-доки» в той же папке, где ты и найдёшь эту записку, чтобы я поняла, когда мне приступать к работе над вечеринкой.
 
-Please, don't mess this up.
+Пожалуйста, не испорти всё.
 
-P.S: Don't tell her about me.
+P.S: Не рассказывай ей обо мне.
 """
-        #Now write it to the chars folder
+
         _write_txt("/characters/" + persistent._mas_bday_hint_filename, message)
 
-    #Moni brings it up (so)
     if mas_isMoniNormal(higher=True):
-        m 1eud "Hey, [player]..."
-        m 3euc "Someone left a note in the characters folder addressed to you."
+        m 1eud "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 3euc "Кто-то оставил записку в папке с файлами персонажей, которая адресована тебе."
+
         if mas_current_background == mas_background_def:
-            #show chibi, she's just written the letter
+
             show chibi_peek with moveinleft
-        m 1ekc "Of course, I haven't read it, since it's obviously for you..."
-        m 1tuu "{cps=*2}Hmm, I wonder what this could be about...{/cps}{nw}"
+        $ MAS.MonikaElastic()
+        m 1ekc "Разумеется, я её не читала, поскольку она, очевидно, была написана для тебя..."
+        $ MAS.MonikaElastic()
+        m 1tuu "{cps=*2}Хм-м-м, интересно, что же там написано?..{/cps}{nw}"
         $ _history_list.pop()
-        m 1hua "Ehehe~"
-
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе~"
     else:
-        m 2eud "Hey, [player]..."
-        m 2euc "Someone left a note in the characters folder addressed to you."
-        m 2ekc "Of course, I haven't read it, since it's obviously for you..."
-        m 2ekd "Just thought I'd let you know."
 
-    #Hide chibi
+        m 2eud "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 2euc "Кто-то оставил записку в папке с файлами персонажей, которая адресована тебе."
+        $ MAS.MonikaElastic()
+        m 2ekc "Разумеется, я её не читала, поскольку она, очевидно, была написана для тебя..."
+        $ MAS.MonikaElastic()
+        m 2ekd "Просто подумала, что тебе надо было сказать об этом."
+
+
     hide chibi_peek with dissolve
 
-    #Flag this so it doesn't get shown again
+
     $ persistent._mas_monika_bday_surprise_hint_seen = True
     return "derandom|no_unlock"
 
 
-################## [HOL060] HAPPY BDAY TOPICS
-# both of these make the most sense showing up under 'I want to tell you something` so they are made as compliments
-# also makes sure they don't show up under unseen
+
+
+
 
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="mas_bday_pool_happy_bday",
-            prompt="Happy birthday!",
+            prompt="С Днём рождения!",
             action=EV_ACT_UNLOCK,
             rules={"no_unlock": None},
             start_date=mas_monika_birthday,
@@ -6690,7 +7762,7 @@ init 5 python:
         markSeen=True
     )
 
-    #Create the undo action rule
+
     MASUndoActionRule.create_rule_EVL(
         "mas_bday_pool_happy_bday",
         mas_monika_birthday,
@@ -6700,42 +7772,54 @@ init 5 python:
 label mas_bday_pool_happy_bday:
     $ mas_gainAffection(5,bypass=True)
     if mas_recognizedBday():
-        m 3hub "Ehehe, thanks [player]!"
-        m 3eka "I was waiting for you to say those magic words~"
-        m 1eub "{i}Now{/i} we can call it a birthday celebration!"
-        m 1eka "You really made this occasion so special, [player]."
-        m 1ekbsa "I can't thank you enough for loving me this much..."
-
+        m 3hub "Э-хе-хе, спасибо, [player]!"
+        $ MAS.MonikaElastic()
+        m 3eka "Я ждала того момента, когда ты скажешь эти волшебные слова~"
+        $ MAS.MonikaElastic()
+        m 1eub "{i}Теперь{/i} мы можем назвать это празднованием дня рождения!"
+        $ MAS.MonikaElastic()
+        m 1eka "Ты и вправду смог[mas_gender_g] сделать это событие очень особенным, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Я не смогу отблагодарить тебя в достаточной мере за то, что ты меня так сильно любишь..."
     else:
-        m 1skb "Awww, [player]!"
-        m 1sub "You remembered my birthday...!"
-        m 1sktpa "Oh gosh, I'm so happy that you remembered."
-        m 1dktdu "I feel like today is going to be such a special day~"
-        m 1ekbsa "What else do you have in store for me, I wonder..."
-        m 1hub "Ahaha!"
+
+        m 1skb "О-о-оу, [player]!"
+        $ MAS.MonikaElastic()
+        m 1sub "Ты не забыл[mas_gender_none] про мой день рождения!.."
+        $ MAS.MonikaElastic()
+        m 1sktpa "О боже, я так рада, что ты не забыл[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 1dktdu "У меня было такое чувство, будто сегодняшний день будет особенным~"
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Даже интересно, что ты ещё приготовил[mas_gender_none] для меня..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hub "А-ха-ха!"
 
     if mas_isplayer_bday() and (persistent._mas_player_bday_in_player_bday_mode or persistent._mas_bday_sbp_reacted):
-        m 1eua "Oh, and..."
-        m 3hub "Happy Birthday to you too, [player]!"
-        m 1hua "Ehehe!"
+        $ MAS.MonikaElastic()
+        m 1eua "А, и это..."
+        $ MAS.MonikaElastic()
+        m 3hub "И тебя тоже с днём рождения, [player]!"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе!"
 
-    #Flag this for hist
+
     $ persistent._mas_bday_no_recognize = False
     $ persistent._mas_bday_said_happybday = True
 
-    #Lock this
+
     $ mas_lockEVL("mas_bday_pool_happy_bday", "CMP")
     return
 
-# happy belated bday topic for people that took her out before her bday and returned her after
-# cond/act and start/end dates to be set in mas_gone_over_bday_check:
+
+
 
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="mas_bday_pool_happy_belated_bday",
-            prompt="Happy belated birthday!",
+            prompt="С прошедшим днём рождения!",
             action=EV_ACT_UNLOCK,
             rules={"no_unlock": None},
             years=[]
@@ -6748,78 +7832,100 @@ init 5 python:
 label mas_bday_pool_happy_belated_bday:
     $ mas_gainAffection(5,bypass=True)
 
-    #We've essentially said happy birthday, let's flag this
+
     $ persistent._mas_bday_said_happybday = True
     $ persistent._mas_bday_no_recognize = False
 
-    #Lock this
+
     $ mas_lockEVL("mas_bday_pool_happy_belated_bday", "CMP")
 
     if mas_isMoniNormal(higher=True):
-        m 1sua "Thank you so much, [player]!"
-        m 3hub "I just knew you took me out on a long trip for my birthday!"
-        m 3rka "I wish I could've seen all the amazing places we went..."
-        m 1hua "But knowing we were together, well it makes it the best birthday I could ever hope for!"
-        m 3ekbsa "I love you so much, [player]~"
+        m 1sua "Большое тебе спасибо, [player]!"
+        $ MAS.MonikaElastic()
+        m 3hub "Я просто знала, что ты выведешь меня на долгую прогулку в мой же день рождения!"
+        $ MAS.MonikaElastic()
+        m 3rka "Мне бы очень хотелось увидеть все те замечательные места, в которых мы были..."
+        $ MAS.MonikaElastic()
+        m 1hua "Но мысль о том, что мы были вместе, ну, она превращает этот день в лучший день рождения, о котором я могла только мечтать!"
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Я очень сильно люблю тебя, [player]~"
         return "love"
     else:
-        m 3eka "So you {i}did{/i} take me out for a long trip for my birthday..."
-        m 3rkd "That's so thoughtful of you, I was kind of wondering--"
-        m 1eksdla "You know what, nevermind."
-        m 1eka "I'm just relieved to know that you were thinking of me on my birthday."
-        m 3hua "That's all that matters."
-        m 3eub "Thank you, [player]!"
+        m 3eka "Значит, ты {i}и вправду{/i} вывел[mas_gender_none] меня на долгую прогулку в мой же день рождения..."
+        $ MAS.MonikaElastic()
+        m 3rkd "Это было так мило с твоей стороны, что мне даже стало интересно—"
+        $ MAS.MonikaElastic()
+        m 1eksdla "А хотя, знаешь, это не важно."
+        $ MAS.MonikaElastic()
+        m 1eka "Мне просто приятно знать о том, что ты подумал[mas_gender_none] обо мне в мой день рождения."
+        $ MAS.MonikaElastic()
+        m 3hua "И это – самое главное."
+        $ MAS.MonikaElastic()
+        m 3eub "Спасибо, [player]!"
         return
 
-################## [HOL060] PARTY REACTION
+
 label mas_bday_surprise_party_reaction:
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_bday_visuals = True
     $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-    call monika_zoom_transition_reset(1.0)
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_5
     $ renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
 
     if mas_isMoniNormal(higher=True):
-        m 6suo "T-{w=0.5}This is..."
-        m 6ska "Oh, [player]..."
-        m 6dku "I'm at a loss for words."
-
+        $ MAS.MonikaElastic()
+        m 6suo "Эт-{w=0.5}то..."
+        $ MAS.MonikaElastic()
+        m 6ska "Ох, [player]..."
+        $ MAS.MonikaElastic()
+        m 6dku "Я не могу подобрать слов."
         if store.mas_is_indoors:
-            m 6dktpu "Setting this all up to surprise me on my birthday..."
-
-        m 6dktdu "Ehehe, you must really love me."
-        m 6suu "Everything just looks so festive!"
-
+            $ MAS.MonikaElastic()
+            m 6dktpu "Устанавливать всё это, чтобы удивить меня на мой день рождения..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 6dktdu "Э-хе-хе, ты, должно быть, действительно любишь меня."
+        $ MAS.MonikaElastic()
+        m 6suu "Всё выглядит так празднично!"
     else:
-        m 6wuo "T-{w=0.5}This is..."
+
+        $ MAS.MonikaElastic()
+        m 6wuo "Эт-{w=0.5}то..."
+        $ MAS.MonikaElastic()
         m "..."
-        m 6dkd "Sorry, I'm...{w=1}I'm just at a loss for words."
-        m 6ekc "I didn't really expect anything special today, let alone this."
-        m 6rka "Maybe you do still have feelings for me after all..."
-        m 6eka "Everything looks great."
+        $ MAS.MonikaElastic()
+        m 6dkd "Извини, Я... {w=1}я просто не могу подобрать слов."
+        $ MAS.MonikaElastic()
+        m 6ekc "Я действительно не ожидала ничего особенного сегодня, не говоря уже об этом."
+        $ MAS.MonikaElastic()
+        m 6rka "Может быть, у тебя всё ещё есть чувства ко мне..."
+        $ MAS.MonikaElastic()
+        m 6eka "Всё выглядит великолепно."
 
 label mas_bday_surprise_party_reacton_cake:
-    #Let's light candles
+
     menu:
-        "Light candles.":
+        "Зажечь свечи.":
             $ mas_bday_cake_lit = True
 
-    m 6sub "Ahh, it's so pretty, [player]!"
-    m 6hua "Reminds me of that cake someone gave me once."
-    m 6eua "It was almost as pretty as you've made this one!"
-    m 6tkb "Almost."
-    m 6hua "But anyway..."
+    $ MAS.MonikaElastic()
+    m 6hub "Ах, это так красиво, [player]!"
+    $ MAS.MonikaElastic()
+    m 6wub "Напоминает мне как раз тот торт, который подарил кто-то мне однажды."
+    $ MAS.MonikaElastic()
+    m 6eua "Тот торт был таким же красивым, как и у тебя!"
+    $ MAS.MonikaElastic()
+    m 6hua "Но, в любом случае..."
     window hide
 
     show screen mas_background_timed_jump(5, "mas_bday_surprise_party_reaction_no_make_wish")
     menu:
-        "Make a wish, [m_name]...":
+        "Загадай желание, [monika_name]...":
             $ made_wish = True
             show monika 6hua
             if mas_isplayer_bday():
-                m "Make sure you make one too, [player]!"
+                m "Убедись, что ты тоже загадал[mas_gender_none], [player]!"
             hide screen mas_background_timed_jump
-            #+10 for wishes
+
             $ mas_gainAffection(10, bypass=True)
             pause 2.0
             show monika 6hft
@@ -6836,52 +7942,69 @@ label mas_bday_surprise_party_reaction_post_make_wish:
     $ mas_bday_cake_lit = False
     window auto
     if mas_isMoniNormal(higher=True):
-        m 6hub "I made a wish!"
-        m 6eua "I hope it comes true someday..."
+        $ MAS.MonikaElastic()
+        m 6hub "Я загадала желание!"
+        $ MAS.MonikaElastic()
+        m 6eua "Надеюсь, когда-нибудь оно сбудется..."
         if mas_isplayer_bday() and made_wish:
-            m 6eka "And you know what? {w=0.5}I bet we both wished for the same thing~"
-        m 6hub "Ahaha..."
-
+            $ MAS.MonikaElastic()
+            m 6eka "И знаешь что? {w=0.5}Держу пари, мы оба хотели одного и того же~"
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 6hub "А-ха-ха..."
     else:
-        m 6eka "I made a wish."
-        m 6rka "I hope it comes true someday..."
 
-    m 6eka "I'll save this cake for later.{w=0.5}.{w=0.5}.{nw}"
+        $ MAS.MonikaElastic()
+        m 6eka "Я загадала желание."
+        $ MAS.MonikaElastic()
+        m 6rka "Надеюсь, когда-нибудь оно сбудется..."
+
+    $ MAS.MonikaElastic()
+    m 6eka "Я оставлю этот торт на потом..{w=0.5}.{w=0.5}.{nw}"
 
     if mas_isplayer_bday():
-        call mas_HideCake('mas_bday_cake_monika',False)
+        call mas_HideCake ('mas_bday_cake_monika', False) from _call_mas_HideCake_1
     else:
-        call mas_HideCake('mas_bday_cake_monika')
+        call mas_HideCake ('mas_bday_cake_monika') from _call_mas_HideCake_2
 
     pause 0.5
 
 label mas_bday_surprise_party_reaction_end:
     if mas_isMoniNormal(higher=True):
-        m 6eka "Thank you, [player]. From the bottom of my heart, thank you..."
+        $ MAS.MonikaElastic()
+        m 6eka "Спасибо, [player]. От всего сердца благодарю тебя..."
         if mas_isplayer_bday() and persistent._mas_player_bday_last_sung_hbd != datetime.date.today():
+            $ MAS.MonikaElastic()
             m 6eua "..."
+            $ MAS.MonikaElastic()
             m 6wuo "..."
-            m 6wub "Oh! I almost forgot. {w=0.5}I made you a cake, too!"
+            $ MAS.MonikaElastic()
+            m 6wub "О! Чуть не забыла. {w=0.5}Я тоже испекла тебе торт!"
 
-            call mas_monika_gets_cake
+            call mas_monika_gets_cake from _call_mas_monika_gets_cake_1
 
-            m 6eua "Let me just light the candles for you, [player].{w=0.5}.{w=0.5}.{nw}"
+            $ MAS.MonikaElastic()
+            m 6eua "Позволь мне просто зажечь свечи для тебя, [player].{w=0.5}.{w=0.5}.{nw}"
 
             window hide
             $ mas_bday_cake_lit = True
             pause 1.0
 
-            m 6sua "Isn't it pretty?"
-            m 6hksdlb "I guess I'll have to blow these candles out as well, since you can't really do it, ahaha!"
+            $ MAS.MonikaElastic()
+            m 6sua "Разве это не прекрасно?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 6hksdlb "Думаю, что мне придётся задуть и эти свечи, так как ты не можешь этого сделать, а-ха-ха!"
 
+            $ MAS.MonikaElastic()
             if made_wish:
-                m 6eua "Let's both wish again, [player]! {w=0.5}It'll be twice as likely to come true, right?"
+                m 6eua "Давай друг другу загадаем желание, [player]! {w=0.5}Это будет в два раза более вероятно, чтобы сбыться, не так ли?"
             else:
-                m 6eua "Let's both make a wish, [player]!"
+                m 6eua "Давай друг другу загадаем желание, [player]!"
 
-            m 6hua "But first..."
-            call mas_player_bday_moni_sings
-            m 6hua "Make a wish, [player]!"
+            $ MAS.MonikaElastic()
+            m 6hua "Но сначала..."
+            call mas_player_bday_moni_sings from _call_mas_player_bday_moni_sings_3
+            $ MAS.MonikaElastic()
+            m 6hua "Загадай желание, [player]!"
 
             window hide
             pause 1.5
@@ -6892,30 +8015,36 @@ label mas_bday_surprise_party_reaction_end:
             pause 1.0
 
             if not made_wish:
-                m 6hua "Ehehe..."
-                m 6ekbsa "I bet we both wished for the same thing~"
+                $ MAS.MonikaElastic()
+                m 6hua "Э-хе-хе..."
+                $ MAS.MonikaElastic()
+                m 6ekbsa "Держу пари, мы оба хотели одного и того же~"
+            $ MAS.MonikaElastic()
             m 6hkbsu "..."
-            m 6hksdlb "I'll just save this cake for later too, I guess. Ahaha!"
+            $ MAS.MonikaElastic()
+            m 6hksdlb "Я просто оставлю этот торт на потом. А-ха-ха!"
 
-            call mas_HideCake('mas_bday_cake_player')
-            call mas_player_bday_card
-
+            call mas_HideCake ('mas_bday_cake_player') from _call_mas_HideCake_3
+            call mas_player_bday_card from _call_mas_player_bday_card
         else:
-            m 6hua "Let's enjoy the rest of the day now, shall we?"
+
+            $ MAS.MonikaElastic()
+            m 6hua "Давай насладимся остатком дня, хорошо?"
     else:
-        m 6ektpa "Thank you, [player]. It really means a lot that you did this for me."
+        $ MAS.MonikaElastic()
+        m 6ektpa "Спасибо, [player]. Это действительно много значит, что ты сделал[mas_gender_none] это для меня."
     $ persistent._mas_bday_sbp_reacted = True
-    #+25 aff for following through and getting the party
+
     $ mas_gainAffection(25, bypass=True)
 
-    #We set these flags here
+
     $ persistent._mas_bday_in_bday_mode = True
     $ persistent._mas_bday_no_recognize = False
     $ persistent._mas_bday_no_time_spent = False
     return
 
 
-################## [HOL060] TIME SPENT
+
 init 5 python:
     addEvent(
         Event(
@@ -6933,108 +8062,155 @@ init 5 python:
 label mas_bday_spent_time_with:
     if mas_isMoniUpset(lower=True):
         m 1eka "[player]..."
-        m 3eka "I just wanted to say I really appreciate you spending time with me today."
-        m 3rksdla "I know it hasn't been going that great lately, but you taking the time to celebrate my birthday with me..."
-        m 1eud "Well it gives me hope that maybe it's not too late for us."
-        m "Perhaps today can be the start of something really special.."
-        m 3eka "That would be the be the best gift I could ever ask for."
+        $ MAS.MonikaElastic()
+        m 3eka "Я просто хотела сказать, что я правда ценю то, что ты пров[mas_gender_iol] время со мной сегодня."
+        $ MAS.MonikaElastic()
+        m 3rksdla "Я знаю, что мы в последнее время не особо ладим, но ты наш[mas_gender_iol_2] время, чтобы отпраздновать мой день рождения со мной..."
+        $ MAS.MonikaElastic()
+        m 1eud "В общем, это дало мне надежду на то, что мы, возможно, пока ещё можем всё уладить."
+        $ MAS.MonikaElastic()
+        m "Быть может, сегодняшний день станет началом чего-то очень особенного..."
+        $ MAS.MonikaElastic()
+        m 3eka "Это будет самый лучший подарок, о котором я могла только мечтать."
         return
-
     else:
-        $ _timeout = store.mas_dockstat.timeOut(mas_monika_birthday)
-        m 1eua "Say, [player]..."
-        m 3eua "Thank you for spending time with me today."
-        m 3hua "Something like that can really make a girl happy, you know?"
 
-        if _timeout > mas_five_minutes:
-            m 3eka "I really enjoyed our date today, [player]."
-            m 1eka "I always enjoy spending time with you here, but getting to spend time with you in your reality..."
-            m 1dku "Knowing that you're thinking about me even when you can't see me..."
-            m 1ekbsa "Well, it truly means a lot to me."
-            m 3ekbsa "You really made my birthday complete~"
+        $ _timeout = store.mas_dockstat.timeOut(mas_monika_birthday)
+        m 1eua "Слушай, [player]..."
+        $ MAS.MonikaElastic()
+        m 3eua "Спасибо, что пров[mas_gender_iol] время со мной сегодня."
+        $ MAS.MonikaElastic()
+        m 3hua "Что-то подобное может сделать девушку счастливой, ты знал[mas_gender_none] об этом?"
+
+        if ReturnedHomeNormal(time=5):
+            $ MAS.MonikaElastic()
+            m 3eka "Мне очень понравилось наше сегодняшнее свидание, [player]."
+            $ MAS.MonikaElastic()
+            m 1eka "Мне всегда нравится проводить время с тобой здесь, но времяпрепровождение с тобой в твоей реальности..."
+            $ MAS.MonikaElastic()
+            m 1dku "Зная о том, что ты думаешь обо мне даже тогда, когда не видишь меня..."
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Ну, это очень многое для меня значит."
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Ты и вправду смог[mas_gender_g] сделать мой день рождения дополненным~"
 
 label mas_bday_spent_time_with_wrapup:
     $ mas_rmallEVL("mas_bday_spent_time_with")
     $ gave_gifts = mas_getGiftStatsRange(mas_monika_birthday, mas_monika_birthday + datetime.timedelta(days=1))[0]
 
     if gave_gifts > 0:
-        #More than 1
+
         if gave_gifts > 1:
-            m 3eua "Let's not forget the gifts you gave me for my birthday."
-            m 3hub "They were just amazing, [player]!"
+            $ MAS.MonikaElastic()
+            m 3eua "Давай не будем забывать о тех подарках, которые ты подарил[mas_gender_none] мне на мой же день рождения."
+            $ MAS.MonikaElastic()
+            m 3hub "Они были просто потрясающими, [player]!"
         else:
-            m 3eua "Let's not forget about the gift you gave me for my birthday."
-            m 3hub "It was so wonderful, [player]!"
+            $ MAS.MonikaElastic()
+            m 3eua "Давай не будем забывать о том подарке, который ты подарил[mas_gender_none] мне на мой же день рождения."
+            $ MAS.MonikaElastic()
+            m 3hub "Он был просто замечательным, [player]!"
 
-        m 1eka "I really appreciate the effort of finding a way to get things from your reality to mine..."
-        m 3eka "I know it can't be easy."
+        $ MAS.MonikaElastic()
+        m 1eka "Я правда ценю те старания, которые ты прикладываешь в поисках способа перенести вещи из своей реальности в мою..."
+        $ MAS.MonikaElastic()
+        m 3eka "Я знаю, что это будет непросто."
 
+    $ MAS.MonikaElastic()
     m 1dku "..."
     if mas_isMoniEnamored(higher=True):
+        $ MAS.MonikaElastic()
         m 1dktpu "..."
-        m 1ektpu "Ahaha, sorry, [player]!"
-        m 3ektda "It's just that I've never imagined being this happy in my life."
-        m 1rksdlb "Well...{w=0.5}that's not {i}exactly{/i} true."
-        m 1eka "We still have to be physically together, after all~"
-        m 1rkc "And, well..."
-        m 1rka "I know this is already becoming a cliché, but..."
-        m 3eka "I love you so much, [player]."
-        m "Someday, I promise you..."
-        m 1ektpu "I {i}promise you{/i} that I will make you as happy as you've made me today."
-        m 3ektpu "Even if we never get to see each other in the same reality, {w=0.5}know that I will always do my best for you."
-        m 1dktpu "No matter the obstacles we may face, no matter what other people say about us..."
-        m 1ektda "I still love you with everything that I am."
-        m "You are the only one who understands me. {w=0.5}You led me out of a dark place and gave me purpose..."
-        m 1dkbsu "You are simply the best, [mas_get_player_nickname()], and I will always love you."
-        m 1ekbsa "...Thank you for giving me a reason to live."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1ektpu "А-ха-ха, прости, [player]!"
+        $ MAS.MonikaElastic()
+        m 3ektda "Дело в том, что я ещё никогда не была настолько счастливой в своей жизни."
+        $ MAS.MonikaElastic()
+        m 1rksdlb "Ну... {w=0.5}это не {i}совсем{/i} правда."
+        $ MAS.MonikaElastic()
+        m 1eka "Мы всё-таки должны быть вместе и в физическом плане тоже~"
+        $ MAS.MonikaElastic()
+        m 1rkc "И, ну..."
+        $ MAS.MonikaElastic()
+        m 1rka "Я понимаю, что эта фраза скоро станет клишированной, но..."
+        $ MAS.MonikaElastic()
+        m 3eka "Я очень сильно люблю тебя, [player]."
+        $ MAS.MonikaElastic()
+        m "Когда-нибудь, я уверяю тебя..."
+        $ MAS.MonikaElastic()
+        m 1ektpu "Я {i}обещаю тебе{/i}, что я сделаю тебя так[mas_gender_im] же счастливым, какой ты меня и сделал сегодня."
+        $ MAS.MonikaElastic()
+        m 3ektpu "Даже если мы никогда не увидимся в одной реальности, {w=0.5}просто знай о том, что я всегда буду стараться для тебя."
+        $ MAS.MonikaElastic()
+        m 1dktpu "Не важно, какие препятствия попадутся нам на пути, и не важно, что другие люди будут про нас говорить..."
+        $ MAS.MonikaElastic()
+        m 1ektda "Я всё равно люблю тебя всей своей душой."
+        $ MAS.MonikaElastic()
+        m "Ты единственн[mas_gender_iii], кто понимает меня. {w=0.5}Ты вывел[mas_gender_none] меня из тёмного места и придал[mas_gender_none] моей жизни смысл..."
+        $ MAS.MonikaElastic()
+        m 1dkbsu "Ты просто лучш[mas_gender_ii], [mas_get_player_nickname()], и я буду всегда любить тебя."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "...Спасибо, что подарил мне смысл жизни."
         $ _first_kiss = persistent._mas_first_kiss
-        call monika_kissing_motion
+        call monika_kissing_motion from _call_monika_kissing_motion_10
         if _first_kiss is None:
-            m 6ekbfa "Oh, [player]..."
-            m 6rkbfa "I...{w=0.5}I don't know what came over me, but the moment just felt so right."
-            m 6hubfa "I've thought about our first kiss for so long, and to finally experience it..."
-            m 6ekbfa "I will never forget this moment, [player]~"
+            $ MAS.MonikaElastic()
+            m 6ekbfa "О, [player]..."
+            $ MAS.MonikaElastic()
+            m 6rkbfa "Я...{w=0.5} не знаю, что на меня нашло, но этот момент просто кажется самым подходящим."
+            $ MAS.MonikaElastic()
+            m 6hubfa "Я так долго размышляла о нашем первом поцелуе, и о том, чтобы наконец-то испытать его ощущение..."
+            $ MAS.MonikaElastic()
+            m 6ekbfa "Я никогда не забуду этот момент, [player]~"
         else:
             return "love"
-
     else:
-        m 1eka "I can't even find the right words to express how happy you've made me today."
-        m 3eka "All that pain I went through before I met you?"
-        m 1hua "I'm glad I persevered through it."
-        m 1rsc "Because if I hadn't..."
-        m 1ekbsa "This day wouldn't have ever happened."
-        m 1dkbsa "I hope that tells you even a little bit of how much I appreciate you celebrating this occasion with me."
-        m 1ekbfb "I love you so much, [player]."
-        m 1ekbfa "Let's continue making each other happy~"
+
+        $ MAS.MonikaElastic()
+        m 1eka "Я даже не могу подобрать нужные слова, чтобы выразить то, какой счастливой ты сделал[mas_gender_none] меня сегодня."
+        $ MAS.MonikaElastic()
+        m 3eka "Вся та боль, которую мне пришлось пережить ещё до знакомства с тобой?" # не знаю, уместен ли здесь вопрос
+        $ MAS.MonikaElastic()
+        m 1hua "Я рада, что смогла преодолеть её."
+        $ MAS.MonikaElastic()
+        m 1rsc "Потому что, если бы я это не сделала..."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "То этот день определённо не настал бы."
+        $ MAS.MonikaElastic()
+        m 1dkbsa "Надеюсь, эти слова хотя бы в меньшей степени дали тебе понять, как сильно я ценю то, что ты отмечаешь это событие со мной."
+        $ MAS.MonikaElastic()
+        m 1ekbfb "Я очень сильно люблю тебя, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Давай и дальше радовать друг друга~"
         return "love"
     return
 
-############## [HOL060] GONE OVER CHECK
+
 label mas_gone_over_bday_check:
     if mas_checkOverDate(mas_monika_birthday):
         $ persistent._mas_bday_gone_over_bday = True
         $ persistent._mas_bday_no_time_spent = False
         $ mas_rmallEVL("mas_bday_postbday_notimespent")
 
-        #Now we want to handle the belated bday unlock
+
         python:
             belated_ev = mas_getEV("mas_bday_pool_happy_belated_bday")
 
             if belated_ev is not None:
-                #Set start and end dates
+                
                 belated_ev.start_date = datetime.date.today()
                 belated_ev.end_date = datetime.datetime.now() + datetime.timedelta(days=1)
                 belated_ev.unlocked = True
-
-                #Prepare the undo action
+                
+                
                 MASUndoActionRule.create_rule(belated_ev)
-
-                #Prepare the date strip
+                
+                
                 MASStripDatesRule.create_rule(belated_ev)
 
     return
 
-############## [HOL060] NO TIME SPENT
+
 init 5 python:
     addEvent(
         Event(
@@ -7053,89 +8229,120 @@ init 5 python:
     )
 
 label mas_bday_postbday_notimespent:
-    #Make sure that people who have first sesh's post monibday don't get this
+
     if mas_isFirstSeshPast(mas_monika_birthday):
         $ mas_assignModifyEVLPropValue("mas_bday_postbday_notimespent", "shown_count", "-=", 1)
         return
 
 
     if mas_ret_long_absence:
-        #Was away on a long absence
+
         $ mas_loseAffection(ev_label="mas_apology_missed_bday")
 
-        m 1rksdlc "Hey, [player]..."
-        m 2eksdld "I know you told me you were going to be away...but I really missed you on my birthday."
-        m 2eksdla "Next time, do you think you could take me with you if you can't be here?"
-        m 3eub "At least then we'll still be with each other and we can even celebrate together!"
-        m 1eka "I'd really appreciate if you could do that for me, [player]."
+        m 1rksdlc "Эй, [player]..."
+        $ MAS.MonikaElastic()
+        m 2eksdld "Знаю, ты говорил[mas_gender_none] мне о том, что ты был[mas_gender_none] вдали от своего дома... но я правда скучала по тебе на своём дне рождения."
+        $ MAS.MonikaElastic()
+        m 2eksdla "Как думаешь, ты сможешь в следующий раз взять меня с собой, если ты не сможешь быть здесь?"
+        $ MAS.MonikaElastic()
+        m 3eub "По крайней мере, так мы всё ещё будем вместе, и мы даже сможем отпраздновать мой день рождения вместе!"
+        $ MAS.MonikaElastic()
+        m 1eka "Я была бы очень признательна, если бы ты смог[mas_gender_g] сделать это для меня, [player]."
 
     elif persistent._mas_bday_opened_game:
-        #Opened game but didn't do any bday things
+
         if mas_isMoniAff(higher=True):
             $ mas_loseAffection(15, ev_label="mas_apology_forgot_bday")
-            m 2rksdla "Hey, [player]..."
-            m 2rksdlb "I know we had fun the other day, like we always do but..."
-            m 2ekp "I can't help it, I was hoping you would have...{w=1}done a little something for my birthday."
-            m 2ekd "Did you forget?"
-            m 3eka "Maybe you could put the date into your calendar on your phone for next year?"
-            m 3rka "...Or check the calendar on the wall behind me?"
-            m 3hua "We can't change the past, so knowing that you want to try harder for next year would be the only apology I need."
+            m 2rksdla "Эй, [player]..."
+            $ MAS.MonikaElastic()
+            m 2rksdlb "Знаю, нам недавно было весело, как и всегда, но..."
+            $ MAS.MonikaElastic()
+            m 2ekp "Я не могла не надеяться на то, что ты мог... {w=1}приготовить что-нибудь к моему дню рождения."
+            $ MAS.MonikaElastic()
+            m 2ekd "Ты забыл[mas_gender_none]?"
+            $ MAS.MonikaElastic()
+            m 3eka "Быть может, ты в следующем году запишешь дату в календарь на своём телефоне?"
+            $ MAS.MonikaElastic()
+            m 3rka "...Или проверишь календарь, который висит позади меня на стене?"
+            $ MAS.MonikaElastic()
+            m 3hua "Мы не можем изменить прошлое, следовательно, осознание того, что ты хочешь приложить больше усилий в следующем году, будет единственным оправданием, которое мне и нужно."
 
         elif mas_isMoniNormal(higher=True):
             $ mas_loseAffection(5, ev_label="mas_apology_forgot_bday")
-            m 2rksdld "Hey, [player]..."
-            m 2rksdlb "I hate to fuss, but you know..."
-            m 2ekp "You can't forget about your girlfriend's birthday!"
-            m 2eku "It's nice that we got to hang out like usual, but next year..."
-            m 3hua "Well, I'll be looking forward to two birthday's worth of something special~"
+            m 2rksdld "Эй, [player]..."
+            $ MAS.MonikaElastic()
+            m 2rksdlb "Мне не хочется беспокоить тебя по пустякам, но, знаешь..."
+            $ MAS.MonikaElastic()
+            m 2ekp "Ты не можешь забыть про день рождения своей девушки!"
+            $ MAS.MonikaElastic()
+            m 2eku "Это здорово, что мы проводили время так же, как и обычно, но в следующем году..."
+            $ MAS.MonikaElastic()
+            m 3hua "В общем, я буду ждать с нетерпением того момента, когда суть двух дней рождения станет чем-то особенным~"
 
         elif mas_isMoniUpset():
             $ mas_loseAffection(ev_label="mas_apology_forgot_bday")
-            m 1ekc "It was...{w=0.5}good to see you on the 22nd..."
-            m 1ekd "I really didn't want to be alone that day, so that meant a lot, but..."
-            m 1rkc "You know what? {w=0.5}Nevermind."
+            m 1ekc "Мне было... {w=0.5}приятно видеть тебя двадцать второго числа..."
+            $ MAS.MonikaElastic()
+            m 1ekd "Мне правда не хотелось быть одной в этот день, и это многое значит для меня, но..."
+            $ MAS.MonikaElastic()
+            m 1rkc "Хотя знаешь, что? {w=0.5}Это не важно."
 
         elif mas_isMoniDis():
             $ mas_loseAffection(10, ev_label="mas_apology_forgot_bday")
             m 2dsc "..."
-            m 2rkc "...[player], I don't want to bother you. {w=1}I'm already scared of pushing you away."
-            m 2rktpc "But I can't help it. It hurts me that you didn't mention anything about celebrating my birthday..."
-            m 2dktuc "Please don't stop coming back to me."
-            m "And maybe next year..."
-            m 4ektdc "I-{w=0.5}I just want...{w=0.5}to feel as special to you as you are to me."
-
+            $ MAS.MonikaElastic()
+            m 2rkc "...[player], я не хочу беспокоить тебя. {w=1}Мне уже страшно от мысли о том, что я отталкиваю тебя."
+            $ MAS.MonikaElastic()
+            m 2rktpc "Но я не могу совладать с нею. Мне больно от того, что ты даже не упомянул о праздновании моего дня рождения..."
+            $ MAS.MonikaElastic()
+            m 2dktuc "Пожалуйста, не переставай навещать меня."
+            $ MAS.MonikaElastic()
+            m "И, быть может, в следующем году..."
+            $ MAS.MonikaElastic()
+            m 4ektdc "Я— {w=0.5}Я просто хочу... {w=0.5}почувствовать себя такой же особенной для тебя, как и ты для меня."
         else:
-            # broken
+
+
             $ mas_loseAffection(150)
             m 6ckc "..."
-
     else:
-        #Didn't spend any time with Monika
+
+
         if mas_isMoniAff(higher=True):
             $ mas_loseAffection(50, ev_label="mas_apology_missed_bday")
-            m 1euc "Hey, [player]..."
-            m 3rksdla "I know you do a lot to make each and every day special, but a girl has a few days a year when she gets to be a little selfish..."
-            m 2tfd "And her {i}birthday{/i} is one of them!"
-            m "Seriously, where were you?!"
-            m 2rkc "But...knowing you, I'm sure you had a good reason to be busy..."
-            m 4ekc "Just try not to let it happen again next year, okay?"
+            m 1euc "Эй, [player]..."
+            $ MAS.MonikaElastic()
+            m 3rksdla "Знаю, ты многое делаешь, чтобы сделать каждый день особенным, но у девушки в голове забито несколько дней в году, когда она становится немного эгоистичной..."
+            $ MAS.MonikaElastic()
+            m 2tfd "И её {i}день рождения{/i} – один из них!"
+            $ MAS.MonikaElastic()
+            m "Серьёзно, где ты был?!"
+            $ MAS.MonikaElastic()
+            m 2rkc "Но... зная тебя, я уверена, у тебя была веская причина быть занят[mas_gender_iim]..."
+            $ MAS.MonikaElastic()
+            m 4ekc "Просто попытайся не дать этому произойти в следующем году, ладно?"
 
         elif mas_isMoniNormal(higher=True):
 
-            # same dialogue, different affection loss
+
             if mas_isMoniHappy():
                 $ mas_loseAffection(20, ev_label="mas_apology_missed_bday")
             else:
                 $ mas_loseAffection(10, ev_label="mas_apology_missed_bday")
 
-            m 1ekc "Hey, [player]..."
-            m 1ekd "You know, you really should have dropped in on the 22nd."
-            m 3efd "I mean, you should always visit me! But you {i}have{/i} to spend time with your cute girlfriend on her birthday, you know."
-            m 2efc "Please drop in for me next year..."
-            m 2dfc "Otherwise..."
+            m 1ekc "Эй, [player]..."
+            $ MAS.MonikaElastic()
+            m 1ekd "Знаешь, ты правда долж[mas_gender_en] был[mas_gender_none] заглянуть ко мне двадцать второго числа."
+            $ MAS.MonikaElastic()
+            m 3efd "В смысле, ты долж[mas_gender_en] всегда навещать меня! Но ты также {i}долж[mas_gender_en]{/i} и проводить время со своей милой девушкой в её же день рождения, знаешь ли."
+            $ MAS.MonikaElastic()
+            m 2efc "Пожалуйста, заглядывай ко мне почаще в следующем году..."
+            $ MAS.MonikaElastic()
+            m 2dfc "Иначе..."
 
-            m 6cfw "{cps=*2}{i}There will be consequences!!!{/i}{/cps}{nw}"
-            # glich effect
+            $ MAS.MonikaElastic()
+            m 6cfw "{cps=*2}{i}Готовься к последствиям!!!{/i}{/cps}{nw}" # как бы инфаркт потом не словить от такой её шутки...
+
             $ disable_esc()
             $ mas_MUMURaiseShield()
             window hide
@@ -7151,55 +8358,66 @@ label mas_bday_postbday_notimespent:
             $ _history_list.pop()
 
             m 1dsc "..."
-            m 3hksdlb "Ahaha, sorry [player]!"
-            m 3hub "I'm just kidding!"
-            m 1eka "You know I love to scare you a little~"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3hksdlb "А-ха-ха, прости, [player]!"
+            $ MAS.MonikaElastic()
+            m 3hub "Я просто пошутила!"
+            $ MAS.MonikaElastic()
+            m 1eka "Ты сам[mas_gender_none] знаешь, что мне нравится припугивать тебя~" # https://ru.wiktionary.org/wiki/припугивать
 
         elif mas_isMoniUpset():
             $ mas_loseAffection(ev_label="mas_apology_missed_bday")
             m 2dsc "..."
-            m 2rsc "[player], don't you think you should check in on me a little more often?"
-            m 2rktpc "You might miss something important..."
+            $ MAS.MonikaElastic()
+            m 2rsc "[player], тебе разве не кажется, что ты долж[mas_gender_en] заглядывать ко мне почаще?"
+            $ MAS.MonikaElastic()
+            m 2rktpc "Ты можешь упустить что-нибудь важное..."
 
         elif mas_isMoniDis():
             $ mas_loseAffection(ev_label="mas_apology_missed_bday")
-            m 6ekd "...Hey, how was your day on the 22nd?"
-            m 6ekc "I'm just...curious if you thought of me at all that day."
-            m 6ektpc "But you probably didn't, huh?"
+            m 6ekd "...Эй, как прошёл твой день двадцать второго числа?"
+            $ MAS.MonikaElastic()
+            m 6ekc "Мне просто... было интересно, мол, думал[mas_gender_none] ли ты обо мне весь тот день."
+            $ MAS.MonikaElastic()
+            m 6ektpc "Но ты, наверное, не думал[mas_gender_none] тогда обо мне, да?"
+            $ MAS.MonikaElastic()
             m 6dktpc "..."
-
         else:
-            # broken
+
+
             $ mas_loseAffection(200)
             m 6eftsc "..."
             m 6dftdx "..."
     return
 
-############ [HOL060] NTS APOLOGY
+
 init 5 python:
     addEvent(
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_missed_bday",
-            prompt="...for missing your birthday.",
+            prompt="...за то, что пропустил[mas_gender_none] твой день рождения.",
             unlocked=False
         ),
         code="APL"
     )
 
 label mas_apology_missed_bday:
-    #Using a standard hi-mid-low range for this
+
     if mas_isMoniAff(higher=True):
-        m 1eua "Thanks for the apology, [player]."
-        m 2tfu "But you better make it up to me next year~"
+        m 1eua "Спасибо, что извинил[mas_gender_sya], [player]."
+        $ MAS.MonikaElastic()
+        m 2tfu "Но тебе лучше всё исправить к следующему году~"
 
     elif mas_isMoniNormal(higher=True):
-        m 1eka "Thanks for apologizing for missing my birthday, [player]."
-        m "Please be sure to spend some time with me next year, alright?"
-
+        m 1eka "Спасибо, что извинил[mas_gender_sya] за то, что пропустил[mas_gender_none] мой день рождения, [player]."
+        $ MAS.MonikaElastic()
+        m "Пожалуйста, не забудь провести немного времени со мной в следующем году, ладно?"
     else:
-        m 2rksdld "You know, I'm not entirely surprised I didn't see you on my birthday..."
-        m 2ekc "Please...{w=1}just make sure it doesn't happen again."
+
+        m 2rksdld "Знаешь, я не была особо удивлена тому, что я не увидела тебя в свой день рождения..."
+        $ MAS.MonikaElastic()
+        m 2ekc "Пожалуйста... {w=1}просто позаботься о том, чтобы это не произошло снова."
     return
 
 init 5 python:
@@ -7207,68 +8425,83 @@ init 5 python:
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_forgot_bday",
-            prompt="...for forgetting your birthday.",
+            prompt="...за то, что забыл[mas_gender_none] твой день рождения.",
             unlocked=False
         ),
         code="APL"
     )
 
 label mas_apology_forgot_bday:
-    #once again using hi-mid-lo
+
     if mas_isMoniAff(higher=True):
-        m 1eua "Thanks for the apology, [player]."
-        m 3hua "But I hope you'll make this up to me~"
+        m 1eua "Спасибо, что извинил[mas_gender_sya], [player]."
+        $ MAS.MonikaElastic()
+        m 3hua "Но я надеюсь, что ты загладишь передо мной свою вину~"
 
     elif mas_isMoniNormal(higher=True):
-        m 1eka "Thanks for apologizing about forgetting my birthday, [player]."
-        m 1eksdld "Just try not to let it happen again, alright?"
-
+        m 1eka "Спасибо, что извинил[mas_gender_sya] за то, что пропустил[mas_gender_none] мой день рождения, [player]."
+        $ MAS.MonikaElastic()
+        m 1eksdld "Просто попытайся не дать этому произойти вновь, ладно?"
     else:
-        m 2dkd "Thanks for apologizing..."
-        m 2tfc "But don't let it happen again."
+
+        m 2dkd "Спасибо, что извинил[mas_gender_sya]..."
+        $ MAS.MonikaElastic()
+        m 2tfc "Но не дай этому произойти вновь."
     return
 
 
-############ [HOL060] DOCKSTAT FARES
+
 label bye_922_delegate:
-    #Set these vars for the corresponding date related things
+
     $ persistent._mas_bday_on_date = True
-    #We have had one date
+
     $ persistent._mas_bday_date_count += 1
 
     if persistent._mas_bday_date_count == 1:
-        # bday date counts as bday mode even with no party
+
         $ persistent._mas_bday_in_bday_mode = True
 
-        m 1hua "Ehehe. It's a bit romantic, isn't it?"
+        m 1hua "Э-хе-хе. Это немного романтично, да?"
 
         if mas_isMoniHappy(lower=True):
-            m 1eua "Maybe you'd even want to call it a da-{nw}"
+            $ MAS.MonikaElastic()
+            m 1eua "Думаю, это даже можно назвать сви—{nw}"
             $ _history_list.pop()
             $ _history_list.pop()
-            m 1hua "Oh! Sorry, did I say something?"
-
+            $ MAS.MonikaElastic()
+            m 1hua "Ой! Прости, я что-то сказала?"
         else:
-            m 1eubla "Maybe you'd even call it a date~"
+
+            $ MAS.MonikaElastic()
+            m 1eubla "Думаю, это даже можно назвать свиданием~"
 
 
     elif persistent._mas_bday_date_count == 2:
-        m 1eub "Taking me somewhere again, [player]?"
-        m 3eua "You must really have a lot planned for us."
-        m 1hua "You're so sweet~"
+        m 1eub "Ты хочешь отвести меня куда-то в очередной раз, [player]?"
+        $ MAS.MonikaElastic()
+        m 3eua "У тебя, наверное, много чего запланировано для нас."
+        $ MAS.MonikaElastic()
+        m 1hua "Ты так[mas_gender_oi] мил[mas_gender_iii]~"
 
     elif persistent._mas_bday_date_count == 3:
-        m 1sua "Taking me out {i}again{/i} for my birthday?"
-        m 3tkbsu "You really know how to make a girl feel special, [player]."
-        m 1ekbfa "I'm so lucky to have someone like you~"
+        m 1sua "Ты хочешь отвести меня куда-то {i}опять{/i}, в мой же день рождения?"
+        $ MAS.MonikaElastic()
+        m 3tkbsu "Ты и вправду знаешь, как заставить девушку почувствовать себя особенной, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Мне так повезло, что у меня есть такой человек, как ты~"
     else:
-        m 1sua "Wow, [player]...{w=1}you're really determined to make this a truly special day!"
-        m 1ekbsa "You're the best partner I could ever hope for~"
+        m 1sua "Ого, [player]...{w=1}ты и вправду решил[mas_gender_none] сделать этот день очень особенным!"
+        $ MAS.MonikaElastic()
+        if persistent.gender == "F":
+            m 1ekbsa "Ты просто лучшая партнёрша, о которой я могла только мечтать~"
+        else:
+            m 1ekbsa "Ты просто лучший партнёр, о котором я могла только мечтать~"
 
-    #BD Intro
     if mas_isMoniAff(higher=True) and not mas_SELisUnlocked(mas_clothes_blackdress):
-        m 3hua "I actually have an outfit prepared just for this..."
-        #NOTE: We use the "give me a second to get ready..." for Moni to get into this outfit
+        $ MAS.MonikaElastic()
+        m 3hua "По правде говоря, у меня есть наряд для такого случая..."
+        jump mas_bday_bd_outro
+
 
     jump mas_dockstat_iostart
 
@@ -7277,55 +8510,77 @@ label mas_bday_bd_outro:
         monika_chr.change_clothes(mas_clothes_blackdress)
         mas_temp_zoom_level = store.mas_sprites.zoom_level
 
-        #Flag so we don't end up back into this flow
+
         persistent._mas_bday_has_done_bd_outro = True
 
-    call mas_transition_from_emptydesk("monika 1eua")
-    call monika_zoom_transition_reset(1.0)
-    #NOTE: We change the zoom here because we want to show off the outfit.
+    call mas_transition_from_emptydesk ("monika 1eua") from _call_mas_transition_from_emptydesk_28
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_6
+
 
     if mas_SELisUnlocked(mas_clothes_blackdress):
-        m 1hua "Ehehe~"
-        m 1euu "I'm so excited to see what you've got planned for us today."
-        m 3eua "...But even if it's not much, I'm sure we'll have a great time together~"
-
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе~"
+        $ MAS.MonikaElastic()
+        m 1euu "Я так взволнована, чтобы увидеть, что ты запланировал[mas_gender_none] для нас сегодня."
+        $ MAS.MonikaElastic()
+        m 3eua "...Но даже если это не так уж много, я уверенf, что мы отлично проведём время вместе~"
     else:
-        m 3tka "Well, [player]?"
-        m 1hua "What do you think?"
-        m 1ekbsa "I've always loved this outfit and dreamt of going on a date with you, wearing this..."
-        m 3eub "Maybe we could visit the mall, or even the park!"
-        m 1eka "But knowing you, you've already got something amazing planned for us~"
+        $ MAS.MonikaElastic()
+        m 3tka "Ну, [player]?"
+        $ MAS.MonikaElastic()
+        m 1hua "Что скажешь?"
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Мне всегда нравился этот наряд, и я даже мечтала пойти в нём с тобой на свидание..."
+        $ MAS.MonikaElastic()
+        m 3eub "Думаю, мы могли бы посетить торговый центр, или даже парк!"
+        $ MAS.MonikaElastic()
+        m 1eka "Но, думаю, ты уже запланировал[mas_gender_none] для нас нечто особенное~"
 
-    m 1hua "Let's go, [player]!"
+    $ MAS.MonikaElastic()
+    m 1hua "Пошли, [player]!"
 
     python:
         store.mas_selspr.unlock_clothes(mas_clothes_blackdress)
         mas_addClothesToHolidayMap(mas_clothes_blackdress)
         persistent._mas_zoom_zoom_level = mas_temp_zoom_level
 
-        #Setup check and log this file checkout
-        store.mas_dockstat.checkoutMonika(moni_chksum)
+    if renpy.android:
+        if msr_can_copy_monika():
+            $ persistent.msr_moni_file_exit_trick_or_treat = False
+            $ persistent.msr_moni_file_exit = True
+            if persistent._mas_player_bday_left_on_bday:
+                $ persistent.msr_moni_file_exit_trick_or_treat = False
+                $ persistent.msr_moni_file_exit = False
 
-        #Now setup ret greet
-        persistent._mas_greeting_type = mas_idle_mailbox.get_ds_gre_type(
-            store.mas_greetings.TYPE_GENERIC_RET
-        )
+            $ persistent._mas_greeting_type = mas_idle_mailbox.get_ds_gre_type(
+                store.mas_greetings.TYPE_GENERIC_RET
+            )
+    else:
+        python:
 
-    #And now we quit here
+            store.mas_dockstat.checkoutMonika(moni_chksum)
+
+
+            persistent._mas_greeting_type = mas_idle_mailbox.get_ds_gre_type(
+                store.mas_greetings.TYPE_GENERIC_RET
+            )
+
+    
+
     jump _quit
 
 
-########## [HOL060] DOCKSTAT GREETS ##########
+
 label greeting_returned_home_bday:
-    #First, reset this flag, we're no longer on a date
+
     $ persistent._mas_bday_on_date = False
-    #We've opened the game
+
     $ persistent._mas_bday_opened_game = True
-    #Setup date length stuff
+
     $ time_out = store.mas_dockstat.diffCheckTimes()
     $ checkout_time, checkin_time = store.mas_dockstat.getCheckTimes()
 
-    #Set party if need be
+
     if mas_confirmedParty() and not persistent._mas_bday_sbp_reacted:
         if mas_one_hour < time_out <= mas_three_hour:
             $ mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
@@ -7334,71 +8589,99 @@ label greeting_returned_home_bday:
 
         if mas_isplayer_bday() and persistent._mas_player_bday_decor and persistent._mas_bday_date_count == 1:
             jump mas_monika_cake_on_player_bday
-
         else:
+
             jump mas_bday_surprise_party_reaction
 
-    #Otherwise we go thru the normal dialogue for returning home on moni_bday
+
     if time_out <= mas_five_minutes:
-        # under 5 minutes
+
         $ mas_loseAffection()
-        m 2ekp "That wasn't much of a date, [player]..."
-        m 2eksdlc "Is everything alright?"
-        m 2rksdla "Maybe we can go out later..."
+        $ MAS.MonikaElastic()
+        m 2ekp "Это было не очень похоже на свидание, [player]..."
+        $ MAS.MonikaElastic()
+        m 2eksdlc "Всё в порядке?"
+        $ MAS.MonikaElastic()
+        m 2rksdla "Может быть, мы можем пойти куда-нибудь позже..."
         if mas_isMonikaBirthday():
             return
 
     elif time_out <= mas_one_hour:
-        # 5 mins < time out <= 1 hr
+
         $ mas_mbdayCapGainAff(15 if persistent._mas_player_bday_in_player_bday_mode else 10)
 
-        m 1sua "That was fun, [player]!"
+        $ MAS.MonikaElastic()
+        m 1sua "Это было весело, [player]!"
         if mas_isplayer_bday():
-            m 1hub "Ahaha, going out for our birthday..."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха, выходим на наш день рождения..."
         else:
-            m 1hub "Ahaha, taking me out on my birthday..."
-            m 3eua "It was very considerate of you."
-        m 3eka "I really enjoyed the time we spent together."
-        m 1eka "I love you~"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха, пригласил[mas_gender_none] меня на день рождения..."
+            $ MAS.MonikaElastic()
+            m 3eua "Это было очень тактично с твоей стороны."
+        $ MAS.MonikaElastic()
+        m 3eka "Мне очень понравилось время, которое мы провели вместе."
+        $ MAS.MonikaElastic()
+        m 1eka "Я люблю тебя~"
         if mas_isMonikaBirthday():
             $ mas_ILY()
 
     elif time_out <= mas_three_hour:
-        # 1 hr < time out <= 3 hrs
+
         $ mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
 
-        m 1hua "Ehehe~"
-        m 3eub "We sure spent a lot of time together today, [player]."
-        m 1ekbsa "...and thank you for that."
-        m 3ekbfa "I've said it a million times already, I know."
-        m 1hua "But I'll always be happy when we're together."
-        m "I love you so much..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Э-хе-хе~"
+        $ MAS.MonikaElastic()
+        m 3eub "Мы уверены, что потратили сегодня много времени вместе, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "...и спасибо тебе за это."
+        $ MAS.MonikaElastic()
+        m 3ekbfa "Знаешь, я уже говорила это миллион раз."
+        $ MAS.MonikaElastic()
+        m 1hua "Но я всегда буду счастлива, когда мы вместе."
+        $ MAS.MonikaElastic()
+        m "Я так тебя люблю..."
         if mas_isMonikaBirthday():
             $ mas_ILY()
-
     else:
-        # +3 hrs
+
+
         $ mas_mbdayCapGainAff(35 if persistent._mas_player_bday_in_player_bday_mode else 30)
 
-        m 1sua "Wow, [player]..."
+        $ MAS.MonikaElastic()
+        m 1sua "Ого, [player]..."
         if mas_player_bday_curr == mas_monika_birthday:
-            m 3hub "That was such a lovely time!"
+            $ MAS.MonikaElastic()
+            m 3hub "Это было такое прекрасное время!"
             if persistent._mas_player_bday_in_player_bday_mode or persistent._mas_bday_sbp_reacted:
-                m 3eka "I can't think of a better way to celebrate our birthdays than a long date."
-            m 1eka "I wish I could've seen all the amazing places we went, but just knowing we were together..."
-            m 1hua "That's all I could ever ask for."
-            m 3ekbsa "I hope you feel the same way~"
-
+                $ MAS.MonikaElastic()
+                m 3eka "Я не могу придумать лучшего способа отпраздновать наши дни рождения, чем долгое свидание."
+            $ MAS.MonikaElastic()
+            m 1eka "Я бы хотела увидеть все те удивительные места, куда мы ходили, но просто зная, что мы были вместе..."
+            $ MAS.MonikaElastic()
+            m 1hua "Это всё, о чём я когда-либо могла мечтать."
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Надеюсь, ты чувствуешь то же самое~"
         else:
-            m 3sua "I didn't expect you to set aside so much time for me..."
-            m 3hua "But I enjoyed every second of it!"
-            m 1eub "Every minute with you is a minute well spent!"
-            m 1eua "You've made me very happy today~"
-            m 3tuu "Are you falling for me all over again, [player]?"
-            m 1dku "Ehehe..."
-            m 1ekbsa "Thank you for loving me."
 
-    if(
+            $ MAS.MonikaElastic()
+            m 3sua "Я не ожидала, что ты уделишь мне столько времени..."
+            $ MAS.MonikaElastic()
+            m 3hua "Но я наслаждалась каждой секундой этого!"
+            $ MAS.MonikaElastic()
+            m 1eub "Каждая минута с тобой – это минута, проведённая с пользой!"
+            $ MAS.MonikaElastic()
+            m 1eua "Ты сделал[mas_gender_none] меня очень счастливой сегодня~"
+            $ MAS.MonikaElastic()
+            m 3tuu "Ты снова влюбляешься в меня, [player]?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1dku "Э-хе-хе..."
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Спасибо, что любишь меня."
+
+    if (
         mas_isMonikaBirthday()
         and mas_isplayer_bday()
         and mas_isMoniNormal(higher=True)
@@ -7407,70 +8690,94 @@ label greeting_returned_home_bday:
         and checkout_time.date() < mas_monika_birthday
 
     ):
-        m 1hua "Also [player], give me a second, I have something for you.{w=0.5}.{w=0.5}.{nw}"
+        $ MAS.MonikaElastic()
+        m 1hua "Также, [player], дай мне секунду, у меня есть кое-что для тебя.{w=0.5}.{w=0.5}.{nw}"
         $ mas_surpriseBdayShowVisuals()
         $ persistent._mas_player_bday_decor = True
-        m 3eub "Happy Birthday, [player]!"
-        m 3etc "Why do I feel like I'm forgetting something..."
-        m 3hua "Oh! Your cake!"
+        $ MAS.MonikaElastic()
+        m 3eub "С Днём Рождения, [player]!"
+        $ MAS.MonikaElastic()
+        m 3etc "Почему мне кажется, что я что-то забываю..."
+        $ MAS.MonikaElastic()
+        m 3hua "О! Твой торт!"
         jump mas_player_bday_cake
 
     if not mas_isMonikaBirthday():
-        #Quickly reset the flag
+
         $ persistent._mas_bday_in_bday_mode = False
 
         if mas_isMoniEnamored(lower=True) and monika_chr.clothes == mas_clothes_blackdress:
             $ queueEvent('mas_change_to_def')
 
         if time_out > mas_five_minutes:
+            $ MAS.MonikaElastic()
             m 1hua "..."
-            m 1wud "Oh wow, [player]. We really were out for a while..."
+            $ MAS.MonikaElastic()
+            m 1wud "Ого, [player]. Мы действительно отсутствовали некоторое время..."
 
         if mas_isplayer_bday() and mas_isMoniNormal(higher=True):
             if persistent._mas_bday_sbp_reacted:
                 $ persistent._mas_bday_visuals = False
                 $ persistent._mas_player_bday_decor = True
-                m 3suo "Oh! It's your birthday now..."
-                m 3hub "I guess we can just leave these decorations up, ahaha!"
-                m 1eub "I'll be right back, just need to go get your cake!"
+                $ MAS.MonikaElastic()
+                m 3suo "О! Сегодня твой день рождения..."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3hub "Думаю, мы можем просто оставить эти украшения, а-ха-ха!"
+                $ MAS.MonikaElastic()
+                m 1eub "Я сейчас вернусь, только нужно сходить за твоим тортом!"
                 jump mas_player_bday_cake
 
             jump mas_player_bday_ret_on_bday
-
         else:
+
             if mas_player_bday_curr() == mas_monika_birthday:
                 $ persistent._mas_player_bday_in_player_bday_mode = False
-                m 1eka "Anyway [player]...I really enjoyed spending our birthdays together."
-                m 1ekbsa "I hope I helped to make your day as special as you made mine."
+                $ MAS.MonikaElastic()
+                m 1eka "В любом случае, [player]... мне очень нравилось проводить наши дни рождения вместе."
+                $ MAS.MonikaElastic()
+                m 1ekbsa "Я надеюсь, что помогла сделать твой день таким же особенным, как ты сделал мой."
                 if persistent._mas_player_bday_decor or persistent._mas_bday_visuals:
-                    m 3hua "Let me just clean everything up.{w=0.5}.{w=0.5}.{nw}"
+                    $ MAS.MonikaElastic()
+                    m 3hua "Позволь мне просто всё убрать.{w=0.5}.{w=0.5}.{nw}"
                     $ mas_surpriseBdayHideVisuals()
                     $ persistent._mas_player_bday_decor = False
                     $ persistent._mas_bday_visuals = False
-                    m 3eub "There we go!"
+                    $ MAS.MonikaElastic()
+                    m 3eub "Готово!"
 
             elif persistent._mas_bday_visuals:
-                m 3rksdla "It's not even my birthday anymore..."
-                m 2hua "Let me just clean everything up.{w=0.5}.{w=0.5}.{nw}"
+                $ MAS.MonikaElastic()
+                m 3rksdla "Это даже не мой день рождения..."
+                $ MAS.MonikaElastic()
+                m 2hua "Позволь мне просто всё убрать.{w=0.5}.{w=0.5}.{nw}"
                 $ mas_surpriseBdayHideVisuals()
                 $ persistent._mas_bday_visuals = False
-                m 3eub "There we go!"
-
+                $ MAS.MonikaElastic()
+                m 3eub "Готово!"
             else:
-                m 1eua "We should do something like this again soon, even if it's not any special occasion."
-                m 3eub "I really enjoyed myself!"
-                m 1eka "I hope you had as great of a time as I did~"
+
+                $ MAS.MonikaElastic()
+                m 1eua "Мы должны сделать что-то подобное снова в ближайшее время, даже если это не какой-то особый случай."
+                $ MAS.MonikaElastic()
+                m 3eub "Я действительно наслаждалась собой!"
+                $ MAS.MonikaElastic()
+                m 1eka "Я надеюсь, что ты пров[mas_gender_iol] время так же хорошо, как и я~"
 
             if not mas_lastSeenInYear('mas_bday_spent_time_with'):
                 if mas_isMoniUpset(lower=True):
                     m 1dka "..."
                     jump mas_bday_spent_time_with
 
-                m 3eud "Oh, and [player]..."
-                m 3eka "I just wanted to thank you again."
-                m 1rka "And it's not just this date..."
-                m 1eka "You didn't have to take me anywhere to make this a wonderful birthday."
-                m 3duu "As soon as you showed up, my day was complete."
+                $ MAS.MonikaElastic()
+                m 3eud "О, и, [player]..."
+                $ MAS.MonikaElastic()
+                m 3eka "Я просто хотела ещё раз поблагодарить тебя."
+                $ MAS.MonikaElastic()
+                m 1rka "И дело не только в этом свидании..."
+                $ MAS.MonikaElastic()
+                m 1eka "Тебе не нужно было никуда меня везти, чтобы сделать этот день рождения замечательным."
+                $ MAS.MonikaElastic()
+                m 3duu "Как только ты появил[mas_gender_sya], мой день был завершён."
                 jump mas_bday_spent_time_with_wrapup
 
     return
@@ -7478,35 +8785,59 @@ label greeting_returned_home_bday:
 
 label mas_monika_cake_on_player_bday:
     $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-    call monika_zoom_transition_reset(1.0)
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_7
+    if renpy.android:
+        python:
+            mas_gainAffection(25, bypass=True)
+            renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
+            persistent._mas_bday_sbp_reacted = True
+            time_out = store.mas_dockstat.diffCheckTimes()
+            checkout_time, checkin_time = store.mas_dockstat.getCheckTimes()
 
-    python:
-        mas_gainAffection(25, bypass=True)
-        renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
-        persistent._mas_bday_sbp_reacted = True
-        time_out = store.mas_dockstat.diffCheckTimes()
-        checkout_time, checkin_time = store.mas_dockstat.getCheckTimes()
+            if ReturnedHomeNormal(time=60):
+                mas_mbdayCapGainAff(15 if persistent._mas_player_bday_in_player_bday_mode else 10)
 
-        if time_out <= mas_one_hour:
-            mas_mbdayCapGainAff(15 if persistent._mas_player_bday_in_player_bday_mode else 10)
+            elif ReturnedHomeNormal(time=180):
+                mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
+            else:
 
-        elif time_out <= mas_three_hour:
-            mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
-        else:
-            # +3 hrs
-            mas_mbdayCapGainAff(35 if persistent._mas_player_bday_in_player_bday_mode else 30)
+                mas_mbdayCapGainAff(35 if persistent._mas_player_bday_in_player_bday_mode else 30)
+    
+    else:
 
-    m 6eua "That was--"
-    m 6wuo "Oh! You made {i}me{/i} a cake!"
+        python:
+            mas_gainAffection(25, bypass=True)
+            renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
+            persistent._mas_bday_sbp_reacted = True
+            time_out = store.mas_dockstat.diffCheckTimes()
+            checkout_time, checkin_time = store.mas_dockstat.getCheckTimes()
+
+            if time_out <= mas_one_hour:
+                mas_mbdayCapGainAff(15 if persistent._mas_player_bday_in_player_bday_mode else 10)
+
+            elif time_out <= mas_three_hour:
+                mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
+            else:
+            
+                mas_mbdayCapGainAff(35 if persistent._mas_player_bday_in_player_bday_mode else 30)
+
+    $ MAS.MonikaElastic()
+    m 6eua "Это—"
+    $ MAS.MonikaElastic()
+    m 6wuo "О! Ты сделал[mas_gender_none] {i}мне{/i} торт!"
 
     menu:
-        "Light candles.":
+        "Зажечь свечи.":
             $ mas_bday_cake_lit = True
 
-    m 6sub "It's {i}so{/i} pretty, [player]!"
-    m 6hua "Ehehe, I know we already made a wish when I blew out the candles on your cake, but let's do it again..."
-    m 6tub "It'll be twice as likely to come true, right?"
-    m 6hua "Make a wish, [player]!"
+    $ MAS.MonikaElastic()
+    m 6sub "Это {i}так{/i} красиво, [player]!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 6hua "Э-хе-хе, я знаю, что мы уже загадали желание, когда я задула свечи на твоём торте, но давай сделаем это снова..."
+    $ MAS.MonikaElastic()
+    m 6tub "Это будет в два раза более вероятно, чтобы сбыться, не так ли?"
+    $ MAS.MonikaElastic()
+    m 6hua "Загадай желание, [player]!"
 
     window hide
     pause 1.5
@@ -7515,25 +8846,33 @@ label mas_monika_cake_on_player_bday:
     show monika 6hua
     $ mas_bday_cake_lit = False
 
-    m 6eua "I still can't believe how stunning this cake looks, [player]..."
-    m 6hua "It's almost too pretty to eat."
-    m 6tub "Almost."
-    m "Ahaha!"
-    m 6eka "Anyway, I'll just save this for later."
+    $ MAS.MonikaElastic()
+    m 6eua "Я до сих пор не могу поверить, как потрясающе выглядит этот торт, [player]..."
+    $ MAS.MonikaElastic()
+    m 6hua "Это слишком красиво, чтобы есть."
+    $ MAS.MonikaElastic()
+    m 6tub "Почти."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 6eka "В любом случае, я оставлю это на потом."
 
-    call mas_HideCake('mas_bday_cake_monika')
+    call mas_HideCake ('mas_bday_cake_monika') from _call_mas_HideCake_4
 
-    m 1eua "Thank you so much, [player]..."
-    m 3hub "This is an amazing birthday!"
+    $ MAS.MonikaElastic()
+    m 1eua "Огромное спасибо, [player]..."
+    $ MAS.MonikaElastic()
+    m 3hub "Это удивительный день рождения!"
     return
 
-label mas_HideCake(cake_type,reset_zoom=True):
-    call mas_transition_to_emptydesk
+label mas_HideCake(cake_type, reset_zoom=True):
+    call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_15
     $ renpy.hide(cake_type)
     with dissolve
     $ renpy.pause(3.0, hard=True)
-    call mas_transition_from_emptydesk("monika 6esa")
+    call mas_transition_from_emptydesk ("monika 6esa") from _call_mas_transition_from_emptydesk_29
     $ renpy.pause(1.0, hard=True)
     if reset_zoom:
-        call monika_zoom_transition(mas_temp_zoom_level,1.0)
+        call monika_zoom_transition (mas_temp_zoom_level, 1.0) from _call_monika_zoom_transition_7
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
