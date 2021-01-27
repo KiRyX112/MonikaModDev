@@ -229,7 +229,7 @@ label mas_name_cases:
     elif persistent.tempinstrument == "классическая гитара":
         $ mas_tempinstrument_name_whom = "классическую гитару"
         $ mas_tempinstrument_name_who = "классической гитарой"
-    elif persistent.tempinstrument == "колёсная лира" or tempinstrument == "колесная лира":
+    elif persistent.tempinstrument == "колёсная лира" or persistent.tempinstrument == "колесная лира":
         $ mas_tempinstrument_name_whom = "колёсную лиру"
         $ mas_tempinstrument_name_who = "колёсной лирой"
     elif persistent.tempinstrument == "кошачье фортепиано":
@@ -271,7 +271,7 @@ label mas_name_cases:
     elif persistent.tempinstrument == "символический орган":
         $ mas_tempinstrument_name_whom = "символический орган"
         $ mas_tempinstrument_name_who = "символическим органом"
-    elif persistent.tempinstrument == "скрипка штроха" or tempinstrument == "скрипка Штроха":
+    elif persistent.tempinstrument == "скрипка штроха" or persistent.tempinstrument == "скрипка Штроха":
         $ mas_tempinstrument_name_whom = "скрипку Штроха"
         $ mas_tempinstrument_name_who = "скрипкой Штроха"
     elif persistent.tempinstrument == "стальной барабан":
@@ -283,7 +283,7 @@ label mas_name_cases:
     elif persistent.tempinstrument == "теноровый барабан":
         $ mas_tempinstrument_name_whom = "теноровый барабан"
         $ mas_tempinstrument_name_who = "теноровым барабаном"
-    elif persistent.tempinstrument == "флейта пана" or tempinstrument == "флейта Пана":
+    elif persistent.tempinstrument == "флейта пана" or persistent.tempinstrument == "флейта Пана":
         $ mas_tempinstrument_name_whom = "флейту Пана"
         $ mas_tempinstrument_name_who = "флейтой Пана"
     elif persistent.tempinstrument == "флейта-пикколо":
@@ -336,4 +336,4 @@ label mas_name_cases:
     else:
         $ mas_tempinstrument_name_whom = persistent.tempinstrument
         $ mas_tempinstrument_name_who = persistent.tempinstrument
-
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
