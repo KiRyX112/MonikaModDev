@@ -58,25 +58,25 @@ define -2 gui.interface_text_color = '#ffffff'
 
 
 
-define -2 gui.default_font = "gui/font/comic.ttf"
+define -2 gui.default_font = "gui/font/Aller_Rg.ttf"
 
 
-define -2 gui.name_font = "gui/font/Rotonda.ttf"
+define -2 gui.name_font = "gui/font/RifficFree-Bold.ttf"
 
 
-define -2 gui.interface_font = "DejaVuSans.ttf"
+define -2 gui.interface_font = "gui/font/Aller_Rg.ttf"
 
 
-define -2 gui.text_size = 20
+define -2 gui.text_size = 22
 
 
-define -2 gui.name_text_size = 22
+define -2 gui.name_text_size = 24
 
 
-define -2 gui.interface_text_size = 22
+define -2 gui.interface_text_size = 24
 
 
-define -2 gui.label_text_size = 24
+define -2 gui.label_text_size = 28
 
 
 define -2 gui.notify_text_size = 16
@@ -223,7 +223,17 @@ define -2 gui.choice_button_text_hover_color = "#fa9"
 
 
 
-
+define -2 gui.choice_red_button_width = 420
+define -2 gui.choice_red_button_height = None
+define -2 gui.choice_red_button_tile = False
+define -2 gui.choice_red_button_borders = Borders(100, 5, 100, 5)
+define -2 gui.choice_red_button_text_font = "gui/font/Aller_Rg.ttf"
+define -2 gui.choice_red_button_text_size = 24
+define -2 gui.choice_red_button_text_xalign = 0.5
+define -2 gui.choice_button_text_idle_color = "#000"
+define -2 gui.choice_button_text_hover_color = "#fe9494"
+define -2 gui.idle_button_red = "gui/button/choice_idle_background_red.png"
+define -2 gui.hover_button_red = "gui/button/choice_hover_background_red.png"
 
 
 
@@ -396,22 +406,4 @@ define -2 gui.nvl_thought_xalign = 0.0
 
 define -2 gui.nvl_button_xpos = 450
 define -2 gui.nvl_button_xalign = 0.0
-
-
-
-
-
-
-
-init -2 python:
-    layout.ARE_YOU_SURE = _("Вы уверены?")
-    layout.DELETE_SAVE = _("Вы уверены, что хотите удалить сохранение?")
-    layout.OVERWRITE_SAVE = _("Вы уверены, что хотите перезаписать сохранение?")
-    layout.LOADING = _("Загрузка приведёт к потере прогресса.\nВы уверены, что хотите это сделать?")
-    layout.QUIT = _("Вы уверены, что хотите выйти?")
-    layout.MAIN_MENU = _("Вы уверены, что хотите вернуться в главное меню?\nЭто приведёт к потере прогресса.")
-    layout.END_REPLAY = _("Вы уверены, что хотите остановить повтор?")
-    layout.SLOW_SKIP = _("Вы уверены, что хотите начать пропуск текста?")
-    layout.FAST_SKIP_UNSEEN = _("Вы уверены, что хотите пропустить непрочитанный текст до следующего выбора?")
-    layout.FAST_SKIP_SEEN = _("Вы уверены, что хотите перейти к следующему выбору?")
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
