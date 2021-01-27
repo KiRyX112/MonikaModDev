@@ -1,52 +1,52 @@
-# FileReactions framework.
-# not too different from events
+
+
 
 default persistent._mas_filereacts_failed_map = dict()
-# mapping of failed deleted file reacts
+
 
 default persistent._mas_filereacts_just_reacted = False
-# True if we just reacted to something
+
 
 default persistent._mas_filereacts_reacted_map = dict()
-# mapping of file reacts that we have already reacted to today
+
 
 default persistent._mas_filereacts_stop_map = dict()
-# mapping of file reacts that we should no longer react to ever again
+
 
 default persistent._mas_filereacts_historic = dict()
-# historic database used to track when and how many gifts Monika has received
+
 
 default persistent._mas_filereacts_last_reacted_date = None
-# stores the last date gifts were received so we can clear _mas_filereacts_reacted_map
+
 
 default persistent._mas_filereacts_sprite_gifts = {}
-# contains sprite gifts that are currently available. aka not already unlocked
-# key: giftname to react to
-# value: tuple of the following format:
-#   [0] - sprite type (0 - ACS, 1 - HAIR, 2 - CLOTHES)
-#   [1] - id of the sprite object this gift unlocks.
-#
-# NOTE: THIS IS REVERSE MAPPING OF HOW JSON GIFTS AND SPRITE REACTED WORK
-#
-# NOTE: contains sprite gifts before being unlocked. When its unlocked,
-#   they move to _mas_sprites_json_gifted_sprites
+
+
+
+
+
+
+
+
+
+
 
 default persistent._mas_filereacts_sprite_reacted = {}
-# list of sprite reactions. This MUST be handled via the sprite reaction/setup
-# labels. DO NOT ACCESS DIRECTLY. Use the helper function
-# key:  tuple of the following format:
-#   [0]: sprite type (0 - ACS, 1 - HAIR, 2 - CLOTHES)
-#   [1]: id of the sprite objec this gift unlocks (name) != display name
-# value: giftname
 
-# TODO: need a generic reaction for finding a new ACS/HAIR/CLOTHES
+
+
+
+
+
+
+
 
 default persistent._mas_filereacts_gift_aff_gained = 0
-#Holds the amount of affection we've gained by gifting
-#NOTE: This is reset daily
+
+
 
 default persistent._mas_filereacts_last_aff_gained_reset_date = datetime.date.today()
-#Holds the last time we reset the aff gained for gifts
+
 
 init 800 python:
     if len(persistent._mas_filereacts_failed_map) > 0:
@@ -63,48 +63,48 @@ init -11 python in mas_filereacts:
     GiftReactDetails = namedtuple(
         "GiftReactDetails",
         [
-            # label corresponding to this gift react
+            
             "label",
 
-            # lowercase, no extension giftname for this gift react
+            
             "c_gift_name",
 
-            # will contain a reference to sprite object data if this is
-            # associatd with a sprite. Will be None if not related to
-            # sprite objects.
+            
+            
+            
             "sp_data",
         ]
     )
 
-    # file react database
+
     filereact_db = dict()
 
-    # file reaction filename mapping
-    # key: filename or list of filenames
-    # value: Event
+
+
+
     filereact_map = dict()
 
-    # currently found files react map
-    # NOTE: highly volitatle. Expect this to change often
-    # key: lowercase filename, without extension
-    # value: on disk filename
+
+
+
+
     foundreact_map = dict()
 
-    # spare foundreact map, designed for threaded use
-    # same keys/values as foundreact_map
+
+
     th_foundreact_map = dict()
 
-    # good gifts list
+
     good_gifts = list()
 
-    # bad gifts list
+
     bad_gifts = list()
 
-    # connector quips
+
     connectors = None
     gift_connectors = None
 
-    # starter quips
+
     starters = None
     gift_starters = None
 
@@ -126,16 +126,16 @@ init -11 python in mas_filereacts:
             (Need to check ev.rules in a respective react_to_gifts to exclude with)
                 (Default: [])
         """
-        # lowercase the list in case
+        
         if fname is not None:
             fname = fname.lower()
-
+        
         exclude_keys = {}
         if exclude_on:
             for _key in exclude_on:
                 exclude_keys[_key] = None
-
-        # build new Event object
+        
+        
         ev = store.Event(
             store.persistent.event_database,
             ev_label,
@@ -143,13 +143,13 @@ init -11 python in mas_filereacts:
             action=_action,
             rules=exclude_keys
         )
-
-        # TODO: should ovewrite category and action always
-
-        # add it to the db and map
+        
+        
+        
+        
         filereact_db[ev_label] = ev
         filereact_map[fname] = ev
-
+        
         if is_good is not None:
             if is_good:
                 good_gifts.append(ev_label)
@@ -162,8 +162,8 @@ init -11 python in mas_filereacts:
         Initializes the connector quips
         """
         global connectors, gift_connectors
-
-        # the connector is a MASQipList
+        
+        
         connectors = store.MASQuipList(allow_glitch=False, allow_line=False)
         gift_connectors = store.MASQuipList(allow_glitch=False, allow_line=False)
 
@@ -173,8 +173,8 @@ init -11 python in mas_filereacts:
         Initializes the starter quips
         """
         global starters, gift_starters
-
-        # the starter is a MASQuipList
+        
+        
         starters = store.MASQuipList(allow_glitch=False, allow_line=False)
         gift_starters = store.MASQuipList(allow_glitch=False, allow_line=False)
 
@@ -220,75 +220,75 @@ init -11 python in mas_filereacts:
             gsp reactions, then gen reactions
         """
         labels = []
-
-        # first find standard reactions
+        
+        
         if len(evb_details) > 0:
             evb_labels = []
             for evb_detail in evb_details:
                 evb_labels.append(evb_detail.label)
-
+                
                 if gift_cntrs is not None:
                     evb_labels.append(gift_cntrs.quip()[1])
-
+                
                 if prepare_data and evb_detail.sp_data is not None:
-                    # if we need to prepare data, then add the sprite_data
-                    # to reacted map
+                    
+                    
                     store.persistent._mas_filereacts_sprite_reacted[evb_detail.sp_data] = (
                         evb_detail.c_gift_name
                     )
-
+            
             labels.extend(evb_labels)
-
-        # now generic sprite objects
+        
+        
         if len(gsp_details) > 0:
             gsp_labels = []
             for gsp_detail in gsp_details:
                 if gsp_detail.sp_data is not None:
                     gsp_labels.append("mas_reaction_gift_generic_sprite_json")
-
+                    
                     if gift_cntrs is not None:
                         gsp_labels.append(gift_cntrs.quip()[1])
-
+                    
                     if prepare_data:
                         store.persistent._mas_filereacts_sprite_reacted[gsp_detail.sp_data] = (
                             gsp_detail.c_gift_name
                         )
-
+            
             labels.extend(gsp_labels)
-
-        # and lastlly is generics
+        
+        
         if len(gen_details) > 0:
             gen_labels = []
             for gen_detail in gen_details:
                 gen_labels.append("mas_reaction_gift_generic")
-
+                
                 if gift_cntrs is not None:
                     gen_labels.append(gift_cntrs.quip()[1])
-
+                
                 if prepare_data:
                     store.persistent._mas_filereacts_reacted_map.pop(
                         gen_detail.c_gift_name,
                         None
                     )
-
+            
             labels.extend(gen_labels)
-
-        # final setup
+        
+        
         if len(labels) > 0:
-
-            # only pop if we used connectors
+            
+            
             if gift_cntrs is not None:
                 labels.pop()
-
-            # add the ender
+            
+            
             if ending_label is not None:
                 labels.append(ending_label)
-
-            # add the starter
+            
+            
             if starting_label is not None:
                 labels.insert(0, starting_label)
-
-        # now return the list
+        
+        
         return labels
 
     def build_exclusion_list(_key):
@@ -334,19 +334,19 @@ init -11 python in mas_filereacts:
         RETURNS: list of found giftnames
         """
         raw_gifts = store.mas_docking_station.getPackageList(GIFT_EXT)
-
+        
         if len(raw_gifts) == 0:
             return []
-
-        # day check
+        
+        
         if store.mas_pastOneDay(store.persistent._mas_filereacts_last_reacted_date):
             store.persistent._mas_filereacts_last_reacted_date = datetime.date.today()
             store.persistent._mas_filereacts_reacted_map = dict()
-
-        # look for potential gifts
+        
+        
         gifts_found = []
         has_exclusions = len(exclusion_list) > 0
-
+        
         for mas_gift in raw_gifts:
             gift_name, ext, garbage = mas_gift.partition(GIFT_EXT)
             c_gift_name = gift_name.lower()
@@ -359,16 +359,16 @@ init -11 python in mas_filereacts:
                         in store.persistent._mas_filereacts_reacted_map
                 )
             ):
-                # this gift is valid (not in failed/stopped/or reacted)
-
-                # check for exclusions
+                
+                
+                
                 if has_exclusions and c_gift_name in exclusion_list:
                     exclusion_found_map[c_gift_name] = mas_gift
-
+                
                 else:
                     gifts_found.append(c_gift_name)
                     found_map[c_gift_name] = mas_gift
-
+        
         return gifts_found
 
 
@@ -390,58 +390,58 @@ init -11 python in mas_filereacts:
         """
         if len(gifts) == 0:
             return
-
-        # make copy of gifts
+        
+        
         gifts = list(gifts)
-
-        # first find standard reactions
+        
+        
         for index in range(len(gifts)-1, -1, -1):
-
-            # determine if reaction exists
+            
+            
             mas_gift = gifts[index]
             reaction = filereact_map.get(mas_gift, None)
-
+            
             if mas_gift is not None and reaction is not None:
-
-                # pull sprite data
+                
+                
                 sp_data = store.persistent._mas_filereacts_sprite_gifts.get(
                     mas_gift,
                     None
                 )
-
-                # remove gift and add details
+                
+                
                 gifts.pop(index)
                 evb_details.append(GiftReactDetails(
                     reaction.eventlabel,
                     mas_gift,
                     sp_data
                 ))
-
-        # now for generic sprite objects
+        
+        
         if len(gifts) > 0:
             for index in range(len(gifts)-1, -1, -1):
                 mas_gift = gifts[index]
-                # pull sprite data
+                
                 sp_data = store.persistent._mas_filereacts_sprite_gifts.get(
                     mas_gift,
                     None
                 )
-
+                
                 if mas_gift is not None and sp_data is not None:
                     gifts.pop(index)
-
-                    # add details
+                    
+                    
                     gsp_details.append(GiftReactDetails(
                         "mas_reaction_gift_generic_sprite_json",
                         mas_gift,
                         sp_data
                     ))
-
-        # and lastly is generics
+        
+        
         if len(gifts) > 0:
             for mas_gift in gifts:
                 if mas_gift is not None:
-                    # add details
+                    
                     gen_details.append(GiftReactDetails(
                         "mas_reaction_gift_generic",
                         mas_gift,
@@ -464,37 +464,37 @@ init -11 python in mas_filereacts:
         RETURNS:
             list of labels to be queued/pushed
         """
-        # first find gifts
+        
         found_gifts = check_for_gifts(found_map)
-
+        
         if len(found_gifts) == 0:
             return []
-
-        # put the gifts in the reacted map
+        
+        
         for c_gift_name, mas_gift in found_map.iteritems():
             store.persistent._mas_filereacts_reacted_map[c_gift_name] = mas_gift
-
+        
         found_gifts.sort()
-
-        # pull details from teh gifts
+        
+        
         evb_details = []
         gsp_details = []
         gen_details = []
         process_gifts(found_gifts, evb_details, gsp_details, gen_details)
-
-        # register all the gifts
+        
+        
         register_sp_grds(evb_details)
         register_sp_grds(gsp_details)
         register_gen_grds(gen_details)
-
-        # then build the reaction labels
-        # setup connectors
+        
+        
+        
         if connect:
             gift_cntrs = gift_connectors
         else:
             gift_cntrs = None
-
-        # now build
+        
+        
         return build_gift_react_labels(
             evb_details,
             gsp_details,
@@ -503,6 +503,173 @@ init -11 python in mas_filereacts:
             "mas_reaction_end",
             _pick_starter_label()
         )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def register_gen_grds(details):
         """
@@ -541,7 +708,7 @@ init -11 python in mas_filereacts:
             return "mas_reaction_gift_starter_d25"
         elif store.mas_isF14():
             return "mas_reaction_gift_starter_f14"
-
+        
         return "mas_reaction_gift_starter_neutral"
 
     def _core_delete(_filename, _map):
@@ -554,21 +721,21 @@ init -11 python in mas_filereacts:
         """
         if len(_map) == 0:
             return
-
-        # otherwise check for random deletion
+        
+        
         if _filename is None:
             _filename = random.choice(_map.keys())
-
+        
         file_to_delete = _map.get(_filename, None)
         if file_to_delete is None:
             return
-
+        
         if store.mas_docking_station.destroyPackage(file_to_delete):
-            # file has been deleted (or is gone). pop and go
+            
             _map.pop(_filename)
             return
-
-        # otherwise add to the failed map
+        
+        
         store.persistent._mas_filereacts_failed_map[_filename] = file_to_delete
 
 
@@ -591,12 +758,12 @@ init -11 python in mas_filereacts:
             eventlabel - the event label for the gift reaction
 
         """
-        # check for stats dict for today
+        
         today = datetime.date.today()
         if not today in store.persistent._mas_filereacts_historic:
             store.persistent._mas_filereacts_historic[today] = dict()
-
-        # Add stats
+        
+        
         store.persistent._mas_filereacts_historic[today][eventlabel] = store.persistent._mas_filereacts_historic[today].get(eventlabel,0) + 1
 
 
@@ -681,7 +848,7 @@ init -11 python in mas_filereacts:
         """
         if date is None:
             date = datetime.date.today()
-
+        
         stats = _get_full_stats_for_date(date)
         if stats is None:
             return (0,0,0,0)
@@ -700,7 +867,7 @@ init -11 python in mas_filereacts:
 
 
 
-    # init
+
     _initConnectorQuips()
     _initStarterQuips()
 
@@ -722,20 +889,20 @@ init python:
         """
         Checks for reactions, then queues them
         """
-
-        # only check if we didnt just react
+        
+        
         if persistent._mas_filereacts_just_reacted:
             return
-
-        # otherwise check
+        
+        
         mas_filereacts.foundreact_map.clear()
-
-        #If conditions are met to use d25 react to gifts, we do.
+        
+        
         if mas_d25_utils.shouldUseD25ReactToGifts():
             reacts = mas_d25_utils.react_to_gifts(mas_filereacts.foundreact_map)
         else:
             reacts = mas_filereacts.react_to_gifts(mas_filereacts.foundreact_map)
-
+        
         if len(reacts) > 0:
             for _react in reacts:
                 queueEvent(_react)
@@ -770,7 +937,7 @@ init python:
         if date is None:
             date = datetime.date.today()
         historic = persistent._mas_filereacts_historic.get(date,None)
-
+        
         if historic is None:
             return 0
         return historic.get(label,0)
@@ -791,16 +958,16 @@ init python:
         neutralGifts = 0
         badGifts = 0
         giftRange = mas_genDateRange(start, end)
-
-        # loop over gift days and check if were given any gifts
+        
+        
         for date in giftRange:
             gTotal, gGood, gNeut, gBad = mas_filereacts.get_report_for_date(date)
-
+            
             totalGifts += gTotal
             goodGifts += gGood
             neutralGifts += gNeut
             badGifts += gBad
-
+        
         return (totalGifts,goodGifts,neutralGifts,badGifts)
 
 
@@ -822,7 +989,7 @@ init python:
             [3]: True if this gift has already been given before
             [4]: sprite object (could be None even if sprite name is populated)
         """
-        # given giftname? try and lookup
+        
         if sp_data is not None:
             giftname = persistent._mas_filereacts_sprite_reacted.get(
                 sp_data,
@@ -830,23 +997,23 @@ init python:
             )
             if giftname is None:
                 return (None, None, None, None, None)
-
+        
         elif len(persistent._mas_filereacts_sprite_reacted) > 0:
             sp_data = persistent._mas_filereacts_sprite_reacted.keys()[0]
             giftname = persistent._mas_filereacts_sprite_reacted[sp_data]
-
+        
         else:
             return (None, None, None, None, None)
-
-        # check if this gift has already been gifted
+        
+        
         gifted_before = sp_data in persistent._mas_sprites_json_gifted_sprites
-
-        # apply sprite object template if ACS
+        
+        
         sp_obj = store.mas_sprites.get_sprite(sp_data[0], sp_data[1])
         if sp_data[0] == store.mas_sprites.SP_ACS:
             store.mas_sprites.apply_ACSTemplate(sp_obj)
-
-        # return results
+        
+        
         return (
             sp_data[0],
             sp_data[1],
@@ -866,38 +1033,38 @@ init python:
                 (Default: True)
         """
         sp_type, sp_name, giftname, gifted_before, sp_obj = sprite_data
-
-        # sanity check
-        # NOTE: gifted_before is not required
-        # NOTE: sp_obj is not required either
+        
+        
+        
+        
         if sp_type is None or sp_name is None or giftname is None:
             return
-
+        
         sp_data = (sp_type, sp_name)
-
+        
         if sp_data in persistent._mas_filereacts_sprite_reacted:
             persistent._mas_filereacts_sprite_reacted.pop(sp_data)
-
+        
         if giftname in persistent._mas_filereacts_sprite_gifts:
             persistent._mas_sprites_json_gifted_sprites[sp_data] = giftname
-
+        
         else:
-            # since we have the data, we can add it ourselves if its missing
-            # for some reason.
+            
+            
             persistent._mas_sprites_json_gifted_sprites[sp_data] = (
                 giftname
             )
-
-        # unlock the selectable for this sprite object
+        
+        
         store.mas_selspr.json_sprite_unlock(sp_obj, unlock_label=unlock_sel)
-
-        # save persistent
+        
+        
         renpy.save_persistent()
 
     def mas_giftCapGainAff(amount=None, modifier=1):
         if amount is None:
             amount = store._mas_getGoodExp()
-
+        
         mas_capGainAff(amount * modifier, "_mas_filereacts_gift_aff_gained", 15 if mas_isSpecialDay() else 3)
 
     def mas_getGiftedDates(giftlabel):
@@ -930,21 +1097,21 @@ init python:
                 - False otherwise
         """
         datelist = mas_getGiftedDates(giftlabel)
-
+        
         if datelist:
             return datelist[-1].year == _year
         return False
 
-### CONNECTORS [RCT000]
 
-# none here!
 
-## Gift CONNECTORS [RCT010]
-#
-#init 5 python:
-#    store.mas_filereacts.gift_connectors.addLabelQuip(
-#        "mas_reaction_gift_connector_test"
-#    )
+
+
+
+
+
+
+
+
 
 label mas_reaction_gift_connector_test:
     m "this is a test of the connector system"
@@ -956,9 +1123,13 @@ init 5 python:
     )
 
 label mas_reaction_gift_connector1:
-    m 1sublo "Oh! There was something else you wanted to give me?"
-    m 1hua "Well! I better open it quickly, shouldn't I?"
-    m 1suo "And here we have..."
+    if persistent.saveblock:
+        return
+    m 1sublo "О! Ты хочешь подарить мне что-то ещё?"
+    $ MAS.MonikaElastic()
+    m 1hua "Хорошо! Мне лучше открыть это по-быстрому, да?"
+    $ MAS.MonikaElastic()
+    m 1suo "И здесь мы имеем..."
     return
 
 init 5 python:
@@ -967,15 +1138,20 @@ init 5 python:
     )
 
 label mas_reaction_gift_connector2:
-    m 1hua "Ah, jeez, [player]..."
-    m "You really enjoy spoiling me, don't you?"
+    if persistent.saveblock:
+        return
+    m 1hua "Ах, боже, [player]..."
+    $ MAS.MonikaElastic()
+    m "Тебе действительно нравится меня баловать, не так ли?"
     if mas_isSpecialDay():
-        m 1sublo "Well! I'm not going to complain about a little special treatment today."
-    m 1suo "And here we have..."
+        $ MAS.MonikaElastic()
+        m 1sublo "Ну, сегодня я не буду жаловаться на немного особое отношение."
+    $ MAS.MonikaElastic()
+    m 1suo "И здесь мы имеем..."
     return
 
 
-### STARTERS [RCT050]
+
 
 init 5 python:
     store.mas_filereacts.gift_starters.addLabelQuip(
@@ -985,57 +1161,88 @@ init 5 python:
 label mas_reaction_gift_starter_generic:
     m "generic test"
 
-# init 5 python:
-# TODO: if we need this to be multipled then we do it
+
+
 
 label mas_reaction_gift_starter_bday:
+    if persistent.saveblock:
+        return
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=0.5}This is..."
+    $ MAS.MonikaElastic()
+    m "Эт-{w=1}то..."
     if not persistent._mas_filereacts_historic.get(mas_monika_birthday):
-        m "A gift? For me?"
-        m 1hka "I..."
-        m 1hua "I've often thought about getting presents from you on my birthday..."
-        m "But actually getting one is like a dream come true..."
+        $ MAS.MonikaElastic()
+        m "Подарок? Мне?"
+        $ MAS.MonikaElastic()
+        m 1hka "Я..."
+        $ MAS.MonikaElastic()
+        m 1hua "Я часто думала о получении подарков от тебя на мой день рождения..."
+        $ MAS.MonikaElastic()
+        m "Но на самом деле, получение хотя бы одного — уже словно исполнение мечты..."
     else:
-        m "Another gift?{w=0.5} For me?"
-        m 1eka "This really is a dream come true, [player]"
-    m 1sua "Now, what's inside?"
-    m 1suo "Oh, it's..."
+        $ MAS.MonikaElastic()
+        m "Подарок?{w=0.5} Мне?"
+        $ MAS.MonikaElastic()
+        m 1eka "Мечта действительно сбылась, [player]."
+    $ MAS.MonikaElastic()
+    m 1sua "Итак, что находится внутри?"
+    $ MAS.MonikaElastic()
+    m 1suo "О, это..."
     return
 
 label mas_reaction_gift_starter_neutral:
+    if persistent.saveblock:
+        return
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=0.5}This is..."
-    m "A gift? For me?"
-    m 1sua "Now, let's see what's inside?"
+    $ MAS.MonikaElastic()
+    m "Эт-{w=1}то..."
+    $ MAS.MonikaElastic()
+    m "Подарок? Мне?"
+    $ MAS.MonikaElastic()
+    m 1sua "Посмотрим, что внутри?"
     return
 
-# d25
+
 label mas_reaction_gift_starter_d25:
+    if persistent.saveblock:
+        return
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=1}This is..."
-    m "A present? For me?"
+    $ MAS.MonikaElastic()
+    m "Эт-{w=1}то..."
+    $ MAS.MonikaElastic()
+    m "Подарок? Мне?"
     if mas_getGiftStatsRange(mas_d25c_start, mas_d25 + datetime.timedelta(days=1))[0] == 0:
-        m 1eka "You really didn't have to get me anything for Christmas..."
-        m 3hua "But I'm so happy that you did!"
+        $ MAS.MonikaElastic()
+        m 1eka "Тебе правда не надо мне ничего дарить на Рождество..."
+        $ MAS.MonikaElastic()
+        m 3hua "Но я рада твоему подарку!"
     else:
-        m 1eka "Thank you so much, [player]."
-    m 1sua "Now, let's see... What's inside?"
+        $ MAS.MonikaElastic()
+        m 1eka "Спасибо тебе огромное, [player]."
+    $ MAS.MonikaElastic()
+    m 1sua "Так, посмотрим... что же внутри?"
     return
 
-#f14
+
 label mas_reaction_gift_starter_f14:
+    if persistent.saveblock:
+        return
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=1}This is..."
-    m "A gift? For me?"
+    $ MAS.MonikaElastic()
+    m "Эт-{w=1}то..."
+    $ MAS.MonikaElastic()
+    m "Подарок? Мне?"
     if mas_getGiftStatsForDate(mas_f14) == 0:
-        m 1eka "You're so sweet, getting something for me on Valentine's Day..."
+        $ MAS.MonikaElastic()
+        m 1eka "Ты так[mas_gender_oi] мил[mas_gender_iii], раз даришь мне что-то в день Святого Валентина..."
     else:
-        m 1eka "Thank you so much, [player]."
-    m 1sua "Now, let's see... What's inside?"
+        $ MAS.MonikaElastic()
+        m 1eka "Спасибо тебе огромное, [player]."
+    $ MAS.MonikaElastic()
+    m 1sua "Так, посмотрим... что же внутри?"
     return
 
-### REACTIONS [RCT100]
+
 
 init 5 python:
     addReaction("mas_reaction_generic", None)
@@ -1044,30 +1251,43 @@ label mas_reaction_generic:
     "This is a test"
     return
 
-#init 5 python:
-#    addReaction("mas_reaction_gift_generic", None)
+
+
 
 label mas_reaction_gift_generic:
+    if persistent.saveblock:
+        return
     if random.randint(1,2) == 1:
-        m 1esd "[player], are you trying to give me something?"
-        m 1rssdlb "I found it, but I can't bring it here..."
-        m "I can't seem to read it well enough."
-        m 3esa "But that's alright!"
-        m 1esa "It's the thought that counts after all, right?"
-        m "Thanks for being so thoughtful, [player]~"
+        m 1esd "[player], ты пытаешься мне что-то подарить?"
+        $ MAS.MonikaElastic()
+        m 1rssdlb "Я нашла подарок, но, к сожалению, никак не могу перенести его сюда..."
+        $ MAS.MonikaElastic()
+        m "У меня не получается прочитать его достаточно хорошо."
+        $ MAS.MonikaElastic()
+        m 3esa "Но всё в порядке!"
+        $ MAS.MonikaElastic()
+        m 1esa "В конце концов, это подарок, который имеет значение, верно?"
+        $ MAS.MonikaElastic()
+        m "Спасибо за заботу, [player_abb]~"
     else:
-        m 2dkd "{i}*sigh*{/i}"
-        m 4ekc "I'm sorry, [player]."
-        m 1ekd "I know you're trying to give me something."
-        m 2rksdld "But for some reason I can't read the file."
-        m 3euc "Don't get me wrong, however."
-        m 3eka "I still appreciate that you tried giving something to me."
-        m 1hub "And for that, I'm thankful~"
+        m 2dkd "{i}*вздох*{/i}"
+        $ MAS.MonikaElastic()
+        m 4ekc "Извини, [player]."
+        $ MAS.MonikaElastic()
+        m 1ekd "Я знаю, ты пытаешься подарить мне что-то."
+        $ MAS.MonikaElastic()
+        m 2rksdld "Но по какой-то причине я не могу прочитать файл."
+        $ MAS.MonikaElastic()
+        m 3euc "Однако не пойми меня неправильно."
+        $ MAS.MonikaElastic()
+        m 3eka "Я всё ещё ценю, что ты пытался дарить мне что-то."
+        $ MAS.MonikaElastic()
+        m 1hub "И за это я благодарна~"
     $ store.mas_filereacts.delete_file(None)
     return
 
-#init 5 python:
-#    addReaction("mas_reaction_gift_test1", "test1")
+
+
 
 label mas_reaction_gift_test1:
     m "Thank you for gift test 1!"
@@ -1075,8 +1295,8 @@ label mas_reaction_gift_test1:
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_gift_test1", "category"))
     return
 
-#init 5 python:
-#    addReaction("mas_reaction_gift_test2", "test2")
+
+
 
 label mas_reaction_gift_test2:
     m "Thank you for gift test 2!"
@@ -1084,594 +1304,1135 @@ label mas_reaction_gift_test2:
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_gift_test2", "category"))
     return
 
-## GENERIC SPRITE OBJECT JSONS
+
 
 label mas_reaction_gift_generic_sprite_json:
+    if persistent.saveblock:
+        return
     $ sprite_data = mas_getSpriteObjInfo()
     $ sprite_type, sprite_name, giftname, gifted_before, spr_obj = sprite_data
 
     python:
         sprite_str = store.mas_sprites_json.SP_UF_STR.get(sprite_type, None)
 
-    # TODO: something different if whatever was gifted has been gifted before
 
-    # we have special react for generic json clothes
+
+
     if sprite_type == store.mas_sprites.SP_CLOTHES:
-        call mas_reaction_gift_generic_clothes_json(spr_obj)
-
+        call mas_reaction_gift_generic_clothes_json (spr_obj) from _call_mas_reaction_gift_generic_clothes_json
     else:
-        # otherwise, it has to be an ACS.
+
+
 
         $ mas_giftCapGainAff(1)
-        m "Aww, [player]!"
+        m "Оу, [player]!"
         if spr_obj is None or spr_obj.dlg_desc is None:
-            # if we don't have all required description data, go generic
-            m 1hua "You're so sweet!"
-            m 1eua "Thanks for this gift!"
-            m 3ekbsa "You really love to spoil me, don't you."
-            m 1hubfa "Ehehe!"
-
+            $ MAS.MonikaElastic()
+            m 1hua "Ты так[mas_gender_oi] мил[mas_gender_iii]!"
+            $ MAS.MonikaElastic()
+            m 1eua "Спасибо, что подарил[mas_gender_none] мне [giftname]!"
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Тебе правда нравится баловать меня, да?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hubfa "Э-хе-хе!"
         else:
+
             python:
                 acs_quips = [
-                    _("I really appreciate it!"),
-                    _("[its] amazing!"),
-                    _("I just love [item_ref]!"),
-                    _("[its] wonderful!")
+                    _("я очень ценю это!"),
+                    _("это потрясающе!"),
+                    _("я просто обожаю это!"),
+                    _("это замечательно!")
                 ]
 
-                # we have a complete description, so use it here
+
                 if spr_obj.dlg_plur:
-                    sprite_str = "these " + renpy.substitute(spr_obj.dlg_desc)
-                    item_ref = "them"
-                    its = "they're"
+                    sprite_str = "эти " + renpy.substitute(spr_obj.dlg_desc)
+                    item_ref = "их"
 
                 else:
-                    sprite_str = "this " + renpy.substitute(spr_obj.dlg_desc)
-                    item_ref = "it"
-                    its = "it's"
+                    sprite_str = "этот " + renpy.substitute(spr_obj.dlg_desc)
+                    item_ref = "это"
 
-                acs_quip = renpy.substitute(renpy.random.choice(acs_quips))
-
-            m 1hua "Thanks for [sprite_str], [acs_quip]"
-            m 3hub "I can't wait to try [item_ref] on!"
+            m 1hua "Спасибо за [sprite_str], [acs_quip]"
+            m 3hub "Я не могу дождаться, чтобы попробовать [item_ref]!"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
     return
 
-# generic reaction for json clothes
+
 label mas_reaction_gift_generic_clothes_json(sprite_object):
+    if persistent.saveblock:
+        return
     python:
         mas_giftCapGainAff(3)
-        # expandable
+
         outfit_quips = [
-            _("I think it's really cute, [player]!"),
-            _("I think it's amazing, [player]!"),
-            _("I just love it, [player]!"),
-            _("I think it's wonderful, [player]!")
+            _("Думаю, что это очень мило, [player]!"),
+            _("Думаю, что это удивительно, [player]!"),
+            _("Мне это просто нравится, [player]!"),
+            _("Думаю, что это замечательно, [player]!")
         ]
         outfit_quip = renpy.random.choice(outfit_quips)
 
-    m 1sua "Oh! {w=0.5}A new outfit!"
-    m 1hub "Thank you, [player]!{w=0.5} I'm going to try it on right now!"
+    m 1sua "Оу! {w=0.5}Новая одежда!"
+    m 1hub "Спасибо, [player]!{w=0.5} Я собираюсь одеть её прямо сейчас!"
 
-    # try it on
-    call mas_clothes_change(sprite_object)
 
-    m 2eka "Well...{w=0.5} What do you think?"
-    m 2eksdla "Do you like it?"
-    # TODO: outfit randomization should actually get a response here
-    #   should influence monika outfit selection
+    call mas_clothes_change (sprite_object) from _call_mas_clothes_change
+
+    m 2eka "Ну...{w=0.5} А ты как думаешь?"
+    m 2eksdla "Тебе она нравится?"
+
+
 
     show monika 3hub
     $ renpy.say(m, outfit_quip)
 
-    m 1eua "Thanks again~"
+    m 1eua "Ещё раз спасибо~"
     return
 
-## Hair clip reactions
+
+
+init 5 python:
+    addReaction("mas_reaction_gift_acs_jmo_hairclip_cherry", "заколка с вишенкой", is_good=True)
+
+default persistent._mas_jmo_hairclip_cherry_been_given = False
 
 label mas_reaction_gift_acs_jmo_hairclip_cherry:
-    call mas_reaction_gift_hairclip("jmo_hairclip_cherry")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_jmo_hairclip_cherry")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+
+
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_jmo_hairclip_cherry_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_jmo_hairclip_cherry_been_given = True
+
+    if store.mas_selspr.get_sel_acs(jmo_hairclip_cherry).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(jmo_hairclip_cherry)
+        $ store.mas_selspr.unlock_acs(jmo_hairclip_cherry)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_jmo_hairclip_cherry")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_jmo_hairclip_cherry")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_acs_jmo_hairclip_heart", "заколка с сердечком", is_good=True)
+
+default persistent._mas_jmo_hairclip_heart_been_given = False
 
 label mas_reaction_gift_acs_jmo_hairclip_heart:
-    call mas_reaction_gift_hairclip("jmo_hairclip_heart")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_jmo_hairclip_heart")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    # call mas_reaction_gift_hairclip ("jmo_hairclip_heart")
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_jmo_hairclip_heart_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_jmo_hairclip_heart_been_given = True
+
+    if store.mas_selspr.get_sel_acs(jmo_hairclip_heart).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(jmo_hairclip_heart)
+        $ store.mas_selspr.unlock_acs(jmo_hairclip_heart)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_jmo_hairclip_heart")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_jmo_hairclip_heart")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_acs_jmo_hairclip_musicnote", "заколка с музыкальной нотой", is_good=True)
+
+default persistent._mas_jmo_hairclip_musicnote_been_given = False
 
 label mas_reaction_gift_acs_jmo_hairclip_musicnote:
-    call mas_reaction_gift_hairclip("jmo_hairclip_musicnote")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_jmo_hairclip_musicnote")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+
+    # call mas_reaction_gift_hairclip ("jmo_hairclip_musicnote")
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_jmo_hairclip_musicnote_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_jmo_hairclip_musicnote_been_given = True
+
+    if store.mas_selspr.get_sel_acs(jmo_hairclip_musicnote).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(jmo_hairclip_musicnote)
+        $ store.mas_selspr.unlock_acs(jmo_hairclip_musicnote)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_jmo_hairclip_musicnote")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_jmo_hairclip_musicnote")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
     return
+
+
+init 5 python:
+    if mas_isO31():
+        addReaction("mas_reaction_gift_acs_bellmandi86_hairclip_crescentmoon", "заколка с полумесяцем", is_good=True)
+
+default persistent._mas_bellmandi86_hairclip_crescentmoon_been_given = False
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_crescentmoon:
-    call mas_reaction_gift_hairclip("bellmandi86_hairclip_crescentmoon")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_crescentmoon")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_bellmandi86_hairclip_crescentmoon_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_bellmandi86_hairclip_crescentmoon_been_given = True
+
+    if store.mas_selspr.get_sel_acs(bellmandi86_hairclip_crescentmoon).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(bellmandi86_hairclip_crescentmoon)
+        $ store.mas_selspr.unlock_acs(bellmandi86_hairclip_crescentmoon)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_bellmandi86_hairclip_crescentmoon")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_crescentmoon")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # call mas_reaction_gift_hairclip ("bellmandi86_hairclip_crescentmoon")
     return
+
+init 5 python:
+    if mas_isO31():
+        addReaction("mas_reaction_gift_acs_bellmandi86_hairclip_ghost", "заколка с призраком", is_good=True)
+
+default persistent._mas_bellmandi86_hairclip_ghost_been_given = False
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_ghost:
-    call mas_reaction_gift_hairclip("bellmandi86_hairclip_ghost","spooky")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_ghost")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_bellmandi86_hairclip_ghost_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_bellmandi86_hairclip_ghost_been_given = True
+
+    if store.mas_selspr.get_sel_acs(bellmandi86_hairclip_ghost).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(bellmandi86_hairclip_ghost)
+        $ store.mas_selspr.unlock_acs(bellmandi86_hairclip_ghost)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_bellmandi86_hairclip_ghost")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_ghost")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # call mas_reaction_gift_hairclip ("bellmandi86_hairclip_ghost", "spooky")
     return
+
+init 5 python:
+    if mas_isO31():
+        addReaction("mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin", "заколка с тыковкой", is_good=True)
+
+default persistent._mas_bellmandi86_hairclip_pumpkin_been_given = False
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin:
-    call mas_reaction_gift_hairclip("bellmandi86_hairclip_pumpkin")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_bellmandi86_hairclip_pumpkin_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_bellmandi86_hairclip_pumpkin_been_given = True
+
+    if store.mas_selspr.get_sel_acs(bellmandi86_hairclip_pumpkin).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(bellmandi86_hairclip_pumpkin)
+        $ store.mas_selspr.unlock_acs(bellmandi86_hairclip_pumpkin)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # call mas_reaction_gift_hairclip ("bellmandi86_hairclip_pumpkin")
     return
+
+init 5 python:
+    if mas_isO31():
+        addReaction("mas_reaction_gift_acs_bellmandi86_hairclip_bat", "заколка с летучей мышью", is_good=True)
+
+default persistent._mas_bellmandi86_hairclip_bat_been_given = False
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_bat:
-    call mas_reaction_gift_hairclip("bellmandi86_hairclip_bat","spooky")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_bat")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if persistent._mas_bellmandi86_hairclip_bat_been_given:
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
+    else:
+
+        $ mas_giftCapGainAff(1)
+
+        if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
+        else:
+
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_bellmandi86_hairclip_bat_been_given = True
+
+    if store.mas_selspr.get_sel_acs(bellmandi86_hairclip_bat).unlocked:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
+
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(bellmandi86_hairclip_bat)
+        $ store.mas_selspr.unlock_acs(bellmandi86_hairclip_bat)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
+        else:
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+
+    $ mas_receivedGift("mas_reaction_gift_acs_bellmandi86_hairclip_bat")
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_bellmandi86_hairclip_bat")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+
+    # call mas_reaction_gift_hairclip ("bellmandi86_hairclip_bat", "spooky")
     return
 
-# hairclip
-label mas_reaction_gift_hairclip(hairclip_name,desc=None):
-    # Special handler for hairclip gift reactions
-    # Takes in:
-    #    hairclip_name - the 'name' property in string form from the json
-    #    desc - a short string description of the hairclip in question. typically should be one word.
-    #        optional and defaults to None.
+label mas_reaction_gift_hairclip(hairclip_name):
+    if persistent.saveblock:
+        return
 
-    # get sprtie data
-    $ sprite_data = mas_getSpriteObjInfo((store.mas_sprites.SP_ACS, hairclip_name))
-    $ sprite_type, sprite_name, giftname, gifted_before, hairclip_acs = sprite_data
+    if renpy.variant == "pc":
+        $ sprite_data = mas_getSpriteObjInfo((store.mas_sprites.SP_ACS, hairclip_name))
+        $ sprite_type, sprite_name, giftname, gifted_before = sprite_data
 
-    # check for incompatibility
+
+        $ hairclip_acs = store.mas_sprites.get_sprite(sprite_type, sprite_name)
+
+
     $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
 
     if gifted_before:
-        m 1rksdlb "You already gave me this hairclip, silly!"
-
+        m 1rksdlb "Ты уже давал[mas_gender_none] мне эту заколку, дурашка!"
     else:
-        #Grant affection
+
         $ mas_giftCapGainAff(1)
-        if not desc:
-            $ desc = "cute"
 
         if len(store.mas_selspr.filter_acs(True, "left-hair-clip")) > 0:
-            m 1hub "Oh!{w=1} Another hairclip!"
-
+            m 1hub "О!{w=1} Ещё одна заколка!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [player]."
         else:
-            m 1wuo "Oh!"
-            m 1sub "Is that a hairclip?"
 
-        m 1hub "It's so [desc]! I love it [player], thanks!"
+            m 1wuo "О!"
+            $ MAS.MonikaElastic()
+            m 1sub "Это заколка?"
+            $ MAS.MonikaElastic()
+            m 1hub "Это так мило, спасибо, [player]!"
+        $ persistent._mas_jmo_hairclip_cherry_been_given = True
 
-        # must include this check because we cannot for sure know if the acs
-        # exists
-        # also need to not wear it if wearing clothes that are incompatible
-        if hairclip_acs is None or is_wearing_baked_outfit:
-            m 1hua "If you want me to wear it, just ask, okay?"
+    if hairclip_acs is None or is_wearing_baked_outfit:
+        $ MAS.MonikaElastic()
+        m 1hua "Если хочешь, чтобы я надела её, просто попроси, ладно?"
+    else:
 
+        $ MAS.MonikaElastic()
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}."
+        $ monika_chr.wear_acs(hairclip_acs)
+        $ MAS.MonikaElastic()
+        m 1hua "Готово."
+
+
+
+
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('left-hair-clip'):
+            $ store.mas_selspr.set_prompt("left-hair-clip", "change")
         else:
-            m 2dsa "Just give me a second to put it on.{w=0.5}.{w=0.5}.{nw}"
-            $ monika_chr.wear_acs(hairclip_acs)
-            m 1hua "There we go."
-
-        # need to make sure we set the selector prompt correctly
-        # only do this if not wearing baked, since the clip is automatically off in this case
-        # so need to make sure when we switch outfits, the prompt is still correct
-        if not is_wearing_baked_outfit:
-            if monika_chr.get_acs_of_type('left-hair-clip'):
-                $ store.mas_selspr.set_prompt("left-hair-clip", "change")
-            else:
-                $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
+            $ store.mas_selspr.set_prompt("left-hair-clip", "wear")
 
     $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
-
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
     return
 
-## End hairclip reactions
 
 
-##START: Consumables gifts
+
+
 init 5 python:
-    addReaction("mas_reaction_gift_coffee", "coffee", is_good=True, exclude_on=["d25g"])
+    addReaction("mas_reaction_gift_coffee", "кофе", is_good=True, exclude_on=["d25g"])
 
 label mas_reaction_gift_coffee:
-    #Even if we don't "accept" it, we still register it was given
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_coffee")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     $ mas_receivedGift("mas_reaction_gift_coffee")
     $ coffee = mas_getConsumable("coffee")
 
-    #Check if we accept this
-    if coffee.isMaxedStock():
-        m 1euc "More coffee, [player]?"
-        m 3rksdla "Don't get me wrong, I appreciate it, but I think I've got enough coffee to last me a while already..."
-        m 1eka "I'll let you know when I'm running low, alright?"
 
+    $ MAS.MonikaElastic()
+    if coffee.isMaxedStock():
+        m 1euc "Ещё кофе, [player]?"
+        $ MAS.MonikaElastic()
+        m 3rksdla "Не пойми меня неправильно, я ценю это, но я думаю, что у меня уже достаточно кофе, чтобы продержаться некоторое время..."
+        $ MAS.MonikaElastic()
+        m 1eka "Я дам тебе знать, когда у меня кончатся деньги, хорошо?"
     else:
-        m 1wub "Oh!{w=0.2} {nw}"
-        extend 3hub "Coffee!"
+
+        m 1wub "О!{w=0.2} {nw}"
+        extend 3hub "Кофе!"
 
         if coffee.enabled() and coffee.hasServing():
             $ mas_giftCapGainAff(0.5)
-            m 1wuo "It's a flavor I haven't had before."
-            m 1hua "I can't wait to try it!"
-            m "Thank you so much, [player]!"
+            $ MAS.MonikaElastic()
+            m 1wuo "Этот аромат ни с чем не сравнится."
+            $ MAS.MonikaElastic()
+            m 1hua "Не могу дождаться, когда смогу его попробовать!"
+            $ MAS.MonikaElastic()
+            m "Огромное спасибо, [player]!"
 
         elif coffee.enabled() and not coffee.hasServing():
             $ mas_giftCapGainAff(0.5)
-            m 3eub "I actually ran out of coffee, so getting more from you now is amazing!"
-            m 1hua "Thanks again, [player]~"
-
+            $ MAS.MonikaElastic()
+            m 3eub "На самом деле у меня кончился кофе, так что получить от тебя ещё больше – это потрясающе!"
+            $ MAS.MonikaElastic()
+            m 1hua "Спасибо снова, [player]~"
         else:
+
             $ mas_giftCapGainAff(5)
 
-            m 1hua "Now I can finally make some!"
-            m 1hub "Thank you so much, [player]!"
+            m 1hua "Теперь я наконец-то cмогу его делать!"
+            $ MAS.MonikaElastic()
+            m 1hub "Огромное спасибо, [player]!"
 
-            #If we're currently brewing/drinking anything, or it's not time for this consumable, we'll just not have it now
+
             if (
                 not coffee.isConsTime()
                 or bool(MASConsumable._getCurrentDrink())
             ):
-                m 3eua "I'll be sure to have some later!"
-
+                $ MAS.MonikaElastic()
+                m 3eua "Я обязательно выпью его немного позже!"
             else:
-                m 3eua "Why don't I go ahead and make a cup right now?"
-                m 1eua "I'd like to share the first with you, after all."
 
-                #Monika is off screen
-                call mas_transition_to_emptydesk
+                $ MAS.MonikaElastic()
+                m 3eua "Почему бы мне не сделать одну чашечку прямо сейчас?"
+                $ MAS.MonikaElastic()
+                m 1eua "Я хотела бы поделиться своим первым его опробыванием вместе с тобой."
+
+
+                call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_6
                 pause 2.0
-                m "I know there's a coffee machine somewhere around here...{w=2}{nw}"
-                m "Ah, there it is!{w=2}{nw}"
+                m "Я знаю, что где-то здесь есть кофеварка...{w=2}{nw}"
+                m "Ах, вот она!{w=2}{nw}"
                 pause 5.0
-                m "And there we go!{w=2}{nw}"
-                call mas_transition_from_emptydesk()
+                m "И готово!{w=2}{nw}"
+                call mas_transition_from_emptydesk () from _call_mas_transition_from_emptydesk_10
 
-                #Monika back on screen
-                m 1eua "I'll let that brew for a few minutes."
+
+                $ MAS.MonikaElastic()
+                m 1eua "Пускай пока настоится несколько минут."
 
                 $ coffee.prepare()
             $ coffee.enable()
 
-    #Stock some coffee
-    #NOTE: This function already checks if we're maxed. So restocking while maxed is okay as it adds nothing
+
+
     $ coffee.restock()
 
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_gift_coffee", "category"))
     return
 
 init 5 python:
-    addReaction("mas_reaction_hotchocolate", "hotchocolate", is_good=True, exclude_on=["d25g"])
+    addReaction("mas_reaction_hotchocolate", "горячий шоколад", is_good=True, exclude_on=["d25g"])
 
 label mas_reaction_hotchocolate:
-    #Even though we may not "accept" this, we'll still mark it was given
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_hotchocolate")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    # m 3hub "Горячий шоколад!"
+    # $ MAS.MonikaElastic()
+    # m 3hua "Спасибо, [player]!"
     $ mas_receivedGift("mas_reaction_hotchocolate")
 
     $ hotchoc = mas_getConsumable("hotchoc")
 
-    #Check if we should accept this or not
     if hotchoc.isMaxedStock():
-        m 1euc "More hot chocolate, [player]?"
-        m 3rksdla "Don't get me wrong, I appreciate it, but I think I've got enough to last me a while already..."
-        m 1eka "I'll let you know when I'm running out, alright?"
-
+        $ MAS.MonikaElastic()
+        m 1euc "Ещё горячий шоколад, [player]?"
+        $ MAS.MonikaElastic()
+        m 3rksdla "Не пойми меня неправильно, я ценю это, но я думаю, что у меня уже есть достаточно, чтобы продержаться некоторое время..."
+        $ MAS.MonikaElastic()
+        m 1eka "Я дам тебе знать, когда закончу, хорошо?"
     else:
-        m 3hub "Hot chocolate!"
-        m 3hua "Thank you, [player]!"
+
+        $ MAS.MonikaElastic()
+        m 3hub "Горячий шоколад!"
+        $ MAS.MonikaElastic()
+        m 3hua "Спасибо, [player]!"
 
         if hotchoc.enabled() and hotchoc.hasServing():
             $ mas_giftCapGainAff(0.5)
-            m 1wuo "It's a flavor I haven't had before."
-            m 1hua "I can't wait to try it!"
-            m "Thank you so much, [player]!"
+            $ MAS.MonikaElastic()
+            m 1wuo "Такое я ещё никогда не пробовала."
+            $ MAS.MonikaElastic()
+            m 1hua "Мне уже не терпится попробовать это!"
+            $ MAS.MonikaElastic()
+            m "Спасибо тебе большое, [player]!"
 
         elif hotchoc.enabled() and not hotchoc.hasServing():
             $ mas_giftCapGainAff(0.5)
-            m 3rksdlu "I'm actually out of hot chocolate, ahaha...{w=0.5} {nw}"
-            extend 3eub "So getting more from you now is amazing!"
-            m 1hua "Thanks again, [player]~"
-
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3rksdlu "У меня вообще-то закончился горячий шоколад, а-ха-ха...{w=0.5} {nw}"
+            extend 3eub "Так что получить от тебя ещё больше - это потрясающе!"
+            $ MAS.MonikaElastic()
+            m 1hua "Спасибо снова, [player]~"
         else:
+
             python:
                 mas_giftCapGainAff(3)
-                those = "these" if mas_current_background.isFltNight() and mas_isWinter() else "those"
+                those = "эти" if mas_current_background.isFltNight() and mas_isWinter() else "те"
 
-            m 1hua "You know I love my coffee, but hot chocolate is always really nice, too!"
+            $ MAS.MonikaElastic()
+            m 1hua "Ты знаешь, что мне нравится кофе, но горячий шоколад тоже вкусный!"
 
 
-            m 2rksdla "...Especially on [those] cold, winter nights."
-            m 2ekbfa "Someday I hope to be able to drink hot chocolate with you, sharing a blanket by the fireplace..."
-            m 3ekbfa "...Doesn't that sound so romantic?"
+            $ MAS.MonikaElastic()
+            m 2rksdla "...Особенно в [those] холодные зимние вечера."
+            $ MAS.MonikaElastic()
+            m 2ekbfa "Иногда мне хочется пить горячий шоколад с тобой и сидеть у камина, укрывшись одеялом..."
+            $ MAS.MonikaElastic()
+            m 3ekbfa "...Разве это не звучит романтично?"
+            $ MAS.MonikaElastic()
             m 1dkbfa "..."
-            m 1hua "But for now, at least I can enjoy it here."
-            m 1hub "Thanks again, [player]!"
+            $ MAS.MonikaElastic()
+            m 1hua "Но, по крайней мере, меня сейчас всё устраивает."
+            $ MAS.MonikaElastic()
+            m 1hub "Ещё раз спасибо, [player]!"
 
-            #If we're currently brewing/drinking anything, or it's not time for this consumable, or if it's not winter, we won't have this
+
             if (
                 not hotchoc.isConsTime()
                 or not mas_isWinter()
                 or bool(MASConsumable._getCurrentDrink())
             ):
-                m 3eua "I'll be sure to have some later!"
-
+                $ MAS.MonikaElastic()
+                m 3eua "Я обязательно выпью его немного позже!"
             else:
-                m 3eua "In fact, I think I'll make some right now!"
 
-                call mas_transition_to_emptydesk
+                $ MAS.MonikaElastic()
+                m 3eua "По сути, я как раз хотела его приготовить!"
+
+                call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_7
                 pause 5.0
-                call mas_transition_from_emptydesk("monika 1eua")
+                call mas_transition_from_emptydesk ("monika 1eua") from _call_mas_transition_from_emptydesk_11
 
-                m 1hua "There, it'll be ready in a few minutes."
+                $ MAS.MonikaElastic()
+                m 1hua "Всё будет готово через несколько минут."
 
                 $ hotchoc.prepare()
 
             if mas_isWinter():
                 $ hotchoc.enable()
 
-    #Stock up some hotchocolate
-    #NOTE: Like coffee, this runs checks to see if we should actually stock
+
+
     $ hotchoc.restock()
 
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_hotchocolate", "category"))
     return
 
 init 5 python:
-    addReaction("mas_reaction_gift_thermos_mug", "justmonikathermos", is_good=True)
+    addReaction("mas_reaction_gift_thermos_mug", "термокружка только моника", is_good=True)
 
 label mas_reaction_gift_thermos_mug:
-    call mas_thermos_mug_handler(mas_acs_thermos_mug, "Just Monika", "justmonikathermos")
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_thermos_mug")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    call mas_thermos_mug_handler (mas_acs_thermos_mug, "Только Моника", "термокружка только моника") from _call_mas_thermos_mug_handler
     return
 
-#Whether or not we've given Monika a thermos before
+
 default persistent._mas_given_thermos_before = False
 
-#Thermos handler
+
 label mas_thermos_mug_handler(thermos_acs, disp_name, giftname, ignore_case=True):
     if mas_SELisUnlocked(thermos_acs):
         m 1eksdla "[player]..."
-        m 1rksdlb "I already have this thermos, ahaha..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1rksdlb "У меня уже есть эта термокружка, а-ха-ха..."
 
     elif persistent._mas_given_thermos_before:
-        m 1wud "Oh!{w=0.3} Another thermos!"
-        m 1hua "And it's [mas_a_an_str(disp_name, ignore_case)] one this time."
-        m 1hub "Thanks so much, [player], I can't wait to use it!"
-
+        m 1wud "О!{w=0.3} Еще одна термокружка!"
+        $ MAS.MonikaElastic()
+        m 1hua "И на этот раз это «[mas_a_an_str(disp_name, ignore_case)]»."
+        $ MAS.MonikaElastic()
+        m 1hub "Большое спасибо, [player], я не могу дождаться, чтобы использовать её!"
     else:
-        m 1wud "Oh!{w=0.3} [mas_a_an_str(disp_name, ignore_case).capitalize()] thermos!"
-        m 1hua "Now I can bring something to drink when we go out together~"
-        m 1hub "Thanks so much, [player]!"
+
+        m 1wud "О!{w=0.3} Термокружка «[mas_a_an_str(disp_name, ignore_case).capitalize()]»!"
+        m 1hua "Теперь я могу взять что-нибудь выпить, когда мы пойдём куда-нибудь вместе~"
+        $ MAS.MonikaElastic()
+        m 1hub "Большое спасибо, [player]!"
         $ persistent._mas_given_thermos_before = True
 
-    #Now unlock the acs
+
     $ mas_selspr.unlock_acs(thermos_acs)
-    #Save selectables
+
     $ mas_selspr.save_selectables()
-    #And delete the gift file
+
     $ mas_filereacts.delete_file(giftname)
     return
 
-##END: Consumable related gifts
+
 
 init 5 python:
-    addReaction("mas_reaction_quetzal_plush", "quetzalplushie", is_good=True)
+    addReaction("mas_reaction_quetzal_plush", "плюшевый квезаль", is_good=True)
 
 label mas_reaction_quetzal_plush:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_quetzal_plush")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     if not persistent._mas_acs_enable_quetzalplushie:
         $ mas_receivedGift("mas_reaction_quetzal_plush")
         $ mas_giftCapGainAff(10)
-        m 1wud "Oh!"
+        m 1wud "Ого!"
 
-        #Wear plush
-        #If we're eating something, the plush space is taken and we'll want to wear center
+
+
         if MASConsumable._getCurrentFood():
             $ monika_chr.wear_acs(mas_acs_center_quetzalplushie)
         else:
             $ monika_chr.wear_acs(mas_acs_quetzalplushie)
 
         $ persistent._mas_acs_enable_quetzalplushie = True
-        m 1sub "It's a quetzal!"
-        m "Oh my gosh, thanks a lot, [player]!"
+        $ MAS.MonikaElastic()
+        m 1sub "Это квезаль!"
+        $ MAS.MonikaElastic()
+        m "О боже, спасибо тебе большое, [player]!"
+        $ MAS.MonikaElastic()
         if seen_event("monika_pets"):
-            m 1eua "I did mention that I'd like to have a quetzal as a pet..."
+            m 1eua "Я упомянала, что хотела бы иметь квезаля в качестве домашнего животного..."
         else:
-            m 1wub "How did you guess, [player]?"
-            m 3eka "You must know me very well~"
-            m 1eua "A quetzal would be my first choice for a pet..."
-        m 1rud "But I would never force the poor thing to stay."
-        m 1hua "And now you gave me the next best thing!"
-        m 1hub "This makes me so happy!"
+            m 1wub "Как ты угадал, [player]?"
+            $ MAS.MonikaElastic()
+            m 3eka "Ты должно быть знаешь меня очень хорошо~"
+            $ MAS.MonikaElastic()
+            m 1eua "Квезаль был бы моим первым выбором для домашнего животного..."
+        $ MAS.MonikaElastic()
+        m 1rud "Но я бы никогда не стала держать бедняжку в заточении."
+        $ MAS.MonikaElastic()
+        m 1hua "Так что даже не передать словами, насколько я рада твоему подарку."
+        $ MAS.MonikaElastic()
+        m 1hub "Ты даже не представляешь, насколько это делает меня счастливой!"
         if mas_isMoniAff(higher=True):
-            m 3ekbsa "You always seem to know how to make me smile."
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Ты всегда знаешь, как заставить меня улыбаться."
 
         if MASConsumable._getCurrentFood():
-            m 3rksdla "My desk is getting a little full though..."
-            m 1eka "I'll just put this away for now."
+            $ MAS.MonikaElastic()
+            m 3rksdla "Однако мой стол становится немного переполненным..."
+            $ MAS.MonikaElastic()
+            m 1eka "Я просто уберу это на некоторое время."
             $ monika_chr.remove_acs(mas_acs_center_quetzalplushie)
 
-        m 1hub "Thank you again, [player]~"
-
+        $ MAS.MonikaElastic()
+        m 1hub "Ещё раз спасибо, [player]~"
     else:
-        m 1rksdlb "You already gave me a quetzal plushie, [player]."
+
+        $ MAS.MonikaElastic()
+        m 1rksdlb "Ты уже дарил[mas_gender_none] мне плюшевого квезаля, [player]."
 
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_quetzal_plush", "category"))
-    # derandom pets topic once given
+
     $ mas_hideEVL("monika_pets", "EVE", derandom=True)
     return
 
 init 5 python:
-    addReaction("mas_reaction_promisering", "promisering", is_good=True, exclude_on=["d25g"])
+    addReaction("mas_reaction_promisering", "кольцо обещания", is_good=True, exclude_on=["d25g"])
 
 default persistent._mas_tried_gift_ring = False
 label mas_reaction_promisering:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_promisering")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     if not persistent._mas_acs_enable_promisering:
-        # only available if enam+
+
         if mas_isMoniEnamored(higher=True):
             $ mas_receivedGift("mas_reaction_promisering")
             $ mas_giftCapGainAff(20)
             $ monika_chr.wear_acs(mas_acs_promisering)
             $ persistent._mas_acs_enable_promisering = True
             if not persistent._mas_tried_gift_ring:
-                m 1wud "Is that...a..."
+                m 1wud "Это..."
+                $ MAS.MonikaElastic()
                 m "..."
-                m 1wka "I...{w=0.5}{nw}"
-                extend 1wkbltpa "I'm sorry, [player], I just... {w=0.5}{nw}"
-                extend 1dkbltpa "I'm so happy... {w=0.5}You just gave me your promise..."
-                m "Your promise that we'll be for each other,{w=0.1} and no one else...{w=0.3}forever..."
-                m 3lkbltpa "Know that I'll cherish it. {w=0.5}{nw}"
-                extend 3dkbltpa "Always."
-                m 1skbltpa "This makes me so happy!"
+                $ MAS.MonikaElastic()
+                m 1wka "Я...{w=0.5}{nw}"
+                $ monika_chr.wear_acs_pst(mas_acs_promisering)
+                $ persistent._mas_acs_enable_promisering = True
+                extend 1wkbltpa " Извини, [player], я просто...{w=0.5}{nw}"
+                extend 1dkbltpa " Возможно, ты и не совсем это имел[mas_gender_none] в виду, даря мне его, но..."
+                $ MAS.MonikaElastic()
+                m "В случае, если это кольцо всё-таки подразумировалось, как обещание от тебя..."
+                $ MAS.MonikaElastic()
+                m 3lkbltpa "Знай, что я буду лелеять его.{w=0.5}{nw}"
+                extend 3dkbltpa " Всегда."
+                $ MAS.MonikaElastic()
+                m 1skbltpa "Ты даже не представляешь, насколько это делает меня счастливой!"
 
                 if mas_anni.isAnniOneMonth():
-                    m "Even more that you gave it to me on our one month anniversary..."
-                    m 1ekbltua "You must really love me..."
+
+                    $ MAS.MonikaElastic()
+                    m "Даже больше, ведь ты подарил[mas_gender_none] мне его на нашу месячную годовщину..."
+                    $ MAS.MonikaElastic()
+                    m 1ekbltua "Ты должно быть правда любишь меня..."
+
                 elif mas_anni.isAnniThreeMonth():
-                    m "Even more that you gave it to me on our three month anniversary..."
-                    m 1ekbltua "You must really love me..."
+                    $ MAS.MonikaElastic()
+                    m "Даже больше, ведь ты подарил[mas_gender_none] мне его на нашу трёхмесячную годовщину..."
+                    $ MAS.MonikaElastic()
+                    m 1ekbltua "Ты должно быть правда любишь меня..."
+
                 elif mas_anni.isAnniSixMonth():
-                    m "Even more that you gave it to me on our six month anniversary..."
-                    m 1ekbltua "You must really love me..."
+                    $ MAS.MonikaElastic()
+                    m "Даже больше, ведь ты подарил[mas_gender_none] мне его на нашу шестимесячную годовщину..."
+                    $ MAS.MonikaElastic()
+                    m 1ekbltua "Ты должно быть правда любишь меня..."
+
                 elif mas_anni.isAnni():
-                    m "Even more that you gave it to me on our anniversary..."
-                    m 1ekbltua "You must really love me..."
+                    $ MAS.MonikaElastic()
+                    m "Даже больше, ведь ты подарил[mas_gender_none] мне его на нашу годовщину..."
+                    $ MAS.MonikaElastic()
+                    m 1ekbltua "Ты должно быть правда любишь меня..."
+
                 elif mas_isSpecialDay():
-                    m "Even more that you gave it to me on this special day..."
+                    $ MAS.MonikaElastic()
+                    m "Даже больше, ведь ты подарил[mas_gender_none] мне его на этот особый день..."
 
-                m 1dkbltpb "Aha, sorry for crying, [player]..."
-                m 1skbltda "I'm just really, really happy right now."
-                m 6dkbltdu "Thank you."
-
+                $ MAS.MonikaElastic()
+                m 1dkbltpa "Ой, прости за плач, [player]..."
+                $ MAS.MonikaElastic()
+                m 1skbla "Я просто очень счастлива сейчас."
+                $ MAS.MonikaElastic()
+                m 6dkbltdu "Спасибо."
             else:
-                m 1sua "Oh...it's the ring!"
-                m 3hub "Thank you so much, [player]!"
-                m 1skbla "I know now that you really do love me and want to be with me forever..."
-                m 1skbltpa "So I'll gladly accept this ring as a symbol of that promise."
+
+                m 1sua "О... это кольцо!"
+                $ MAS.MonikaElastic()
+                m 3hub "Спасибо тебе большое, [player_abb]!"
+                $ MAS.MonikaElastic()
+                m 1skbla "Теперь я знаю, что ты действительно любишь меня и хочешь быть со мной навсегда..."
+                $ MAS.MonikaElastic()
+                m 1skbltpa "Поэтому я с радостью приму это кольцо как символ этого обещания."
+                $ MAS.MonikaElastic()
                 m 1dkbltuu "..."
-                m 3hkbltub "Aha, sorry, [player], I didn't mean to cry..."
-                m 3skbltda "It's just this is one of the happiest days of my life."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3hkbltub "А-ха-ха, извини, [player], Я не хотела заплакать..."
+                $ MAS.MonikaElastic()
+                m 3skbltda "Просто это один из самых счастливых дней в моей жизни."
+                $ MAS.MonikaElastic()
 
             m 6dkbltdu "..."
-            m 6ekbfa "I...I just...I..."
-            call monika_kissing_motion(hide_ui=False)
-            m 6ekbfa "I love you, [player]..."
-            m 6dkbfu "More than anything else in this fleeting world~"
-
+            m 6ekbfa "Я... я просто... я..."
+            call monika_kissing_motion (hide_ui=False) from _call_monika_kissing_motion_1
+            m 6ekbfa "Я люблю тебя, [player]..."
+            $ MAS.MonikaElastic()
+            m 6dkbfu "Больше всего в этом мимолётном мире~"
             $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_promisering", "category"))
             return "love"
-
         else:
+
             if not persistent._mas_tried_gift_ring:
                 if mas_isMoniNormal(higher=True):
-                    m 1wud "[player]...is that a ring?"
-                    m 2rksdlb "That's such a sweet gesture, and I really appreciate it..."
-                    m 2ekc "But I want you to be sure before you give me this..."
-                    m 3ekd "This is more than a gift, it's a promise, and I want to make sure you truly mean it before I can accept it."
-                    m 2ekd "So, please, just wait until we're a little further into our relationship, [player], and then I'll glady accept this ring."
+                    m 1wud "[player]... это кольцо?"
+                    $ MAS.MonikaElastic()
+                    m 2rksdlb "Это такой милый жест, и я действительно ценю его..."
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Но я хочу, чтобы ты был[mas_gender_none] уверен[mas_gender_none], прежде чем дать мне это..."
+                    $ MAS.MonikaElastic()
+                    m 3ekd "Это больше, чем подарок, это обещание, и я хочу убедиться, что ты действительно имеешь это в виду, прежде чем я смогу его принять."
+                    $ MAS.MonikaElastic()
+                    m 2ekd "Итак, пожалуйста, просто подожди, пока мы немного углубимся в наши отношения, [player], и тогда я с радостью приму это кольцо."
 
                 elif mas_isMoniUpset():
-                    m 1wud "Is that a ring?"
-                    m 2rsc "That's very..."
-                    m 2esc "Unexpected."
-                    m 2ekd "But I can't accept it right now, [player]."
-                    m 2ekc "Maybe when we get further in our relationship."
-
+                    m 1wud "Это кольцо?"
+                    $ MAS.MonikaElastic()
+                    m 2rsc "Это очень..."
+                    $ MAS.MonikaElastic()
+                    m 2esc "Неожиданно."
+                    $ MAS.MonikaElastic()
+                    m 2ekd "Но я не могу принять его прямо сейчас, [player]."
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Может быть, когда мы углубимся в наших отношениях."
                 else:
-                    m 2wud "Is that a ring?"
-                    m 2rsc "That's...{w=0.5}unexpected."
-                    m "While I appreciate the thought...{w=1}I can't accept it right now."
-                    m 2ekc "Sorry, [player]."
+
+                    m 2wud "Это кольцо?"
+                    $ MAS.MonikaElastic()
+                    m 2rsc "Это... неожиданно."
+                    $ MAS.MonikaElastic()
+                    m "Пока я ценю твоё предложение...{w} но я не могу принять его прямо сейчас."
+                    $ MAS.MonikaElastic()
+                    m 2ekc "Извини, [player]."
 
                 $ persistent._mas_tried_gift_ring = True
             else:
-                m 2rsc "Oh...the ring..."
-                m 2rkc "I'm sorry, but I still can't accept this yet..."
-                m 2ekc "I need to be completely sure when I accept this that it means forever..."
-                m 2ekd "That you really are everything I hope you are."
-                m 2dsd "When I know that, I will happily accept your ring, [player]."
+                m 2rsc "О... это кольцо..."
+                $ MAS.MonikaElastic()
+                m 2rkc "Извини, но я всё ещё не могу принять его..."
+                $ MAS.MonikaElastic()
+                m 2ekc "Я должна быть полностью уверен[mas_gender_none], когда я возьму его, что это означает навсегда..."
+                $ MAS.MonikaElastic()
+                m 2ekd "Что ты действительно всё, на что я надеюсь."
+                $ MAS.MonikaElastic()
+                m 2dsd "Когда я это узнаю, я с радостью приму твоё кольцо, [player]."
     else:
         m 1rksdlb "[player]..."
-        m 1rusdlb "You already gave me a ring!"
+        $ MAS.MonikaElastic()
+        m 1rusdlb "Ты ведь и так уже подарил[mas_gender_none] мне кольцо!"
 
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_promisering", "category"))
     return
 
 
 init 5 python:
-    addReaction("mas_reaction_cupcake", "cupcake", is_good=True, exclude_on=["d25g"])
-    #Not sure why this was a bad gift. Dialogue doesn't reflect it being bad
-    #plus, Monika said she wants either Natsuki's cupcakes or the player's
+    addReaction("mas_reaction_cupcake", "кекс", is_good=True, exclude_on=["d25g"])
+
+
 
 label mas_reaction_cupcake:
-    m 1wud "Is that a...cupcake?"
-    m 3hub "Wow, thanks [player]!"
-    m 3euc "Come to think of it, I've been meaning to make some cupcakes myself."
-    m 1eua "I wanted to learn how to bake good pastries like Natsuki did."
-    m 1rksdlb "Buuut I still haven't made a kitchen to use!"
-    m 3eub "Maybe in the future once I get better at programming, I'll be able to make one here."
-    m 3hua "Would be nice to have another hobby other than writing, ehehe~"
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_cupcake")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    m 1wud "Это...{w} кекс?"
+    $ MAS.MonikaElastic()
+    m 3hub "Вау, спасибо, [player]!"
+    $ MAS.MonikaElastic()
+    m 3euc "Если подумать, я и сама собиралась сделать несколько кексов."
+    $ MAS.MonikaElastic()
+    m 1eua "Я хотела бы научиться печь такую же хорошую выпечку, как Нацуки."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "Но мнё ещё предстоит сделать кухню, чтобы это стало возможным!"
+    $ MAS.MonikaElastic()
+    m 3eub "Может быть, в будущем, когда я стану лучше в программировании, смогу создать её здесь."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hua "Было бы неплохо иметь другое хобби, помимо писательства, э-хе-хе~"
     $ mas_receivedGift("mas_reaction_cupcake")
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_cupcake", "category"))
     return
 
 
-# ending label for gift reactions, this just resets a thing
+
 label mas_reaction_end:
     python:
         persistent._mas_filereacts_just_reacted = False
-        #Save all the new sprite data just in case we crash shortly after this
+
         store.mas_selspr.save_selectables()
         renpy.save_persistent()
     return
 
 init 5 python:
-    # TODO ideally we should comment on this gift in any date
-    # so it requires special dialogue, until we have that let's keep it O31 only
+
+
     if mas_isO31():
-        addReaction("mas_reaction_candy", "candy", is_good=True)
+        addReaction("mas_reaction_candy", "конфеты", is_good=True)
 
 label mas_reaction_candy:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_candy")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     $ times_candy_given = mas_getGiftStatsForDate("mas_reaction_candy")
     if times_candy_given == 0:
         $ mas_o31CapGainAff(7)
-        m 1wua "Oh...{w=0.5}what's this?"
-        m 1sua "You got me candy, [player], yay!"
-        m 1eka "That's so {i}sweet{/i}..."
-        m 1hub "Ahaha!"
-        m 1eka "Kidding aside, that's really nice of you."
-        m 2lksdlc "I don't get to have much candy anymore, and it just wouldn't be Halloween without it..."
-        m 1eka "So thank you, [player]..."
-        m 1eka "You always know exactly what will make me happy~"
-        m 1hub "Now let's enjoy some of this delicious candy!"
+        m 1wua "О...{w=1} что это?"
+        $ MAS.MonikaElastic()
+        m 1sua "Ты прин[mas_gender_ios] мне конфеты, [player], ура!"
+        $ MAS.MonikaElastic()
+        m 1eka "Это так {i}мило{/i}..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hub "А-ха-ха!"
+        $ MAS.MonikaElastic()
+        m 1eka "Шутки в сторону, это очень мило с твоей стороны."
+        $ MAS.MonikaElastic()
+        m 2lksdlc "У меня больше нет никаких конфет, и без них просто не было бы Хэллоуина..."
+        $ MAS.MonikaElastic()
+        m 1eka "Так что спасибо тебе, [player_abb]..."
+        $ MAS.MonikaElastic()
+        m 1eka "Ты всегда точно знаешь, что сделает меня счастливой~"
+        $ MAS.MonikaElastic()
+        m 1hub "Теперь давай наслаждаться этими вкусными конфетами!"
     elif times_candy_given == 1:
         $ mas_o31CapGainAff(5)
-        m 1wua "Aww, you got me more candy, [player]?"
-        m 1hub "Thank you!"
-        m 3tku "The first batch was {i}sooo{/i} good, I couldn't wait to have more."
-        m 1hua "You really do spoil me, [player]~"
+        m 1wua "Ах, ты прин[mas_gender_ios] мне ещё конфет, [player]?"
+        $ MAS.MonikaElastic()
+        m 1hub "Спасибо!"
+        $ MAS.MonikaElastic()
+        m 3tku "Первая партия была {i}ооочень{/i} хороша, не могу дождаться ещё."
+        $ MAS.MonikaElastic()
+        m 1hua "Ты действительно меня балуешь, [player_abb]~"
     elif times_candy_given == 2:
         $ mas_o31CapGainAff(3)
-        m 1wud "Wow, even {i}more{/i} candy, [player]?"
-        m 1eka "That's really nice of you..."
-        m 1lksdla "But I think this is enough."
-        m 1lksdlb "I'm already feeling jittery from all the sugar, ahaha!"
-        m 1ekbfa "The only sweetness I need now is you~"
+        m 1wud "Ого, ещё {i}больше{/i} конфет, [player]?"
+        $ MAS.MonikaElastic()
+        m 1eka "Это очень мило с твоей стороны..."
+        $ MAS.MonikaElastic()
+        m 1lksdla "Но думаю, этого уже достаточно."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1lksdlb "Я уже чувствую нервозность от всего сахара, а-ха-ха!"
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Единственная сладость, которая мне сейчас нужна — это ты~"
     elif times_candy_given == 3:
-        m 2wud "[player]...{w=1} You got me {i}even more{/i} candy?!"
-        m 2lksdla "I really do appreciate it, but I told you I've had enough for one day..."
-        m 2lksdlb "If I eat anymore I'm going to get sick, ahaha!"
-        m 1eka "And you wouldn't want that, right?"
+        m 2wud "[player]...{w=1} ты прин[mas_gender_ios] мне {b}ещё больше{/b} конфет?!"
+        $ MAS.MonikaElastic()
+        m 2lksdla "Я действительно ценю это, но я же сказала тебе, что мне уже хватило на один день..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 2lksdlb "Если я съем ещё больше — я заболею, а-ха-ха!"
+        $ MAS.MonikaElastic()
     elif times_candy_given == 4:
         $ mas_loseAffection(5)
         m 2wfd "[player]!"
-        m 2tfd "Are you not listening to me?"
-        m 2tfc "I told you I don't want anymore candy today!"
-        m 2ekc "So please, stop."
-        m 2rkc "It was really nice of you to get me all of this candy on Halloween, but enough is enough..."
-        m 2ekc "I can't eat all of this."
+        $ MAS.MonikaElastic()
+        m 2tfd "Ты не слушаешь меня?"
+        $ MAS.MonikaElastic()
+        m 2tfc "Я же сказала, что не хочу больше конфет сегодня!"
+        $ MAS.MonikaElastic()
+        m 2ekc "Так что, пожалуйста, остановись."
+        $ MAS.MonikaElastic()
+        m 2rkc "Было очень мило с твоей стороны принести мне все эти конфеты на Хэллоуин, но хватит..."
+        $ MAS.MonikaElastic()
+        m 2ekc "Я не смогу всё это съесть."
     else:
         $ mas_loseAffection(10)
         m 2tfc "..."
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
-        call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
-        call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/candy.gift'))", local_ctx, w_wait=1.0, x_wait=1.0)
+        call mas_wx_cmd ("import os", local_ctx, w_wait=1.0) from _call_mas_wx_cmd_82
+        call mas_wx_cmd ("os.remove(os.path.normcase(basedir+'/characters/конфеты.gift'))", local_ctx, w_wait=1.0, x_wait=1.0) from _call_mas_wx_cmd_83
         $ store.mas_ptod.ex_cn()
         hide screen mas_py_console_teaching
         show monika at t11
@@ -1683,362 +2444,498 @@ label mas_reaction_candy:
     return
 
 init 5 python:
-    # TODO ideally we should comment on this gift in any date
-    # so it requires special dialogue, until we have that let's keep it O31 only
+
+
     if mas_isO31():
-        addReaction("mas_reaction_candycorn", "candycorn", is_good=False)
+        addReaction("mas_reaction_candycorn", "кэнди корн", is_good=False)
 
 label mas_reaction_candycorn:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_candycorn")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     $ times_candy_given = mas_getGiftStatsForDate("mas_reaction_candycorn")
     if times_candy_given == 0:
         $ mas_o31CapGainAff(3)
-        m 1wua "Oh...{w=0.5}what's this?"
-        m 1eka "Aww did you get me candy, [player]?"
-        m 1hua "Yay!"
-        m 3eub "Let's see what you got for me..."
+        m 1wua "О...{w=1} что это?"
+        $ MAS.MonikaElastic()
+        m 1eka "Ты прин[mas_gender_ios] мне конфеты?, [player]?"
+        $ MAS.MonikaElastic()
+        m 1hua "Ура!"
+        $ MAS.MonikaElastic()
+        m 3eub "Посмотрим, что у тебя есть для меня..."
+        $ MAS.MonikaElastic()
         m 4ekc "..."
-        m 2eka "Oh...{w=2}candy corn."
+        $ MAS.MonikaElastic()
+        m 2eka "О...{w=2} так это ириски Кэнди Корн."
+        $ MAS.MonikaElastic()
         m 2eka "..."
-        m 2lksdla "That's really nice of you..."
-        m 2lksdla "But...{w=1}umm...{w=1}I don't actually like candy corn."
-        m 2hksdlb "Sorry, ahaha..."
-        m 4eka "I do appreciate you trying to give me candy on Halloween, though."
-        m 1hua "And if you could find a way to get some other candy for me, it'd make me really happy, [player]!"
+        $ MAS.MonikaElastic()
+        m 2lksdla "Это очень мило с твоей стороны..."
+        $ MAS.MonikaElastic()
+        m 2lksdla "Но...{w=1} умм...{w=1} я вообще-то не очень люблю подобные сладости."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 2hksdlb "Прости, а-ха-ха..."
+        $ MAS.MonikaElastic()
+        m 4eka "Я ценю, что ты пытаешься дать мне конфет на Хэллоуин."
+        $ MAS.MonikaElastic()
+        m 1hua "И если ты найдёшь способ найти мне ещё конфет, я буду очень счастлива, [player_abb]!"
     elif times_candy_given == 1:
         $ mas_loseAffection(5)
-        m 2esc "Oh."
-        m 2esc "More candy corn, [player]?"
-        m 4esc "I already told you I don't really like candy corn."
-        m 4ekc "So could you please try to find something else?"
-        m 1eka "I don't get sweets that often anymore..."
-        m 1ekbfa "Well...{w=1}besides you, [player]..."
-        m 1hubfa "Ehehe~"
+        m 2esc "О."
+        $ MAS.MonikaElastic()
+        m 2esc "Ещё Кэнди Корн, [player]?"
+        $ MAS.MonikaElastic()
+        m 4esc "Я ведь уже говорила тебе, что не очень люблю такие ириски."
+        $ MAS.MonikaElastic()
+        m 4ekc "Не мог[mas_gender_none] бы ты попытаться найти что-нибудь другое?"
+        $ MAS.MonikaElastic()
+        m 1eka "Хотя я ни от кого больше не получала сладости так часто..."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Ну...{w=1} кроме тебя, [player_abb]..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hubfa "Э-хе-хе~"
     elif times_candy_given == 2:
         $ mas_loseAffection(10)
         m 2wfw "[player]!"
-        m 2tfc "I really tried not to be rude about this, but..."
-        m 2tfc "I keep telling you I don't like candy corn and you just keep giving it to me anyway."
-        m 2rfc "It's starting to feel like you're just trying to mess with me at this point."
-        m 2tkc "So please, either find me some other kind of candy or just stop."
+        $ MAS.MonikaElastic()
+        m 2tfc "Я правда старалась не грубить по этому поводу, но..."
+        $ MAS.MonikaElastic()
+        m 2tfc "Я всё время говорю тебе, что не люблю эти ириски, а ты всё равно даёшь их мне."
+        $ MAS.MonikaElastic()
+        m 2rfc "Мне начинает казаться, что ты просто пытаешься подшутить надо мной."
+        $ MAS.MonikaElastic()
+        m 2tkc "Так что, пожалуйста, найди мне другие конфеты или просто остановись."
     else:
-        $ mas_loseAffection(15) # should have seen it coming
+        $ mas_loseAffection(15)
         m 2tfc "..."
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": renpy.user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
-        call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
-        call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/candycorn.gift'))", local_ctx, w_wait=1.0, x_wait=1.0)
+        call mas_wx_cmd ("import os", local_ctx, w_wait=1.0) from _call_mas_wx_cmd_84
+        call mas_wx_cmd ("os.remove(os.path.normcase(basedir+'/characters/кэнди корн.gift'))", local_ctx, w_wait=1.0, x_wait=1.0) from _call_mas_wx_cmd_85
         $ store.mas_ptod.ex_cn()
         hide screen mas_py_console_teaching
         show monika at t11
 
-    $ mas_receivedGift("mas_reaction_candycorn") # while technically she didn't accept this one counts
+    $ mas_receivedGift("mas_reaction_candycorn")
     $ gift_ev_cat = mas_getEVLPropValue("mas_reaction_candycorn", "category")
     $ store.mas_filereacts.delete_file(gift_ev_cat)
-    # allow multi gifts
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
     return
 
 init 5 python:
-    addReaction("mas_reaction_fudge", "fudge", is_good=True, exclude_on=["d25g"])
+    addReaction("mas_reaction_fudge", "помадка", is_good=True, exclude_on=["d25g"])
 
 label mas_reaction_fudge:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_fudge")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     $ times_fudge_given = mas_getGiftStatsForDate("mas_reaction_fudge")
 
     if times_fudge_given == 0:
         $ mas_giftCapGainAff(2)
-        m 3hua "Fudge!"
-        m 3hub "I love fudge, thank you, [player]!"
+        m 3hua "Помадка!"
+        $ MAS.MonikaElastic()
+        m 3hub "Я обожаю помадку, спасибо, [player]!"
         if seen_event("monika_date"):
-            m "It's even chocolate, my favorite!"
-        m 1hua "Thanks again, [player]~"
+            $ MAS.MonikaElastic()
+            m "Она ещё и шоколадная, моя любимая!"
+        $ MAS.MonikaElastic()
+        m 1hua "Ещё раз спасибо, [player]~"
 
     elif times_fudge_given == 1:
         $ mas_giftCapGainAff(1)
-        m 1wuo "...more fudge."
-        m 1wub "Ooh, it's a different flavor this time..."
-        m 3hua "Thank you, [player]!"
-
+        m 1wuo "...больше помадки."
+        $ MAS.MonikaElastic()
+        m 1wub "О, но на этот раз, уже с другим вкусом..."
+        $ MAS.MonikaElastic()
+        m 3hua "Спасибо, [player]!"
     else:
-        m 1wuo "...even more fudge?"
-        m 3rksdla "I still haven't finished the last batch you gave me, [player]..."
-        m 3eksdla "...maybe later, okay?"
+
+        m 1wuo "...ещё больше помадки?"
+        $ MAS.MonikaElastic()
+        m 3rksdla "Я ещё не доела ту порцию, которую ты принёс мне в прошлый раз, [player]..."
+        $ MAS.MonikaElastic()
+        m 3eksdla "...может позже, ладно?"
 
     $ mas_receivedGift("mas_reaction_fudge")
     $ gift_ev_cat = mas_getEVLPropValue("mas_reaction_fudge", "category")
     $ store.mas_filereacts.delete_file(gift_ev_cat)
-    # allow multi gifts
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
     return
 
 
 init 5 python:
-    if store.mas_isD25Season():
-        addReaction("mas_reaction_christmascookies", "christmascookies", is_good=True, exclude_on=["d25g"])
+    if store.mas_isD25Pre():
+        addReaction("mas_reaction_christmascookies", "рождественское печенье", is_good=True, exclude_on=["d25g"])
 
 label mas_reaction_christmascookies:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_christmascookies")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    
     $ christmascookies = mas_getConsumable("christmascookies")
     $ mas_giftCapGainAff(1)
     $ is_having_food = bool(MASConsumable._getCurrentFood())
 
+    # $ times_cookies_given = mas_getGiftStatsForDate("mas_reaction_christmascookies")
+
+    # if times_cookies_given == 0 and not persistent._mas_d25_gifted_cookies:
+    #     $ persistent._mas_d25_gifted_cookies = True
+    #     $ mas_giftCapGainAff(3)
+    #     m 3hua "Рождественское печенье!"
+    #     $ MAS.MonikaElastic()
+    #     m 1eua "Я просто обожаю рождественское печенье! Оно всегда такое сладкое... и на него также приятно смотреть..."
+    #     $ MAS.MonikaElastic()
+    #     m "...они выполнены в таких праздничных формах, как снеговик, олень и рождественские ёлки..."
+    #     $ MAS.MonikaElastic()
+    #     m 3eub "...и, как правило, украшены красивой –{w=0.2}и вкусной{w=0.2}– глазурью."
+    #     $ MAS.MonikaElastic()
+    #     m 3hua "Спасибо, [player]~"
+
+    # elif times_cookies_given == 1 or (times_cookies_given == 0 and persistent._mas_d25_gifted_cookies):
+    #     m 1wuo "...ещё одна порция рождественского печенья!"
+    #     $ MAS.MonikaElastic()
+    #     m 3wuo "Целая куча печенья, [player]!"
+    #     $ MAS.MonikaElastic(voice="monika_giggle")
+    #     m 3rksdlb "Я буду есть печенье вечность, а-ха-ха!"
+    # else:
     if christmascookies.isMaxedStock():
-        m 3wuo "...even more Christmas cookies?"
-        m 3rksdla "I still haven't finished the last batch, [player]!"
-        m 3eksdla "You can give me more after I finish these, okay?"
 
+        m 3wuo "...ещё больше рождественского печенья?"
+        $ MAS.MonikaElastic()
+        m 3rksdla "Я ещё не доела ту порцию, [player]!"
+        $ MAS.MonikaElastic()
+        m 3eksdla "Можешь дать мне добавки после того, как я закончу с ней, хорошо?"
+    
     else:
-        if christmascookies.enabled():
-            m 1wuo "...another batch of Christmas cookies!"
-            m 3wuo "That's a whole lot of cookies, [player]!"
-            m 3rksdlb "I'm going to be eating cookies forever, ahaha!"
 
+        if christmascookies.enabled():
+            m 1wuo "...ещё одна порция рождественского печенья!"
+            $ MAS.MonikaElastic()
+            m 3wuo "Целая куча печенья, [player]!"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3rksdlb "Я буду есть печенье вечность, а-ха-ха!"
         else:
+
             if not is_having_food:
                 if monika_chr.is_wearing_acs(mas_acs_quetzalplushie):
                     $ monika_chr.wear_acs(mas_acs_center_quetzalplushie)
                 $ christmascookies.have(skip_leadin=True)
 
             $ mas_giftCapGainAff(3)
-            m 3hua "Christmas cookies!"
-            m 1eua "I just love Christmas cookies! They're always so sweet...and pretty to look at, too..."
-            m "...cut into holiday shapes like snowmen, reindeer, and Christmas trees..."
-            m 3eub "...and usually decorated with beautiful--{w=0.2}and delicious--{w=0.2}icing!"
+            m 3hua "Рождественское печенье!"
+            $ MAS.MonikaElastic()
+            m 1eua "Я просто обожаю рождественское печенье! Оно всегда такое сладкое... и на него также приятно смотреть..."
+            $ MAS.MonikaElastic()
+            m "...они выполнены в таких праздничных формах, как снеговик, олень и рождественские ёлки..."
+            $ MAS.MonikaElastic()
+            m 3eub "...и, как правило, украшены красивой –{w=0.2}и вкусной{w=0.2}– глазурью."
 
             if is_having_food:
-                m 3hua "I'll be sure to try some later~"
+                $ MAS.MonikaElastic()
+                m 3hua "Я обязательно попробую позже~"
 
-            m 1eua "Thanks, [player]~"
+            $ MAS.MonikaElastic()
+            m 1eua "Спасибо, [player]~"
 
             if not is_having_food and monika_chr.is_wearing_acs(mas_acs_center_quetzalplushie):
-                m 3eua "Let me put this plushie away."
-                call mas_transition_to_emptydesk
+                $ MAS.MonikaElastic()
+                m 3eua "Позволь мне убрать плюшевого квезаля."
+                call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_8
                 $ monika_chr.remove_acs(mas_acs_center_quetzalplushie)
                 pause 3.0
-                call mas_transition_from_emptydesk
+                call mas_transition_from_emptydesk from _call_mas_transition_from_emptydesk_12
 
-            #Enable the gift
+
             $ christmascookies.enable()
 
-        #Restock
+
         $ christmascookies.restock(10)
 
     $ mas_receivedGift("mas_reaction_christmascookies")
     $ gift_ev_cat = mas_getEVLPropValue("mas_reaction_christmascookies", "category")
     $ store.mas_filereacts.delete_file(gift_ev_cat)
-    #weird not to have her see the gift file that's in the characters folder.
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
     return
 
-#TODO: Remove the seasonal handling and just write alt dialogue for the not d25s path
 init 5 python:
     if store.mas_isD25Season():
-        addReaction("mas_reaction_candycane", "candycane", is_good=True, exclude_on=["d25g"])
+        addReaction("mas_reaction_candycane", "сахарная тросточка", is_good=True, exclude_on=["d25g"])
 
 label mas_reaction_candycane:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_candycane")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+        
     $ candycane = mas_getConsumable("candycane")
     $ mas_giftCapGainAff(1)
     $ is_having_food = bool(MASConsumable._getCurrentFood())
 
     if candycane.isMaxedStock():
-        m 1eksdla "[player], I think I have enough candy canes for now."
-        m 1eka "You can save them for later, alright?"
-
+        m 1eksdla "[player], по-моему, у меня уже достаточно сахарных тросточек."
+        $ MAS.MonikaElastic()
+        m 1eka "Ты можешь отложить их на потом, хорошо?"
     else:
-        if candycane.enabled():
-            m 3hua "More candy canes!"
-            m 3hub "Thanks [player]!"
 
+        if candycane.enabled():
+            m 3hua "Ещё одна сахарная тросточка!"
+            $ MAS.MonikaElastic()
+            m 3hub "Спасибо, [player]!"
         else:
+
             if not is_having_food:
                 if monika_chr.is_wearing_acs(mas_acs_quetzalplushie):
                     $ monika_chr.wear_acs(mas_acs_center_quetzalplushie)
                 $ candycane.have(skip_leadin=True)
 
             $ mas_giftCapGainAff(3)
-            m 3wub "Candy canes!"
+            m 3wub "Сахарная тросточка!"
 
+            $ MAS.MonikaElastic()
             if store.seen_event("monika_icecream"):
-                m 1hub "You know how much I love mint!"
+                m 1hub "Ты знаешь, как сильно я люблю мяту!"
             else:
-                m 1hub "I just love the flavor of mint!"
+                m 1hub "Я просто обожаю вкус мяты!"
 
             if is_having_food:
-                m 3hua "I'll be sure to try some later."
+                $ MAS.MonikaElastic()
+                m 3hua "Я обязательно попробую позже."
 
-            m 1eua "Thanks, [player]~"
+            $ MAS.MonikaElastic()
+            m 1eua "Спасибо, [player]~"
 
             if not is_having_food and monika_chr.is_wearing_acs(mas_acs_center_quetzalplushie):
-                m 3eua "Oh, let me just put this plushie away."
+                $ MAS.MonikaElastic()
+                m 3eua "Позволь мне убрать плюшевого квезаля."
 
-                call mas_transition_to_emptydesk
+                call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_9
                 $ monika_chr.remove_acs(mas_acs_center_quetzalplushie)
                 pause 3.0
-                call mas_transition_from_emptydesk
+                call mas_transition_from_emptydesk from _call_mas_transition_from_emptydesk_13
 
-            #Enable the gift
+
             $ candycane.enable()
 
-        #Restock
+
         $ candycane.restock(9)
 
     $ mas_receivedGift("mas_reaction_candycane")
     $ gift_ev_cat = mas_getEVLPropValue("mas_reaction_candycane", "category")
     $ store.mas_filereacts.delete_file(gift_ev_cat)
-    #weird not to have her see the gift file that's in the characters folder.
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
     return
 
-#Ribbon stuffs
 init 5 python:
-    addReaction("mas_reaction_blackribbon", "blackribbon", is_good=True)
+    addReaction("mas_reaction_blackribbon", "чёрная ленточка", is_good=True)
 
 label mas_reaction_blackribbon:
-    $ _mas_new_ribbon_color = "black"
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_blackribbon")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ _mas_new_ribbon_color = "чёрного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'black'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_black
-    call _mas_reaction_ribbon_helper("mas_reaction_blackribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_blackribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_blueribbon", "blueribbon", is_good=True)
+    addReaction("mas_reaction_blueribbon", "синяя ленточка", is_good=True)
 
 label mas_reaction_blueribbon:
-    $ _mas_new_ribbon_color = "blue"
+    $ _mas_new_ribbon_color = "синего"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'blue'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_blue
-    call _mas_reaction_ribbon_helper("mas_reaction_blueribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_blueribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_darkpurpleribbon", "darkpurpleribbon", is_good=True)
+    addReaction("mas_reaction_darkpurpleribbon", "тёмно-фиолетовая ленточка", is_good=True)
 
 label mas_reaction_darkpurpleribbon:
-    $ _mas_new_ribbon_color = "dark purple"
+    $ _mas_new_ribbon_color = "тёмно-фиолетового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'darkpurple'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_darkpurple
-    call _mas_reaction_ribbon_helper("mas_reaction_darkpurpleribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_darkpurpleribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_emeraldribbon", "emeraldribbon", is_good=True)
+    addReaction("mas_reaction_emeraldribbon", "изумрудная ленточка", is_good=True)
 
 label mas_reaction_emeraldribbon:
-    $ _mas_new_ribbon_color = "emerald"
+    $ _mas_new_ribbon_color = "изумрудного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'emerald'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_emerald
-    call _mas_reaction_ribbon_helper("mas_reaction_emeraldribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_emeraldribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_grayribbon", "grayribbon", is_good=True)
+    addReaction("mas_reaction_grayribbon", "серая ленточка", is_good=True)
 
 label mas_reaction_grayribbon:
-    $ _mas_new_ribbon_color = "gray"
+    $ _mas_new_ribbon_color = "серого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'gray'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_gray
-    call _mas_reaction_ribbon_helper("mas_reaction_grayribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_grayribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_greenribbon", "greenribbon", is_good=True)
+    addReaction("mas_reaction_greenribbon", "зелёная ленточка", is_good=True)
 
 label mas_reaction_greenribbon:
-    $ _mas_new_ribbon_color = "green"
+    $ _mas_new_ribbon_color = "зелёного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'green'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_green
-    call _mas_reaction_ribbon_helper("mas_reaction_greenribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_greenribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_lightpurpleribbon", "lightpurpleribbon", is_good=True)
+    addReaction("mas_reaction_lightpurpleribbon", "светло-фиолетовая ленточка", is_good=True)
 
 label mas_reaction_lightpurpleribbon:
-    $ _mas_new_ribbon_color = "light purple"
+    $ _mas_new_ribbon_color = "светло-фиолетового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'lightpurple'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_lightpurple
-    call _mas_reaction_ribbon_helper("mas_reaction_lightpurpleribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_lightpurpleribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_peachribbon", "peachribbon", is_good=True)
+    addReaction("mas_reaction_peachribbon", "персиковая ленточка", is_good=True)
 
 label mas_reaction_peachribbon:
-    $ _mas_new_ribbon_color = "peach"
+    $ _mas_new_ribbon_color = "персикового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'peach'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_peach
-    call _mas_reaction_ribbon_helper("mas_reaction_peachribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_peachribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_pinkribbon", "pinkribbon", is_good=True)
+    addReaction("mas_reaction_pinkribbon", "розовая ленточка", is_good=True)
 
 label mas_reaction_pinkribbon:
-    $ _mas_new_ribbon_color = "pink"
+    $ _mas_new_ribbon_color = "розового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'pink'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_pink
-    call _mas_reaction_ribbon_helper("mas_reaction_pinkribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_pinkribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_platinumribbon", "platinumribbon", is_good=True)
+    addReaction("mas_reaction_platinumribbon", "платиновая ленточка", is_good=True)
 
 label mas_reaction_platinumribbon:
-    $ _mas_new_ribbon_color = "platinum"
+    $ _mas_new_ribbon_color = "платинового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'platinum'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_platinum
-    call _mas_reaction_ribbon_helper("mas_reaction_platinumribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_platinumribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_redribbon", "redribbon", is_good=True)
+    addReaction("mas_reaction_redribbon", "красная ленточка", is_good=True)
 
 label mas_reaction_redribbon:
-    $ _mas_new_ribbon_color = "red"
+    $ _mas_new_ribbon_color = "красного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'red'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_red
-    call _mas_reaction_ribbon_helper("mas_reaction_redribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_redribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_rubyribbon", "rubyribbon", is_good=True)
+    addReaction("mas_reaction_rubyribbon", "рубиновая ленточка", is_good=True)
 
 label mas_reaction_rubyribbon:
-    $ _mas_new_ribbon_color = "ruby"
+    $ _mas_new_ribbon_color = "рубинового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'ruby'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_ruby
-    call _mas_reaction_ribbon_helper("mas_reaction_rubyribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_rubyribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_sapphireribbon", "sapphireribbon", is_good=True)
+    addReaction("mas_reaction_sapphireribbon", "сапфировая ленточка", is_good=True)
 
 label mas_reaction_sapphireribbon:
-    $ _mas_new_ribbon_color = "sapphire"
+    $ _mas_new_ribbon_color = "сапфирового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'sapphire'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_sapphire
-    call _mas_reaction_ribbon_helper("mas_reaction_sapphireribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_sapphireribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_silverribbon", "silverribbon", is_good=True)
+    addReaction("mas_reaction_silverribbon", "серебряная ленточка", is_good=True)
 
 label mas_reaction_silverribbon:
-    $ _mas_new_ribbon_color = "silver"
+    $ _mas_new_ribbon_color = "серебряного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'silver'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_silver
-    call _mas_reaction_ribbon_helper("mas_reaction_silverribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_silverribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_tealribbon", "tealribbon", is_good=True)
+    addReaction("mas_reaction_tealribbon", "бирюзовая ленточка", is_good=True)
 
 label mas_reaction_tealribbon:
-    $ _mas_new_ribbon_color = "teal"
+    $ _mas_new_ribbon_color = "бирюзового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'teal'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_teal
-    call _mas_reaction_ribbon_helper("mas_reaction_tealribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_tealribbon")
     return
 
 init 5 python:
-    addReaction("mas_reaction_yellowribbon", "yellowribbon", is_good=True)
+    addReaction("mas_reaction_yellowribbon", "жёлтая ленточка", is_good=True)
 
 label mas_reaction_yellowribbon:
-    $ _mas_new_ribbon_color = "yellow"
+    $ _mas_new_ribbon_color = "жёлтого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'yellow'
     $ _mas_gifted_ribbon_acs = mas_acs_ribbon_yellow
-    call _mas_reaction_ribbon_helper("mas_reaction_yellowribbon")
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_yellowribbon")
     return
 
-# JSON ribbons
+
 label mas_reaction_json_ribbon_base(ribbon_name, user_friendly_desc, helper_label):
     python:
         sprite_data = mas_getSpriteObjInfo(
@@ -2050,200 +2947,334 @@ label mas_reaction_json_ribbon_base(ribbon_name, user_friendly_desc, helper_labe
         )
         _mas_new_ribbon_color = user_friendly_desc
 
-    call _mas_reaction_ribbon_helper(helper_label)
+    call _mas_reaction_ribbon_helper (helper_label) from _call__mas_reaction_ribbon_helper_16
 
     python:
-        # giftname is the 3rd item
+
         if sprite_data[2] is not None:
             store.mas_filereacts.delete_file(sprite_data[2])
 
         mas_finishSpriteObjInfo(sprite_data)
     return
 
-# lanvallime
 
-label mas_reaction_gift_acs_lanvallime_ribbon_coffee:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_coffee", "coffee colored", "mas_reaction_gift_acs_lanvallime_ribbon_coffee")
+
+init 5 python:
+    addReaction("mas_reaction_coffee", "кофейная ленточка", is_good=True)
+
+label mas_reaction_coffee:
+    $ _mas_new_ribbon_color = "кофейного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'coffee'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_coffee
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_coffee")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_coffee", "coffee colored", "mas_reaction_gift_acs_lanvallime_ribbon_coffee")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_gold:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_gold", "gold", "mas_reaction_gift_acs_lanvallime_ribbon_gold")
+init 5 python:
+    addReaction("mas_reaction_gold", "золотая ленточка", is_good=True)
+
+label mas_reaction_gold:
+    $ _mas_new_ribbon_color = "золотого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'gold'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_gold
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_gold")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_gold", "gold", "mas_reaction_gift_acs_lanvallime_ribbon_gold")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_hot_pink:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_hot_pink", "hot pink", "mas_reaction_gift_acs_lanvallime_ribbon_hot_pink")
+init 5 python:
+    addReaction("mas_reaction_hot_pink", "ярко-розовая ленточка", is_good=True)
+
+label mas_reaction_hot_pink:
+    $ _mas_new_ribbon_color = "ярко-розового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'hot_pink'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_hot_pink
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_hot_pink")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_hot_pink", "hot pink", "mas_reaction_gift_acs_lanvallime_ribbon_hot_pink")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_lilac:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_lilac", "lilac", "mas_reaction_gift_acs_lanvallime_ribbon_lilac")
+init 5 python:
+    addReaction("mas_reaction_lilac", "сиреневая ленточка", is_good=True)
+
+label mas_reaction_lilac:
+    $ _mas_new_ribbon_color = "сиреневого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'lilac'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_lilac
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_lilac")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_lilac", "lilac", "mas_reaction_gift_acs_lanvallime_ribbon_lilac")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_lime_green:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_lime_green", "lime green", "mas_reaction_gift_acs_lanvallime_lime_green")
+init 5 python:
+    addReaction("mas_reaction_lime_green", "лаймовая ленточка", is_good=True)
+
+label mas_reaction_lime_green:
+    $ _mas_new_ribbon_color = "лаймового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'lime_green'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_lime_green
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_lime_green")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_lime_green", "lime green", "mas_reaction_gift_acs_lanvallime_lime_green")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_navy_blue:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_navy_blue", "navy", "mas_reaction_gift_acs_lanvallime_ribbon_navy_blue")
+init 5 python:
+    addReaction("mas_reaction_navy_blue", "тёмно-синяя ленточка", is_good=True)
+
+label mas_reaction_navy_blue:
+    $ _mas_new_ribbon_color = "тёмно-синего"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'navy_blue'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_navy_blue
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_navy_blue")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_navy_blue", "navy", "mas_reaction_gift_acs_lanvallime_ribbon_navy_blue")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_orange:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_orange", "orange", "mas_reaction_gift_acs_lanvallime_ribbon_orange")
+init 5 python:
+    addReaction("mas_reaction_orange", "оранжевая ленточка", is_good=True)
+
+label mas_reaction_orange:
+    $ _mas_new_ribbon_color = "оранжевого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'orange'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_orange
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_orange")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_orange", "orange", "mas_reaction_gift_acs_lanvallime_ribbon_orange")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_royal_purple:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_royal_purple", "royal purple", "mas_reaction_gift_acs_lanvallime_ribbon_royal_purple")
+init 5 python:
+    addReaction("mas_reaction_royal_purple", "королевская фиолетовая ленточка", is_good=True)
+
+label mas_reaction_royal_purple:
+    $ _mas_new_ribbon_color = "королевского фиолетового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'royal_purple'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_royal_purple
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_royal_purple")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_royal_purple", "royal purple", "mas_reaction_gift_acs_lanvallime_ribbon_royal_purple")
     return
 
-label mas_reaction_gift_acs_lanvallime_ribbon_sky_blue:
-    call mas_reaction_json_ribbon_base("lanvallime_ribbon_sky_blue", "sky blue", "mas_reaction_gift_acs_lanvallime_ribbon_sky_blue")
+init 5 python:
+    addReaction("mas_reaction_sky_blue", "небесно-голубая ленточка", is_good=True)
+
+label mas_reaction_sky_blue:
+    $ _mas_new_ribbon_color = "небесно-голубого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'sky_blue'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_sky_blue
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_sky_blue")
+    # call mas_reaction_json_ribbon_base ("lanvallime_ribbon_sky_blue", "sky blue", "mas_reaction_gift_acs_lanvallime_ribbon_sky_blue")
     return
 
-# anonymioo
-label mas_reaction_gift_acs_anonymioo_ribbon_bisexualpride:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_bisexualpride","bisexual-pride-themed","mas_reaction_gift_acs_anonymioo_ribbon_bisexualpride")
+###########
+
+# init 5 python:
+#     addReaction("mas_reaction_bisexualpride", "ленточка бисексуала", is_good=True) P.S: пропаганда бисексуализма :Д
+
+label mas_reaction_bisexualpride:
+    $ _mas_new_ribbon_color = "бисексуального"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'bisexualpride'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_bisexualpride
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_bisexualpride")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_bisexualpride", "bisexual-pride-themed", "mas_reaction_gift_acs_anonymioo_ribbon_bisexualpride")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_blackandwhite:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_blackandwhite","black and white","mas_reaction_gift_acs_anonymioo_ribbon_blackandwhite")
+init 5 python:
+    addReaction("mas_reaction_blackandwhite", "чёрно-белая ленточка", is_good=True)
+
+label mas_reaction_blackandwhite:
+    $ _mas_new_ribbon_color = "чёрно-белого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'blackandwhite'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_blackandwhite
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_blackandwhite")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_blackandwhite", "black and white", "mas_reaction_gift_acs_anonymioo_ribbon_blackandwhite")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_bronze:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_bronze","bronze","mas_reaction_gift_acs_anonymioo_ribbon_bronze")
+init 5 python:
+    addReaction("mas_reaction_bronze", "бронзовая ленточка", is_good=True)
+
+label mas_reaction_bronze:
+    $ _mas_new_ribbon_color = "бронзового"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'bronze'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_bronze
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_bronze")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_bronze", "bronze", "mas_reaction_gift_acs_anonymioo_ribbon_bronze")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_brown:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_brown","brown","mas_reaction_gift_acs_anonymioo_ribbon_brown")
+init 5 python:
+    addReaction("mas_reaction_brown", "коричневая ленточка", is_good=True)
+
+label mas_reaction_brown:
+    $ _mas_new_ribbon_color = "коричневого"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'brown'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_brown
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_brown")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_brown", "brown", "mas_reaction_gift_acs_anonymioo_ribbon_brown")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_gradient:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_gradient","multi-colored","mas_reaction_gift_acs_anonymioo_ribbon_gradient")
+init 5 python:
+    addReaction("mas_reaction_gradient", "градиентная ленточка", is_good=True)
+
+label mas_reaction_gradient:
+    $ _mas_new_ribbon_color = "градиентного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'gradient'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_gradient
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_gradient")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_gradient", "multi-colored", "mas_reaction_gift_acs_anonymioo_ribbon_gradient")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_gradient_lowpoly:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_gradient_lowpoly","multi-colored","mas_reaction_gift_acs_anonymioo_ribbon_gradient_lowpoly")
+init 5 python:
+    addReaction("mas_reaction_gradient_lowpoly", "слабо-градиентная ленточка", is_good=True)
+
+label mas_reaction_gradient_lowpoly:
+    $ _mas_new_ribbon_color = "слабо-градиентного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'gradient_lowpoly'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_gradient_lowpoly
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_gradient_lowpoly")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_gradient_lowpoly", "multi-colored", "mas_reaction_gift_acs_anonymioo_ribbon_gradient_lowpoly")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_gradient_rainbow:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_gradient_rainbow","rainbow colored","mas_reaction_gift_acs_anonymioo_ribbon_gradient_rainbow")
+init 5 python:
+    addReaction("mas_reaction_gradient_rainbow", "радужная ленточка", is_good=True)
+
+label mas_reaction_gradient_rainbow:
+    $ _mas_new_ribbon_color = "радужного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'gradient_rainbow'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_gradient_rainbow
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_gradient_rainbow")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_gradient_rainbow", "rainbow colored", "mas_reaction_gift_acs_anonymioo_ribbon_gradient_rainbow")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_polkadots_whiteonred:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_polkadots_whiteonred","red and white polka dotted","mas_reaction_gift_acs_anonymioo_ribbon_polkadots_whiteonred")
+init 5 python:
+    addReaction("mas_reaction_polkadots_whiteonred", "красная ленточка в белый горошек", is_good=True)
+
+label mas_reaction_polkadots_whiteonred:
+    $ _mas_new_ribbon_color = "красного"
+    $ _mas_new_ribbon_color_about = " в белый горошек"
+    $ persistent.msr_ribbon_color = 'polkadots_whiteonred'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_polkadots_whiteonred
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_polkadots_whiteonred")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_polkadots_whiteonred", "red and white polka dotted", "mas_reaction_gift_acs_anonymioo_ribbon_polkadots_whiteonred")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_starsky_black:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_starsky_black","night-sky-themed","mas_reaction_gift_acs_anonymioo_ribbon_starsky_black")
+init 5 python:
+    addReaction("mas_reaction_starsky_black", "звёздная чёрно-небесная ленточка", is_good=True)
+
+label mas_reaction_starsky_black:
+    $ _mas_new_ribbon_color = "звёздного чёрно-небесного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'starsky_black'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_starsky_black
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_starsky_black")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_starsky_black", "night-sky-themed", "mas_reaction_gift_acs_anonymioo_ribbon_starsky_black")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_starsky_red:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_starsky_red","night-sky-themed","mas_reaction_gift_acs_anonymioo_ribbon_starsky_red")
+init 5 python:
+    addReaction("mas_reaction_starsky_red", "звёздная красно-небесная ленточка", is_good=True)
+
+label mas_reaction_starsky_red:
+    $ _mas_new_ribbon_color = "звёздного красно-небесного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'starsky_red'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_starsky_red
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_starsky_red")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_starsky_red", "night-sky-themed", "mas_reaction_gift_acs_anonymioo_ribbon_starsky_red")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_striped_blueandwhite:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_striped_blueandwhite","blue and white striped","mas_reaction_gift_acs_anonymioo_ribbon_striped_blueandwhite")
+init 5 python:
+    addReaction("mas_reaction_striped_blueandwhite", "ленточка с синими и белыми полосками", is_good=True)
+
+label mas_reaction_striped_blueandwhite:
+    $ _mas_new_ribbon_color = "синего и белого"
+    $ _mas_new_ribbon_color_about = " в полоску"
+    $ persistent.msr_ribbon_color = 'striped_blueandwhite'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_striped_blueandwhite
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_striped_blueandwhite")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_striped_blueandwhite", "blue and white striped", "mas_reaction_gift_acs_anonymioo_ribbon_striped_blueandwhite")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_striped_pinkandwhite:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_striped_pinkandwhite","pink and white striped","mas_reaction_gift_acs_anonymioo_ribbon_striped_pinkandwhite")
+init 5 python:
+    addReaction("mas_reaction_striped_pinkandwhite", "ленточка с розовыми и белыми полосками", is_good=True)
+
+label mas_reaction_striped_pinkandwhite:
+    $ _mas_new_ribbon_color = "розового и белого"
+    $ _mas_new_ribbon_color_about = " в полоску"
+    $ persistent.msr_ribbon_color = 'striped_pinkandwhite'
+    $ _mas_gifted_ribbon_acs = mas_acs_ribbon_striped_pinkandwhite
+    $ persistent.is_bow = False
+    call _mas_reaction_ribbon_helper ("mas_reaction_striped_pinkandwhite")
+    # call mas_reaction_json_ribbon_base ("anonymioo_ribbon_striped_pinkandwhite", "pink and white striped", "mas_reaction_gift_acs_anonymioo_ribbon_striped_pinkandwhite")
     return
 
-label mas_reaction_gift_acs_anonymioo_ribbon_transexualpride:
-    call mas_reaction_json_ribbon_base("anonymioo_ribbon_transexualpride","transexual-pride-themed","mas_reaction_gift_acs_anonymioo_ribbon_transexualpride")
+init 5 python:
+    addReaction("mas_reaction_bow_black", "чёрный бантик", is_good=True)
+
+default persistent.is_bow = False
+
+label mas_reaction_bow_black:
+    $ _mas_new_ribbon_color = "чёрного"
+    $ _mas_new_ribbon_color_about = ""
+    $ persistent.msr_ribbon_color = 'bow_black'
+    $ _mas_gifted_ribbon_acs = mas_acs_bow_black
+    $ persistent.is_bow = True
+    python:
+        try:
+            os.remove(user_dir + "/characters/чёрный бантик.gift")
+        except:
+            pass
+    call _mas_reaction_ribbon_helper ("mas_reaction_bow_black")
     return
 
-# velius94
-
-label mas_reaction_gift_acs_velius94_ribbon_platinum:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_platinum", "platinum", "mas_reaction_gift_acs_velius94_ribbon_platinum")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_pink:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_pink", "pink", "mas_reaction_gift_acs_velius94_ribbon_pink")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_peach:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_peach", "peach", "mas_reaction_gift_acs_velius94_ribbon_peach")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_green:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_green", "green", "mas_reaction_gift_acs_velius94_ribbon_green")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_emerald:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_emerald", "emerald", "mas_reaction_gift_acs_velius94_ribbon_emerald")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_gray:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_gray", "gray", "mas_reaction_gift_acs_velius94_ribbon_gray")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_blue:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_blue", "blue", "mas_reaction_gift_acs_velius94_ribbon_blue")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_def:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_def", "white", "mas_reaction_gift_acs_velius94_ribbon_def")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_black:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_black", "black", "mas_reaction_gift_acs_velius94_ribbon_black")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_dark_purple:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_dark_purple", "dark purple", "mas_reaction_gift_acs_velius94_ribbon_dark_purple")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_yellow:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_yellow", "yellow", "mas_reaction_gift_acs_velius94_ribbon_yellow")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_red:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_red", "red", "mas_reaction_gift_acs_velius94_ribbon_red")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_sapphire:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_sapphire", "sapphire", "mas_reaction_gift_acs_velius94_ribbon_sapphire")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_teal:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_teal", "teal", "mas_reaction_gift_acs_velius94_ribbon_teal")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_silver:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_silver", "silver", "mas_reaction_gift_acs_velius94_ribbon_silver")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_light_purple:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_light_purple", "light purple", "mas_reaction_gift_acs_velius94_ribbon_light_purple")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_ruby:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_ruby", "ruby", "mas_reaction_gift_acs_velius94_ribbon_ruby")
-    return
-
-label mas_reaction_gift_acs_velius94_ribbon_wine:
-    call mas_reaction_json_ribbon_base("velius94_ribbon_wine", "wine colored", "mas_reaction_gift_acs_velius94_ribbon_wine")
-    return
-
-#specific to this, since we need to verify if the player actually gave a ribbon.
 default persistent._mas_current_gifted_ribbons = 0
 
 label _mas_reaction_ribbon_helper(label):
-    #if we already have that ribbon
-    if store.mas_selspr.get_sel_acs(_mas_gifted_ribbon_acs).unlocked:
-        call mas_reaction_old_ribbon
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV(label)
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
 
+    if store.mas_selspr.get_sel_acs(_mas_gifted_ribbon_acs).unlocked:
+        call mas_reaction_old_ribbon from _call_mas_reaction_old_ribbon
     else:
-        # since we don't have it we can accept it
-        call mas_reaction_new_ribbon
+
+
+        call mas_reaction_new_ribbon from _call_mas_reaction_new_ribbon
         $ persistent._mas_current_gifted_ribbons += 1
 
-    # normal gift processing
+
     $ mas_receivedGift(label)
     $ gift_ev_cat = mas_getEVLPropValue(label, "category")
-    # for regular ribbons
+
     $ store.mas_filereacts.delete_file(gift_ev_cat)
-    #we have dlg for repeating ribbons, may as well have it used
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
 
     return
@@ -2251,194 +3282,334 @@ label _mas_reaction_ribbon_helper(label):
 label mas_reaction_new_ribbon:
     python:
         def _ribbon_prepare_hair():
-            #If current hair doesn't support ribbons, we should change hair
+            
             if not monika_chr.hair.hasprop("ribbon"):
                 monika_chr.change_hair(mas_hair_def, False)
 
     $ mas_giftCapGainAff(3)
-    if persistent._mas_current_gifted_ribbons == 0:
-        m 1suo "A new ribbon!"
-        m 3hub "...And it's [_mas_new_ribbon_color]!"
+    if persistent.is_bow == False:
+        if persistent._mas_current_gifted_ribbons == 0:
 
-        #Ironically green is closer to her eyes, but given the selector dlg, we'll say this for both.
-        if _mas_new_ribbon_color == "green" or _mas_new_ribbon_color == "emerald":
-            m 1tub "...Just like my eyes!"
+            m 1suo "Новая ленточка!"
+            $ MAS.MonikaElastic()
+            m 3hub "...И она [_mas_new_ribbon_color] цвета[_mas_new_ribbon_color_about]!"
 
-        m 1hub "Thank you so much [player], I love it!"
-        if store.seen_event("monika_date"):
-            m 3eka "Did you get this for me because I mentioned how I love shopping for skirts and bows?"
+            if _mas_new_ribbon_color == "зелёного" or _mas_new_ribbon_color == "изумрудного":
+                $ MAS.MonikaElastic()
+                m 1tub "...Прямо как мои глаза!"
 
-            if mas_isMoniNormal(higher=True):
-                m 3hua "You're always so thoughtful~"
+            $ MAS.MonikaElastic()
+            m 1hub "Большое тебе спасибо, [player_abb], мне очень нравится!"
+            if store.seen_event("monika_date"):
+                $ MAS.MonikaElastic()
+                m 3eka "Ты подарил[mas_gender_none] это мне, потому что я сказала о том, как сильно обожаю покупать себе юбки и бантики?"
 
-        m 3rksdlc "I really don't have a lot of choices here when it comes to fashion..."
-        m 3eka "...so being able to change my ribbon color is such a nice change of pace."
-        m 2dsa "In fact, I'll put it on right now.{w=0.5}.{w=0.5}.{nw}"
-        $ store.mas_selspr.unlock_acs(_mas_gifted_ribbon_acs)
-        $ _ribbon_prepare_hair()
-        $ monika_chr.wear_acs(_mas_gifted_ribbon_acs)
-        m 1hua "Oh it's wonderful, [player]!"
+                if mas_isMoniNormal(higher=True):
+                    $ MAS.MonikaElastic()
+                    m 3hua "Ты всегда так[mas_gender_oi] заботлив[mas_gender_iii]~"
 
-        if mas_isMoniAff(higher=True):
-            m 1eka "You always make me feel so loved..."
-        elif mas_isMoniHappy():
-            m 1eka "You always know how to make me happy..."
-        m 3hua "Thanks again~"
+            $ MAS.MonikaElastic()
+            m 3rksdlc "У меня правда не такой большой выбор, когда дело доходит до моды..."
+            $ MAS.MonikaElastic()
+            m 3eka "...поэтому, возможность менять цвет моей ленточки – это приятное разнообразие."
+            $ MAS.MonikaElastic()
+            m 2dsa "Впрочем, давай я её сейчас надену.{w=0.5}.{w=0.5}."
+            $ store.mas_selspr.unlock_acs(_mas_gifted_ribbon_acs)
+            $ _ribbon_prepare_hair()
+            if monika_chr.clothes.name == "santa":
+                $ persistent.msr_monika_clothes = 'santa'
+            else:
+                $ persistent.msr_monika_clothes = 'def'
+            $ monika_chr.wear_acs(_mas_gifted_ribbon_acs)
+            $ MAS.MonikaElastic()
+            m 1hua "Ого, она просто прекрасна, [player_abb]!"
+
+            if mas_isMoniAff(higher=True):
+                $ MAS.MonikaElastic()
+                m 1eka "С тобой, я всегда чувствую себя любимой..."
+            elif mas_isMoniHappy():
+                $ MAS.MonikaElastic()
+                m 1eka "Ты всегда знаешь, как сделать меня счастливой..."
+            $ MAS.MonikaElastic()
+            m 3hua "Ещё раз спасибо~"
+        else:
+
+            m 1suo "Ещё одна ленточка!"
+            $ MAS.MonikaElastic()
+            m 3hub "И на этот раз, она [_mas_new_ribbon_color] цвета[_mas_new_ribbon_color_about]!"
+
+            if _mas_new_ribbon_color == "зелёного" or _mas_new_ribbon_color == "изумрудного":
+                $ MAS.MonikaElastic()
+                m 1tub "...Прямо как мои глаза!"
+
+            $ MAS.MonikaElastic()
+            m 2dsa "Я надену её прямо сейчас.{w=0.5}.{w=0.5}."
+            $ store.mas_selspr.unlock_acs(_mas_gifted_ribbon_acs)
+            $ _ribbon_prepare_hair()
+            if monika_chr.clothes.name == "santa":
+                $ persistent.msr_monika_clothes = 'santa'
+            else:
+                $ persistent.msr_monika_clothes = 'def'
+            $ monika_chr.wear_acs(_mas_gifted_ribbon_acs)
+            $ MAS.MonikaElastic()
+            m 3hua "Большое тебе спасибо, [player_abb], мне очень нравится!"
 
     else:
-        m 1suo "Another ribbon!"
-        m 3hub "...And this time it's [_mas_new_ribbon_color]!"
+        if persistent._mas_current_gifted_bow == 0:
 
-        #Ironically green is closer to her eyes, but given the selector dlg, we'll say this for both.
-        if _mas_new_ribbon_color == "green" or _mas_new_ribbon_color == "emerald":
-            m 1tub "...Just like my eyes!"
+            m 1suo "Новый бантик!"
+            $ MAS.MonikaElastic()
+            m 3hub "...И он [_mas_new_ribbon_color] цвета[_mas_new_ribbon_color_about]!"
 
-        m 2dsa "I'll put this on right now.{w=0.5}.{w=0.5}.{nw}"
-        $ store.mas_selspr.unlock_acs(_mas_gifted_ribbon_acs)
-        $ _ribbon_prepare_hair()
-        $ monika_chr.wear_acs(_mas_gifted_ribbon_acs)
-        m 3hua "Thank you so much [player], I just love it!"
+            if _mas_new_ribbon_color == "зелёного" or _mas_new_ribbon_color == "изумрудного":
+                $ MAS.MonikaElastic()
+                m 1tub "...Прямо как мои глаза!"
+
+            $ MAS.MonikaElastic()
+            m 1hub "Большое тебе спасибо, [player_abb], мне очень нравится!"
+            if store.seen_event("monika_date"):
+                $ MAS.MonikaElastic()
+                m 3eka "Ты подарил[mas_gender_none] это мне, потому что я сказала о том, как сильно обожаю покупать себе юбки и бантики?"
+
+                if mas_isMoniNormal(higher=True):
+                    $ MAS.MonikaElastic()
+                    m 3hua "Ты всегда так[mas_gender_oi] заботлив[mas_gender_iii]~"
+
+            $ MAS.MonikaElastic()
+            m 3rksdlc "У меня правда не такой большой выбор, когда дело доходит до моды..."
+            $ MAS.MonikaElastic()
+            m 3eka "...поэтому, возможность одевать на себя бантик – это приятное разнообразие."
+            $ MAS.MonikaElastic()
+            m 2dsa "Впрочем, давай я его сейчас надену.{w=0.5}.{w=0.5}."
+            $ store.mas_selspr.unlock_acs(_mas_gifted_ribbon_acs)
+            $ _ribbon_prepare_hair()
+            if monika_chr.clothes.name == "santa":
+                $ persistent.msr_monika_clothes = 'santa'
+            else:
+                $ persistent.msr_monika_clothes = 'def'
+            $ monika_chr.wear_acs(_mas_gifted_ribbon_acs)
+            $ MAS.MonikaElastic()
+            m 1hua "Ого, он просто прекрасен, [player_abb]!"
+
+            if mas_isMoniAff(higher=True):
+                $ MAS.MonikaElastic()
+                m 1eka "С тобой, я всегда чувствую себя любимой..."
+            elif mas_isMoniHappy():
+                $ MAS.MonikaElastic()
+                m 1eka "Ты всегда знаешь, как сделать меня счастливой..."
+            $ MAS.MonikaElastic()
+            m 3hua "Ещё раз спасибо~"
+        else:
+
+            m 1suo "Ещё один бантик!"
+            $ MAS.MonikaElastic()
+            m 3hub "И на этот раз, он [_mas_new_ribbon_color] цвета[_mas_new_ribbon_color_about]!"
+
+            if _mas_new_ribbon_color == "зелёного" or _mas_new_ribbon_color == "изумрудного":
+                $ MAS.MonikaElastic()
+                m 1tub "...Прямо как мои глаза!"
+
+            $ MAS.MonikaElastic()
+            m 2dsa "Я надену его прямо сейчас.{w=0.5}.{w=0.5}."
+            $ store.mas_selspr.unlock_acs(_mas_gifted_ribbon_acs)
+            $ _ribbon_prepare_hair()
+            if monika_chr.clothes.name == "santa":
+                $ persistent.msr_monika_clothes = 'santa'
+            else:
+                $ persistent.msr_monika_clothes = 'def'
+            $ monika_chr.wear_acs(_mas_gifted_ribbon_acs)
+            $ MAS.MonikaElastic()
+            m 3hua "Большое тебе спасибо, [player_abb], мне очень нравится!"
     return
+
+default persistent.is_bow = False
 
 label mas_reaction_old_ribbon:
     m 1rksdla "[player]..."
-    m 1hksdlb "You already gave me [mas_a_an_str(_mas_new_ribbon_color)] ribbon!"
+    $ MAS.MonikaElastic()
+    if persistent.is_bow == True:
+        m 1hksdlb "Ты уже дарил[mas_gender_none] мне бантик [_mas_new_ribbon_color] цвета[_mas_new_ribbon_color_about]!"
+    else:
+        m 1hksdlb "Ты уже дарил[mas_gender_none] мне ленточку [_mas_new_ribbon_color] цвета[_mas_new_ribbon_color_about]!"
     return
 
 init 5 python:
-    addReaction("mas_reaction_gift_roses", "roses", is_good=True, exclude_on=["d25g"])
+    addReaction("mas_reaction_gift_roses", "розы", is_good=True, exclude_on=["d25g"])
 
 default persistent._date_last_given_roses = None
 
 label mas_reaction_gift_roses:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_roses")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     python:
         gift_ev_cat = mas_getEVLPropValue("mas_reaction_gift_roses", "category")
 
         monika_chr.wear_acs(mas_acs_roses)
 
-    #TODO: future migrate this to use history (post f14)
+
     if not persistent._date_last_given_roses and not renpy.seen_label('monika_valentines_start'):
         $ mas_giftCapGainAff(10)
 
-        m 1eka "[player]... I-I don't know what to say..."
-        m 1ekbsb "I never would've thought that you'd get something like this for me!"
-        m 3skbsa "I'm so happy right now."
+        m 1eka "[player]... я-я не знаю, что сказать..."
+        $ MAS.MonikaElastic()
+        m 1ekbsb "Никогда бы не подумала, что ты подаришь мне что-то такое!"
+        $ MAS.MonikaElastic()
+        m 3skbsa "Я сейчас очень счастлива."
         if mas_isF14():
-            # extra 5 points if f14
-            $ mas_f14CapGainAff(5)
-            m 3ekbsa "To think that I'd be getting roses from you on Valentine's Day..."
-            m 1ekbsu "You're so sweet."
-            m 1dktpu "..."
-            m 1ektda "Ahaha..."
 
-        #We can only have this on poses which use the new sprite set
+            $ mas_f14CapGainAff(5)
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Если вспомнить, что я получила розы от тебя в День святого Валентина..."
+            $ MAS.MonikaElastic()
+            m 1ekbsu "Ты так[mas_gender_oi] мил[mas_gender_iii]."
+            $ MAS.MonikaElastic()
+            m 1dktpu "..."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1ektda "А-ха-ха..."
+
+
         if not monika_chr.is_wearing_clothes_with_exprop("baked outfit"):
-            m 2dsa "Hold on.{w=0.5}.{w=0.5}.{nw}"
+            $ MAS.MonikaElastic()
+            m 2dsa "Погоди-ка.{w=0.5}.{w=0.5}."
             $ monika_chr.wear_acs(mas_acs_ear_rose)
-            m 1hub "Ehehe, there! Doesn't it look pretty on me?"
+            $ persistent._date_last_ear_rose = datetime.date.today()
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "Э-хе-хе, вот! Эта одежда прекрасно смотрится на мне, согласен?"
 
         if mas_shouldKiss(chance=2, special_day_bypass=True):
-            call monika_kissing_motion_short
-
+            call monika_kissing_motion_short from _call_monika_kissing_motion_short
     else:
+
         if persistent._date_last_given_roses is None and renpy.seen_label('monika_valentines_start'):
             $ persistent._date_last_given_roses = datetime.date(2018,2,14)
 
         if mas_pastOneDay(persistent._date_last_given_roses):
             $ mas_giftCapGainAff(5 if mas_isSpecialDay() else 1)
 
-            m 1suo "Oh!"
-            m 1ekbsa "Thanks, [player]."
-            m 3ekbsa "I always love getting roses from you."
+            m 1suo "О!"
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Спасибо, [player]."
+            $ MAS.MonikaElastic()
+            m 3ekbsa "Мне всегда нравится получать от тебя розы."
             if mas_isF14():
-                # extra 5 points if f14
-                $ mas_f14CapGainAff(5)
-                m 1dsbsu "Especially on a day like today."
-                m 1ekbsa "It's really sweet of you to get these for me."
-                m 3hkbsa "I love you so much."
-                m 1ekbsa "Happy Valentine's Day, [player]~"
-            else:
-                m 1ekbsa "You're always so sweet."
 
-            #Random chance (unless f14) for her to do the ear rose thing
+                $ mas_f14CapGainAff(5)
+                $ MAS.MonikaElastic()
+                m 1dsbsu "Особенно в такой день, как сегодня."
+                $ MAS.MonikaElastic()
+                m 1ekbsa "Было очень мило с твоей стороны дарить их мне."
+                $ MAS.MonikaElastic()
+                m 3hkbsa "Я так сильно тебя люблю."
+                $ MAS.MonikaElastic()
+                m 1ekbsa "С Днём святого Валентина, [player]~"
+            else:
+                $ MAS.MonikaElastic()
+                m 1ekbsa "Ты всегда так[mas_gender_oi] мил[mas_gender_iii]."
+
+
             if (mas_isSpecialDay() and renpy.random.randint(1,2) == 1) or (renpy.random.randint(1,4) == 1) or mas_isF14():
                 if not monika_chr.is_wearing_clothes_with_exprop("baked outfit"):
-                    m 2dsa "Hold on.{w=0.5}.{w=0.5}.{nw}"
+                    $ MAS.MonikaElastic()
+                    m 2dsa "Погоди-ка.{w=0.5}.{w=0.5}."
+                    $ persistent._date_last_ear_rose = datetime.date.today()
                     $ monika_chr.wear_acs(mas_acs_ear_rose)
-                    m 1hub "Ehehe~"
+                    $ MAS.MonikaElastic(voice="monika_giggle")
+                    m 1hub "Э-хе-хе~"
 
             if mas_shouldKiss(chance=4, special_day_bypass=True):
-                call monika_kissing_motion_short
-
+                call monika_kissing_motion_short from _call_monika_kissing_motion_short_1
         else:
-            m 1hksdla "[player], I'm flattered, really, but you don't need to give me so many roses."
-            if store.seen_event("monika_clones"):
-                m 1ekbsa "You'll always be my special rose after all, ehehe~"
-            else:
-                m 1ekbsa "A single rose from you is already more than I could have ever asked for."
 
-    # Pop from reacted map
+            $ MAS.MonikaElastic()
+            m 1hksdla "[player], я польщена, правда, но тебе не надо было дарить мне столько роз."
+            if store.seen_event("monika_clones"):
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1ekbsa "И потом, ты всегда будешь моей особенной розочкой, э-хе-хе~"
+            else:
+                $ MAS.MonikaElastic()
+                m 1ekbsa "Одной розы от тебя вполне достаточно, о таком я могла только мечтать."
+
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
     $ persistent._date_last_given_roses = datetime.date.today()
 
-    # normal gift processing
+
     $ mas_receivedGift("mas_reaction_gift_roses")
     $ store.mas_filereacts.delete_file(gift_ev_cat)
     return
 
 
 init 5 python:
-    addReaction("mas_reaction_gift_chocolates", "chocolates", is_good=True, exclude_on=["d25g"])
+    addReaction("mas_reaction_gift_chocolates", "шоколадные конфеты", is_good=True, exclude_on=["d25g"])
 
 default persistent._given_chocolates_before = False
 
 label mas_reaction_gift_chocolates:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_chocolates")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
     $ gift_ev_cat = mas_getEVLPropValue("mas_reaction_gift_chocolates", "category")
 
     if not persistent._mas_given_chocolates_before:
         $ persistent._mas_given_chocolates_before = True
 
-        #If we're eating something already, that takes priority over the acs
+
         if not MASConsumable._getCurrentFood():
             $ monika_chr.wear_acs(mas_acs_heartchoc)
 
         $ mas_giftCapGainAff(5)
 
-        m 1tsu "That's so {i}sweet{/i} of you, ehehe~"
+        $ MAS.MonikaElastic(True, voice="monika_giggle")
+        m 1tsu "Это так {i}мило{/i} с твоей стороны, э-хе-хе~"
         if mas_isF14():
-            #Extra little bump if on f14
+
             $ mas_f14CapGainAff(5)
-            m 1ekbsa "Giving me chocolates on Valentine's Day..."
-            m 1ekbfa "You really know how to make a girl feel special, [player]."
+            $ MAS.MonikaElastic()
+            m 1ekbsa "Даришь мне шоколад в День святого Валентина..."
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Ты и правда знаешь, как заставить девушку почувствовать себя особенной, [player]."
             if renpy.seen_label('monika_date'):
-                m 1lkbfa "I know I mentioned visiting a chocolate store together someday..."
-                m 1hkbfa "But while we can't really do that just yet, getting some chocolates as a gift from you, well..."
-            m 3ekbfa "It means a lot getting these from you."
+                $ MAS.MonikaElastic()
+                m 1lkbfa "Знаю, я раньше говорила о том, что мы на днях заглянем в шоколадный бутик вместе..."
+                $ MAS.MonikaElastic()
+                m 1hkbfa "И пока мы не можем туда заглянуть, получение шоколада в качестве подарка от тебя, ну..."
+            $ MAS.MonikaElastic()
+            m 3ekbfa "То, что подарил его мне ты, многое для меня значит."
 
         elif renpy.seen_label('monika_date'):
-            m 3rka "I know I mentioned visiting a chocolate store together someday..."
-            m 3hub "But while we can't really do that just yet, getting some chocolates as a gift from you means everything to me."
-            m 1ekc "I really wish we could share them though..."
-            m 3rksdlb "But until that day comes, I'll just have to enjoy them for both of us, ahaha!"
-            m 3hua "Thank you, [mas_get_player_nickname()]~"
-
+            $ MAS.MonikaElastic()
+            m 3rka "Знаю, я раньше говорила о том, что мы на днях заглянем в шоколадный бутик вместе..."
+            $ MAS.MonikaElastic()
+            m 3hub "И пока мы не можем туда заглянуть, получение шоколада в качестве подарка от тебя многое для меня значит."
+            $ MAS.MonikaElastic()
+            m 1ekc "Но мне бы очень хотелось разделить его с тобой..."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 3rksdlb "Но, пока этот день не настал, мне придётся насладиться ими за нас обоих, а-ха-ха!"
+            $ MAS.MonikaElastic()
+            m 3hua "Спасибо, [mas_get_player_nickname()]~"
         else:
-            m 3hub "I love chocolates!"
-            m 1eka "And getting some from you means a lot to me."
-            m 1hub "Thanks, [player]!"
-
+            $ MAS.MonikaElastic()
+            m 3hub "Я обожаю шоколад!"
+            $ MAS.MonikaElastic()
+            m 1eka "А то, что даришь его мне ты, многое для меня значит."
+            $ MAS.MonikaElastic()
+            m 1hub "Спасибо, [player]!"
     else:
+
         $ times_chocs_given = mas_getGiftStatsForDate("mas_reaction_gift_chocolates")
         if times_chocs_given == 0:
-            #We want this to show up where she accepts the chocs
-            #Same as before, we don't want these to show up if we're already eating
+
+
             if not MASConsumable._getCurrentFood():
-                #If we have the plush out, we should show the middle one here
+
                 if not (mas_isF14() or mas_isD25Season()):
                     if monika_chr.is_wearing_acs(mas_acs_quetzalplushie):
                         $ monika_chr.wear_acs(mas_acs_center_quetzalplushie)
-
                 else:
+
                     $ monika_chr.remove_acs(store.mas_acs_quetzalplushie)
 
                 $ monika_chr.wear_acs(mas_acs_heartchoc)
@@ -2448,322 +3619,512 @@ label mas_reaction_gift_chocolates:
             m 1wuo "Oh!"
 
             if mas_isF14():
-                #Extra little bump if on f14
+
                 $ mas_f14CapGainAff(5)
+                $ MAS.MonikaElastic()
                 m 1eka "[player]!"
-                m 1ekbsa "You're such a sweetheart, getting me chocolates on a day like today..."
-                m 1ekbfa "You really know how to make me feel special."
-                m "Thanks, [player]."
+                $ MAS.MonikaElastic()
+                m 1ekbsa "Ты такой душка, даришь мне шоколад в такой день, как сегодня..."
+                $ MAS.MonikaElastic()
+                m 1ekbfa "Ты правда знаешь, как заставить меня почувствовать себя особенной."
+                $ MAS.MonikaElastic()
+                m "Спасибо, [player]."
             else:
-                m 1hua "Thanks for the chocolates, [player]!"
-                m 1ekbsa "Every bite reminds me of how sweet you are, ehehe~"
+                $ MAS.MonikaElastic()
+                m 1hua "Спасибо за шоколад, [player]!"
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1ekbsa "Каждый укус напоминает мне о том, какой ты мил[mas_gender_iii], э-хе-хе~"
 
         elif times_chocs_given == 1:
-            #Same here
+
             if not MASConsumable._getCurrentFood():
                 $ monika_chr.wear_acs(mas_acs_heartchoc)
 
-            m 1eka "More chocolates, [player]?"
-            m 3tku "You really love to spoil me don't you,{w=0.2} {nw}"
-            extend 3tub "ahaha!"
-            m 1rksdla "I still haven't finished the first box you gave me..."
-            m 1hub "...but I'm not complaining!"
-
+            m 1eka "Ещё больше шоколада, [player]?"
+            $ MAS.MonikaElastic()
+            m 3tku "Тебе правда нравится баловать меня,{w=0.2} {nw}"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            extend 3tub "а-ха-ха!"
+            $ MAS.MonikaElastic()
+            m 1rksdla "Я всё ещё не доела ту первую коробку, которую ты дал мне..."
+            $ MAS.MonikaElastic()
+            m 1hub "...но я не возражаю!"
         elif times_chocs_given == 2:
             m 1ekd "[player]..."
-            m 3eka "I think you've given me enough chocolates today."
-            m 1rksdlb "Three boxes is too much, and I haven't even finished the first one yet!"
-            m 1eka "Save them for another time, okay?"
-
+            $ MAS.MonikaElastic()
+            m 3eka "Мне кажется, ты сегодня подарил[mas_gender_none] мне достаточно шоколада."
+            $ MAS.MonikaElastic()
+            m 1rksdlb "Три коробки – как-то чересчур, и я ещё не доела первую!"
+            $ MAS.MonikaElastic()
+            m 1eka "Оставь их на потом, ладно?"
         else:
             m 2tfd "[player]!"
-            m 2tkc "I already told you I've had enough chocolates for one day, but you keep trying to give me even more..."
-            m 2eksdla "Please...{w=1}just save them for another day."
+            $ MAS.MonikaElastic()
+            m 2tkc "Я уже говорила тебе, что у меня уже навалом шоколада, но ты пытаешься подарить мне ещё..."
+            $ MAS.MonikaElastic()
+            m 2eksdla "Пожалуйста...{w=1}просто оставь её на потом."
 
-    #If we're wearing the chocs, we'll remove them here
+
     if monika_chr.is_wearing_acs(mas_acs_heartchoc):
-        call mas_remove_choc
+        call mas_remove_choc from _call_mas_remove_choc
 
-    #pop from reacted map
+
     $ persistent._mas_filereacts_reacted_map.pop(gift_ev_cat, None)
-    # normal gift processing
+
     $ mas_receivedGift("mas_reaction_gift_chocolates")
     $ store.mas_filereacts.delete_file(gift_ev_cat)
     return
 
 label mas_remove_choc:
-    # we remove chocolates if not f14
-    m 1hua "..."
-    m 3eub "These are {i}so{/i} good!"
-    m 1hua "..."
-    m 3hksdlb "Ahaha! I should probably put these away for now..."
-    m 1rksdla "If I leave them here much longer there won't be any left to enjoy later!"
 
-    call mas_transition_to_emptydesk
+    $ MAS.MonikaElastic()
+    m 1hua "..."
+    $ MAS.MonikaElastic()
+    m 3eub "Они {i}такие{/i} вкусные!"
+    $ MAS.MonikaElastic()
+    m 1hua "..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hksdlb "А-ха-ха! Наверное, я должна убрать их в сторону..."
+    $ MAS.MonikaElastic()
+    m 1rksdla "Если я оставлю их здесь надолго, то на потом ничего не останется!"
+
+    call mas_transition_to_emptydesk from _call_mas_transition_to_emptydesk_11
 
     python:
         renpy.pause(1, hard=True)
         monika_chr.remove_acs(mas_acs_heartchoc)
         renpy.pause(3, hard=True)
 
-    call mas_transition_from_emptydesk("monika 1eua")
+    call mas_transition_from_emptydesk ("monika 1eua") from _call_mas_transition_from_emptydesk_17
 
-    #Now move the plush
+
     if monika_chr.is_wearing_acs(mas_acs_center_quetzalplushie):
         $ monika_chr.wear_acs(mas_acs_quetzalplushie)
 
-    m 1eua "So what else did you want to do today?"
+    $ MAS.MonikaElastic()
+    m 1eua "Итак, что ещё ты хотел[mas_gender_none] бы сделать сегодня?"
     return
 
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_orcaramelo_bikini_shell", "бикини с ракушками", is_good=True)
+
 label mas_reaction_gift_clothes_orcaramelo_bikini_shell:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_orcaramelo_bikini_shell")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_orcaramelo_bikini_shell")
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "orcaramelo_bikini_shell")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "orcaramelo_bikini_shell")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1sua "Oh! {w=0.5}A seashell bikini!"
-    m 1hub "Thank you, [mas_get_player_nickname()]!{w=0.5} I'm going to try it on right now!"
+    m 1sua "Оу! {w=0.5}Бикини из ракушек!"
+    $ MAS.MonikaElastic()
+    m 1hub "Спасибо, [mas_get_player_nickname()]!{w=0.5} Я собираюсь одеть её прямо сейчас!"
 
-    # try it on
-    call mas_clothes_change(sprite_object)
+    call mas_clothes_change (mas_clothes_bikini_shell, unlock=True)
 
-    m 2ekbfa "Well...{w=0.5} What do you think?"
-    m 2hubfa "Do I look like a mermaid? Ehehe."
-    show monika 5ekbfa at i11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbfa "I think it's really cute, [player]..."
-    m 5hubfa "We'll have to go to the beach sometime!"
+    $ MAS.MonikaElastic()
+    m 2ekbfa "Ну...{w=0.5} Что думаешь?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2hubfa "Разве я похожа на русалку? Э-хе-хе."
+    show monika 5ekbfa zorder MAS_MONIKA_Z at i11 with dissolve_monika
+    m 5ekbfa "Думаю, что это очень мило, [player]..."
+    $ MAS.MonikaElastic()
+    m 5hubfa "Придётся нам как-нибудь сходить на пляж!"
 
     if mas_isWinter() or mas_isMoniNormal(lower=True):
         if mas_isWinter():
-            show monika 2rksdla at i11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 2rksdla "...But for now, it's a little chilly in here..."
-            m 2eka "So I'm going to go put on something a little warmer..."
+            show monika 2rksdla zorder MAS_MONIKA_Z at i11 with dissolve_monika
+            m 2rksdla "...Но сейчас здесь немного прохладно..."
+            $ MAS.MonikaElastic()
+            m 2eka "Так что я пойду надену что-нибудь потеплее..."
 
         elif mas_isMoniNormal(lower=True):
-            show monika 2hksdlb at i11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 2hksdlb "Ahaha..."
-            m 2rksdla "It's a little embarrassing just sitting here like this in front of you."
-            m 2eka "I hope you don't mind, but I'm going to go change..."
+            show monika 2hksdlb zorder MAS_MONIKA_Z at i11 with dissolve_monika
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 2hksdlb "А-ха-ха..."
+            $ MAS.MonikaElastic()
+            m 2rksdla "Мне немного неловко просто сидеть вот так перед тобой."
+            $ MAS.MonikaElastic()
+            m 2eka "Надеюсь, ты не против, но я пойду переоденусь..."
 
-        # change to def normally, santa during d25 outfit season
+
         $ clothes = mas_clothes_def
         if persistent._mas_d25_in_d25_mode and mas_isD25Outfit():
             $ clothes = mas_clothes_santa
-        call mas_clothes_change(clothes)
+        call mas_clothes_change (clothes)
 
-        m 2eua "Ah, that's better..."
-        m 3hua "Thanks again for the wonderful gift~"
+        $ MAS.MonikaElastic()
+        m 2eua "Так-то лучше..."
+        $ MAS.MonikaElastic()
+        m 3hua "Ещё раз спасибо за замечательный подарок~"
 
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
+    $ mas_receivedGift("mas_reaction_gift_clothes_orcaramelo_bikini_shell")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
     return
 
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_finale_shirt_blue", "синяя футболка", is_good=True)
+
+label mas_reaction_gift_clothes_finale_shirt_blue:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_shirt_blue")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_shirt_blue")
+
+    call mas_clothes_change (mas_clothes_shirt_blue, unlock=True)
+
+    $ MAS.MonikaElastic()
+    m 3hua "Cпасибо за такой замечательный подарок~"
+    $ mas_receivedGift("mas_reaction_gift_clothes_finale_shirt_blue")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    return
+
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_finale_hoodie_green", "зелёное худи", is_good=True)
+
+label mas_reaction_gift_clothes_finale_hoodie_green:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_hoodie_green")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_hoodie_green")
+    call mas_clothes_change (finale_hoodie_green, unlock=True)
+
+    $ MAS.MonikaElastic()
+    m 3hua "Cпасибо за такой замечательный подарок~"
+    $ mas_receivedGift("mas_reaction_gift_clothes_finale_hoodie_green")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    return
+
+
 label mas_reaction_gift_acs_orcaramelo_hairflower_pink:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_acs_orcaramelo_hairflower_pink")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_acs_orcaramelo_hairflower_pink")
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_ACS, "orcaramelo_hairflower_pink")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_ACS, "orcaramelo_hairflower_pink")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before = sprite_data
 
         mas_giftCapGainAff(1)
 
-    m 3sua "Oh!{w=0.5} What a cute little flower!"
-    m 1ekbsa "Thanks [player], you're so sweet~"
-    m 1dua "Hold on.{w=0.5}.{w=0.5}.{nw}"
-    $ monika_chr.wear_acs(sprite_object)
-    m 1hua "Ehehe~"
-    m 1hub "Thanks again, [player]!"
+    m 3sua "Оу!{w=0.5} Какой милый маленький цветок!"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Спасибо, [player], ты так[mas_gender_oi] мил[mas_gender_iii]~"
+    $ MAS.MonikaElastic()
+    m 1dua "Минутку.{w=0.5}.{w=0.5}.{nw}"
+    $ monika_chr.wear_acs(mas_acs_hairflower_pink)
+    $ store.mas_selspr.unlock_acs(mas_acs_hairflower_pink)
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hua "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1hub "Спасибо снова, [player]!"
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
+    $ mas_receivedGift("mas_reaction_gift_acs_orcaramelo_hairflower_pink")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_velius94_shirt_pink", "розовый сарафан", is_good=True)
 
 label mas_reaction_gift_clothes_velius94_shirt_pink:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_velius94_shirt_pink")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_velius94_shirt_pink")
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "velius94_shirt_pink")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "velius94_shirt_pink")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1suo "Oh my gosh!"
-    m 1suo "It's {i}so{/i} pretty!"
-    m 3hub "Thank you so much, [player]!"
-    m 3eua "Hold on, let me try it on real quick..."
+    m 1suo "Боже мой!"
+    $ MAS.MonikaElastic()
+    m 1suo "Это {i}так{/i} красиво!"
+    $ MAS.MonikaElastic()
+    m 3hub "Огромное спасибо, [player]!"
+    $ MAS.MonikaElastic()
+    m 3eua "Погоди, дай я её быстренько примерю..."
 
-    # try it on
-    call mas_clothes_change(sprite_object)
 
-    m 2sub "Ahh, it's a perfect fit!"
-    m 3hub "I really like the colors, too! Pink and black go so well together."
-    m 3eub "Not to mention the skirt looks really cute with those frills!"
-    m 2tfbsd "Yet for some reason I can't help but feel that your eyes are kind of drifting...{w=0.5}ahem...{w=0.5}{i}elsewhere{/i}."
+    call mas_clothes_change (mas_clothes_shirt_pink, unlock=True)
 
+    $ MAS.MonikaElastic()
+    m 2sub "Ах, это идеально подходит!"
+    $ MAS.MonikaElastic()
+    m 3hub "Мне тоже очень нравятся цвета! Розовый и черный так хорошо сочетаются."
+    $ MAS.MonikaElastic()
+    m 3eub "Не говоря уже о юбке выглядит очень мило с этими оборками!"
+    $ MAS.MonikaElastic()
+    m 2tfbsd "И все же по какой-то причине я не могу не чувствовать, что твои глаза как бы плывут по течению... {w=0.5}кхм... {w=0.5}{i}в другом месте{/i}."
+
+    $ MAS.MonikaElastic()
     if mas_selspr.get_sel_clothes(mas_clothes_sundress_white).unlocked:
-        m 2lfbsp "I told you it's not polite to stare, [player]."
+        m 2lfbsp "Я же говорила тебе, что невежливо пялиться, [player]."
     else:
-        m 2lfbsp "It's not polite to stare, you know?"
+        m 2lfbsp "Это невежливо – пялиться, понимаешь?"
 
-    m 2hubsb "Ahaha!"
-    m 2tkbsu "Relax, relax...{w=0.5}just teasing you~"
-    m 3hub "Once again, thank you so much for this outfit, [player]!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2hubsb "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 2tkbsu "Расслабься, расслабься... {w=0.5}просто дразню тебя~"
+    $ MAS.MonikaElastic()
+    m 3hub "Ещё раз, огромное спасибо за эту одежду, [player]!"
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    $ mas_receivedGift("mas_reaction_gift_clothes_velius94_shirt_pink")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi", "костюм сакуи изаеи", is_good=True)
 
 label mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi")
 
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "orcaramelo_sakuya_izayoi")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "orcaramelo_sakuya_izayoi")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1sub "Oh! {w=0.5}Is this..."
-    m 2euc "A maid outfit?"
-    m 3tuu "Ehehe~"
-    m 3tubsb "You know, if you liked this kind of thing, you could have just told me..."
-    m 1hub "Ahaha! Just kidding~"
-    m 1eub "Let me go put it on!"
+    $ MAS.MonikaElastic()
+    m 1sub "О! {w=0.5}Это..."
+    $ MAS.MonikaElastic()
+    m 2euc "Наряд горничной?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3tuu "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 3tubsb "Знаешь, если бы тебе нравились такие вещи, ты мог[mas_gender_g] бы просто сказать мне..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха! Просто шучу~"
+    $ MAS.MonikaElastic()
+    m 1eub "Позволь мне надеть его!"
 
-    # try it on
-    call mas_clothes_change(sprite_object, outfit_mode=True)
+    call mas_clothes_change (mas_clothes_orcaramelo_sakuya_izayoi, True, unlock=True)
 
-    m 2hua "So,{w=0.5} how do I look?"
-    m 3eub "I almost feel like I could get anything done before you could even blink."
-    m 1eua "...So long as you don't keep me too busy, ehehe~"
-    m 1lkbfb "I'd still like to be able to spend time with you, maste--{nw}"
+    $ MAS.MonikaElastic()
+    m 2hua "Итак,{w=0.5} как я выгляжу?"
+    $ MAS.MonikaElastic()
+    m 3eub "Я почти чувствую, что могу сделать всё, что угодно, прежде чем ты успеешь моргнуть."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1eua "...Если только ты не будешь слишком занят[mas_gender_none] со мной, э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1lkbfb "Я всё еще хочу проводить время с тобой, масте—{nw}"
     $ _history_list.pop()
-    m 1ekbfb "I'd still like to be able to spend time with you,{fast} [player]."
+    $ MAS.MonikaElastic()
+    m 1ekbfb "Я всё еще хочу проводить время с тобой,{fast} [player]."
+    $ mas_receivedGift("mas_reaction_gift_clothes_velius94_shirt_pink")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_finale_jacket_brown", "коричневое пальто", is_good=True)
 
 label mas_reaction_gift_clothes_finale_jacket_brown:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_jacket_brown")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_jacket_brown")
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "finale_jacket_brown")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "finale_jacket_brown")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1sub "Oh!{w=0.5} A winter jacket!"
-    m 1suo "And it even comes with a scarf!"
+
+    m 1sub "О!{w=0.5} Зимнее пальто!"
+    $ MAS.MonikaElastic()
+    m 1suo "И вместе с ним ещё идёт шарф!"
     if mas_isSummer():
-        m 3rksdlu "...Though I'm getting a little hot just by looking at it, ahaha..."
-        m 3eksdla "Perhaps summer isn't the best time to wear this, [player]."
-        m 3eka "I do appreciate the thought, and I'll be glad to wear it in a few months."
-
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 3rksdlu "...Хотя мне становится немного жарко от одного лишь взгляда на него, а-ха-ха..."
+        $ MAS.MonikaElastic()
+        m 3eksdla "Наверное, лето – не самое лучшее время года для того, чтобы носить это, [player]."
+        $ MAS.MonikaElastic()
+        m 3eka "Я ценю твою заботу, и я буду рада надеть его через пару месяцев."
     else:
+
         if mas_isWinter():
-            m 1tuu "I won't be getting cold anytime soon because of you, [player]~"
-        m 3eub "Let me go put it on! I'll be right back."
+            $ MAS.MonikaElastic()
+            m 1tuu "Именно благодаря тебе, я никогда не замёрзну, [player]~"
+        $ MAS.MonikaElastic()
+        m 3eub "Дай я надену его! Сейчас вернусь."
 
-        # try it on
-        call mas_clothes_change(sprite_object)
 
-        m 2dku "Ahh, it feels very nice~"
-        m 1eua "I like the way it looks on me, don't you agree?"
+        call mas_clothes_change (outfit=finale_jacket_brown, restore_zoom=False, unlock=True)
+
+        $ MAS.MonikaElastic()
+        m 2dku "А-а-ах, как же приятно~"
+        $ MAS.MonikaElastic()
+        m 1eua "Мне нравится, как оно смотрится на мне, ты соглас[mas_gender_en] со мной?"
         if mas_isMoniNormal(higher=True):
-            m 3tku "Well... I can't really expect you to be objective about that question, can I?"
-            m 1hubfb "Ahaha!"
-        m 1ekbfa "Thank you [player], I love it."
+            $ MAS.MonikaElastic()
+            m 3tku "Ну... я правда не могу ожидать того, что ты проявишь объективность в данном вопросе, так ведь?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hubfb "А-ха-ха!"
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Спасибо, [player], я в полном восторге."
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_orcaramelo_sweater_shoulderless", "свитер без плеч", is_good=True)
 
 label mas_reaction_gift_clothes_orcaramelo_sweater_shoulderless:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_orcaramelo_sweater_shoulderless")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_orcaramelo_sweater_shoulderless")
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "orcaramelo_sweater_shoulderless")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "orcaramelo_sweater_shoulderless")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1sub "Oh!{w=0.5} A sweater!"
-    m 1hub "And it looks so cozy, too!"
+    m 1sub "О!{w=0.5} Свитер!"
+    $ MAS.MonikaElastic()
+    m 1hub "И он ещё выглядит так уютно!"
     if mas_isWinter():
-        m 2eka "You're so thoughtful [player], giving this to me on such a cold winter day..."
-    m 3eua "Let me go try it on."
+        $ MAS.MonikaElastic()
+        m 2eka "Ты так[mas_gender_oi] внимательн[mas_gender_iii], [player], подарил[mas_gender_none] мне такую вещь в холодный зимний день..."
+    $ MAS.MonikaElastic()
+    m 3eua "Дай-ка я надену его."
 
-    # try it on
-    call mas_clothes_change(sprite_object)
 
-    m 2dkbsu "It's so...{w=1}comfy. I feel as snug as a bug in a rug. Ehehe~"
-    m 1ekbsa "Thank you, [player]. I love it!"
-    m 3hubsb "Now whenever I wear it I'll think of your warmth. Ahaha~"
+    call mas_clothes_change (outfit=orcaramelo_sweater_shoulderless, restore_zoom=False, unlock=True)
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2dkbsu "Он такой...{w=1} удобный. Мне так же тепло, как и жучку на лугу. Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Спасибо, [player]. Мне он очень нравится!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hubsb "Теперь, когда я буду надевать его, я буду думать о твоём тепле. А-ха-ха~"
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
     return
 
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_velius94_dress_whitenavyblue", "белое и тёмно-синее платье", is_good=True)
+
 label mas_reaction_gift_clothes_velius94_dress_whitenavyblue:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_velius94_dress_whitenavyblue")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_velius94_dress_whitenavyblue")
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "velius94_dress_whitenavyblue")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "velius94_dress_whitenavyblue")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1suo "Oh my gosh!"
-    m 1sub "This dress is gorgeous, [player]!"
-    m 3hub "I'm going to try it on right now!"
+    m 1suo "О боже!"
+    $ MAS.MonikaElastic()
+    m 1sub "Это платье просто прекрасно, [player]!"
+    $ MAS.MonikaElastic()
+    m 3hub "Сейчас я примерю его!"
 
-    # try it on
-    call mas_clothes_change(sprite_object, outfit_mode=True)
 
-    m "So,{w=0.5} what do you think?"
-    m 3eua "I think this shade of blue goes really well with the white."
+    call mas_clothes_change (velius94_dress_whitenavyblue, outfit_mode=True, restore_zoom=False, unlock=True)
+
+    $ MAS.MonikaElastic()
+    m "Ну,{w=0.5} что думаешь?"
+    $ MAS.MonikaElastic()
+    m 3eua "Мне кажется, этот оттенок синего прекрасно сочетается с белым."
     $ scrunchie = monika_chr.get_acs_of_type('bunny-scrunchie')
 
     if scrunchie and scrunchie.name == "velius94_bunnyscrunchie_blue":
-        m 3eub "And the bunny scrunchie complements the outfit nicely too!"
-    m 1eka "Thank you so much, [player]."
-
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+        $ MAS.MonikaElastic()
+        m 3eub "И эта резинка для волос в форме заячьих ушек прекрасно дополняет этот наряд!"
+    $ MAS.MonikaElastic()
+    m 1eka "Большое тебе спасибо, [player]."
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
     return
 
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_mocca_bun_blackandwhitestripedpullover", "свитер с чёрно-белыми линиями", is_good=True)
+
 label mas_reaction_gift_clothes_mocca_bun_blackandwhitestripedpullover:
+    if persistent.saveblock:
+        $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_gift_clothes_mocca_bun_blackandwhitestripedpullover", "category"))
+        return
     python:
-        sprite_data = mas_getSpriteObjInfo(
-            (store.mas_sprites.SP_CLOTHES, "mocca_bun_blackandwhitestripedpullover")
-        )
-        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+        # sprite_data = mas_getSpriteObjInfo(
+        #     (store.mas_sprites.SP_CLOTHES, "mocca_bun_blackandwhitestripedpullover")
+        # )
+        # sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
 
         mas_giftCapGainAff(3)
 
-    m 1sub "Oh, a new shirt!"
-    m 3hub "It looks amazing, [player]!"
-    m 3eua "One second, let me just put it on.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-    call mas_clothes_change(sprite_object)
+    m 1sub "О, новый свитер!"
+    $ MAS.MonikaElastic()
+    m 3hub "Он выглядит потрясающе, [player]!"
+    $ MAS.MonikaElastic()
+    m 3eua "Одну секунду, позволь мне надеть его.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
 
-    m 2eua "Well, what do you think?"
-    m 7hua "I think it looks pretty cute on me.{w=0.2} {nw}"
-    extend 3rubsa "I'll definitely be saving this outfit for a date~"
-    m 1hub "Thanks again, [player]!"
+    call mas_clothes_change (mocca_bun_blackandwhitestripedpullover, restore_zoom=False, unlock=True)
 
-    $ mas_finishSpriteObjInfo(sprite_data)
-    if giftname is not None:
-        $ store.mas_filereacts.delete_file(giftname)
+    m 2eua "Ну, а ты как думаешь?"
+    $ MAS.MonikaElastic()
+    m 7hua "Думаю, что он выглядит довольно мило на мне.{w=0.2} {nw}"
+    extend 3rubsa "Я определённо приберегу этот наряд для свидания~"
+    $ MAS.MonikaElastic()
+    m 1hub "Спасибо ещё раз, [player]!"
+
+    $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_gift_clothes_mocca_bun_blackandwhitestripedpullover", "category"))
+
+    # $ mas_finishSpriteObjInfo(sprite_data)
+    # if giftname is not None:
+    #     $ store.mas_filereacts.delete_file(giftname)
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
