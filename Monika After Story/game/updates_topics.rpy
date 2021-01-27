@@ -1,12 +1,12 @@
-# Module that defines changed topics between versions
-# this should run before updates.rpy
 
-# start by initalization version update dict
+
+
+
 define updates.version_updates = None
 
-# key:version number -> v:changedIDs
-# changedIDs structure:
-#   k:oldId -> v:newId
+
+
+
 define updates.topics = None
 
 init -1 python in mas_db_merging:
@@ -28,8 +28,8 @@ init -1 python in mas_db_merging:
         Runs a specific set of merges, particularly for the merge that
         happend after version 0.8.10.
         """
-
-        # compliments
+        
+        
         if store.persistent._mas_compliments_database is not None:
             merge_db(
                 store.persistent._mas_compliments_database,
@@ -37,34 +37,34 @@ init -1 python in mas_db_merging:
             )
 
 
-# preeerything
+
 init -1 python:
     def clearUpdateStructs():
-        #
-        # Clears a bunch of uneeded stuff
-
+        
+        
+        
         updates.topics.clear()
         updates.topics = None
-        #updates.version_updates.clear()
-        #updates.version_updates = None
-        # TODO
-        # is there a way to delete a renpy storemodule?
 
 
-# runs before updates.rpy
+
+
+
+
+
 init 9 python:
     renpy.call_in_new_context("vv_updates_topics")
 
-# init label for updats_topics
+
 label vv_updates_topics:
     python:
 
-        # init these dicts
+
         updates.version_updates = {}
         updates.topics = {}
 
-        # versions
-        # use the v#_#_# notation so we can work with labels
+
+
         vv0_11_9 = "v0_11_9"
         vv0_11_8 = "v0_11_8"
         vv0_11_7 = "v0_11_7"
@@ -122,11 +122,9 @@ label vv_updates_topics:
         vv0_3_0 = "v0_3_0"
         vv0_2_2 = "v0_2_2"
 
-        # update this dict accordingly to every new version
-        # k:old version number -> v:new version number
-        # some version changes skip some numbers because no major updates
-        #NOTE: If a version does not have and update script, its version still must be documented and point to the next update
-        #script available
+
+
+
         updates.version_updates[vv0_11_8] = vv0_11_9
         updates.version_updates[vv0_11_7] = vv0_11_9
         updates.version_updates[vv0_11_6] = vv0_11_7
@@ -183,21 +181,21 @@ label vv_updates_topics:
         updates.version_updates[vv0_3_0] = vv0_3_1
         updates.version_updates[vv0_2_2] = vv0_3_0
 
-        # NOTE: we are no longer going to use this:
-        #
-        # version structures:
-        # if a version has changed / removed IDS, then add it as a dict
-        # here
-        # k:oldID -> v:newID
-        # if newID is None, the topic is considered removed
-        #
-        # NOTE: If a potential conflict may occur (removing one topic,
-        # changing name of another topic to the one that was removed),
-        # do NOT use this to update the IDs
-        # All conflicts should be handled in an individual script block in
-        # updates.rpy. (SEE updates.rpy)
 
-        # (0.8.4 - 0.8.10) -> 0.8.11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         updates.topics[vv0_8_11] = {
             "monika_snowman": None,
             "monika_relax": None,
@@ -205,30 +203,30 @@ label vv_updates_topics:
             "monika_whatiwant": None
         }
 
-        # (0.8.1 - 0.8.3) -> 0.8.4
+
         updates.topics[vv0_8_4] = {
             "monika_bestgirl": "mas_compliment_bestgirl"
         }
 
-        # 0.8.0 -> 0.8.1
+
         updates.topics[vv0_8_1] = {
             "monika_write": "monika_writingtip3",
             "mas_random_ask": None,
             "monika_ravel": "mas_story_ravel"
         }
 
-        # 0.7.4 -> 0.8.0
+
         updates.topics[vv0_8_0] = {
             "monika_love2": None
         }
 
-        # (0.7.0 - 0.7.3) -> 0.7.4
+
         updates.topics[vv0_7_4] = {
             "monika_playerhappy": None,
             "monika_bad_day": None
         }
 
-        # (0.6.1 - 0.6.3) -> 0.7.0
+
         changedIDs = {
             "monika_deleted": None,
             "monika_whatever": None,
@@ -241,13 +239,13 @@ label vv_updates_topics:
         }
         updates.topics[vv0_7_0] = changedIDs
 
-        # (0.5.1 - 0.6.0) -> 0.6.1
+
         changedIDs = {
             "monika_piano": None
         }
         updates.topics[vv0_6_1] = changedIDs
 
-        # (0.3.3 - 0.5.0) -> 0.5.1
+
         changedIDs = dict()
         changedIDs["monika_music"] = None
         changedIDs["monika_keitai"] = None
@@ -263,19 +261,19 @@ label vv_updates_topics:
         changedIDs["monika_computer"] = None
         updates.topics[vv0_5_1] = changedIDs
 
-        # 0.3.1 -> 0.3.2
+
         changedIDs = dict()
         changedIDs["monika_monika"] = None
         updates.topics[vv0_3_2] = changedIDs
 
-        # 0.3.0 -> 0.3.1
+
         changedIDs = dict()
         changedIDs["monika_ghosts"] = "monika_whispers"
         updates.topics[vv0_3_1] = changedIDs
 
-        # 0.2.2 -> 0.3.0
-        # this is a long list...
-        # no_topics_list is defined / checked in updates.rpy
+
+
+
         changedIDs = None
         changedIDs = dict()
         changedIDs["ch30_1"] = "monika_god"
@@ -303,7 +301,7 @@ label vv_updates_topics:
         changedIDs["ch30_23"] = "monika_tea"
         changedIDs["ch30_24"] = "monika_favoritegame"
         changedIDs["ch30_25"] = "monika_smash"
-#        changedIDs["ch30_26"] = ""
+
         changedIDs["ch30_27"] = "monika_lastpoem"
         changedIDs["ch30_28"] = "monika_anxious"
         changedIDs["ch30_29"] = "monika_friends"
@@ -340,55 +338,56 @@ label vv_updates_topics:
         changedIDs["monika_literatureclub"] = "monika_ddlc"
         changedIDs["monika_religion"] = None
 
-            # here is a list of new ids, for reference. These are automatically
-            # handled via new topic generation.
-            # monika_credits_song
-            # monika_whatever (special topic launcher)
 
-            # here is a list of IDS present in v0.2.2, again for reference
-            # monika_imouto
-            # monika_oneesan
-            # monika_family
-            # monika_anime
-            # monika_libitina
-            # monika_meta
-            # monika_programming
-            # monika_vn
-            # monika_totono
-            # monika_subahibi
-            # monika_difficulty
-            # monika_poetry
-            # monika_dan
-            # monika_4chan
-            # monika_reddit
-            # monika_vidya
-            # monika_books
-            # monika_favpoem
-            # monika_favbook
-            # monika_natsuki
-            # monika_love
-            # monika_hedgehog
-            # monika_justification
-            # monika_freewill
-            # monika_shill
-            # monika_technique
-            # monika_contribute
-            # monika_drawing
-            # monika_mc
-            # monika_heroism
-            # monika_dracula
-            # monika_undertale
-            # monika_bestgrill
-            # monika_trolley
-            # monika_girlfriend
-            # monika_waifus
 
-            # CONFLICTING CHANGES ALERT
-            # the following ids have been changed/removed and conflict with
-            # changedIDs dict (these must be handled in updates.rpy)
-            # monika_piano
-            # monika_college was pointing to ch30_31 (monika_middleschool)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         updates.topics[vv0_3_0] = changedIDs
 
-        # ensuring no refs to old dicts
+
         changedIDs = None
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
