@@ -1,41 +1,30 @@
-## This splash screen is the first thing that Renpy will show the player
-##
-## Before load, check to be sure that the archive files were found.
-## If not, display an error message and quit.
-init -100 python:
-    #Check for each archive needed
-    for archive in ['audio','images','scripts','fonts']:
-        if not archive in config.archives:
-            #If one is missing, throw an error and chlose
-            renpy.error("DDLC archive files not found in /game folder. Check installation and try again.")
 
-## First, a disclaimer declaring this is a mod is shown, then there is a
-## check for the original DDLC assets in the install folder. If those are
-## not found, the player is directed to the developer's site to download.
-##
+
+
+
 init python:
     menu_trans_time = 1
-    #The default splash message, originally shown in Act 1 and Act 4
-    splash_message_default = _("This game is an unofficial fan work, unaffiliated with Team Salvato.")
+
+    splash_message_default = _("Эта неофициальная фановая игра, неподдерживаемая Team Salvato.")
     splash_messages = [
-    _("Please support Doki Doki Literature Club & Team Salvato."),
-    _("You are my sunshine,\nMy only sunshine"),
-    _("I missed you."),
-    _("Play with me"),
-    _("It's just a game, mostly."),
-    _("This game is not suitable for children\nor those who are easily disturbed?"),
-    _("sdfasdklfgsdfgsgoinrfoenlvbd"),
-    _("null"),
-    _("I have granted kids to hell"),
-    _("PM died for this."),
-    _("It was only partially your fault."),
-    _("This game is not suitable for children\nor those who are easily dismembered.")
-#    "Don't forget to backup Monika's character file."
+    _("Пожалуйста, поддержите Doki Doki Literature Club и Team Salvato."),
+    _("Ты мой солнечный свет,\nМой единственный свет."),
+    _("Я скучала по тебе."),
+    _("Поиграй со мной."),
+    _("Это всего лишь игра... по большей части."),
+    _("Эта игра не предназначена для детей,\nбеременных женщин и лиц с неустойчивой психикой?"),
+    _("сдфасдклфгсдфгсгоинрфоенлвдб"),
+    _("ноль"),
+    _("Я отправила детей в ад."),
+    _("За это умер Проект М."),
+    _("Это была лишь отчасти твоя вина."),
+    _("Эта игра не предназначена для детей,\nбеременных женщин и неуравновешенных психов.")
+
     ]
 
 image splash_warning = ParameterizedText(style="splash_text", xalign=0.5, yalign=0.5)
 
-##Here's where you can change the logo file to whatever you want
+
 image menu_logo:
     "mod_assets/menu_new.png"
     subpixel True
@@ -44,7 +33,7 @@ image menu_logo:
     zoom 0.60
     menu_logo_move
 
-#Removed rendering below of other char imgs in main menu
+
 
 image menu_bg:
     topleft
@@ -149,6 +138,24 @@ image intro:
     "white" with Dissolve(0.5, alpha=True)
     0.5
 
+image intro_mod:
+    truecenter
+    "white"
+    0.5
+    "mod_assets/msr_logo.png" with Dissolve(0.5, alpha=True)
+    2.5
+    "white" with Dissolve(0.5, alpha=True)
+    0.5
+
+image intro_mod_winter:
+    truecenter
+    "white"
+    0.5
+    "mod_assets/msr_logo_winter.png" with Dissolve(0.5, alpha=True)
+    2.5
+    "white" with Dissolve(0.5, alpha=True)
+    0.5
+    
 image warning:
     truecenter
     "white"
@@ -162,6 +169,52 @@ image tos2 = "bg/warning2.png"
 
 
 label splashscreen:
+    $ persistent.splash_now = True
+    python:
+        process_list = []
+        currentuser = ""
+        if renpy.windows:
+            try:
+                process_list = subprocess.check_output("wmic process get Description", shell=True).lower().replace("\r", "").replace(" ", "").split("\n")
+            except:
+                pass
+            try:
+                for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+                    user = os.environ.get(name)
+                    if user:
+                        currentuser = user
+            except:
+                pass
+
+    python:
+        firstrun = "1"
+
+    if not firstrun:
+        if persistent.first_run:
+            $ quick_menu = False
+            scene black
+            menu:
+                "A previous save file has been found. Would you like to delete your save data and start over?"
+                "Yes, delete my existing data.":
+                    "Deleting save data...{nw}"
+                    python:
+                        delete_all_saves()
+                        renpy.loadsave.location.unlink_persistent()
+                        renpy.persistent.should_save_persistent = False
+                        renpy.utter_restart()
+                "No, continue where I left off.":
+                    pass
+
+        python:
+            if not firstrun:
+                try:
+                    with open(config.basedir + "/game/firstrun", "w") as f:
+                        f.write("1")
+                except:
+
+                    pass
+
+
     python:
         _mas_AffStartup()
 
@@ -169,17 +222,17 @@ label splashscreen:
         persistent.sessions['total_sessions'] = persistent.sessions['total_sessions']+ 1
         store.mas_calendar.loadCalendarDatabase()
 
-        # set zoom
+
         store.mas_sprites.adjust_zoom()
 
     if mas_corrupted_per and (mas_no_backups_found or mas_backup_copy_failed):
-        # we have a corrupted persistent but was unable to recover via the
-        # backup system
-        call mas_backups_you_have_corrupted_persistent
+
+
+        call mas_backups_you_have_corrupted_persistent from _call_mas_backups_you_have_corrupted_persistent
 
     scene white
 
-    #If this is the first time the game has been run, show a disclaimer
+
     default persistent.first_run = False
     $ persistent.tried_skip = False
     if not persistent.first_run:
@@ -188,12 +241,12 @@ label splashscreen:
         scene tos
         with Dissolve(1.0)
         pause 1.0
-        "[config.name] is a Doki Doki Literature Club fan mod that is not affiliated with Team Salvato."
-        "It is designed to be played only after the official game has been completed, and contains spoilers for the official game."
-        "Game files for Doki Doki Literature Club are required to play this mod and can be downloaded for free at: http://ddlc.moe"
+        "[config.name] это мод для Doki Doki Literature Club, который не связан с Team Salvato."
+        "В него рекомендуется играть только после завершения основной игры, и он содержит спойлеры из официальной игры."
+        "Файлы для игры Doki Doki Literature Club обязательны, чтобы работал этот мод, их можно скачать по адресу: http://ddlc.moe"
         menu:
-            "By playing [config.name] you agree that you have completed Doki Doki Literature Club and accept any spoilers contained within."
-            "I agree.":
+            "Играя в [config.name] вы соглашаетесь, что прошли Doki Doki Literature Club, и готовы принять любые спойлеры, содержающиеся в моде."
+            "Согласен.":
                 pass
         scene tos2
         with Dissolve(1.5)
@@ -202,44 +255,55 @@ label splashscreen:
         scene white
         with Dissolve(1.5)
 
-        #Optional, load a copy of DDLC save data
-        if not persistent.has_merged:
+
+        if not persistent.has_merged and renpy.variant("pc"):
             call import_ddlc_persistent from _call_import_ddlc_persistent
 
         $ persistent.first_run = True
 
-#    $ basedir = config.basedir.replace('\\', '/')
-#   NOTE: this keeps screwing with my syntax coloring
+
+
     python:
-        basedir = config.basedir.replace("\\", "/")
+        basedir = user_dir.replace('\\', '/')
 
-        # dump verseion to a firstrun-style file
-        with open(basedir + "/game/masrun", "w") as versfile:
-            versfile.write(config.name + "|" + config.version + "\n")
+        if renpy.variant("pc"):
+            with open(basedir + "/game/masrun", "w") as versfile:
+                versfile.write(config.name + "|" + config.version + "\n")
 
 
-    #Check for game updates before loading the game or the splash screen
 
-    #autoload handling
-    #Use persistent.autoload if you want to bypass the splashscreen on startup for some reason
+
+
+
     if persistent.autoload and not _restart:
         jump autoload
 
     $ mas_enable_quit()
 
-    # Start splash logic
+    if not persistent.check_os:
+        $ renpy.call("os_check")
+        $ persistent._mas_game_crashed_os = False
+
+
     $ config.allow_skipping = False
 
-    # Splash screen
+
     show white
-    $ persistent.ghost_menu = False #Handling for easter egg from DDLC
-    $ splash_message = splash_message_default #Default splash message
+    $ persistent.ghost_menu = False
+    $ splash_message = splash_message_default
     $ config.main_menu_music = audio.t1
     $ renpy.music.play(config.main_menu_music)
     show intro with Dissolve(0.5, alpha=True)
     pause 2.5
     hide intro with Dissolve(0.5, alpha=True)
-    #You can use random splash messages, as well. By default, they are only shown during certain acts.
+    if not mas_isWinter():
+        show intro_mod with Dissolve(0.5, alpha=True)
+        pause 2.5
+        hide intro_mod with Dissolve(0.5, alpha=True)
+    else:
+        show intro_mod_winter with Dissolve(0.5, alpha=True)
+        pause 2.5
+        hide intro_mod_winter with Dissolve(0.5, alpha=True)
     if renpy.random.randint(0, 3) == 0:
         $ splash_message = renpy.random.choice(splash_messages)
     show splash_warning "[splash_message]" with Dissolve(0.5, alpha=True)
@@ -262,22 +326,22 @@ label warningscreen:
 label after_load:
     $ config.allow_skipping = False
     $ _dismiss_pause = config.developer
-    $ persistent.ghost_menu = False #Handling for easter egg from DDLC
+    $ persistent.ghost_menu = False
     $ style.say_dialogue = style.normal
-    #Check if the save has been tampered with
+
     if anticheat != persistent.anticheat:
         stop music
         scene black
-        "The save file could not be loaded."
-        "Are you trying to cheat?"
-        #Handle however you want, default is to force reset all save data
+        "Не удалось загрузить файл сохранения."
+        "Ты пытаешься считерить?"
+
         $ renpy.utter_restart()
     return
 
 
 label autoload:
     python:
-        # Stuff that's normally done after splash
+
         if "_old_game_menu_screen" in globals():
             _game_menu_screen = _old_game_menu_screen
             del _old_game_menu_screen
@@ -286,38 +350,38 @@ label autoload:
             del _old_history
         renpy.block_rollback()
 
-        # Fix the game context (normally done when loading save file)
+
         renpy.context()._menu = False
         renpy.context()._main_menu = False
         main_menu = False
         _in_replay = None
 
-    # explicity remove keymaps we dont want
+
     $ config.keymap["debug_voicing"] = list()
     $ config.keymap["choose_renderer"] = list()
 
-    # Pop the _splashscreen label which has _confirm_quit as False and other stuff
+
     $ renpy.pop_call()
 
-    # oh shit we are going to break everything right here
+
     if persistent._mas_chess_mangle_all:
         jump mas_chess_go_ham_and_delete_everything
 
-    # okay lets setup monika's clothes
-#    python:
-#        monika_chr.change_outfit(
-#            persistent._mas_monika_clothes,
-#            persistent._mas_monika_hair
-#        )
 
-    # need to set the monisize correctly
+
+
+
+
+
+
+
     $ store.mas_dockstat.setMoniSize(persistent.sessions["total_playtime"])
 
-    # finally lets run actions that needed to be run
+
     $ mas_runDelayedActions(MAS_FC_START)
 
-    #jump expression persistent.autoload
-    # NOTE: we should always jump to ch30 instead
+
+
     jump ch30_autoload
 
 label before_main_menu:
@@ -334,45 +398,51 @@ label quit:
         )
         new_time = today_time + persistent.sessions["total_playtime"]
 
-        # prevent out of boudns time
+
         if datetime.timedelta(0) < new_time <= mas_maxPlaytime():
             persistent.sessions['total_playtime'] = new_time
 
-        # set the monika size
+
         store.mas_dockstat.setMoniSize(persistent.sessions["total_playtime"])
 
-        # save selectables
+        persistent.last_aff_points = persistent._mas_affection["affection"]
+
+
         store.mas_selspr.save_selectables()
 
-        # save current hair / clothes / acs
+
         monika_chr.save()
 
-        # save weather options
+
         store.mas_weather.saveMWData()
 
-        # save bgs
         store.mas_background.saveMBGData()
 
-        # remove special images
-        store.mas_island_event.removeImages()
-
-        #remove o31 cgs
         store.mas_o31_event.removeImages()
 
-        # delayed action stuff
         mas_runDelayedActions(MAS_FC_END)
         store.mas_delact.saveDelayedActionMap()
 
         _mas_AffSave()
 
-        # delete the monika file if we aren't leaving
-        if not persistent._mas_dockstat_going_to_leave:
-            store.mas_utils.trydel(mas_docking_station._trackPackage("monika"))
 
-        # clear image caches
+        if not persistent._mas_dockstat_going_to_leave and renpy.variant("pc"):
+            store.mas_utils.trydel(mas_docking_station._trackPackage("моника"))
+
+
         store.mas_sprites._clear_caches()
 
-        # xp calc
+
         store.mas_xp.grant()
 
+        delete_auto_saves()
+
+        delete_reload_saves()
+        
+        peristent.start_visual = False
+
+        if persistent.msr_moni_file_exit:
+            persistent.last_go_somewhere = datetime.datetime.now()
+
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
