@@ -1,6 +1,6 @@
-# script stuff that is actually easter eggs
 
-# sayori music chnage/scare
+
+
 label sayori_name_scare:
     if persistent._mas_sensitive_mode:
         return
@@ -11,16 +11,16 @@ label sayori_name_scare:
         store.mas_globals.show_s_light = True
     return
 
-# yuri scare
+
 label yuri_name_scare:
     if persistent._mas_sensitive_mode:
         return
-#    show yuri 3s zorder 2 at t11
-    # disable stuff
+
+
     $ HKBHideButtons()
     $ disable_esc()
 
-    # this is the closet scene
+
     scene black
     show yuri eyes zorder 2 at t11
     play music hb
@@ -32,17 +32,17 @@ label yuri_name_scare:
     show layer master
     stop music
 
-    # cleanup
+
     $ HKBShowButtons()
     $ enable_esc()
     return
 
-# natsuki scare
+
 label natsuki_name_scare(playing_okayev=False):
     if persistent._mas_sensitive_mode:
         return
 
-    # disable stuff
+
     $ HKBHideButtons()
     $ disable_esc()
     $ store.songs.enabled = False
@@ -51,7 +51,7 @@ label natsuki_name_scare(playing_okayev=False):
     $ curr_vol = store.songs.getVolume("music")
     $ renpy.music.set_volume(1.0, channel="music")
 
-    # music adjustment
+
     if playing_okayev:
         $ currentpos = get_pos(channel="music")
         $ adjusted_t5c = "<from " + str(currentpos) + " loop 4.444>" + scary_t5c
@@ -61,7 +61,7 @@ label natsuki_name_scare(playing_okayev=False):
         stop music
         $ play_song("<from 11>" + scary_t5c)
 
-    # play with me scene setup
+
     scene black
     show darkred zorder 5
     show natsuki ghost1 zorder 2 at t11
@@ -69,14 +69,14 @@ label natsuki_name_scare(playing_okayev=False):
     show n_rects_ghost2_instant zorder 4
     show n_rects_ghost3_instant zorder 4
     show natsuki_ghost_blood zorder 3
-#    $ style.say_dialogue = style.edited
-#    n ghost2 "..."
-#    n ghost2 "PLAY WITH ME!!!"
-#    $ style.say_dialogue = style.normal
+
+
+
+
     pause 5
 
-    # most of this section has been purely copied
-    # neck crack
+
+
     play sound "sfx/crack.ogg"
     hide natsuki_ghost_blood
     hide n_rects_ghost1_instant
@@ -87,13 +87,13 @@ label natsuki_name_scare(playing_okayev=False):
     show n_rects_ghost5 onlayer front zorder 4
     pause 0.5
 
-    # running
+
     hide natsuki
     play sound "sfx/run.ogg"
     show natsuki ghost4 on layer front at i11
     pause 0.25
 
-    # removal
+
     window hide(None)
     hide natsuki onlayer front
     hide n_rects_ghost4 onlayer front
@@ -103,7 +103,7 @@ label natsuki_name_scare(playing_okayev=False):
     window auto
     scene black
 
-    # cleanup
+
     python:
         HKBShowButtons()
         enable_esc()
@@ -112,7 +112,7 @@ label natsuki_name_scare(playing_okayev=False):
         renpy.music.set_volume(curr_vol, channel="music")
 
 
-    # we want to be back in the loop
+
     if playing_okayev:
         $ currentpos = get_pos(channel="music")
         $ adjusted_okayev = "<from " + str(currentpos) + " loop 4.444>bgm/5_monika.ogg"
@@ -124,7 +124,7 @@ label natsuki_name_scare(playing_okayev=False):
 
     return
 
-# MODIFIED natsuki rects
+
 image n_rects_ghost1_instant:
     RectCluster(Solid("#000"), 4, 15, 5).sm
     pos (580, 270)
@@ -140,13 +140,13 @@ image n_rects_ghost3_instant:
     pos (616, 310)
     size (25, 15)
 
-#modified hungry natsuki image animation
-define ns.NATSUKI_SCALE = 0.15
-#image ns2_n_win = im.FactorScale("images/cg/n_cg1b.png", ns.NATSUKI_SCALE)(882,325)
-image n_cg1bs = LiveComposite((1280,720), (10, 300), im.FactorScale(im.Flip("images/cg/n_cg1b.png",horizontal=True), ns.NATSUKI_SCALE), (64,347), "n_rects1", (85,360), "n_rects2", (71,370), "n_rects3")
-# regular
 
-#modified rectangles for Natsuki's eyes and mouth
+define ns.NATSUKI_SCALE = 0.15
+
+image n_cg1bs = LiveComposite((1280,720), (10, 300), im.FactorScale(im.Flip("images/cg/n_cg1b.png",horizontal=True), ns.NATSUKI_SCALE), (64,347), "n_rects1", (85,360), "n_rects2", (71,370), "n_rects3")
+
+
+
 image n_rects1:
     RectCluster(Solid("#000"), 3, 5, 3).sm
     pos (0, 0)
@@ -162,23 +162,23 @@ image n_rects3:
     pos (0, 0)
     size (3, 3)
 
-#natsuki scare 2:
+
 label natsuki_name_scare_hungry:
     if persistent._mas_sensitive_mode:
         return
 
-#label natsuki_name_scare2:
-    # disable stuff
+
+
     $ HKBHideButtons()
     $ disable_esc()
     $ store.songs.enabled = False
     $ quick_menu = False
     $ curr_music_vol = store.songs.getVolume("music")
     $ curr_sound_vol = store.songs.getVolume("sound")
-    $ renpy.music.set_volume(0.0, channel="music") # kill music
-    $ renpy.sound.set_volume(1.0) # max sound
+    $ renpy.music.set_volume(0.0, channel="music")
+    $ renpy.sound.set_volume(1.0)
 
-     # tear screen and glitch sound
+
     show screen tear(20, 0.1, 0.1, 0, 40)
     play sound "sfx/s_kill_glitch1.ogg"
     pause 0.2
@@ -186,12 +186,12 @@ label natsuki_name_scare_hungry:
     hide screen tear
 
 
-    #show hungry Natsuki and Monika glitch, hide regular Monika
+
     show n_cg1bs
-    show monika_body_glitch1 at t11 zorder MAS_MONIKA_Z
+    show monika_body_glitch1 zorder MAS_MONIKA_Z at t11
     hide monika
 
-    #play special music and display glitch text.
+
     $ adjusted_6g = "<from 6.0>bgm/6g.ogg"
     $ renpy.play(adjusted_6g, channel="sound")
     $ ntext = glitchtext(96)
@@ -200,21 +200,21 @@ label natsuki_name_scare_hungry:
     $ ntext = glitchtext(96)
     n "{cps=*2}{color=#000}[ntext]{/color}{/cps}{nw}"
 
-    # tear screen and glitch sound to mark end of glitch.
+
     show screen tear(20, 0.1, 0.1, 0, 40)
     play sound "sfx/s_kill_glitch1.ogg"
     pause 0.2
     stop sound
     hide screen tear
 
-    #show Monika and hide Natsuki and glitch Monika.
-    show monika 1esa at t11 zorder MAS_MONIKA_Z
+
+    show monika 1esa zorder MAS_MONIKA_Z at t11
     hide n_cg1bs
     hide monika_body_glitch1
 
     $ mas_resetTextSpeed()
 
-    # cleanup
+
     python:
         HKBShowButtons()
         enable_esc()
@@ -224,12 +224,12 @@ label natsuki_name_scare_hungry:
         renpy.sound.set_volume(curr_sound_vol)
         renpy.music.set_volume(curr_music_vol, channel="music")
 
-    #go back to dialog
+
     return
 
-#Zoomed in on ghost face, just like original ghost menu exit.
+
 transform zoom_ghost:
-        zoom 1.5 yoffset 500
+    zoom 1.5 yoffset 500
 
 
 label mas_ghost_monika:
@@ -237,29 +237,30 @@ label mas_ghost_monika:
     scene black
 
     python:
-        #plays music from ghost menu.
+
         play_song(audio.ghostmenu)
 
     show noise zorder 11:
         alpha 0.5
 
-    #show ghost monika
+
     show ghost_monika zorder MAS_MONIKA_Z at i11
 
-    #wait 10 seconds (length of ghost menu music)
+
     $ renpy.pause(10, hard=True)
 
     stop music
     hide noise
 
-    #Show zoomed in ghost face.
+
     show ghost_monika at zoom_ghost
 
-    #Time the original game displayed zoomed in face for.
+
     pause 0.01
 
-    #Prevent player from losing affection.
+
     $ persistent.closed_self = True
 
-    #Exit the game.
+
     jump _quit
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
