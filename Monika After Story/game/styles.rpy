@@ -1,18 +1,18 @@
-# START: vars
-# Whether dark mode is enabled or not
+
+
 default persistent._mas_dark_mode_enabled = False
 
-# Whether auto ui change is enabled or not
+
 default persistent._mas_auto_mode_enabled = False
 
 init -1 python in mas_globals:
-    # None on init, True if dark ui, False otherwise
+
     dark_mode = None
 
-    # The door-knock greets, if door open, need to keep a broken textbox, so this would be set False for those before the spaceroom call
+
     change_textbox = True
 
-    # The colors we're using for buttons
+
     button_text_hover_color = None
     button_text_idle_color = None
 
@@ -20,12 +20,12 @@ init -201 python in mas_ui:
 
     dark_suffix = "_dark"
 
-    # img strings and other constants
 
-    # confirm
+
+
     CNF_BG = "gui/overlay/confirm.png"
 
-    # selector
+
     SEL_SB_FRAME = "mod_assets/frames/black70_pinkborder100_5px.png"
 
 init -200 python in mas_ui:
@@ -40,17 +40,16 @@ init -200 python in mas_ui:
     light_button_text_hover_color = "#fa9"
     light_button_text_insensitive_color = "#8C8C8C"
 
-    # ---- files ----
 
-    # confirm screen
+
+
     cm_bg = CNF_BG
 
-    # selector
+
     sel_sb_frame = SEL_SB_FRAME
 
     SCROLLABLE_MENU_X = 680
     SCROLLABLE_MENU_Y = 40
-
     SCROLLABLE_MENU_W = 560
 
     SCROLLABLE_MENU_TALL_H = 640
@@ -64,12 +63,12 @@ init -200 python in mas_ui:
 
     SCROLLABLE_MENU_XALIGN = -0.05
 
-    # HOW TO CHOOSE:
-    #    TXT for menus w/ the dlg box
-    #    TALL for menus w/o final buttons
-    #    MEDIUM for menus w/ one final button
-    #    LOW for menus w/ 2 final buttons
-    #    VLOW for menus w/ 3 final buttons
+
+
+
+
+
+
 
     SCROLLABLE_MENU_TALL_AREA = (SCROLLABLE_MENU_X, SCROLLABLE_MENU_Y, SCROLLABLE_MENU_W, SCROLLABLE_MENU_TALL_H)
     SCROLLABLE_MENU_MEDIUM_AREA = (SCROLLABLE_MENU_X, SCROLLABLE_MENU_Y, SCROLLABLE_MENU_W, SCROLLABLE_MENU_MEDIUM_H)
@@ -80,7 +79,7 @@ init -200 python in mas_ui:
     SCROLLABLE_MENU_TXT_MEDIUM_AREA = (SCROLLABLE_MENU_X, SCROLLABLE_MENU_Y, SCROLLABLE_MENU_W, SCROLLABLE_MENU_TXT_MEDIUM_H)
     SCROLLABLE_MENU_TXT_LOW_AREA = (SCROLLABLE_MENU_X, SCROLLABLE_MENU_Y, SCROLLABLE_MENU_W, SCROLLABLE_MENU_TXT_LOW_H)
 
-# START: Helper method(s)
+
 init python:
     import store.mas_globals as mas_globals
     import store.mas_ui as mas_ui
@@ -95,22 +94,22 @@ init python:
         RETURNS:
             filestring pointing to the right path
         """
-
-        # Light handling
+        
+        
         if not mas_globals.dark_mode:
             return filestring
-
-        # Dark handling
+        
+        
         else:
-            # Need to isolate this for just the extension and the path so we can form a new one
+            
             if '.' in filestring:
                 extension = filestring[filestring.index('.'):]
                 path = filestring[:filestring.index('.')]
                 return path + "_d" + extension
-            # If that fails then we just return the normal one
+            
             return filestring
 
-    # FIXME: the next four methods could be refactored into some sort of "StyleUtils" static class
+
     def mas_swapStyle(base_name, dark_name, morning_flag):
         """
         Swaps the single style between default and dark variants.
@@ -120,7 +119,7 @@ init python:
         """
         if base_name not in mas_ui.style_stash:
             mas_ui.style_stash[base_name] = getattr(style, base_name)
-
+        
         if morning_flag:
             stashed_style = mas_ui.style_stash[base_name]
             setattr(style, base_name, mas_ui.style_stash[base_name])
@@ -133,12 +132,12 @@ init python:
         Check if selected style has a dark alternative.
         """
         dark_style_name = style_name + mas_ui.dark_suffix
-
+        
         for other_tuple in renpy.style.styles:
             other_name = other_tuple[0]
             if other_name == dark_style_name:
                 return True
-
+        
         return False
 
     def mas_isDarkStyle(style_name):
@@ -161,10 +160,9 @@ init python:
         IN:
             morning_flag - if True, light mode, if False, dark mode
         """
-        # Create aliases
-        # FIXME: could be done on startup for some speedup
+        
         new_aliases = {}
-
+        
         for style_tuple, style_ptr in renpy.style.styles.iteritems():
             style_name = style_tuple[0]
             if mas_isTextDarkStyle(style_name):
@@ -173,51 +171,52 @@ init python:
                 alias_name = style_name[:-suffix_len] + mas_ui.dark_suffix + "_text"
                 if not style.exists(alias_name):
                     new_aliases[alias_name] = style_ptr
-
+        
         for alias_name, alias_style_ptr in new_aliases.iteritems():
             setattr(style, alias_name, alias_style_ptr)
-
-        # Automagically switch every style which has a dark variant
+        
+        
         for style_tuple in renpy.style.styles.keys():
             style_name = style_tuple[0]
             if not mas_isDarkStyle(style_name) and mas_hasDarkStyle(style_name):
                 dark_style_name = style_name + mas_ui.dark_suffix
                 mas_swapStyle(style_name, dark_style_name, morning_flag)
-
+        
         if not morning_flag:
-            # Handle the global swaps
+            
             mas_globals.dark_mode = True
-
+            
             mas_globals.button_text_idle_color = mas_ui.dark_button_text_idle_color
             mas_globals.button_text_hover_color = mas_ui.dark_button_text_hover_color
             mas_globals.button_text_insensitive_color = mas_ui.dark_button_text_insensitive_color
-
-            # Textbox
+            
+            
             if mas_globals.change_textbox:
                 style.say_window = style.window_dark
-
+        
         else:
-            # Handle the global swaps
+            
             mas_globals.dark_mode = False
-
+            
             mas_globals.button_text_idle_color = mas_ui.light_button_text_idle_color
             mas_globals.button_text_hover_color = mas_ui.light_button_text_hover_color
             mas_globals.button_text_insensitive_color = mas_ui.light_button_text_insensitive_color
-
-            # Textbox
+            
+            
             if mas_globals.change_textbox:
                 style.say_window = style.window
-
-        # Timefile changes
+        
+        
         mas_ui.cm_bg = mas_getTimeFile(mas_ui.CNF_BG)
         mas_ui.sel_sb_frame = mas_getTimeFile(mas_ui.SEL_SB_FRAME)
-
-        # Reset the global flag
+        
+        
         mas_globals.change_textbox = True
+        
+        if persistent.mas_window_color == "default":
+            style.rebuild()
 
-        style.rebuild()
 
-# START: Settings menu helpers
 init python in mas_settings:
     _persistent = renpy.game.persistent
     import store
@@ -225,13 +224,13 @@ init python in mas_settings:
         """
         Handles the toggling of fields so the menu options become mutually exclusive
         """
-        # We're disablng this so we only set it false
+        
         if _persistent._mas_auto_mode_enabled:
             _persistent._mas_auto_mode_enabled = False
             if store.mas_current_background.isFltNight():
                 store.mas_darkMode(True)
-
-        # But here we need to also switch the other button since this is mutually exclusive
+        
+        
         else:
             _persistent._mas_auto_mode_enabled = True
             _persistent._mas_dark_mode_enabled = False
@@ -242,15 +241,15 @@ init python in mas_settings:
         """
         if _persistent._mas_dark_mode_enabled:
             _persistent._mas_dark_mode_enabled = False
-
+        
         else:
             _persistent._mas_dark_mode_enabled = True
             _persistent._mas_auto_mode_enabled = False
         renpy.restart_interaction()
 
 
-# START: Generic button styles
-# FIXME: can be renamed or removed later
+
+
 style generic_button_base:
     hover_sound gui.hover_sound
     activate_sound gui.activate_sound
@@ -277,8 +276,6 @@ style generic_button_text_dark is generic_button_text_base:
     hover_color mas_ui.dark_button_text_hover_color
     insensitive_color mas_ui.dark_button_text_insensitive_color
 
-# fancy checkbox buttons lose the box when selected
-# and the entire frame gets colored
 style generic_fancy_check_button:
     properties gui.button_properties("check_button")
     foreground "mod_assets/buttons/checkbox/[prefix_]fancy_check.png"
@@ -307,7 +304,8 @@ style generic_fancy_check_button_text_dark is gui_button_text_dark:
     selected_color "#FFAA99"
     outlines []
 
-# START: image definitions
+
+
 image menu_bg:
     topleft
     ConditionSwitch(
@@ -330,16 +328,16 @@ image menu_nav:
 
 init -1 python:
 
-    # set default and interface font groups
-    # NOTE: this MUST be after -2
+
+
     gui.default_font = FontGroup().add(
-        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 # kr
+        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 
     ).add(
-        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf # s-cn
+        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf 
     ).add(
-        "mod_assets/font/mplus-2p-regular.ttf", 0x3000, 0x4dff  # jp + others
+        "mod_assets/font/mplus-2p-regular.ttf", 0x3000, 0x4dff  
     ).add(
-        "gui/font/Aller_Rg.ttf", 0x0000, 0xffff # latin-1
+        "gui/font/Aller_Rg.ttf", 0x0000, 0xffff 
     )
     gui.interface_font = gui.default_font
     gui.button_text_font = gui.default_font
@@ -348,17 +346,16 @@ init -1 python:
 init -1 python in mas_ui:
     import store
 
-    music_menu_font = store.FontGroup().add( # use mplus as base
-        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 # kr
+    music_menu_font = store.FontGroup().add( 
+        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 
     ).add(
-        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf # s-cn
+        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf 
     ).add(
-        "mod_assets/font/mplus-2p-regular.ttf", 0x0000, 0xffff  # jp
+        "mod_assets/font/mplus-2p-regular.ttf", 0x0000, 0xffff  
     )
 
-# START: Helper methods that we use inside screens
 init -10 python in mas_ui:
-    # Methods for mas_check_scrollable_menu
+
     def check_scr_menu_return_values(buttons_data, return_all):
         """
         A method to return buttons keys and values
@@ -388,3 +385,4 @@ init -10 python in mas_ui:
             if data["return_value"] == data["true_value"]:
                 return selected_prompt
         return default_prompt
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
