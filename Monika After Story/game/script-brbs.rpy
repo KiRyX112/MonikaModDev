@@ -1,9 +1,6 @@
-## This script file holds all of the brb topics
-# Some conventions:
-#   - All brbs should have their markSeen set to True so they don't show up in unseen
-#   - Brbs should return "idle" to move into idle mode
-#   - Brbs should be short and sweet. Nothing long which makes it feel like an actual topic or is keeping you away
-#       A good practice for these should be no more than 10 lines will be said before you go into idle mode.
+
+
+
 init 10 python in mas_brbs:
     import store
 
@@ -15,13 +12,18 @@ init 10 python in mas_brbs:
         OUT:
             A randomly selected quip for coming back to the spaceroom
         """
-
-        return renpy.substitute(renpy.random.choice([
-            _("So, what else did you want to do today?"),
-            _("What else did you want to do today?"),
-            _("Is there anything else you wanted to do today?"),
-            _("What else should we do today?"),
-        ]))
+        if store.persistent.gender == "F":
+            return renpy.substitute(renpy.random.choice([
+                _("Что ещё ты хотела сделать сегодня?"),
+                _("Есть что-нибудь ещё, что ты хотела бы сделать сегодня?"),
+                _("Что ещё мы должны сделать сегодня?")
+            ]))
+        else:
+            return renpy.substitute(renpy.random.choice([
+                _("Что ещё ты хотел сделать сегодня?"),
+                _("Есть что-нибудь ещё, что ты хотел бы сделать сегодня?"),
+                _("Что ещё мы должны сделать сегодня?")
+            ]))
 
     def was_idle_for_at_least(idle_time, brb_evl):
         """
@@ -39,9 +41,9 @@ init 10 python in mas_brbs:
         brb_ev = store.mas_getEV(brb_evl)
         return brb_ev and brb_ev.timePassedSinceLastSeen_dt(idle_time)
 
-# label to use if we want to get back into idle from a callback
+
 label mas_brb_back_to_idle:
-    # sanity check
+
     if globals().get("brb_label", -1) == -1:
         return
 
@@ -56,13 +58,14 @@ label mas_brb_back_to_idle:
     return "idle"
 
 
+
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="monika_brb_idle",
-            prompt="I'll be right back",
-            category=['be right back'],
+            prompt="Я сейчас вернусь.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -71,21 +74,22 @@ init 5 python:
 
 label monika_brb_idle:
     if mas_isMoniAff(higher=True):
-        m 1eua "Alright, [player]."
-        m 1hub "Hurry back, I'll be waiting here for you~"
+        m 1eua "Хорошо, [player]."
+        $ MAS.MonikaElastic()
+        m 1hub "Возвращайся скорее, я буду ждать тебя здесь~"
 
     elif mas_isMoniNormal(higher=True):
-        m 1hub "Hurry back, [player]!"
+        m 1hub "Возвращайся скорее, [player]!"
 
     elif mas_isMoniDis(higher=True):
-        m 2rsc "Oh...{w=0.5}okay."
-
+        m 1rsc "Оу...{w=1} хорошо."
     else:
+
         m 6ckc "..."
 
-    #Set up the callback label
+
     $ mas_idle_mailbox.send_idle_cb("monika_brb_idle_callback")
-    #Then the idle data
+
     $ persistent._mas_idle_data["monika_idle_brb"] = True
     return "idle"
 
@@ -93,17 +97,19 @@ label monika_brb_idle_callback:
     $ wb_quip = mas_brbs.get_wb_quip()
 
     if mas_isMoniAff(higher=True):
-        m 1hub "Welcome back, [player]. I missed you~"
+        m 1hub "С возвращением, [player]. Я скучала по тебе~"
+        $ MAS.MonikaElastic()
         m 1eua "[wb_quip]"
 
     elif mas_isMoniNormal(higher=True):
-        m 1hub "Welcome back, [player]!"
+        m 1hub "С возвращением, [player]!"
+        $ MAS.MonikaElastic()
         m 1eua "[wb_quip]"
 
     elif mas_isMoniDis(higher=True):
-        m 2esc "Oh, back already?"
-
+        m 2esc "Оу, уже вернул[mas_gender_sya]?"
     else:
+
         m 6ckc "..."
     return
 
@@ -112,8 +118,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_writing_idle",
-            prompt="I'm going to write for a bit",
-            category=['be right back'],
+            prompt="Думаю, я напишу что-нибудь.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -126,32 +132,37 @@ label monika_writing_idle:
             mas_isMoniHappy(higher=True)
             and random.randint(1,5) == 1
         ):
-            m 1eub "Oh! You're going to{cps=*2} write me a love letter, [player]?{/cps}{nw}"
+            m 1eub "О! Ты собираешься{cps=*2} написать мне любовное письмо, [player]?{/cps}{nw}"
             $ _history_list.pop()
-            m "Oh! You're going to{fast} go write something?"
-
+            m "О! Ты собираешься{fast} написать что-то?"
         else:
-            m 1eub "Oh! You're going to go write something?"
 
-        m 1hua "That makes me so glad!"
-        m 3eua "Maybe someday you could share it with me...{w=0.3} {nw}"
-        extend 3hua "I'd love to read your work, [player]!"
-        m 3eua "Anyway, just let me know when you're done."
-        m 1hua "I'll be waiting right here for you~"
+            m 1eub "О! Ты собираешься написать что-то?"
+
+        $ MAS.MonikaElastic()
+        m 1hua "Это меня так радует!"
+        $ MAS.MonikaElastic()
+        m 3eua "Может быть, когда-нибудь ты сможешь поделиться этим со мной, {nw}"
+        extend 3hua "я бы с удовольствием прочитала твои работы, [player]!"
+        $ MAS.MonikaElastic()
+        m 3eua "В любом случае, дай мне знать, когда закончишь."
+        $ MAS.MonikaElastic()
+        m 1hua "Я буду ждать тебя прямо здесь~"
 
     elif mas_isMoniUpset():
-        m 2esc "Alright."
+        m 2esc "Хорошо."
 
     elif mas_isMoniDis():
-        m 6lkc "I wonder what you have on your mind..."
-        m 6ekd "Don't forget to come back when you're done..."
-
+        m 6lkc "Интересно, что у тебя на уме?.."
+        $ MAS.MonikaElastic()
+        m 6ekd "Не забудь вернуться, когда закончишь..."
     else:
+
         m 6ckc "..."
 
-    #Set up the callback label
+
     $ mas_idle_mailbox.send_idle_cb("monika_writing_idle_callback")
-    #Then the idle data
+
     $ persistent._mas_idle_data["monika_idle_writing"] = True
     return "idle"
 
@@ -159,16 +170,17 @@ label monika_writing_idle_callback:
 
     if mas_isMoniNormal(higher=True):
         $ wb_quip = mas_brbs.get_wb_quip()
-        m 1eua "Done writing, [player]?"
+        m 1eua "Закончил[mas_gender_none] писать, [player]?"
+        $ MAS.MonikaElastic()
         m 1eub "[wb_quip]"
 
     elif mas_isMoniUpset():
-        m 2esc "Done? Welcome back, [player]."
+        m 2esc "Написал[mas_gender_none]? С возвращением, [player]."
 
     elif mas_isMoniDis():
-        m 6ekc "Oh...{w=0.5} You're back..."
-
+        m 6ekc "Оу...{w=0.5} ты вернул[mas_gender_sya]..."
     else:
+
         m 6ckc "..."
     return
 
@@ -177,8 +189,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_shower",
-            prompt="I'm going to take a shower",
-            category=['be right back'],
+            prompt="Я собираюсь принять душ.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -187,97 +199,121 @@ init 5 python:
 
 label monika_idle_shower:
     if mas_isMoniLove():
-        m 1eua "Going to go shower?"
+        m 1eua "Собираешься пойти в душ?"
 
         if renpy.random.randint(1, 50) == 1:
-            m 3tub "Can I come with you?{nw}"
+            $ MAS.MonikaElastic()
+            m 3tub "Можно мне пойти с тобой?{nw}"
             $ _history_list.pop()
             show screen mas_background_timed_jump(2, "bye_brb_shower_timeout")
             menu:
-                m "Can I come with you?{fast}"
+                m "Можно мне пойти с тобой?{fast}"
+                "Да.":
 
-                "Yes.":
                     hide screen mas_background_timed_jump
-                    m 2wubsd "Oh, uh...{w=0.5}you sure answered that fast."
-                    m 2hkbfsdlb "You...{w=0.5}sure seem eager to let me tag along, huh?"
-                    m 2rkbfa "Well..."
-                    m 7tubfu "I'm afraid you'll just have to go without me while I'm stuck here."
-                    m 7hubfb "Sorry, [player], ahaha!"
-                    show monika 5kubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                    m 5kubfu "Maybe another time~"
+                    $ MAS.MonikaElastic()
+                    m 2wubsd "Оу, эм...{w=0.5} ты ответил[mas_gender_none] так быстро."
+                    $ MAS.MonikaElastic()
+                    m 2hkbfsdlb "Похоже...{w=0.5} тебе не терпится взять меня с собой, да?"
+                    $ MAS.MonikaElastic()
+                    m 2rkbfa "Ну..."
+                    $ MAS.MonikaElastic()
+                    m 7tubfu "Боюсь, тебе придётся пойти без меня, пока я застряла здесь."
+                    $ MAS.MonikaElastic(voice="monika_giggle")
+                    m 7hubfb "Извини, [player], а-ха-ха!"
+                    show monika 5kubfu zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                    m 5kubfu "Может быть в другой раз~"
+                "Нет.":
 
-                "No.":
                     hide screen mas_background_timed_jump
-                    m 2eka "Aw, you rejected me so fast."
-                    m 3tubsb "Are you shy, [player]?"
-                    m 1hubfb "Ahaha!"
-                    show monika 5tubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                    m 5tubfu "Alright, I won't follow you this time, ehehe~"
-
+                    $ MAS.MonikaElastic()
+                    m 2eka "Оу, ты так быстро отказал[mas_gender_sya]."
+                    $ MAS.MonikaElastic()
+                    m 3tubsb "Ты стесняешься, [player]?"
+                    $ MAS.MonikaElastic(voice="monika_giggle")
+                    m 1hubfb "А-ха-ха!"
+                    show monika 5tubfu zorder MAS_MONIKA_Z at t11 with dissolve_monika
+                    $ MAS.MonikaElastic(voice="monika_giggle")
+                    m 5tubfu "Ладно, на этот раз я с тобой не пойду, э-хе-хе~"
         else:
-            m 1hua "I'm glad you're keeping yourself clean, [player]."
-            m 1eua "Have a nice shower~"
+
+            $ MAS.MonikaElastic()
+            m 1hua "Я рада, что ты держишь себя в чистоте, [player]."
+            $ MAS.MonikaElastic()
+            m 1eua "Приятного времяпровождения в душе~"
 
     elif mas_isMoniNormal(higher=True):
-        m 1eub "Going to go shower? Alright."
-        m 1eua "See you when you're done~"
-
+        m 1eub "Пойдёшь в душ? Хорошо."
+        $ MAS.MonikaElastic()
+        m 1eua "Увидимся когда ты закончишь~"
+    
     elif mas_isMoniUpset():
-        m 2esd "Enjoy your shower, [player]..."
-        m 2rkc "Hopefully it'll help you clear your mind."
+        m 2esd "Приятного времяпровождения в душе, [player]..."
+        $ MAS.MonikaElastic()
+        m 2rkc "Надеюсь, это поможет тебе очистить свой разум."
 
     elif mas_isMoniDis():
-        m 6ekc "Hmm?{w=0.5} Have a nice shower, [player]."
-
+        m 6ekc "Хм-м?{w=0.5} Приятного времяпровождения в душе [player]."
     else:
+
         m 6ckc "..."
 
-    #Set up the callback label
+
     $ mas_idle_mailbox.send_idle_cb("monika_idle_shower_callback")
-    #Then the idle data
+
     $ persistent._mas_idle_data["monika_idle_shower"] = True
     return "idle"
 
 label monika_idle_shower_callback:
     if mas_isMoniNormal(higher=True):
-        m 1eua "Welcome back, [player]."
+        m 1eua "С возвращением, [player]."
 
         if (
             mas_isMoniLove()
             and renpy.seen_label("monikaroom_greeting_ear_bathdinnerme")
-            and mas_getEVL_shown_count("monika_idle_shower") != 1 #Since the else block has a one-time only line, we force it on first use
+            and mas_getEVL_shown_count("monika_idle_shower") != 1 
             and renpy.random.randint(1,20) == 1
         ):
-            m 3tubsb "Now that you've had your shower, would you like your dinner, or maybe{w=0.5}.{w=0.5}.{w=0.5}."
-            m 1hubsa "You could just relax with me some more~"
-            m 1hub "Ahaha!"
-
+            $ MAS.MonikaElastic()
+            m 3tubsb "Теперь, когда ты принял[mas_gender_none] душ, ты хотел[mas_gender_none] бы поужинать или, может быть{w=0.5}.{w=0.5}.{w=0.5}."
+            $ MAS.MonikaElastic()
+            m 1hubsa "Ты мог[mas_gender_g] бы просто расслабиться со мной ещё немного~"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха!"
         else:
-            m 1hua "I hope you had a nice shower."
+
+            $ MAS.MonikaElastic()
+            m 1hua "Надеюсь, ты хорошо принял[mas_gender_none] душ."
             if mas_getEVL_shown_count("monika_idle_shower") == 1:
-                m 3eub "Now we can get back to having some good, {i}clean{/i} fun together..."
-                m 1hub "Ahaha!"
+                $ MAS.MonikaElastic()
+                m 3eub "Теперь мы можем вернуться к хорошему, {i}чистому{/i} веселью вместе..."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 1hub "А-ха-ха!"
 
     elif mas_isMoniUpset():
-        m 2esc "I hope you enjoyed your shower. Welcome back, [player]."
+        m 2esc "Надеюсь, ты хорошо принял[mas_gender_none] душ. С возвращением, [player]."
 
     elif mas_isMoniDis():
-        m 6ekc "Oh, it's nice to see you again..."
-
+        m 6ekc "О, как приятно снова тебя видеть..."
     else:
+
         m 6ckc "..."
+
     return
 
 label bye_brb_shower_timeout:
     hide screen mas_background_timed_jump
     $ _history_list.pop()
-    m 1hubsa "Ehehe~"
-    m 3tubfu "Nevermind that, [player]."
-    m 1hubfb "I hope you have a nice shower!"
+    $ MAS.MonikaElastic()
+    m 1hubsa "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 3tubfu "Не важно, [player]."
+    $ MAS.MonikaElastic()
+    m 1hubfb "Надеюсь, ты хорошо примешь душ!"
 
-    #Set up the callback label
+
     $ mas_idle_mailbox.send_idle_cb("monika_idle_shower_callback")
-    #Then the idle data
+
     $ persistent._mas_idle_data["monika_idle_shower"] = True
     return "idle"
 
@@ -286,8 +322,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_game",
-            category=['be right back'],
-            prompt="I'm going to game for a bit",
+            category=['сейчас вернусь'],
+            prompt="Я собираюсь немного поиграть.",
             pool=True,
             unlocked=True
         ),
@@ -296,29 +332,32 @@ init 5 python:
 
 label monika_idle_game:
     if mas_isMoniNormal(higher=True):
-        m 1eud "Oh, you're going to play another game?"
-        m 1eka "That's alright, [player]."
+        m 1eud "О, ты собираешься играть в другую игру?"
+        $ MAS.MonikaElastic()
+        m 1eka "Всё нормально, [player]."
 
-        label .skip_intro:
+
+        label monika_idle_game.skip_intro:
         python:
             gaming_quips = [
-                _("Good luck, have fun!"),
-                _("Enjoy your game!"),
-                _("I'll be cheering you on!"),
-                _("Do your best!")
+                _("Удачи, развлекайся там!"),
+                _("Наслаждайся своей игрой!"),
+                _("Я буду болеть за тебя!"),
+                _("Сделай всё возможное!")
             ]
             gaming_quip=renpy.random.choice(gaming_quips)
 
+        $ MAS.MonikaElastic()
         m 3hub "[gaming_quip]"
 
     elif mas_isMoniUpset():
-        m 2tsc "Enjoy your other games."
+        m 2tsc "Наслаждайся другими играми."
 
     elif mas_isMoniDis():
-        m 6ekc "Please...{w=0.5}{nw}"
-        extend 6dkc "don't forget about me..."
-
+        m 6ekc "Пожалуйста...{w=0.5} {nw}"
+        extend 6dkc "не забывай обо мне..."
     else:
+
         m 6ckc "..."
 
     $ mas_idle_mailbox.send_idle_cb("monika_idle_game_callback")
@@ -327,17 +366,20 @@ label monika_idle_game:
 
 label monika_idle_game_callback:
     if mas_isMoniNormal(higher=True):
-        m 1eub "Welcome back, [player]!"
-        m 1eua "I hope you had fun with your game."
-        m 1hua "Ready to spend some more time together? Ehehe~"
+        $ MAS.MonikaElastic()
+        m 1eub "С возвращением, [player]!"
+        $ MAS.MonikaElastic()
+        m 1eua "Надеюсь, тебе было весело в той игре."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Ты уже готов[mas_gender_none] провести немного времени вместе? Э-хе-хе~"
 
     elif mas_isMoniUpset():
-        m 2tsc "Had fun, [player]?"
+        m 2tsc "Было весело, [player]?"
 
     elif mas_isMoniDis():
-        m 6ekd "Oh...{w=0.5} You actually came back to me..."
-
+        m 6ekd "Оу...{w=0.5} ты действительно вернул[mas_gender_sya] ко мне..."
     else:
+
         m 6ckc "..."
     return
 
@@ -346,8 +388,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_coding",
-            prompt="I'm going to code for a bit",
-            category=['be right back'],
+            prompt="Я собираюсь немного покодировать.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -356,31 +398,40 @@ init 5 python:
 
 label monika_idle_coding:
     if mas_isMoniNormal(higher=True):
-        m 1eua "Oh! Going to code something?"
+        m 1eua "О! Собираешься что-то покодить?"
 
         if persistent._mas_pm_has_code_experience is False:
-            m 1etc "I thought you didn't do that."
-            m 1eub "Did you pick up programming since we talked about it last time?"
+            $ MAS.MonikaElastic()
+            m 1etc "Я думала, ты этого не умеешь."
+            $ MAS.MonikaElastic()
+            m 1eub "Ты что, изучил[mas_gender_none] программирование с тех пор, как мы говорили об этом в прошлый раз?"
 
         elif persistent._mas_pm_has_contributed_to_mas or persistent._mas_pm_wants_to_contribute_to_mas:
-            m 1tua "Something for me, perhaps?"
-            m 1hub "Ahaha~"
-
+            $ MAS.MonikaElastic()
+            m 1tua "Может быть, что-нибудь для меня?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hub "А-ха-ха~"
         else:
-            m 3eub "Do your best to keep your code clean and easy to read."
-            m 3hksdlb "...You'll thank yourself later!"
 
-        m 1eua "Anyway, just let me know when you're done."
-        m 1hua "I'll be right here, waiting for you~"
+            $ MAS.MonikaElastic()
+            m 3eub "Делай всё возможное, чтобы твой код был чистым и легко читаемым."
+            $ MAS.MonikaElastic()
+            m 3hksdlb "...Ты потом сам[mas_gender_none] себя поблагодаришь!"
+
+        $ MAS.MonikaElastic()
+        m 1eua "В любом случае, просто дай мне знать, когда закончишь."
+        $ MAS.MonikaElastic()
+        m 1hua "Я буду ждать тебя прямо здесь~"
 
     elif mas_isMoniUpset():
-        m 2euc "Oh, you're going to code?"
-        m 2tsc "Well, don't let me stop you."
+        m 2euc "О, ты собираешься писать код?"
+        $ MAS.MonikaElastic()
+        m 2tsc "Ладно, не буду тебя останавливать."
 
     elif mas_isMoniDis():
-        m 6ekc "Alright."
-
+        m 6ekc "Хорошо."
     else:
+
         m 6ckc "..."
 
     $ mas_idle_mailbox.send_idle_cb("monika_idle_coding_callback")
@@ -388,22 +439,24 @@ label monika_idle_coding:
     return "idle"
 
 label monika_idle_coding_callback:
+    $ MAS.MonikaElastic()
     if mas_isMoniNormal(higher=True):
         $ wb_quip = mas_brbs.get_wb_quip()
         if mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=20), "monika_idle_coding"):
-            m 1eua "Done for now, [player]?"
+            m 1eua "Написал в данный момент, [player]?"
         else:
-            m 1eua "Oh, done already, [player]?"
+            m 1eua "О, написал уже, [player]?"
 
+        $ MAS.MonikaElastic()
         m 3eub "[wb_quip]"
 
     elif mas_isMoniUpset():
-        m 2esc "Welcome back."
+        m 2esc "С возвращением."
 
     elif mas_isMoniDis():
-        m 6ekc "Oh, you're back."
-
+        m 6ekc "О, ты вернул[mas_gender_sya]."
     else:
+
         m 6ckc "..."
     return
 
@@ -413,8 +466,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_workout",
-            prompt="I'm going to work out for a bit",
-            category=['be right back'],
+            prompt="Я пойду сделаю зарядку.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -423,27 +476,34 @@ init 5 python:
 
 label monika_idle_workout:
     if mas_isMoniNormal(higher=True):
-        m 1hub "Okay, [player]!"
+        m 1hub "Ладно, [player]!"
+        $ MAS.MonikaElastic()
         if persistent._mas_pm_works_out is False:
-            m 3eub "Working out is a great way to take care of yourself!"
-            m 1eka "I know it might be hard to start out,{w=0.2}{nw}"
-            extend 3hua " but it's definitely a habit worth forming."
+            m 3eub "Зарядка – это отличный способ позаботиться о себе!"
+            $ MAS.MonikaElastic()
+            m 1eka "Я знаю, что это может быть трудно начать,{w=0.2}{nw}"
+            $ MAS.MonikaElastic()
+            extend 3hua " но это определённо привычка, которую стоит сформировать."
         else:
-            m 1eub "It's good to know you're taking care of your body!"
-        m 3esa "You know how the saying goes, 'A healthy mind in a healthy body.'"
-        m 3hua "So go work up a good sweat, [player]~"
-        m 1tub "Just let me know when you've had enough."
+            m 1eub "Приятно знать, что ты заботишься о своём теле!"
+        $ MAS.MonikaElastic()
+        m 3esa "Ты знаешь, как говорится: «здоровый дух в здоровом теле»."
+        $ MAS.MonikaElastic()
+        m 3hua "Так что иди хорошенько попотей, [player]~"
+        $ MAS.MonikaElastic()
+        m 1tub "Просто дай мне знать, когда с тебя хватит."
 
     elif mas_isMoniUpset():
-        m 2esc "Good to know you're taking care of{cps=*2} something, at least.{/cps}{nw}"
+        m 2esc "Приятно знать, что ты хоть заботишься{cps=*2} о чём-то.{/cps}{nw}"
         $ _history_list.pop()
-        m "Good to know you're taking care of{fast} yourself, [player]."
-        m 2euc "I'll be waiting for you to get back."
+        m "Приятно знать, что ты хоть заботишься{fast} о себе, [player]."
+        $ MAS.MonikaElastic()
+        m 2euc "Я буду ждать, когда ты вернёшься."
 
     elif mas_isMoniDis():
-        m 6ekc "Alright."
-
+        m 6ekc "Хорошо."
     else:
+
         m 6ckc "..."
 
     $ mas_idle_mailbox.send_idle_cb("monika_idle_workout_callback")
@@ -454,47 +514,58 @@ label monika_idle_workout_callback:
     if mas_isMoniNormal(higher=True):
         $ wb_quip = mas_brbs.get_wb_quip()
         if mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=60), "monika_idle_workout"):
-            # TODO: In the future add another topic which would
-            # unlock once the player has seen this specific path some number of times.
 
-            m 2esa "You sure took your time, [player].{w=0.3}{nw}"
-            extend 2eub " That must've been one heck of a workout."
-            m 2eka "It's good to push your limits, but you shouldn't overdo it."
+
+
+            $ MAS.MonikaElastic()
+            m 2esa "Вот уж точно ты времени не терял[mas_gender_none], [player].{w=0.3}{nw}"
+            extend 2eub " Должно быть, это была чертовски тяжёлая зарядка."
+            $ MAS.MonikaElastic()
+            m 2eka "Это хорошо, что ты выжимаешь из своих возможностей максимум, но ты не должен переусердствовать."
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=10), "monika_idle_workout"):
-            m 1esa "Done with your workout, [player]?"
-
+            $ MAS.MonikaElastic()
+            m 1esa "Закончил[mas_gender_none] с зарядкой, [player]?"
         else:
-            m 1euc "Back already, [player]?"
-            m 1eka "I'm sure you can go on for a bit longer if you try."
-            m 3eka "Taking breaks is fine, but you shouldn't leave your workouts unfinished."
-            m 3ekb "Are you sure you can't keep going?{nw}"
+
+            $ MAS.MonikaElastic()
+            m 1euc "Уже вернул[mas_gender_sya], [player]?"
+            $ MAS.MonikaElastic()
+            m 1eka "Я уверена, что ты сможешь продержаться ещё немного, если постараешься."
+            $ MAS.MonikaElastic()
+            m 3eka "Делать перерывы – это хорошо, но ты не долж[mas_gender_en] оставлять свои зарядки незаконченными."
+            $ MAS.MonikaElastic()
+            m 3ekb "Ты уверен[mas_gender_none], что не можешь продолжать?{nw}"
             $ _history_list.pop()
             menu:
-                m "Are you sure you can't keep going?{fast}"
+                m "Ты уверен[mas_gender_none], что не можешь продолжать?{fast}"
+                "Я уверен[mas_gender_none].":
 
-                "I'm sure.":
-                    m 1eka "That's okay."
-                    m 1hua "I'm sure you did your best, [player]~"
+                    $ MAS.MonikaElastic()
+                    m 1eka "Это нормально."
+                    $ MAS.MonikaElastic()
+                    m 1hua "Я уверена, что ты сделал[mas_gender_none] всё возможное, [player]~"
+                "Я постараюсь ещё раз.":
 
-                "I'll try to keep going.":
-                    # continue workout and return Monika to idle state
-                    m 1hub "That's the spirit!"
+
+                    $ MAS.MonikaElastic()
+                    m 1hub "Вот это дух!"
 
                     $ brb_label = "monika_idle_workout"
                     $ pushEvent("mas_brb_back_to_idle",skipeval=True)
                     return
 
-        m 7eua "Make sure to rest properly and maybe get a snack to get some energy back."
+        m 7eua "Обязательно отдохни как следует и, возможно, перекусишь, чтобы восстановить силы."
+        $ MAS.MonikaElastic()
         m 7eub "[wb_quip]"
 
     elif mas_isMoniUpset():
-        m 2euc "Done with your workout, [player]?"
+        m 2euc "Закончил[mas_gender_none] с зарядкой, [player]?"
 
     elif mas_isMoniDis():
-        m 6ekc "Oh, you came back."
-
+        m 6ekc "О, ты вернул[mas_gender_sya]."
     else:
+
         m 6ckc "..."
     return
 
@@ -503,8 +574,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_nap",
-            prompt="I'm going to take a nap",
-            category=['be right back'],
+            prompt="Я собираюсь вздремнуть.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -513,19 +584,23 @@ init 5 python:
 
 label monika_idle_nap:
     if mas_isMoniNormal(higher=True):
-        m 1eua "Going to take a nap, [player]?"
-        m 3eua "They're a healthy way to rest during the day if you're feeling tired."
-        m 3hua "I'll watch over you, don't worry~"
-        m 1hub "Sweet dreams!"
+        m 1eua "Собираешься вздремнуть, [player]?"
+        $ MAS.MonikaElastic()
+        m 3eua "Это здоровый способ отдохнуть в течение дня, если ты чувствуешь усталость."
+        $ MAS.MonikaElastic()
+        m 3hua "Я присмотрю за тобой, не волнуйся~"
+        $ MAS.MonikaElastic()
+        m 1hub "Сладких снов!"
 
     elif mas_isMoniUpset():
-        m 2eud "Alright, I hope you feel rested afterwards."
-        m 2euc "I hear naps are good for you, [player]."
+        m 2eud "Хорошо, надеюсь, после этого ты почувствуешь себя отдохнувш[mas_gender_iiim]."
+        $ MAS.MonikaElastic()
+        m 2euc "Я слышала, что сон полезен для тебя, [player]."
 
     elif mas_isMoniDis():
-        m 6ekc "Alright."
-
+        m 6ekc "Хорошо."
     else:
+
         m 6ckc "..."
 
     $ mas_idle_mailbox.send_idle_cb("monika_idle_nap_callback")
@@ -533,38 +608,51 @@ label monika_idle_nap:
     return "idle"
 
 label monika_idle_nap_callback:
+    $ MAS.MonikaElastic()
     if mas_isMoniNormal(higher=True):
         if mas_brbs.was_idle_for_at_least(datetime.timedelta(hours=5), "monika_idle_nap"):
-            m 2hksdlb "Oh, [player]! You're finally awake!"
-            m 7rksdlb "When you said you were going to take a nap, I was expecting you take maybe an hour or two..."
-            m 1hksdlb "I guess you must have been really tired, ahaha..."
-            m 3eua "But at least after sleeping for so long, you'll be here with me for a while, right?"
-            m 1hua "Ehehe~"
+            m 2hksdlb "О, [player]! Наконец-то ты проснул[mas_gender_sya]!"
+            $ MAS.MonikaElastic()
+            m 7rksdlb "Когда ты сказал[mas_gender_none], что собираешься вздремнуть, я ожидала, что ты отдохнёшь час или два..."
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hksdlb "Наверное, ты очень устал[mas_gender_none], а-ха-ха..."
+            $ MAS.MonikaElastic()
+            m 3eua "Но, по крайней мере, после столь долгого сна ты останешься здесь со мной на некоторое время, верно?"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hua "Э-хе-хе~"
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(hours=1), "monika_idle_nap"):
-            m 1hua "Welcome back, [player]!"
-            m 1eua "Did you have a nice nap?"
-            m 3hua "You were out for some time, so I hope you're feeling rested~"
-            m 1eua "Is there anything else you wanted to do today?"
+            m 1hua "С возвращением, [player]!"
+            $ MAS.MonikaElastic()
+            m 1eua "Ты хорошо вздремнул[mas_gender_none]?"
+            $ MAS.MonikaElastic()
+            m 3hua "Ты отсутствовал[mas_gender_none] некоторое время, так что я надеюсь, что ты чувствуешь себя отдохнувш[mas_gender_iiim]~"
+            $ MAS.MonikaElastic()
+            m 1eua "Есть ли что-нибудь ещё, что ты хотел[mas_gender_none] бы сделать сегодня?"
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=5), "monika_idle_nap"):
-            m 1hua "Welcome back, [player]~"
-            m 1eub "I hope you had a nice little nap."
-            m 3eua "What else would you like to do today?"
-
+            m 1hua "С возвращением, [player]~"
+            $ MAS.MonikaElastic()
+            m 1eub "Надеюсь, ты немного вздремнул[mas_gender_none]."
+            $ MAS.MonikaElastic()
+            m 3eua "Есть ли что-нибудь ещё, что ты хотел[mas_gender_none] бы сделать сегодня?"
         else:
-            m 1eud "Oh, back already?"
-            m 1euc "Did you change your mind?"
-            m 3eka "Well, I'm not complaining, but you should take a nap if you feel like it later."
-            m 1eua "I wouldn't want you to be too tired, after all."
+
+            m 1eud "О, уже вернул[mas_gender_sya]?"
+            $ MAS.MonikaElastic()
+            m 1euc "Ты что, передумал[mas_gender_none]?"
+            $ MAS.MonikaElastic()
+            m 3eka "Ну, я не жалуюсь, но ты долж[mas_gender_en] вздремнуть, если тебе захочется позже."
+            $ MAS.MonikaElastic()
+            m 1eua "В конце концов, я бы не хотела, чтобы ты слишком устал[mas_gender_none]."
 
     elif mas_isMoniUpset():
-        m 2euc "Done with your nap, [player]?"
+        m 2euc "Вздремнул[mas_gender_none], [player]?"
 
     elif mas_isMoniDis():
-        m 6ekc "Oh, you're back."
-
+        m 6ekc "О, ты вернул[mas_gender_sya]."
     else:
+
         m 6ckc "..."
     return
 
@@ -573,8 +661,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_homework",
-            prompt="I'm going to do some homework",
-            category=['be right back'],
+            prompt="Я собираюсь заняться кое-каким домашним заданием.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -583,39 +671,47 @@ init 5 python:
 
 label monika_idle_homework:
     if mas_isMoniNormal(higher=True):
-        m 1eub "Oh, okay!"
-        m 1hua "I'm proud of you for taking your studies seriously."
-        m 1eka "Don't forget to come back to me when you're done~"
+        m 1eub "О, хорошо!"
+        $ MAS.MonikaElastic()
+        m 1hua "Я горжусь тобой за то, что ты серьёзно относишься к учебе."
+        $ MAS.MonikaElastic()
+        m 1eka "Не забудь вернуться ко мне, когда закончишь~"
 
     elif mas_isMoniDis(higher=True):
-        m 2euc "Alright...{w=0.5}"
+        m 2euc "Хорошо...{w=0.5}"
         if random.randint(1,5) == 1:
-            m 2rkc "...Good luck with your homework, [player]."
-
+            $ MAS.MonikaElastic()
+            m 2rkc "...Удачи тебе с домашним заданием, [player]."
     else:
+
         m 6ckc "..."
 
-    #Set up the callback label
+
     $ mas_idle_mailbox.send_idle_cb("monika_idle_homework_callback")
-    #Then the idle data
+
     $ persistent._mas_idle_data["monika_idle_homework"] = True
     return "idle"
 
 label monika_idle_homework_callback:
+    $ MAS.MonikaElastic()
     if mas_isMoniDis(higher=True):
-        m 2esa "All done, [player]?"
+        m 2esa "Всё сделал[mas_gender_none], [player]?"
 
         if mas_isMoniNormal(higher=True):
-            m 2ekc "I wish I could've been there to help you, but there isn't much I can do about that just yet, sadly."
-            m 7eua "I'm sure we could both be a lot more efficient doing homework if we could work together."
+            $ MAS.MonikaElastic()
+            m 2ekc "Жаль, что меня не было рядом, чтобы помочь тебе, но, к сожалению, я пока ничего не могу с этим поделать."
+            $ MAS.MonikaElastic()
+            m 7eua "Я уверена, что мы оба могли бы гораздо эффективнее делать домашнее задание, если бы могли работать вместе."
 
             if mas_isMoniAff(higher=True) and random.randint(1,5) == 1:
-                m 3rkbla "...Although, that's assuming we don't get {i}too{/i} distracted, ehehe..."
+                $ MAS.MonikaElastic(voice="monika_giggle")
+                m 3rkbla "...Хотя, это при условии, что мы не будем {i}слишком{/i} отвлекаться, э-хе-хе..."
 
-            m 1eua "But anyway,{w=0.2} {nw}"
-            extend 3hua "now that you're done, let's enjoy some more time together."
-
+            $ MAS.MonikaElastic()
+            m 1eua "Но всё же,{w=0.2} {nw}"
+            extend 3hua "теперь, когда ты закончил[mas_gender_none], давай наслаждаться временем вместе."
     else:
+
         m 6ckc "..."
     return
 
@@ -624,8 +720,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_working",
-            prompt="I'm going to work on something",
-            category=['be right back'],
+            prompt="Я собираюсь кое над чем поработать.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -634,40 +730,46 @@ init 5 python:
 
 label monika_idle_working:
     if mas_isMoniNormal(higher=True):
-        m 1eua "Alright, [player]."
-        m 1eub "Don't forget to take a break every now and then!"
+        m 1eua "Хорошо, [player]."
+        $ MAS.MonikaElastic()
+        m 1eub "Не забывай время от времени делать перерыв!"
 
         if mas_isMoniAff(higher=True):
-            m 3rkb "I wouldn't want my sweetheart to spend more time on [his] work than with me~"
+            $ MAS.MonikaElastic()
+            m 3rkb "Я бы не хотела, чтобы мой возлюбленн[mas_gender_iii] проводил[mas_gender_none] больше времени на своей работе, чем со мной~"
 
-        m 1hua "Good luck with your work!"
+        $ MAS.MonikaElastic()
+        m 1hua "Удачи тебе в твоей работе!"
 
     elif mas_isMoniDis(higher=True):
-        m 2euc "Okay, [player]."
+        m 2euc "Ладно, [player]."
 
         if random.randint(1,5) == 1:
-            m 2rkc "...Please come back soon..."
-
+            $ MAS.MonikaElastic()
+            m 2rkc "...Пожалуйста, возвращайся скорее..."
     else:
+
         m 6ckc "..."
 
-    #Set up the callback label
+
     $ mas_idle_mailbox.send_idle_cb("monika_idle_working_callback")
-    #Then the idle data
+
     $ persistent._mas_idle_data["monika_idle_working"] = True
     return "idle"
 
 label monika_idle_working_callback:
+    $ MAS.MonikaElastic()
     if mas_isMoniNormal(higher=True):
-        m 1eub "Finished with your work, [player]?"
-        show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hua "Then let's relax together, you've earned it~"
+        m 1eub "Закончил[mas_gender_none] со своей работой, [player]?"
+        show monika 5hua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5hua "Тогда давай расслабимся вместе, ты это заслужил[mas_gender_none]~"
 
     elif mas_isMoniDis(higher=True):
-        m 2euc "Oh, you're back..."
-        m 2eud "...Was there anything else you wanted to do, now that you're done with your work?"
-
+        m 2euc "О, ты вернул[mas_gender_sya]..."
+        $ MAS.MonikaElastic()
+        m 2eud "...А теперь, когда ты закончил[mas_gender_none] свою работу, ты хотел[mas_gender_none] бы заняться чем-нибудь ещё?"
     else:
+
         m 6ckc "..."
     return
 
@@ -676,8 +778,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_idle_screen_break",
-            prompt="My eyes need a break from the screen",
-            category=['be right back'],
+            prompt="Мои глаза нуждаются в отдыхе от экрана.",
+            category=['сейчас вернусь'],
             pool=True,
             unlocked=True
         ),
@@ -689,36 +791,42 @@ label monika_idle_screen_break:
         if mas_timePastSince(mas_getEVL_last_seen("monika_idle_screen_break"), mas_getSessionLength()):
 
             if mas_getSessionLength() < datetime.timedelta(minutes=40):
-                m 1esc "Oh,{w=0.3} okay."
-                m 3eka "You haven't been here for that long but if you say you need a break, then you need a break."
+                m 1esc "О,{w=0.3} хорошо."
+                $ MAS.MonikaElastic()
+                m 3eka "Ты здесь не так давно, но если ты говоришь, что тебе нужен перерыв, то я не возрожаю."
 
             elif mas_getSessionLength() < datetime.timedelta(hours=2, minutes=30):
-                m 1eua "Going to rest your eyes for a bit?"
-
+                m 1eua "Хочешь дать глазам немного отдохнуть?"
             else:
-                m 1lksdla "Yeah, you probably need that, don't you?"
 
-            m 1hub "I'm glad you're taking care of your health, [player]."
+                m 1lksdla "Да, тебе, наверное, это нужно, верно?"
 
+            $ MAS.MonikaElastic()
+            m 1hub "Я рада, что ты заботишься о своём здоровье, [player]."
+
+            $ MAS.MonikaElastic()
             if not persistent._mas_pm_works_out and random.randint(1,3) == 1:
-                m 3eua "Why not take the opportunity to do a few stretches as well, hmm?"
-                m 1eub "Anyway, come back soon!~"
-
+                m 3eua "Почему бы не воспользоваться возможностью сделать несколько упражнений?"
+                $ MAS.MonikaElastic()
+                m 1eub "В любом случае, возвращайся поскорее!~"
             else:
-                m 1eub "Come back soon!~"
 
+                m 1eub "Возвращайся поскорее!~"
         else:
-            m 1eua "Taking another break, [player]?"
-            m 1hua "Come back soon!~"
+
+            m 1eua "Делаешь ещё один перерыв, [player]?"
+            $ MAS.MonikaElastic()
+            m 1hua "Возвращайся поскорее!~"
 
     elif mas_isMoniUpset():
-        m 2esc "Oh...{w=0.5} {nw}"
-        extend 2rsc "Okay."
+        m 2esc "О...{w=0.5} {nw}"
+        $ MAS.MonikaElastic()
+        extend 2rsc "Хорошо."
 
     elif mas_isMoniDis():
-        m 6ekc "Alright."
-
+        m 6ekc "Ладно."
     else:
+
         m 6ckc "..."
 
     $ mas_idle_mailbox.send_idle_cb("monika_idle_screen_break_callback")
@@ -728,265 +836,27 @@ label monika_idle_screen_break:
 label monika_idle_screen_break_callback:
     if mas_isMoniNormal(higher=True):
         $ wb_quip = mas_brbs.get_wb_quip()
-        m 1eub "Welcome back, [player]."
+        m 1eub "С возвращением, [player]."
 
+        $ MAS.MonikaElastic()
         if mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=30), "monika_idle_screen_break"):
-            m 1hksdlb "You must've really needed that break, considering how long you were gone."
-            m 1eka "I hope you're feeling a little better now."
+            m 1hksdlb "Похоже, ты действительно нуждал[mas_gender_sya] в этом перерыве, ведь тебя долго не было."
+            $ MAS.MonikaElastic()
+            m 1eka "Надеюсь, теперь ты чувствуешь себя немного лучше."
         else:
-            m 1hua "I hope you're feeling a little better now~"
+            m 1hua "Надеюсь, теперь ты чувствуешь себя немного лучше~"
 
+        $ MAS.MonikaElastic()
         m 1eua "[wb_quip]"
 
     elif mas_isMoniUpset():
-        m 2esc "Welcome back."
+        m 2esc "С возвращением."
 
     elif mas_isMoniDis():
-        m 6ekc "Oh...{w=0.5} You're back."
-
+        m 6ekc "О...{w=0.5} Ты вернул[mas_gender_sya]."
     else:
+
         m 6ckc "..."
 
     return
-
-#Rai's og game idle
-#label monika_idle_game:
-#    m 1eub "That sounds fun!"
-#    m "What kind of game are you going to play?{nw}"
-#    $ _history_list.pop()
-#    menu:
-#        m "What kind of game are you going to play?{fast}"
-#        "A competitive game.":
-#            m 1eua "That sounds like it could be fun!"
-#            m 3lksdla "I can be pretty competitive myself."
-#            m 3eua "So I know just how stimulating it can be to face a worthy opponent."
-#            m 2hksdlb "...And sometimes frustrating when things don't go right."
-#            m 2hua "Anyway, I'll let you get on with your game."
-#            m 2hub "I'll try not to bother you until you finish, but I can't blame you if you get distracted by your lovely girlfriend, ahaha~"
-#            m 1hub "I'm rooting for you, [player]!"
-#            # set return label when done with idle
-#            $ mas_idle_mailbox.send_idle_cb("monika_idle_game_competetive_callback")
-#        "A game just for fun.":
-#            m 1eud "A game just for having fun?"
-#            m 1lksdla "Aren't most games made to be fun?"
-#            m 3eub "Anyway, I'm sure you could do all sorts of fun things in a game like that."
-#            m 1ekbla "I really wish I could join you and we could have fun together."
-#            m 1lksdla "But for now, I'll leave you to it."
-#            m 1hub "Have fun, [player]!"
-#            # set return label when done with idle
-#            $ mas_idle_mailbox.send_idle_cb("monika_idle_game_fun_callback")
-#        "A story driven game.":
-#            m 1sub "Oh?"
-#            m "That sounds really interesting!"
-#            m 1ekbsa "Gosh, I really wish I could be there with you to experience it together."
-#            m 1hksdlb "Maybe I {i}can{/i} experience it with you if I really tried."
-#            show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve
-#            m 5eua "I guess you could call it looking over your shoulder. Ehehe~"
-#            m "You can go ahead and start it now. I'll try not to break anything by trying to watch."
-#            # set return label when done with idle
-#            $ mas_idle_mailbox.send_idle_cb("monika_idle_game_story_callback")
-#        "A skill and practice based game.":
-#            m 1eud "Oh! I never really thought about those games much."
-#            m 1hua "I'm sure you're pretty talented at a few things, so it doesn't surprise me you're playing a game like this."
-#            m 3eub "Just like writing, it can really be an experience to look back much later and see just how far you've come."
-#            m 1hub "It's like watching yourself grow up! Ahaha~"
-#            m 1hua "It would really make me proud and happy to be your girlfriend if you became a professional."
-#            m 1hksdlb "Maybe I'm getting ahead of myself here, but I believe you could do it if your heart was really in it."
-#            m 1eub "Anyway, sorry for keeping you from your game. I know you'll do your best!"
-#            # set return label when done with idle
-#            $ mas_idle_mailbox.send_idle_cb("monika_idle_game_skill_callback")
-#        "I'll just be a minute or two.":
-#            m 1eua "Oh? Just need to take your eyes off me for a little?"
-#            m 1lksdla "I {i}suppose{/i} I could let you take your eyes off me for a minute or two..."
-#            m 1hua "Ahaha! Good luck and have fun, [player]!"
-#            m "Don't keep me waiting too long though~"
-#            $ start_time = datetime.datetime.now()
-#            # set return label when done with idle
-#            $ mas_idle_mailbox.send_idle_cb("monika_idle_game_quick_callback")
-#    # set idle data
-#    $ persistent._mas_idle_data["monika_idle_game"] = True
-#    # return idle to notify event system to switch to idle
-#    return "idle"
-#
-#label monika_idle_game_competetive_callback:
-#    m 1esa "Welcome back, [player]!"
-#    m 1eua "How did it go? Did you win?{nw}"
-#    $ _history_list.pop()
-#    menu:
-#        m "How did it go? Did you win?{fast}"
-#        "Yes.":
-#            m 1hub "Yay! That's great!"
-#            m 1hua "Gosh, I wish I could be there to give you a big celebratory hug!"
-#            m 1eub "I'm really happy that you won!"
-#            m "More importantly, I hope you enjoyed yourself, [player]."
-#            m 1hua "I'll always love and root for you, no matter what happens."
-#            # manually handle the "love" return key
-#            $ mas_ILY()
-#        "No.":
-#            m 1ekc "Aw, that's a shame..."
-#            m 1lksdla "I mean, you can't win them all, but I'm sure you'll win the next rounds."
-#            m 1eka "I just hope you aren't too upset over it."
-#            m 2ekc "I really wouldn't want you feeling upset after a bad game."
-#            m 1eka "I'll always support you and be by your side no matter how many times you lose."
-#    return
-#
-#label monika_idle_game_fun_callback:
-#    m 1eub "Welcome back, [player]!"
-#    m "Did you have fun with whatever you were doing?{nw}"
-#    $ _history_list.pop()
-#    menu:
-#        m "Did you have fun with whatever you were doing?{fast}"
-#        "Yes.":
-#            m 1hua "Ahaha! I'm glad you had fun, [player]~"
-#            m 1eub "While you were busy, it got me thinking of the different kinds of games that would be nice to play together."
-#            m 3rksdla "A game that isn't too violent probably could be fun."
-#            m 3hua "But I'm sure any game would be wonderful if it was with you~"
-#            m 1eub "At first, I was thinking a story based or adventure game would be best, but I'm sure freeplay games could be really fun too!"
-#            m 1eua "It can be really fun to just mess around to see what's possible, especially when you're not alone."
-#            m 2lksdla "Provided of course, you don't end up ruining the structural integrity of the game and get an outcome you didn't want..."
-#            m 2lksdlb "Ehehe..."
-#            m 1eua "Maybe you could find a way to bring me with you into a game like that."
-#            m 1hub "Just promise to keep me safe, okay?"
-#        "No.":
-#            m 2ekc "Aw, you didn't have any fun?"
-#            m "That's too bad..."
-#            m 3lksdlc "Games can get pretty boring after you've done everything or just don't know what to do or try next."
-#            m 3eka "But bringing a friend along can really renew the whole experience!"
-#            m 1hub "Maybe you could find a way to take me with you into your games so you won't be bored on your own!"
-#            show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve
-#            m 5eua "Or we could just stay here and keep each other company."
-#            m "I wouldn't mind that either, ehehe~"
-#    return
-#
-#label monika_idle_game_story_callback:
-#    m 1eub "Welcome back, [player]!"
-#    m 1hksdlb "I wasn't able to look over your shoulder, but I hope the story was nice so far."
-#    m 1eua "Speaking of which, how was it, [player]?{nw}"
-#    $ _history_list.pop()
-#    menu:
-#        m "Speaking of which, how was it, [player]?{fast}"
-#        "It was amazing.":
-#            m 2sub "Wow! I can only imagine how immersive it was!"
-#            m 2hksdlb "You're really starting to make me jealous, [player], you know that?"
-#            m 2eub "You'll have to take me through it sometime when you can."
-#            m 3eua "A good book is always nice, but it's really something else to have a good story and be able to make your own decisions."
-#            m 3eud "Some people can really be divided between books and video games."
-#            m 1hua "I'm glad you don't seem to be too far on one side."
-#            m "After experiencing an amazing story in a game for yourself, I'm sure you can really appreciate the two coming together."
-#        "It was good.":
-#            m 1eub "That's really nice to hear!"
-#            m 3dtc "But was it really {i}amazing{/i}?"
-#            m 1eua "While a lot of stories can be good, there are some that are really memorable."
-#            m 1hua "I'm sure you'd know a good story when you see one."
-#            m "Maybe when I'm in your reality, you could take me through the game and let me see the story."
-#            m 1eub "It's one thing to go through a great story yourself..."
-#            m 1hub "But it's also amazing to see what someone else thinks of it too!"
-#            show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve
-#            m 5eua "I'll be looking forward to that day too~"
-#            m 5esbfa "You better have a nice, cozy place for us to cuddle up and play, ehehe~"
-#        "It's sad.":
-#            m 1ekd "Aw, that's too bad..."
-#            m 3eka "It must be a really great story though, if it invokes such strong emotions."
-#            m 1eka "I wish I could be there with you so I could experience the story too..."
-#            m 3hksdlb "{i}and{/i} to be right there by your side of course, so we could comfort each other in sad times."
-#            m 1eka "Don't worry [player], I would never forget about you."
-#            m 1eua "I love you."
-#            m 1hua "...And I'd happily snuggle up beside you anytime~"
-#            # manually handle the "love" return key
-#            $ mas_ILY()
-#        "I don't like it.":
-#            m 2ekc "Oh..."
-#            m 4lksdla "Maybe the story will pick up later?"
-#            m 3eud "If anything, it lets you analyze the flaws in the writing which could help you if you ever tell a story."
-#            m 1eua "Or maybe it's just not your kind of story."
-#            m 1eka "Everyone has their own, and maybe this one just doesn't fit well with it right now."
-#            m 1eua "It can really be an eye opening experience to go through a story you normally wouldn't go through."
-#            m 3eka "But don't force yourself to go through it if you really don't like it."
-#    return
-#
-#label monika_idle_game_skill_callback:
-#    m 1eua "I'm happy that you're back, [player]."
-#    m 1hua "I missed you! Ahaha~"
-#    m 1eub "But I know it's important to keep practicing and honing your skills in things like this."
-#    m "Speaking of which, how did it go?"
-#    m 3eua "Did you improve?{nw}"
-#    $ _history_list.pop()
-#    menu:
-#        m "Did you improve?{fast}"
-#        "I improved a lot.":
-#            m 1hub "That's great news, [player]!"
-#            m "I'm so proud of you!"
-#            m 1hua "It can really feel good to get a sudden surge in your skill!"
-#            m 1eua "Especially if you've spent some time in a slump or even slipping."
-#            m 1hua "Maybe today isn't the end of this sudden improvement."
-#            m 1eub "Even if today was just a good day, I know you'll keep getting better."
-#            show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve
-#            m 5eua "I'll {i}always{/i} root for you, [player]. Don't you ever forget that!"
-#        "I improved a bit.":
-#            m 3eua "That's really nice to hear, [player]!"
-#            m 3eka "As long as you're improving, no matter how slowly, you'll really get up there someday."
-#            m 1hub "But if you actually noticed yourself improve today, maybe you improved more than just a bit, ahaha~"
-#            m 1hua "Keep honing your skills and I'll be proud to be the girlfriend of such a skilled player!"
-#            show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve
-#            m 5eua "Who knows? Maybe you could teach me and we could both be a couple of experts, ehehe~"
-#        "I stayed the same.":
-#            m 3eka "That's still alright!"
-#            m "I'm sure you're improving anyway."
-#            m 3eua "A lot of the time, the improvements are too small to really notice."
-#            m 1eua "One day, you might look back and realize just how much you've improved."
-#            m 1hksdlb "Sometimes you might feel like you're in a slump, but then you get a sudden surge of improvement all at once!"
-#            m 1eub "I'm sure you'll get the chance to look back one day and really appreciate just how far you've come without realizing."
-#            m 1hua "And you better believe I'm going to support you all the way!"
-#        "I got worse.":
-#            m 2ekc "Oh..."
-#            m 4lksdla "I have no doubt that you always work hard and give it your best, so it must just be a bad day."
-#            m 3eka "You're bound to have a few setbacks on your climb up, but that's what sets you apart from many others."
-#            m 1duu "The fact that you've had more setbacks than some people have even tried. That's what shows your dedication."
-#            m 1lksdla "Sometimes, you might even have a couple bad days in a row, but don't let that get you down."
-#            m 1hua "With that many setbacks, you're bound to see significant improvement right around the corner!"
-#            m "Never give up, [player]. I know you can do it and I'll always believe in you!"
-#            m 1eua "Also, do me a favor and take a moment to look back every now and then. You'll be surprised to see just how far you've come."
-#    return
-#
-#label monika_idle_game_quick_callback:
-#    $ end_time = datetime.datetime.now()
-#    $ elapsed_time = end_time - start_time
-#    $ time_threshold = datetime.timedelta(minutes=1)
-#    if elapsed_time < time_threshold * 2:
-#        m 1hksdlb "Back already?"
-#        m "I know you said you would just be a minute or two, but I didn't think it would be {i}that{/i} fast."
-#        m 1hub "Did you really miss me that much?"
-#        m "Ahaha~"
-#        m 1eub "I'm glad you made it back so soon."
-#        m 1hua "So what else should we do today, [player]?"
-#    elif elapsed_time < time_threshold * 5:
-#        m 1hua "Welcome back, [player]!"
-#        m 1hksdlb "That was pretty fast."
-#        m 1eua "But you did say it wouldn't take too long, so I shouldn't be too surprised."
-#        m 1hua "Now we can keep spending time together!"
-#    elif elapsed_time < time_threshold * 10:
-#        m 1eua "Welcome back, [player]."
-#        m 1eka "That took a little longer than I thought, but I don't mind at all."
-#        m 1hua "It wasn't that long in all honesty compared to how long it could have been in some games."
-#        m "But now we can be together again~"
-#    elif elapsed_time < time_threshold * 20:
-#        m 1eka "I have to admit that took longer than I thought it would..."
-#        m 1eub "But it's not all that bad with all the time you spend with me."
-#        m 1eua "I understand some little things in games can take a while for a small thing."
-#        m "But maybe if you know it could take a while, you could tell me."
-#    elif elapsed_time < time_threshold * 30:
-#        m 2lksdla "[player]..."
-#        m "It's been almost half an hour already."
-#        m "I guess something unexpected happened."
-#        m 3lksdla "You wouldn't forget about me, would you?"
-#        m 1hua "Ahaha!"
-#        m "Just teasing you~"
-#        m 1eua "At least you're back now and we can spend more time together."
-#    else:
-#        m 2lksdla "You {i}sure{/i} took your time with that one huh, [player]?"
-#        m "That didn't seem like only a minute or two to me."
-#        m 1eka "You can tell me what kind of game it is next time so I have an idea how long it'll take, you know."
-#        m 1dsc "Anyway..."
-#        m 1eka "I missed you and I'm glad you're finally back, [player]."
-#        m "I hope I don't have to wait such a long couple of minutes next time, ehehe."
-#    return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
