@@ -1,47 +1,47 @@
-#Create an apology db for storing our times
-#Stores the event label as a key, its corresponding data is a tuple where:
-#   [0] -> timedelta defined by: current total playtime + apology_active_expiry time
-#   [1] -> datetime.date defined by the date the apology was added + apology_overall_expiry time
+
+
+
+
 default persistent._mas_apology_time_db = {}
 
-#Create a generic apology db. We'll want to know how many times the player has apologized for mas_apology_reason
-#Allows us the ability to apply diminishing returns on affection for repeated use of the same apology
-#This db here simply stores the integer corresponding to apology reason as a key,
-#corresponding int value is the amt of times it was used
+
+
+
+
 default persistent._mas_apology_reason_use_db = {}
 
 init -10 python in mas_apology:
     apology_db = {}
-    # Event database for apologies
+
 
 
 init python:
     def mas_checkApologies():
-        #Let's not do extra work
+        
         if len(persistent._mas_apology_time_db) == 0:
             return
-
-        #Calculate the current total playtime to compare...
+        
+        
         current_total_playtime = persistent.sessions['total_playtime'] + mas_getSessionLength()
-
+        
         _today = datetime.date.today()
-        #Iter thru the stuffs in the apology time tb
+        
         for ev_label in persistent._mas_apology_time_db.keys():
             if current_total_playtime >= persistent._mas_apology_time_db[ev_label][0] or _today >= persistent._mas_apology_time_db[ev_label][1]:
-                #Pop the ev_label from the time db and lock the event label. You just lost your chance
+                
                 store.mas_lockEVL(ev_label,'APL')
                 persistent._mas_apology_time_db.pop(ev_label)
-
+        
         return
 
 
 init 5 python:
-   addEvent(
+    addEvent(
        Event(
            persistent.event_database,
            eventlabel='monika_playerapologizes',
-           prompt="I want to apologize...",
-           category=['you'],
+           prompt="Я хочу извиниться...",
+           category=['ты'],
            pool=True,
            unlocked=True
         )
@@ -49,87 +49,92 @@ init 5 python:
 
 label monika_playerapologizes:
 
-    #Firstly, let's check if there's an apology reason for the prompt
-    #NOTE: When adding more apology reasons, add a reason the player would say sorry for here (corresponding to the same #as the apology reason)
+
+
     $ player_apology_reasons = {
-        0: "something else.", #since we shouldn't actually be able to get this, we use this as our fallback
-        1: "saying I wanted to break up.",
-        2: "joking about having another girlfriend.",
-        3: "calling you a murderer.",
-        4: "closing the game on you.",
-        5: "entering your room without knocking.",
-        6: "missing Christmas.",
-        7: "forgetting your birthday.",
-        8: "not spending time with you on your birthday.",
-        9: "the game crashing.",
-        10: "the game crashing.", #easiest way to handle this w/o overrides
-        11: "not listening to your speech.",
-        12: "calling you evil.",
-        13: "not answering you seriously."
+        0: "что-то другое.",
+        1: "то, что сказал[mas_gender_none], что хочу расстаться.",
+        2: "то, что пошутил[mas_gender_none] насчёт того, что у меня другая девушка.",
+        3: "то, что назвал[mas_gender_none] тебя убийцей.",
+        4: "то, что закрывал[mas_gender_none] игру вместе с тобой.",
+        5: "то, что входил[mas_gender_none] в твою комнату без стука.",
+        6: "то, что пропустил[mas_gender_none] Рождество.",
+        7: "то, что забыл[mas_gender_none] про твой день рождения.",
+        8: "то, что не пров[mas_gender_iol] время вместе с тобой в твой же день рождения.",
+        9: "то, что игра вылетела.",
+        10: "то, что игра вылетает.",
+        11: "то, что не послушал[mas_gender_iol] мою речь.",
+        12: "то, что называл[mas_gender_none] тебя злой.",
+        13: "то, что не отвечал[mas_gender_none] тебе серьёзно."
     }
 
-    #Set the prompt for this...
+
     if len(persistent._mas_apology_time_db) > 0:
-        #If there's a non-generic apology reason pending we use "for something else."
+
         $ mas_setEVLPropValues(
             "mas_apology_generic",
-            prompt="...for {0}".format(player_apology_reasons.get(mas_apology_reason,player_apology_reasons[0]))
+            prompt="...за {0}".format(player_apology_reasons.get(mas_apology_reason,player_apology_reasons[0]))
         )
     else:
-        #Otherwise, we use "for something." if reason isn't 0
+
         if mas_apology_reason == 0:
-            $ mas_setEVLPropValues("mas_apology_generic", prompt="...for something.")
+            $ mas_setEVLPropValues("mas_apology_generic", prompt="...за что-то.")
         else:
-            #We set this to an apology reason if it's valid
+
             $ mas_setEVLPropValues(
                 "mas_apology_generic",
-                prompt="...for {0}".format(player_apology_reasons.get(mas_apology_reason,"something."))
+                prompt="...за {0}".format(player_apology_reasons.get(mas_apology_reason,"что-то."))
             )
 
-    #Then we delete this since we're not going to need it again until we come back here, where it's created again.
-    #No need to store excess memory
+
+
     $ del player_apology_reasons
 
-    #Now we run through our apology db and find what's unlocked
+
     python:
         apologylist = [
             (ev.prompt, ev.eventlabel, False, False)
             for ev_label, ev in store.mas_apology.apology_db.iteritems()
-            if ev.unlocked and (ev.prompt != "...for something." and ev.prompt != "...for something else.")
+            if ev.unlocked and (ev.prompt != "...за что-то." and ev.prompt != "...за что-то другое.")
         ]
 
-        #Now we add the generic if there's no prompt attached
+
         generic_ev = mas_getEV('mas_apology_generic')
 
-        if generic_ev.prompt == "...for something." or generic_ev.prompt == "...for something else.":
+        if generic_ev.prompt == "...за что-то." or generic_ev.prompt == "...за что-то другое.":
             apologylist.append((generic_ev.prompt, generic_ev.eventlabel, False, False))
 
-        #The back button
-        return_prompt_back = ("Nevermind.", False, False, False, 20)
 
-    #Display our scrollable
+        return_prompt_back = ("Не важно.", False, False, False, 20)
+
+
     show monika at t21
     call screen mas_gen_scrollable_menu(apologylist, mas_ui.SCROLLABLE_MENU_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, return_prompt_back)
 
-    #Make sure we don't lose this value
+
     $ apology =_return
 
-    #Handle backing out
+
     if not apology:
         if mas_apology_reason is not None or len(persistent._mas_apology_time_db) > 0:
             show monika at t11
             if mas_isMoniAff(higher=True):
-                m 1ekd "[player], if you're feeling guilty about what happened..."
-                m 1eka "You don't have to be afraid of apologizing, we all make mistakes after all."
-                m 3eka "We just have to accept what happened, learn from our mistakes, and move on, together. Okay?"
+                m 1ekd "[player], если ты чувствуешь себя виноватым из-за случившегося..."
+                $ MAS.MonikaElastic()
+                m 1eka "Тебе не надо бояться извинений, поскольку мы все делаем ошибки."
+                $ MAS.MonikaElastic()
+                m 3eka "Нам просто надо смириться с тем, что произошло, учиться на своих же ошибках и двигаться дальше, вместе. Договорились?"
             elif mas_isMoniNormal(higher=True):
                 m 1eka "[player]..."
-                m "If you want to apologize, go ahead. It'd mean a lot to me if you did."
+                $ MAS.MonikaElastic()
+                m "Если ты хочешь извиниться – пожалуйста. Если ты извинишься, это будет многое значить для меня."
             elif mas_isMoniUpset():
-                m 2rkc "Oh..."
-                m "I was kind of--"
+                m 2rkc "Ох..."
+                $ MAS.MonikaElastic()
+                m "Я была довольно—"
                 $ _history_list.pop()
-                m 2dkc "Nevermind."
+                $ MAS.MonikaElastic()
+                m 2dkc "Не важно."
             elif mas_isMoniDis():
                 m 6rkc "...?"
             else:
@@ -140,23 +145,23 @@ label monika_playerapologizes:
                 if mas_isMoniBroken():
                     m 6ckc "..."
                 else:
-                    m 6rkc "Did you have something to say, [player]?"
+                    m 6rkc "Ты хочешь что-то сказать, [player]?"
         return "prompt"
 
     show monika at t11
-    #Call our apology label
-    #NOTE: mas_setApologyReason() ensures that this label exists
-    call expression apology
 
-    #Increment the shown count
+
+    call expression apology from _call_expression_3
+
+
     $ mas_getEV(apology).shown_count += 1
 
-    #Lock the apology label if it's not the generic
+
     if apology != "mas_apology_generic":
         $ store.mas_lockEVL(apology, 'APL')
 
-    #Pop that apology from the time db
-    if apology in persistent._mas_apology_time_db: #sanity check
+
+    if apology in persistent._mas_apology_time_db:
         $ persistent._mas_apology_time_db.pop(apology)
     return
 
@@ -164,7 +169,7 @@ init 5 python:
     addEvent(
         Event(
             persistent._mas_apology_database,
-            prompt="...for something else.",
+            prompt="...за что-то другое.",
             eventlabel="mas_apology_generic",
             unlocked=True,
         ),
@@ -172,88 +177,106 @@ init 5 python:
     )
 
 label mas_apology_generic:
-    #dict of all generic apologies
-    #Note, if a custom apology is needed, add it here and reference the apology reason by the integer associated.
+
+
     $ mas_apology_reason_db = {
         0: "",
-        1: "saying you wanted to break up. I knew you didn't mean it...",
-        2: "joking about having another girlfriend. You nearly gave me a heart attack!",
-        3: "calling me a murderer. I hope you don't really see me that way...",
-        4: "closing the game on me.",
-        5: "entering my room without knocking.",
-        6: "missing Christmas.",
-        7: "forgetting my birthday.",
-        8: "not spending time with me on my birthday.",
-        9: "the game crashing. I understand it happens sometimes, but don't worry, I'm alright!",
-        10: "the game crashing. It really was scary, but I'm just glad you came back to me and made things better.",
-        11: "not listening to my speech. I worked really hard on it.",
-        12: "calling me evil. I know you don't really think that.",
-        13: "not taking my questions seriously. I know you'll be honest with me from now on."
+        1: "то, что ты сказал{0}, что хочешь расстаться. Я знала, ты говорил{0} не всерьёз...".format(mas_gender_none),
+        2: "то, что пошутил{0} насчёт того, что у тебя другая девушка. Ты меня до смерти напугал{0}!".format(mas_gender_none),
+        3: "то, что назвал{0} меня убийцей. Надеюсь, ты не видишь меня такой...".format(mas_gender_none),
+        4: "то, что внезапно закрывал{0} игру.".format(mas_gender_none),
+        5: "то, что входил{0} в мою комнату без стука.".format(mas_gender_none),
+        6: "то, что пропустил{0} Рождество.".format(mas_gender_none),
+        7: "то, что забыл{0} про мой день рождения.".format(mas_gender_none),
+        8: "то, что не пров{0} время вместе со мной в мой же день рождения.".format(mas_gender_iol),
+        9: "то, что игра вылетела. Я понимаю, такое иногда происходит, но не волнуйся, со мной всё хорошо!",
+        10: "то, что игра вылетает. Это было очень страшно, но я рада, что ты вернулся ко мне и всё изменилось к лучшему.",
+        11: "то, что не послушал{0} мою речь. Я очень старалась.".format(mas_gender_none),
+        12: "то, что называл{0} меня злой. Я знаю, что ты правда так не считаешь.".format(mas_gender_none),
+        13: "то, что не воспринимал{0} мои вопросы всерьёз. Я знаю, что с этого момента ты будешь чест{1} со мной.".format(mas_gender_none, mas_gender_en)
     }
 
-    #If there's no reason to apologize
+
     if mas_apology_reason is None and len(persistent._mas_apology_time_db) == 0:
         if mas_isMoniBroken():
-            m 1ekc "...{w=1}Oh."
+            m 1ekc "...{w=1}Ох."
+            $ MAS.MonikaElastic()
             m 2dsc ".{w=2}.{w=2}."
-            m "Okay."
+            $ MAS.MonikaElastic()
+            m "Ладно."
         elif mas_isMoniDis():
-            m 2dfd "{i}*sigh*{/i}"
-            m 2dsd "I hope this isn't some joke or trick, [player]."
+            m 2dfd "{i}*вздох*{/i}"
+            $ MAS.MonikaElastic()
+            m 2dsd "Надеюсь, это не какая-то шутка или уловка, [player]."
+            $ MAS.MonikaElastic()
             m 2dsc "..."
-            m 1eka "...Thank you for the apology."
-            m 2ekc "But please, try to be more mindful about my feelings."
-            m 2dkd "Please."
+            $ MAS.MonikaElastic()
+            m 1eka "...Спасибо, что извинил[mas_gender_sya]."
+            $ MAS.MonikaElastic()
+            m 2ekc "Но, пожалуйста, старайся уделять больше внимания моим чувствам."
+            $ MAS.MonikaElastic()
+            m 2dkd "Пожалуйста."
         elif mas_isMoniUpset():
-            m 1eka "Thank you, [player]."
-            m 1rksdlc "I know things aren't the best between us, but I know that you're still a good person."
-            m 1ekc "So could you be a little more considerate of my feelings?"
-            m 1ekd "Please?"
+            m 1eka "Спасибо, [player]."
+            $ MAS.MonikaElastic()
+            m 1rksdlc "Я понимаю, что между нами всё не так хорошо, но я знаю, что ты – хороший человек."
+            $ MAS.MonikaElastic()
+            m 1ekc "Так что, можешь ли ты уделять чуть больше внимания моим чувствам?"
+            $ MAS.MonikaElastic()
+            m 1ekd "Пожалуйста?"
         else:
-            m 1ekd "Did something happen?"
-            m 2ekc "I don't see a reason for you to be sorry."
+            m 1ekd "Что-то произошло?"
+            $ MAS.MonikaElastic()
+            m 2ekc "Я не вижу причины для извинений с твоей стороны."
+            $ MAS.MonikaElastic()
             m 1dsc "..."
-            m 1eub "Anyway, thank you for the apology."
-            m 1eua "Whatever it is, I know you're doing your best to make things right."
-            m 1hub "That's why I love you, [player]!"
+            $ MAS.MonikaElastic()
+            m 1eub "Так или иначе, спасибо за извинение."
+            $ MAS.MonikaElastic()
+            m 1eua "Что бы это ни было, я знаю, что ты очень стараешься всё исправить."
+            $ MAS.MonikaElastic()
+            m 1hub "За это я и люблю тебя, [player]!"
             $ mas_ILY()
 
-    #She knows what you are apologizing for
+
     elif mas_apology_reason_db.get(mas_apology_reason, False):
-        #Set apology_reason
+
         $ apology_reason = mas_apology_reason_db.get(mas_apology_reason,mas_apology_reason_db[0])
 
-        m 1eka "Thank you for apologizing for [apology_reason]"
-        m "I accept your apology, [player]. It means a lot to me."
+        m 1eka "Спасибо, что извинил[mas_gender_sya] за [apology_reason]"
+        $ MAS.MonikaElastic()
+        m "Я принимаю твои извинения, [player]. Это многое для меня значит."
 
-    #She knows that you've got something else to apologize for, and wants you to own up
+
     elif len(persistent._mas_apology_time_db) > 0:
-        m 2tfc "[player], if you have something to apologize for, please just say it."
-        m 2rfc "It'd mean a lot more to me if you would just admit what you did."
-
-    #She knows there's a reason for your apology but won't comment on it
+        m 2tfc "[player], если ты хочешь за что-то извиниться, то просто скажи это."
+        $ MAS.MonikaElastic()
+        m 2rfc "Если бы ты признал[mas_gender_none] всё то, что натворил, это бы многое для меня значило."
     else:
-        #Since this 'reason' technically varies, we don't really have a choice as we therefore can't add 0 to the db
-        #So recover a tiny bit of affection
-        $ mas_gainAffection(modifier=0.1)
-        m 2tkd "What you did wasn't funny, [player]."
-        m 2dkd "Please be more considerate about my feelings in the future."
 
-    #We only want this for actual apology reasons. Not the 0 case or the None case.
+
+
+
+        $ mas_gainAffection(modifier=0.1)
+        m 2tkd "То, что ты натворил[mas_gender_none], было совсем не смешно, [player]."
+        $ MAS.MonikaElastic()
+        m 2dkd "Пожалуйста, уделяй больше внимания моим чувствам в дальнейшем."
+
+
     if mas_apology_reason:
-        #Update the apology_reason count db (if not none)
+
         $ persistent._mas_apology_reason_use_db[mas_apology_reason] = persistent._mas_apology_reason_use_db.get(mas_apology_reason,0) + 1
 
         if persistent._mas_apology_reason_use_db[mas_apology_reason] == 1:
-            #Restore a little bit of affection
+
             $ mas_gainAffection(modifier=0.2)
         elif persistent._mas_apology_reason_use_db[mas_apology_reason] == 2:
-            #Restore a little less affection
+
             $ mas_gainAffection(modifier=0.1)
 
-        #Otherwise we recover no affection.
 
-    #Reset the apology reason
+
+
     $ mas_apology_reason = None
     return
 
@@ -262,7 +285,7 @@ init 5 python:
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_bad_nickname",
-            prompt="...for calling you a bad name.",
+            prompt="...за то, что обзывал тебя плохими словами.",
             unlocked=False
         ),
         code="APL"
@@ -271,27 +294,38 @@ init 5 python:
 label mas_apology_bad_nickname:
     $ ev = mas_getEV('mas_apology_bad_nickname')
     if ev.shown_count == 0:
-        $ mas_gainAffection(modifier=0.2) # recover a bit of affection
-        m 1eka "Thank you for apologizing for the name you tried to give me."
-        m 2ekd "That really hurt, [player]..."
-        m 2dsc "I accept your apology, but please don't do that again. Okay?"
+        $ mas_gainAffection(modifier=0.2)
+        m 1eka "Спасибо, что извинил[mas_gender_sya] за то имя, которое пытал[mas_gender_sya] дать мне."
+        $ MAS.MonikaElastic()
+        m 2ekd "Мне было очень больно, [player]..."
+        $ MAS.MonikaElastic()
+        m 2dsc "Я принимаю твоё извинение, но, пожалуйста, не делай так больше. Ладно?"
         $ mas_unlockEVL("monika_affection_nickname", "EVE")
 
     elif ev.shown_count == 1:
-        $ mas_gainAffection(modifier=0.1) # recover less affection
-        m 2dsc "I can't believe you did that {i}again{/i}."
-        m 2dkd "Even after I gave you a second chance."
-        m 2tkc "I'm disappointed in you, [player]."
-        m 2tfc "Don't ever do that again."
+        $ mas_gainAffection(modifier=0.1)
+        m 2dsc "Не могу поверить в то, что ты {i}снова{/i} это сделал[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 2dkd "Даже после того, как я дала тебе второй шанс."
+        $ MAS.MonikaElastic()
+        m 2tkc "Я разочаровалась в тебе, [player]."
+        $ MAS.MonikaElastic()
+        m 2tfc "Не делай так больше."
         $ mas_unlockEVL("monika_affection_nickname", "EVE")
-
     else:
-        #No recovery here. You asked for it.
+
+
         m 2wfc "[player]!"
-        m 2wfd "I can't believe you."
-        m 2dfc "I trusted you to give me a good nickname to make me more unique, but you just threw it back in my face..."
-        m "I guess I couldn't trust you for this."
-        m ".{w=0.5}.{w=0.5}.{nw}"
-        m 2rfc "I'd accept your apology, [player], but I don't think you even mean it."
-        #No unlock of nickname topic either.
+        $ MAS.MonikaElastic()
+        m 2wfd "Как ты мог?"
+        $ MAS.MonikaElastic()
+        m 2dfc "Я надеялась, что ты дашь мне хорошее прозвище, дабы сделать меня более уникальной, но ты решил отплатить мне чёрной неблагодарностью..."
+        $ MAS.MonikaElastic()
+        m "Похоже, я не могу доверить тебе такое право."
+        $ MAS.MonikaElastic()
+        m ".{w=0.5}.{w=0.5}.{w=0.5}{nw}"
+        $ MAS.MonikaElastic()
+        m 2rfc "Я бы приняла твоё извинение, [player], но я сомневаюсь, что ты сказал это на полном серьёзе."
+
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
