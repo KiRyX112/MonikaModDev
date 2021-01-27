@@ -1,17 +1,17 @@
-# Module that contains both work-flow specific shield functions and
-# generalized shield functions.
-#
+
+
+
 
 init python:
-    # WORKFLOW-BASED
 
-    # please add descriptions of workflows and what needs to be
-    # enabled / disabled
 
-    ######################### Core Disable ####################################
-    # Not a workflow, just a specific set of shield functions that disable
-    # and enable core interactions. Certain RenPy / DDLC-based interactions
-    # may still work even when this shield is raised
+
+
+
+
+
+
+
     def mas_DropShield_core():
         """
         Enables:
@@ -42,8 +42,8 @@ init python:
         disable_esc()
 
 
-    #################### Allow Dialogue workflow ##############################
-    # Used when Monika is speaking.
+
+
     def mas_DropShield_dlg():
         """
         Enables:
@@ -70,8 +70,8 @@ init python:
         store.hkb_button.play_enabled = True
         store.mas_globals.dlg_workflow = False
         mas_calDropOverlayShield()
-
-        # special dialogue shield settings for derand and bookmark hotkeys
+        
+        
         store.mas_hotkeys.derandom_enabled = False
         store.mas_hotkeys.bookmark_enabled = False
 
@@ -102,13 +102,13 @@ init python:
         store.hkb_button.play_enabled = False
         store.mas_globals.dlg_workflow = True
         mas_calRaiseOverlayShield()
-
-        # special dialogue shield settings for derand and bookmark hotkeys
+        
+        
         store.mas_hotkeys.derandom_enabled = True
         store.mas_hotkeys.bookmark_enabled = True
 
-    ################### Music Menu opened workflow ############################
-    # Used when the music menu opens.
+
+
     def mas_DropShield_mumu():
         """
         Enables:
@@ -145,8 +145,8 @@ init python:
         mas_OVLRaiseShield()
 
 
-    ################## Idle mode workflow #####################################
-    # Used in idle mode
+
+
     def mas_DropShield_idle():
         """
         Enables:
@@ -179,8 +179,8 @@ init python:
         store.hkb_button.play_enabled = False
 
 
-    ################## Piano mode workflow ####################################
-    # used when Monika plays her piano
+
+
 
     def mas_DropShield_timedtext():
         """
@@ -223,13 +223,13 @@ init python:
         mas_hotkeys.no_window_hiding = True
 
 
-################################## GENERALIZED ################################
-    # NOTE: only generalized functions that are mult-module encompassing
-    # are allowed here. IF a generalized function is mostly related to
-    # a specific store/module, make it there. NOT here.
 
-    ################## Enable / Disable Music Menu ############################
-    # specifically for enabling and disabling the music menu
+
+
+
+
+
+
     def mas_MUMUDropShield():
         """
         Enables:
@@ -258,8 +258,8 @@ init python:
         store.songs.enabled = False
 
 
-    ################## Enable / Disable Music interactions ####################
-    # specifically for enabling and disabling all music-based interactions
+
+
 
     def mas_MUINDropShield():
         """
@@ -289,8 +289,8 @@ init python:
         store.mas_hotkeys.mu_ctrl_enabled = False
 
 
-    ################## dlg <-> idle transitions ###############################
-    # specifically for transitioning between DLg and idle modes
+
+
     def mas_dlgToIdleShield():
         """
         Enables:
@@ -350,3 +350,4 @@ init python:
         store.hkb_button.music_enabled = True
         store.songs.enabled = True
         mas_calDropOverlayShield()
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
