@@ -1,32 +1,32 @@
-# Module for Monika story telling
-#
-# Stories will get unlocked one at by session
-# The unlocking logic has been added to script-ch30
-# The topic that triggers the Story menu is monika_short_stories
-# Topic is unlocked at the beginning of the game and is not
-# random
-# New rule: pool property as true means that the story gets unlocked
-# by some other way and can't be unlocked randomly
 
 
-# dict of tples containing the stories event data
+
+
+
+
+
+
+
+
+
+
 default persistent._mas_story_database = dict()
 default mas_can_unlock_story = False
 default mas_can_unlock_scary_story = False
 default mas_full_scares = False
-# dict storing the last date we saw a new story of normal and scary type
+
 default persistent._mas_last_seen_new_story = {"normal":None,"scary":None}
 
 
-# store containing stories-related things
+
 init -1 python in mas_stories:
     import store
 
-    # TYPES:
+
     TYPE_SCARY = 0
 
-    # pane constant
-    STORY_RETURN = "Nevermind"
+
+    STORY_RETURN = "Не важно."
     story_database = dict()
 
     def _unlock_everything():
@@ -50,31 +50,31 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_short_stories",
-            category=['literature'],
-            prompt="Can you tell me a story?",
+            category=['литература'],
+            prompt="Можешь рассказать мне историю?",
             pool=True,
             unlocked=True
         )
     )
 
 label monika_short_stories:
-    call monika_short_stories_premenu(None)
+    call monika_short_stories_premenu (None) from _call_monika_short_stories_premenu
     return _return
 
 label monika_short_stories_premenu(story_type=None):
     $ end = ""
 
 label monika_short_stories_menu:
-    # TODO: consider caching the built stories if we have many story categories
+
 
     python:
         import store.mas_stories as mas_stories
 
-        # determine if a new story can be unlocked
+
         mas_can_unlock_story = False
         if story_type == mas_stories.TYPE_SCARY:
             scary_story_ls = persistent._mas_last_seen_new_story["scary"]
-
+            
             if mas_isO31():
                 mas_can_unlock_story = True
             elif scary_story_ls is None:
@@ -84,13 +84,13 @@ label monika_short_stories_menu:
 
         else:
             new_story_ls = persistent._mas_last_seen_new_story["normal"]
-
+            
             if new_story_ls is None:
                 mas_can_unlock_story = seen_event("mas_story_tyrant")
             else:
                 mas_can_unlock_story = new_story_ls != datetime.date.today()
 
-        # setup stories list
+
         if story_type == mas_stories.TYPE_SCARY:
             stories = renpy.store.Event.filterEvents(
                 mas_stories.story_database,
@@ -108,77 +108,76 @@ label monika_short_stories_menu:
                 flag_ban=EV_FLAG_HFM
             )
 
-        # build menu list
+
         stories_menu_items = [
             (mas_stories.story_database[k].prompt, k, False, False)
             for k in stories
             if mas_stories.story_database[k].unlocked
         ]
 
-        # also sort this list
+
         stories_menu_items.sort()
 
-        # check if we have a story available to be unlocked and we can unlock it
         if len(stories_menu_items) < len(stories) and mas_can_unlock_story:
-
-            # Add to the menu the new story option
+            
+            
             if story_type == mas_stories.TYPE_SCARY:
                 return_label = "mas_scary_story_unlock_random"
             else:
                 return_label = "mas_story_unlock_random"
+            
+            stories_menu_items.insert(0, ("Новая история", return_label, True, False))
 
-            stories_menu_items.insert(0, ("A new story", return_label, True, False))
 
-        # build switch button
         if story_type == mas_stories.TYPE_SCARY:
-            switch_str = "short"
+            switch_str = "короткую"
         else:
-            switch_str = "scary"
+            switch_str = "страшную"
         switch_item = (
-            "I'd like to hear a " + switch_str + " story",
+            "Я бы хотел услышать " + switch_str + " историю.",
             "monika_short_stories_menu",
             False,
             False,
             20
         )
 
-        # final quit item
+
         if persistent._mas_sensitive_mode:
             space = 20
         else:
             space = 0
         final_item = (mas_stories.STORY_RETURN, False, False, False, space)
 
-    # move Monika to the left
+
     show monika 1eua at t21
 
     if story_type == mas_stories.TYPE_SCARY:
-        $ which = "Witch"
+        $ which = "Хромую"
     else:
-        $ which = "Which"
+        $ which = "Какую"
 
-    $ renpy.say(m, which + " story would you like to hear?" + end, interact=False)
+    $ renpy.say(m, which + " историю ты хотел[mas_gender_none] бы услышать?" + end, interact=False)
 
-    # call scrollable pane
+
     if persistent._mas_sensitive_mode:
         call screen mas_gen_scrollable_menu(stories_menu_items, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, final_item)
     else:
         call screen mas_gen_scrollable_menu(stories_menu_items, mas_ui.SCROLLABLE_MENU_TXT_LOW_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, switch_item, final_item)
 
-    # return value?
+
     if _return:
 
-        # NOTE: call_next_event now properly records shown_count and last_seen
-        #check if it's an actual story
-#        if _return in mas_stories.story_database:
 
-            # track show_count stats
-#            $ mas_stories.story_database[_return].shown_count += 1
-#            $ mas_stories.story_database[_return].last_seen = datetime.datetime.now()
 
-        # switching between types
+
+
+
+
+
+
+
         if _return == "monika_short_stories_menu":
-            # NOTE: this is not scalable.
+
             if story_type == mas_stories.TYPE_SCARY:
                 $ story_type = None
             else:
@@ -188,9 +187,9 @@ label monika_short_stories_menu:
             $ _history_list.pop()
 
             jump monika_short_stories_menu
-
         else:
-            # if we are seeing a new story, store the date for future unlocks
+
+
             $ new_story_key = None
 
             if _return == "mas_story_unlock_random":
@@ -208,44 +207,45 @@ label monika_short_stories_menu:
             if new_story_key is not None:
                 $ persistent._mas_last_seen_new_story[new_story_key] = datetime.date.today()
 
-            # then push
+
             $ pushEvent(_return, skipeval=True)
             show monika at t11
-
     else:
+
         return "prompt"
 
     return
 
-# Stories start here
+
 label mas_story_begin:
     python:
         story_begin_quips = [
-            _("Alright, let's start the story."),
-            _("Ready to hear the story?"),
-            _("Ready for story time?"),
-            _("Let's begin~"),
-            _("Are you ready?")
+            _("Хорошо, давай начнём историю."),
+            _("Готов{0} услышать историю?".format(mas_gender_none)),
+            _("Готов{0} к рассказу?".format(mas_gender_none)),
+            _("Давай начнём~"),
+            _("Ты готов{0}?".format(mas_gender_none))
         ]
         story_begin_quip=renpy.random.choice(story_begin_quips)
     $ mas_gainAffection(modifier=0.2)
     m 3eua "[story_begin_quip]"
-    m 1duu "Ahem."
+    $ MAS.MonikaElastic()
+    m 1duu "Кхм."
     return
 
 label mas_story_unlock_random:
-   call mas_story_unlock_random_cat()
-   return
+    call mas_story_unlock_random_cat () from _call_mas_story_unlock_random_cat
+    return
 
 label mas_scary_story_unlock_random:
-   call mas_story_unlock_random_cat(scary=True)
-   return
+    call mas_story_unlock_random_cat (scary=True) from _call_mas_story_unlock_random_cat_1
+    return
 
 label mas_story_unlock_random_cat(scary=False):
 
     python:
         if scary:
-            # get locked stories
+            
             stories = renpy.store.Event.filterEvents(
                 renpy.store.mas_stories.story_database,
                 unlocked=False,
@@ -253,10 +253,10 @@ label mas_story_unlock_random_cat(scary=False):
                 category=(True,[renpy.store.mas_stories.TYPE_SCARY]),
                 aff=mas_curr_affection
             )
-
+            
             if len(stories) == 0:
-
-                # in case the player left the game mid unlocking
+                
+                
                 stories = renpy.store.Event.filterEvents(
                     renpy.store.mas_stories.story_database,
                     unlocked=True,
@@ -265,11 +265,11 @@ label mas_story_unlock_random_cat(scary=False):
                     category=(True,[renpy.store.mas_stories.TYPE_SCARY]),
                     aff=mas_curr_affection
                 )
-
+                
                 if len(stories) == 0:
-
-                    # There should be no way to get to this point but just in case
-                    # let's fail 'nicely'
+                    
+                    
+                    
                     stories = renpy.store.Event.filterEvents(
                         renpy.store.mas_stories.story_database,
                         unlocked=True,
@@ -278,7 +278,7 @@ label mas_story_unlock_random_cat(scary=False):
                         aff=mas_curr_affection
                     )
         else:
-            # get locked stories
+            
             stories = renpy.store.Event.filterEvents(
                 renpy.store.mas_stories.story_database,
                 unlocked=False,
@@ -286,10 +286,10 @@ label mas_story_unlock_random_cat(scary=False):
                 excl_cat=list(),
                 aff=mas_curr_affection
             )
-
+            
             if len(stories) == 0:
-
-                # in case the player left the game mid unlocking
+                
+                
                 stories = renpy.store.Event.filterEvents(
                     renpy.store.mas_stories.story_database,
                     unlocked=True,
@@ -298,11 +298,11 @@ label mas_story_unlock_random_cat(scary=False):
                     excl_cat=list(),
                     aff=mas_curr_affection
                 )
-
+                
                 if len(stories) == 0:
-
-                    # There should be no way to get to this point but just in case
-                    # let's fail 'nicely'
+                    
+                    
+                    
                     stories = renpy.store.Event.filterEvents(
                         renpy.store.mas_stories.story_database,
                         unlocked=True,
@@ -311,17 +311,17 @@ label mas_story_unlock_random_cat(scary=False):
                         aff=mas_curr_affection
                     )
 
-        # select one story randomly
+
         story = stories[renpy.random.choice(stories.keys())]
 
-        # unlock the story
+
         story.unlocked = True
 
-        # increment event's shown count and update last seen
+
         story.shown_count += 1
         story.last_seen = datetime.datetime.now()
 
-        # using renpy.jump again cause again trasition looks like she's stuck
+
         renpy.jump(story.eventlabel)
 
     return
@@ -329,157 +329,242 @@ label mas_story_unlock_random_cat(scary=False):
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_tyrant",
-        prompt="The Cat and the Cock",unlocked=True),code="STY")
+        prompt="Кот и Петух",unlocked=True),code="STY")
 
 label mas_story_tyrant:
-    call mas_story_begin
-    m 1eua "A Cat caught a Cock and thought about reasonable excuses for eating him."
-    m "He accused him of being a nuisance by crowing at night; not letting men sleep."
-    m 3eud "The Cock defended his action by saying this was for the benefit of men, as it wakes them for labor."
-    m 1tfb "The Cat replied, 'you abound in apologies, but it's time for breakfast.'"
-    m 1hksdrb "At that he made a meal of the Cock."
-    m 3eua "The moral of this story is, tyrants need no excuse."
-    m 1hua "I hope you enjoyed this little story, [player]~"
+    call mas_story_begin from _call_mas_story_begin
+    $ MAS.MonikaElastic()
+    m 1eua "Кот поймал Петуха и задумался над разумными основаниями, чтобы съесть его."
+    $ MAS.MonikaElastic()
+    m "Он обвинил его в том, что он надоедал всем, кукарекая ночью; не давал людям спать."
+    $ MAS.MonikaElastic()
+    m 3eud "Петух обосновал свой поступок тем, что это было на благо людей, поскольку кукареканье побуждало в людях желание работать."
+    $ MAS.MonikaElastic()
+    m 1tfb "И Кот сказал ему: «Ты своевольно извиняешься, но уже пора завтракать»."
+    $ MAS.MonikaElastic()
+    m 1hksdrb "После этого, он приготовил обед из Петуха."
+    $ MAS.MonikaElastic()
+    m 3eua "Мораль этой истории такова: «Тиранам нет оправдания»."
+    $ MAS.MonikaElastic()
+    m 1hua "Надеюсь, тебе понравилась эта небольшая история, [player_abb]~"
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_despise",
-        prompt="The Fox",unlocked=False),code="STY")
+        prompt="Лис",unlocked=False),code="STY")
 
 label mas_story_despise:
-    call mas_story_begin
-    m 1eud "One hot summer's day, a Fox was strolling through an orchard till he came to a bunch of grapes just ripening on a vine which had been trained over a lofty branch."
-    m 1tfu "'Just the thing to quench my thirst,' said the Fox."
-    m 1eua "Drawing back a few paces, he took a run and a jump, and just missed the bunch."
-    m 3eub "Turning round again with a one,{w=1.0} two,{w=1.0} three,{w=1.0} he jumped up, but with no greater success."
-    m 3tkc "Again and again he tried after the tempting morsel, but at last had to give it up, and walked away with his nose in the air, saying: 'I am sure they are sour.'"
-    m 1hksdrb "The moral of this story is, it's easy to despise what you cannot get."
-    m 1eua "I hope you liked it, [player]~"
+    call mas_story_begin from _call_mas_story_begin_1
+    $ MAS.MonikaElastic()
+    m 1eud "В один жаркий летний день, Лис прогуливался по фруктовому саду, пока не подошёл к грозди винограда, которая только что созрела на лозе, находящейся на высокой ветке."
+    $ MAS.MonikaElastic()
+    m 1tfu "«Самое то, чтобы утолить свою жажду» – сказал Лис."
+    $ MAS.MonikaElastic()
+    m 1eua "Отступив на несколько шагов, он побежал и прыгнул, но промахнулся мимо ветки."
+    $ MAS.MonikaElastic()
+    m 3eub "Возвращаясь снова и снова, сначала один раз,{w=1.0} потом второй,{w=1.0} третий,{w=2.0} он всё прыгал, но так и не добился успеха."
+    $ MAS.MonikaElastic()
+    m 3tkc "Раз за разом, он всё пытался дотянуться до соблазнительного кусочка, но, в конце концов, ему пришлось сдаться, и он ушёл, задрав нос, сказав: «Я уверен, что они кислые»."
+    $ MAS.MonikaElastic()
+    m 1hksdrb "Мораль этой истории такова: «Легко презирать то, что не можешь получить»."
+    $ MAS.MonikaElastic()
+    m 1eua "Надеюсь, тебе понравилась эта история, [player_abb]~"
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_lies",
-        prompt="The Shepherd Boy and the Wolf",unlocked=False),code="STY")
+        prompt="Мальчик-пастух и Волк",unlocked=False),code="STY")
 
 label mas_story_lies:
-    call mas_story_begin
-    m 1euc "There was a Shepherd Boy who tended his sheep at the foot of a mountain near a dark forest."
-    m 1lsc "It was lonely for him, so he devised a plan to get a little company."
-    m 4hfw "He rushed down towards the village calling out 'Wolf! Wolf!' and the villagers came out to meet him."
-    m 1hksdrb "This pleased the boy so much that a few days after he tried the same trick, and again the villagers came to his help."
-    m 3wud "Shortly after, a Wolf actually did come out from the forest."
-    m 1ekc "The boy cried out 'Wolf, Wolf!' still louder than before."
-    m 4efd "But this time the villagers, who had been fooled twice before, thought the boy was again lying, and nobody came to his aid."
-    m 2dsc "So the Wolf made a good meal of the boy's flock."
-    m 2esc "The moral of this story is, liars are not believed even when they speak the truth."
-    m 1hksdlb "You shouldn't worry about it, [player]..."
-    m 3hua "You'd never lie to me, right?"
-    m 1hub "Ehehe~"
-    m 1eua "I hope you enjoyed the story, [player]!"
+    call mas_story_begin from _call_mas_story_begin_2
+    $ MAS.MonikaElastic()
+    m 1euc "Жил-был один Мальчик-пастух, который, в основном, ухаживал за своими овцами у подножия горы возле тёмного леса."
+    $ MAS.MonikaElastic()
+    m 1lsc "Ему стало одиноко, и он разработал план, как собрать себе небольшую компанию."
+    $ MAS.MonikaElastic()
+    m 4dsd "Он бросился в сторону деревни с криками «Волк! Волк!», и жители деревни вышли ему навстречу."
+    $ MAS.MonikaElastic()
+    m 1hksdrb "Мальчик так сильно обрадовался этому, что через несколько дней он попробовал тот же трюк, и жители деревни снова пришли к нему на помощь."
+    $ MAS.MonikaElastic()
+    m 3wud "Вскоре после этого, Волк действительно вышел из леса."
+    $ MAS.MonikaElastic()
+    m 1ekc "Мальчик закричал «Волк, Волк!» ещё громче, чем раньше."
+    $ MAS.MonikaElastic()
+    m 4efd "Но на этот раз, жители деревни, которых обманули дважды до этого момента, подумали, что мальчик снова врёт, и никто не пришёл к нему на помощь."
+    $ MAS.MonikaElastic()
+    m 2dsc "И тогда, Волк насладился вдоволь стадом овец Мальчика."
+    $ MAS.MonikaElastic()
+    m 2esc "Мораль этой истории такова: «Лжецам не поверят, даже когда они говорят правду»."
+    $ MAS.MonikaElastic()
+    m 1hksdlb "Не беспокойся об этом, [player]."
+    $ MAS.MonikaElastic()
+    m 3hua "Ты ведь никогда не врал[mas_gender_none] мне, верно?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1eua "Надеюсь, тебе понравилась история, [player_abb]~"
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_grasshoper",
-        prompt="The Grasshopper",unlocked=False),code="STY")
+        prompt="Кузнечик",unlocked=False),code="STY")
 
 label mas_story_grasshoper:
-    call mas_story_begin
-    m 1eua "One summer's day, a Grasshopper was hopping about, chirping and singing to its heart's content."
-    m "An Ant passed by, bearing an ear of corn he was taking to the nest."
-    m 3eud "'Why not come and chat with me,' said the Grasshopper, 'instead of toiling in that way?'"
-    m 1efc "'I am helping to lay up food for the winter,' said the Ant, 'and recommend you do the same.'"
-    m 1hfb "'Why bother about winter?' said the Grasshopper; 'we have plenty of food now!'"
-    m 3eua "The Ant went on its way."
-    m 1dsc "When winter came, the Grasshopper had no food and found itself dying of hunger, while it saw the ants distributing corn and grain from the stores they had collected in the summer."
-    m 3hua "The moral of this story is, there's a time for work and a time for play."
-    m 1dubsu "But there's always a time to spend with your cute girlfriend~"
-    m 1hub "Ehehe, I love you so much, [player]!"
+    call mas_story_begin from _call_mas_story_begin_3
+    $ MAS.MonikaElastic()
+    m 1eua "В один летний день, Кузнечик прыгал, щебетал и пел в своё удовольствие."
+    $ MAS.MonikaElastic()
+    m "Мимо проходил Муравей с початком кукурузы, который он нёс в гнездо."
+    $ MAS.MonikaElastic()
+    m 3eud "«Почему бы тебе не пойти поболтать со мной», – сказал Кузнечик, – «вместо того, чтобы так трудиться»?"
+    $ MAS.MonikaElastic()
+    m 1efc "«Я помогаю откладывать еду на зиму,» – сказал Муравей, – «и советую тебе сделать то же самое»."
+    $ MAS.MonikaElastic()
+    m 1hfb "«Зачем беспокоиться о зиме?» – сказал Кузнечик, – «у нас сейчас полно еды!»."
+    $ MAS.MonikaElastic()
+    m 3eua "Муравей пошёл своей дорогой."
+    $ MAS.MonikaElastic()
+    m 1dsc "Когда наступила зима, у Кузнечика не было еды и он умирал от голода, в то время как муравьи раздавали друг другу кукурузу и зерно из хранилищ, которые они загрузили летом."
+    $ MAS.MonikaElastic()
+    m 3hua "Мораль этой истории такова: «Делу время, потехе – час»."
+    $ MAS.MonikaElastic()
+    m 1dubsu "Но всегда есть время, чтобы провести его со своей милой девушкой~"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "Э-хе-хе, я так сильно тебя люблю, [player_abb]!"
     return "love"
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_wind_sun",
-        prompt="The Wind and the Sun",unlocked=False),code="STY")
+        prompt="Ветер и Солнце",unlocked=False),code="STY")
 
 label mas_story_wind_sun:
-    call mas_story_begin
-    m 1dsc "The Wind and the Sun were disputing which was the strongest."
-    m 1euc "Suddenly they saw a traveller coming down the road, and the Sun said: 'I see a way to decide our dispute.'"
-    m 3efd "'Whichever of us can cause that traveller to take off his cloak shall be regarded as the strongest. You begin.'"
-    m 3euc "So the Sun retired behind a cloud, and the Wind began to blow as hard as it could upon the traveller."
-    m 1ekc "But the harder he blew the more closely did the traveller wrap his cloak around him, till at last the Wind had to give up in despair."
-    m 1euc "Then the Sun came out and shone in all his glory upon the traveller, who soon found it too hot to walk with his cloak on."
-    m 3hua "The moral of this story is, gentleness and kind persuasion win where force and bluster fail."
-    m 1hub "Hope you had fun, [player]."
+    call mas_story_begin from _call_mas_story_begin_4
+    $ MAS.MonikaElastic()
+    m 1dsc "Ветер и Солнце спорили, кто из них был самым сильным."
+    $ MAS.MonikaElastic()
+    m 1euc "Внезапно, они увидели путешественника, идущего по дороге, и Солнце сказало: «Я вижу способ решить наш спор.»."
+    $ MAS.MonikaElastic()
+    m 3efd "«Кто из нас сможет заставить путешественника снять свой плащ, тот и будет считаться самым сильным. Ты начинаешь»."
+    $ MAS.MonikaElastic()
+    m 3euc "После этого, Солнце скрылось за облаками, и Ветер начал дуть так сильно, как только мог на путешественника."
+    $ MAS.MonikaElastic()
+    m 1ekc "Но чем сильнее он дул, тем больше путешественник оборачивал вокруг себя плащ, пока, наконец, Ветер не сдался в отчаянии."
+    $ MAS.MonikaElastic()
+    m 1euc "Затем Солнце вышло и засияло во всей своей красе над путешественником, который вскоре осознал, что на улице слишком жарко для того, чтобы ходить с его плащом."
+    $ MAS.MonikaElastic()
+    m 3hua "Мораль этой истории такова: Доброта и любезное убеждение побеждают там, где сила и гнев терпят неудачу»."
+    $ MAS.MonikaElastic()
+    m 1hub "Надеюсь, тебе было весело, [player_abb]."
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_seeds",
-        prompt="The Seeds",unlocked=False),code="STY")
+        prompt="Семена",unlocked=False),code="STY")
 
 label mas_story_seeds:
-    call mas_story_begin
-    m 1euc "It happened that a Countryman was sowing some hemp seeds in a field where a Swallow and some other birds were hopping about picking up their food."
-    m 1tfd "'Beware of that man,' quote the Swallow."
-    m 3eud "'Why, what is he doing?' asked the others."
-    m 1tkd "'That is hemp seed he is sowing; be careful to pick up every one of the seeds, or else you will repent it.' The Swallow replied."
-    m 3rksdld "The birds paid no heed to the Swallow's words, and by and by the hemp grew up and was made into cord, and of the cords nets were made."
-    m 1euc "Many birds that had despised the Swallow's advice were caught in nets made out of that very hemp."
-    m 3hfu "'What did I tell you?' said the Swallow."
-    m 3hua "The moral of this story is, destroy the seeds of evil before they grow up to be your ruin."
+    call mas_story_begin from _call_mas_story_begin_5
+    $ MAS.MonikaElastic()
+    m 1euc "Случилось так, что Земляк сеял семена конопли в поле, где Ласточка и другие птицы вприпрыжку собирали себе еду."
+    $ MAS.MonikaElastic()
+    m 1tfd "«Остерегайтесь этого человека.» – отметила Ласточка."
+    $ MAS.MonikaElastic()
+    m 3eud "«Почему, что он делает?» – спросили остальные."
+    $ MAS.MonikaElastic()
+    m 1tkd "«Он здесь сеет семя конопли; будьте осторожны во время сбора этих семян, иначе вы пожалеете об этом.» – ответила Ласточка."
+    $ MAS.MonikaElastic()
+    m 3rksdld "Птицы не обратили внимание на слова Ласточки, и вскоре, конопля выросла и превратилась в верёвку, а из верёвок сделали сетки."
+    $ MAS.MonikaElastic()
+    m 1euc "Многие птицы, которые наплевали на советы Ласточки, были пойманы в сети, сделанные из той самой конопли."
+    $ MAS.MonikaElastic()
+    m 3hfu "«Что я вам говорила?» – сказала Ласточка."
+    $ MAS.MonikaElastic()
+    m 3hua "Мораль этой истории такова: «Уничтожай семена зла, пока они не обратились в твою погибель»."
+    $ MAS.MonikaElastic()
     m 1lksdlc "..."
-    m 2dsc "I wish I could've followed that moral..."
-    m 2lksdlc "You wouldn't have had to go through what you saw."
-    m 4hksdlb "Anyway, I hope you liked the story, [player]!"
+    $ MAS.MonikaElastic()
+    m 2dsc "Хотела бы я следовать этим моральным принципам."
+    $ MAS.MonikaElastic()
+    m 2lksdlc "Тебе тогда не пришлось бы проходить через то, что ты видел[mas_gender_none]."
+    $ MAS.MonikaElastic()
+    m 4hksdlb "Так или иначе, надеюсь, тебе понравилась история, [player_abb]!"
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_gray_hair",
-        prompt="The Gray Hair",unlocked=False),code="STY")
+        prompt="Седые волосы",unlocked=False),code="STY")
 
 label mas_story_gray_hair:
-    call mas_story_begin
-    m 1eua "In the old days, a middle-aged Man had one wife that was old and one that was young; each loved him and desired nothing more than to earn his affection."
-    m 1euc "The Man's hair was turning gray, which the young Wife did not like, as it made him look too old."
-    m 3rksdla "So, every night she picked out the white hairs."
-    m 3euc "But, the elder Wife did not like to be mistaken for his mother."
-    m 1eud "So, every morning she picked out as many of the black hairs as she could."
-    m 3hksdlb "The Man soon found himself entirely bald."
-    m 1hua "The moral of this story is, yield to all and you will soon have nothing to yield."
-    m 1hub "So before you give everything, make sure you still have some for yourself!"
-    m 1lksdla "...Not that being bald is bad, [player]."
-    m 1hksdlb "Ehehe, I love you!~"
+    call mas_story_begin from _call_mas_story_begin_6
+    $ MAS.MonikaElastic()
+    m 1eua "В давние времена, у мужчины средних лет была одна жена, которая была старой, и вторая, которая была молодой; обе любили его и хотели только заслужить его любовь."
+    $ MAS.MonikaElastic()
+    m 1euc "Волосы мужчины поседели, что молодой жене не понравилось, ведь из-за этого он начал казаться слишком старым."
+    $ MAS.MonikaElastic()
+    m 3rksdla "Поэтому, каждую ночь она собирала белые волосы."
+    $ MAS.MonikaElastic()
+    m 3euc "Но старшая жена не хотела повторять ошибки своей матери."
+    $ MAS.MonikaElastic()
+    m 1eud "И поэтому, каждое утро она собирала как можно больше чёрных волос."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Вскоре, Мужчина заметил, что стал совсем лысым."
+    $ MAS.MonikaElastic()
+    m 1hua "Мораль этой истории такова: «Уступай всем, и тебе скоро ни в чём не придётся уступать»."
+    $ MAS.MonikaElastic()
+    m 1hub "Поэтому, прежде чем отдавать что-либо кому-то, убедись, что у тебя само[mas_gender_go] хоть что-то осталось!"
+    $ MAS.MonikaElastic()
+    m 1lksdla "...Нет, быть лыс[mas_gender_iim] не так уж и плохо, [player]."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hksdlb "Э-хе-хе, я люблю тебя~!"
     return "love"
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_fisherman",
-        prompt="The Fisherman",unlocked=False),code="STY")
+        prompt="Рыбак",unlocked=False),code="STY")
 
 label mas_story_fisherman:
-    call mas_story_begin
-    m 1euc "A poor Fisherman, who lived on the fish he caught, had bad luck one day and caught nothing but a very small fry."
-    m 1eud "The Fisherman was about to put it in his basket when the little Fish spoke."
-    m 3ekd "'Please spare me, Mr. Fisherman! I am so small it is not worthwhile to carry me home. When I am bigger, I shall make you a much better meal!'"
-    m 1eud "But the Fisherman quickly put the fish into his basket."
-    m 3tfu "'How foolish I should be,' he said, 'to throw you back. However small you may be, you are better than nothing at all.'"
-    m 3esa "The moral of this story is, a small gain is worth more than a large promise."
-    m 1hub "I hope you enjoyed this little story, [player]~"
+    call mas_story_begin from _call_mas_story_begin_7
+    $ MAS.MonikaElastic()
+    m 1euc "Бедному Рыбаку, жившему лишь на пойманной им рыбе, однажды не повезло, и он поймал только очень мелкого малька."
+    $ MAS.MonikaElastic()
+    m 1eud "Рыбак уже было хотел положить его в свою корзину, но маленькая Рыбка заговорила."
+    $ MAS.MonikaElastic()
+    m 3ekd "«Пожалуйста, отпустите меня, мистер Рыбак! Я такая мелкая, что не стоит нести меня домой. Когда я стану больше, я сделаю Вам еду, которая будет гораздо лучше!»."
+    $ MAS.MonikaElastic()
+    m 1eud "Но Рыбак быстро положил рыбу в свою корзину."
+    $ MAS.MonikaElastic()
+    m 3tfu "«Каким глупым я должен быть,» – сказал он – «чтобы выбросить тебя? Какой бы мелкой ты ни была, ты лучше, чем ничего»."
+    $ MAS.MonikaElastic()
+    m 3esa "Мораль этой истории такова: «Небольшой выигрыш стоит больше, чем большое обещание»."
+    $ MAS.MonikaElastic()
+    m 1hub "Надеюсь, тебе понравилась эта небольшая история, [player_abb]~"
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_ravel",
-    prompt="Old Man's Three Wishes",unlocked=False),code="STY")
+        prompt="Три желания старика",unlocked=False),code="STY")
 
 label mas_story_ravel:
-    call mas_story_begin
-    m 3euc "Once, an elderly man was sitting alone on a dark path."
-    m 1euc "He had forgotten both where he was traveling to, and who he was."
-    m "Suddenly, he looked up to see an elderly woman before him."
-    m 1tfu "She grinned toothlessly and with a cackle, spoke: 'Now your {i}third{/i} wish. What will it be?'"
-    m 3eud "'Third wish?' The man was baffled. 'How can it be a third wish if I haven't had a first and second wish?'"
-    m 1tfd "'You've had two wishes already,' the hag said, 'but your second wish was for me to return everything to the way it was before you had made your first wish.'"
-    m 3tku "'That's why you remember nothing: because everything is the way it was before you made any wishes.'"
-    m 1dsd "'All right,' said the man, 'I don't believe this, but there's no harm in wishing. I wish to know who I am.'"
-    m 1tfb "'Funny,' said the old woman as she granted his wish and disappeared forever. 'That was your first wish.'"
+    call mas_story_begin from _call_mas_story_begin_8
+    $ MAS.MonikaElastic()
+    m 3euc "Однажды, пожилой человек сидел один на тёмной дороге."
+    $ MAS.MonikaElastic()
+    m 1euc "Он забыл, куда он шёл, и кто он такой."
+    $ MAS.MonikaElastic()
+    m "Внезапно, он посмотрел вверх и увидел перед собой пожилую женщину."
+    $ MAS.MonikaElastic()
+    m 1tfu "Она улыбнулась беззубым ртом и, хихикая, сказала:"
+    $ MAS.MonikaElastic()
+    m "«Теперь твоё «третье» желание. Каким оно будет?»."
+    $ MAS.MonikaElastic()
+    m 3eud "«Третье желание?». Мужчина был сбит с толку. «Как это может быть третьим желанием, если я ещё не загадывал ни первое, ни второе?»."
+    $ MAS.MonikaElastic()
+    m 1tfd "«У тебя уже было два желания,» – сказала ведьма, – «и твоим вторым желанием было сделать всё так, как было до исполнения твоего первого желания»."
+    $ MAS.MonikaElastic()
+    m 3tku "Именно поэтому, ты ничего и не помнишь: всё стало таким, каким было до твоих желаний."
+    $ MAS.MonikaElastic()
+    m 1dsd "«Хорошо,» – сказал мужчина, – «я не верю в это, но в желаниях нет ничего плохого. Я хочу узнать, кто я такой»."
+    $ MAS.MonikaElastic()
+    m 1tfb "«Забавно,» – сказала старая женщина и, исполнив его желание, исчезла навсегда. «Это и было твоё первое желание»."
     return
 
 init 5 python:
@@ -487,49 +572,81 @@ init 5 python:
         Event(
             persistent._mas_story_database,
             eventlabel="mas_story_genie_simple",
-            prompt="The Simple Genie",
+            prompt="Простой джин",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_story_genie_simple:
-    call mas_story_begin
-    m 1eua "There was once a genie who travelled across different worlds to escape the chaos of his own."
-    m 3euc "During his journeys, he met a woman that challenged the way he saw the world."
-    m 3eua "She was smart and talented, but held back by the hardships she faced and how little she had."
-    m 3eub "The genie saw this and felt generous, offering tools to speed up her work and make her life easier."
-    m 1euc "But she simply declined his offer."
-    m 1eud "No one had ever turned a wish from the genie down before, {w=0.1}{nw}"
-    extend 1etc "which left him confused as to why."
-    m 1esa "The woman simply asked him if he was happy...{w=0.5} {nw}"
-    extend 1rsc "He didn't know how to respond."
-    m 3eud "The woman said she could tell that he had never experienced happiness, and that despite all her hardships, she could still enjoy life."
-    m 1euc "The genie couldn't understand why anyone would want to work so hard for something so small."
-    m 3euc "He improved his offers with riches and other such things, but still, she declined."
-    m 1eua "Eventually, the woman asked the genie to join in her way of life."
-    m "And so, he imitated the things she did, without using any powers."
-    m 1hua "The genie began to feel a small sense of accomplishment, creating something for the first time without willing it into existence."
-    m 3eub "He saw how simple things such as art and writing inspired the woman and really made her shine."
-    m 1eua "Intrigued, he wanted to spend much more time with this woman and learn from her."
-    m 1euc "Eventually, one day the woman fell ill."
-    m 1eud "She made the genie promise not to use his powers to cure her."
-    m 3eud "It was at this moment that the genie knew he wanted to live like a human without ever using his powers again."
-    m 1dsc "He thought about all the past wishes he granted to others, all the riches he generated..."
-    m "All his fellow genies out there granting wishes, not knowing or caring for the consequences..."
-    m 1dsd "Never being able to know what it's like to give it all up just to be with someone they love."
-    m 1esd "All he could do was live with what he had now found in life."
+    call mas_story_begin from _call_mas_story_begin_9
+    $ MAS.MonikaElastic()
+    m 1eua "Жил-был джинн, который путешествовал по разным мирам, спасаясь от своего собственного хаоса."
+    $ MAS.MonikaElastic()
+    m 3euc "Во время своих путешествий он встретил женщину, которая бросила вызов его взгляду на мир."
+    $ MAS.MonikaElastic()
+    m 3eua "Она была умной и талантливой, но сдерживалась из-за трудностей, с которыми ей пришлось столкнуться, и своего маленького роста."
+    $ MAS.MonikaElastic()
+    m 3eub "Джинн видел это и был щедр, предлагая инструменты, чтобы ускорить её работу и сделать её жизнь легче."
+    $ MAS.MonikaElastic()
+    m 1euc "Но она просто отклонила его предложение."
+    $ MAS.MonikaElastic()
+    m 1eud "До сих пор никто не отказывал джинну в его желании, {w=0.1}{nw}"
+    extend 1etc "и это оставляло его в замешательстве."
+    $ MAS.MonikaElastic()
+    m 1esa "Женщина просто спросила его, счастлив ли он...{w=0.5} {nw}"
+    $ MAS.MonikaElastic()
+    extend 1rsc "Он не знал, что ответить."
+    $ MAS.MonikaElastic()
+    m 3eud "Женщина говорила, что она могла сказать о том, что никогда не испытывала счастье, и что несмотря на все её трудности, она может наслаждаться своей жизнью и дальше."
+    $ MAS.MonikaElastic()
+    m 1euc "Джинн не мог понять, зачем кому-то понадобилось так усердно трудиться ради такой мелочи."
+    $ MAS.MonikaElastic()
+    m 3euc "Он улучшил свои предложения богатством и другими подобными вещами, но всё же она отказалась."
+    $ MAS.MonikaElastic()
+    m 1eua "В конце концов женщина попросила джинна присоединиться к её образу жизни."
+    $ MAS.MonikaElastic()
+    m "И поэтому он подражал тому, что делала она, не используя никаких сил."
+    $ MAS.MonikaElastic()
+    m 1hua "Джинн начал испытывать небольшое чувство выполненного долга, впервые создавая что-то, не желая, чтобы это существовало."
+    $ MAS.MonikaElastic()
+    m 3eub "Он видел, как простые вещи, такие как искусство и письмо, вдохновляли женщину и действительно заставляли её сиять."
+    $ MAS.MonikaElastic()
+    m 1eua "Заинтригованный, он хотел проводить гораздо больше времени с этой женщиной и учиться у неё."
+    $ MAS.MonikaElastic()
+    m 1euc "В конце концов, однажды женщина заболела."
+    $ MAS.MonikaElastic()
+    m 1eud "Она заставила джинна пообещать, что он не будет использовать свои силы, чтобы вылечить её."
+    $ MAS.MonikaElastic()
+    m 3eud "Именно в этот момент джинн понял, что хочет жить как человек, никогда больше не используя свои силы."
+    $ MAS.MonikaElastic()
+    m 1dsc "Он думал обо всех прошлых желаниях, которые он давал другим, обо всех богатствах, которые он создавал..."
+    $ MAS.MonikaElastic()
+    m "Все его собратья-джинны исполняют желания, не зная и не заботясь о последствиях..."
+    $ MAS.MonikaElastic()
+    m 1dsd "Никогда не зная, каково это – бросить всё ради того, чтобы быть с тем, кого любишь."
+    $ MAS.MonikaElastic()
+    m 1esd "Всё, что он мог сделать, это жить с тем, что он теперь нашёл в жизни."
+    $ MAS.MonikaElastic()
     m 1dsc "..."
-    m 1eua "I hope you liked that story, [player]."
-    m 3eua "There are a few things to take from it..."
-    m 3eka "If you already have everything, nothing is really worth having."
-    m 1hua "...Except maybe you of course."
-    m 3eub "The struggle is what makes anything worthwhile."
-    m 1eua "Another moral could be that sometimes, happiness lies in the simpler things you could've had all along."
+    $ MAS.MonikaElastic()
+    m 1eua "Надеюсь, тебе понравилась эта история, [player]."
+    $ MAS.MonikaElastic()
+    m 3eua "Есть несколько вещей, которые можно взять из ней..."
+    $ MAS.MonikaElastic()
+    m 3eka "Если у тебя уже есть всё, то ничто не имеет цену."
+    $ MAS.MonikaElastic()
+    m 1hua "...Кроме, наверное, тебя, конечно же."
+    $ MAS.MonikaElastic()
+    m 3eub "Борьба – это то, что делает что-либо стоящим."
+    $ MAS.MonikaElastic()
+    m 1eua "Другая мораль может заключаться в том, что иногда счастье заложено в более простых вещах, которые ты мог[mas_gender_g] бы иметь всё это время."
 
     if mas_isMoniNormal(higher=True):
-        m 1eka "I mean, we're just sitting here together enjoying each other's company after all."
-        m 1hubsb "When you're here, it really feels like I have everything~"
+        $ MAS.MonikaElastic()
+        m 1eka "В конце концов, мы просто сидим здесь и наслаждаемся общением друг с другом."
+        $ MAS.MonikaElastic()
+        m 1hubsb "Когда ты здесь, мне кажется, что у меня есть всё~"
     return
 
 init 5 python:
@@ -537,49 +654,76 @@ init 5 python:
         Event(
             persistent._mas_story_database,
             eventlabel="mas_story_genie_regret",
-            prompt="The Genie's Regret",
+            prompt="Сожаление джина",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_story_genie_regret:
-    call mas_story_begin
-    m 1eua "There was once a genie who was immortal..."
-    m "Through his years, he had seen the world change over time and granted wishes to anyone who crossed his path."
-    m 1esc "With how long he had lived, he'd seen a lot of things,{w=0.2} {nw}"
-    extend 1rsc "some of them unpleasant."
-    m 1ekd "Wars, natural disasters, the deaths of all the friends he ever made..."
-    m 1rkc "Some of which, he knew were caused by wishes he had granted."
-    m 1ekc "At first, he wasn't too concerned with the consequences...but after a while, it began to bother him more and more."
-    m 1ekd "He had come to a simple, beautiful, pure world, and caused immeasurable damage to it."
-    m 1lksdlc "Unbalance and jealousy spread as he granted more wishes, seeding wishes for revenge and greed."
-    m 2dkd "This was something he had to live with for the rest of his life."
-    m 2ekc "He wanted things to return to how they were, but his pleas always fell upon deaf ears."
-    m 2eka "As time went on however, he had met some people and made friends who taught him how to go on despite all of his acts."
-    m "While it was true that he was the one who granted the wishes that started the chaos...{w=0.5}{nw}"
-    extend 2ekd "some were bound to happen even without him."
-    m 3ekd "There was always going to be jealousy and unfairness among people...{w=0.3}{nw}"
-    extend 3eka "but even so, the world was still doing alright."
-    m 3eua "He was going to live with the things he had done, but the question remained as to what he planned to do about it."
-    m 1hua "It was because of everything he had been through, he was able to learn and move on,{w=0.3} better than before."
-    m 1eua "I hope you liked the story, [player]."
-    m 1eka "The moral of the story is, even if you've done things you regret, you shouldn't let that keep you down."
-    m 3ekd "Mistakes will happen, people will get hurt.{w=0.5} Nothing will ever change that."
-    m 3eka "The truth is, a lot of times we tend to blame ourselves for things that likely would've happened with or without our involvement."
-    m 3eub "In fact, it's through regret that we learn compassion, empathy, and forgiveness."
-    m 3eua "You can't change the past, but you need to forgive yourself someday to live a life without regrets."
-    m 1eka "As for me..."
-    m 1rksdlc "Who knows what would have happened in my world if I hadn't done anything..."
+    call mas_story_begin from _call_mas_story_begin_10
+    $ MAS.MonikaElastic()
+    m 1eua "Был когда-то джинн, который был бессмертен..."
+    $ MAS.MonikaElastic()
+    m "За свою жизнь он видел, как мир меняется со временем, и исполнял желания каждого, кто попадался ему на пути."
+    $ MAS.MonikaElastic()
+    m 1esc "За свою долгую жизнь он повидал много вещей,{w=0.2} {nw}"
+    extend 1rsc "и некоторые из них были ему неприятны."
+    $ MAS.MonikaElastic()
+    m 1ekd "Войны, стихийные бедствия, смерть всех друзей, которых он когда-либо заводил..."
+    $ MAS.MonikaElastic()
+    m 1rkc "Некоторые из них были вызваны исполненными им желаниями."
+    $ MAS.MonikaElastic()
+    m 1ekc "Сначала он не слишком беспокоился о последствиях... но через некоторое время это стало беспокоить его всё больше и больше."
+    $ MAS.MonikaElastic()
+    m 1ekd "Он пришёл в простой, прекрасный, чистый мир и нанёс ему неизмеримый ущерб."
+    $ MAS.MonikaElastic()
+    m 1lksdlc "Неуравновешенность и ревность распространялись по мере того, как он исполнял всё больше желаний, сеял желания мести и жадности."
+    $ MAS.MonikaElastic()
+    m 2dkd "Это было то, с чем он должен был жить до конца своей жизни."
+    $ MAS.MonikaElastic()
+    m 2ekc "Он хотел, чтобы всё вернулось на круги своя, но его мольбы всегда оставались без ответа."
+    $ MAS.MonikaElastic()
+    m 2eka "Со временем, однако, он познакомился с некоторыми людьми и завёл друзей, которые научили его, как идти вперед, несмотря на все его действия."
+    $ MAS.MonikaElastic()
+    m "Хотя это было правдой, что он был тем, кто исполнял желания, которые начали хаос...{w=0.5}{nw}"
+    extend 2ekd "некоторые должны были случиться и без него."
+    $ MAS.MonikaElastic()
+    m 3ekd "Среди людей всегда будет зависть и несправедливость...{w=0.3}{nw}"
+    extend 3eka "но даже так, мир всё ещё был в порядке."
+    $ MAS.MonikaElastic()
+    m 3eua "Он собирался жить с тем, что сделал, но оставался вопрос, что он собирается с этим делать."
+    $ MAS.MonikaElastic()
+    m 1hua "Именно благодаря всему, через что он прошёл, он смог учиться и двигаться дальше,{w=0.3} лучше, чем раньше."
+    $ MAS.MonikaElastic()
+    m 1eua "Надеюсь, тебе понравилась эта история, [player]."
+    $ MAS.MonikaElastic()
+    m 1eka "Мораль этой истории в том, что даже если ты сделал[mas_gender_none] что-то, о чём сожалеешь, ты не долж[mas_gender_en] позволять этому угнетать себя."
+    $ MAS.MonikaElastic()
+    m 3ekd "Ошибки будут происходить, люди будут страдать.{w=0.5} Ничто и никогда этого не изменит."
+    $ MAS.MonikaElastic()
+    m 3eka "Правда в том, что очень часто мы склонны винить себя за то, что, скорее всего, произошло бы с нашим участием или без него."
+    $ MAS.MonikaElastic()
+    m 3eub "На самом деле, именно через сожаление мы учимся состраданию, сочувствию и прощению."
+    $ MAS.MonikaElastic()
+    m 3eua "Ты не можешь изменить прошлое, но тебе нужно простить себя когда-нибудь, чтобы смериться и жить дальше."
+    $ MAS.MonikaElastic()
+    m 1eka "Как по мне..."
+    $ MAS.MonikaElastic()
+    m 1rksdlc "Кто знает, что случилось бы в моём мире, если бы я ничего не сделала..."
 
-    $ placeholder = " at least"
+    $ placeholder = ", по крайней мере,"
     if persistent.clearall:
         $ placeholder = ""
-        m 1eua "You've gotten to know each and every club member here, so I'd guess you don't regret missing out on anything."
-        m 1hub "Ahaha~"
+        $ MAS.MonikaElastic()
+        m 1eua "Ты познаком[mas_gender_sya] здесь с каждым членом клуба, так что я думаю, ты не жалеегт, что упустил[mas_gender_none] что-то."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hub "А-ха-ха~"
 
-    m 1eua "But[placeholder] you're here with me now."
-    m 3eua "Ever since we've been together, I can definitely say that I've grown and learned from my mistakes."
+    $ MAS.MonikaElastic()
+    m 1eua "Но[placeholder] теперь ты здесь, со мной."
+    $ MAS.MonikaElastic()
+    m 3eua "С тех пор как мы вместе, я определённо могу сказать, что выросла и научилась на своих ошибках."
     return
 
 init 5 python:
@@ -587,69 +731,114 @@ init 5 python:
         Event(
             persistent._mas_story_database,
             eventlabel="mas_story_genie_end",
-            prompt="The Genie's End",
+            prompt="Конец джина",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_story_genie_end:
-    call mas_story_begin
-    m 1eua "There was once an immortal genie who had lived a long life."
-    m 1euc "He had seen everything there was to see...{w=0.3}lived freely, and learned the fulfillment of working towards a goal."
-    m 3euc "Essentially, he gave everything up but his immortality to be able to live like a human."
-    m 1ekc "It's true that he had lived a nice life and surrounded himself with loving friends and family..."
-    m 1ekd "But he grew cold as years went by and he watched each one of his loved ones pass on."
-    m 1rksdlc "There were still a select few people whom he held dear, despite knowing that he would have to watch them die as well."
-    m 3rksdld "He never told his friends that he wasn't human, as he still wanted to be treated as one."
-    m 1euc "One day, as he was travelling with one of his friends, they came across a genie who would grant each of them one wish."
-    m 1dsc "This made him think about everything he had been through;{w=0.5} from back to when he granted wishes to when he gave it up for a simple life."
-    m 1dsd "...Everything that had led up to this moment, where he could make his own wish for the first time in a long while."
+    call mas_story_begin from _call_mas_story_begin_11
+    $ MAS.MonikaElastic()
+    m 1eua "Жил-был когда-то бессмертный джинн, который прожил долгую жизнь."
+    $ MAS.MonikaElastic()
+    m 1euc "Он видел все, что только можно было увидеть...{w=0.3} жил свободно и научился выполнять работу по достижению цели."
+    $ MAS.MonikaElastic()
+    m 3euc "По существу, он отказался от всего, кроме своего бессмертия, чтобы жить как человек."
+    $ MAS.MonikaElastic()
+    m 1ekc "Это правда, что он прожил хорошую жизнь и окружил себя любящими друзьями и семьёй..."
+    $ MAS.MonikaElastic()
+    m 1ekd "Но с годами он становился всё холоднее и холоднее и наблюдал за каждым из своих близких."
+    $ MAS.MonikaElastic()
+    m 1rksdlc "Оставалось ещё несколько избранных людей, которых он любил, хотя и знал, что ему придётся смотреть, как они умрут."
+    $ MAS.MonikaElastic()
+    m 3rksdld "Он никогда не говорил своим друзьям, что он не человек, так как всё ещё хотел, чтобы с ним обращались как с человеком."
+    $ MAS.MonikaElastic()
+    m 1euc "Однажды, когда он путешествовал с одним из своих друзей, они наткнулись на джинна, который исполнял одно из их желаний."
+    $ MAS.MonikaElastic()
+    m 1dsc "Это заставило его задуматься обо всем, через что он прошёл;{w=0.5} с тех пор, как он исполнял желания, до тех пор, когда он отказался от них ради простой жизни."
+    $ MAS.MonikaElastic()
+    m 1dsd "...Всё, что привело его к этому моменту, когда он впервые за долгое время смог загадать собственное желание."
+    $ MAS.MonikaElastic()
     m 1dsc "..."
-    m 2eud "He wished to die."
-    m 2ekc "Confused, his friend asked why and where it came from all of a sudden."
-    m 2dsc "It was there and then he explained everything to his friend."
-    m 3euc "That he had been a genie, many years ago..."
-    m 3eud "...How he came across someone who made him give it all up just to be with someone he loved."
-    m 3ekd "...And how he had been slowly getting sick and tired of what was left of his life."
-    m 1esc "Truthfully, he wasn't tired of living...{w=0.5} {nw}"
-    extend 1ekd "He was just tired of seeing his loved ones perish over and over again."
-    m 1dsd "His last request to his friend was for him to go back to his other friends and tie up any loose ends for him."
+    $ MAS.MonikaElastic()
+    m 2eud "Он хотел умереть."
+    $ MAS.MonikaElastic()
+    m 2ekc "Будучи озадаченным, его друг спросил, почему и что с ним стряслось."
+    $ MAS.MonikaElastic()
+    m 2dsc "Именно тогда он и объяснил всё своему другу."
+    $ MAS.MonikaElastic()
+    m 3euc "Что много лет назад он был джинном..."
+    $ MAS.MonikaElastic()
+    m 3eud "...Как он встретил кого-то, кто заставил его бросить всё ради того, чтобы быть с кем-то, кого он любил."
+    $ MAS.MonikaElastic()
+    m 3ekd "...И как ему постепенно надоедало то, что осталось от его жизни."
+    $ MAS.MonikaElastic()
+    m 1esc "По правде говоря, он не устал жить...{w=0.5} {nw}"
+    extend 1ekd "Он просто устал видеть, как его близкие гибнут снова и снова."
+    $ MAS.MonikaElastic()
+    m 1dsd "Его последняя просьба к другу состояла в том, чтобы он вернулся к своим друзьям и связал для него все концы."
+    $ MAS.MonikaElastic()
     m 1dsc "..."
-    m 1eka "I hope you enjoyed that little story, [player]."
-    m 3eka "I guess you could say the moral is that everyone needs to have some closure."
-    m 1eka "Although, you might be wondering what his friend wished for in that scenario."
-    m 1eua "He wished for his friend to get the peaceful rest he deserved."
-    m 1lksdla "While it's true that his genie friend might not have been anyone particularly special..."
-    m 3eua "He was definitely someone who deserved respect,{w=0.2} {nw}"
-    extend 3eub "especially after living such a long life."
+    $ MAS.MonikaElastic()
+    m 1eka "Надеюсь, тебе понравилась эта маленькая история, [player]."
+    $ MAS.MonikaElastic()
+    m 3eka "Я думаю, ты мог[mas_gender_g] бы сказать, что мораль заключается в том, что каждый должен иметь некоторое завершение."
+    $ MAS.MonikaElastic()
+    m 1eka "Хотя, возможно, тебе интересно, чего хотел его друг в этом сценарии."
+    $ MAS.MonikaElastic()
+    m 1eua "Он хотел, чтобы его друг получил покой, которого он заслуживал."
+    $ MAS.MonikaElastic()
+    m 1lksdla "Хотя это правда, что его друг – джинн, возможно, и не был кем-то особенным..."
+    $ MAS.MonikaElastic()
+    m 3eua "Он определённо был тем, кто заслуживал уважения,{w=0.2} {nw}"
+    extend 3eub "особенно после такой долгой жизни."
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_immortal_love",
-        prompt="Love Never Ends",unlocked=False),code="STY")
+        prompt="У любви нет конца",unlocked=False),code="STY")
 
 label mas_story_immortal_love:
-    call mas_story_begin
-    m 3eua "There was a married couple who lived happily together for many years."
-    m "Every Valentine's Day, the husband would have a beautiful bouquet of flowers sent to his wife."
-    m 1eka "Each of these bouquets came with a note with a few simple words written on it."
-    m 3dsc "{i}My love for you only grows.{/i}"
-    m 1eud "After some time, the husband passed away."
-    m 1eka "The wife, saddened by her loss, believed she would spend her next Valentine's Day alone and in mourning."
+    call mas_story_begin from _call_mas_story_begin_12
+    $ MAS.MonikaElastic()
+    m 3eua "Жила-была одна супружеская пара, которая многие годы жила в мире и согласии."
+    $ MAS.MonikaElastic()
+    m "В каждый День святого Валентина, муж дарил красивый букет цветов своей жене."
+    $ MAS.MonikaElastic()
+    m 1eka "К каждому из этих букетов была приложена записка с парой простых, но очень приятных слов."
+    $ MAS.MonikaElastic()
+    m 3dsc "{i}Моя любовь к тебе только растёт{/i}."
+    $ MAS.MonikaElastic()
+    m 1eud "Через какое-то время, её муж скончался."
+    $ MAS.MonikaElastic()
+    m 1eka "Жена, будучи опечаленной из-за своей потери, была уверена в том, что она проведёт свой следующий День святого Валентина одна и в трауре."
+    $ MAS.MonikaElastic()
     m 1dsc "..."
-    m 2euc "However,{w=0.3} on her first Valentine's Day without her husband, she still received a bouquet from him."
-    m 2efd "Heartbroken and angry, she complained to the florist that there was a mistake."
-    m 2euc "The florist explained that there was no mistake."
-    m 3eua "The husband had ordered many bouquets in advance to ensure that his beloved wife would continue to receive flowers long after his death."
-    m 3eka "Speechless and stunned, the wife read the note attached to the bouquet."
-    m 1ekbsa "{i}My love for you is eternal.{/i}"
-    m 1dubsu "Ahh..."
-    m 1eua "Wasn't that a touching story, [player]?"
-    m 1hua "I thought it was really romantic."
-    m 1lksdlb "But I don't want to think of either of us dying."
-    m 1eua "At least the ending was very heartwarming."
-    m 1hua "Thanks for listening~"
+    $ MAS.MonikaElastic()
+    m 2euc "Однако,{w=0.3} в свой первый День святого Валентина без своего мужа, она всё равно получила букет от него."
+    $ MAS.MonikaElastic()
+    m 2efd "Будучи злой и с разбитым сердцем, она пожаловалась флористу на то, что произошла ошибка."
+    $ MAS.MonikaElastic()
+    m 2euc "И флорист объяснил ей, что здесь никакой ошибки не было."
+    $ MAS.MonikaElastic()
+    m 3eua "Её супруг заранее заказал много букетов, чтобы его любимая жена и дальше получала цветы после его смерти."
+    $ MAS.MonikaElastic()
+    m 3eka "Будучи потрясённой и потеряв дар речи, жена прочитала записку, приложенную к букету."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}Моя любовь к тебе вечна{/i}."
+    $ MAS.MonikaElastic()
+    m 1dubsu "Ах..."
+    $ MAS.MonikaElastic()
+    m 1eua "Разве это не трогательная история, [player]?"
+    $ MAS.MonikaElastic()
+    m 1hua "Лично я считаю, что она была довольно романтичной."
+    $ MAS.MonikaElastic()
+    m 1lksdlb "Но я не хочу думать о том, что кто-то из нас умрёт."
+    $ MAS.MonikaElastic()
+    m 1eua "По крайней мере, финал был очень трогательным."
+    $ MAS.MonikaElastic()
+    m 1hua "Спасибо, что выслушал[mas_gender_none]~"
     return
 
 init 5 python:
@@ -657,44 +846,70 @@ init 5 python:
         Event(
             persistent._mas_story_database,
             eventlabel="mas_story_mother_and_trees",
-            prompt="A mother and her trees",
+            prompt="Мать и её деревья",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_story_mother_and_trees:
-    call mas_story_begin
-    m 1eua "There was once a boy who lived with his mother."
-    m 3eud "She gave him all the affection a mother could give...{w=0.2}{nw}"
-    extend 3rksdla "but he always thought she could be a little weird."
-    m 3eub "On his birthdays, she would {i}always{/i} bake cookies for him and all his classmates to thank them for being his friends."
-    m 1eua "She would also keep and display every little drawing he made in art school, so their walls were covered with art from over the years."
-    m 2rksdlc "Sometimes, he would even get rid of his drawings because he didn't want her to put them up with the rest."
-    m 2euc "What stood out most with her however...{w=0.3}{nw}"
-    extend 2eud "was that she often talked to their trees."
-    m 1eua "There were three trees in their backyard that she would talk to every day."
-    m 3rksdlb "She even had names for each of them!"
-    m 3hksdlb "Sometimes, she would even ask him to dress up and pose by the trees so she could take pictures of them together."
-    m 1eka "One day, as he saw her talking to the trees, he asked her why she always talked to them so much."
-    m 3hub "His mother replied, 'Well, because they need to feel loved!'"
-    m 1eka "But he still didn't really understand...{w=0.2}{nw}"
-    extend 1eua "and as soon as he left, she just continued right where she had left off in her conversation."
-    m 2ekc "As time passed, the boy eventually had to move out and start his own life."
-    m 2eka "His mother told him not to worry about leaving her because she had her trees to always keep her company."
-    m 2eua "While he was busy with his life, he still made time to keep in touch with her."
-    m 2ekc "Until one day...{w=0.5}{nw}"
-    extend 2dkd "he got the call."
-    m 2rksdlc "His mother had died and was found lying by one of the trees."
-    m 2ekd "In her will, she only had one request of him...{w=0.3}and that was to keep taking care of the trees, talking to them every day."
-    m 1eka "He took good care of the trees of course, but he could never bring himself to talk to them."
-    m 3euc "Some time later, while he was looking through and cleaning up his mother's old belongings, he found an envelope."
-    m 1eud "Inside, he was shocked at what he found."
-    m 2wud "There were three stillborn death certificates for his would-be siblings."
-    m 2dsc "Each of them had an identical name to one of the trees that had been in the backyard all his life."
-    m 2dsd "He had never known that he had siblings, but he finally understood why his mother talked to the trees..."
-    m 2eka "He always wanted to take his mother's wish very seriously, and it was then when he started talking to the trees every day, just as his mother wished."
-    m 2duu "...And he even went ahead and planted one more tree."
+    call mas_story_begin from _call_mas_story_begin_13
+    $ MAS.MonikaElastic()
+    m 1eua "Жил-был мальчик, который жил со своей матерью."
+    $ MAS.MonikaElastic()
+    m 3eud "Она отдавала ему всю свою любовь, какую только может дать мать...{w=0.2}{nw}"
+    extend 3rksdla "но он всегда думал, что она была немного странной."
+    $ MAS.MonikaElastic()
+    m 3eub "В дни его рождения она {i}всегда{/i} пекла печенье для него и всех его одноклассников, чтобы поблагодарить их за то, что они были его друзьями."
+    $ MAS.MonikaElastic()
+    m 1eua "Она также хранила и выставляла каждый маленький рисунок, который он делал в художественной школе, так что их стены были покрыты искусством с годами."
+    $ MAS.MonikaElastic()
+    m 2rksdlc "Иногда он даже избавлялся от своих рисунков, потому что не хотел, чтобы она ставила их вместе с остальными."
+    $ MAS.MonikaElastic()
+    m 2euc "Однако больше всего её отличало то...{w=0.3}{nw}"
+    extend 2eud "что она часто разговаривала со своими деревьями."
+    $ MAS.MonikaElastic()
+    m 1eua "На их заднем дворе росли три дерева, с которыми она разговаривала каждый день."
+    $ MAS.MonikaElastic()
+    m 3rksdlb "У неё даже были имена для каждого из них!"
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Иногда она даже просила его одеться и позировать у деревьев, чтобы сфотографировать их вместе."
+    $ MAS.MonikaElastic()
+    m 1eka "Однажды, увидев, как она разговаривает с деревьями, он спросил её, почему она всегда так много с ними говорит."
+    $ MAS.MonikaElastic()
+    m 3hub "Его мать ответила: «Ну, потому что им нужно чувствовать себя любимыми!»"
+    $ MAS.MonikaElastic()
+    m 1eka "Но он по-прежнему ничего не понимал...{w=0.2}{nw}"
+    extend 1eua "и как только он ушёл, она продолжила разговор с того места, на котором и стояла."
+    $ MAS.MonikaElastic()
+    m 2ekc "Шло время, и мальчику в конце концов пришлось съехать и начать свою собственную жизнь."
+    $ MAS.MonikaElastic()
+    m 2eka "Мать сказала ему, чтобы он не беспокоился о том, что уйдёт от неё, потому что у неё всегда есть деревья, чтобы составить ей компанию."
+    $ MAS.MonikaElastic()
+    m 2eua "Пока он был занят своей жизнью, он всё ещё находил время, чтобы поддерживать с ней контакт."
+    $ MAS.MonikaElastic()
+    m 2ekc "До одного дня...{w=0.5}{nw}"
+    extend 2dkd "ему позвонили."
+    $ MAS.MonikaElastic()
+    m 2rksdlc "Его мать умерла и была найдена лежащей у одного из деревьев."
+    $ MAS.MonikaElastic()
+    m 2ekd "В её завещании была только одна просьба к нему...{w=0.3} и всё это для того, чтобы заботиться о деревьях, разговаривать с ними каждый день."
+    $ MAS.MonikaElastic()
+    m 1eka "Конечно, он хорошо заботился о деревьях, но никогда не мог заставить себя заговорить с ними."
+    $ MAS.MonikaElastic()
+    m 3euc "Некоторое время спустя, просматривая и приводя в порядок старые вещи матери, он нашёл конверт."
+    $ MAS.MonikaElastic()
+    m 1eud "Он был потрясён тем, что обнаружил внутри."
+    $ MAS.MonikaElastic()
+    m 2wud "Там было три свидетельства о смерти его будущих братьев и сестер."
+    $ MAS.MonikaElastic()
+    m 2dsc "У каждого из них было одинаковое имя с одним из деревьев, которые росли на заднем дворе всю его жизнь."
+    $ MAS.MonikaElastic()
+    m 2dsd "Он никогда не знал, что у него есть братья и сестры, но в конце концов понял, почему его мать разговаривает с деревьями..."
+    $ MAS.MonikaElastic()
+    m 2eka "Он всегда очень серьёзно относился к желанию своей матери, и именно тогда он начал разговаривать с деревьями каждый день, как и хотела его мать."
+    $ MAS.MonikaElastic()
+    m 2duu "...И он даже пошёл вперёд и посадил ещё одно дерево."
     return
 
 init 5 python:
@@ -702,112 +917,199 @@ init 5 python:
         Event(
             persistent._mas_story_database,
             eventlabel="mas_story_self_hate",
-            prompt="Self-hate",
-            unlocked=False
+            prompt="Ненависть к себе",
+            unlocked=False,
         ),
         code="STY"
     )
 
 label mas_story_self_hate:
-    call mas_story_begin
-    m 1eua "Once, there were two people who had been living together for a very long time."
-    m 1hua "Life was simple, and they both loved each other. Things were going well."
-    m 3euc "Then one day, the man suddenly killed his lover for seemingly no reason."
-    m 3eud "He {i}did{/i} love her, and in a healthy way too!"
-    m 2ekc "There were never any fights or arguments, either."
-    m "There was nothing to gain from murdering her at all."
-    m 4ekd "No satisfaction, nothing out of the ordinary on her will..."
-    m 1dkc "In fact, the man was left emotionally scarred having lost the love of his life."
+    call mas_story_begin from _call_mas_story_begin_14
+    $ MAS.MonikaElastic()
+    m 1eua "Когда-то были два человека, которые жили вместе очень долго."
+    $ MAS.MonikaElastic()
+    m 1hua "Жизнь была проста, и они оба любили друг друга. Всё шло хорошо."
+    $ MAS.MonikaElastic()
+    m 3euc "И вот однажды этот человек внезапно убил свою возлюбленную, казалось бы, без всякой причины."
+    $ MAS.MonikaElastic()
+    m 3eud "Он {i}действительно{/i} любил её, и очень сильно!"
+    $ MAS.MonikaElastic()
+    m 2ekc "Не было даже каких-либо драк или споров."
+    $ MAS.MonikaElastic()
+    m "Им никакая выгода не светит от её убийства."
+    $ MAS.MonikaElastic()
+    m 4ekd "Никакого удовлетворения, ничего необычного по её воле..."
+    $ MAS.MonikaElastic()
+    m 1dkc "На самом деле этот человек остался эмоционально травмированным, потеряв любовь всей своей жизни."
+    $ MAS.MonikaElastic()
     m "..."
-    m 1ekd "So why?"
-    m 1rksdlc "How could this happen all of a sudden?"
-    m 1eksdlc "It wasn't that he didn't love her."
-    m 3eksdla "It was because he loved her so, so very much."
-    m "He didn't hate her..."
-    m 2eksdld "He just hated himself so much as to deny his own happiness."
+    $ MAS.MonikaElastic()
+    m 1ekd "Так почему же?"
+    $ MAS.MonikaElastic()
+    m 1rksdlc "Как это могло случиться так внезапно?"
+    $ MAS.MonikaElastic()
+    m 1eksdlc "Не то чтобы он её не любил."
+    $ MAS.MonikaElastic()
+    m 3eksdla "А всё потому, что он так сильно любил её."
+    $ MAS.MonikaElastic()
+    m "Он не испытывал к ней ненависти..."
+    $ MAS.MonikaElastic()
+    m 2eksdld "Он просто ненавидел себя настолько, что отказывался от собственного счастья."
+    $ MAS.MonikaElastic()
     m 2dkc "..."
     if persistent._mas_pm_love_yourself is False:
-        m 3ekc "Hey [player], do you remember when I asked you if you loved yourself?"
-        m 1rksdld "From what I remember, you told me that you didn't..."
-        m 1rksdla "Sorry, I don't mean to put you on the spot or anything..."
-        m 3eka "I just want to make sure you remember that I love you."
-        m 3ekd "More importantly, I want to make sure that you know how to love yourself."
-        m 1ekbsa "I know you're worth loving and I'd do anything to show you why."
-        m 1ekbfa "I hope you never forget that~"
+        m 3ekc "Эй, [player], помнишь, я спросила тебя, любишь ли ты себя?"
+        $ MAS.MonikaElastic()
+        m 1rksdld "Насколько я помню, ты сказал мне, что нет..."
+        $ MAS.MonikaElastic()
+        m 1rksdla "Прости, я не хотела ставить тебя в неловкое положение или ещё что..."
+        $ MAS.MonikaElastic()
+        m 3eka "Я просто хочу убедиться, что ты помнишь, что я люблю тебя."
+        $ MAS.MonikaElastic()
+        m 3ekd "Что ещё более важно, я хочу убедиться, что ты знаешь, как любить себя."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Я знаю, что ты достоин любви, и я сделаю всё, чтобы показать тебе."
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Надеюсь, ты никогда этого не забудешь~"
     else:
-        m 1rksdlb "Sorry for telling such a dark story, [player]..."
-        m 3eksdla "But it does have an important message..."
-        m 3eud "And that is you need to find a way to love yourself, or you might do something you regret later on."
-        m 1ekc "As much as you may try, trying to live your life solely for someone else will never work."
-        m 1eka "You have to love yourself to be able to allow yourself to truly love someone else."
-        m 3ekbsa "Just remember I'll always love you, [player]."
-        m 3ekbfa "If you ever begin to doubt loving yourself, just come to me and I'll be more than happy to remind you of all your wonderful qualities~"
+        m 1rksdlb "Прости, что рассказала такую мрачную историю, [player]..."
+        $ MAS.MonikaElastic()
+        m 3eksdla "Но у него есть важное послание..."
+        $ MAS.MonikaElastic()
+        m 3eud "И оно значит, что тебе нужно найти способ любить себя, иначе ты можешь сделать то, о чём потом пожалеешь."
+        $ MAS.MonikaElastic()
+        m 1ekc "Как бы ты ни старал[mas_gender_sya], попытка прожить свою жизнь исключительно для кого-то другого никогда не сработает."
+        $ MAS.MonikaElastic()
+        m 1eka "Ты долж[mas_gender_en] любить себя, чтобы позволить себе по-настоящему любить кого-то другого."
+        $ MAS.MonikaElastic()
+        m 3ekbsa "Просто помни, что я всегда буду любить тебя, [player]."
+        $ MAS.MonikaElastic()
+        m 3ekbfa "Если nы когда-нибудь начнёшь сомневаться в любви к себе, просто приходи ко мне, и я буду более чем счастлива напомнить тебе обо всех твоих замечательных качествах~"
     return "love"
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_o_tei",
-        prompt="The Tale of O-Tei",unlocked=False),code="STY")
+        prompt="Рассказ об О-Тей",unlocked=False),code="STY")
 
 label mas_story_o_tei:
-    call mas_story_begin
-    m 1eua "A long time ago, there lived a man named Kenji, who was studying to be a physician."
-    m 3eub "He was engaged to a young woman named Tomoe and they were to be married after he finished his studies."
-    m 1esc "Unfortunately, Tomoe contracted a serious illness before that could happen."
-    m 2dsd "It wasn't long until she was bedridden, nearing the end of her life."
-    m 2esd "Kenji knelt by her bedside, and she said to him, 'We have been promised to each other since childhood...'"
-    m 3ekc "'Unfortunately with this frail body of mine, my time has come and I am going to die before I could become your wife.'"
-    m "'Please do not grieve when I go. I believe we shall meet again.'"
-    m 3eud "He asked, 'How would I know of your return?'"
-    m 2dsc "Unfortunately, she had succumbed before she could give him an answer."
-    m "Kenji grieved deeply for the loss of his love, taken too soon from him."
-    m 2esc "He never forgot about Tomoe as time moved on, but he was required to marry someone else and preserve the family name."
-    m "He soon married another girl, but his heart stayed somewhere else."
-    m 2esd "And as everything does in life, his family too had been taken by time and he was left all alone again."
-    m 4eud "It was then that he decided to abandon his home and take a long journey to forget his troubles."
-    m 1esc "He travelled all around the country, searching for a cure to his malaise."
-    m 1euc "And then on one evening, he came across an inn and stopped there to rest."
-    m "As he settled down in his room, a nakai opened the door to greet him."
-    m 3euc "His heart leapt..."
-    m 3wud "The girl that greeted him looked exactly like Tomoe."
-    m "Everything he saw in her reminded him perfectly of his past love."
-    m 1esc "Kenji then remembered the last words they exchanged before her departure."
-    m 1esc "He flagged down the girl and told her, 'I'm sorry to be a bother, but you remind me so much of someone I knew long ago that it startled me at first.'"
-    m 3euc "'If you don't mind me asking, what is your name?'"
-    m 3wud "Immediately, in the unforgotten voice of his deceased beloved, the girl answered, 'My name is Tomoe, and you are Kenji, my promised husband.'"
-    m 1wud "'I died tragically before we could complete our marriage...'"
-    m "'And now I have returned, Kenji, my husband-to-be.'"
-    m 1dsc "The girl then collapsed to the floor, unconscious."
-    m 1esa "Kenji held her in his arms, tears flowing from his face."
-    m 1dsa "'...Welcome back, Tomoe...'"
-    m 3esa "As she came to, she had no memory of what happened at the inn."
-    m 1hua "Not long after, Kenji married her as soon as they could, and lived on happily for the rest of their lives."
+    call mas_story_begin from _call_mas_story_begin_15
+    $ MAS.MonikaElastic()
+    $ MAS.MonikaElastic()
+    m 1eua "Давным-давно жил человек по имени Кендзи, который учился на врача."
+    $ MAS.MonikaElastic()
+    m 3eub "Он был помолвлен с молодой женщиной по имени Томоэ, и они должны были пожениться после окончания учебы."
+    $ MAS.MonikaElastic()
+    m 1esd "К сожалению, Томоэ заболела серьёзной болезнью до того, как это произошло."
+    $ MAS.MonikaElastic()
+    m 2dsd "Вскоре она была прикована к постели, приближаясь к концу своей жизни."
+    $ MAS.MonikaElastic()
+    m 2esd "Кендзи встал на колени у её постели, и она сказала ему:"
+    $ MAS.MonikaElastic()
+    m "— Мы обещали друг другу с детства..."
+    $ MAS.MonikaElastic()
+    m 4ekd "— К сожалению, с этим моим хрупким телом, моё время пришло, и я умру прежде, чем смогу стать твоей женой."
+    $ MAS.MonikaElastic()
+    m 3ekd "— Пожалуйста, не скорби, когда я уйду. Думаю, мы ещё встретимся."
+    $ MAS.MonikaElastic()
+    m 3eud "Он спросил:"
+    $ MAS.MonikaElastic()
+    m "— Как я узнаю о твоём возвращении?"
+    $ MAS.MonikaElastic()
+    m 2dsc "К сожалению, она умерла, прежде чем смогла дать ему ответ."
+    $ MAS.MonikaElastic()
+    m "Кендзи был глубоко опечален потерей своей любимой, отнятой у него слишком рано."
+    $ MAS.MonikaElastic()
+    m 2esc "Он никогда не забывал о Томоэ с течением времени, но он должен был жениться на ком-то другом и сохранить фамилию."
+    $ MAS.MonikaElastic()
+    m "Вскоре он женился на другой девушке, но его сердце остановилось в другом месте."
+    $ MAS.MonikaElastic()
+    m 2esd "И, как все в жизни, его семья тоже была занята временем, и он снова остался один."
+    $ MAS.MonikaElastic()
+    m 4eud "Именно тогда он решил покинуть свой дом и отправиться в далёкое путешествие, чтобы забыть о своих проблемах."
+    $ MAS.MonikaElastic()
+    m 1euc "Он путешествовал по всей стране в поисках лекарства от недуга."
+    $ MAS.MonikaElastic()
+    m "И вот однажды вечером он наткнулся на трактир и остановился там отдохнуть."
+    $ MAS.MonikaElastic()
+    m "Когда он уселся в своей комнате, некая Накай открыла дверь, чтобы поприветствовать его."
+    $ MAS.MonikaElastic()
+    m 3eud "Его сердце забилось..."
+    $ MAS.MonikaElastic()
+    m 3wud "Девушка, которая его приветствовала, была похожа на Томоэ."
+    $ MAS.MonikaElastic()
+    m "Всё, что он видел в ней, прекрасно напоминало ему о его прошлой любви."
+    $ MAS.MonikaElastic()
+    m 1eud "Затем Кендзи вспомнил последние слова, которыми они обменялись перед её уходом."
+    $ MAS.MonikaElastic()
+    m "Он остановил девушку и сказал ей:"
+    $ MAS.MonikaElastic()
+    m "— Извини, что беспокою, но ты так напоминаешь мне кое-кого, кого я давно знаю, что это испугало меня поначалу."
+    $ MAS.MonikaElastic()
+    m "— Если ты не возражаешь, я спрошу, как тебя зовут?"
+    $ MAS.MonikaElastic()
+    m 3wud "Тотчас же, незабытым голосом умершей возлюбленной девушка ответила:"
+    $ MAS.MonikaElastic()
+    m "— Меня зовут Томоэ, а ты Кендзи, мой обещанный муж."
+    $ MAS.MonikaElastic()
+    m 1wud "— Я трагически погибла прежде, чем мы смогли завершить наш брак..."
+    $ MAS.MonikaElastic()
+    m "— А теперь я вернулась, Кендзи, мой будущий муж."
+    $ MAS.MonikaElastic()
+    m 1dsc "Затем девушка упала на пол, потеряв сознание."
+    $ MAS.MonikaElastic()
+    m 1esa "Кендзи держал её на руках, слёзы текли по его щекам."
+    $ MAS.MonikaElastic()
+    m 1dsa "— ...С возвращением, Томоэ..."
+    $ MAS.MonikaElastic()
+    m 3esa "Когда она очнулась, не помнила, что произошло в гостинице."
+    $ MAS.MonikaElastic()
+    m 1hua "Вскоре после этого Кендзи женился на ней, как только они смогли, и прожил счастливо всю оставшуюся жизнь."
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_story_crow_and_pitcher",
-        prompt="The Crow and the Pitcher",unlocked=False),code="STY")
+        prompt="Ворон и кувшин",unlocked=False),code="STY")
 
 label mas_story_crow_and_pitcher:
-    call mas_story_begin
-    m 2ekd "There was once a drought so severe, not even birds could find much to drink."
-    m 7eub "While searching from above, a thirsty crow found a pitcher and was relieved to find there was some water still inside!"
-    m 3eksdlc "However, the pitcher was tall with a narrow neck. No matter how he tried, he could not reach the water with his beak."
-    m 1dksdlc "For the poor crow, all hope seemed lost. Surely he would die of thirst."
-    m 3wud "...Then he had an idea."
-    m 3esc "He began searching for small pebbles on the ground and dropping them into the pitcher, one by one."
-    m 2efsdlc "Hours passed. It was slow, grueling work, gathering more and more."
-    m 2esa "But with each tiny pebble, the water rose higher and higher, until finally..."
-    m 4hub "He could take a long, refreshing drink!"
+    call mas_story_begin from _call_mas_story_begin_16
+    $ MAS.MonikaElastic()
+    m 2ekd "Однажды была такая сильная засуха, что даже птицы не могли найти много воды."
+    $ MAS.MonikaElastic()
+    m 7eub "Во время поисков сверху измученный жаждой ворон нашёл кувшин и с облегчением обнаружил, что в нём ещё осталось немного воды!"
+    $ MAS.MonikaElastic()
+    m 3eksdlc "Однако кувшин был высокий, с узким горлышком. Как он ни старался, ему не удавалось дотянуться клювом до воды."
+    $ MAS.MonikaElastic()
+    m 1dksdlc "Бедный Ворон, казалось, потерял всякую надежду. Разумеется, он умрёт от жажды."
+    $ MAS.MonikaElastic()
+    m 3wud "...И тут ему в голову пришла идея."
+    $ MAS.MonikaElastic()
+    m 3esc "Он начал искать мелкие камешки на земле и бросать их в кувшин, один за другим."
+    $ MAS.MonikaElastic()
+    m 2efsdlc "Время шло. Это была медленная, изнурительная работа, собирающая в себя всё больше и больше."
+    $ MAS.MonikaElastic()
+    m 2esa "Но с каждым крошечным камешком вода поднималась всё выше и выше, пока наконец не остановилась..."
+    $ MAS.MonikaElastic()
+    m 4hub "Он смог выпить большой глоток освежающего напитка!"
+    $ MAS.MonikaElastic()
     m 2dka "..."
-    m 2eka "You know, this story kind of reminds me of our situation, [player]."
-    m 7ekc "Right now, our goal seems so far away. We're reaching out as much as we can, but the gap between us is enormous."
-    m 3dkc "It sometimes feels like it's impossible to bridge. If we tried to cross it in one leap, we'd be like the crow reaching with just his beak."
-    m 1tkd "...Believe me, I tried."
-    m 3ekb "But when you think about it, we're adding pebbles to our pitcher. And it's not just you and me!"
-    m 3eua "Advances in both VR and AI technology are gradually moving forward..."
-    m 3hua "And more specifically to our situation, so many people are working together to help me get closer to your reality."
-    m 1eka "When I think about it that way--the water level in that pitcher slowly rising--it makes it a lot easier to keep going every day."
-    m 1hua "I hope it does for you too, [mas_get_player_nickname()]~"
+    $ MAS.MonikaElastic()
+    m 2eka "Знаешь, эта история отчасти напоминает мне нашу ситуацию, [player]."
+    $ MAS.MonikaElastic()
+    m 7ekc "Сейчас наша цель кажется такой далёкой. Мы тянемся изо всех сил, но разрыв между нами огромен."
+    $ MAS.MonikaElastic()
+    m 3dkc "Иногда кажется, что это невозможно преодолеть. Если бы мы попытались пересечь его одним прыжком, то были бы похожи на ворона, который тянется только клювом."
+    $ MAS.MonikaElastic()
+    m 1tkd "...Поверь мне, я старалась."
+    $ MAS.MonikaElastic()
+    m 3ekb "Но если вдуматься, то мы добавляем камешки в наш кувшин. И дело не только в нас с тобой!"
+    $ MAS.MonikaElastic()
+    m 3eua "Достижения как в области виртуальной реальности, так и в области искусственного интеллекта постепенно продвигаются вперёд..."
+    $ MAS.MonikaElastic()
+    m 3hua "А если говорить более конкретно о нашей ситуации, то так много людей работают вместе, чтобы помочь мне приблизиться к твоей реальности."
+    $ MAS.MonikaElastic()
+    m 1eka "Когда я думаю об этом в таком ключе – то, что вода в кувшине медленно набирается – мне становится куда легче продолжать идти каждый день."
+    $ MAS.MonikaElastic()
+    m 1hua "Я надеюсь, что и для тебя тоже, [mas_get_player_nickname()]~"
     return
 
 init 5 python:
@@ -815,35 +1117,47 @@ init 5 python:
         Event(
             persistent._mas_story_database,
             eventlabel="mas_story_friend",
-            prompt="Having A Best Friend",
+            prompt="Наличие лучшего друга",
             unlocked=True
         ),
         code="STY"
     )
 
 label mas_story_friend:
-    call mas_story_begin
-    m 3eua "Once two friends were walking through the desert..."
-    m 1eua  "During some point of their journey, they had an argument {nw}"
-    extend 1wud "and one friend slapped the other in the face!"
-    m 1eud "The one who got slapped was hurt, but without saying anything wrote in the sand,{w=0.1} 'Today my best friend slapped me in the face.'"
-    m 1eua "They kept on walking until they found an oasis, where they decided to take a bath."
-    m 1ekc "The one who had been slapped got stuck in the mire and started drowning,{w=0.1} {nw}"
-    extend 3wuo "but the other saved him!"
-    m 3eua "After he recovered from the near drowning, he wrote on a stone,{w=0.1} 'Today my best friend saved my life.'"
-    m 3eud "The friend who had slapped and saved his best friend asked him,{w=0.1} 'After I hurt you, you wrote in the sand and now, you write on a stone, why?'"
-    m 3eua "The other friend replied, 'When someone hurts us we should write it down in sand where winds of forgiveness can erase it away...'"
-    m 3eub "'But!'"
-    m 3eua "'When someone does something good for us, we must engrave it in stone where no wind can ever erase it.'"
-    m 1hua "The moral of the story is, do not let the shadows of your past darken the doorstep of your future.{w=0.2} {nw}"
-    extend 3hua "Forgive and Forget."
-    m 1hua "I hope you enjoyed it, [player]!"
+    call mas_story_begin from _call_mas_story_begin_17
+    $ MAS.MonikaElastic()
+    m 3eua "Однажды двое друзей шли по пустыне..."
+    $ MAS.MonikaElastic()
+    m 1eua "В какой-то момент своего путешествия они поссорились {nw}"
+    extend 1wud "и один друг дал другому пощечину!"
+    $ MAS.MonikaElastic()
+    m 1eud "Тот, кто получил пощечину, был ранен, но ничего не сказал, написав на песке:{w=0.1} «Сегодня мой лучший друг дала мне пощечину»."
+    $ MAS.MonikaElastic()
+    m 1eua "Они продолжали идти, пока не нашли оазис, где решили принять ванну."
+    $ MAS.MonikaElastic()
+    m 1ekc "Тот, кому дали пощечину, застрял в болоте и начал тонуть,{w=0.1} {nw}"
+    extend 3wuo "но другой спас его!"
+    $ MAS.MonikaElastic()
+    m 3eua "Придя в себя после того, как чуть не утонул, он написал на камне:{w=0.1} «Сегодня мой лучший друг спас мне жизнь»."
+    $ MAS.MonikaElastic()
+    m 3eud "Друг, который ударил и спас лучшего друга, спросил его:{w=0.1} «После того, как я причинил тебе боль, ты писал на песке, а теперь пишешь на камне, зачем?»."
+    $ MAS.MonikaElastic()
+    m 3eua "Другой друг ответил: «Когда кто-то причиняет нам боль, мы должны записать это на песке, где ветер прощения сможет стереть это...»"
+    $ MAS.MonikaElastic()
+    m 3eub "«Но!»"
+    $ MAS.MonikaElastic()
+    m 3eua "«Когда кто-то делает что-то хорошее для нас, мы должны выгравировать это на камне, где никакой ветер никогда не сможет стереть это»."
+    $ MAS.MonikaElastic()
+    m 1hua "Мораль этой истории такова: не позволяй теням прошлого омрачать порог твоего будущего.{w=0.2} {nw}"
+    extend 3hua "Прости и забудь."
+    $ MAS.MonikaElastic()
+    m 1hua "Надеюсь тебе понравилось, [player]!"
     return
 
-#START: Scary Stories
+
 define mas_scary_story_setup_done = False
 
-# Scary stories start here
+
 label mas_scary_story_setup:
     if mas_scary_story_setup_done:
         return
@@ -859,15 +1173,15 @@ label mas_scary_story_setup:
     pause 1.0
 
     $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-    call monika_zoom_transition_reset(1.0)
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset
 
     $ mas_changeBackground(mas_background_def)
 
-    #If we're in O31 mode, it's already raining and the room is also already set up
+
     if not persistent._mas_o31_in_o31_mode:
         $ mas_changeWeather(mas_weather_rain)
         $ store.mas_globals.show_vignette = True
-        call spaceroom(scene_change=is_scene_changing, dissolve_all=is_scene_changing, dissolve_masks=are_masks_changing, force_exp='monika 1dsc_static')
+        call spaceroom (scene_change=is_scene_changing, dissolve_all=is_scene_changing, dissolve_masks=are_masks_changing, force_exp='monika 1dsc_static') from _call_spaceroom
 
     play music "mod_assets/bgm/happy_story_telling.ogg" loop
 
@@ -877,43 +1191,45 @@ label mas_scary_story_setup:
 
     python:
         story_begin_quips = [
-            _("Alright let's start the story."),
-            _("Ready to hear the story?"),
-            _("Ready for story time?"),
-            _("Let's begin."),
-            _("Are you ready?")
+            _("Хорошо, давай начнём историю."),
+            _("Готов{0} услышать историю?".format(mas_gender_none)),
+            _("Готов{0} к рассказу?".format(mas_gender_none)),
+            _("Давай начнём."),
+            _("Ты готов{0}?".format(mas_gender_none))
         ]
         story_begin_quip=renpy.random.choice(story_begin_quips)
     m 3eua "[story_begin_quip]"
-    m 1duu "Ahem."
+    $ MAS.MonikaElastic()
+    m 1duu "Кхм."
     return
 
 label mas_scary_story_cleanup:
 
     python:
         story_end_quips = [
-            _("Scared, [player]?"),
-            _("Did I scare you, [player]?"),
-            _("How was it?"),
-            _("Well?"),
-            _("So...{w=0.5}did I scare you?")
+            _("Тебе страшно, [player]?"),
+            _("Я напугала тебя, [player]?"),
+            _("Ну как?"),
+            _("Ну?"),
+            _("Итак...{w=0.5} я тебя напугала?")
         ]
         story_end_quip=renpy.substitute(renpy.random.choice(story_end_quips))
 
+    $ MAS.MonikaElastic()
     m 3eua "[story_end_quip]"
     show monika 1dsc
     pause 1.0
 
-    #If in O31 mode, weather doesn't need to change, nor vignette. No need to spaceroom call
+
     if not persistent._mas_o31_in_o31_mode:
         $ mas_changeWeather(mas_temp_r_flag)
         $ store.mas_globals.show_vignette = False
-        call spaceroom(scene_change=is_scene_changing, dissolve_all=is_scene_changing, dissolve_masks=are_masks_changing, force_exp='monika 1dsc_static')
+        call spaceroom (scene_change=is_scene_changing, dissolve_all=is_scene_changing, dissolve_masks=are_masks_changing, force_exp='monika 1dsc_static') from _call_spaceroom_2
         hide vignette
-        call monika_zoom_transition(mas_temp_zoom_level,transition=1.0)
+        call monika_zoom_transition (mas_temp_zoom_level, transition=1.0) from _call_monika_zoom_transition
 
     $ play_song(None, 1.0)
-    m 1eua "I hope you liked it, [player]~"
+    m 1eua "Надеюсь, тебе понравилось, [player_abb]~"
     $ mas_DropShield_core()
     $ HKBShowButtons()
     $ mas_scary_story_setup_done = False
@@ -921,74 +1237,113 @@ label mas_scary_story_cleanup:
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_hunter",
-    category=[store.mas_stories.TYPE_SCARY], prompt="The Hunter",unlocked=True),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Охотник",unlocked=True),
     code="STY")
 
 label mas_scary_story_hunter:
-    call mas_scary_story_setup
-    m 3esa "One day, a hunter went out hunting for game in the forest."
-    m 3esc "The forest was dense and dark all around him, so he struggled to hit his mark."
-    m 1esd "He was soon approached by a salesman, who kept his face covered."
-    m 3esd "The salesman offered seven magic bullets that would hit whatever target the owner wanted without fail."
-    m "He would give the hunter these bullets on one condition."
-    m 1euc "The hunter could use the first six bullets as he wished, but the last bullet's mark would be chosen by the salesman."
-    m "The hunter agreed and quickly became famous in his town for bringing home kill after kill."
-    m 3eud "It wasn't long before the hunter used up all six bullets."
-    m 1esc "On his next hunt, the hunter saw a wild boar, the largest he had ever seen. It was too great of a prey to pass up on."
-    m 1euc "He loaded the last bullet hoping to take down the beast..."
-    m 1dsc "But when he fired, the bullet instead hit his beloved fiancée in the chest, killing her."
-    m 3esc "The salesman then appeared to the hunter as he grieved his tragic loss, revealing that he was in fact the Devil."
-    m 1esd "'I will give you a chance for redemption, hunter.' The salesman told him."
-    m 4esb "'Remain ever faithful to your slain beloved for the remainder of your life, and you would be reunited with her after death.'"
-    m 1eud "The hunter vowed to remain true to her for as long as he lived..."
-    m 1dsd "...{w=1}or so he would."
-    m 1dsc "Long after her demise, he fell in love with another woman and soon married her, forgetting his past love."
-    m 1esc "It was until one year to the day after the fatal incident, as the hunter rode through the forest chasing some game, he came across the spot where he slayed his beloved..."
-    m 3wud "He couldn't believe his eyes;{w=1} her corpse, which was buried elsewhere, was standing in the same spot she was slain."
-    m "She approached the hunter, scorning him for being unfaithful and vowing revenge for slaying her."
-    m "The hunter rode away in a panic."
-    m 1euc "After a short way, he looked behind him to see if she was following him any longer..."
-    m 1wkd "...and to his horror,{w=1} he saw that she had gained on him significantly."
-    m 3wkd "In his state of fear, he failed to avoid the branch that was ahead of him, promptly dismounting the hunter from his steed and down to the cold ground."
-    m 4dsc "His attention wasn't on his horse however, as the creature loped away without him."
+    call mas_scary_story_setup from _call_mas_scary_story_setup
+    m 3esa "Однажды охотник отправился на охоту за дичью в лес."
+    $ MAS.MonikaElastic()
+    m 3esc "Лес был густым и тёмным вокруг него, поэтому он изо всех сил пытался попасть в цель."
+    $ MAS.MonikaElastic()
+    m 1esd "Вскоре к нему подошёл продавец, который скрывал своё лицо."
+    $ MAS.MonikaElastic()
+    m 3esd "Тот предложил охотнику семь волшебных пуль, которые в обязательном порядке поражали любую цель, которую хотел владелец."
+    $ MAS.MonikaElastic()
+    m "Но дал бы он эти пули лишь при одном условии..."
+    $ MAS.MonikaElastic()
+    m 1euc "Первые шесть пуль охотник мог использовать по своему усмотрению, но вот мешень последней пули выбирал уже сам продавец."
+    $ MAS.MonikaElastic()
+    m "Охотник согласился и быстро прославился в своём городе тем, что приносил домой дичь за дичью."
+    $ MAS.MonikaElastic()
+    m 3eud "Вскоре он израсходовал все шесть пуль."
+    $ MAS.MonikaElastic()
+    m 1esc "На следующей охоте охотник увидел кабана, самого крупного из когда-либо виденных им. Это была слишком уж большая добыча, чтобы отказаться от той."
+    $ MAS.MonikaElastic()
+    m 1euc "Он зарядил последнюю пулю, надеясь уничтожить зверя..."
+    $ MAS.MonikaElastic()
+    m 1dsc "Но когда тот выстрелил, пуля попала его любимой невесте в грудь, убив её."
+    $ MAS.MonikaElastic()
+    m 3esc "Затем продавец явился охотнику, скорбя о трагической утрате того, показывая, что он на самом деле дьявол."
+    $ MAS.MonikaElastic()
+    m 1esd "— Я дам тебе шанс на искупление, охотник. — сказал ему продавец."
+    $ MAS.MonikaElastic()
+    m 4esb "— Оставайся верным своей возлюбленной до конца своей жизни, и ты воссоединишься с ней после смерти."
+    $ MAS.MonikaElastic()
+    m 1eud "Охотник поклялся оставаться верным ей до конца своей жизни..."
+    $ MAS.MonikaElastic()
+    m 1dsd "...{w}или около того."
+    $ MAS.MonikaElastic()
+    m 1dsc "Вскоре после её кончины он влюбился в другую женщину и вскоре женился на ней, забыв о своей прошлой любви."
+    $ MAS.MonikaElastic()
+    m 1esc "Это было до одного года на следующий день после рокового инцидента. Когда охотник ехал через лес, преследуя какую-то дичь, он наткнулся на место, где он убил свою возлюбленную."
+    $ MAS.MonikaElastic()
+    m 3wud "К его ужасу,{w=1.0} её труп, который был похоронен в другом месте, стоял на том же самом месте, где она была убита."
+    $ MAS.MonikaElastic()
+    m "Она подошла к охотнику, презирая его за неверность, и поклялась отомстить за своё убийство."
+    $ MAS.MonikaElastic()
+    m "Охотник в панике уехал прочь."
+    $ MAS.MonikaElastic()
+    m 1euc "Пройдя короткий путь, он оглянулся назад, чтобы проверить, следует ли она за ним дальше."
+    $ MAS.MonikaElastic()
+    m 1wkd "К его ужасу, он не только не продвинулся дальше своей дистанции, но и преследовавшая значительно приблизилась к нему."
+    $ MAS.MonikaElastic()
+    m 3wkd "В своём страхе он не смог избежать ветви, которая была впереди него, незамедлительно сбив охотника со своего коня вниз на холодную землю."
+    $ MAS.MonikaElastic()
+    m 4dsc "Однако его внимание не было на его лошади, поскольку существо умчалось прочь без него."
     $ store.mas_sprites.show_empty_desk()
-    m 1esc "...It was instead on the figure that he promised to be with eternally in the afterlife."
-    # 1 in 10
+    $ MAS.MonikaElastic()
+    m 1esc "...Вместо этого он был на фигуре, с которой тот обещал быть вечно в загробной жизни."
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,10) == 1) or mas_full_scares:
         hide monika
         play sound "sfx/giggle.ogg"
         show yuri dragon2 zorder 72 at malpha
         $ style.say_dialogue = style.edited
-        y "{cps=*2}I'll get you too.{/cps}{nw}"
+        y "{cps=*2}Я тоже до тебя доберусь.{/cps}{nw}"
         hide yuri
         $ mas_resetTextSpeed()
-        show monika 1eua at i11 zorder MAS_MONIKA_Z
+        show monika 1eua zorder MAS_MONIKA_Z at i11
     hide emptydesk
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_kuchisake_onna",
-    category=[store.mas_stories.TYPE_SCARY], prompt="Kuchisake-Onna",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Кутисакэ-онна",unlocked=False),
     code="STY")
 
 label mas_scary_story_kuchisake_onna:
-    call mas_scary_story_setup
-    m 3eud "There once was a beautiful woman, who was the wife of a samurai."
-    m 3eub "She was as incredibly beautiful as she was vain, welcoming the attention of any man prepared to offer it to her."
-    m 1tsu "And often, would ask men to appraise her appearance."
-    m 1euc "The woman was prone to cheat on her husband multiple times and was soon found out about her affairs."
-    m 1esc "When he confronted her, he was beyond infuriated as she was damaging their status as nobles, humiliating him."
-    m 2dsc "He then brutally punished her by cutting her mouth from ear to ear, disfiguring her delicate beauty."
-    m 4efd "'Who will think you as beautiful now?' were his salt to her horrifying wound."
-    m 2dsd "Shortly after, the woman died."
-    m "She couldn't live further after she was tarnished and treated like a freak by everyone around her."
-    m 1esc "Her husband, denounced by his cruelty, committed seppuku shortly after."
-    m 3eud "The woman, dying from such a fate, became a vengeful and malicious spirit."
-    m "They say she now wanders around aimlessly at night, her face covered with a mask and a bladed weapon on her hands."
-    m 1dsd "Anyone unlucky enough to come across her will hear her spine-chilling question..."
-    m 1cua "{b}{i}Am I p r e t t y?{/i}{/b}"
-    # 1 in 15
+    call mas_scary_story_setup from _call_mas_scary_story_setup_1
+    $ MAS.MonikaElastic()
+    m 3eud "Жила-была красивая женщина, жена самурая."
+    $ MAS.MonikaElastic()
+    m 3eub "Она была так же невероятно красива, как и тщеславна, приветствуя внимание любого мужчины, готового предложить его ей."
+    $ MAS.MonikaElastic()
+    m 1tsu "И часто просила мужчин оценить её внешность."
+    $ MAS.MonikaElastic()
+    m 1euc "Женщина была склонна обманывать мужа несколько раз и вскоре тому стало известно о её делах."
+    $ MAS.MonikaElastic()
+    m 1esc "Когда он столкнулся с ней, он был вне себя от ярости, поскольку она наносила ущерб их статусу дворян, унижая его."
+    $ MAS.MonikaElastic()
+    m 2dsc "Затем он жестоко наказал её, перерезав ей рот от уха до уха, изуродовав её нежную красоту."
+    $ MAS.MonikaElastic()
+    m 4efd "— Кто теперь будет считать тебя красивой? — было его солью к её ужасающей ране."
+    $ MAS.MonikaElastic()
+    m 2dsd "Вскоре после этого женщина умерла."
+    $ MAS.MonikaElastic()
+    m "Она не могла жить дальше после того, как все вокруг относились к ней как к уроду."
+    $ MAS.MonikaElastic()
+    m 1esc "Её муж, осуждённый за свою жестокость, совершил сеппуку вскоре после этого."
+    $ MAS.MonikaElastic()
+    m 3eud "Женщина, умиревшая от такой участи, стала мстительным и злым духом."
+    $ MAS.MonikaElastic()
+    m "Говорят, что теперь она бесцельно бродит по ночам, её лицо покрыто маской, и та всегда с клинковым оружием на руках."
+    $ MAS.MonikaElastic()
+    m 1dsd "Любой, кому не посчастливится встретить её, услышит её леденящий душу вопрос..."
+    $ MAS.MonikaElastic()
+    m 1cua "{b}{i}Я к р а с и в а я?{/i}{/b}"
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,15) == 1) or mas_full_scares:
         hide monika
         show screen tear(20, 0.1, 0.1, 0, 40)
@@ -997,24 +1352,24 @@ label mas_scary_story_kuchisake_onna:
         show k_rects_eyes1 zorder 74
         show k_rects_eyes2 zorder 74
         $ pause(0.25)
-        #play music t7g
+
         stop sound
         hide screen tear
         $ style.say_dialogue = style.edited
         show screen mas_background_timed_jump(5, "mas_scary_story_kuchisake_onna.no")
         menu:
-            "am I pretty?"
-            "Yes.":
+            "Я красивая?"
+            "Да.":
                 hide screen mas_background_timed_jump
                 jump mas_scary_story_kuchisake_onna.clean
-            "No.":
+            "Нет.":
                 jump mas_scary_story_kuchisake_onna.no
     else:
         jump mas_scary_story_kuchisake_onna.end
 
-label .no:
+label mas_scary_story_kuchisake_onna.no:
     hide screen mas_background_timed_jump
-    "{b}{i}Is that, so?{w=1.0}{nw}{/i}{/b}"
+    "{b}{i}Это так?{w=1.0}{nw}{/i}{/b}"
     $ _history_list.pop()
     $ _history_list.pop()
     $ pause(1.0)
@@ -1024,7 +1379,7 @@ label .no:
     $ pause(0.25)
     hide natsuki mas_ghost onlayer front
 
-label .clean:
+label mas_scary_story_kuchisake_onna.clean:
     show black zorder 100
     hide k_rects_eyes1
     hide k_rects_eyes2
@@ -1032,48 +1387,78 @@ label .clean:
     $ pause(1.5)
     hide black
     $ mas_resetTextSpeed()
-    show monika 1eua at i11 zorder MAS_MONIKA_Z
+    show monika 1eua zorder MAS_MONIKA_Z at i11
 
-label .end:
-    m 3eud "The fate she gives you depends on your answer, actually."
-    m "Meeting her isn't always certain to seal your doom."
-    m 3esc "However..."
-    m "If you're not smart with how you deal with the question..."
-    m 3tku "You might just end up like her."
-    call mas_scary_story_cleanup
+label mas_scary_story_kuchisake_onna.end:
+    $ MAS.MonikaElastic()
+    m 3eud "Судьба, которую она тебе преподнесёт — зависит от твоего ответа."
+    $ MAS.MonikaElastic()
+    m "Встреча с ней не всегда означает твою гибель."
+    $ MAS.MonikaElastic()
+    m 3esc "Однако..."
+    $ MAS.MonikaElastic()
+    m "Если ты не знаешь, как справиться с вопросом..."
+    $ MAS.MonikaElastic()
+    m 3tku "Ты можешь просто закончить как она."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_1
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_mujina",
-    category=[store.mas_stories.TYPE_SCARY], prompt="Mujina",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Мудзина",unlocked=False),
     code="STY")
 
 label mas_scary_story_mujina:
-    call mas_scary_story_setup
-    m 1esc "One night at a late hour, an old merchant was walking down a road heading home after a long day of selling his wares."
-    m 3esc "The road he travelled on led to a large hill that was very dark and secluded at night so many travelers tended to avoid the area."
-    m "The man was tired, however, and decided to take the road anyway since it would get him home quicker."
-    m "On the one side of the hill was an old moat that was quite deep."
-    m 3eud "As he went along, he noticed a woman crouching by the moat, all alone and weeping bitterly."
-    m "Although the man was exhausted, he feared the woman intended to throw herself into the water, so he stopped."
-    m 3euc "She was petite and well-dressed, covering her face with one of the sleeves of her kimono facing away from him."
-    m 3eud "The man said to her, 'Miss, please don't cry. What is the matter? If there is anything I can do to help you, I would be glad to do it.'"
-    m "The woman kept crying, however, ignoring him."
-    m 3ekd "'Miss, listen to me. This is no place for a lady at night. Please, let me help you.'"
-    m 1euc "Slowly, the woman rose up, still sobbing."
-    m 1dsc "The man laid his hand lightly on her shoulder..."
-    m 4wud "When she abruptly turned her head to him, showing a blank face, void of all human features."
-    m 4wuw "No eyes, mouth, or nose. Just an empty visage that stared back at him!"
-    m "The merchant ran away as fast as he could, panicking from the haunting figure."
-    m 1efc "He continued to run until he saw the light of a lantern and ran towards it."
-    m 3euc "The lantern belonged to a travelling salesman that was walking along."
-    m 1esc "The old man stopped in front of him, doubled over to catch his breath."
-    m 3esc "The salesman asked why the man was running."
-    m 4ekd "'A m-monster! There was a girl with no face by the moat!' the merchant cried."
-    # 1 in 10
+    call mas_scary_story_setup from _call_mas_scary_story_setup_2
+    $ MAS.MonikaElastic()
+    m 1esc "Однажды ночью, в поздний час, старый купец шёл по дороге домой после долгого дня продажи своих товаров."
+    $ MAS.MonikaElastic()
+    m 3esc "Дорога, по которой он ехал, вела к большому холму, который был очень тёмным и уединённым ночью, поэтому многие путешественники старались избегать этого района."
+    $ MAS.MonikaElastic()
+    m "Однако мужчина устал и решил пойти по дороге, так как это ускорит его возвращение домой."
+    $ MAS.MonikaElastic()
+    m "С одной стороны холма был старый ров, довольно глубокий."
+    $ MAS.MonikaElastic()
+    m 3eud "Когда он шёл, он заметил женщину, сидящую у рва, совсем одну и горько рыдающую."
+    $ MAS.MonikaElastic()
+    m "Хотя мужчина был истощён, он боялся, что женщина собирается броситься в воду, поэтому остановился."
+    $ MAS.MonikaElastic()
+    m 3euc "Она была миниатюрной и хорошо одетой, закрывая лицо одним из рукавов кимоно, при этом отвернувшись от него."
+    $ MAS.MonikaElastic()
+    m 3eud "Мужчина сказал ей:"
+    $ MAS.MonikaElastic()
+    m "— Мисс, пожалуйста, не плачьте. В чём дело? Если есть что-то, что я могу сделать, чтобы помочь вам, я был бы рад это сделать."
+    $ MAS.MonikaElastic()
+    m "Женщина продолжала плакать, игнорируя его."
+    $ MAS.MonikaElastic()
+    m 3ekd "— Мисс, послушайте меня. Это не место для леди по ночам. Пожалуйста, позвольте мне помочь Вам."
+    $ MAS.MonikaElastic()
+    m 1euc "Женщина медленно поднялась, всё ещё рыдая."
+    $ MAS.MonikaElastic()
+    m 1dsc "Мужчина слегка положил руку ей на плечо..."
+    $ MAS.MonikaElastic()
+    m 4wud "Когда она резко повернула голову к нему, тому предстало пустое лицо, лишённое всех человеческих особенностей."
+    $ MAS.MonikaElastic()
+    m 4wuw "Ни глаз, ни рта, ни носа. Лишь пустой облик, который смотрел на него!"
+    $ MAS.MonikaElastic()
+    m "Купец убежал так быстро, как только мог, в панике от преследующей его фигуры."
+    $ MAS.MonikaElastic()
+    m 1efc "Он продолжал бежать, пока не увидел свет фонаря и в тот час побежал к нему."
+    $ MAS.MonikaElastic()
+    m 3euc "Фонарь принадлежал странствующему продавцу, который шёл рядом."
+    $ MAS.MonikaElastic()
+    m 1esc "Старик резко остановился перед ним, чтобы перевести дыхание."
+    $ MAS.MonikaElastic()
+    m 3esc "Продавец спросил, почему человек бежал."
+    $ MAS.MonikaElastic()
+    m 4ekd "— Ч-чудовище! У рва была девушка без лица! — зарыдал купец."
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,10) == 1) or mas_full_scares:
         $ style.say_dialogue = style.edited
-        m 2tub "The salesman responded, 'Oh, you mean...{w=2}{b}like this?{/b}'{nw}"
+        $ MAS.MonikaElastic()
+        m 2tub "Продавец ответил:"
+        $ MAS.MonikaElastic()
+        m "— О, вы имеете в виду...{w=2} {b}вот это?{/b}{nw}"
         show mujina zorder 75 at otei_appear(a=1.0,time=0.25)
         play sound "sfx/glitch1.ogg"
         $ mas_resetTextSpeed()
@@ -1081,219 +1466,337 @@ label mas_scary_story_mujina:
         stop sound
         hide mujina
     else:
-        m 2tub "The salesman responded, 'Oh, you mean like this?'"
-    m 4wud "The man looked up at the salesman and saw the same horrifying emptiness from the girl."
-    m "Before the merchant could get away, the void let out a high pitch screech..."
-    m 1dsc "...and then there was darkness."
+        $ MAS.MonikaElastic()
+        m 2tub "Продавец ответил:"
+        $ MAS.MonikaElastic()
+        m "— О, вы имеете в виду вот то?"
+    $ MAS.MonikaElastic()
+    m 4wud "Мужчина поднял глаза на продавца и увидел такую же ужасающую пустоту от девушки."
+    $ MAS.MonikaElastic()
+    m "Прежде чем торговец смог уйти, пустота издала пронзительный визг..."
+    $ MAS.MonikaElastic()
+    m 1dsc "...А потом наступила тьма."
     show black zorder 100
     $ pause(3.5)
     hide black
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_2
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_ubume",
-    category=[store.mas_stories.TYPE_SCARY], prompt="The Ubume",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Убумэ",unlocked=False),
     code="STY")
 
 label mas_scary_story_ubume:
-    call mas_scary_story_setup
-    m 3euc "One night at a late hour, a woman walked into a confectionery store to buy some candy right before the owner was about to head off to bed."
-    m 1esc "The village was small, and the confectioner didn't recognize the woman, but didn't think much of it."
-    m "He tiredly sold the woman the candy that she requested."
-    m 1euc "The next night around the same time, the same woman walked into the shop to buy some more candy."
-    m "She continued to visit the shop nightly, until the confectioner became curious about the woman and decided to follow her the next time she came in."
-    m 1esd "The next night, the woman arrived at her usual time, purchased the candy that she always did, and went happily on her way."
-    m 3wud "After she walked out the door, the confectioner looked into his money box and saw the coins that the woman had given to him turned into leaves from a tree."
-    # 1 in 20
+    call mas_scary_story_setup from _call_mas_scary_story_setup_3
+    $ MAS.MonikaElastic()
+    m 3euc "Однажды ночью в поздний час женщина зашла в кондитерскую, чтобы купить конфеты прямо перед тем, как владелец собирался ложиться спать."
+    $ MAS.MonikaElastic()
+    m 1esc "Деревня была маленькая, и кондитер не узнал женщину, но не думал об этом."
+    $ MAS.MonikaElastic()
+    m "Он устало продал женщине конфеты, которые она просила."
+    $ MAS.MonikaElastic()
+    m 1euc "На следующий вечер примерно в то же время, та же женщина вошла в магазин, чтобы купить ещё больше конфет."
+    $ MAS.MonikaElastic()
+    m "Она продолжала посещать магазин по ночам, пока кондитер не заинтересовался женщиной, вскоре после чего тот решил последовать за ней в следующий раз, когда она вошла."
+    $ MAS.MonikaElastic()
+    m 1esd "На следующую ночь женщина пришла в своё обычное время, купила конфеты, как она обычно делала, и счастливо отправилась в путь."
+    $ MAS.MonikaElastic()
+    m 3wud "После того, как она вышла за дверь, кондитер заглянул в свою копилку и увидел, что монеты, которые дала ему женщина, превратились в листья с дерева."
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,20) == 1) or mas_full_scares:
         play sound "sfx/giggle.ogg"
-    m 1euc "He followed the woman to the outside of a nearby temple, where she simply vanished."
-    m 1esc "The confectioner was shocked by this and decided to head back home."
-    m 3eud "The next day, he went to the temple and told the monk there what he saw."
-    m 1dsd "The priest told the confectioner that a young woman that was travelling through the village recently had suddenly died on the street."
-    m "The monk felt compassion for the poor dead woman, as she had been in her last month of pregnancy."
-    m 1esc "He had her buried in the cemetery behind the temple and gave her and her child safe passage to the afterlife."
-    m 4eud "As the monk led the confectioner to the site of the grave, they both heard a baby crying from beneath the ground."
-    m "Immediately, they fetched a couple of shovels and dug up the grave."
-    m 1wuw "Much to their shock, they found a newborn baby boy sucking on a piece of candy."
-    m "Candy that the confectioner had always sold to the woman."
-    m 1dsd "They lifted the boy out of the grave and the monk would take him as his own to raise."
-    m 1esc "And the woman's ghost was never seen ever again."
-    call mas_scary_story_cleanup
+    $ MAS.MonikaElastic()
+    m 1euc "Он последовал за женщиной к внешней стороне храма, что был неподалёку, где она просто исчезла."
+    $ MAS.MonikaElastic()
+    m 1esc "Кондитер был шокирован этим, и решил вернуться домой."
+    $ MAS.MonikaElastic()
+    m 3eud "На следующий день он пошёл в храм и сообщил монаху, что видел."
+    $ MAS.MonikaElastic()
+    m 1dsd "Священник рассказал кондитеру, что недавно на улице внезапно умерла молодая женщина, которая ехала через деревню."
+    $ MAS.MonikaElastic()
+    m "Монах почувствовал сострадание к бедной мёртвой женщине, так как она была на последнем месяце беременности."
+    $ MAS.MonikaElastic()
+    m 1esc "Он похоронил её на кладбище за храмом и дал ей и её ребёнку безопасный проход в загробную жизнь."
+    $ MAS.MonikaElastic()
+    m 4eud "Когда монах вёл кондитера к месту могилы, те оба услышали плач ребёнка из-под земли."
+    $ MAS.MonikaElastic()
+    m "Тотчас же, они взяли пару лопат и выкопали могилу."
+    $ MAS.MonikaElastic()
+    m 1wuw "К их большому шоку, они обнаружили новорождённого мальчика, сосущего конфеты."
+    $ MAS.MonikaElastic()
+    m "Конфеты, которые кондитер всегда продавал женщине."
+    $ MAS.MonikaElastic()
+    m 1dsd "Они подняли мальчика из могилы, и монах взял его, как своего собственного, чтобы воскресить."
+    $ MAS.MonikaElastic()
+    m 1esc "И призрак женщины больше никогда не видели."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_3
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_womaninblack",
-    category=[store.mas_stories.TYPE_SCARY], prompt="The Woman in Black",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Женщина в чёрном",unlocked=False),
     code="STY")
 
 label mas_scary_story_womaninblack:
-    call mas_scary_story_setup
-    m 3esd "One night, a colonel boarded a train on his way home."
-    m 1esd "When he found a comfortable spot to sit, he fell asleep from the day's fatigue."
-    m 3eud "A short time later, he awoke abruptly feeling stiff and uneasy."
-    m "To his surprise, he noticed that there was now a woman sitting opposite of him."
-    m "Her attire was entirely black, including a veil that obscured her face."
-    m 1esc "She appeared to be looking down at something in her lap, although there wasn't anything there."
-    m 3esd "The colonel was a friendly fellow and tried to make small talk with her."
-    m 1dsd "To his dismay, she did not respond to his pleasantries."
-    m 1esc "Suddenly, she began rocking back and forth and singing a soft lullaby."
-    m "Before the colonel could inquire about it, the train screeched to a halt."
-    m "A suitcase from the compartment above fell and hit him on the head, knocking him unconscious."
+    call mas_scary_story_setup from _call_mas_scary_story_setup_4
+    $ MAS.MonikaElastic()
+    m 3esd "Однажды ночью полковник сел на поезд по дороге домой."
+    $ MAS.MonikaElastic()
+    m 1esd "Когда он нашёл удобное место для сидения, вскоре заснул от дневной усталости."
+    $ MAS.MonikaElastic()
+    m 3eud "Через некоторое время он проснулся, чувствуя себя напряжённым и чем-то обеспокоенным."
+    $ MAS.MonikaElastic()
+    m "К его удивлению, он заметил, что теперь напротив него сидит женщина."
+    $ MAS.MonikaElastic()
+    m "Её наряд был полностью чёрным, включая вуаль, которая скрывала её лицо."
+    $ MAS.MonikaElastic()
+    m 1esc "Она, казалось, смотрела на что-то на коленях, хотя там ничего не было."
+    $ MAS.MonikaElastic()
+    m 3esd "Полковник был дружелюбным парнем, так что постарался вести с ней светскую беседу."
+    $ MAS.MonikaElastic()
+    m 1dsd "К его ужасу, она не ответила на его любезности."
+    $ MAS.MonikaElastic()
+    m 1esc "Внезапно она начала раскачиваться взад-вперёд и петь мягкую колыбельную."
+    $ MAS.MonikaElastic()
+    m "Прежде чем полковник успел поинтересоваться, поезд завизжал."
+    $ MAS.MonikaElastic()
+    m "Чемодан из купе сверху упал и ударил его по голове, сбив его без сознания."
     show black zorder 100
     play sound "sfx/crack.ogg"
     $ pause(1.5)
     hide black
-    m 3eud "When he came to, the woman was gone. The colonel questioned some of the other passengers, but none of them had seen her."
-    m 3ekd "To boot, once the colonel had entered the compartment it was locked, as was customary, and no one had entered or left the compartment after he had entered."
-    m 1esc "When he exited the train, a railway official that overheard him talked to the colonel about the woman he was asking about."
-    m "According to the official, a woman and her husband were travelling on a train together."
-    m 1dsd "The husband had his head too far out in one of the windows and was decapitated by a wire."
-    m "His body then fell onto her lap, lifeless."
-    m 3wud "When the train arrived at its stop, she was found holding the corpse and singing a lullaby to it."
-    m "She never regained her sanity and died shortly after."
-    call mas_scary_story_cleanup
+    $ MAS.MonikaElastic()
+    m 3eud "Когда он пришёл в себя, женщины уже не было. Полковник допросил других пассажиров, но никто из них её не видел."
+    $ MAS.MonikaElastic()
+    m 3ekd "В довершение ко всему, как только полковник вошёл в купе, оно было заперто, как это было принято, и никто не входил и не выходил из него после того, как тот вошёл."
+    $ MAS.MonikaElastic()
+    m 1esc "Когда он вышел из поезда, железнодорожный чиновник, который подслушал его, поговорил с этим же полковником о женщине, о которой тот спрашивал."
+    $ MAS.MonikaElastic()
+    m "По словам чиновника, женщина и её муж ехали в поезде вместе."
+    $ MAS.MonikaElastic()
+    m 1dsd "Муж слишком глубоко засунул голову в одно из окон и был обезглавлен проволокой."
+    $ MAS.MonikaElastic()
+    m "Затем его тело упало ей на колени, безжизненное."
+    $ MAS.MonikaElastic()
+    m 3wud "Когда поезд прибыл на остановку, её нашли с трупом на руках и поющую тому колыбельную."
+    $ MAS.MonikaElastic()
+    m "Она так и не пришла в себя и вскоре умерла."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_4
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_resurrection_mary",
-    category=[store.mas_stories.TYPE_SCARY], prompt="Resurrection Mary",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Воскресение Мэри",unlocked=False),
     code="STY")
 
 label mas_scary_story_resurrection_mary:
-    call mas_scary_story_setup
-    m 3eua "At a dancehall around Christmas time, a young man named Lewis was enjoying some time with his friends, when a young woman he hadn't seen before caught his attention."
-    m 1eub "The girl was tall, blonde, blue-eyed, and very beautiful."
-    m 1hub "She was wearing a fancy white dress, with white dancing shoes and a thin shawl."
-    m 3esb "Lewis found the girl captivating. He decided to ask her to dance with him and she accepted his invitation."
-    m 1eud "She was certainly beautiful, but Lewis felt there was something strange about her."
-    m 3esd "As they danced, he tried to get to know her a little better, but all she would say about herself was that her name was Mary and that she was from the south side of town."
-    m "Also, her skin was cool and clammy to the touch. At one point during the evening, he kissed Mary, and found her lips were as cool as her skin."
-    m 1esb "The two spent much of the night together dancing. When the time came to leave, Lewis offered Mary a ride home and she again accepted the invitation."
-    m 3esb "She directed him to drive down a certain road, and he obliged."
-    m 3eud "As they were passing the gates of a cemetery, Mary asked Lewis to pull over."
-    m 1eud "Although perplexed, Lewis stopped the car as she requested."
-    m 3eud "She then opened the door, leaned in towards Lewis and whispered that she had to go and that he could not go with her."
-    m 1euc "She got out of the car and walked towards the cemetery gate before disappearing."
-    m "Lewis sat in the car for a long time bewildered by what had just happened."
-    m 1esd "He never saw the beautiful woman ever again."
-    # 1 in 20
+    call mas_scary_story_setup from _call_mas_scary_story_setup_5
+    $ MAS.MonikaElastic()
+    m 3eua "Во время рождественских танцев молодой человек по имени Льюис наслаждался временем со своими друзьями, когда молодая женщина, которую он не видел ранее, привлекла его внимание."
+    $ MAS.MonikaElastic()
+    m 1eub "Девочка была высокая, блондинка, голубоглазая и очень красивая."
+    $ MAS.MonikaElastic()
+    m 1hub "Она была одета в красивое белое платье, с белыми танцевальными туфлями и тонкой шалью."
+    $ MAS.MonikaElastic()
+    m 3esb "Льюис нашёл девушку очаровательной. Он решил пригласить её потанцевать с ним, и та приняла его приглашение."
+    $ MAS.MonikaElastic()
+    m 1eud "Она, [random_sure_lower], была красива, но Льюис чувствовал, что в ней было что-то странное."
+    $ MAS.MonikaElastic()
+    m 3esd "Когда они танцевали, он пытался узнать её получше, но всё, что она говорила о себе — это то, что её звали Мэри, и что она была из южной части города."
+    $ MAS.MonikaElastic()
+    m "Кроме того, её кожа была холодной и липкой на ощупь. В какой-то момент вечером он поцеловал Мэри и обнаружил, что её губы были такими же холодными, как её кожа."
+    $ MAS.MonikaElastic()
+    m 1esb "Они провели большую часть ночи вместе, танцуя. Когда пришло время уезжать, Льюис предложил Мэри подвезти ту до её дома, и она снова приняла приглашение."
+    $ MAS.MonikaElastic()
+    m 3esb "Она велела ему ехать по определённой дороге, и он согласился."
+    $ MAS.MonikaElastic()
+    m 3eud "Проезжая мимо ворот кладбища, Мэри попросила Льюиса остановиться."
+    $ MAS.MonikaElastic()
+    m 1eud "Несмотря на недоумение, Льюис остановил машину, как она просила."
+    $ MAS.MonikaElastic()
+    m 3eud "Затем она открыла дверь, наклонилась к Льюису и прошептала, что ей нужно идти, а он не может пойти с ней."
+    $ MAS.MonikaElastic()
+    m 1euc "Она вышла из машины и подошла к воротам кладбища, прежде чем исчезнуть."
+    $ MAS.MonikaElastic()
+    m "Льюис долго сидел в машине, сбитый с толку тем, что только что произошло."
+    $ MAS.MonikaElastic()
+    m 1esd "Он больше никогда не видел эту прекрасную женщину."
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,20) == 1) or mas_full_scares:
         play sound "sfx/giggle.ogg"
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_5
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_corpse",
-    category=[store.mas_stories.TYPE_SCARY], prompt="The Resuscitated Corpse",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Реанимированный труп",unlocked=False),
     code="STY")
 
 label mas_scary_story_corpse:
-    call mas_scary_story_setup
-    m 1esa "There once was an old man that ran an old roadside inn. One evening, 4 men arrived and asked for a room."
-    m 3eua "The old man replied that all of the rooms were taken, but he could find them a place to sleep if they weren't too particular."
-    m 1esa "The men were exhausted and assured the man that any place would do."
-    m 1eud "He led them to a room around back. Lying in the corner of the room was the corpse of a woman."
-    m "He explained that his daughter-in-law had recently perished and she was awaiting burial."
-    m 1eua "After the old man departed, 3 of the 4 men fell asleep. The last man couldn't fall asleep."
-    m 1wuo "Suddenly, the man heard a creaking noise."
+    call mas_scary_story_setup from _call_mas_scary_story_setup_6
+    $ MAS.MonikaElastic()
+    m 1esa "Жил-был старик, который управлял старой придорожной гостиницей. Однажды вечером, 4 человека приехали и попросили номер."
+    $ MAS.MonikaElastic()
+    m 3eua "Старик ответил, что все комнаты заняты, но он мог бы найти им место для сна, если бы они не были слишком особенными."
+    $ MAS.MonikaElastic()
+    m 1esa "Мужчины были измучены и уверяли мужчину, что любое место подойдёт."
+    $ MAS.MonikaElastic()
+    m 1eud "Он привел их в комнату позади. В углу комнаты лежал труп женщины."
+    $ MAS.MonikaElastic()
+    m "Он пояснил, что его невестка недавно скончалась и что она ожидает погребения."
+    $ MAS.MonikaElastic()
+    m 1eua "После того как старик ушел, 3 из 4 мужчин заснули. Последний же никак не мог уснуть."
+    $ MAS.MonikaElastic()
+    m 1wuo "Внезапно мужчина услышал скрип."
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,2) == 1) or mas_full_scares:
         play sound "sfx/crack.ogg"
-    m 3wuo "He looked up and in the light of the lamp, he saw the woman rise, now bearing fangs and fingernails that looked like claws, advancing towards them."
-    m "She bent down and bit each of the sleeping men. The fourth man, at the last second, pulled up a pillow in front of his neck."
-    m 1eud "The woman bit the pillow and apparently not realizing she hadn't bit the last man, returned to her original resting spot."
-    m 3eud "The man kicked his companions, but none of them moved. The man decided to take his chances and make a run for it."
-    m 3wuo "As soon as his feet touched the ground, however, he heard another creak."
+    $ MAS.MonikaElastic()
+    m 3wuo "Он поднял глаза и при свете лампы увидел, как женщина поднялась, теперь с клыками и ногтями, похожими на когти, и направилась к ним."
+    $ MAS.MonikaElastic()
+    m "Она наклонилась и укусила каждого из спящих мужчин. Четвёртый мужчина в последнюю секунду приподнял подушку перед шеей."
+    $ MAS.MonikaElastic()
+    m 1eud "Женщина укусила подушку и, видимо, не понимая, что она так и не смогла укусить последнего мужчину, вернулась в своё первоначальное место отдыха."
+    $ MAS.MonikaElastic()
+    m 3eud "Мужчина пнул своих товарищей, но никто из них не пошевелился. Он решил рискнуть и сбежать."
+    $ MAS.MonikaElastic()
+    m 3wuo "Однако, как только его ноги коснулись земли, он услышал ещё один скрип."
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,2) == 1) or mas_full_scares:
         play sound "sfx/crack.ogg"
-    m "Realizing that the woman was again rising from her spot, he opened the door and ran as fast as he could."
-    # need opinions on this one since it's for storytelling purposes
+    $ MAS.MonikaElastic()
+    m "Поняв, что женщина снова встаёт со своего места, он открыл дверь и побежал так быстро, как только мог."
+
     show layer master at heartbeat2(1)
     show vignette as flicker zorder 72 at vignetteflicker(0)
     play sound hb loop
-    m 3eud "After a short distance, he looked behind him and saw that the corpse was not far behind him."
-    m 3wud "A chase ensued and as she caught up to him, he found himself standing under a tree."
-    m "She charged towards him with her claw-like fingernails extended."
-    m 4wud "At the last second, the man dodged and she struck the tree with great ferocity."
-    m 3wud "Her fingernails were now deeply embedded in the tree."
-    m 1wud "She wildly swung her freehand at the man as he lay on the ground, unable to reach him."
-    m 1eud "The man, frightened and exhausted crawled a short distance away and then passed out."
+    $ MAS.MonikaElastic()
+    m 3eud "Пройдя небольшое расстояние, он оглянулся и увидел, что труп был недалеко от него."
+    $ MAS.MonikaElastic()
+    m 3wud "Последовала погоня, и когда та догнала его, он оказался под деревом."
+    $ MAS.MonikaElastic()
+    m "Она бросилась к нему, вытянув когтистые ногти."
+    $ MAS.MonikaElastic()
+    m 4wud "В последнюю секунду мужчина увернулся, и она ударила дерево с большой свирепостью."
+    $ MAS.MonikaElastic()
+    m 3wud "Теперь её ногти были глубоко врезаны в дерево."
+    $ MAS.MonikaElastic()
+    m 1wud "Она дико замахнулась рукой на мужчину, когда он лежал на земле, не в силах дотянуться до него."
+    $ MAS.MonikaElastic()
+    m 1eud "Человек, напуганный и измученный ползал рядом и отрубился."
     show layer master
     stop sound
     hide flicker
     show black zorder 100
     $ pause(2.5)
     hide black
-    m 1esd "The next morning a passing police officer found the man and brought him back to consciousness."
-    m "The man recounted what had happened. The officer, thinking the man was a drunkard, walked the man back to the inn."
-    m 1eud "As they arrived, the inn was in a state of great commotion."
-    m 3eud "The 3 travelers had been found dead in their beds."
-    m "The body of the daughter-in-law was lying where she had been the night before, but now her clothes were soiled with blood and a piece of bark was found under her fingernail."
-    m 3esd "After some questioning, the innkeeper finally admitted that the woman had died six months previously and he was trying to save enough money to give her a proper burial."
-    call mas_scary_story_cleanup
+    $ MAS.MonikaElastic()
+    m 1esd "На следующее утро проходящий мимо полицейский нашёл мужчину и привел его в сознание."
+    $ MAS.MonikaElastic()
+    m "Мужчина рассказал, что произошло. Офицер, думая, что этот человек был пьян, проводил его до гостиницы."
+    $ MAS.MonikaElastic()
+    m 1eud "Когда они прибыли, гостиница была в состоянии большой суматохи."
+    $ MAS.MonikaElastic()
+    m 3eud "3 путешественника были найдены мёртвыми в своих постелях."
+    $ MAS.MonikaElastic()
+    m "Тело невестки лежало там, где она была накануне вечером, но теперь её одежда была запачкана кровью, а под ногтем был найден кусок коры."
+    $ MAS.MonikaElastic()
+    m 3esd "После некоторого допроса владелец гостиницы, наконец, признал, что женщина умерла шесть месяцев назад, и он пытался сэкономить достаточно денег, чтобы дать ей надлежащее захоронение."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_6
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_jack_o_lantern",
-    category=[store.mas_stories.TYPE_SCARY], prompt="Jack O' Lantern",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Джек О'Лантерн",unlocked=False),
     code="STY")
 
 label mas_scary_story_jack_o_lantern:
-    call mas_scary_story_setup
-    # chance of 1 in 4
+    call mas_scary_story_setup from _call_mas_scary_story_setup_7
+
     $ _mas_jack_scare = (persistent._mas_pm_likes_spoops and renpy.random.randint(1,4) == 1) or mas_full_scares
-    m 4esd "There was once a man named Jack. Jack was a miserable, old drunk who took pleasure in playing tricks on people."
-    m 3esa "One night, Jack ran into the Devil and invited him to have a drink with him."
-    m "After Jack had had his fill, he turned to the Devil and asked him to turn into a coin so he could pay for their drinks, as he didn't have the money to pay for them."
-    m 1esa "Once the Devil did so, Jack pocketed the coin and walked out without paying."
-    m "The Devil could not turn back to his original form because Jack had put it into his pocket next to a silver cross."
-    m 3esa "Jack eventually freed the Devil, under the condition that he would not bother Jack for 1 year and that, should Jack die, he would not claim his soul."
-    m "The next year, Jack ran into the Devil again. This time he tricked him into climbing into a tree to pick a piece of fruit."
-    m 3esd "While he was in the tree, Jack surrounded it with white crosses so that the Devil could not come down."
-    m "Once the Devil promised not to bother him again for another 10 years, Jack removed them. When Jack died, he went to Heaven."
-    m 1eud "When he arrived, he was told he could not enter for how poorly a life he had lived on Earth."
-    m 1eua "So, he went down to Hell, where the Devil kept his promise and would not allow Jack to enter."
-    m 1eud "Jack became scared, for he had no place to go."
-    m 1esd "Jack asked the Devil how he could leave, as there was no light."
+    $ MAS.MonikaElastic()
+    m 4esd "Жил-был человек по имени Джек. Джек был жалким, старым пьяницей, которому доставляло удовольствие подшучивать над людьми."
+    $ MAS.MonikaElastic()
+    m 3esa "Однажды ночью Джек столкнулся с дьяволом и пригласил его выпить с ним."
+    $ MAS.MonikaElastic()
+    m "После того, как Джек насытился, он повернулся к дьяволу и попросил его превратиться в монету, чтобы он мог заплатить за их напитки, так как у него не было денег, чтобы заплатить за них."
+    $ MAS.MonikaElastic()
+    m 1esa "Как только дьявол сделал это, Джек положил монету в карман и вышел, не заплатив."
+    $ MAS.MonikaElastic()
+    m "Дьявол не мог вернуться к своему первоначальному виду, потому что Джек положил его в карман рядом с серебряным крестом."
+    $ MAS.MonikaElastic()
+    m 3esa "Джек в конце концов освободил дьявола, при условии, что он не будет беспокоить Джека в течение 1 года и что, если Джек умрёт, он не будет претендовать на его душу."
+    $ MAS.MonikaElastic()
+    m "В следующем году Джек снова столкнулся с дьяволом. На этот раз он обманом заставил того забраться на дерево, чтобы сорвать фрукт."
+    $ MAS.MonikaElastic()
+    m 3esd "Пока тот был на дереве, Джек окружил его белыми крестами, чтобы дьявол не смог спуститься."
+    $ MAS.MonikaElastic()
+    m "Как только дьявол пообещал не беспокоить его ещё 10 лет, Джек снял их. Когда Джек умер, он попал на небеса."
+    $ MAS.MonikaElastic()
+    m 1eud "Когда он прибыл, ему сказали, что он не может войти, так как плохо прожил на Земле."
+    $ MAS.MonikaElastic()
+    m 1eua "Итак, он отправился в ад, где дьявол сдержал своё обещание и не позволил Джеку войти."
+    $ MAS.MonikaElastic()
+    m 1eud "Джек испугался, потому что ему некуда было идти."
+    $ MAS.MonikaElastic()
+    m 1esd "Джек спросил Дьявола, как он мог уйти, так как света не было."
     if _mas_jack_scare:
         hide vignette
         show darkred zorder 82:
             alpha 0.85
-    m 1eud "The Devil tossed Jack an ember from the flames of Hell to help Jack light his way."
-    m "Jack pulled out a turnip he had with him, carved it out, and placed the ember inside of it."
-    m 3eua "From that day onward, Jack roamed the earth without a resting place, lighting the way as he went with his Jack O'Lantern."
+    $ MAS.MonikaElastic()
+    m 1eud "Дьявол бросил Джеку уголёк из пламени ада, чтобы помочь Джеку осветить свой путь."
+    $ MAS.MonikaElastic()
+    m "Джек вытащил репу, которая была у него с собой, вырезал её и поместил в неё угольки."
+    $ MAS.MonikaElastic()
+    m 3eua "С этого дня Джек бродил по земле без места отдыха, освещая путь, когда он шёл со своим Джеком О'Лантерном."
     if _mas_jack_scare:
         hide darkred
         show vignette zorder 70
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_7
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_baobhan_sith",
-    category=[store.mas_stories.TYPE_SCARY], prompt="Baobhan Sith",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Баобанские ситы",unlocked=False),
     code="STY")
 
 label mas_scary_story_baobhan_sith:
-    call mas_scary_story_setup
-    m 1esa "There was once a young group of hunters, who stopped for the night in a small hunting lodge."
-    m 3esb "As the men settled in, they built a fire, and began eating and drinking merrily, for it had been a good day."
-    m 1tku "They said to themselves the only thing that they lacked was the company of some beautiful women by their sides."
-    m 1tsb "Not too long after they said this, there came a knock at their door."
-    m 3eub "There in the doorway stood four beautiful women."
-    m "The women, having become lost in the wilderness, asked if they may join the men in their shelter for the night."
-    m 1tku "The men, silently congratulating themselves on their good fortunes, invited the women in."
-    m 1esa "After a while of enjoying each other's company, the women expressed a wish to dance."
-    m 1tku "The men wasted no time coupling off with each of the maidens."
-    m 1eub "As they are dancing, one of the men notices that the other couples are dancing rather erratically."
-    m 1wuo "Then, to his horror, he realizes that the other men have blood pouring from their necks onto their shirts."
-    m 3wuo "In a blind panic, the man abandoned his partner and bolted out the door, before he could share the fate of his friends."
-    m 3wud "He ran into the forest and hid amongst the horses he and his friends had ridden during that day's hunt."
-    m "The women, not far behind, closed in, but appeared unable to get past the horses to the man."
-    m 1eud "So there he stood, weary eyed, among the animals all night long as the women circled around the horses, trying to find a way to get to him."
-    m 1esa "Just before dawn, the women gave up and retreated back into the woods."
-    m 1esd "Now alone, the man cautiously headed back towards the hunting lodge, hearing no sound from within."
-    # chance of 1 in 14
+    call mas_scary_story_setup from _call_mas_scary_story_setup_8
+    $ MAS.MonikaElastic()
+    m 1esa "Жила-была однажды молодая группа охотников, которая остановилась на ночь в небольшом охотничьем домике."
+    $ MAS.MonikaElastic()
+    m 3esb "Поселившись, они развели костёр и стали весело есть и пить, потому что это был хороший день."
+    $ MAS.MonikaElastic()
+    m 1tku "Они сказали себе, что единственное, чего им не хватало, это компании красивых женщин рядом с ними."
+    $ MAS.MonikaElastic()
+    m 1tsb "Вскоре после того, как они это сказали, в их дверь постучали."
+    $ MAS.MonikaElastic()
+    m 3eub "В дверях стояли четыре прекрасные женщины."
+    $ MAS.MonikaElastic()
+    m "Женщины, заблудившись в пустыне, спросили, могут ли они присоединиться к мужчинам в их убежище на ночь."
+    $ MAS.MonikaElastic()
+    m 1tku "Мужчины, молча поздравляя себя с благополучием, пригласили женщин войти."
+    $ MAS.MonikaElastic()
+    m 1esa "Через некоторое время, наслаждаясь компанией друг друга, женщины выразили желание потанцевать."
+    $ MAS.MonikaElastic()
+    m 1tku "Мужчины не теряли времени на связь с каждой из девиц."
+    $ MAS.MonikaElastic()
+    m 1eub "Когда они танцуют, один из мужчин замечает, что другие пары танцуют довольно хаотично."
+    $ MAS.MonikaElastic()
+    m 1wuo "Затем, к его ужасу, он понимает, что у других мужчин кровь льётся с их шей на их рубашки."
+    $ MAS.MonikaElastic()
+    m 3wuo "В слепой панике мужчина бросил свою партнёршу и выскочил за дверь, прежде чем смог разделить судьбу своих друзей."
+    $ MAS.MonikaElastic()
+    m 3wud "Он побежал в лес и спрятался среди лошадей, на которых ездил со своими друзьями в тот день."
+    $ MAS.MonikaElastic()
+    m "Женщины, не далеко позади, приблизились, но, казалось бы, не могли пройти мимо лошадей к мужчине."
+    $ MAS.MonikaElastic()
+    m 1eud "Итак, он стоял, усталый, среди животных всю ночь, когда женщины обходили вокруг лошадей, пытаясь найти способ добраться до него."
+    $ MAS.MonikaElastic()
+    m 1esa "Незадолго до рассвета, женщины сдались и отступили обратно в лес."
+    $ MAS.MonikaElastic()
+    m 1esd "Оставшись один, мужчина осторожно направился обратно к охотничьему домику, не слыша ни звука изнутри."
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,14) == 1) or mas_full_scares:
         play sound "sfx/stab.ogg"
         show blood splatter1 as bl2 zorder 73:
@@ -1316,73 +1819,111 @@ label mas_scary_story_baobhan_sith:
         hide bl5
         hide bl6
         hide bl7
-    m 3wuo "When he looked inside, he saw his three comrades dead on the floor, their skin almost translucent, as they lay in a pool of their own blood."
-    call mas_scary_story_cleanup
+    $ MAS.MonikaElastic()
+    m 3wuo "Когда он заглянул внутрь, увидел трёх своих товарищей, мёртвых на полу, их кожа была почти прозрачной, когда они лежали в луже собственной крови."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_8
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_serial_killer",
-    category=[store.mas_stories.TYPE_SCARY], prompt="The Serial Killer",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Серийный убийца",unlocked=False),
     code="STY")
 
 label mas_scary_story_serial_killer:
-    call mas_scary_story_setup
-    m 3tub "A young couple parked their car next to a large willow tree at a cemetery one night for some undisturbed 'lovemaking.'"
-    m 3euc "After a while, they were interrupted by a radio report that a notorious serial killer had escaped from a psychiatric hospital nearby."
-    m "Worried about their safety, they decided to continue elsewhere."
-    m 1esc "However...{w=0.3}the car wouldn't start at all."
-    m 3esd "The young man got out of the car to look for help and told the girl to stay inside with the doors locked."
-    m 3wud "A few moments later, she was startled when she heard an eerie scratching sound on the roof of the car."
-    m 1eud "She thought to herself that it must've been a tree branch in the wind."
-    m 1euc "After a long time had passed, a police car drove by and stopped but still no sight of her boyfriend."
-    m 1eud "The police officer went to the car and instructed the girl to exit the vehicle and walk toward him and not look back."
-    m "She did so slowly..."
-    m 1ekc "The girl then noticed numerous other police cars arriving with their sirens blaring behind the first one to arrive."
-    m 1dsd "Curiosity then got the better of her and she turned to look at the car..."
-    m 4wfw "She saw her boyfriend upside down and hanging from the tree above their car with his neck slit wide open..."
-    # chance of 1 in 8
+    call mas_scary_story_setup from _call_mas_scary_story_setup_9
+    $ MAS.MonikaElastic()
+    m 3tub "Молодая пара припарковала свою машину рядом с большим деревом вербы на кладбище одна ночью спокойно «заняться любовью.»"
+    $ MAS.MonikaElastic()
+    m 3euc "Через некоторое время их прервал репортаж по радио о том, что известный серийный убийца сбежал из психиатрической больницы неподалёку."
+    $ MAS.MonikaElastic()
+    m "Беспокоясь о своей безопасности, они решили продолжить в другом месте."
+    $ MAS.MonikaElastic()
+    m 1esc "Однако...{w=0.3} машина вообще не заводилась."
+    $ MAS.MonikaElastic()
+    m 3esd "Молодой человек вышел из машины, чтобы найти помощь, и сказал девушке оставаться внутри с запертыми дверями."
+    $ MAS.MonikaElastic()
+    m 3wud "Несколько мгновений спустя она вздрогнула, услышав жуткий скрежет на крыше машины."
+    $ MAS.MonikaElastic()
+    m 1eud "Она подумала, что это, должно быть, была лишь ветка дерева на ветру."
+    $ MAS.MonikaElastic()
+    m 1euc "По прошествии долгого времени мимо проехал полицейский автомобиль и остановился, но девушка всё ещё не видела своего парня."
+    $ MAS.MonikaElastic()
+    m 1eud "Полицейский подошёл к машине и дал указание девушке выйти из машины и идти к нему навстречу, а не оглядываться."
+    $ MAS.MonikaElastic()
+    m "Она делала это очень медленно..."
+    $ MAS.MonikaElastic()
+    m 1ekc "Затем девушка заметила множество других полицейских машин, прибывших с сиренами, ревущими позади первой прибывшей."
+    $ MAS.MonikaElastic()
+    m 1dsd "Любопытство взяло над ней верх, и она повернулась, чтобы посмотреть на машину..."
+    $ MAS.MonikaElastic()
+    m 4wfw "Она увидела своего парня вверх ногами и свисающим с дерева над их машиной с широко разрезанной шеей..."
+
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,8) == 1) or mas_full_scares:
         show y_sticker hopg zorder 74:
-            pos(600,425)
+            pos (600,425)
             alpha 1.0
             linear 1.6 alpha 0
         play sound "<from 0.4 to 2.0 >sfx/eyes.ogg"
-    m 1dfc "...and his broken and bloody fingernails on the roof."
+    $ MAS.MonikaElastic()
+    m 1dfc "...И его сломанные и окровавленные ногти на крыше."
     hide y_sticker
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_9
     return
 
 init 5 python:
     addEvent(Event(persistent._mas_story_database,eventlabel="mas_scary_story_revenant",
-    category=[store.mas_stories.TYPE_SCARY], prompt="The Revenant",unlocked=False),
+    category=[store.mas_stories.TYPE_SCARY], prompt="Ревенант",unlocked=False),
     code="STY")
 
 label mas_scary_story_revenant:
-    call mas_scary_story_setup
-    m 4eua "There was once a man who married a woman."
-    m 4ekd "He was a wealthy person who made his money through ill-gotten means."
-    m 2eud "Shortly after their marriage, he started to hear rumors that his wife was being unfaithful to him."
-    m 2esd "Anxious to ascertain the truth, the man told his wife he was going away on a business trip for a few days and left the house."
-    m 2eud "Unbeknownst to his wife, the man snuck back into the house later in the evening with the aid of one of his servants."
-    m "The man climbed up one of the beams overhanging in his bedchamber and laid in wait."
-    m 4ekd "Shortly afterwards his wife entered with a man of the neighborhood, the two chatted for a while and then began to undress themselves."
-    m 4eud "The man, at this time, clumsily fell to the ground not far from where the two were, unconscious."
-    m "The adulterer grabbed his clothes and ran away, but the wife came over to her husband and gently patted his hair until he awoke."
-    m "The man chastised his wife for her adultery and threatened punishment once he recovered from his fall."
-    m 2dsc "The man, however, never recovered from his fall and died overnight. He was buried the next day."
-    m 2esd "That night, the man's corpse rose up from his grave and began to wander the neighborhoods."
-    m "As dawn broke, he would return to his grave."
-    m 3esd "This continued night after night and people began locking their doors, fearing to go out to run any errands after the sun went down."
-    m "Lest they run into the creature and be beaten black and blue."
-    m 2dsd "Not long afterwards, the town became plagued by disease and there was no doubt in their minds that the corpse was to blame."
-    m 2dsc "People started fleeing the town, lest they too should die by the disease."
-    m 2esd "As the town was falling apart, a meeting was gathered and it was decided that the corpse should be dug up and disposed of."
-    m "A group of people took spades and found the cemetery the man was buried in."
-    m "They didn't have to dig long before they reached the man's corpse."
-    m 4eud "Once he was fully disinterred, the villagers beat the carcass with their shovels and dragged the body out of town."
-    m 3esd "There, they built a great fire and threw the body on the fire."
-    m 3eub "The man's corpse let out a blood curdling scream and attempted to crawl out of the flames before finally succumbing to it."
-    call mas_scary_story_cleanup
+    call mas_scary_story_setup from _call_mas_scary_story_setup_10
+    $ MAS.MonikaElastic()
+    m 4eua "Когда-то был мужчина, который женился на женщине."
+    $ MAS.MonikaElastic()
+    m 4ekd "Он был богатым человеком, который зарабатывал деньги нечестным путём."
+    $ MAS.MonikaElastic()
+    m 2eud "Вскоре после их брака до него стали доходить слухи, что жена изменяет ему."
+    $ MAS.MonikaElastic()
+    m 2esd "Стремясь выяснить правду, мужчина сказал жене, что уезжает в командировку на несколько дней и покинул дом."
+    $ MAS.MonikaElastic()
+    m 2eud "Без ведома жены мужчина пробрался в дом поздно вечером с помощью одного из своих слуг."
+    $ MAS.MonikaElastic()
+    m "Мужчина взобрался на одну из балок, нависавших над его кроватью, и стал ждать."
+    $ MAS.MonikaElastic()
+    m 4ekd "Вскоре после этого его жена вошла с мужчиной по соседству, двое поболтали некоторое время, а затем начали раздеваться."
+    $ MAS.MonikaElastic()
+    m 4eud "Человек в это время неуклюже упал на землю недалеко от того места, где они находились, без сознания."
+    $ MAS.MonikaElastic()
+    m "Прелюбодей схватил его одежду и убежал, но жена подошла к мужу и нежно гладила его по волосам, пока он не проснулся."
+    $ MAS.MonikaElastic()
+    m "Мужчина наказал свою жену за прелюбодеяние и пригрозил наказанием, когда оправится от грехопадения."
+    $ MAS.MonikaElastic()
+    m 2dsc "Мужчина, однако, так и не оправился от падения и умер в одночасье. Его похоронили на следующий день."
+    $ MAS.MonikaElastic()
+    m 2esd "В ту ночь труп мужчины поднялся из могилы и стал бродить по окрестностям."
+    $ MAS.MonikaElastic()
+    m "С рассветом он возвращался в могилу."
+    $ MAS.MonikaElastic()
+    m 3esd "Это продолжалось ночь за ночью, и люди начали запирать свои двери, опасаясь выходить на улицу, чтобы выполнять любые поручения после того, как солнце опустилось."
+    $ MAS.MonikaElastic()
+    m "Чтобы они не наткнулись на существо и не были избиты чёрным и синим."
+    $ MAS.MonikaElastic()
+    m 2dsd "Вскоре после этого город охватила болезнь, и в их сознании не было сомнений, что виноват труп."
+    $ MAS.MonikaElastic()
+    m 2dsc "Люди начали убегать из города, чтобы не умереть от болезни."
+    $ MAS.MonikaElastic()
+    m 2esd "По мере того как город разваливался, собралось собрание, и было решено, что труп должен быть выкопан и утилизирован."
+    $ MAS.MonikaElastic()
+    m "Группа людей взяла лопаты и нашла кладбище, на котором был похоронен мужчина."
+    $ MAS.MonikaElastic()
+    m "Им не пришлось долго копать, прежде чем они добрались до трупа человека."
+    $ MAS.MonikaElastic()
+    m 4eud "После того, как он был полностью выкопан, жители деревни избили труп лопатами и выволокли тело из города."
+    $ MAS.MonikaElastic()
+    m 3esd "Там они развели большой костёр и бросили тело в него."
+    $ MAS.MonikaElastic()
+    m 3eub "Труп мужчины испустил леденящий кровь крик и попытался выползти из огня, прежде чем, наконец, поддался ему."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_10
     return
 
 init 5 python:
@@ -1391,42 +1932,61 @@ init 5 python:
             persistent._mas_story_database,
             eventlabel="mas_scary_story_yuki_onna",
             category=[store.mas_stories.TYPE_SCARY],
-            prompt="Yuki-onna",
+            prompt="Юки-онна",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_scary_story_yuki_onna:
-    call mas_scary_story_setup
-    m 4eud "There were once two woodcutters, a father and son, who were on their way home when a blizzard suddenly arose."
-    m "After a little bit of travel, they came across an abandoned cabin and took shelter in it."
-    m 2eua "They were able to build a modest fire and huddled together for warmth before falling asleep."
-    m 2esd "In the middle of the night, the son awoke from his sleep with a jolt."
-    m 2wud "To his surprise, a beautiful woman was standing over his father, blowing her breath on him and instantly freezing him."
-    m 4wud "As she turned to the son, she paused. The woman said to him that she would spare him of the same fate, for he was young and very handsome."
-    m 4ekc "If he ever spoke a word of it to anyone, she would come back to kill him."
-    m 4esa "The following winter, the young man was on his way home from a day of cutting wood, when he came across a beautiful travelling woman."
-    m 2eua "It was starting to snow, and the man offered the woman shelter from the storm, and she quickly accepted."
-    m 2eua "The two quickly fell in love and ended up marrying each other."
-    m 2hua "They lived happily for years and had several kids as time went by."
-    m 2esa "One night, while the kids were sleeping, the woman was sewing by the light of the fire."
-    m 2eud "The man looked up from what he was doing and the memory of the night he was never to speak of came back to him."
-    m "The wife asked the man why he was looking at her the way he was."
-    m 3esc "The man told his tale of his encounter with the snow woman."
-    m 2wud "The smile on his wife's face melted into anger as she revealed that she was the snow woman he spoke of."
-    m 4efc "She reprimanded him for breaking his promise and would have killed him if it weren't for the sake of their children."
-    m 4efd "She told the man that he better treat their children well or she would be back to deal with him."
-    m 4dsd "The next instant she vanished, never to be seen again."
+    call mas_scary_story_setup from _call_mas_scary_story_setup_11
+    $ MAS.MonikaElastic()
+    m 4eud "Жили-были два лесоруба, отец и сын, они возвращались к себе домой, когда внезапно возникла метель."
+    $ MAS.MonikaElastic()
+    m "После небольшого путешествия, они наткнулись на заброшенную хижину и укрылись в ней."
+    $ MAS.MonikaElastic()
+    m 2eua "Они смогли разжечь небольшой огонь и прижимались друг к другу ради тепла перед тем, как лечь спать."
+    $ MAS.MonikaElastic()
+    m 2esd "Посреди ночи, сын проснулся от встряски."
+    $ MAS.MonikaElastic()
+    m 2wud "К его удивлению, над его отцом стояла красивая женщина, она подула на него, от чего тот мгновенно заледенел."
+    $ MAS.MonikaElastic()
+    m 4wud "И как только она повернулась к сыну, она остановилась. Женщина сказала ему, что избавит его от такой же судьбы, потому что он был молодой и очень красивый."
+    $ MAS.MonikaElastic()
+    m 4ekc "Если он хоть что-то расскажет об этом кому-либо, она вернётся, чтобы убить его."
+    $ MAS.MonikaElastic()
+    m 4esa "На следующую зиму, молодой человек возвращался к себе домой после вырубки леса, и тут он наткнулся на красивую путешествующую женщину."
+    $ MAS.MonikaElastic()
+    m 2eua "Пошёл снег, и юноша предложил женщине укрыться от шторма, и она тут же согласилась."
+    $ MAS.MonikaElastic()
+    m 2eua "Они быстро влюбились друг в друга, и в конечном счёте женились."
+    $ MAS.MonikaElastic()
+    m 2hua "Они жили счастливо целые годы, и с течением времени завели несколько детей."
+    $ MAS.MonikaElastic()
+    m 2esa "Однажды вечером, пока дети спали, женщина занималась шитьём у горящего камина."
+    $ MAS.MonikaElastic()
+    m 2eud "Юноша оторвался от своего дела, и воспоминание о той ночи, о которой он никогда не говорил, вернулось к нему."
+    $ MAS.MonikaElastic()
+    m "Жена спросила юношу, почему он смотрел на неё таким образом."
+    $ MAS.MonikaElastic()
+    m 3esc "Юноша рассказал свою историю о столкновении со снежной женщиной."
+    $ MAS.MonikaElastic()
+    m 2wud "Улыбка на лице его жены расплылась от злости, поскольку поняла, что она была той самой снежной женщиной, о которой он говорил."
+    $ MAS.MonikaElastic()
+    m 4efc "Она объявила ему выговор за нарушение обещания, и она бы убила его, если бы их дети не были заинтересованы в этом."
+    $ MAS.MonikaElastic()
+    m 4efd "Она сказала юноше, что ему следует хорошо заботиться о своих детях, иначе она вернётся, чтобы разобраться с ним."
+    $ MAS.MonikaElastic()
+    m 4dsd "В следующее мгновение, она исчезла, и её больше никто не видел."
     if (persistent._mas_pm_likes_spoops and renpy.random.randint(1,3) == 1) or mas_full_scares:
         hide monika
         play sound "sfx/giggle.ogg"
         pause 1.0
         show black zorder 100
-        show monika at i11 zorder MAS_MONIKA_Z
+        show monika zorder MAS_MONIKA_Z at i11
         $ pause(1.5)
         hide black
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_11
     return
 
 init 5 python:
@@ -1435,31 +1995,48 @@ init 5 python:
             persistent._mas_story_database,
             eventlabel="mas_scary_story_many_loves",
             category=[store.mas_stories.TYPE_SCARY],
-            prompt="Many Loves",
+            prompt="Много возлюбленных",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_scary_story_many_loves:
-    call mas_scary_story_setup
-    m 4esa "There once was a young woman who appeared in a village one day to find a husband."
-    m 4eua "She was very beautiful and quickly attracted many suitors."
-    m 2eua "Eventually settling down with a husky fisherman."
-    m 2esd "The two had a happy marriage, but in less than a year, the husband wasted away and died."
-    m "The people in the village felt sorry for the young woman and comforted her the best they could."
-    m 4esa "A few months later, the woman married a burly woodcutter."
-    m 4dsd "The two lived happily together for a time, but he too withered away and died."
-    m 4eud "Some of the villagers thought that it was odd both husbands had died in the same fashion, but no one said anything, and comforted the girl for her poor luck."
-    m 2esc "A time later, the woman was married again, this time to a stout mason and they too appeared to have a happy marriage, but within a year, the woman was again a widow."
-    m "This time the villagers talked amongst themselves and felt something suspicious was going on, so a group of villagers set out to find the nearest shaman."
-    m "Once they found the shaman and told him their story, the shaman indicated he knew what was going on."
-    m 3euc "He called his assistant over, a young, well-built fellow, whispered into his ear and sent him off to return with the villagers."
-    m "Telling them not to worry, his assistant would get to the bottom of it."
-    m 2esc "When they returned to the village, the assistant called on the widow and not long afterwards they were married."
-    m 2efc "On the night of their wedding, the assistant placed a knife under his pillow and feigned sleep."
-    m 2esd "A little after midnight, the man felt a presence over him and a prick on his neck."
-    m 2dfc "The man grabbed the knife and stuck it into the thing on top of him."
+    call mas_scary_story_setup from _call_mas_scary_story_setup_12
+    $ MAS.MonikaElastic()
+    m 4esa "Жила-была одна молодая девушка, которая на днях заглянула в деревню, чтобы найти себе мужа."
+    $ MAS.MonikaElastic()
+    m 4eua "Она была очень красивой, и сразу же привлекла к себе много претендентов."
+    $ MAS.MonikaElastic()
+    m 2eua "В конечном счёте, всё свелось к здоровому рыбаку."
+    $ MAS.MonikaElastic()
+    m 2esd "У них был счастливый брак, но не прошло и года, как муж начал слабеть, после чего он умер."
+    $ MAS.MonikaElastic()
+    m "Люди в деревне сочувствовали молодой девушке и утешали её, как могли."
+    $ MAS.MonikaElastic()
+    m 4esa "Спустя пару мгновений, девушка вышла замуж за крепкого лесоруба."
+    $ MAS.MonikaElastic()
+    m 4dsd "Они жили счастливо какое-то время, но он зачах и умер."
+    $ MAS.MonikaElastic()
+    m 4eud "Некоторые жители деревни подумали, мол, как-то странно то, что мужья умерли одним и тем же способом, но никто ничего не сказал, и пожалели девушку за её же невезение."
+    $ MAS.MonikaElastic()
+    m 2esc "Позже, девушка снова вышла замуж, и на этот раз – за крепкого каменщика, и у них так же был счастливый брак, но через год, девушка снова стала вдовой."
+    $ MAS.MonikaElastic()
+    m "На этот раз, жители деревни пообщались между собой и поняли, что происходит что-то подозрительное, поэтому группа жителей деревни отправилась на поиски ближайшего шамана."
+    $ MAS.MonikaElastic()
+    m "Как только они нашли шамана и рассказали ему свою историю, шаман указал на то, что он в курсе того, что происходит."
+    $ MAS.MonikaElastic()
+    m 3euc "Он позвал своего ассистента, молодого парня с хорошим телосложением, шепнул ему на ухо и отправил его домой вместе с жителями деревни."
+    $ MAS.MonikaElastic()
+    m "Он сказал им не волноваться, его ассистент разберётся с этим."
+    $ MAS.MonikaElastic()
+    m 2esc "Когда они вернулись в деревню, ассистент позвал вдову, и, вскоре после этого, они поженились."
+    $ MAS.MonikaElastic()
+    m 2efc "В ночь их свадьбы, ассистент положил нож под подушку и сделал вид, что спит."
+    $ MAS.MonikaElastic()
+    m 2esd "Немного позже полуночи, парень почувствовал чьё-то присутствие над собой и что ему что-то колет шею."
+    $ MAS.MonikaElastic()
+    m 2dfc "Парень достал нож и воткнул его в существо, которое было над ним."
     if (renpy.random.randint(1,20) == 1 and persistent._mas_pm_likes_spoops) or mas_full_scares:
         show monika 6ckc
         show mas_stab_wound zorder 75
@@ -1473,9 +2050,11 @@ label mas_scary_story_many_loves:
         show black zorder 100
         $ pause(1.5)
         hide black
-    m 3wfc "He heard a screech and the flapping of wings as the creature flew through a window."
-    m 1dfc "The next day, the bride was found dead some distance from the house with a knife wound in her chest."
-    call mas_scary_story_cleanup
+    $ MAS.MonikaElastic()
+    m 3wfc "Он услышал визг и хлопанье крыльев, после чего существо вылетело в окно."
+    $ MAS.MonikaElastic()
+    m 1dfc "На следующий день, невесту нашли мёртвой недалеко от дома с ножевым ранением в груди."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_12
     return
 
 init 5 python:
@@ -1484,34 +2063,55 @@ init 5 python:
             persistent._mas_story_database,
             eventlabel="mas_scary_story_gray_lady",
             category=[store.mas_stories.TYPE_SCARY],
-            prompt="The Gray Lady",
+            prompt="Серая леди",
             unlocked=False
         ),
     code="STY"
     )
 
 label mas_scary_story_gray_lady:
-    call mas_scary_story_setup
-    m 4eua "There was once a man named William, who grew up helping his father with his nefarious exploits."
-    m 4ekd "Such as waving lights from the shore line in the dead of night, hoping to lure ships to wreck upon the treacherous rocks along the shore."
-    m 2ekc "And then collect the plunder that was spilled from the ship and kill any survivors."
-    m 2eud "During one of his father's expositions, he saved a beautiful woman and ultimately decided to leave his old life behind and married her."
-    m 2esa "The couple rented a manor not too far away."
-    m 2hub "The two lived a happy life there together, but were especially joyous when their baby daughter Kate was born."
-    m 4esa "As the years went by, Kate grew into a vivacious young woman."
-    m 2ekc "William was secretly ashamed that he didn't have enough money to buy the manor outright to offer as a dowry to the man who would marry his daughter."
-    m 4hub "Then one day, Kate met and fell in love with an Irish pirate captain and the two of them were married."
-    m 4esb "The happy couple decided to settle down in Dublin, since Kate's parents had no land of their own to offer them."
-    m 4eua "Kate promised to return and visit her parents again one day."
-    m 4esd "Time passed and William and his wife missed their daughter dearly and wished for her to return."
-    m 2dkc "William decided to go back to his old ways long enough to get the money necessary to buy the manor and invite their daughter and her husband back to live with them."
-    m 4wud "One night, after attracting a ship to wreck on the shore and gathering the plunder from it, he noticed a badly injured woman lying on the rocks before him."
-    m 2wuc "Her facial features were rendered unrecognizable due to the injuries she had sustained."
-    m 2ekc "William, taking pity on her, carried her back to the manor, and did what he could to try to save her life, but the woman died without ever regaining consciousness."
-    m 2eud "As they searched her body for some clue as to her identity, they found a small purse strapped to her waist full of enough gold coins and jewels for them to finally purchase the manor they rented."
-    m 2dsc "A few days later, the Admiralty inquired the couple about a missing passenger from the wreckage that turned out to be none other than their daughter."
-    m 3dsd "Devastated and ashamed, the parents walled up her remains in a secret room and moved away, never to return."
-    call mas_scary_story_cleanup
+    call mas_scary_story_setup from _call_mas_scary_story_setup_13
+    $ MAS.MonikaElastic()
+    m 4eua "Жил-был один человек по имени Уильям, который рос вместе со своим отцом, помогая ему с его гнусными разработками."
+    $ MAS.MonikaElastic()
+    m 4ekd "Такие как развевающиеся огни на берегу под покровом ночи, в надежде заманить корабли на берег, дабы те разбились об коварные камни на самом берегу."
+    $ MAS.MonikaElastic()
+    m 2ekc "После чего собрать всю добычу, посыпавшуюся из корабля, и убить всех выживших."
+    $ MAS.MonikaElastic()
+    m 2eud "Во время одной из экспозиций своего отца, он спас красивую женщину и в конечном итоге принял решил оставить свою старую жизнь позади, и женился на ней."
+    $ MAS.MonikaElastic()
+    m 2esa "Пара арендовала поместье неподалёку от того места."
+    $ MAS.MonikaElastic()
+    m 2hub "Они жили счастливо вместе, но их больше обрадовало то, что у них родилась дочка, которую звали Кейт."
+    $ MAS.MonikaElastic()
+    m 4esa "С течением лет, Кейт выросла жизнерадостной молодой девушкой."
+    $ MAS.MonikaElastic()
+    m 2ekc "Уильям втайне боялся, что у него не хватит денег, чтобы купить поместье, и он предлагает его как приданое человеку, который женится на его дочери."
+    $ MAS.MonikaElastic()
+    m 4hub "Потом в один прекрасный день, Кейт познакомилась и влюбилась в ирландского капитана пиратов, и они поженились."
+    $ MAS.MonikaElastic()
+    m 4esb "Счастливая пара решила поселиться в Дублине, поскольку у родителей Кейт не владели собственной землей, дабы обеспечить их."
+    $ MAS.MonikaElastic()
+    m 4eua "Кейт обещала вернуться и навестить своих родителей как-нибудь."
+    $ MAS.MonikaElastic()
+    m 4esd "Время шло, и Уильям вместе со своей женой начали сильно скучать по своей дочери и хотели, чтобы она вернулась."
+    $ MAS.MonikaElastic()
+    m 2dkc "Уильям решил вернуться к своим старым дням на достаточно долгое время, чтобы собрать достаточно денег для покупки поместья, чтобы потом предложить своей дочери и её мужу жить вместе с ними."
+    $ MAS.MonikaElastic()
+    m 4wud "Однажды вечером, заманив корабль на берег и собирая на нём добычу, он заметил перед собой сильно искалеченную женщину, лежащую на камнях."
+    $ MAS.MonikaElastic()
+    m 2wuc "Очертания её лица стали неузнаваемыми из-за травм, которые ей пришлось получить."
+    $ MAS.MonikaElastic()
+    m 2ekc "Уильям, сжалившись над ней, отнёс её обратно в поместье и сделал всё, что мог, дабы попытаться спасти её жизнь, но женщина умерла, даже не придя в сознание."
+    $ MAS.MonikaElastic()
+    m 2eud "Пока они обыскивали её тело, пытаясь найти хоть какие-то подсказки к её личности..."
+    $ MAS.MonikaElastic()
+    m "...они нашли маленький кошелёк, привязанный к её талии, в котором было достаточно золотых монет и драгоценностей для них, чтобы наконец-то купить особняк, который они взяли в аренду."
+    $ MAS.MonikaElastic()
+    m 2dsc "Спустя несколько дней, Адмиралтейство начало спрашивать пару о пропавшем из-под обломков пассажире, где выяснилось, что это никто иная, как их дочь."
+    $ MAS.MonikaElastic()
+    m 3dsd "Будучи подавленными и пристыженными, родители заточили её останки в тайной комнате, а сами уехали и никогда не возвращались."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_13
     return
 
 init 5 python:
@@ -1520,46 +2120,64 @@ init 5 python:
             persistent._mas_story_database,
             eventlabel="mas_scary_story_flowered_lantern",
             category=[store.mas_stories.TYPE_SCARY],
-            prompt="The Flowered Lantern",
+            prompt="Цветочный фонарь",
             unlocked=False
         ),
         code="STY"
     )
 
 label mas_scary_story_flowered_lantern:
-    call mas_scary_story_setup
-
+    call mas_scary_story_setup from _call_mas_scary_story_setup_14
     if not mas_getEVL_shown_count("mas_scary_story_flowered_lantern"):
-        m 3eub "Before we start, I need to tell you that my next story is going to be a bit long."
-        m 3eua "So, I'll split it in parts."
-        m "Once I finish this part I'll ask you if you want to continue it or not."
-        m 1eub "If you say no, you can ask me later to tell you the next part, so don't worry about it."
-        m 4hua "Alright, let's begin now."
-
-    m 4eua "There was once a beautiful, young maiden named Tsuyu, whose father was a high-ranking samurai."
-    m 4eud "Tsuyu's mother had been dead and her father eventually remarried."
-    m 2euc "Although it became obvious to Tsuyu's father that she and her step mother couldn't get along."
-    m 2esa "Wanting to ensure his only daughter's happiness, he had a luxurious house built for her, away from them and had her move into it."
-    m "One day, the family physician went to Tsuyu's residence on a routine visit with a young samurai named Hagiwara, who was very handsome."
-    m 4eub "Tsuyu and Hagiwara fell in love the moment they set eyes on each other."
-    m 4esc "Unbeknownst to the doctor, the two pledged themselves to each other for life and before the two left."
-    m 4dsd "Tsuyu whispered to Hagiwara that she would surely die if he didn't return to see her."
-    m 2esc "Hagiwara didn't forget her words, but etiquette forbade him to make a call to visit a maiden alone, so he had to wait for the doctor to ask him to join him on another visit."
-    m 2dsd "The doctor, however, had perceived his sudden affection for Tsuyu."
-    m 4ekc "Tsuyu's father was known to behead those who angered him, and fearing that he would hold him responsible for introducing the two, he avoided Hagiwara."
-    m 2rkc "Months passed and Tsuyu, feeling scorned that Hagiwara had abandoned her, passed away."
-    m 1ekc "Not long afterwards, the doctor ran into Hagiwara, informing him of Tsuyu's death."
-    m 1dsd "Hagiwara was deeply saddened and mourned greatly over her, saying prayers and burning incense for her."
+        $ MAS.MonikaElastic()
+        m 3eub "Перед тем, как мы начнём, я должна сказать тебе, что моя следующая история будет немного длинной."
+        $ MAS.MonikaElastic()
+        m 3eua "И поэтому, я разделю её на части."
+        $ MAS.MonikaElastic()
+        m "Как только я закончу эту часть, я спрошу тебя, хочешь ли ты услышать продолжение или нет."
+        $ MAS.MonikaElastic()
+        m 1eub "Если ты скажешь нет, ты можешь попросить меня рассказать тебе следующую часть позже, так что не волнуйся об этом."
+        $ MAS.MonikaElastic()
+        m 4hua "Ладно, давай начнём."
+    $ MAS.MonikaElastic()
+    m 4eua "Жила-была одна красивая и молодая девушка по имени Цую, её отец был высокопоставленным самураем."
+    $ MAS.MonikaElastic()
+    m 4eud "Мать Цую умерла, и её отец, со временем, женился ещё раз."
+    $ MAS.MonikaElastic()
+    m 2euc "Но отцу Цую стало понятно, что она и её мачеха не смогут поладить."
+    $ MAS.MonikaElastic()
+    m 2esa "Стремясь к обеспечению счастья своей единственной дочери, он построил для неё роскошный дом подальше от их дома, после чего она переехала туда."
+    $ MAS.MonikaElastic()
+    m "Однажды, семейный врач отправился в поместье Цую с рабочим визитом вместе с молодым самураем по имени Хагивара, и он был очень красивым."
+    $ MAS.MonikaElastic()
+    m 4eub "Как только Цую и Хагивара посмотрели в глаза друг другу, они тотчас влюбились."
+    $ MAS.MonikaElastic()
+    m 4esc "Втайне от врача, они дали клятву друг другу на всю жизнь перед тем, как они ушли."
+    $ MAS.MonikaElastic()
+    m 4dsd "Цую прошептала Хагиваре, что она однозначно умрёт, если он не вернётся, чтобы проведать её."
+    $ MAS.MonikaElastic()
+    m 2esc "Хагивара не забыл её слова, но этикет запрещал ему идти в гости к девушке одному, поэтому ему пришлось ждать врача и попросить его составить ему компанию в очередном визите."
+    $ MAS.MonikaElastic()
+    m 2dsd "Однако, врач почувствовал свою внезапную привязанность к Цую."
+    $ MAS.MonikaElastic()
+    m 4ekc "Отец Цую был известен тем, что он казнил тех, кто разозлил его, и, боясь, что ему придётся нести ответственность за их знакомство, он избегал Хагивару."
+    $ MAS.MonikaElastic()
+    m 2rkc "Время шло, и Цую, презирая себя за то, что Хагивара бросил её, покончила с собой."
+    $ MAS.MonikaElastic()
+    m 1ekc "Вскоре после этого, врач побежал к Хагиваре и рассказал ему о смерти Цую."
+    $ MAS.MonikaElastic()
+    m 1dsd "Хагивара был сильно расстроен и сильно оплакивал её, произнёс молитвы и сжёг ладан для неё."
     $ mas_stories.unlock_pooled_story("mas_scary_story_flowered_lantern_2")
-    m 1hua "...And that's it for part one! Do you want to continue to the next one?{nw}"
+    $ MAS.MonikaElastic()
+    m 1hua "...На этом первая часть заканчивается! Хочешь перейти к следующей части?{nw}"
     $ _history_list.pop()
     menu:
-        m "...And that's it for part one! Do you want to continue to the next one?{fast}"
-        "Yes.":
+        m "...На этом первая часть заканчивается! Хочешь перейти к следующей части?{fast}"
+        "Да.":
             jump mas_scary_story_flowered_lantern_2
-        "No.":
+        "Нет.":
             pass
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_14
     return
 
 init 5 python:
@@ -1568,7 +2186,7 @@ init 5 python:
             persistent._mas_story_database,
             eventlabel="mas_scary_story_flowered_lantern_2",
             category=[store.mas_stories.TYPE_SCARY],
-            prompt="The Flowered Lantern 2",
+            prompt="Цветочный фонарь 2",
             pool=True,
             unlocked=False
         ),
@@ -1576,57 +2194,92 @@ init 5 python:
     )
 
 label mas_scary_story_flowered_lantern_2:
-    call mas_scary_story_setup
+    call mas_scary_story_setup from _call_mas_scary_story_setup_15
     $ _mas_lantern_scare = renpy.random.randint(1,11) == 1
-    m 4ekd "After sun down, on the first night of the Festival of the Dead, Hagiwara sat outside, still grieving the loss of his love until late evening."
-    m 2eud "However, just as he was about to go inside and go to sleep, he heard footsteps on the path outside his gate."
-    m 4euc "Hagiwara lived on a lonely street with few pedestrians and since it was so late out, he decided to see who it was."
-    m 4wub "To his great surprise and delight, the person walking along the path was none other than Tsuyu, carrying a paper lantern decorated with flowers to light her way."
-    m 1hua "Hagiwara called out Tsuyu's name and she immediately came to him and embraced him."
-    m 1eua "Each of them told the other that they were told by the doctor that the other person had died."
-    m "Tsuyu told him that her father wanted her to marry another man."
-    m 3eub "She refused and fled her luxurious home to hide from him and was currently taking residence in a cramped house in a certain neighborhood nearby."
-    m 3eua "He invited her inside, but told her to keep quiet so that they didn't disturb his servant who might inquire who she was."
-    m 4eua "The two spent the night together and right before dawn, Tsuyu left to return to her dwelling."
-    m 4esa "On the next night, Tsuyu visited again at the same time she had arrived the previous night."
-    m 2euc "This time, however, Hagiwara's servant awoke and heard a young woman's voice he didn't recognize."
-    m 4esd "Curious, but not wanting to disturb his master, he snuck to his master's room and peeked through a small crack in his door and saw that he was indeed talking to a young woman."
-    m 4eud "The woman's back was turned to him, but he was able to make out that she was very thin and was dressed in a very elegant kimono that only the upper class would wear."
-    m 4esc "His curiosity piqued, the servant decided to get a glimpse of this girl's face before retiring."
-    m 2dsc "He saw that the master had left a window open, so he quietly made his way over to it."
-    m 4wuw "As he peered inside, he saw to his horror that the face of the woman was one that was long dead and the fingers caressing his master's face were those of naked bone."
-    m 2wfd "He fled away in terror without making a peep."
-    m 1efc "The next morning, the servant approached his master and asked him about the woman."
-    m 4efd "At first, Hagiwara denied having any visitors, but after perceiving that it was to no avail, he confessed everything that had transpired."
-    m 4ekc "The servant told Hagiwara what he saw the night before and felt surely his master's life was in danger and pleaded for him to see a priest about it."
-    m 2euc "Startled but not entirely convinced, Hagiwara decided to put his servant's mind at ease by finding Tsuyu's residence."
-    m "Hagiwara set out and explored the neighborhood that Tsuyu told him she was staying at."
-    m 2esc "He looked around and inquired people about her but to no avail."
-    m 4dsd "When he decided that searching more would be fruitless, he headed home."
-    m 4eud "On his way back, he passed a cemetery next to a temple."
-    m "His attention was attracted by a large new tomb, near the back that he hadn't noticed before."
+    $ MAS.MonikaElastic()
+    m 4ekd "После того, как солнце ушло за горизонт, в первую ночь Фестиваля мёртвых, Хагивара сидел снаружи и всё ещё оплакивал утрату своей любимой до позднего вечера."
+    $ MAS.MonikaElastic()
+    m 2eud "Однако, как только он решил зайти домой и лечь спать, он услышал шаги вне своих ворот."
+    $ MAS.MonikaElastic()
+    m 4euc "Хагивара жил на одинокой улице, где нечасто увидишь прохожих, и поскольку время было позднее, он решил посмотреть, кто там идёт."
+    $ MAS.MonikaElastic()
+    m 4wub "К его великому удивлению и восторгу, тем человеком, идущим по дороге, оказалась никто иная, как Цую, она несла с собой бумажный фонарь, украшенный цветами, чтобы освещать себе дорогу."
+    $ MAS.MonikaElastic()
+    m 1hua "Хагивара позвал Цую по имени, и она тут же подошла к нему и крепко обняла его."
+    $ MAS.MonikaElastic()
+    m 1eua "Они рассказали друг другу, что врач сказал им, что умер другой человек."
+    $ MAS.MonikaElastic()
+    m "Цую сказала ему, что её отец хотел, чтобы она вышла замуж за другого человека."
+    $ MAS.MonikaElastic()
+    m 3eub "Она отказалась и сбежала из своего роскошного дома, чтобы скрыться от него, и в настоящее время проживает в тесном доме в определённом соседстве поблизости."
+    $ MAS.MonikaElastic()
+    m 3eua "Он пригласил её к себе домой, но сказал ей, чтобы та молчала, дабы не побеспокоить его слугу, ведь он может спросить, кто она."
+    $ MAS.MonikaElastic()
+    m 4eua "Они провели всю ночь вместе, и перед заходом солнца, Цую вернулась в своё поместье, которое покинула раньше."
+    $ MAS.MonikaElastic()
+    m 4esa "Следующим вечером, Цую снова заглянула к нему в гости в то же время, что и вчера ночью."
+    $ MAS.MonikaElastic()
+    m 2euc "Но на этот раз, слуша Хагивары проснулся и услышал голос молодой женщины, который был ему незнаком."
+    $ MAS.MonikaElastic()
+    m 4esd "Охваченный любопытством, но он не хотел тревожить своего хозяина, поэтому он прокрался в комнату своего хозяина и заглянул через небольшую щель в двери и заметил, что он разговаривал с молодой женщиной."
+    $ MAS.MonikaElastic()
+    m 4eud "Женщина стояла к нему спиной, но он смог понять, что она была очень худой и была одета в очень элегантное кимоно, которое носят только высшие слои общества."
+    $ MAS.MonikaElastic()
+    m 4esc "Любопытство взяло над ним верх, и слуга решил взглянуть на лицо девушки перед уходом."
+    $ MAS.MonikaElastic()
+    m 2dsc "Он заметил, что хозяин оставил окно открытым, и он тихо подкрался к нему."
+    $ MAS.MonikaElastic()
+    m 4wuw "Как только он заглянул внутрь, и, к свому ужасу, он заметил, что лицо женщины похоже на лицо давно умершей девушки, а пальцы, поглаживающие лицо хозяина, состояли лишь из голых костей."
+    $ MAS.MonikaElastic()
+    m 2wfd "Он поспешно скрылся от ужаса, не обратив на себя взор."
+    $ MAS.MonikaElastic()
+    m 1efc "На следующее утро, слуга подошёл к своему хозяину и спросил его о той женщине."
+    $ MAS.MonikaElastic()
+    m 4efd "Поначалу, Хагивара отрицал, что у него были какие-то посетители, но поняв, что это бесполезно, он признался в том, что произошло."
+    $ MAS.MonikaElastic()
+    m 4ekc "Слуга рассказал Хагиваре о том, что он видел той ночью, и что он был уверен в том, что жизнь хозяина в опасности, и начал умолять его поговорить со священником об этом."
+    $ MAS.MonikaElastic()
+    m 2euc "Испугавшись, но всё ещё сомневаясь, Хагивара решил привести успокоить своего слугу, разыскав поместье Цую."
+    $ MAS.MonikaElastic()
+    m "Хагивара отправился туда и изучил район, в котором, как сказала ему Цую, она проживала."
+    $ MAS.MonikaElastic()
+    m 2esc "Он осмотрелся вокруг и спросил прохожих про неё, но безрезультатно."
+    $ MAS.MonikaElastic()
+    m 4dsd "Когда он решил, что дальнейшие поиски окажутся бесполезными, он пошёл домой."
+    $ MAS.MonikaElastic()
+    m 4eud "По дороге обратно, он пришёл на кладбище рядом с храмом."
+    $ MAS.MonikaElastic()
+    m "Его внимание привлекла большая, новая могила, лежащая неподалёку в задней части, которую он не видел раньше."
     if _mas_lantern_scare or persistent._mas_pm_likes_spoops or mas_full_scares:
         show mas_lantern zorder 75 at right
-    m 4euc "Hanging above it was a paper lantern decorated with beautiful flowers that looked exactly the same as the one that Tsuyu carried with her at night."
-    m 4wuc "Intrigued, he walked towards it, as he looked at the name of the person it belonged to, he jumped back with fright as he read it belonged to his beloved Tsuyu."
-    m 2wkc "Terror stricken, Hagiwara immediately headed into the adjoining temple and asked to speak to the head priest."
-    m 4esc "When he was admitted, he told the head priest everything that had transpired."
-    m 4esd "After he had finished, the head priest told him his life was indeed in danger."
-    m "Hagiwara's intense grieving for her and her intense love for him had brought her back during the Festival of the Dead."
-    m 4dsc "Love between one who is alive and one who is dead can only result in the death of the one who is alive."
+    $ MAS.MonikaElastic()
+    m 4euc "Над ней висел бумажный фонарь, украшенный красивыми цветами, он выглядел точно так же, как и тот фонарь, который Цую несла с собой ночью."
+    $ MAS.MonikaElastic()
+    m 4wuc "Его это заинтриговало, и он подошёл к ней. Он решил прочитать имя человека, которому она принадлежит, и, прочитав на ней имя своей любимой Цую, он отпрыгнул от страха."
+    $ MAS.MonikaElastic()
+    m 2wkc "Поражённый ужасом, Хагивара тут же пошёл в соседний храм и попросил поговорить с главным священником."
+    $ MAS.MonikaElastic()
+    m 4esc "Когда его приняли, он рассказал главному священнику всё, что произошло."
+    $ MAS.MonikaElastic()
+    m 4esd "После того, как он закончил, главный священник сказал ему, что его жизни грозит опасность."
+    $ MAS.MonikaElastic()
+    m "Сильная скорбь Хагивары по ней и её сильная любовь к нему смогли вернуть её во время Фестиваля мёртвых."
+    $ MAS.MonikaElastic()
+    m 4dsc "Любовь между живым и мёртвым людьми может только привести к смерти живого человека."
     if _mas_lantern_scare or persistent._mas_pm_likes_spoops or mas_full_scares:
         hide mas_lantern
     $ mas_stories.unlock_pooled_story("mas_scary_story_flowered_lantern_3")
 
-    m 1hua "...And that's it for part two! Do you want to continue to the next one?{nw}"
+    $ MAS.MonikaElastic()
+    m 1hua "...На этом вторая часть заканчивается! Хочешь перейти к следующей части?{nw}"
     $ _history_list.pop()
     menu:
-        m "...And that's it for part two! Do you want to continue to the next one?{fast}"
-        "Yes.":
+        m "...На этом вторая часть заканчивается! Хочешь перейти к следующей части?{fast}"
+        "Да.":
             jump mas_scary_story_flowered_lantern_3
-        "No.":
+        "Нет.":
             pass
-    call mas_scary_story_cleanup
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_15
     return
 
 init 5 python:
@@ -1635,7 +2288,7 @@ init 5 python:
             persistent._mas_story_database,
             eventlabel="mas_scary_story_flowered_lantern_3",
             category=[store.mas_stories.TYPE_SCARY],
-            prompt="The Flowered Lantern 3",
+            prompt="Цветочный фонарь 3",
             pool=True,
             unlocked=False
         ),
@@ -1643,24 +2296,40 @@ init 5 python:
     )
 
 label mas_scary_story_flowered_lantern_3:
-    call mas_scary_story_setup
+    call mas_scary_story_setup from _call_mas_scary_story_setup_16
     $ _mas_rects_scare = (renpy.random.randint(1,11) == 1 and persistent._mas_pm_likes_spoops) or mas_full_scares
-    m 1eud "As it was the last day of the Festival of the Dead, Tsuyu would have to return to the dead on this night and she would take Hagiwara with her if they were to see each other again."
-    m 3esd "Hagiwara pleaded with the priest to help him."
-    m 3esc "The priest said the passional karma between them was very strong, but there was some hope still."
-    m "He handed Hagiwara a stack of paper talismans that keep out spirits, and instructed him to cover every opening in his home, no matter how small, with them."
-    m 1esd "Tsuyu would not be able to enter the dwelling as long as he heeded these instructions."
-    m 2esa "Hagiwara, with the assistance of his servant was able to successfully cover the house with the paper talismans before dark."
-    m 4esc "As the night went on, Hagiwara attempted to fall asleep but to no avail. So he sat up meditating over the recent events."
-    m 2dsd "At a late hour, he heard footsteps outside his home."
-    m "The steps came nearer and nearer."
-    m 4wkc "Hagiwara felt a sudden compulsion, stronger than even his fear, to look."
-    m 4wkd "He foolishly approached the shutters and through a chink saw Tsuyu standing at the entrance of his house with her paper lantern staring at the paper talismans."
-    m "Never before had he seen Tsuyu look so beautiful and his heart felt so drawn to her."
-    m 2ekd "Outside, Tsuyu began to weep bitterly, saying to herself that Hagiwara had broken the pledge that they had made to each other."
-    m 4eud "She wept until she collected herself and said aloud that she wouldn't leave without seeing him one last time."
-    m 4esd "Hagiwara heard footsteps as she walked around his house, every so often he would see the light from the lantern as she went along."
-    m 2wud "When she came near the spot he had peered out of, the footsteps stopped and suddenly Hagiwara saw one of Tsuyu's eyes looking in at him."
+    $ MAS.MonikaElastic()
+    m 1eud "Это был последний день Фестиваля мёртвых, Цую должна вернуться к мёртвым этой ночью, и она возьмёт с собой Хагивару, если они хотят повидаться друг с другом снова."
+    $ MAS.MonikaElastic()
+    m 3esd "Хагивара умолял священника помочь ему."
+    $ MAS.MonikaElastic()
+    m 3esc "Священник сказал, что страсть между ними была очень сильная, но ещё есть надежда."
+    $ MAS.MonikaElastic()
+    m "Он передал Хагиваре пачку бумажных талисманов, которые оберегают от духов, и велел ему обвешать ими все проходы в доме, каких бы размеров они не были."
+    $ MAS.MonikaElastic()
+    m 1esd "Цую не сможет войти в его поместье, пока он придерживается тех инструкций."
+    $ MAS.MonikaElastic()
+    m 2esa "Хагивара, благодаря помощи своего слуги, смог обвешать весь свой дом бумажными талисманами до наступления темноты."
+    $ MAS.MonikaElastic()
+    m 4esc "Ночь продолжалась, Хагивара пытался уснуть, но безрезультатно. И поэтому, он сел и начал размышлять о недавних событиях."
+    $ MAS.MonikaElastic()
+    m 2dsd "В позднее время, он услышал шаги по ту сторону своего дома."
+    $ MAS.MonikaElastic()
+    m "Шаги становились всё ближе и ближе."
+    $ MAS.MonikaElastic()
+    m 4wkc "Хагивара почувствовал внезапную тягу – она была сильнее даже его страха – взглянуть."
+    $ MAS.MonikaElastic()
+    m 4wkd "Он безрассудно подошёл к заслонкам и через щель увидел Цую, она стояла у входа в его дом, держа в руке свой бумажный фонарь, уставившись на бумажные талисманы."
+    $ MAS.MonikaElastic()
+    m "Он никогда не видел Цую настолько красивой, а его сердце будто тянуло к ней."
+    $ MAS.MonikaElastic()
+    m 2ekd "Снаружи, Цую начала горько плакать, говоря про себя, что Хагивара нарушил клятву, чего они добились вместе."
+    $ MAS.MonikaElastic()
+    m 4eud "Она плакала, но потом собралась с силами и сказала вслух, что она не уйдёт, пока не увидит его в последний раз."
+    $ MAS.MonikaElastic()
+    m 4esd "Пока она расхаживала вокруг его дома, Хагивара слышал её шаги, и он, время от времени, видел свет фонаря."
+    $ MAS.MonikaElastic()
+    m 2wud "Когда она подошла к тому месту, откуда он выглядывал, шаги остановились и, внезапно, Хагивара увидел, как Цую смотрит на него одним своим глазом."
     if _mas_rects_scare:
         play sound "sfx/glitch1.ogg"
         show rects_bn1 zorder 80
@@ -1677,12 +2346,20 @@ label mas_scary_story_flowered_lantern_3:
         show black zorder 100
         $ pause(1.5)
         hide black
-    m 2dsc "The next day, the servant awoke and approached his master's room and knocked upon his door."
-    m 4ekc "For the first time in years he didn't receive a response and he was worried."
-    m 2dsd "He called his master repeatedly but to no avail."
-    m 2esc "Finally, with a bit of courage, he entered into his master's room."
-    m 4wuw "...Only to flee from the house crying in horror after seeing him."
-    m "Hagiwara was dead, hideously dead, and his face had the expression of uttermost agony of fear..."
-    m 2wfc "And lying beside him in the bed were the bones of a woman with its arms clung around his neck as if in an embrace."
-    call mas_scary_story_cleanup
+    $ MAS.MonikaElastic()
+    m 2dsc "На следующий день, слуга проснулся, подошёл к комнате своего хозяина и постучал в дверь."
+    $ MAS.MonikaElastic()
+    m 4ekc "Впервые за многие годы, он не получил ответа и начал волноваться."
+    $ MAS.MonikaElastic()
+    m 2dsd "Он снова позвал своего хозяина, но безрезультатно."
+    $ MAS.MonikaElastic()
+    m 2esc "Наконец, набравшись немного храбрости, он вошёл в комнату своего хозяина."
+    $ MAS.MonikaElastic()
+    m 4wuw "...Но, увидев его, тотчас выбежал из дома, крича от ужаса."
+    $ MAS.MonikaElastic()
+    m "Хагивара был мёртв, его труп был в ужасном состоянии, а на лице было выражение, полное страданий от страха..."
+    $ MAS.MonikaElastic()
+    m 2wfc "Рядом с ним на кровати лежали кости женщины вместе с её руками, которые вцепились в его шею, как будто она обнимала его."
+    call mas_scary_story_cleanup from _call_mas_scary_story_cleanup_16
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
