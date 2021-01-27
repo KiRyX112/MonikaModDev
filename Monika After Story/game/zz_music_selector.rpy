@@ -747,7 +747,7 @@ init -1 python in songs:
         user_dir = renpy.config.basedir
 
     custom_music_dir = "custom_bgm"
-    custom_music_reldir = user_dir.replace("\\", "/") + "/{0}".format(custom_music_dir)
+    custom_music_reldir = "../" + custom_music_dir + "/"
 
 
 
@@ -797,7 +797,7 @@ init 10 python:
 
 
     store.songs.custom_music_dir = (
-        user_dir + "/custom_bgm/"
+        config.basedir + "/" + store.songs.custom_music_dir + "/"
     ).replace("\\", "/")
 
     if (
