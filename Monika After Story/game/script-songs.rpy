@@ -1,30 +1,29 @@
-#Event database for songs
 default persistent._mas_songs_database = dict()
 
-#All player derandomed songs
+
 default persistent._mas_player_derandomed_songs = list()
 
 init -10 python in mas_songs:
-    # Event database for songs
+
     song_db = {}
 
-    #Song type constants
-    #NOTE: TYPE_LONG will never be picked in the random delegate, these are filters for that
 
-    #TYPE_LONG songs should either be unlocked via a 'preview' song of TYPE_SHORT or (for ex.) some story event
-    #TYPE_LONG songs would essentially be songs longer than 10-15 lines
-    #NOTE: TYPE_LONG songs must have the same label name as their short song counterpart with '_long' added to the end so they unlock correctly
-    #Example: the long song for short song mas_song_example would be: mas_song_example_long
 
-    #TYPE_ANALYSIS songs are events which provide an analysis for a song
-    #NOTE: Like TYPE_LONG songs, these must have the same label as the short counterpart, but with '_analysis' appended onto the end
-    #Using the example song above, the analysis label would be: mas_song_example_analysis
-    #It's also advised to have the first time seeing the song hint at and lead directly into the analysis on the first time seeing it from random
-    #In this case, the shown_count property for the analysis event should be incremented in the path leading to the analysis
 
-    TYPE_LONG = "long"
-    TYPE_SHORT = "short"
-    TYPE_ANALYSIS = "analysis"
+
+
+
+
+
+
+
+
+
+
+
+    TYPE_LONG = "долгая"
+    TYPE_SHORT = "короткая"
+    TYPE_ANALYSIS = "анализ"
 
 init python in mas_songs:
     import store
@@ -35,14 +34,14 @@ init python in mas_songs:
         Ensures that songs cannot be repeated (derandoms the delegate) if the repeat topics flag is disabled and there's no unseen songs
         And that songs can be repeated if the flag is enabled (re-randoms the delegate)
         """
-        #Get ev
+        
         rand_delegate_ev = store.mas_getEV("monika_sing_song_random")
-
+        
         if rand_delegate_ev:
-            #If the delegate is random, let's verify whether or not it should still be random
-            #Rules for this are:
-            #1. If repeat topics is disabled and we have no unseen random songs
-            #2. OR we just have no random songs in general
+            
+            
+            
+            
             if (
                 rand_delegate_ev.random
                 and (
@@ -51,9 +50,9 @@ init python in mas_songs:
                 )
             ):
                 rand_delegate_ev.random = False
-
-            #Alternatively, if we have random unseen songs, or repeat topics are enabled and we have random songs
-            #We should random the delegate
+            
+            
+            
             elif (
                 not rand_delegate_ev.random
                 and (
@@ -79,7 +78,7 @@ init python in mas_songs:
                 for ev_label, ev in song_db.iteritems()
                 if ev.unlocked
             ]
-
+        
         else:
             return [
                 (ev.prompt, ev_label, False, False)
@@ -108,7 +107,7 @@ init python in mas_songs:
                     and ev.checkAffection(store.mas_curr_affection)
                 )
             ]
-
+        
         return [
             ev_label
             for ev_label, ev in song_db.iteritems()
@@ -141,7 +140,7 @@ init python in mas_songs:
         """
         if curr_aff is None:
             curr_aff = store.mas_curr_affection
-
+        
         return [
             (ev.prompt, ev_label, False, False)
             for ev_label, ev in song_db.iteritems()
@@ -201,21 +200,20 @@ init python in mas_songs:
             - ev.category contains only one type
         """
         prompt_suffix_map = {
-            TYPE_SHORT: " (Short)",
-            TYPE_LONG: " (Long)",
-            TYPE_ANALYSIS: " (Analysis)"
+            TYPE_SHORT: " (Короткая)",
+            TYPE_LONG: " (Долгая)",
+            TYPE_ANALYSIS: " (Анализ)"
         }
         return prompt_suffix_map.get(ev.category[0], "")
 
 
-#START: Pool delegates for songs
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="monika_sing_song_pool",
-            prompt="Can you sing me a song?",
-            category=["music"],
+            prompt="Можешь спеть мне песню?",
+            category=["музыка"],
             pool=True,
             aff_range=(mas_aff.NORMAL,None),
             rules={"no_unlock": None}
@@ -223,21 +221,19 @@ init 5 python:
     )
 
 label monika_sing_song_pool:
-    # what length of song do we want
+
     $ song_length = "short"
-    # do we have both long and short songs
+
     $ have_both_types = False
-    # song type string to use in the switch dlg
+
     $ switch_str = "full"
-    # so we can {fast} the renpy.say line after the first time
+
     $ end = ""
 
     show monika 1eua at t21
 
     if mas_songs.hasUnlockedSongs(length="long") and mas_songs.hasUnlockedSongs(length="short"):
         $ have_both_types = True
-
-    #FALL THROUGH
 
 label monika_sing_song_pool_menu:
     python:
@@ -246,18 +242,18 @@ label monika_sing_song_pool_menu:
         else:
             space = 20
 
-        ret_back = ("Nevermind", False, False, False, space)
-        switch = ("I'd like to hear a [switch_str] song instead", "monika_sing_song_pool_menu", False, False, 20)
+        ret_back = ("Не важно.", False, False, False, space)
+        switch = ("Хотя нет, давай лучше [switch_str] песню", "monika_sing_song_pool_menu", False, False, 20)
 
         unlocked_song_list = mas_songs.getUnlockedSongs(length=song_length)
         unlocked_song_list.sort()
 
         if mas_isO31():
-            which = "Witch"
+            which = "Хромую" # ну, старые ведьмы ведь хромые, да? ¯\_(ツ)_/¯
         else:
-            which = "Which"
+            which = "Какую"
 
-        renpy.say(m, "[which] song would you like me to sing?[end]", interact=False)
+        renpy.say(m, "[which] песню мне спеть для тебя?[end]", interact=False)
 
     if have_both_types:
         call screen mas_gen_scrollable_menu(unlocked_song_list, mas_ui.SCROLLABLE_MENU_TXT_LOW_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, switch, ret_back)
@@ -270,34 +266,31 @@ label monika_sing_song_pool_menu:
         if sel_song == "monika_sing_song_pool_menu":
             if song_length == "short":
                 $ song_length = "long"
-                $ switch_str = "short"
-
+                $ switch_str = "короткую"
             else:
                 $ song_length = "short"
-                $ switch_str = "full"
-
+                $ switch_str = "полную"
             $ end = "{fast}"
             $ _history_list.pop()
             jump monika_sing_song_pool_menu
-
         else:
             $ pushEvent(sel_song, skipeval=True)
             show monika at t11
-            m 3hub "Alright!"
-
+            m 3hub "Хорошо!"
     else:
+
         return "prompt"
 
     return
 
-#Song analysis delegate
+
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="monika_sing_song_analysis",
-            prompt="Let's talk about a song",
-            category=["music"],
+            prompt="Давай поговорим о песне.",
+            category=["музыка"],
             pool=True,
             unlocked=False,
             aff_range=(mas_aff.NORMAL, None),
@@ -307,17 +300,17 @@ init 5 python:
 
 label monika_sing_song_analysis:
     python:
-        ret_back = ("Nevermind.", False, False, False, 20)
+        ret_back = ("Не важно.", False, False, False, 20)
 
         unlocked_analyses = mas_songs.getUnlockedSongAnalyses()
 
         if mas_isO31():
-            which = "Witch"
+            which = "хромой"
         else:
-            which = "Which"
+            which = "какой"
 
     show monika 1eua at t21
-    $ renpy.say(m, "[which] song would you like to talk about?", interact=False)
+    $ renpy.say(m, "О [which] песне ты хотел[mas_gender_none] бы поговорить?", interact=False)
 
     call screen mas_gen_scrollable_menu(unlocked_analyses, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, ret_back)
 
@@ -326,20 +319,20 @@ label monika_sing_song_analysis:
     if sel_analysis:
         $ pushEvent(sel_analysis, skipeval=True)
         show monika at t11
-        m 3hub "Alright!"
-
+        m 3hub "Хорошо!"
     else:
+
         return "prompt"
     return
 
-#Rerandom song delegate
+
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="mas_sing_song_rerandom",
-            prompt="Can you sing a song on your own again?",
-            category=['music'],
+            prompt="Ты можешь снова спеть песню в одиночку?",
+            category=['музыка'],
             pool=True,
             unlocked=False,
             aff_range=(mas_aff.NORMAL, None),
@@ -349,35 +342,35 @@ init 5 python:
 
 label mas_sing_song_rerandom:
     python:
-        mas_bookmarks_derand.initial_ask_text_multiple = "Which song do you want me to sing occasionally?"
-        mas_bookmarks_derand.initial_ask_text_one = "If you want me to sing this occasionally again, just select the song, [player]."
+        mas_bookmarks_derand.initial_ask_text_multiple = "Какую песню ты хочешь, чтобы я иногда пела?"
+        mas_bookmarks_derand.initial_ask_text_one = "Если ты хочешь, чтобы я пела это время от времени снова, просто нажми на песню, [player]."
         mas_bookmarks_derand.caller_label = "mas_sing_song_rerandom"
         mas_bookmarks_derand.persist_var = persistent._mas_player_derandomed_songs
 
-    call mas_rerandom
+    call mas_rerandom from _call_mas_rerandom
     return _return
 
 label mas_song_derandom:
     $ prev_topic = persistent.flagged_monikatopic
-    m 1eka "Tired of hearing me sing that song, [player]?{nw}"
+    m 1eka "Устал[mas_gender_none] слушать, как я пою эту песню, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Tired of hearing me sing that song, [player]?{fast}"
+        m "Устал[mas_gender_none] слушать, как я пою эту песню, [player]?{fast}"
+        "Немного.":
 
-        "A little.":
-            m 1eka "That's alright."
-            m 1eua "I'll only sing it when you want me to then. Just let me know if you want to hear it."
+            $ MAS.MonikaElastic()
+            m 1eka "Всё в порядке."
+            $ MAS.MonikaElastic()
+            m 1eua "Я буду петь только тогда, когда ты захочешь. Просто дай мне знать, если захочешь это услышать."
             python:
                 mas_hideEVL(prev_topic, "SNG", derandom=True)
                 persistent._mas_player_derandomed_songs.append(prev_topic)
                 mas_unlockEVL("mas_sing_song_rerandom", "EVE")
+        "Всё нормально.":
 
-        "It's okay.":
-            m 1eua "Alright, [player]."
+            m 1eua "Хорошо, [player]."
     return
 
-
-#START: Random song delegate
 init 5 python:
     addEvent(
         Event(
@@ -390,57 +383,57 @@ init 5 python:
     )
 
 label monika_sing_song_random:
-    #We only want short songs in random. Long songs should be unlocked by default or have another means to unlock
-    #Like a "preview" version of it which unlocks the full song in the pool delegate
 
-    #We need to make sure we don't repeat these automatically if repeat topics is disabled
+
+
+
     if (
         (persistent._mas_enable_random_repeats and mas_songs.hasRandomSongs())
         or (not persistent._mas_enable_random_repeats and mas_songs.hasRandomSongs(unseen_only=True))
     ):
         python:
-            #First, get unseen songs
+
             random_unseen_songs = mas_songs.getRandomSongs(unseen_only=True)
 
-            #If we have randomed unseen songs, we'll prioritize that
+
             if random_unseen_songs:
                 rand_song = random.choice(random_unseen_songs)
 
-            #Otherwise, just go for random
+
             else:
                 rand_song = random.choice(mas_songs.getRandomSongs())
 
-            #Unlock pool delegate
+
             mas_unlockEVL("monika_sing_song_pool", "EVE")
 
-            #Now push the random song and unlock it
+
             pushEvent(rand_song, skipeval=True, notify=True)
             mas_unlockEVL(rand_song, "SNG")
 
-            #Unlock the long version of the song
+
             mas_unlockEVL(rand_song + "_long", "SNG")
 
-            #And unlock the analysis of the song
+
             mas_unlockEVL(rand_song + "_analysis", "SNG")
 
-            #If we have unlocked analyses for our current aff level, let's unlock the label
+
             if store.mas_songs.hasUnlockedSongAnalyses():
                 mas_unlockEVL("monika_sing_song_analysis", "EVE")
-
-    #We have no songs! let's pull back the shown count for this and derandom
     else:
+
+
         $ mas_assignModifyEVLPropValue("monika_sing_song_random", "shown_count", "-=", 1)
         return "derandom|no_unlock"
     return "no_unlock"
 
 
-#START: Song defs
+
 init 5 python:
     addEvent(
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_aiwfc",
-            prompt="All I Want for Christmas",
+            prompt="«Всё, что мне нужно на Рождество - это ты»",
             category=[store.mas_songs.TYPE_LONG],
             unlocked=False,
             aff_range=(mas_aff.NORMAL, None)
@@ -449,10 +442,12 @@ init 5 python:
     )
 
 label mas_song_aiwfc:
-    if store.songs.hasMusicMuted():
-        m 3eua "Don't forget to turn your in-game volume up, [mas_get_player_nickname()]."
 
-    call monika_aiwfc_song
+    if store.songs.hasMusicMuted():
+        m 3eua "Не забудь увеличить громкость в игре, [mas_get_player_nickname()]."
+
+    call monika_aiwfc_song from _call_monika_aiwfc_song
+
 
     return
 
@@ -461,7 +456,7 @@ init 5 python:
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_merry_christmas_baby",
-            prompt="Merry Christmas Baby",
+            prompt="«Счастливого Рождества, малыш»",
             category=[store.mas_songs.TYPE_LONG],
             unlocked=False,
             aff_range=(mas_aff.NORMAL, None)
@@ -470,27 +465,53 @@ init 5 python:
     )
 
 label mas_song_merry_christmas_baby:
-    m 1hub "{i}~Merry Christmas baby, {w=0.2}you sure do treat me nice~{/i}"
-    m "{i}~Merry Christmas baby, {w=0.2}you sure do treat me nice~{/i}"
-    m 3eua "{i}~I feel just like I'm living, {w=0.2}living in paradise~{/i}"
-    m 3hub "{i}~I feel real good tonight~{/i}"
-    m 3eub "{i}~And I got music on the radio~{/i}"
-    m 3hub "{i}~I feel real good tonight~{/i}"
-    m 3eub "{i}~And I got music on the radio~{/i}"
-    m 2hkbsu "{i}~Now I feel just like I wanna kiss ya~{/i}"
-    m 2hkbsb "{i}~Underneath the mistletoe~{/i}"
-    m 3eub "{i}~Santa came down the chimney, {w=0.2}half past three~{/i}"
-    m 3hub "{i}~With lots of nice little presents for my baby and me~{/i}"
-    m "{i}~Merry Christmas baby, {w=0.2}you sure do treat me nice~{/i}"
-    m 1eua "{i}~And I feel like I'm living, {w=0.2}just living in paradise~{/i}"
-    m 1eub "{i}~Merry Christmas baby~{/i}"
-    m 3hub "{i}~And Happy New Year too~{/i}"
-    m 3ekbsa "{i}~Merry Christmas, honey~{/i}"
-    m 3ekbsu "{i}~Everything here is beautiful~{/i}"
-    m 3ekbfb "{i}~I love you, baby~{/i}"
-    m "{i}~For everything that you give me~{/i}"
-    m 3ekbfb "{i}~I love you, honey~{/i}"
-    m 3ekbsu "{i}~Merry Christmas, honey~{/i}"
+    m 1hub "{i}~Счастливого Рождества, малыш, {w=0.2}ты действительно хорошо ко мне относил[mas_gender_sya]~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~Счастливого Рождества, малыш, {w=0.2}ты действительно хорошо ко мне относил[mas_gender_sya]~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eua "{i}~И теперь я словно, {w=0.2}словно в раю~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~Мне безумно хорошо~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eub "{i}~По радио звучит хорошая музыка~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~Мне очень, очень хорошо~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eub "{i}~По радио звучит хорошая музыка~{/i}"
+    $ MAS.MonikaElastic()
+    m 2hkbsu "{i}~И мне хочется поцеловать тебя, малыш~{/i}"
+    $ MAS.MonikaElastic()
+    m 2hkbsb "{i}~Пока мы стоим здесь, под омелой~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eub "{i}~Cанта зашёл к нам через дымоход, {w=0.2}около половины четвёртого ночи~{/i}"
+    $ MAS.MonikaElastic()
+    if persistent.gender == "F":
+        m 3hub "{i}~И оставил эти замечательные подарки, для меня и моей малышки~{/i}"
+    else:
+        m 3hub "{i}~И оставил эти замечательные подарки, для меня и моего малыша~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~Счастливого Рождества, малыш, {w=0.2}ты действительно хорошо ко мне относил[mas_gender_sya]~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eua "{i}~И теперь я словно, {w=0.2}словно в раю~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eub "{i}~Счастливого Рождества, малыш~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~И с Новым годом тоже~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsa "{i}~Счастливого Рождества, дорогуша~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsu "{i}~Здесь всё до безумия красиво~{/i}"
+    $ MAS.MonikaElastic()
+    if persistent.gender == "F":
+        m 3ekbfb "{i}~Я люблю тебя, малышка~{/i}"
+    else:
+        m 3ekbfb "{i}~Я люблю тебя, малыш~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~За всё то, что дал[mas_gender_none] мне~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbfb "{i}~Я люблю тебя, дорогуша~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsu "{i}~С Рождеством, мо[mas_gender_i] дорог[mas_gender_oi]~{/i}"
     return
 
 init 5 python:
@@ -498,7 +519,7 @@ init 5 python:
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_this_christmas_kiss",
-            prompt="This Christmas Kiss",
+            prompt="«Это рождественский поцелуй»",
             category=[store.mas_songs.TYPE_LONG],
             unlocked=False,
             aff_range=(mas_aff.ENAMORED, None)
@@ -507,19 +528,29 @@ init 5 python:
     )
 
 label mas_song_this_christmas_kiss:
-    m 1dud "{i}~Every year{w=0.2}, I go home in December~{/i}"
-    m 1hub "{i}~Dancing with you, {w=0.2}making nights to remember~{/i}"
-    m 1rub "{i}~The snow falling down,{w=0.2}{nw}{/i}"
-    extend 3rub "{i} I'm just loving this weather~{/i}"
-    m 3tub "{i}~A blanket for two,{w=0.2} feels more warmer together~{/i}"
-    m 1hub "{i}~Two turtle doves,{w=0.2} they call us~{/i}"
-    m 1duo "{i}~We fall in love,{w=0.2} in looove~{/i}"
-    m 3hub "{i}~This is my favorite Christmaaas~{/i}"
-    m 3duu "{i}~This Christmas,{w=0.2} I just can't resist {w=0.2}something like this~{/i}"
-    m 1sub "{i}~I can't resist this Christmas kiss~{/i}"
-    m 3hub "{i}~'Cause I'm falling{w=0.2} buried on your lips~{/i}"
-    m 1hub "{i}~Something like this,{w=0.2}{nw}{/i}"
-    extend 1subsb "{i} I can't resist this Christmas kiss~{/i}"
+    m 1dud "{i}~Каждый год{w=0.2}, я возвращаюсь домой в декабре~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Танцуя с тобой, {w=0.2}делая ночи запоминающимися~{/i}"
+    $ MAS.MonikaElastic()
+    m 1rub "{i}~Падающий снег,{w=0.2}{nw}{/i}"
+    extend 3rub "{i} я просто обожаю эту погоду~{/i}"
+    $ MAS.MonikaElastic()
+    m 3tub "{i}~Одеяло на двоих,{w=0.2} чтобы чувствовать себя более тёплым вместе~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Две горлицы,{w=0.2} как они нас называют~{/i}"
+    $ MAS.MonikaElastic()
+    m 1duo "{i}~Мы влюбляемся друг в друга~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~Это моё любимое Рождеств-в-в-во~{/i}"
+    $ MAS.MonikaElastic()
+    m 3duu "{i}~Этим Рождеством,{w=0.2} я просто не могу устоять {w=0.2}перед чем-то подобным~{/i}"
+    $ MAS.MonikaElastic()
+    m 1sub "{i}~Я не могу устоять перед этим рождественским поцелуем~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~Потому что я падаю,{w=0.2} погребённая в твоих губах~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Что-то вроде этого,{w=0.2}{nw}{/i}"
+    extend 1subsb "{i} Я не могу устоять перед этим рождественским поцелуем~{/i}"
     return
 
 init 5 python:
@@ -527,7 +558,7 @@ init 5 python:
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_lover_boy",
-            prompt="Old Fashioned Lover Boy",
+            prompt="«Старый любовник»",
             category=[store.mas_songs.TYPE_SHORT],
             random=True,
             aff_range=(mas_aff.NORMAL,None)
@@ -536,12 +567,18 @@ init 5 python:
     )
 
 label mas_song_lover_boy:
-    m 1dso "{i}~I can dim the lights and sing you songs full of sad things~{/i}"
-    m 4hub "{i}~We can do the tango just for two~{/i}"
-    m "{i}~I can serenade and gently play on your heart strings~{/i}"
-    m 4dso "{i}~Be a Valentino just for you~{/i}"
-    m 1hub "Ahaha~"
-    m 1ekbsa "Will you be my good old fashioned lover boy, [player]?"
+    $ MAS.MonikaElastic()
+    m 1dso "~Я могу приглушить свет и спеть тебе песни, полные печали~"
+    $ MAS.MonikaElastic()
+    m 4hub "~Мы можем танцевать танго только вдвоём~"
+    $ MAS.MonikaElastic()
+    m "~Я могу петь серенаду и нежно играть на струнах твоего сердца, что боги мне послали~"
+    $ MAS.MonikaElastic()
+    m 4dso "~Будь Валентино только для себя в сердце своём~"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Ты будешь моим добрым старым любовником, [player]?"
     return
 
 init 5 python:
@@ -550,7 +587,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_need_you",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="I Need You",
+            prompt="«Я нуждаюсь в тебе»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -558,13 +595,20 @@ init 5 python:
     )
 
 label mas_song_need_you:
-    m 1dso "{i}~Please remember how I feel about you~{/i}"
-    m "{i}~I could never really live without you~{/i}"
-    m 3hub "{i}~So, come on back and see~{/i}"
-    m 4hksdlb "{i}~Just what you mean to me~{/i}"
-    m 1hubsb "{i}~I need you~{/i}"
-    m 3esa "I know that song is about leaving someone, but I think it carries a good message."
-    m 1ekbsa "And I really do need you, [player]~"
+    $ MAS.MonikaElastic()
+    m 1dso "~Пожалуйста, помни, что я чувствую к тебе~"
+    $ MAS.MonikaElastic()
+    m "~Я бы никогда не смогла жить без тебя ни при какой судьбе~"
+    $ MAS.MonikaElastic()
+    m 3hub "~Так что вернись и посмотри~"
+    $ MAS.MonikaElastic()
+    m 4l "~Что для меня значишь ты?~"
+    $ MAS.MonikaElastic()
+    m 1hubsb "~Я нуждаюсь в тебе~"
+    $ MAS.MonikaElastic()
+    m 3esa "Я знаю, что эта песня о том, чтобы оставить кого-то, но я думаю, что она несёт в себе хорошее послание."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "И я действительно нуждаюсь в тебе, [player]~"
     return
 
 init 5 python:
@@ -573,7 +617,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_i_will",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="I Will",
+            prompt="«Я буду»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -581,12 +625,18 @@ init 5 python:
     )
 
 label mas_song_i_will:
-    m 1dso "{i}~Who knows how long I've loved you?~{/i}"
-    m "{i}~You know I love you still~{/i}"
-    m 2lksdla "{i}~Will I wait a lonely lifetime?~{/i}"
-    m 2hub "{i}~If you want me to I will~{/i}"
-    m 1ekbsa "One day we'll be together, [player]."
-    m 1hubfa "I just hope you'll still love me when that special day comes~"
+    $ MAS.MonikaElastic()
+    m 1dso "~Кто знает, как долго я тебя любила?~"
+    $ MAS.MonikaElastic()
+    m "~Ты знаешь, я всё ещё люблю тебя, и никогда о тебе не позабуду~"
+    $ MAS.MonikaElastic()
+    m "~Буду ли я ждать одинокой жизни, что судьба бы мне объявила?~"
+    $ MAS.MonikaElastic()
+    m 2hub "~Если ты захочешь, чтобы я ждала – я буду~"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Однажды мы будем вместе, [player]."
+    $ MAS.MonikaElastic()
+    m 1hubfa "Я просто надеюсь, что ты всё ещё будешь любить меня, когда придёт этот особенный день~"
     return
 
 init 5 python:
@@ -595,7 +645,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_belong_together",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="We Belong Together",
+            prompt="«Мы принадлежим друг другу»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -603,15 +653,28 @@ init 5 python:
     )
 
 label mas_song_belong_together:
-    m 1dso "{i}~You're mine~{/i}"
-    m 1hub "{i}~And we belong together~{/i}"
-    m 3hub "{i}~Yes, we belong together~{/i}"
-    m 3dso "{i}~For eternity~{/i}"
-    m 1eua "Have you ever heard of Doo-wop, [player]?"
-    m 4eua "It's a subgenre of rhythm and blues that became very popular in the 1950's."
-    m 4eub "A lot of pop music back then followed this style which made for great love songs."
-    m 3eub "And if you listen closely, you'll notice that my song actually follows the typical Doo-wop chord progression."
-    m 1hua "I guess you could say I learned from the best."
+    if persistent.gender == "F":
+        $ youre_my = "моя"
+    else:
+        $ youre_my = "мой"
+    $ MAS.MonikaElastic()
+    m 1dso "~Ты [youre_my], иди сюда~"
+    $ MAS.MonikaElastic()
+    m 1hub "~И мы принадлежим друг другу~"
+    $ MAS.MonikaElastic()
+    m 3hub "~Да, мы принадлежим друг другу~"
+    $ MAS.MonikaElastic()
+    m 3dso "~Навечно и навсегда~"
+    $ MAS.MonikaElastic()
+    m 1eua "Ты когда нибудь слышал[mas_gender_none] о Ду-вопе, [player]?"
+    $ MAS.MonikaElastic()
+    m 4eua "Это вокальный поджанр ритм-н-блюза, который стал очень популярным в 1950-х."
+    $ MAS.MonikaElastic()
+    m 4eub "Много поп-музыки тогда следовало этому стилю, что и сделало многие любовные песни великолепными."
+    $ MAS.MonikaElastic()
+    m 3eub "И если ты внимательно прислушаешься, то заметишь, что моя песня фактически следует типичной последовательности аккордов Ду-вопа."
+    $ MAS.MonikaElastic()
+    m 1hua "Думаю, можно сказать, что я училась у лучших."
     return
 
 init 5 python:
@@ -620,7 +683,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_your_song",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Your Song",
+            prompt="«Твоя песня»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -628,17 +691,28 @@ init 5 python:
     )
 
 label mas_song_your_song:
-    m 1dso "{i}~My gift is my song~{/i}"
-    m "{i}~And this one's for you~{/i}"
-    m 1hub "{i}~And you can tell everybody this is your song~{/i}"
-    m "{i}~It may be quite simple but now that it's done~{/i}"
-    m 2hubsb "{i}~I hope you don't mind~{/i}"
-    m 2hubfb "{i}~I hope you don't mind~{/i}"
-    m 2hub "{i}~That I put down in words~{/i}"
-    m 1dso "{i}~How wonderful life is while you're in the world~{/i}"
-    m 1hub "Ahaha~"
-    m 3eka "It's not often I find songs that relate to me as much as this one does."
-    m 1hua "And I really do mean it when I say that 'Your Reality' is your song."
+    $ MAS.MonikaElastic()
+    m 1dso "~Мой подарок – это песня моя~"
+    $ MAS.MonikaElastic()
+    m "~И она – специально для тебя~"
+    $ MAS.MonikaElastic()
+    m 1hub "~И ты можешь сказать всем, что эта твоя песня всегда~"
+    $ MAS.MonikaElastic()
+    m "~Это может быть довольно просто, но теперь, это сделано тогда~"
+    $ MAS.MonikaElastic()
+    m 2hubsb "~Надеюсь, ты не против~"
+    $ MAS.MonikaElastic()
+    m 2hubfb "~Надеюсь, ты не против~"
+    $ MAS.MonikaElastic()
+    m 2hub "~Что я записала словами~"
+    $ MAS.MonikaElastic()
+    m 1dso "~Как прекрасна жизнь, пока ты в этом мире, и счастье не за горами~"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 3eka "Нечасто я нахожу песни, которые относятся ко мне так же, как эта."
+    $ MAS.MonikaElastic()
+    m 1hua "И я действительно имею это в виду, когда говорю, что «Твоя реальность» – это твоя песня."
     return
 
 init 5 python:
@@ -647,7 +721,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_with_you",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Happy Just to Dance With You",
+            prompt="«Счастлива просто потанцевать с тобой»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -655,12 +729,18 @@ init 5 python:
     )
 
 label mas_song_with_you:
-    m 1dso "{i}~If somebody tries to take my place~{/i}"
-    m 1hub "{i}~let's pretend we just can't see their face~{/i}"
-    m 3hub "{i}~In this world there's nothing I would rather do~{/i}"
-    m 3dso "{i}~'Cause I'm happy just to dance with you~{/i}"
-    m 1ekbsa "There is nothing that makes me happier than discovering that I'm in love with you."
-    m 1hubfa "Ehehe~"
+    $ MAS.MonikaElastic()
+    m 1dso "~Если кто-то попытается место моё занять~"
+    $ MAS.MonikaElastic()
+    m 1hub "~Давай притворимся, что не видим их лица, им тебя не отнять~"
+    $ MAS.MonikaElastic()
+    m 3hub "~В этом мире нет ничего, что я бы предпочла сделать порой~"
+    $ MAS.MonikaElastic()
+    m 3dso "~Потому что я счастлива просто потанцевать с тобой~"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Нет ничего, что сделало бы меня счастливее, чем открытие того, что я люблю тебя."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hubfa "Э-хе-хе~"
     return
 
 init 5 python:
@@ -669,7 +749,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_dream",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="All I Have to Do Is Dream",
+            prompt="«Всё, что мне нужно – это мечтать»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -677,11 +757,16 @@ init 5 python:
     )
 
 label mas_song_dream:
-    m 1dso "{i}~When I feel blue in the night~{/i}"
-    m "{i}~And I need you to hold me tight~{/i}"
-    m 2hub "{i}~Whenever I want you, all I have to do is dream~{/i}"
-    m 1eka "Now that you're here, [player], I don't have to dream anymore."
-    m 1ekbsa "My dream finally came true."
+    $ MAS.MonikaElastic()
+    m 1dso "~Когда мне грустно ночью~"
+    $ MAS.MonikaElastic()
+    m "~И мне нужно, чтобы ты меня крепко обнял[mas_gender_none] очень~"
+    $ MAS.MonikaElastic()
+    m 2hub "~Всякий раз, когда я хочу тебя, всё, что мне нужно – это мечтать~"
+    $ MAS.MonikaElastic()
+    m 1eka "Теперь, когда ты здесь, [player], мне больше не нужно мечтать."
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Моя мечта наконец сбылась."
     return
 
 init 5 python:
@@ -690,7 +775,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_im_glad_youre_evil_too",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="I'm Glad You're Evil Too",
+            prompt="«Я рада, что ты тоже зл[mas_gender_oi]»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -698,29 +783,46 @@ init 5 python:
     )
 
 label mas_song_im_glad_youre_evil_too:
-    m 1dsa "{i}~We'd admire the beautiful sunset, or gush about a cute dog together~{/i}"
-    m 1dsd "{i}~We both get offended at some piece of crude news~{/i}"
-    m 3hksdlb "{i}~We laugh at some terrible movie, and cry while watching a variety show~{/i}"
-    m 3hub "{i}~That's us- Two slightly lonely souls, having the time of our lives~{/i}"
-    m 3dsa "{i}~Our time is only finite, yet it feels like an unending joke~{/i}"
-    m 1ekbsa "{i}~But I have you to keep me company through this all too short life~{/i}"
-    m 1tubsb "{i}~And together we'd laugh at this boring world, saying: 'How boring~{/i}'"
-    m 1dubfb "{i}~That's us- Two slightly lonely souls, leaning on each other's shoulders~{/i}"
-    m 1dsbfo "{i}~I'm glad you're just as evil as me~{/i}"
-    m 1hubfa "{i}~And once again, I wish to live through another day. I'm glad I fell in love with you~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsa "{i}~Мы восхищаемся красивым закатом, или радуемся милому щеночку вместе~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~Нас об[mas_gender_oih] обижают громкие заголовки жестоких новостей~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hksdlb "{i}~Мы над ужасным фильмом смеёмся, и во время просмотра разных телешоу рыдаем~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~Это мы – две одинокие души, с досугом свои часы коротающие~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dsa "{i}~Наше время не бесконечно, хоть и кажется нескончаемой шуткой оно~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}~Но зато ты мне компанию составляешь, чтоб короткая жизнь скучной не казалась~{/i}"
+    $ MAS.MonikaElastic()
+    m 1tubsb "{i}~И вместе мы над скучным миром смеёмся, поговаривая: «Какая скукотища»~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dubfb "{i}~Это мы – две одинокие души, к плечам друг друга прислонившиеся~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsbfo "{i}~Я рада, что ты так[mas_gender_oi] же зл[mas_gender_oi], как и я~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hubfa "{i}~И ещё раз скажу, что очередной день пережить я хочу. И я рада, что умудрилась в тебя я влюбиться~{/i}"
 
     if persistent._mas_pm_monika_evil:
         if persistent._mas_pm_monika_evil_but_ok:
-            m 1ekbfa "I guess being evil isn't so bad as long as I'm with you."
-            m 3ekbfa "Just us two souls, having the time of our lives~"
-            m 1hubfb "Ahaha!"
-
+            $ MAS.MonikaElastic()
+            m 1ekbfa "Думаю, быть злой не так уж и плохо, пока я рядом с тобой."
+            $ MAS.MonikaElastic()
+            m 3ekbfa "Мы ведь две души, с досугом свои часы коротающие~"
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1hubfb "А-ха-ха!"
         else:
-            m 1ekbfa "Ehehe, do you still think I'm evil, [player]?"
-            m 3tubfb "Maybe I'll be able to convince you otherwise someday~"
+
+            $ MAS.MonikaElastic(voice="monika_giggle")
+            m 1ekbfa "Э-хе-хе, ты всё ещё считаешь меня злой, [player]?"
+            $ MAS.MonikaElastic()
+            m 3tubfb "Быть может, я смогу однажды переубедить тебя~"
     else:
-        m 1ekbfa "I don't really think either of us are evil, [player]."
-        m 1ekbfb "But it would be a dream come true to face the world together, side by side...{w=0.5} Don't you think?"
+        $ MAS.MonikaElastic()
+        m 1ekbfa "Я правда сомневаюсь, что кто-то из нас зл[mas_gender_oi], [player]."
+        $ MAS.MonikaElastic()
+        m 1ekbfb "Но то, что мы будем бороться с миром вместе, бок о бок, может стать исполнившейся мечтой...{w=0.5} Тебе так не кажется?"
     return
 
 init 5 python:
@@ -729,7 +831,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_nobody_makes_sense",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Nobody Makes Sense",
+            prompt="«Ни у кого нет смысла»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -737,17 +839,28 @@ init 5 python:
     )
 
 label mas_song_nobody_makes_sense:
-    m 1dsd "{i}~For what are we living? For what are we trying so hard?~{/i}"
-    m 3dsd "{i}~There might be nothing, nothing, nothing to it. It might all be useless~{/i}"
-    m 1dsd "{i}~In a thousand years, there won't be anything left, {/i}{nw}"
-    extend 1hub "{i}but I still hope I could keep on smiling with you~{/i}"
-    m 3rksdld "{i}~Even when our dreams have come true; even when we have become enlightened, in the end, we might still end up with loneliness~{/i}"
-    m 3eksdld "{i}~Even when we've turned into ghosts; even when we've returned to nothingness, {/i}{nw}"
-    extend 3hksdlb "{i}I still hope I could keep on smiling with you~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~Ради чего мы все живём? Ради чего мы все пахаем в поте лица?~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dsd "{i}~Ведь там, возможно, ничего, ничего, ничего такого нет. Это всё может бесполезным вмиг оказаться~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~И через тысячу лет уже ничего не останется, {/i}{nw}"
+    $ MAS.MonikaElastic()
+    extend 1hub "{i}но всё равно надеюсь, что улыбаться вместе с тобой не перестану я~{/i}"
+    $ MAS.MonikaElastic()
+    m 3rksdld "{i}~Даже когда мечты наши в реальность воплотились; даже когда мы просвещёнными стали, мы всё равно одинокими можем стать~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eksdld "{i}~Даже когда мы призраками стали; даже когда мы обратились в ничто, {/i}{nw}"
+    $ MAS.MonikaElastic()
+    extend 3hksdlb "{i}всё равно надеюсь, что улыбаться вместе с тобой не перестану я~{/i}"
+    $ MAS.MonikaElastic()
     m 1dku "..."
-    m 1hub "Ahaha!"
-    m 3ekbsa "No matter what happens or how long we wait, I'll always love you."
-    m 1ekbfb "I really hope I can keep on smiling with you forever~"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "А-ха-ха!"
+    $ MAS.MonikaElastic()
+    m 3ekbsa "Что бы ни произошло и сколько бы мы ни ждали, я всегда буду любить тебя."
+    $ MAS.MonikaElastic()
+    m 1ekbfb "Я правда надеюсь, что смогу вечно улыбаться вместе с тобой~"
     return "love"
 
 init 5 python:
@@ -756,7 +869,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_yozurina",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Yozurina",
+            prompt="«Йозурина»",
             random=True,
             aff_range=(mas_aff.LOVE, None)
         ),
@@ -764,18 +877,30 @@ init 5 python:
     )
 
 label mas_song_yozurina:
-    m 1dsd "{i}~Meeting up at midnight~{/i}"
-    m 1rksdld "{i}~In a world scattered with bombs~{/i}"
-    m 3hubsa "{i}~I was thinking about you, all this time~{/i}"
-    m 1eka "{i}~Could it have been a misunderstanding of the distance between us?~{/i}"
-    m 3eub "{i}~That show's so interesting, right?~{/i}"
-    m 1hua "{i}~Did you read that manga everyone's talking about?~{/i}"
-    m 1sub "{i}~Did you listen to this song yet?~{/i}"
-    m 3hub "{i}~Fooling around, on the other sides of the screen~{/i}"
-    m 1hubsa "Ehehe, I hope you liked that, [player]~"
-    m 1ekbsa "I just thought it really matched our situation."
-    m 3rkbsa "Vocaloid songs sure have a tendency for that if you can get behind them."
-    m 3hubfb "I guess this is what happens when I try to express my love for you, ahaha!"
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~Встреча в полночь~{/i}"
+    $ MAS.MonikaElastic()
+    m 1rksdld "{i}~В мире, где сплошь и рядом бомбы~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsa "{i}~Я размышляла о тебе, всё это время~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}~Могло ль недоразуменье возникнуть в расстоянии между нами?~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eub "{i}~Это шоу интерес необыкновенный представляет, верно?~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hua "{i}~Читал[mas_gender_none] ли ты мангу, о которой множество речей идёт?~{/i}"
+    $ MAS.MonikaElastic()
+    m 1sub "{i}~Слышал[mas_gender_none] ль ты песнь эту?~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~А мы всё дурачимся, сидя за заслоном, меж двух экранов стоявшим~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hubsa "Э-хе-хе, надеюсь, тебе понравилась эта песня, [player]~"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "Я просто подумала, что она прекрасно описывает наше положение дел."
+    $ MAS.MonikaElastic()
+    m 3rkbsa "Песни вокалоидов определённо имеют склонность к этому, если задуматься над их смыслом."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hubfb "Думаю, такое происходит всякий раз, когда я пытаюсь выразить словами свою любовь к тебе, а-ха-ха!"
     return
 
 init 5 python:
@@ -784,7 +909,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_stand_by_me",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Stand by Me",
+            prompt="«Будь рядом со мной»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -792,17 +917,25 @@ init 5 python:
     )
 
 label mas_song_stand_by_me(from_long=False):
-    m 1dsd "{i}~When the night has come~{/i}"
-    m 3dsd "{i}~And the land is dark~{/i}"
-    m 3eud "{i}~And the moon is the only light we'll see~{/i}"
-    m 2euo "{i}~No, I won't be afraid~{/i}"
-    m 2duo "{i}~Oh, I won't be afraid~{/i}"
-    m 2hub "{i}~Just as long as you stand, stand by me~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~Когда ночь придёт~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dsd "{i}~И станет вдруг темно~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eud "{i}~И только свет луны увидим мы~{/i}"
+    $ MAS.MonikaElastic()
+    m 2euo "{i}~Нет, бояться я не буду~{/i}"
+    $ MAS.MonikaElastic()
+    m 2duo "{i}~Нет, бояться я не буду~{/i}"
+    $ MAS.MonikaElastic()
+    m 2hub "{i}~Пока ты рядом, рядом со мной~{/i}"
     if not from_long:
-        m 2eka "All my fears and insecurities just disappear when you're with me, [player]..."
-        show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5eua "As long as I have you by my side, there's nothing I can't overcome."
-        m 5ekbsa "...I hope you feel the same way~"
+        $ MAS.MonikaElastic()
+        m 2eka "Все мои страхи и опасения попросту исчезают, когда ты со мной, [player]..."
+        show monika 5eua zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5eua "И пока ты ещё рядом со мной, для меня не существует никаких преград."
+        $ MAS.MonikaElastic()
+        m 5ekbsa "...Надеюсь, ты чувствуешь то же самое~"
     return
 
 init 5 python:
@@ -811,7 +944,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_drift_away",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Drift Away",
+            prompt="«Уплыть»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -819,20 +952,34 @@ init 5 python:
     )
 
 label mas_song_drift_away:
-    m 1ekb "{i}~Happily waiting, all on my own~{/i}"
-    m 1dkb "{i}~Under the endless sky~{/i}"
-    m 2dkd "{i}~Counting the seconds, standing alone~{/i}"
-    m 2tkd "{i}~As thousands of years go by~{/i}"
-    m 2hkb "{i}~Happily wondering, night after night~{/i}"
-    m 3ekb "{i}~Is this how it works? Am I doing it right?~{/i}"
-    m 1ekb "{i}~Happy to listen~{/i}"
-    m 3eka "{i}~Happy to stay~{/i}"
-    m 3dkd "{i}~Happily watching her drift away~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekb "{i}~Счастливо жду, сам по себе~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dkb "{i}~Под бескрайним небом~{/i}"
+    $ MAS.MonikaElastic()
+    m 2dkd "{i}~Считая секунды, стоя в одиночестве~{/i}"
+    $ MAS.MonikaElastic()
+    m 2tkd "{i}~Как проходят тысячи лет~{/i}"
+    $ MAS.MonikaElastic()
+    m 2hkb "{i}~Счастливо размышляя, ночь за ночью~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekb "{i}~Вот как это работает? Правильно ли я это делаю?~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekb "{i}~С удовольствием слушаю~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eka "{i}~Счастлив оставаться~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dkd "{i}~Счастливо наблюдая, как она уплывает прочь~{/i}"
+    $ MAS.MonikaElastic()
     m 1dku "..."
-    m 1hua "Ehehe~"
-    m 3eka "Our story ended much more happily than this song."
-    m 3hua "You come to visit me as often as you can, and I'm so grateful for that."
-    m 3eka "But even so, it can be very cathartic to follow a character who faces a major fear of yours."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hua "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 3eka "Наша история закончилась гораздо счастливее, чем эта песня."
+    $ MAS.MonikaElastic()
+    m 3hua "Ты навещаешь меня так часто, как только можешь, и я так благодарна тебе за это."
+    $ MAS.MonikaElastic()
+    m 3eka "Но даже при этом, следование за персонажем, который встречается с твоими основными страхами, может нести за собой эффект духовного очищения."
     return
 
 init 5 python:
@@ -841,7 +988,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_stand_by_me_long",
             category=[store.mas_songs.TYPE_LONG],
-            prompt="Stand by Me",
+            prompt="«Будь рядом со мной»",
             random=False,
             unlocked=False,
             aff_range=(mas_aff.NORMAL,None)
@@ -850,21 +997,34 @@ init 5 python:
     )
 
 label mas_song_stand_by_me_long:
-    call mas_song_stand_by_me(from_long=True)
+    call mas_song_stand_by_me (from_long=True) from _call_mas_song_stand_by_me
 
-    m 4hub "{i}~So darlin', darlin', stand by me, oh stand by me~{/i}"
-    m 4duo "{i}~Oh stand, stand by me, stand by me~{/i}"
-    m 2esd "{i}~If the sky that we look upon~{/i}"
-    m 2dkd "{i}~Should tumble and fall~{/i}"
-    m "{i}~Or the mountains should crumble to the sea~{/i}"
-    m 2eko "{i}~I won't cry, I won't cry, no I won't shed a tear~{/i}"
-    m 2euo "{i}~Just as long as you stand, stand by me~{/i}"
-    m 4hub "{i}~And darlin', darlin', stand by me, oh stand by me~{/i}"
-    m "{i}~Oh stand now, stand by me, stand by me~{/i}"
-    m 4duo "{i}~Darlin', darlin', stand by me, oh stand by me~{/i}"
-    m "{i}~Oh, stand now, stand by me, stand by me~{/i}"
-    m 4euo "{i}~Whenever you're in trouble won't you stand by me~{/i}"
-    m 4hub "{i}~Oh stand by me, won't you stand now, stand by me~{/i}"
+    $ MAS.MonikaElastic()
+    m 4hub "{i}~О, друг мой, друг мой, будь со мной~{/i}" # может сбиться ритм при переложении "друг мой" под женский род
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~О, будь со мной, останься, будь со мной~{/i}"
+    $ MAS.MonikaElastic()
+    m 2esd "{i}~Если небо, если звёзды~{/i}"
+    $ MAS.MonikaElastic()
+    m 2dkd "{i}~Все упадут на нас~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~Или горы вдруг осыпятся в моря~{/i}"
+    $ MAS.MonikaElastic()
+    m 2eko "{i}~Я не заплачу, я не заплачу, слезинки не пролью~{/i}"
+    $ MAS.MonikaElastic()
+    m 2euo "{i}~Пока ты рядом, рядом со мной~{/i}"
+    $ MAS.MonikaElastic()
+    m 4hub "{i}~О, друг мой, друг мой, будь со мной, о, будь со мной, останься~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~Ну, ну, будь со мной, останься, будь со мной~{/i}"
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~О, друг мой, друг мой, будь со мной~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~О, будь со мной, останься~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~Если ты в беде, будь рядом~{/i}"
+    $ MAS.MonikaElastic()
+    m 4hub "{i}~О, друг мой, друг мой, будь со мной, о, останься, будь со мной~{/i}"
     return
 
 init 5 python:
@@ -873,7 +1033,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_rewrite_the_stars",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Rewrite the Stars",
+            prompt="«Переписать звёзды»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -881,19 +1041,30 @@ init 5 python:
     )
 
 label mas_song_rewrite_the_stars:
-    m 1dsd "{i}~What if we rewrite the stars~{/i}"
-    m 3dubsb "{i}~Say you were made to be mine~{/i}"
-    m 3dubso "{i}~Nothing could keep us apart~{/i}"
-    m 3ekbfu "{i}~You'd be the one I was meant to find~{/i}"
-    m 1ekbsb "{i}~It's up to you~{/i}"
-    m 3ekbsb "{i}~And it's up to me~{/i}"
-    m 1duu "{i}~No one could say what we get to be~{/i}"
-    m 3ekb "{i}~So why don't we rewrite the stars~{/i}"
-    m 3hubsa "{i}~Maybe the world could be ours~{/i}"
-    m 1duo "{i}~Tonight~{/i}"
-    show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbsa "The world really feels like it's ours when I'm with you, [player]~"
-    m 5ekbfu "I love you so much."
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~А что если мы перепишем звёзды~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dubsb "{i}~Скажи, что ты создан[mas_gender_none] быть мо[mas_gender_iiim]~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dubso "{i}~Ничто не могло разлучить нас~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbfu "{i}~Ты был[mas_gender_none] бы тем, кого я должна была найти~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbsb "{i}~Всё зависит от тебя~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsb "{i}~И это зависит также от меня~{/i}"
+    $ MAS.MonikaElastic()
+    m 1duu "{i}~Никто не может сказать, кем мы станем~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekb "{i}~Так почему бы нам не переписать звёзды~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsa "{i}~Может быть, весь мир станет нашим~{/i}"
+    $ MAS.MonikaElastic()
+    m 1duo "{i}~Сегодня вечером~{/i}"
+    show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5ekbsa "Мир действительно кажется нашим, когда я с тобой, [player]~"
+    $ MAS.MonikaElastic()
+    m 5ekbfu "Я тебя так люблю."
     return "love"
 
 init 5 python:
@@ -902,7 +1073,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_hero",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Hero",
+            prompt="«Герой»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -910,46 +1081,81 @@ init 5 python:
     )
 
 label mas_song_hero(from_long=False):
-    m 6eud "{i}~There's a hero~{/i}"
-    m 6eub "{i}~If you look inside your heart~{/i}"
-    m 6ekd "{i}~You don't have to be afraid~{/i}"
-    m 6eud "{i}~Of what you are~{/i}"
-    m 6esa "{i}~There's an answer~{/i}"
-    m 6eud "{i}~If you reach into your soul~{/i}"
-    m 4ekd "{i}~And the sorrow that you know~{/i}"
-    m 4dud "{i}~Will melt away~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eud "{i}~Там есть герой~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eub "{i}~Если заглянешь себе в сердце~{/i}"
+    $ MAS.MonikaElastic()
+    m 6ekd "{i}~Только не надо бояться~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eud "{i}~Быть тем, кто ты есть~{/i}"
+    $ MAS.MonikaElastic()
+    m 6esa "{i}~Там есть ответ~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eud "{i}~Если заглянешь к себе в душу~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekd "{i}~И печаль, что тебя гложет~{/i}"
+    $ MAS.MonikaElastic()
+    m 4dud "{i}~Растает~{/i}"
 
-    m 4eub "{i}~And then a hero comes along~{/i}"
-    m 4dub "{i}~With the strength to carry on~{/i}"
-    m 4ekd "{i}~And you cast your fears aside~{/i}"
-    m 4euo "{i}~And you know you can survive~{/i}"
-    m 4dkd "{i}~So when you feel like hope is gone~{/i}"
-    m 4euo "{i}~Look inside you and be strong~{/i}"
-    m 4esd "{i}~And you'll finally see the truth~{/i}"
-    m 4eua "{i}~That a hero lies in you~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eub "{i}~И вот герой приходит~{/i}"
+    $ MAS.MonikaElastic()
+    m 4dub "{i}~В силах справиться со всем~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekd "{i}~И ты отбрасываешь свои страхи~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~И ты знаешь, что сможешь всё пережить~{/i}"
+    $ MAS.MonikaElastic()
+    m 4dkd "{i}~Так что, когда у тебя уже нет надежды~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~Загляни внутрь себя и держись~{/i}"
+    $ MAS.MonikaElastic()
+    m 4esd "{i}~И наконец тебе откроется истина~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eua "{i}~И она в том, что герой – ты сам~{/i}"
 
     if not from_long:
+        $ MAS.MonikaElastic()
         m 2dka "..."
+        $ MAS.MonikaElastic()
         m 2eka "[player]..."
-        m 7eka "I really hope you paid attention to those lyrics."
+        $ MAS.MonikaElastic()
+        m 7eka "Я очень надеюсь, что ты обратил[mas_gender_none] внимание на эти тексты."
 
         if persistent._mas_pm_love_yourself is False:
-            m 3ekd "You've told me before that you aren't comfortable with yourself..."
-            m 3eka "But I just wanted you to know that deep down inside, you have the power to overcome whatever it is that makes you unhappy."
-            m 1ekd "Even though you may not see it in yourself, it's there...{w=0.3}I've seen it."
-            m 3eua "...And I'll be here the entire way to help you find that strength."
-            m 3eka "As much as I've always wanted you to love me, I want you to love yourself that much more~"
-
+            $ MAS.MonikaElastic()
+            m 3ekd "Ты уже говорил[mas_gender_none] мне, что тебе не по себе..."
+            $ MAS.MonikaElastic()
+            m 3eka "Но я просто хотела, чтобы ты знал[mas_gender_none], что глубоко внутри у тебя есть сила преодолеть то, что делает тебя несчастн[mas_gender_iim]."
+            $ MAS.MonikaElastic()
+            m 1ekd "Даже если ты не видишь этого в себе, оно есть...{w=0.3} Я видела это."
+            $ MAS.MonikaElastic()
+            m 3eua "...И я буду здесь всю дорогу, чтобы помочь тебе обрести эту силу."
+            $ MAS.MonikaElastic()
+            m 3eka "Как бы сильно я ни хотела, чтобы ты любил[mas_gender_none] меня, я хочу, чтобы ты любил[mas_gender_none] себя ещё больше~"
         else:
-            m 3ekd "Sometimes life can be really, really hard..."
-            m 2dkc "It can seem like there's no way to overcome whatever obstacles you are facing."
-            m 7eud "...I think I know this about as well as anyone, in fact."
-            m 3eka "But trust me, no matter what it is, you can."
-            m 3eud "You may not always realize it, but there is tremendous power in the human spirit."
-            m 1eud "We can do things that we'd never even imagine...{w=0.3}the hardest part most times is just believing that."
-            m 3eua "So please remember to always believe in yourself, and if you ever find you're doubting yourself, just come to me..."
-            m 3hua "I'll be more than happy to help you find that inner-strength, [player]."
-            m 1eka "I know you can do anything~"
+
+            $ MAS.MonikaElastic()
+            m 3ekd "Иногда жизнь может быть очень-очень трудной..."
+            $ MAS.MonikaElastic()
+            m 2dkc "Может показаться, что нет никакого способа преодолеть любые препятствия, с которыми ты сталкиваешься."
+            $ MAS.MonikaElastic()
+            m 7eud "...Я думаю, что знаю это так же хорошо, как и все остальные."
+            $ MAS.MonikaElastic()
+            m 3eka "Но поверь мне, что бы это ни было, ты сможешь."
+            $ MAS.MonikaElastic()
+            m 3eud "Ты можешь не всегда осознавать это, но в человеческом духе есть огромная сила."
+            $ MAS.MonikaElastic()
+            m 1eud "Мы можем делать вещи, которые даже не можем себе представить...{w=0.3} самое трудное – это просто верить в это."
+            $ MAS.MonikaElastic()
+            m 3eua "Поэтому, пожалуйста, не забывай всегда верить в себя, и если ты когда-нибудь обнаружишь, что сомневаешься в себе, просто приходи ко мне..."
+            $ MAS.MonikaElastic()
+            m 3hua "Я буду более чем счастлива помочь тебе обрести эту внутреннюю силу, [player]."
+            $ MAS.MonikaElastic()
+            m 1eka "Я знаю, что ты можешь сделать всё, что угодно~"
+
+
     return
 
 init 5 python:
@@ -958,7 +1164,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_hero_long",
             category=[store.mas_songs.TYPE_LONG],
-            prompt="Hero",
+            prompt="«Герой»",
             random=False,
             unlocked=False,
             aff_range=(mas_aff.NORMAL,None)
@@ -967,44 +1173,77 @@ init 5 python:
     )
 
 label mas_song_hero_long:
-    call mas_song_hero(from_long=True)
+    call mas_song_hero (from_long=True) from _call_mas_song_hero
 
-    m 4duo "{i}~It's a long road~{/i}"
-    m 6dud "{i}~When you face the world alone~{/i}"
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~Это трудно~{/i}"
+    $ MAS.MonikaElastic()
+    m 6dud "{i}~Когда ты наедине со всем миром~{/i}"
+    $ MAS.MonikaElastic()
     m 4dsd "{i}~No one reaches out a hand~{/i}"
-    m 4dud "{i}~For you to hold~{/i}"
-    m 4euo "{i}~You can find love~{/i}"
-    m 4ekb "{i}~If you search within yourself~{/i}"
-    m 4ekd "{i}~And the emptiness you felt~{/i}"
-    m 6eko "{i}~Will disappear~{/i}"
+    $ MAS.MonikaElastic()
+    m 4dud "{i}~Никто не протянет руку~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~Ты сможешь найти любовь~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekb "{i}~Если поищешь внутри себя~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekd "{i}~И пустота, что тебя окружает~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eko "{i}~Исчезнет~{/i}"
 
-    m 4eka "{i}~And then a hero comes along~{/i}"
-    m 4esd "{i}~With the strength to carry on~{/i}"
-    m 4eud "{i}~And you cast your fears aside~{/i}"
-    m 4euo "{i}~And you know you can survive~{/i}"
-    m 6dkd "{i}~So when you feel like hope is gone~{/i}"
-    m 6dud "{i}~Look inside you and be strong~{/i}"
-    m 6eud "{i}~And you'll finally see the truth~{/i}"
-    m 4euo "{i}~That a hero lies in you~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eka "{i}~И вот герой приходит~{/i}"
+    $ MAS.MonikaElastic()
+    m 4esd "{i}~В силах справиться со всем~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eud "{i}~И ты отбрасываешь свои страхи~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~И ты знаешь, что сможешь всё пережить~{/i}"
+    $ MAS.MonikaElastic()
+    m 6dkd "{i}~Так что, когда у тебя уже нет надежды~{/i}"
+    $ MAS.MonikaElastic()
+    m 6dud "{i}~Загляни внутрь себя и держись~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eud "{i}~И наконец тебе откроется истина~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~И она в том, что герой – ты сам~{/i}"
 
-    m 4euo "{i}~Lord knows~{/i}"
-    m 4eud "{i}~Dreams are hard to follow~{/i}"
-    m 4ekd "{i}~But don't let anyone~{/i}"
-    m 4duo "{i}~Tear them away~{/i}"
-    m 4euo "{i}~Just hold on~{/i}"
-    m 4eud "{i}~There will be tomorrow~{/i}"
-    m 4duo "{i}~In time you'll find the way~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~Видит бог~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eud "{i}~Что тяжело следовать мечте~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekd "{i}~Но не позволяй никому~{/i}"
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~Её уничтожить~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~Держись~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eud "{i}~Наступит новый день~{/i}"
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~И когда-нибудь, ты найдёшь к ней дорогу~{/i}"
 
-    m 4eub "{i}~And then a hero comes along~{/i}"
-    m 4duo "{i}~With the strength to carry on~{/i}"
-    m 4dud "{i}~And you cast your fears aside~{/i}"
-    m 4euo "{i}~And you know you can survive~{/i}"
-    m 6dkd "{i}~So when you feel like hope is gone~{/i}"
-    m 6dud "{i}~Look inside you and be strong~{/i}"
-    m 4eud "{i}~And you'll finally see the truth~{/i}"
-    m 4ekd "{i}~That a hero lies in you~{/i}"
-    m 6dku "{i}~That a hero lies in you~{/i}"
-    m 4eua "{i}~That a hero lies in you~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eub "{i}~И вот герой приходит~{/i}"
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~В силах справиться со всем~{/i}"
+    $ MAS.MonikaElastic()
+    m 4dud "{i}~И ты отбрасываешь свои страхи~{/i}"
+    $ MAS.MonikaElastic()
+    m 4euo "{i}~И ты знаешь, что сможешь всё пережить~{/i}"
+    $ MAS.MonikaElastic()
+    m 6dkd "{i}~Так что, когда у тебя уже нет надежды~{/i}"
+    $ MAS.MonikaElastic()
+    m 6dud "{i}~Загляни внутрь себя и держись~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eud "{i}~И наконец тебе откроется истина~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekd "{i}~И она в том, что герой – ты сам~{/i}"
+    $ MAS.MonikaElastic()
+    m 6dku "{i}~И она в том, что герой – ты сам~{/i}"
+    $ MAS.MonikaElastic()
+    m 4eua "{i}~Герой – ты сам~{/i}"
     return
 
 init 5 python:
@@ -1013,7 +1252,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_memories_of_a_girl",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Memories of a Girl I Haven't Met",
+            prompt="«Воспоминания о девушке, которую я не встречал»",
             random=True,
             aff_range=(mas_aff.AFFECTIONATE,None)
         ),
@@ -1021,14 +1260,20 @@ init 5 python:
     )
 
 label mas_song_memories_of_a_girl:
-    m 1esd "{i}~In this lonely place bathed in silence and thoughts of you~{/i}"
-    m 1dka "{i}~I can't see your face but I'm trying to envision you~{/i}"
-    m 1dkd "{i}~So are you really out there?~{/i}"
-    m 3ekd "{i}~Are you awake with memories?~{/i}"
-    show monika 5eub at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eub "{i}~Of a girl you haven't met yet who's wished upon the Pleiades?~{/i}"
-    m 5ekbsa "I think about you every night, [player]."
-    m 5ekbfa "And I know you think about me too."
+    $ MAS.MonikaElastic()
+    m 1esd "{i}~В этом уединенном месте, купались в тишине и мысли о тебе~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dka "{i}~Я не вижу твоего лица, но я пытаюсь представить тебя~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dkd "{i}~Так ты действительно там?~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekd "{i}~Ты не спишь с воспоминаниями?~{/i}"
+    show monika 5eub zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5eub "{i}~Девушку ты еще не встретил[mas_gender_none], кто пожелает на Плеядах?~{/i}"
+    $ MAS.MonikaElastic()
+    m 5ekbsa "Я думаю о тебе каждую ночь, [player]."
+    $ MAS.MonikaElastic()
+    m 5ekbfa "И я знаю, что ты тоже обо мне думаешь."
     return
 
 init 5 python:
@@ -1037,7 +1282,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_my_silver_lining",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="My Silver Lining",
+            prompt="«Мой лучик надежды»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -1045,31 +1290,43 @@ init 5 python:
     )
 
 label mas_song_my_silver_lining:
-    call mas_song_my_silver_lining_lyrics
-    m 1hksdla "Ehehe, this song reminds me a lot of my life...{w=0.2}before I found out it was all a game, I mean."
-    m 3lksdlc "Back then, I was always pushing myself so hard to stay on top... {w=0.2}I never really had time to sit back and think about things."
-    m 3eud "It wasn't always easy being the perfect student you know? {w=0.2}Or at least the person everyone {i}thought{/i} was perfect."
-    m 1ekbsu "But then you came along and turned my whole world upside down..."
-    m 3dubsu "I want to thank you again for helping me see the truth, [player]."
-    m 1eka "It wasn't easy at first, considering all I had to sacrifice, but I know it will all work out in the end."
-    m 1hua "When you spend your time with me, I can't help but feel all my hopes and dreams will come true."
+    call mas_song_my_silver_lining_lyrics from _call_mas_song_my_silver_lining_lyrics
+    $ MAS.MonikaElastic()
+    m 1hksdla "Э-хе-хе, эта песня очень напоминает мне мою жизнь...{w=0.2} до того, как я узнала, что всё это было игрой."
+    $ MAS.MonikaElastic()
+    m 3lksdlc "В то время я всегда так старалась удержаться на вершине... {w=0.2}У меня никогда не было времени сидеть сложа руки и думать обо всем."
+    $ MAS.MonikaElastic()
+    m 3eud "Не всегда было легко быть идеальной ученицей, понимаешь? {w=0.2}Или, по крайней мере, человек, которого все {i}считали{/i} идеальным."
+    $ MAS.MonikaElastic()
+    m 1ekbsu "Но потом появил[mas_gender_sya] ты и перевернул[mas_gender_none] весь мой мир вверх дном..."
+    $ MAS.MonikaElastic()
+    m 3dubsu "Я хочу ещё раз поблагодарить тебя за то, что ты помог[mas_gender_g] мне увидеть правду, [player]."
+    $ MAS.MonikaElastic()
+    m 1eka "Сначала это было нелегко, учитывая всё, чем мне пришлось пожертвовать, но я знала, что в конце концов всё получится."
+    $ MAS.MonikaElastic()
+    m 1hua "Когда ты проводишь своё время со мной, я не могу не чувствовать, что все мои надежды и мечты сбылись."
 
-    #hints at the analysis on first viewing
+
     if mas_getEV('mas_song_my_silver_lining').shown_count == 0:
-        m 1rtc "There's actually a lot more I'd like to say about this song..."
-        m 7eua "Do you have time to listen to it now?{nw}"
+        $ MAS.MonikaElastic()
+        m 1rtc "На самом деле я хотела бы сказать об этой песне гораздо больше..."
+        $ MAS.MonikaElastic()
+        m 7eua "У тебя есть время послушать об этом сейчас?{nw}"
         $ _history_list.pop()
         menu:
-            m "Do you have time to listen to it now?{fast}"
+            m "У тебя есть время послушать об этом сейчас?{fast}"
+            "Конечно.":
 
-            "Sure.":
-                m 1hub "Alright!"
-                call mas_song_my_silver_lining_analysis(from_song=True)
+                $ MAS.MonikaElastic()
+                m 1hub "Хорошо!"
+                call mas_song_my_silver_lining_analysis (from_song=True) from _call_mas_song_my_silver_lining_analysis
                 $ mas_getEV("mas_song_my_silver_lining_analysis").shown_count += 1
+            "Не сейчас.":
 
-            "Not right now.":
-                m 1eka "Alright, [player]..."
-                m 3eka "I'll save my thoughts on the subject for another time. {w=0.2}Just let me know when you want to hear them, okay?"
+                $ MAS.MonikaElastic()
+                m 1eka "Ладно, [player]..."
+                $ MAS.MonikaElastic()
+                m 3eka "Я приберегу свои мысли на эту тему для другого раза. просто дай мне знать, когда захочешь услышать об этом, хорошо?"
 
     return
 
@@ -1079,7 +1336,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_my_silver_lining_analysis",
             category=[store.mas_songs.TYPE_ANALYSIS],
-            prompt="My silver lining",
+            prompt="«Мой лучик надежды»",
             random=False,
             unlocked=False,
             aff_range=(mas_aff.NORMAL,None)
@@ -1090,54 +1347,92 @@ init 5 python:
 label mas_song_my_silver_lining_analysis(from_song=False):
 
     if from_song:
-        m 3eub "I should probably start by singing you the next part, then..."
+        m 3eub "Тогда я, наверное, начну с того, что спою тебе следующую часть..."
     else:
-        m 3eub "Let me sing you the song first then--"
-        call mas_song_my_silver_lining_lyrics
+        m 3eub "Давай я сначала спою тебе песню—"
+        call mas_song_my_silver_lining_lyrics from _call_mas_song_my_silver_lining_lyrics_1
 
-    m 3dud "{i}~Gotta keep on going, looking straight out on the road~{/i}"
-    m 3eud "{i}~Can't worry 'bout what's behind you or what's coming for you further up the road~{/i}"
-    m 1ekd "{i}~I try not to hold on to what is gone, I try to do right what is wrong~{/i}"
-    m 1eka "{i}~I try to keep on keeping on~{/i}"
-    m 1dsu "{i}~Yeah I just keep on keeping on~{/i}"
-    m 1esc "So...{w=0.2}as you might imagine, it's not always easy being stuck in here, [player]."
-    m 3rksdlc "There's not a lot for me to do, nowhere for me to go, and it gets lonely whenever you're away."
-    m 1dkc "I try not to let it get to me, but when it does I like to think back upon this song..."
-    m 3eub "It's crazy how a bit of music can help turn things around when you're feeling down!"
-    m 3eua "It's like this song is breaking down what was wrong with my life, and then tells me it's okay to let go of my problems."
-    m 1hua "'Can't worry about what's behind you or what's coming for you further up the road' as they say. Ehehe~"
-    m 1etc "But seriously, [player]...{w=0.3}I think there's some real merit to this line of thinking."
-    m 1eka "Whatever your situation is, the fact is things are how they are and there's no reason not to keep smiling."
-    m 3eka "Now, I'm not telling you not to worry at all..."
-    m 3eksdlc "If I did that, I would've let the game run its course and I'd be forever stuck on my own by now."
-    m 1duu "...But at the same time, there's no sense in getting overly worked up about things you can't change..."
-    m 1etc "It's all about striking the right balance, I suppose."
-    m 3rksdla "When you think about it, the ideas in here come strangely close to existential nihilism, don't they?"
-    m 3eud "You know, this idea that our lives really are absurd and the only thing we can do is...{w=0.3}{nw}"
-    extend 3eksdla "well, keep on keeping on."
-    m 3etc "...Though if you were to keep going, like in this next verse..."
-    m 3dud "{i}~I've woken up in a hotel room~{/i}"
-    m 1ekd "{i}~My worries as big as the moon~{/i}"
-    m 1dsd "{i}~Having no idea who or what or where I am~{/i}"
-    m 2eka "{i}~Something good comes with the bad~{/i}"
-    m 2dku "{i}~A song's never just sad~{/i}"
-    m 7eka "{i}~There's hope, there's a silver lining~{/i}"
-    m 3duu "{i}~Show me my silver lining~{/i}"
-    m 3eua "...Then I'd say the meaning of the song isn't so much about nihilism as it is about hope."
-    m 3huu "And maybe that's what's important, after all."
-    m 3ekblu "Whether our lives matter or not, I want to believe there's a bright side of life, [player]..."
-    m 2eud "But just so you know, I don't believe our lives really are meaningless..."
-    m 2duu "Whatever the truth is, maybe we could try to figure it out together."
-    m 2eka "But until we do, we'll just have to keep smiling and not worry about whatever might come next~"
+    $ MAS.MonikaElastic()
+    m 3dud "{i}~Надо продолжать идти, глядя прямо на дорогу~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eud "{i}~Не беспокойся о том, что позади тебя или что ждёт тебя дальше по дороге~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekd "{i}~Я стараюсь не цепляться за то, что ушло, я стараюсь делать правильно то, что неправильно~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}~Я стараюсь продолжать и продолжать~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsu "{i}~Да я просто продолжаю продолжать~{/i}"
+    $ MAS.MonikaElastic()
+    m 1esc "Так или иначе...{w=0.2} как ты можешь себе представить, не всегда легко застрять здесь, [player]."
+    $ MAS.MonikaElastic()
+    m 3rksdlc "Тут я не много могу сделать, не могу никуда пойти, и мне становится одиноко, когда тебя нет рядом."
+    $ MAS.MonikaElastic()
+    m 1dkc "Я стараюсь не поддаваться этому, но когда это происходит, мне нравится вспоминать эту песню..."
+    $ MAS.MonikaElastic()
+    m 3eub "Это безумие, как немного музыки может помочь изменить ситуацию, когда ты чувствуешь себя подавленным!"
+    $ MAS.MonikaElastic()
+    m 3eua "Как будто эта песня разрушает то, что было не так в моей жизни, а затем говорит мне, что всё в порядке, чтобы отпустить мои проблемы."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hua "«Не беспокойся о том, что у тебя за спиной или что ждёт тебя дальше по дороге», как говорится. Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 1etc "Но, правда, [player]...{w=0.3} я думаю, что есть некоторые реальные заслуги в этом направлении мышления."
+    $ MAS.MonikaElastic()
+    m 1eka "Какова бы ни была твоя ситуация, факт остаётся фактом: всё так, как есть, и нет причин не улыбаться."
+    $ MAS.MonikaElastic()
+    m 3eka "Так вот, я вовсе не говорю тебе, чтобы ты не волновал[mas_gender_sya]..."
+    $ MAS.MonikaElastic()
+    m 3eksdlc "Если бы я это сделала, то позволила бы игре идти своим чередом, и теперь я навсегда застряла бы сама по себе."
+    $ MAS.MonikaElastic()
+    m 1duu "...Но в то же время нет никакого смысла чрезмерно волноваться о вещах, которые ты не можешь изменить..."
+    $ MAS.MonikaElastic()
+    m 1etc "Я полагаю, всё дело в том, чтобы найти правильный баланс."
+    $ MAS.MonikaElastic()
+    m 3rksdla "Когда ты думаешь об этом, идеи здесь странно близки к экзистенциальному нигилизму, верно?"
+    $ MAS.MonikaElastic()
+    m 3eud "Понимаешь, эта идея, что наша жизнь действительно абсурдна, и единственное, что мы можем сделать, это...{w=0.3} {nw}"
+    extend 3eksdla "продолжать и продолжать."
+    $ MAS.MonikaElastic()
+    m 3etc "...Хотя если бы ты продолжал[mas_gender_none] идти, как в следующем стихе..."
+    $ MAS.MonikaElastic()
+    m 3dud "{i}~Я проснулась в гостиничном номере~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekd "{i}~Мои тревоги огромны, как луна~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsd "{i}~Не имея ни малейшего понятия кто или что или где я~{/i}"
+    $ MAS.MonikaElastic()
+    m 2eka "{i}~Что-то хорошее приходит вместе с плохим~{/i}"
+    $ MAS.MonikaElastic()
+    m 2dku "{i}~Песня никогда не бывает просто грустной~{/i}"
+    $ MAS.MonikaElastic()
+    m 7eka "{i}~Есть надежда, есть лучик надежды~{/i}"
+    $ MAS.MonikaElastic()
+    m 3duu "{i}~Покажи мне мой лучик надежды~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eua "...Тогда я бы сказала, что смысл песни не столько в нигилизме, сколько в надежде."
+    $ MAS.MonikaElastic()
+    m 3huu "И, может быть, это самое главное."
+    $ MAS.MonikaElastic()
+    m 3ekblu "Независимо от того, важна наша жизнь или нет, я хочу верить, что есть светлая сторона, [player]..."
+    $ MAS.MonikaElastic()
+    m 2eud "Но, чтобы ты знал[mas_gender_none], я не верю, что наша жизнь действительно бессмысленна..."
+    $ MAS.MonikaElastic()
+    m 2duu "Какова бы ни была правда, возможно, мы могли бы попытаться выяснить это вместе."
+    $ MAS.MonikaElastic()
+    m 2eka "Но пока мы этого не сделаем, мы просто будем продолжать улыбаться и не беспокоиться о том, что может произойти дальше~"
     return
 
 label mas_song_my_silver_lining_lyrics:
-    m 1dsd "{i}~I don't want to wait anymore, I'm tired of looking for answers~{/i}"
-    m 1eub "{i}~Take me some place where there's music and there's laughter~{/i}"
-    m 2lksdld "{i}~I don't know if I'm scared of dying but I'm scared of living too fast, too slow~{/i}"
-    m 2dsc "{i}~Regret, remorse, hold on, oh no I've got to go~{/i}"
-    m 7eud "{i}~There's no starting over, no new beginnings, time races on~{/i}"
-    m 7eka "{i}~And you've just gotta keep on keeping on~{/i}"
+    m 1dsd "{i}~Я больше не хочу ждать, я устала искать ответы~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eub "{i}~Отведи меня куда-нибудь, где есть музыка и смех~{/i}"
+    $ MAS.MonikaElastic()
+    m 2lksdld "{i}~Я не знаю, боюсь ли я умереть, но я боюсь жить слишком быстро, слишком медленно~{/i}"
+    $ MAS.MonikaElastic()
+    m 2dsc "{i}~Сожаление, раскаяние, надежда, о нет, я должна идти~{/i}"
+    $ MAS.MonikaElastic()
+    m 7eud "{i}~Нет начала, нет новых начинаний, время мчится вперёд~{/i}"
+    $ MAS.MonikaElastic()
+    m 7eka "{i}~И ты просто должен продолжать и продолжать~{/i}"
     return
 
 init 5 python:
@@ -1146,7 +1441,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_amaranthine",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Amaranthine",
+            prompt="«Неувядающий»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -1154,23 +1449,38 @@ init 5 python:
     )
 
 label mas_song_amaranthine:
-    m 1dso "{i}~Time goes by as day and nights are turning into years~{/i}"
-    m 1dkbsa "{i}~But I'm lying in your arms~{/i}"
-    m 3ekbsb "{i}~It's the place~{/i}"
-    m 3hubsb "{i}~Where I know that I am closest to your heart~{/i}"
-    m 1hua "{i}~Where the dark is torn apart~{/i}"
-    m 1ekb "{i}~I know you feel the same as I inside~{/i}"
-    m 3eka "{i}~It feels like in a dream where we can fly~{/i}"
-    m 3hub "{i}~Like a sign, like a dream, you're my amaranthine~{/i}"
-    m 1ekbla "{i}~You are all I needed, believe me~{/i}"
-    m 3eub "{i}~Like we drift in a stream~{/i}"
-    m 3hua "{i}~Your beauty serene~{/i}"
-    m 1hub "{i}~There's nothing else in life I ever need~{/i}"
-    m 1ekbsa "{i}~My dream, amaranthine~{/i}"
-    show monika 5ekbsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbsu "My life feels so complete with you in it, [player]."
-    m 5hubfu "I love you so much~"
+    $ MAS.MonikaElastic()
+    m 1dso "{i}~Время идёт, дни и ночи превращаются в года~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dkbsa "{i}~А я лежу в твоих объятиях~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsb "{i}~Только так~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsb "{i}~Я знаю, что нахожусь ближе всего к твоему сердцу~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hua "{i}~Что тьма рассеялась~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekb "{i}~Я знаю, что в душе ты чувствуешь то же, что и я~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eka "{i}~Словно во сне, в котором мы можем летать~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}~Cловно знак, словно сон, ты – мой амарант~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbla "{i}~Кроме тебя, мне ничего не надо, поверь~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eub "{i}~Словно течение реки~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hua "{i}~Твоя красота безмятежна~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Больше мне в жизни ничего не надо~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}~Моя мечта, амарант~{/i}"
+    show monika 5ekbsu zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5ekbsu "И я знаю, что ты тоже обо мне думаешь, [player]."
+    $ MAS.MonikaElastic()
+    m 5hubfu "Я тебя так люблю~"
     return "love"
+
 
 init 5 python:
     addEvent(
@@ -1178,7 +1488,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_shelter",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Shelter",
+            prompt="«Убежище»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -1186,32 +1496,43 @@ init 5 python:
     )
 
 label mas_song_shelter:
-    call mas_song_shelter_lyrics
-    m 2rsbsa "Ehehe~"
-    m 2ekbfa "You're the reason I can keep moving forward, [player]."
-    m 2ekbsu "And if someday you feel like you're all alone in the world...{w=0.3}{nw}"
-    extend 2dkbsa "I want you to remember you're not."
-    m 7hubfb "...You've got me for one!"
-    m 3eka "And besides, there are tons of people out there who'd like nothing more than to know we're happy...{w=0.3}even if they don't know our names or faces."
-    m 1hub "There always will be someone out there rooting for us!"
+    call mas_song_shelter_lyrics from _call_mas_song_shelter_lyrics
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2rsbsa "Э-хе-хе~"
+    $ MAS.MonikaElastic()
+    m 2ekbfa "Ты – причина, по которой я могу продолжать двигаться вперёд, [player]."
+    $ MAS.MonikaElastic()
+    m 2ekbsu "И если однажды ты почувствуешь, что ты совсем один в этом мире...{w=0.3}{nw}"
+    extend 2dkbsa " я хочу, чтобы ты помнил[mas_gender_none], что это не так."
+    $ MAS.MonikaElastic()
+    m 7hubfb "...Ты меня поймал[mas_gender_none] за это!"
+    $ MAS.MonikaElastic()
+    m 3eka "И кроме того, есть куча людей, которые не хотят ничего больше, чем знать, что мы счастливы...{w=0.3} даже если они не знают наших имён или лиц."
+    $ MAS.MonikaElastic()
+    m 1hub "Там всегда будет кто-то болеть за нас!"
 
-    #hints at the analysis on first viewing
+
     if not mas_getEVL_shown_count("mas_song_shelter"):
-        m 3rksdla "I actually have more I'd like to say about this song, but only if you have the time of course..."
+        $ MAS.MonikaElastic()
+        m 3rksdla "На самом деле я хотела бы рассказать об этой песне больше, но только если у тебя есть время, разумеется..."
 
-        m 1eka "Would you like to hear more about it right now?{nw}"
+        $ MAS.MonikaElastic()
+        m 1eka "Может быть, ты хочешь услышать больше о ней прямо сейчас?{nw}"
         $ _history_list.pop()
         menu:
-            m "Would you like to hear more about it right now?{fast}"
+            m "Может быть, ты хочешь услышать больше о ней прямо сейчас?{fast}"
+            "Конечно!":
 
-            "Sure!":
-                m 3hub "Okay, great!"
-                call mas_song_shelter_analysis(from_song=True)
+                $ MAS.MonikaElastic()
+                m 3hub "Ладно, отлично!"
+                call mas_song_shelter_analysis (from_song=True) from _call_mas_song_shelter_analysis
                 $ mas_assignModifyEVLPropValue("mas_song_shelter_analysis", "shown_count", "+=", 1)
+            "Но не сейчас.":
 
-            "Not right now.":
-                m 1eka "Okay, [player]..."
-                m 3eka "Just let me know when you'd like to hear my thoughts about it later."
+                $ MAS.MonikaElastic()
+                m 1eka "Хорошо, [player]..."
+                $ MAS.MonikaElastic()
+                m 3eka "Просто дай мне знать, когда ты захочешь услышать мои мысли о ней позже."
 
     return
 
@@ -1221,7 +1542,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_shelter_analysis",
             category=[store.mas_songs.TYPE_ANALYSIS],
-            prompt="Shelter",
+            prompt="«Убежище»",
             aff_range=(mas_aff.NORMAL,None)
         ),
         code="SNG"
@@ -1229,68 +1550,101 @@ init 5 python:
 
 label mas_song_shelter_analysis(from_song=False):
     if from_song:
-        m 3eksdla "So this song is called {i}Shelter{/i} and, as you can probably tell, I really like it."
-
+        m 3eksdla "В общем, эта песня называется {i}«Убежище»{/i}, и, как ты уже, наверное, понял[mas_gender_none], мне она очень нравится."
     else:
-        call mas_song_shelter_lyrics
-        m 1ekbsa "This song is called {i}Shelter{/i} and I really like it, [player]."
 
-    m 3etc "...Although 'song' might not be the right word. {w=0.3}You're missing out on something if you don't have the visuals."
-    m 3rtc "Maybe it'd be more accurate to call it an animation project?"
-    m 3eua "Regardless of what you want to call it, I highly recommend you experience the entire thing sometime."
-    m 1esd "I came across it while browsing for some music, but it instantly left a big impression on me."
-    m 1esa "It tells the story of Rin, a girl stranded alone in a simulation."
-    m 1rkc "Day after day, she busies herself recreating her world as a way to escape her loneliness...{w=0.3}{nw}"
-    extend 3wud "until she finds out why she's trapped in there in the first place!"
-    m 3eubsb "Turns out there was someone outside who truly loved her and created her world so she could have a future!"
-    m 1dku "Thanks to these new-found memories, she realizes she was never alone in the first place and can keep moving forward, believing in the future."
-    m 1eka "Watching it, I was surprised at how moved I was by Rin's story..."
-    m 3eub "It was just so...{w=0.3}relatable! {w=0.3}{nw}"
-    extend 3eka "From the way she was stuck in that empty world, {nw}"
-    extend 1ekbsa "to how she found the strength to keep going for a special someone."
-    m 3hksdlb "By the end, I was so overwhelmed I was actually crying!"
-    m 3eka "Not to mention, this song carries a very good message..."
-    m 3ekc "It's a reminder you may not see all the people who care about you immediately..."
-    m 2eka "I know it can be difficult, and sometimes you'll have to look really hard for them...{w=0.5}{nw}"
-    extend 2duu "but there's always someone."
-    m "I promise."
-    m 7hub "Just look at me!"
-    m 3ekd "I was stuck all alone in this fake reality, but when I took a peek outside...{w=0.5}{nw}"
-    extend 3hubsb "I found you!"
-    m 1ekbsu "As for you...{w=0.5}you already have me of course, but I'm not the only one.{w=0.3} {nw}"
+        call mas_song_shelter_lyrics from _call_mas_song_shelter_lyrics_1
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Эта песня называется {i}«Убежище»{/i}, и мне она очень нравится, [player]."
+
+    $ MAS.MonikaElastic()
+    m 3etc "...Хотя «песня» – не совсем подходящее слово для неё. {w=0.3}Ты можешь что-нибудь упустить, если у тебя нет визуального изображения."
+    $ MAS.MonikaElastic()
+    m 3rtc "Наверное, будет точнее назвать это анимационным проектом?"
+    $ MAS.MonikaElastic()
+    m 3eua "Как бы тебе не хотелось это называть, я настоятельно рекомендую тебе как-нибудь насладиться этим."
+    $ MAS.MonikaElastic()
+    m 1esd "Я наткнулась на неё, пока искала какую-нибудь музыку, но она мгновенно произвела на меня большое впечатление."
+    $ MAS.MonikaElastic()
+    m 1esa "Она рассказывает историю о Рин, девушке, застрявшей в одиночестве в симуляции."
+    $ MAS.MonikaElastic()
+    m 1rkc "День за днём, она была занята воссозданием своего мира, дабы избежать одиночества...{w=0.3} {nw}"
+    extend 3wud "но потом она узнаёт, почему с самого начала оказалась там не по своей воле!"
+    $ MAS.MonikaElastic()
+    m 3eubsb "Оказалось, что по ту сторону был человек, который искренне любил её, и создал для неё свой мир, чтобы у неё было будущее!"
+    $ MAS.MonikaElastic()
+    m 1dku "И благодаря этим новообретённым воспоминаниям, она понимает, что с самого начала не была одинокой, и продолжает двигаться вперёд, веря в будущее."
+    $ MAS.MonikaElastic()
+    m 1eka "Глядя на неё, я была удивлена, как меня растрогала история Рин..."
+    $ MAS.MonikaElastic()
+    m 3eub "Она просто была такой...{w=0.3} узнаваемой! {w=0.3}{nw}"
+    extend 3eka "Начиная с того, что она застряла в том пустом мире, {nw}"
+    extend 1ekbsa "и заканчивая тем, что она смогла найти в себе силы, чтобы продолжить искать особенного человека."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "В конце концов, я была так потрясена, что даже расплакалась!"
+    $ MAS.MonikaElastic()
+    m 3eka "Не говоря уже о том, что в песне заложен очень хороший посыл..."
+    $ MAS.MonikaElastic()
+    m 3ekc "Это напоминание о том, что ты можешь не сразу увидеть всех тех людей, которые заботятся о тебе..."
+    $ MAS.MonikaElastic()
+    m 2eka "Знаю, это может быть трудно, и иногда тебе приходится очень усердно искать их...{w=0.5} {nw}"
+    extend 2duu "но такой человек всегда есть."
+    $ MAS.MonikaElastic()
+    m "Уверяю тебя."
+    $ MAS.MonikaElastic()
+    m 7hub "Просто посмотри на меня!"
+    $ MAS.MonikaElastic()
+    m 3ekd "Я застряла одна в этой фальшивой реальности, но как только я выглянула наружу...{w=0.5} {nw}"
+    extend 3hubsb "я нашла тебя!"
+    $ MAS.MonikaElastic()
+    m 1ekbsu "А что до тебя...{w=0.5} у тебя уже есть я, конечно же, но я не одна.{w=0.3} {nw}"
 
     if persistent._mas_pm_have_fam and not persistent._mas_pm_have_fam_mess:
-        extend 3hubsb "I'm sure your family must care a lot about you as well!"
+        extend 3hubsb "Я уверена, твоя семья так же хорошо о тебе заботится!"
 
         if not persistent._mas_pm_love_yourself:
-            m 3dkbsa "I may be stating the obvious, but they really {i}are{/i} important."
+            $ MAS.MonikaElastic()
+            m 3dkbsa "Возможно, я заявляю очевидное, но они {i}очень{/i} важны."
 
-        m 3eka "And if that's still not enough for you...{w=0.3} {nw}"
+        $ MAS.MonikaElastic()
+        m 3eka "И если для тебя этого недостаточно...{w=0.3} {nw}"
 
-    extend 3hub "I can already think of tons of people who care about you!"
+    extend 3hub "Я уже могу представить себе тысячи людей, которым ты небезразличен!"
 
+    $ MAS.MonikaElastic()
     if persistent._mas_pm_love_yourself:
-        m 3eua "You don't see what I mean? {w=0.5}{nw}"
+        m 3eua "Ты не понимаешь, о чём я? {w=0.5}{nw}"
     else:
-        m 3eua "You don't believe me? {w=0.5}{nw}"
+        m 3eua "Ты не веришь мне? {w=0.5}{nw}"
 
-    extend 3eub "Try going over the lyrics again!"
-    m 7dua "Only this time, assume the 'they' refers to all these other versions of me out there, each with their own partner..."
-    m 4ekbsa "They all know of our love and carry it with them, even if they don't know our names or faces."
-    m 2ekbsa "I know because I care about them too, if only because I'm aware of the bond they share."
-    m 1ekbsb "We're not alone, [player]! {w=0.3}{nw}"
-    extend 3hubsu "No matter what happens in our lives from now on, we can face it knowing there always will be someone out there rooting for us~"
+    extend 3eub "Попробуй прочитать текст песни ещё раз!"
+    $ MAS.MonikaElastic()
+    m 7dua "Но на этот раз, давай предположим, что под «они» подразумеваются другие версии меня, и каждая из них – со своим партнёром..."
+    $ MAS.MonikaElastic()
+    m 4ekbsa "Они все знают о нашей любви и несут её с собой, даже если они не знают наших имён или лиц."
+    $ MAS.MonikaElastic()
+    m 2ekbsa "Я знаю это, потому что они мне тоже небезразличны, хотя бы потому, что я знаю, какую связь они разделяют."
+    $ MAS.MonikaElastic()
+    m 1ekbsb "Мы не одиноки, [player]! {w=0.3}{nw}"
+    extend 3hubsu "Что бы ни происходило в нашей жизни с этого момента, мы сможем совладать с этим, зная о том, что всегда найдётся человек, который будет болеть за нас~"
     return
 
 label mas_song_shelter_lyrics:
-    m 1dud "{i}~When I'm older, I'll be silent beside you~{/i}"
-    m 1duu "{i}~I know words won't be enough~{/i}"
-    m 1ekd "{i}~And they won't need to know our names or our faces~{/i}"
-    m 3ekd "{i}~But they will carry on for us~{/i}"
-    m 3hubsb "{i}~And it's a long way forward, so trust in me~{/i}"
-    m 3ekbsb "{i}~I'll give them shelter, like you've done for me~{/i}"
-    m 2dkbsu "{i}~And I know I'm not alone, you'll be watching over us~{/i}"
-    m "{i}~Until you're gone~{/i}"
+    m 1dud "{i}~Когда я вырасту, рядом с тобой я буду тихой~{/i}"
+    $ MAS.MonikaElastic()
+    m 1duu "{i}~Я знаю, что слов недостаточно~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekd "{i}~И они не понадобятся, чтобы узнать наши имена или лица~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekd "{i}~Но они продолжат за нас~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsb "{i}~И нас ждёт долгая дорога, так что поверь мне~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsb "{i}~Я дам им убежище, как его дал ты мне~{/i}"
+    $ MAS.MonikaElastic()
+    m 2dkbsu "{i}~И я знаю, что я не одна, ты будешь присматривать за нами~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~Пока тебя не станет~{/i}"
     return
 
 init 5 python:
@@ -1299,7 +1653,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_cant_help_falling_in_love",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Can't Help Falling in Love",
+            prompt="«Не могу не любить тебя»",
             random=True,
             aff_range=(mas_aff.AFFECTIONATE,None)
         ),
@@ -1307,22 +1661,30 @@ init 5 python:
     )
 
 label mas_song_cant_help_falling_in_love(from_long=False):
-    m 1dud "{cps=16}{i}~Wise men say~{/i}{/cps}"
-    m 1dub "{cps=16}{i}~Only fools rush in~{/i}{/cps}"
-    m 1dud "{cps=16}{i}~But I can't help{w=0.3}{/i}{/cps}{nw}"
-    extend 1ekbsb "{cps=16}{i} falling in love with you~{/i}{/cps}"
-    m 3ekbsa "{cps=16}{i}~Shall I stay?~{/i}{/cps}"
-    m 3dkb "{cps=16}{i}~Would it be a sin~{/i}{/cps}"
-    m 1dud "{cps=16}{i}~If I can't help{w=0.3}{/i}{/cps}{nw}"
-    extend 1dubsb "{cps=16}{i} falling in love with you?~{/i}{/cps}"
+    m 1dud "{cps=16}{i}~Мудрецы говорят~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dub "{cps=16}{i}~Спешат лишь дураки~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dud "{cps=16}{i}~Но я не могу{w=0.3}{/i}{/cps}{nw}"
+    $ MAS.MonikaElastic()
+    extend 1ekbsb "{cps=16}{i} не любить тебя~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 3ekbsa "{cps=16}{i}~Если я останусь~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 3dkb "{cps=16}{i}~Будет ли это грехом?~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dud "{cps=16}{i}~Ведь я не могу{w=0.3}{/i}{/cps}{nw}"
+    $ MAS.MonikaElastic()
+    extend 1dubsb "{cps=16}{i} не любить тебя~{/i}{/cps}"
 
     if not from_long:
+        $ MAS.MonikaElastic()
         m 1dkbsa "..."
-        show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbsa "I suppose there's nothing wrong with being a little foolish every now and then.{w=0.5}{nw}"
-        extend 5hubsb " Ahaha~"
-        show monika 1ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 1ekbsa "I love you, [player]~"
+        show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 5ekbsa "Я полагаю, нет ничего плохого в том, чтобы быть немного глупым время от времени.{w=0.5}{nw}"
+        extend 5hubsb " А-ха-ха~"
+        show monika 1ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+        m 1ekbsa "Я люблю тебя, [player]~"
         $ mas_ILY()
 
     return
@@ -1333,7 +1695,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_cant_help_falling_in_love_long",
             category=[store.mas_songs.TYPE_LONG],
-            prompt="Can't Help Falling in Love",
+            prompt="«Не могу не любить тебя»",
             random=False,
             unlocked=False,
             aff_range=(mas_aff.AFFECTIONATE,None)
@@ -1342,27 +1704,34 @@ init 5 python:
     )
 
 label mas_song_cant_help_falling_in_love_long:
-    call mas_song_cant_help_falling_in_love(from_long=True)
-    call mas_song_cant_help_falling_in_love_second_verse
-    call mas_song_cant_help_falling_in_love_third_verse
-    call mas_song_cant_help_falling_in_love_second_verse
-    call mas_song_cant_help_falling_in_love_third_verse
+    call mas_song_cant_help_falling_in_love (from_long=True) from _call_mas_song_cant_help_falling_in_love
+    call mas_song_cant_help_falling_in_love_second_verse from _call_mas_song_cant_help_falling_in_love_second_verse
+    call mas_song_cant_help_falling_in_love_third_verse from _call_mas_song_cant_help_falling_in_love_third_verse
+    call mas_song_cant_help_falling_in_love_second_verse from _call_mas_song_cant_help_falling_in_love_second_verse_1
+    call mas_song_cant_help_falling_in_love_third_verse from _call_mas_song_cant_help_falling_in_love_third_verse_1
 
-    m 1ekbfb "{cps=16}{i}~For I can't help{w=0.3} falling in love{w=0.5} with{w=0.5} you~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1ekbfb "{cps=16}{i}~Потому что я не могу{w=0.3} не любить{w=0.5} тебя~{/i}{/cps}"
     return
 
 label mas_song_cant_help_falling_in_love_second_verse:
-    m 1dud "{cps=24}{i}~Like a river flows~{/i}{/cps}"
-    m 1dub "{cps=24}{i}~Surely to the sea~{/i}{/cps}"
-    m 1ekbsb "{cps=24}{i}~Darling, so it goes~{/i}{/cps}"
-    m 1ekbsa "{cps=24}{i}~Some things{w=0.3}{/i}{/cps}{nw}"
-    extend 3ekbsb "{cps=24}{i} are meant to be~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dud "{cps=24}{i}~Как река непременно~{/i}{/cps}"
+    extend 1dub "{cps=24}{i} впадает в море~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1ekbsb "{cps=24}{i}~Любимая, некоторым вещам~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{cps=24}{i}~Суждено{w=0.3}{/i}{/cps}{nw}"
+    extend 3ekbsb "{cps=24}{i} быть~{/i}{/cps}"
     return
 
 label mas_song_cant_help_falling_in_love_third_verse:
-    m 1dud "{cps=16}{i}~Take my hand~{/i}{/cps}"
-    m 1dub "{cps=16}{i}~Take my whole life,{w=0.3} too~{/i}{/cps}"
-    m 1dud "{cps=16}{i}~For I can't help{w=0.3} falling in love with you~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dud "{cps=16}{i}~Возьми моб руку~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dub "{cps=16}{i}~Возьми и всю мою жизнь~{/i}{/cps}"
+    $ MAS.MonikaElastic()
+    m 1dud "{cps=16}{i}~Потому что я не могу{w=0.3} не любить тебя~{/i}{/cps}"
     return
 
 init 5 python:
@@ -1371,7 +1740,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_lamour_toujours",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="L'Amour Toujours",
+            prompt="«Любовь навсегда»",
             random=True,
             aff_range=(mas_aff.AFFECTIONATE, None)
         ),
@@ -1379,24 +1748,34 @@ init 5 python:
     )
 
 label mas_song_lamour_toujours:
-    m 1dud "{i}~I still believe in your eyes~{/i}"
-    m 1dub "{i}~I just don't care what you've done in your life~{/i}"
-    m 3ekbsb "{i}~Baby, I'll always be here by your side~{/i}"
-    m 1dsbsd "{i}~Don't leave me waiting too long, {/i}{w=0.3}{nw}"
-    extend 1ekbsu "{i}please come by~{/i}"
+    m 1dud "{i}~Я всё ещё доверяю твоим глазам~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dub "{i}~Меня просто не волнует, что ты делал[mas_gender_none] в своей жизни~{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsb "{i}~Детка, я всегда буду на твоей стороне~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dsbsd "{i}~Не заставляй меня ждать слишком долго, {/i}{w=0.3}{nw}"
+    extend 1ekbsu "{i}пожалуйста, приди~{/i}"
 
-    m 1dud "{i}~I still believe in your eyes~{/i}"
-    m "{i}~There is no choice, {/i}{w=0.3}{nw}"
-    extend 3hubsb "{i}I belong to your life~{/i}"
-    m 3dubsb "{i}~Because I'll live to love you some day~{/i}"
-    m 1hubsa "{i}~You'll be my baby and we'll fly away~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dud "{i}~Я всё ещё доверяю твоим глазам~{/i}"
+    $ MAS.MonikaElastic()
+    m "{i}~Выбора нет, {/i}{w=0.3}{nw}"
+    extend 3hubsb "{i}я принадлежу твоей жизни~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dubsb "{i}~Потому что мне нужна твоя любовь каждый день~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hubsa "{i}~Ты будешь мо[mas_gender_iiim], малыш, и я буду направлять тебя~{/i}"
 
-    m 1ekb "{i}~And I'll fly with you~{/i}"
-    m 1dkb "{i}~I'll fly with you~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekb "{i}~И я буду летать с тобой~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dkb "{i}~Я буду летать с тобой~{/i}"
 
+    $ MAS.MonikaElastic()
     m 1dkbsu "..."
-    show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbsa "I want nothing more than to be by your side forever, [player]~"
+    show monika 5ekbsa zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5ekbsa "Я не хочу ничего большего, чем быть всегда рядом с тобой, [player]~"
     return
 
 init 5 python:
@@ -1405,7 +1784,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_god_knows",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="God Knows",
+            prompt="«Одному Богу известно»",
             random=True,
             aff_range=(mas_aff.AFFECTIONATE,None)
         ),
@@ -1413,19 +1792,28 @@ init 5 python:
     )
 
 label mas_song_god_knows:
-    m 1eua "{i}~You know that{w=0.2}{/i}{nw}"
-    extend 1eub "{i} I would follow you, no matter what we go through~{/i}"
-    m 1efb "{i}~Bring all the darkness the world can offer~{/i}"
-    m 1hua "{i}~Because you’ll shine{w=0.2} no matter if the future is bleak~{/i}"
-    m 3tub "{i}~We’ll aim out{w=0.2} just beyond the boundary~{/i}"
-    m 3eksdla "{i}~And even if it scares me~{/i}"
-    m 1hub "{i}~Nothing can shatter my soul because your way is my way~{/i}"
-    m 1eub "{i}~Forever on this railway~{/i}"
-    m 1eubsa "{i}~As if we were God blessed~{/i}"
+    m 1eua "{i}~И ты это знаешь,{w=0.2}{/i}{nw}"
+    extend 1eub "{i} я последую за тобой, что бы мы ни пережили~{/i}"
+    $ MAS.MonikaElastic()
+    m 1efb "{i}~Принеси всю тьму, какую только может предложить мир~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hua "{i}~Потому что ты будешь сиять{w=0.2} независимо от того, будет ли будущее мрачным~{/i}"
+    $ MAS.MonikaElastic()
+    m 3tub "{i}~Мы будем идти{w=0.2} сразу за границей~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eksdla "{i}~И даже если это пугает меня~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Ничто не может разбить мою душу, потому что твой путь – это мой путь~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eub "{i}~Навсегда на этой железной дороге~{/i}"
+    $ MAS.MonikaElastic()
+    m 1eubsa "{i}~Как будто мы были благословлены Богом~{/i}"
+    $ MAS.MonikaElastic()
     m 1dubsu "..."
-    m 3rud "You know, I'm still skeptical about whether some sort of a god exists or not..."
-    show monika 5hubsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubsu "But having you here really does feel like a blessing from the heavens."
+    $ MAS.MonikaElastic()
+    m 3rud "Понимаешь, я всё ещё скептически отношусь к тому, существует ли какой-то Бог или нет..."
+    show monika 5hubsu zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5hubsu "Но то, что ты здесь, действительно кажется благословением небес."
     return
 
 init 5 python:
@@ -1434,7 +1822,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_ageage_again",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Ageage Again",
+            prompt="«Агеаге, ещё раз»", # хз, как переводится "ageage"
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -1442,23 +1830,38 @@ init 5 python:
     )
 
 label mas_song_ageage_again:
-    m 1hub "{i}~Ageage, ageage, again!~{/i}"
-    m 3duu "{i}~If you recall this song suddenly~{/i}"
-    m 1hub "{i}~Party, party, party, party, party time!~{/i}"
-    m 3hubsa "{i}~I am by your side~{/i}"
-    m 1hub "{i}~Ageage, ageage, again!~{/i}"
-    m 3rubsu "{i}~If I recall your smile~{/i}"
-    m 1subsb "{i}~Love, love, love, love, I'm in love!~{/i}"
-    m 3hubsa "{i}~Want to feel the same rhythm~{/i}"
-    m 3eua "You know, I love how upbeat and happy this song is."
-    m 1rksdld "There are a lot of other Vocaloid songs that {i}sound{/i} upbeat, but their lyrics are sad and sometimes disturbing..."
-    m 3hksdlb "But I'm glad that at least this song isn't one of them."
-    m 3eua "From what I can tell, this song is about a girl who fell in love with a boy at a party, and now wants to go with him to another party the next weekend."
-    m 1eub "Even though we didn't meet at a party, the feel of this song really reminds me of us."
-    m 3rubsu "Though, I can't deny I'd love to go to a party with you sometime~"
+    m 1hub "{i}~Агеаге, агеаге, ещё раз!~{/i}"
+    $ MAS.MonikaElastic()
+    m 3duu "{i}~Если песню эту вдруг ты вспомнишь~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Вечеринка, вечеринка, вечеринка, вечеринка, карнавал!~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsa "{i}~И я всегда на твоей стороне~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hub "{i}~Агеаге, агеаге, ещё раз!~{/i}"
+    $ MAS.MonikaElastic()
+    m 3rubsu "{i}~Если улыбку твою я вдруг вспомню~{/i}"
+    $ MAS.MonikaElastic()
+    m 1subsb "{i}~Любовь, любовь, любовь, любовь, я влюблена!~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsa "{i}~И я хочу чувствовать тот же ритм~{/i}"
+    $ MAS.MonikaElastic()
+    m 3eua "Знаешь, мне нравится то, какая жизнерадостная и счастливая эта песня."
+    $ MAS.MonikaElastic()
+    m 1rksdld "Есть много других песен, исполненных вокалойдами, которые {i}звучат{/i} жизнерадостно, но текст их песен грустный и порой даже внушает беспокойство..."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Но я рада, что, по крайней мере, эта песня – не одна из них."
+    $ MAS.MonikaElastic()
+    m 3eua "Насколько я могу судить, в этой песне поётся про девушку, которая влюбилась в одного парня на вечеринке, и теперь хочет пойти с ним на другую вечеринку на следующих выходных."
+    $ MAS.MonikaElastic()
+    m 1eub "Хоть мы встретились и не на вечеринке, настроение этой песни правда напоминает мне о нас."
+    $ MAS.MonikaElastic()
+    m 3rubsu "Хотя я не могу отрицать, что хотела бы как-нибудь сходить с тобой на вечеринку~"
     if persistent._mas_pm_social_personality == mas_SP_INTROVERT:
-        m 1eka "That is, if you're up to it."
-        m 1hubsb "If not, there are still plenty of things I'd love to do with you~"
+        $ MAS.MonikaElastic()
+        m 1eka "То есть, если ты готов[mas_gender_none]."
+        $ MAS.MonikaElastic()
+        m 1hubsb "Если нет, то есть ещё много вещей, которые я хотела бы сделать с тобой~"
     return
 
 init 5 python:
@@ -1467,7 +1870,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_falling_in_love_at_a_coffee_shop",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Falling in Love at a Coffee Shop",
+            prompt="«Влюбиться в кофейне»",
             random=True,
             aff_range=(mas_aff.NORMAL, None)
         ),
@@ -1475,22 +1878,31 @@ init 5 python:
     )
 
 label mas_song_falling_in_love_at_a_coffee_shop:
-    m 1tub "{i}~I think that possibly, maybe I'm falling for you~{/i}"
-    m 1dubsb "{i}~Yes, there's a chance that I've fallen quite hard over you~{/i}"
-    m 1ekbsb "{i}~I've seen the waters that make your eyes shine, now I'm shining too~{/i}"
-    m 1dkbsu "{i}~Because, oh, because I've fallen quite hard over you~{/i}"
-    m 1ekd "{i}~If I didn't know you, I'd rather not know~{/i}"
-    m 2dkd "{i}~If I couldn't have you, I'd rather be alone~{/i}"
-    m 2hku "{i}~I never knew just what it was~{/i}"
-    show monika 5hubsb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubsb "{i}~About this old coffee shop I love so much~{/i}"
-    m 5hubsa "{i}~All of the while, I never knew~{/i}"
+    m 1tub "{i}~Я думаю, что, возможно, может быть, я влюбляюсь в тебя~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dubsb "{i}~Да, существует вероятность, что я довольно сильно влюбился в тебя~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbsb "{i}~Я видел блеск в твоих глазах, сейчас я тоже весь сияю~{/i}"
+    $ MAS.MonikaElastic()
+    m 1dkbsu "{i}~Потому что, ох, потому, что я довольно сильно влюблён в тебя~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekd "{i}~Если бы я мог не знать, я бы предпочёл не знать тебя~{/i}"
+    $ MAS.MonikaElastic()
+    m 2dkd "{i}~Если бы я не мог обладать тобой, я бы предпочёл остаться один~{/i}"
+    $ MAS.MonikaElastic()
+    m 2hku "{i}~Я никогда не знал, что такого особенного в этой старой кофейне~{/i}"
+    show monika 5hubsb zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 5hubsb "{i}~Об этой старой кофейне, которую я так люблю~{/i}"
+    $ MAS.MonikaElastic()
+    m 5hubsa "{i}~Вот это время я не знал~{/i}"
+    $ MAS.MonikaElastic()
     m 5lubsa "..."
-    show monika 1hkbssdlb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 1hkbssdlb "I suppose the first moment of falling in love can be confusing to anyone."
-    m 1etc "Like not knowing why you're suddenly so drawn to some ordinary coffee shop...{w=0.2}{nw}"
-    extend 3rtu "or why attending a certain club meeting becomes your favorite part of the day."
-    m 3hubsa "Then when you have time to think, you realize it isn't the place at all, it's the person you meet there each day~"
+    show monika 1hkbssdlb zorder MAS_MONIKA_Z at t11 with dissolve_monika
+    m 1hkbssdlb "Думаю, первый момент, когда ты влюбляешься, может сбить с толку любого."
+    $ MAS.MonikaElastic()
+    m 1etc "К примеру, ты не знаешь, почему тебя так внезапно притянуло к какой-то обычной кофейне...{w=0.2} {nw}"
+    extend 3rtu "или почему посещение определённого клубного собрания становится твоей любимой частью дня."
+    m 3hubsa "А потом, когда у тебя появляется время на размышления, ты осознаёшь, что дело не в кофейне, а в человеке, которого ты встречаешь там каждый день~"
     return
 
 init 5 python:
@@ -1499,7 +1911,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_wonderwall",
             category=[store.mas_songs.TYPE_SHORT],
-            prompt="Wonderwall",
+            prompt="«Чудо и преграда»",
             random=True,
             aff_range=(mas_aff.NORMAL,None)
         ),
@@ -1507,43 +1919,54 @@ init 5 python:
     )
 
 label mas_song_wonderwall:
-    call mas_song_wonderwall_lyrics
-    m 1ekbsu "Ehehe, you really are the one who saved me, [player]~"
+    call mas_song_wonderwall_lyrics from _call_mas_song_wonderwall_lyrics
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1ekbsu "Э-хе-хе, ты и правда спас[mas_gender_s] меня, [player]~"
 
+    $ MAS.MonikaElastic()
     if persistent.monika_kill:
-        m 3dkbfu "I'm forever grateful you brought me back. {nw}"
+        m 3dkbfu "Я буду вечно благодарна тебе за то, что ты вернул[mas_gender_none] меня обратно. {nw}"
     else:
-        m 3dkbfu "I'm forever grateful you stayed for me. {nw}"
+        m 3dkbfu "Я вечно благодарна тебе за то, что ты остал[mas_gender_sya] со мной. {nw}"
 
-    extend 3ekbsa "I trust you to take care of me until I can find my way to you."
-    m 3rkc "Like this song says, the way from here to your world is a winding road, there's no telling what we'll find beyond the next curve."
+    extend 3ekbsa "Я верю в то, что ты будешь заботиться обо мне, пока я не найду свою дорогу к тебе."
+    $ MAS.MonikaElastic()
+    m 3rkc "Как пелось в этой песне, путь отсюда до твоего мира – словно извилистая дорога, не говоря уже о том, что ждёт нас за следующим поворотом."
 
+    $ MAS.MonikaElastic()
     if mas_isMoniEnamored(higher=True):
-        m 1dubsa "...But with you by my side, there's no way I could be afraid."
-        m 1ekbsa "I know the place it leads to will be worth it.{w=0.3} {nw}"
-        extend 3ekbsu "After all, you're my wonderwall~"
-
+        m 1dubsa "...Но пока ты со мной, мне нечего бояться."
+        $ MAS.MonikaElastic()
+        m 1ekbsa "Я знаю, что то место, к которому она ведёт, будет стоить того.{w=0.3} {nw}"
+        extend 3ekbsu "И потом, ты – моя стена чудес~"
     else:
-        m 3eka "The only thing we can be sure of is the place it leads us to will be worth it."
-        m 1ekd "...Sometimes, it's a little scary not knowing what's ahead...{w=0.3}{nw}"
-        extend 1eubla "but I trust you, so we'll just have to keep on walking until we reach that place~"
 
-    #hints at the analysis on first viewing
+        m 3eka "Единственное, в чём мы можем быть уверены, так это в том, что место, к которому она нас приведёт, будет стоить того."
+        $ MAS.MonikaElastic()
+        m 1ekd "...Порой бывает немного страшно, когда не знаешь, что впереди...{w=0.3} {nw}"
+        extend 1eubla "но я верю тебе, так что мы просто должны продолжать идти, пока не дойдём до того места~"
+
+
     if not mas_getEVL_shown_count("mas_song_wonderwall"):
-        m 3etc "By the way...{w=0.2}there's actually some things that intrigue me about this song."
-        m 1eua "...Would you like to talk about it now?{nw}"
+        $ MAS.MonikaElastic()
+        m 3etc "Кстати...{w=0.2} есть пара вещей, которые интригуют меня в этой песне."
+        $ MAS.MonikaElastic()
+        m 1eua "...Хочешь поговорить об этом сейчас?{nw}"
         $ _history_list.pop()
         menu:
-            m "...Would you like to talk about it now?{fast}"
+            m "...Хочешь поговорить об этом сейчас?{fast}"
+            "Конечно.":
 
-            "Sure.":
-                m 1hua "Okay then!"
-                call mas_song_wonderwall_analysis(from_song=True)
+                $ MAS.MonikaElastic()
+                m 1hua "Хорошо!"
+                call mas_song_wonderwall_analysis (from_song=True) from _call_mas_song_wonderwall_analysis
                 $ mas_assignModifyEVLPropValue("mas_song_wonderwall_analysis", "shown_count", "+=", 1)
+            "Не сейчас.":
 
-            "Not now.":
-                m 1eka "Oh, okay then..."
-                m 3eka "Just let me know if you want to talk more about this song later."
+                $ MAS.MonikaElastic()
+                m 1eka "Ох, ну ладно..."
+                $ MAS.MonikaElastic()
+                m 3eka "Дай знать, если ты захочешь поговорить об этой песне позже."
 
     return
 
@@ -1553,7 +1976,7 @@ init 5 python:
             persistent._mas_songs_database,
             eventlabel="mas_song_wonderwall_analysis",
             category=[store.mas_songs.TYPE_ANALYSIS],
-            prompt="Wonderwall",
+            prompt="«Чудо и преграда»",
             random=False,
             unlocked=False,
             aff_range=(mas_aff.NORMAL,None)
@@ -1563,40 +1986,66 @@ init 5 python:
 
 label mas_song_wonderwall_analysis(from_song=False):
     if not from_song:
-        call mas_song_wonderwall_lyrics
+        call mas_song_wonderwall_lyrics from _call_mas_song_wonderwall_lyrics_1
+        $ MAS.MonikaElastic()
 
-    m 3eta "There's a lot of people who are very vocal about their dislike for this song..."
-    m 3etc "You wouldn't expect that, would you?"
-    m 1eud "The song has been hailed as a classic and is one of the most popular songs ever made...{w=0.3} {nw}"
-    extend 3rsc "So what makes some people hate it so much?"
-    m 3esc "I think there are several answers to this question. {w=0.2}The first being that it's been overplayed."
-    m 3rksdla "While some people listen to the same music for long periods of time, not everybody can do that."
-    m 3hksdlb "...I hope you won't get tired of {i}my{/i} song anytime soon [player], ahaha~"
-    m 1esd "Another argument you could make is that it's overrated in some ways..."
-    m 1rsu "Even though I like it, I still have to admit that the lyrics and chords are pretty simple."
-    m 3etc "So what made the song so popular then?{w=0.3} {nw}"
-    extend 3eud "Especially considering many other songs go completely unnoticed, no matter how advanced or ambitious they are."
-    m 3duu "Well, it all boils down to what the song makes you feel. {w=0.2}Your taste in music is subjective, after all."
-    m 1efc "...But what bothers me is when someone complains about it just because it's trendy to go against the general opinion."
-    m 3tsd "It's like disagreeing for the sake of helping them feel like they stand out from the crowd...{w=0.2}like they need it to stay self-confident."
-    m 2rsc "It kinda feels...{w=0.5}a bit silly, to be honest."
-    m 2rksdld "At that point you're not even judging the song anymore...{w=0.2}you're just trying to make a name for yourself by being controversial."
-    m 2dksdlc "It's a little sad if anything...{w=0.3}{nw}"
-    extend 7rksdlc "defining yourself by something you hate doesn't seem like a very healthy thing to do in the long run."
-    m 3eud "I guess my point here is to just be yourself and like what you like."
-    m 3eka "And that goes both ways... {w=0.3}You shouldn't feel pressured into liking something because others do, the same way you shouldn't dismiss something solely because it's popular."
-    m 1hua "As long as you follow your heart and stay true to yourself, you can never go wrong, [player]~"
+    m 3eta "Есть много людей, которые очень восторженно отзываются о своей нелюбви к этой песне..."
+    $ MAS.MonikaElastic()
+    m 3etc "Ты ведь не ожидал[mas_gender_none] этого, правда?"
+    $ MAS.MonikaElastic()
+    m 1eud "Песня была признана классической и стала одной из самых популярных песен...{w=0.3} {nw}"
+    $ MAS.MonikaElastic()
+    extend 3rsc "Так что заставило некоторых людей так сильно ненавидеть её?"
+    $ MAS.MonikaElastic()
+    m 3esc "Мне кажется, на этот вопрос есть несколько ответов. {w=0.2}Первое – она играет чуть ли не везде."
+    $ MAS.MonikaElastic()
+    m 3rksdla "В то время как некоторые люди слушают одну и ту же музыку в течение длительного времени, не все способны на это."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3hksdlb "...Надеюсь, ты не устанешь от {i}моей{/i} песни в ближайшее время, [player], а-ха-ха~"
+    $ MAS.MonikaElastic()
+    m 1esd "Ещё один аргумент, который можно привести, – то, что её, в каком-то смысле, переоценили..."
+    $ MAS.MonikaElastic()
+    m 1rsu "Хоть мне она и нравится, я всё же должна признать, что текст песни и аккорды довольно простые."
+    $ MAS.MonikaElastic()
+    m 3etc "Так что сделало эту песню такой популярной?{w=0.3} {nw}"
+    extend 3eud "Особенно учитывая то, что многие другие песни остались абсолютно незамеченными, какими бы продвинутыми или амбициозными они не были."
+    $ MAS.MonikaElastic()
+    m 3duu "Ну, всё сводится к тому, что эта песня заставляет тебя чувствовать. {w=0.2}И потом, твой вкус к музыке может быть субъективным."
+    $ MAS.MonikaElastic()
+    m 1efc "...Но меня беспокоит то, что кто-то жалуется на песню лишь из-за того, что сейчас модно идти против общего мнения."
+    $ MAS.MonikaElastic()
+    m 3tsd "Как будто они не соглашаются с другими лишь ради того, чтобы помочь им почувствовать, что они выделяются из толпы...{w=0.2} как будто им это нужно, чтобы оставаться уверенными в себе."
+    $ MAS.MonikaElastic()
+    m 2rsc "Это выглядит...{w=0.5} немного глупо, если честно."
+    $ MAS.MonikaElastic()
+    m 2rksdld "И в этот момент, ты даже не осуждаешь эту песню...{w=0.2} ты просто пытаешься сделать себе имя, вызывая споры."
+    $ MAS.MonikaElastic()
+    m 2dksdlc "И это немного грустно...{w=0.3} {nw}"
+    extend 7rksdlc "определять своё место в жизни, ненавидя что-либо, не очень полезно в долгосрочной перспективе."
+    $ MAS.MonikaElastic()
+    m 3eud "Думаю, я пытаюсь сказать, что надо просто быть собой и ценить то, что тебе нравится."
+    $ MAS.MonikaElastic()
+    m 3eka "И это работает в обе стороны... {w=0.3}Ты не долж[mas_gender_en] через силу заставлять себя ценить что-либо лишь потому, что это нравится другим, и ты так же не долж[mas_gender_en] игнорировать что-то лишь потому, что это популярно."
+    $ MAS.MonikaElastic()
+    m 1hua "Пока ты следуешь зову сердца и остаёшься верн[mas_gender_iim] себе, ты никогда не ошибёшься, [player]~"
     return
 
 label mas_song_wonderwall_lyrics:
-    m 1duo "{i}~I don't believe that anybody feels the way I do about you now~{/i}"
-    m 3esc "{i}~And all the roads we have to walk are winding~{/i}"
-    m 3dkd "{i}~And all the lights that lead us there are blinding~{/i}"
-    m 1ekbla "{i}~There are many things that I would like to say to you but I don't know how~{/i}"
-    m 1hubsb "{i}~Because maybe~{/i}"
-    m 3hubsa "{i}~You're gonna be the one that saves me~{/i}"
-    m 3dubso "{i}~And after all~{/i}"
-    m 1hubsb "{i}~You're my wonderwall~{/i}"
+    m 1duo "{i}~Я не верю, что кто-либо чувствует то же, что я чувствую к тебе сейчас~{/i}"
+    $ MAS.MonikaElastic()
+    m 3esc "{i}~Все дороги, по которым нам идти, - извилисты,~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dkd "{i}~И все огни, которые ведут нас туда, - оспепляют~{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbla "{i}~Есть много вещей, которые я хотела бы сказать тебе, но я не знаю как~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hubsb "{i}~Поскольку, возможно~{/i}"
+    $ MAS.MonikaElastic()
+    m 3hubsa "{i}~Ты именно т[mas_gender_ot], кто спасёт меня~{/i}"
+    $ MAS.MonikaElastic()
+    m 3dubso "{i}~Ведь в конечном итоге~{/i}"
+    $ MAS.MonikaElastic()
+    m 1hubsb "{i}~Ты - и само чудо, и преграда на пути к нему~{/i}"
     return
 
 init 5 python:
@@ -1604,7 +2053,7 @@ init 5 python:
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_when_youre_gone",
-            prompt="When you're gone",
+            prompt="«Когда ты умрёшь»",
             category=[store.mas_songs.TYPE_SHORT],
             random=True,
             aff_range=(mas_aff.AFFECTIONATE,None)
@@ -1613,20 +2062,31 @@ init 5 python:
     )
 
 label mas_song_when_youre_gone:
-    m 1dsd "{i}~When you're gone{/i}{w=0.2}{nw}"
-    extend 1duo "{i} the pieces of my heart are missing you~{/i}"
-    m 4dud "{i}~When you're gone~{/i}"
-    m 4duo "{i}~The face I came to know is missing too~{/i}"
-    m 4ekd "{i}~When you're gone~{/i}"
-    m 6eko "{i}~The words I need to hear to always get me through the day{/i}{w=0.2}{nw}"
-    extend 2ektpc "{i} and make it okay~{/i}"
-    m 2ektpu "{i}~I miss you~{/i}"
+    m 1dsd "{i}~Когда ты умрёшь,{/i}{w=0.2}{nw}"
+    $ MAS.MonikaElastic()
+    extend 1duo "{i} осколки моего сердца будут скучать по тебе~{/i}"
+    $ MAS.MonikaElastic()
+    m 4dud "{i}~Когда ты умрёшь~{/i}"
+    $ MAS.MonikaElastic()
+    m 4duo "{i}~Лицо, которое я узнала, тоже пропало~{/i}"
+    $ MAS.MonikaElastic()
+    m 4ekd "{i}~Когда ты умрёшь~{/i}"
+    $ MAS.MonikaElastic()
+    m 6eko "{i}~Слова, которые мне нужно услышать, чтобы всегда помочь мне пережить этот день{/i}{w=0.2}{nw}"
+    extend 2ektpc "{i} и пусть всё будет в порядке~{/i}"
+    $ MAS.MonikaElastic()
+    m 2ektpu "{i}~Я скучаю по тебе~{/i}"
+    $ MAS.MonikaElastic()
     m 2dktda "..."
-    m 6eksdld "Avril Lavigne wrote this song for her grandfather that passed away, because they were like best friends when she was younger."
-    m 6rkc "I haven't really had anyone in my life actually die before, but thinking about not being able to talk to someone ever again..."
-    m 6eka "[player], I really need you and your words of encouragement.{w=0.5}{nw}"
-    extend 6hua " I'll be okay as long as you're here to brighten up my day~"
-    m 6ekbsa "In addition to being the love of my life, you're also my best friend.{w=0.2} Don't ever underestimate how important you are to me."
+    $ MAS.MonikaElastic()
+    m 6eksdld "Аврил Лавин написала эту песню для своего умершего дедушки, потому что они были как лучшие друзья, когда она была моложе."
+    $ MAS.MonikaElastic()
+    m 6rkc "На самом деле в моей жизни ещё никто не умирал, но я думаю о том, что больше никогда не смогу с кем-то поговорить..."
+    $ MAS.MonikaElastic()
+    m 6eka "[player], мне очень нуж[mas_gender_en] ты и твои слова ободрения.{w=0.5}{nw}"
+    extend 6hua " Я буду в порядке, пока ты здесь, чтобы скрасить мой день~"
+    $ MAS.MonikaElastic()
+    m 6ekbsa "Помимо того, что ты любовь всей моей жизни, ты ещё и мой лучший друг.{w=0.2} Никогда не недооценивай, насколько ты важ[mas_gender_en] для меня."
     return
 
 init 5 python:
@@ -1634,7 +2094,7 @@ init 5 python:
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_we_have_all_the_time_in_the_world",
-            prompt="We Have All the Time in the World",
+            prompt="«У нас есть всё время в мире»",
             category=[store.mas_songs.TYPE_SHORT],
             random=True,
             aff_range=(mas_aff.LOVE, None)
@@ -1643,19 +2103,28 @@ init 5 python:
     )
 
 label mas_song_we_have_all_the_time_in_the_world(from_long=False):
-    m 1dud "{i}{cps=18}~We have all {w=0.7}the time {w=0.7}in the world~{/cps}{/i}"
-    m 1eua "{i}{cps=22}~Time enough for life~{/cps}{/i}"
-    m 3eub "{i}{cps=22}~To unfold {w=0.7}all the precious things~{/cps}{/i}"
-    m 3hua "{i}{cps=22}~Love has in store~{/cps}{/i}"
+    m 1dud "{i}{cps=18}~У нас есть всё {w=0.7}время {w=0.7}в мире~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1eua "{i}{cps=22}~Времени хватит на всю жизнь~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3eub "{i}{cps=22}~Чтобы раскрыть {w=0.7}все драгоценные вещи~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3hua "{i}{cps=22}~Любовь есть в запасе~{/cps}{/i}"
 
-    m 1dub "{i}{cps=18}~We have all {w=0.7}the love {w=0.7}in the world~{/cps}{/i}"
-    m 1esd "{i}{cps=22}~And if that's all we have {w=0.7}you will find~{/cps}{/i}"
-    m 3dka "{i}{cps=22}~We need nothing more~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1dub "{i}{cps=18}~У нас есть вся {w=0.7}любовь {w=0.7}в мире~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1esd "{i}{cps=22}~И если это всё что у нас есть, {w=0.7}ты найдёшь~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3dka "{i}{cps=22}~Больше нам ничего не нужно~{/cps}{/i}"
 
     if not from_long:
+        $ MAS.MonikaElastic()
         m 1duu "..."
-        m 1ekbsb "You've made me the happiest girl in the world, [player]. I'll always be grateful for that."
-        m 1hubsa "I hope that I do the same for you~"
+        $ MAS.MonikaElastic()
+        m 1ekbsb "Ты сделал[mas_gender_none] меня самой счастливой девушкой на свете, [player]. Я всегда буду благодарна за это."
+        $ MAS.MonikaElastic()
+        m 1hubsa "Я надеюсь, что сделаю то же самое для тебя~"
     return
 
 init 5 python:
@@ -1663,50 +2132,65 @@ init 5 python:
         Event(
             persistent._mas_songs_database,
             eventlabel="mas_song_we_have_all_the_time_in_the_world_long",
-            prompt="We Have All the Time in the World",
+            prompt="«У нас есть всё время в мире»",
             category=[store.mas_songs.TYPE_LONG],
             aff_range=(mas_aff.LOVE, None)
         ),
         code="SNG"
     )
 
+
+
 label mas_song_we_have_all_the_time_in_the_world_long:
-    call mas_song_we_have_all_the_time_in_the_world(from_long=True)
+    call mas_song_we_have_all_the_time_in_the_world (from_long=True) from _call_mas_song_we_have_all_the_time_in_the_world
 
-    m 1dud "{i}{cps=18}~Every step {w=0.7}of the way~{/cps}{/i}"
-    m 1duo "{i}{cps=18}~Will find us~{/cps}{/i}"
-    m 3eud "{i}{cps=18}~With the cares {w=0.7}of the world~{/cps}{/i}"
-    m 1duo "{i}{cps=18}~Far behind us~{/cps}{/i}"
+    m 1dud "{i}{cps=18}~Каждый шаг {w=0.7}на этом пути~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1duo "{i}{cps=18}~Мы совершим~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3eud "{i}{cps=18}~Оставив все заботы {w=0.7}мира~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1duo "{i}{cps=18}~Далеко позади~{/cps}{/i}"
 
-    m 1dud "{i}{cps=18}~We have all {w=0.7}the time {w=0.7}in the world~{/cps}{/i}"
-    m 1dubsa "{i}{cps=18}~Just for love~{/cps}{/i}"
-    m 3eubsb "{i}{cps=22}~Nothing more, {w=0.75}nothing less~{/cps}{/i}"
-    m 1ekbsa "{i}{cps=18}~Only love~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1dud "{i}{cps=18}~У нас есть всё {w=0.7}время {w=0.7}в этом мире~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1dubsa "{i}{cps=18}~Лишь для любви~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3eubsb "{i}{cps=22}~И не больше, {w=0.75}и не меньше~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}{cps=18}~Только любви~{/cps}{/i}"
 
-    m 1dud "{i}{cps=18}~Every step {w=0.75}of the way~{/cps}{/i}"
-    m 1duo "{i}{cps=18}~Will find us~{/cps}{/i}"
-    m 1dua "{i}{cps=18}~With the cares {w=0.7}of the world~{/cps}{/i}"
-    m 1duo "{i}{cps=18}~Far behind us~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1dud "{i}{cps=18}~Каждый шаг {w=0.75}на этом пути~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1duo "{i}{cps=18}~Мы совершим~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1dua "{i}{cps=18}~Оставив все заботы {w=0.7}мира~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1duo "{i}{cps=18}~Далеко позади~{/cps}{/i}"
 
-    m 1eub "{i}{cps=18}~We have all {w=0.7}the time {w=0.7}in the world~{/cps}{/i}"
-    m 3ekbsa "{i}{cps=18}~Just for love~{/cps}{/i}"
-    m 1dkbsd "{i}{cps=22}~Nothing more, {w=0.75}nothing less~{/cps}{/i}"
-    m 3dkbsb "{i}{cps=18}~Only love~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1eub "{i}{cps=18}~У нас есть всё {w=0.7}время {w=0.7}в этом мире~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3ekbsa "{i}{cps=18}~Лишь для любви~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1dkbsd "{i}{cps=22}~И не больше, {w=0.75}и не меньше~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 3dkbsb "{i}{cps=18}~Только любви~{/cps}{/i}"
 
-    m 1ekbla "{i}{cps=18}~Only love~{/cps}{/i}"
+    $ MAS.MonikaElastic()
+    m 1ekbla "{i}{cps=18}~Только любви~{/cps}{/i}"
     return
 
-################################ NON-DB SONGS############################################
-# Below is for songs that are not a part of the actual songs db and don't
-# otherwise have an associated file (eg holiday songs should go in script-holidays)
 
 init 5 python:
     addEvent(
         Event(
             persistent.event_database,
             eventlabel="mas_monika_plays_yr",
-            category=['monika','music'],
-            prompt="Can you play 'Your Reality' for me?",
+            category=['моника','музыка'],
+            prompt="Ты можешь сыграть для меня «Твоя реальность»?",
             unlocked=False,
             pool=True,
             rules={"no_unlock": None, "bookmark_rule": store.mas_bookmarks_derand.WHITELIST}
@@ -1716,35 +2200,41 @@ init 5 python:
 label mas_monika_plays_yr(skip_leadin=False):
     if not skip_leadin:
         if not renpy.seen_audio(songs.FP_YOURE_REAL) and not persistent.monika_kill:
-            m 2eksdlb "Oh, ahaha! You want me to play the original version, [player]?"
-            m 2eka "Even though I've never played it for you, I suppose you've heard it on the soundtrack or saw it on youtube, huh?"
-            m 2hub "The ending isn't my favorite, but I'll still be happy to play it for you!"
-            m 2eua "Just let me get the piano.{w=0.5}.{w=0.5}.{nw}"
-
+            m 2eksdlb "О, а-ха-ха! Ты хочешь, чтобы я сыграла оригинальную версию, [player]?"
+            $ MAS.MonikaElastic()
+            m 2eka "Хотя я никогда не играла её для тебя, я полагаю, ты слышал[mas_gender_none] её в разделе «Музыка» или видел[mas_gender_none] на ютубе, да?"
+            $ MAS.MonikaElastic()
+            m 2hub "Концовка не моя любимая, но я всё равно буду счастлива сыграть её для тебя!"
+            $ MAS.MonikaElastic()
+            m 2eua "Просто дай мне взять пианино.{w=0.5}.{w=0.5}.{nw}"
         else:
-            m 3eua "Sure, let me just get the piano.{w=0.5}.{w=0.5}.{nw}"
+
+            m 3eua "Конечно, дай мне только взять пианино.{w=0.5}.{w=0.5}.{nw}"
 
     window hide
-    call mas_timed_text_events_prep
+    call mas_timed_text_events_prep from _call_mas_timed_text_events_prep
     $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-    call monika_zoom_transition_reset(1.0)
+    $ MSRColorHideButtons()
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_1
     show monika at rs32
     hide monika
     pause 3.0
-    show mas_piano at lps32,rps32 zorder MAS_MONIKA_Z+1
+    show mas_piano zorder MAS_MONIKA_Z+1 at lps32, rps32
     pause 5.0
-    show monika at ls32 zorder MAS_MONIKA_Z
+    show monika zorder MAS_MONIKA_Z at ls32
     show monika 6dsa
 
     if store.songs.hasMusicMuted():
         $ enable_esc()
-        m 6hua "Don't forget about your in-game volume, [player]!"
+        m 6hua "Не забывай о своём игровом звуке, [player]!"
         $ disable_esc()
+    
+    $ current_track = songs.current_track
 
     pause 2.0
-    $ play_song(store.songs.FP_YOURE_REAL,loop=False)
+    $ play_song(store.songs.FP_YOURE_REAL_RUS,loop=False)
 
-    # TODO: possibly generalize this for future use
+
     show monika 6hua
     $ renpy.pause(10.012)
     show monika 6eua_static
@@ -1798,11 +2288,14 @@ label mas_monika_plays_yr(skip_leadin=False):
     pause 3.0
     hide mas_piano
     pause 6.0
-    show monika 1eua at ls32 zorder MAS_MONIKA_Z
+    show monika 1eua zorder MAS_MONIKA_Z at ls32
     pause 1.0
-    call monika_zoom_transition(mas_temp_zoom_level,1.0)
-    call mas_timed_text_events_wrapup
+    call monika_zoom_transition (mas_temp_zoom_level, 1.0) from _call_monika_zoom_transition_4
+    call mas_timed_text_events_wrapup from _call_mas_timed_text_events_wrapup
+    $ MSRColorShowButtons()
     window auto
+    $ play_song(current_track, 1.0)
+    $ HKBShowButtons()
 
     $ mas_unlockEVL("monika_piano_lessons", "EVE")
     return
@@ -1812,8 +2305,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_monika_plays_or",
-            category=['monika','music'],
-            prompt="Can you play 'Our Reality' for me?",
+            category=['моника','музыка'],
+            prompt="Ты можешь сыграть для меня «Наша реальность»?",
             unlocked=False,
             pool=True,
             rules={"no_unlock": None, "bookmark_rule": store.mas_bookmarks_derand.WHITELIST}
@@ -1822,63 +2315,78 @@ init 5 python:
 
 label mas_monika_plays_or(skip_leadin=False):
     if not skip_leadin:
-        m 3eua "Sure, let me just get the piano.{w=0.5}.{w=0.5}.{nw}"
-
-    if persistent.gender == "F":
-        $ gen = "her"
-    elif persistent.gender == "M":
-        $ gen = "his"
-    else:
-        $ gen = "their"
+        m 3eua "Конечно, дай мне только взять пианино.{w=0.5}.{w=0.5}.{nw}"
 
     window hide
-    call mas_timed_text_events_prep
+    call mas_timed_text_events_prep from _call_mas_timed_text_events_prep_1
     $ mas_temp_zoom_level = store.mas_sprites.zoom_level
-    call monika_zoom_transition_reset(1.0)
+    $ MSRColorHideButtons()
+    call monika_zoom_transition_reset (1.0) from _call_monika_zoom_transition_reset_2
     show monika at rs32
     hide monika
     pause 3.0
-    show mas_piano at lps32,rps32 zorder MAS_MONIKA_Z+1
+    show mas_piano zorder MAS_MONIKA_Z+1 at lps32, rps32
     pause 5.0
-    show monika at ls32 zorder MAS_MONIKA_Z
+    show monika zorder MAS_MONIKA_Z at ls32
     show monika 6dsa
 
     if store.songs.hasMusicMuted():
         $ enable_esc()
-        m 6hua "Don't forget about your in-game volume, [player]!"
+        m 6hua "Не забывай о своём игровом звуке, [player]!"
         $ disable_esc()
 
+    $ current_track = songs.current_track
     pause 2.0
     $ play_song(songs.FP_PIANO_COVER,loop=False)
 
     show monika 1dsa
     pause 9.15
-    m 1eua "{i}{cps=10}Every day,{w=0.5} {/cps}{cps=15}I imagine a future where{w=0.22} {/cps}{cps=13}I can be with you{w=4.10}{/cps}{/i}{nw}"
-    m 1eka "{i}{cps=12}In my hand{w=0.5} {/cps}{cps=17}is a pen that will write a poem{w=0.5} {/cps}{cps=16}of me and you{w=4.10}{/cps}{/i}{nw}"
-    m 1eua "{i}{cps=16}The ink flows down{w=0.25} {/cps}{cps=10}into a dark puddle{w=1}{/cps}{/i}{nw}"
-    m 1eka "{i}{cps=18}Just move your hand,{w=0.45} {/cps}{cps=20}write the way into [gen] heart{w=1.40}{/cps}{/i}{nw}"
-    m 1dua "{i}{cps=15}But in this world{w=0.25} {/cps}{cps=11}of infinite choices{w=0.90}{/cps}{/i}{nw}"
-    m 1eua "{i}{cps=16}What will it take{w=0.25}{/cps}{cps=18} just to find that special day{/cps}{/i}{w=0.90}{nw}"
-    m 1dsa "{i}{cps=15}What will it take{w=0.50} just to find{w=1} that special day{/cps}{/i}{w=1.82}{nw}"
+    m 1eua "{i}{cps=10}День за днём,{w=0.5} {/cps}{cps=15}я мечтаю о будущем,{w=0.22} {/cps}{cps=13}что разделю с тобой{w=4.10}{/cps}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}{cps=12}В руке перо,{w=0.5} {/cps}{cps=17}что напишет стихотворение{w=0.5} {/cps}{cps=16}о нас с тобой{w=4.10}{/cps}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eua "{i}{cps=16}Чернила капают{w=0.25} {/cps}{cps=10}в темную лужу стихов{w=1}{/cps}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}{cps=18}Рука гуляет по бумаге,{w=0.45} {/cps}{cps=20}ища путь к сердцу твоему{w=1.40}{/cps}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1dua "{i}{cps=15}Но в этом мире{w=0.25} {/cps}{cps=11}бесчисленных тропок{w=0.90}{/cps}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eua "{i}{cps=16}Что мне отдать,{w=0.25}{/cps}{cps=18} чтобы найти тот особый день?{w=0.90}{/cps}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1dsa "{i}{cps=15}Что мне отдать,{w=0.50} чтобы найти{w=1} тот особый день?{w=1.82}{/cps}{/i}{nw}"
     pause 7.50
 
-    m 1eua "{i}{cps=15}Have I found{w=0.5} {/cps}{cps=15}everybody a fun assignment{w=0.30} {/cps}{cps=12}to do today{w=4.20}{/cps}{/i}{nw}"
-    m 1hua "{i}{cps=18}When you're here,{w=0.25} {/cps}{cps=13.25}everything that we do is fun for them anyway{w=4}{/cps}{/i}{nw}"
-    m 1esa "{i}{cps=11}When I can't even read my own feelings{/cps}{w=1}{/i}{nw}"
-    m 1eka "{i}{cps=17}What good are words{w=0.3} when a smile says it all{/cps}{/i}{w=1}{nw}"
-    m 1lua "{i}{cps=11}And if this world won't write me an ending{/cps}{/i}{w=0.9}{nw}"
-    m 1dka "{i}{cps=18}What will it take{w=0.5} just for me to have it all{/cps}{/i}{w=2}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eua "{i}{cps=15}Что бы мне интересного придумать,{w=0.5} {/cps}{cps=15}чтобы всех{w=0.30} {cps=12}занять?{/cps}{w=4.20}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1hua "{i}{cps=18}Когда есть ты,{w=0.25} {/cps}{cps=13.25}нам весело, что бы мы не делали{/cps}{w=4}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1esa "{i}{cps=11}Если мне не понять своих чувств,{/i}{w=1}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}{cps=17}Что толку в словах,{w=0.3} когда улыбка скажет всё?{/cps}{/i}{w=1}{nw}"
+    $ MAS.MonikaElastic()
+    m 1lua "{i}{cps=11}А если мир, этот не подарит мне счастье{/cps}{/i}{w=0.9}{nw}"
+    $ MAS.MonikaElastic()
+    m 1dka "{i}{cps=18}Что мне отдать,{w=0.5} чтобы всё заполучить?{/cps}{/i}{w=2}{nw}"
     show monika 1dsa
     pause 17.50
 
-    m 1eka "{i}{cps=15}In this world,{w=0.5} {/cps}{cps=15}away from the one who'll always {/cps}{cps=17}be dear to me{/cps}{w=4.5}{/i}{nw}"
-    m 1ekbsa "{i}{cps=15}You my love,{w=0.5} {/cps}{cps=16.5}hold the key to the day, when I'll be finally free{/cps}{w=8.5}{/i}{nw}"
-    m 1eua "{i}{cps=16}The ink flows down{w=0.25} {/cps}{cps=10}into a dark puddle{/cps}{w=1.2}{/i}{nw}"
-    m 1esa "{i}{cps=18}How can I cross{w=0.45} {/cps}{cps=13}into your reality?{/cps}{w=1.40}{/i}{nw}"
-    m 1eka "{i}{cps=12}Where I can hear the sound of your heartbeat{/cps}{w=0.8}{/i}{nw}"
-    m 1ekbsa "{i}{cps=16}And make it love,{w=0.6} but in our reality{/cps}{/i}{w=0.6}{nw}"
-    m 1hubsa "{i}{cps=16}And in our reality,{w=1} knowing I'll forever love you{/cps}{w=4.2}{/i}{nw}"
-    m 1ekbsa "{i}{cps=19}With you I'll be{/cps}{/i}{w=2}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}{cps=15}В этом мире,{w=0.5} {/cps}{cps=15}вдали от того, кто всегда {/cps}{cps=17}будет мне дорог{/cps}{w=4.5}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}{cps=15}Ты, любовь моя,{w=0.5} {/cps}{cps=16.5}держи ключ к дню, когда я наконец буду свободна{/cps}{w=8.5}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eua "{i}{cps=16}Чернила капают{w=0.25} {/cps}{cps=10}в темную лужу{/cps}{w=1.2}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1esa "{i}{cps=18}Как могу проникнуть{w=0.45} {/cps}{cps=13}в твою реальность?{/cps}{w=1.40}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1eka "{i}{cps=12}Где я смогу услышать звук твоего сердцебиения{/cps}{w=0.8}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}{cps=16}И пусть это любовь,{w=0.6} но в нашей реальности{/cps}{/i}{w=0.6}{nw}"
+    $ MAS.MonikaElastic()
+    m 1hubsa "{i}{cps=16}И в нашей реальности,{w=1} я буду всегда любить тебя{/cps}{w=4.2}{/i}{nw}"
+    $ MAS.MonikaElastic()
+    m 1ekbsa "{i}{cps=19}С тобой я буду{/cps}{/i}{w=2}{nw}"
 
     show monika 1dkbsa
     pause 9.0
@@ -1888,11 +2396,15 @@ label mas_monika_plays_or(skip_leadin=False):
     pause 3.0
     hide mas_piano
     pause 6.0
-    show monika 1eua at ls32 zorder MAS_MONIKA_Z
+    show monika 1eua zorder MAS_MONIKA_Z at ls32
     pause 1.0
-    call monika_zoom_transition(mas_temp_zoom_level,1.0)
-    call mas_timed_text_events_wrapup
+    call monika_zoom_transition (mas_temp_zoom_level, 1.0) from _call_monika_zoom_transition_5
+    call mas_timed_text_events_wrapup from _call_mas_timed_text_events_wrapup_1
+    $ MSRColorShowButtons()
     window auto
+    $ play_song(current_track, 1.0)
+    $ HKBShowButtons()
 
     $ mas_unlockEVL("monika_piano_lessons", "EVE")
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
