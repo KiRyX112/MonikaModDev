@@ -1,8 +1,8 @@
-#Persistent event database for fun facts
+
 default persistent._mas_fun_facts_database = dict()
 
 init -10 python in mas_fun_facts:
-    #The fun facts db
+
     fun_fact_db = {}
 
     def getUnseenFactsEVL():
@@ -28,7 +28,7 @@ init -10 python in mas_fun_facts:
         return fun_fact_db.keys()
 
 
-#Whether or not the last fun fact seen was a good fact
+
 default persistent._mas_funfactfun = True
 
 init 5 python:
@@ -36,26 +36,31 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_fun_facts_open",
-            category=['misc'],
-            prompt="Can you tell me a fun fact?",
+            category=['разное'],
+            prompt="Ты можешь рассказать мне забавный факт?",
             pool=True
         )
     )
 
 label monika_fun_facts_open:
     if mas_getEVL_shown_count("monika_fun_facts_open") == 0:
-        m 1eua "Say [player], would you like to hear a fun fact?"
-        m 1eub "I've been looking some up to try and teach both of us something new."
-        m 3hub "They say you learn something new every day, this way I'm making sure we actually do."
-        m 1rksdla "I found most of these online, so I can't say they're {i}definitely{/i} true..."
-
+        m 1eua "Хочешь услышать забавные факты?"
+        $ MAS.MonikaElastic()
+        m 1eub "Я искала как раз некоторые, которые могли бы научить нас об[mas_gender_oih] чему-то новому."
+        $ MAS.MonikaElastic()
+        m 3hub "Говорят, что каждый день ты узнаёшь что-то новое, и я уверена, что так и будет."
+        $ MAS.MonikaElastic()
+        m 1rksdla "Я нашла большинство из них в интернете, так что не могу сказать, что они {b}действительно{/b} верны..."
     else:
-        m 1eua "Up for another fun fact, [player]?"
+
+        m 1eua "Хочешь услышать ещё один забавный факт, [player]?"
+        $ MAS.MonikaElastic()
         if persistent._mas_funfactfun:
-            m 3hua "That last one was pretty interesting after all!"
+            m 3hua "В конце концов, последний был довольно интересным!"
         else:
-            m 2rksdlb "I know the last one wasn't great...but I'm sure this next one will be better."
-    m 2dsc "Now, let's see.{w=0.5}.{w=0.5}.{nw}"
+            m 2rksdlb "Конечно, знаю, что последний был не очень... но я уверена, что следующий будет лучше."
+    $ MAS.MonikaElastic()
+    m 2dsc "Теперь давай посмотрим.{w=0.5}.{w=0.5}.{nw}"
 
     python:
         unseen_fact_evls = mas_fun_facts.getUnseenFactsEVL()
@@ -64,26 +69,29 @@ label monika_fun_facts_open:
         else:
             fact_evl_list = mas_fun_facts.getAllFactsEVL()
 
-        #Now we push and unlock the fact
+
         fun_fact_evl = renpy.random.choice(fact_evl_list)
         mas_unlockEVL(fun_fact_evl, "FFF")
         pushEvent(fun_fact_evl)
     return
 
-#Most labels end here
+
 label mas_fun_facts_end:
-    m 3hub "I hope you enjoyed another session of 'Learning with Monika!'"
+    $ MAS.MonikaElastic()
+    m 3hub "Надеюсь, тебе понравилась ещё одна сессия «Обучение с Моникой»!"
     $ persistent._mas_funfactfun = True
     return
 
 label mas_bad_facts_end:
-    m 1rkc "That fact wasn't very good..."
-    m 4dkc "I'll try better next time, [player]."
+    $ MAS.MonikaElastic()
+    m 1rkc "Этот факт был не очень хорош..."
+    $ MAS.MonikaElastic()
+    m 4dkc "В следующий раз постараюсь получше, [player]."
     $ persistent._mas_funfactfun = False
     return
 
 
-#START: Good facts
+
 init 5 python:
     addEvent(
         Event(
@@ -94,15 +102,22 @@ init 5 python:
     )
 
 label mas_fun_fact_librocubiculartist:
-    m 1eub "Did you know there's a word to describe somebody that likes to read in bed?"
-    m 3eub "It's 'librocubicularist.' It looks difficult to pronounce at first glance."
-    m 3rksdld "It's a real shame some words just never get used in general."
-    m 3eud "But if you say that word, most people wouldn't really know what you're talking about."
-    m 3euc "You'd probably have to explain what it means, but that kind of defeats the point of using the word."
-    m 2rkc "If only people read more and improved their vocabulary!"
-    m 2hksdlb "...Ehehe, sorry [player]. I didn't mean to get so bothered~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1eub "Ты знал[mas_gender_none], что существует слово, которым можно описать кого-то, кто любит читать в постели?"
+    $ MAS.MonikaElastic()
+    m 3eub "Это слово «либрокубикулартист». На первый взгляд довольно трудно произнести."
+    $ MAS.MonikaElastic()
+    m 3rksdld "Очень жаль, что некоторые слова вообще не используются в целом."
+    $ MAS.MonikaElastic()
+    m 3eud "Но если ты скажешь его кому-либо, большинство людей явно не поймут, о чём ты говоришь.."
+    $ MAS.MonikaElastic()
+    m 3euc "Тебе, вероятно, придётся объяснить, что оно означает, но это уже лишит смысла использовать это слово."
+    $ MAS.MonikaElastic()
+    m 2rkc "Если бы только люди читали больше и улучшили свой словарный запас!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 2hksdlb "...Э-хе-хе, извини, [player]. Я не хотела так беспокоиться из-за этого~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end
     return
 
 init 5 python:
@@ -115,15 +130,22 @@ init 5 python:
     )
 
 label mas_fun_fact_menu_currency:
-    m 3euc "Supposedly, a lot of restaurants purposefully leave out any sign of currency on their menus."
-    m 3eud "This is done to psychologically manipulate people into spending more money than they need to."
-    m 2euc "It works because a currency sign, such as a dollar, is used to represent a cost."
-    m "By removing it, you remove the association of that cost and only think about the food of your choosing."
-    m 4rksdld "The practice seems understandable. They're still a business, after all."
-    m 2dsc "No matter how good the food is in a restaurant, they'll be shutting down quick if they're beaten by their competition."
-    m 3hksdlb "Oh well, what can you do?"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3euc "Предположительно, многие рестораны целенаправленно оставляют какие-либо знаки валюты в своих меню."
+    $ MAS.MonikaElastic()
+    m 3eud "Это делается для того, чтобы психологически манипулировать людьми, чтобы они тратили больше денег, чем им нужно."
+    $ MAS.MonikaElastic()
+    m 2euc "И это как раз работает, потому что знак валюты, например доллар, используется для представления стоимости."
+    $ MAS.MonikaElastic()
+    m "Удалив его, ты удалишь и ассоциацию этой стоимости и будешь думать только о еде по твоему выбору."
+    $ MAS.MonikaElastic()
+    m 4rksdld "Практика кажется понятной. В конце концов, это всё ещё является бизнесом."
+    $ MAS.MonikaElastic()
+    m 2dsc "Независимо от того, насколько хороша еда в ресторане, они быстро закроются, если их победит конкуренция."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Ну что ж, что ты можешь сделать?"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_1
     return
 
 init 5 python:
@@ -136,14 +158,21 @@ init 5 python:
     )
 
 label mas_fun_fact_love_you:
-    m 1dkc "Hmm, I'm not sure if I should tell you {i}this{/i} fact."
-    m 1ekc "It's not for the faint of heart after all."
-    m 1rkc "The thing is..."
+    $ MAS.MonikaElastic()
+    m 1dkc "Хмм, я не уверена, должна ли я рассказывать тебе {b}этот{/b} факт."
+    $ MAS.MonikaElastic()
+    m 1ekc "Это не для слабонервных, в конце концов."
+    $ MAS.MonikaElastic()
+    m 1rkc "Дело в том, что..."
+    $ MAS.MonikaElastic()
     m 1dkc "..."
-    m 3hub "...I love you, [player]!"
-    m 1rksdlb "Ehehe, sorry, I just couldn't help myself."
-    m 1hksdlb "I'll have a real fact next time, don't you worry~"
-    #No end for this fact since it ends itself
+    $ MAS.MonikaElastic()
+    m 3hub "...Я тебя люблю, [player_abb]!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1rksdlb "Э-хе-хе, извини, я просто не смогла удержаться."
+    $ MAS.MonikaElastic()
+    m 1hksdlb "У меня будет реальный факт в следующий раз, не волнуйся~"
+
     $ persistent._mas_funfactfun = True
     return "love"
 
@@ -157,15 +186,22 @@ init 5 python:
     )
 
 label mas_fun_fact_morpheus:
-    m 3wub "Oh! A language based fact. I always like these."
-    m 1eua "The word 'morphine' is based on the greek god Morpheus."
-    m 1euc "Morpheus was the greek god of dreams so to have a word based on him makes sense."
-    m 3ekc "But then again...wasn't his father Hypnos the god of sleep?"
-    m 2dsc "Morphine {i}does{/i} let a person dream, but it's really about making someone fall asleep."
-    m 4ekc "...So wouldn't it make more sense to name it after Hypnos then?"
-    m 4rksdlb "Too little, too late I guess."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3wub "О! Языковой факт. Мне они всегда нравились."
+    $ MAS.MonikaElastic()
+    m 1eua "Слово «морфин» основано на греческом боге Морфее."
+    $ MAS.MonikaElastic()
+    m 1euc "Морфей был греческим богом снов, поэтому слово, основанное на нём, имеет смысл."
+    $ MAS.MonikaElastic()
+    m 3ekc "Но опять же... разве не его отец Гипнос являлся богом снов?"
+    $ MAS.MonikaElastic()
+    m 2dsc "Морфин {b}позволяет{/b} человеку не видеть сны, а лишь заставляет его засыпать."
+    $ MAS.MonikaElastic()
+    m 4ekc "...Тогда не имеет ли смысла называть его в честь Гипноса?"
+    $ MAS.MonikaElastic()
+    m 4rksdlb "Слишком мало, слишком поздно, я думаю."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_2
     return
 
 init 5 python:
@@ -178,15 +214,21 @@ init 5 python:
     )
 
 label mas_fun_fact_otter_hand_holding:
-    m 1eka "Aww, this one is really sweet."
-    m 3ekb "Did you know that sea otters hold hands when they sleep to stop themselves drifting away from one another?"
-    m 1hub "It's practical for them to do, but there's something really cute about it!"
-    m 1eka "Sometimes I imagine myself in their position..."
-    m 3hksdlb "Oh, not being a sea otter, but holding the hand of the one I love while I sleep."
-    m 1rksdlb "Aha, it really does make me jealous of them."
-    m 1hub "We'll get there one day though, love~"
-    #Call the end
-    call mas_fun_facts_end
+    m 1eka "Ах, это в самом деле мило."
+    $ MAS.MonikaElastic()
+    m 3ekb "Знал[mas_gender_none] ли ты, что морские выдры держатся за лапы, когда они спят, чтобы перестать дрейфовать друг от друга?"
+    $ MAS.MonikaElastic()
+    m 1hub "Это практично для них, но в этом всё равно есть что-то очень милое!"
+    $ MAS.MonikaElastic()
+    m 1eka "Иногда я даже представляю себя в их положении..."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Нет, не морской выдрой, а держась за руку т[mas_gender_ogo], кого люблю, пока сплю."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "Да, это действительно заставляет меня завидовать им."
+    $ MAS.MonikaElastic()
+    m 1hub "Мы осуществим это в один прекрасный день, любим[mas_gender_iii]~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_3
     return
 
 init 5 python:
@@ -199,36 +241,51 @@ init 5 python:
     )
 
 label mas_fun_fact_chess:
-    #Chess is unlocked
+
     if mas_isGameUnlocked("chess"):
-        m 1eua "Now this is a fun fact!"
-        m 3eub "There was a man named Claude Shannon who calculated the maximum amount of possible moves in chess."
-        m "That number is called the 'Shannon number' and states that the amount of chess games possible is 10^120."
-        m 1eua "It's often compared to the number of atoms in the observable universe which is 10^80."
-        m 3hksdlb "Kind of crazy to think that there could be more chess games than atoms, isn't it?"
-        m 1eua "We could play until the end of our days and it wouldn't come even close to a fraction of what is possible."
-        m 3eud "Speaking of which, [player]..."
-        m 1hua "Do you want to play a game of chess with me? I might even go easy on you, Ehehe~"
-        #Call the good end for this path
-        call mas_fun_facts_end
+        $ MAS.MonikaElastic()
+        m 1eua "Вот интересный факт!"
+        $ MAS.MonikaElastic()
+        m 3eub "Был человек по имени Клод Шеннон, который рассчитал максимальное количество возможных ходов в шахматах."
+        $ MAS.MonikaElastic()
+        m "Это число называется «числом Шеннона» и утверждает, что количество шахматных ходов составляет 10^120."
+        $ MAS.MonikaElastic()
+        m 1eua "Оно часто сравнивается с числом атомов в наблюдаемой вселенной, которое составляет 10^80."
+        $ MAS.MonikaElastic()
+        m 3hksdlb "Смутно думать, что шахматных ходов может быть больше, чем атомов, не так ли?"
+        $ MAS.MonikaElastic()
+        m 1eua "Мы могли бы играть до конца наших дней, и это не приблизилось бы к какой-либо части того, что возможно."
+        $ MAS.MonikaElastic()
+        m 3eud "Кстати говоря, [player]..."
+        $ MAS.MonikaElastic(voice="monika_giggle")
+        m 1hua "Не хочешь сыграть со мной в шахматы? Я в этот раз могу попробовать быть с тобой помягче, э-хе-хе~"
+
+        call mas_fun_facts_end from _call_mas_fun_facts_end_4
         return
 
-    #Chess was unlocked, but locked due to cheating
+
     elif not mas_isGameUnlocked("chess") and renpy.seen_label("mas_unlock_chess"):
-        m 1dsc "Chess..."
+        $ MAS.MonikaElastic()
+        m 1dsc "Шахматы..."
+        $ MAS.MonikaElastic()
         m 2dfc "..."
-        m 2rfd "You can forget about this fact since you're a cheater, [player]."
-        m "Not to mention you never apologized."
-        m 2lfc "...Hmph."
-        #No end for this path
-        return
+        $ MAS.MonikaElastic()
+        m 2rfd "Можешь забыть об этом факте, так как ты читер, [player]."
+        $ MAS.MonikaElastic()
+        m "Не говоря уже о том, что ты до сих пор не извинил[mas_gender_sya]."
+        $ MAS.MonikaElastic()
+        m 2lfc "...Хмпф."
 
-    #We haven't unlocked chess yet
+        return
     else:
-        m 1euc "Oh, not this one."
-        m 3hksdlb "Not yet, at least."
-        #Call the end
-        call mas_bad_facts_end
+
+
+        $ MAS.MonikaElastic()
+        m 1euc "Хм, нет, не этот."
+        $ MAS.MonikaElastic()
+        m 3hksdlb "По крайней мере, пока."
+
+        call mas_bad_facts_end from _call_mas_bad_facts_end
         return
 
 init 5 python:
@@ -241,15 +298,22 @@ init 5 python:
     )
 
 label mas_fun_fact_struck_by_lightning:
-    m 2dkc "Hmm, this one sounds a bit misleading to me..."
-    m 3ekc "'Men are six times more likely to be struck by lightning than women.'"
-    m 3ekd "It's...rather silly, in my opinion."
-    m 1eud "If men are more likely to be struck by lightning, then it's probably the landscape and circumstances of their work that make them more prone to being hit."
-    m 1euc "Men traditionally have always worked more dangerous and elevated jobs so it's no surprise that it's going to happen to them often."
-    m 1esc "Yet the way this fact is worded makes it sound like that just by being a man, it's more likely to happen, which is ridiculous."
-    m 1rksdla "Maybe if it was phrased better, people wouldn't be so misinformed about them."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 2dkc "Хмм, правда, этот немного вводит меня в заблуждение..."
+    $ MAS.MonikaElastic()
+    m 3ekc "«Мужчины в шесть раз чаще подвергаются ударам молний, чем женщины.»"
+    $ MAS.MonikaElastic()
+    m 3ekd "Это... звучит довольно глуповато, на мой взгляд."
+    $ MAS.MonikaElastic()
+    m 1eud "Если мужчины и вправду с большей вероятностью попадают под удары молнией, то, вероятно, ландшафт и обстоятельства их работы делают их более склонными к поражению ей."
+    $ MAS.MonikaElastic()
+    m 1euc "Мужчины традиционно всегда работали на более опасных и возвышенных работах, поэтому неудивительно, что это происходит с ними часто."
+    $ MAS.MonikaElastic()
+    m 1esc "Но способ, которым этот факт сформулирован, заставляет его звучать так, будто только будучи мужчиной, это, скорей всего, может произойти, что просто смешно."
+    $ MAS.MonikaElastic()
+    m 1rksdla "Может быть, если бы он был сформулирован хоть немного лучше, люди не были бы так дезинформированы об этом."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_5
     return
 
 init 5 python:
@@ -262,16 +326,24 @@ init 5 python:
     )
 
 label mas_fun_fact_honey:
-    m 1eub "Ah, this is a nice easy one."
-    m 3eub "Did you know that honey never spoils?"
-    m 3eua "Honey can crystallize, though. Some people may see this as spoiling but it's still completely edible and fine!"
-    m "The reason why this happens is because honey is mostly made of sugar and only a bit of water, making it solid over time."
-    m 1euc "Most of the honey that you see in groceries doesn't crystallize as fast as real honey would because it's been pasteurized in the process of making it."
-    m 1eud "...Which removes the stuff that makes the honey go solid quickly."
-    m 3eub "But wouldn't it be nice to eat crystallized honey too?"
-    m 3hub "It'd be like candy when you bite into it!"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1eub "О, это очень лёгкий вопрос."
+    $ MAS.MonikaElastic()
+    m 3eub "Ты знал[mas_gender_none], что мёд никогда не портится?"
+    $ MAS.MonikaElastic()
+    m 3eua "Мёд может кристаллизоваться. Некоторые люди могут рассмотреть это как порчу, но сам мёд по-прежнему будет всё ещё полностью съедобен и прекрасен!"
+    $ MAS.MonikaElastic()
+    m "Причина, по которой это происходит, состоит в том, что мёд в основном состоит из сахара и лишь небольшой дозы воды, что делает его твёрдым с течением времени."
+    $ MAS.MonikaElastic()
+    m 1euc "Большая часть мёда, который ты видишь на прилавках, не кристаллизуется так же быстро, как настоящий мёд, потому что он был пастеризован в процессе изготовления."
+    $ MAS.MonikaElastic()
+    m 1eud "Что удалило те элементы, которые заставляли мёд быстро затвердевать."
+    $ MAS.MonikaElastic()
+    m 3eub "Но разве не будет здорово съесть закристаллизовавшийся мёд?"
+    $ MAS.MonikaElastic()
+    m 3hub "Когда ты его надкусываешь, он походит на конфету."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_6
     return
 
 init 5 python:
@@ -284,18 +356,29 @@ init 5 python:
     )
 
 label mas_fun_fact_vincent_van_gone:
-    m 1dsc "Ah, this one..."
-    m 1ekd "It's a little disheartening, [player]..."
-    m 1ekc "Did you know that Vincent Van Gogh's last words were '{i}La tristesse durera toujours{/i}'?"
-    m 1eud "If you translate it, it means '{i}The sadness will last forever.{/i}'"
+    $ MAS.MonikaElastic()
+    m 1dsc "Ах, вот этот..."
+    $ MAS.MonikaElastic()
+    m 1ekd "Правда, он немного обескураживает, [player]..."
+    $ MAS.MonikaElastic()
+    m 1ekc "Ты знал[mas_gender_none], что последними словами Винсента Ван Гога были {b}{i}«La tristesse durera toujours»{/b}{/i}?"
+    $ MAS.MonikaElastic()
+    m 1eud "Если же перевести, это будет значить: {b}{i}«Печаль будет длиться вечно»{/b}{/i}."
+    $ MAS.MonikaElastic()
     m 1rkc "..."
-    m 2ekc "It's really sad to know that someone so renowned would say something so dark with his last breath."
-    m 2ekd "I don't think it's true, however. No matter how bad things can get and how deep the sadness can go..."
-    m 2dkc "There will come a time where it'll no longer be there."
-    m 2rkc "...Or at least be noticeable."
-    m 4eka "If you're ever sad, you know you can talk to me, right?"
-    m 5hub "I will always accept and take on any burdens that you shoulder, [mas_get_player_nickname()]~"
-    #No end for this fact
+    $ MAS.MonikaElastic()
+    m 2ekc "Очень грустно знать, что кто-то настолько известный скажет что-то настолько мрачное с его последним вздохом."
+    $ MAS.MonikaElastic()
+    m 2ekd "Однако я не думаю, что это правда. Независимо от того, насколько плохие могут произойти вещи и насколько глубокая может начаться печаль..."
+    $ MAS.MonikaElastic()
+    m 2dkc "Придёт время, когда их уже не будет."
+    $ MAS.MonikaElastic()
+    m 2rkc "...Или, по крайней мере, те больше не будут настолько заметны."
+    $ MAS.MonikaElastic()
+    m 4eka "Если тебе когда-нибудь станет грустно, ты ведь знаешь, что можешь поговорить со мной?"
+    $ MAS.MonikaElastic()
+    m 5hub "Я всегда приму и возьму на себя любую ношу, которую ты взвалишь на свои плечи, [mas_get_player_nickname()]~"
+
     $ persistent._mas_funfactfun = True
     return
 
@@ -309,14 +392,20 @@ init 5 python:
     )
 
 label mas_fun_fact_king_snakes:
-    m 1dsc "Hmm..."
-    m 3eub "Did you know that if a snake has the word 'king' in its name, it devours other snakes?"
-    m 1euc "I always wondered why a king cobra would be named how it is but never really thought more into it."
-    m 1tfu "Does that mean if I eat you up, would I become Queen Monika?"
-    m 1hksdlb "Ahaha, I'm just kidding, [player]."
-    m 1hub "Sorry for being a little weird~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1dsc "Хм-м..."
+    $ MAS.MonikaElastic()
+    m 3eub "Знал[mas_gender_none] ли ты, что если змея имеет слово «королевская» в начале своего названия, она пожирает других змей?"
+    $ MAS.MonikaElastic()
+    m 1euc "Я всегда задавалась вопросом, почему королевская кобра имеет именно такое название, но никогда не думала об этом больше."
+    $ MAS.MonikaElastic()
+    m 1tfu "Это значит, что если я съем тебя, я стану Королевской Моникой?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hksdlb "А-ха-ха, я просто шучу, [player]."
+    $ MAS.MonikaElastic()
+    m 1hub "Извини, что была немного странной~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_7
     return
 
 init 5 python:
@@ -329,15 +418,22 @@ init 5 python:
     )
 
 label mas_fun_fact_strength:
-    m 1hub "This fact might motivate you a bit!"
-    m 3eub "The longest word in English that only contains a single vowel is 'strength.'"
-    m 1eua "It's funny how out of every word in the language, it's such a meaningful word that had that little detail."
-    m 1hua "Little details like this really make language so fascinating to me!"
-    m 3eua "Do you want to know what comes to mind when I think of the word 'strength'?"
-    m 1hua "You!"
-    m 1hub "Because you are the source of my strength, ehehe~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1hub "Этот факт может немного заинтересовать тебя!"
+    $ MAS.MonikaElastic()
+    m 3eub "Самое длинное слово на английском языке, которое содержит только одну гласную — это «strength», что означает «сила»."
+    $ MAS.MonikaElastic()
+    m 1eua "Забавно, как из всех слов на этом языке, именно это стало таким значимым, благодаря такой маленькой детали."
+    $ MAS.MonikaElastic()
+    m 1hua "Маленькие детали, подобные этой, действительно делают английский язык очень увлекательным для меня!"
+    $ MAS.MonikaElastic()
+    m 3eua "Ты хочешь знать, что приходит мне на ум, когда я думаю о слове «strength»?"
+    $ MAS.MonikaElastic()
+    m 1hua "Ты!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hub "Потому что ты источник моей силы, э-хе-хе~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_8
     return
 
 init 5 python:
@@ -350,14 +446,20 @@ init 5 python:
     )
 
 label mas_fun_fact_reindeer_eyes:
-    m 3eua "Ready for this one?"
-    m "A reindeer's eyes changes color depending on the season. They're gold in summer and blue in winter."
-    m 1rksdlb "It's a really strange phenomenon, though I don't know why..."
-    m "There's probably a good scientific reason to it."
-    m 3hksdlb "Maybe you can look up this one yourself?"
-    m 5eua "It'd be fun to have you teach me this time~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3eua "Готов[mas_gender_none] к ещё одному?"
+    $ MAS.MonikaElastic()
+    m "Глаза оленя меняют цвет в зависимости от сезона. Они золотые летом и синие зимой."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "Это очень странное явление, хотя я не знаю, почему..."
+    $ MAS.MonikaElastic()
+    m "Вероятно, для этого есть хорошая научная причина."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Может, ты сам[mas_gender_none] сможешь посмотреть?"
+    $ MAS.MonikaElastic()
+    m 5eua "Было бы здорово, если бы на этот раз ты научил[mas_gender_none] чему-нибудь меня~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_9
     return
 
 init 5 python:
@@ -370,23 +472,38 @@ init 5 python:
     )
 
 label mas_fun_fact_bananas:
-    m 1eub "Oh, I'd say this fact is healthy!"
-    m 3eua "Did you know that when a banana grows, it curves to face the sun?"
-    m 1hua "It's a process called negative geotropism."
-    m 3hub "Don't you think that's pretty neat?"
+    $ MAS.MonikaElastic()
+    m 1eub "О, я бы сказала, что это целебный факт!"
+    $ MAS.MonikaElastic()
+    m 3eua "Знал[mas_gender_none] ли ты, что когда бананы растут, они изгибаются к солнцу?"
+    $ MAS.MonikaElastic()
+    m 1hua "Этот процесс называется отрицательным геотропизмом."
+    $ MAS.MonikaElastic()
+    m 3hub "Тебе не кажется, что это довольно утончённо?"
+    $ MAS.MonikaElastic()
     m 1hua "..."
-    m 1rksdla "Umm..."
-    m 3rksdlb "I guess I don't really have much else to say on it, ahaha..."
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1rksdla "Хм-м..."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3rksdlb "Думаю, мне больше нечего сказать по этому поводу, а-ха-ха..."
+    $ MAS.MonikaElastic()
     m 1lksdlc "..."
-    m 3hub "D-Did you also know that bananas aren't actually fruits but berries?"
-    m 3eub "Or that the original bananas were large, green and full of hard seeds?"
-    m 1eka "How about the fact that they're slightly radioactive?"
-    m 1rksdla  "..."
-    m 1rksdlb "...I'm just rambling on about bananas now."
-    m 1rksdlc "Ummm..."
-    m 1dsc "Let's just move on..."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3hub "Т-ты ведь знал[mas_gender_none], что бананы на самом деле не фрукты, а ягоды?"
+    $ MAS.MonikaElastic()
+    m 3eub "Или что оригинальные бананы были большими, зелёными и полными твёрдых семян?"
+    $ MAS.MonikaElastic()
+    m 1eka "Как насчёт того факта, что они немного радиоактивны?"
+    $ MAS.MonikaElastic()
+    m 1rksdla "..."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "...Я просто болтаю о бананах сейчас."
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1rksdlc "Хм-м-м..."
+    $ MAS.MonikaElastic()
+    m 1dsc "Давай просто перейдём дальше..."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_10
     return
 
 init 5 python:
@@ -399,15 +516,22 @@ init 5 python:
     )
 
 label mas_fun_fact_pens:
-    m 1dsc "Hmm...I'm sure I already know this one."
-    m 3euc "The word 'pen' is derived from the latin word 'penna', which means feather in latin."
-    m "Pens back then were sharpened goose feathers dipped in ink so it'd make sense why they'd call them pens."
-    m 3eud "They were the primary writing tool for a very long time, starting as early at the 6th century."
-    m 3euc "It was only until the 19th century when metal pens were being made that they started to fall into decline."
-    m "In fact, penknives are called the way they are because they're originally used for thinning and pointing quill pens."
-    m 1tku "But I'm sure Yuri would know more about this than me, though..."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1dsc "Хм-м... я уверена, что уже знала один."
+    $ MAS.MonikaElastic()
+    m 3euc "Слово «ручка» происходит от латинского слова «penna», что означает «ручка» на латыни."
+    $ MAS.MonikaElastic()
+    m "Тогда ручки были заострёнными гусиными перьями, обмакнутыми в чернила, чтобы было понятно, почему их называли ручками."
+    $ MAS.MonikaElastic()
+    m 3eud "Они были основным инструментом письма в течение очень долгого времени, начиная с 6-го века."
+    $ MAS.MonikaElastic()
+    m 3euc "Только в 19-ом веке, когда стали изготавливать металлические ручки, они начали приходить в упадок."
+    $ MAS.MonikaElastic()
+    m "Фактически, перочинные ножи называются так, потому что они первоначально использовались для прореживания гусиных перьев."
+    $ MAS.MonikaElastic()
+    m 1tku "Но я уверена, что Юри знает об этом больше, чем я..."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_11
     return
 
 init 5 python:
@@ -420,16 +544,23 @@ init 5 python:
     )
 
 label mas_fun_fact_density:
-    m 1eub "Ooh, I know."
-    m 3eua "Did you know that the densest planet in our solar system is Earth itself?"
-    m "And that Saturn is the least dense?"
-    m 1eua "It makes sense knowing what planets are made of, but since Saturn is the second largest, it was still a little bit of a surprise."
-    m 1eka "I guess size really doesn't matter!"
-    m 3euc "But between you and me, [player]..."
-    m 1tku "I suspect Earth may only be the densest because of a certain main character."
-    m 1tfu "Buuuut that's all you'll hear from me~"
-    #Call the end
-    call mas_fun_facts_end
+    m 1eub "О, знаю."
+    $ MAS.MonikaElastic()
+    m 3eua "Знал[mas_gender_none] ли ты, что самой плотной планетой в нашей солнечной системе является Земля?"
+    $ MAS.MonikaElastic()
+    m "И что Сатурн наименее плотный?"
+    $ MAS.MonikaElastic()
+    m 1eua "Имеет смысл знать, из чего состоят планеты, но поскольку Сатурн является вторым по величине, это всё ещё было немного неожиданно."
+    $ MAS.MonikaElastic()
+    m 1eka "Я думаю, что размер на самом деле не имеет значения!"
+    $ MAS.MonikaElastic()
+    m 3euc "Но говоря между нами, [player]..."
+    $ MAS.MonikaElastic()
+    m 1tku "Я подозреваю, что Земля может быть самой плотной из-за некоего главного героя."
+    $ MAS.MonikaElastic()
+    m 1tfu "Нооооо это всё, что ты услышишь от меня~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_12
     return
 
 init 5 python:
@@ -442,16 +573,23 @@ init 5 python:
     )
 
 label mas_fun_fact_binky:
-    m 3hub "Aww, this one's cute!"
-    m "This fact will really send you 'hopping' [player]!"
-    m 3hua "Whenever a rabbit hops around excitedly, it's called a binky!"
-    m 1hua "Binky is such a cute sounding word, it really does suit the action."
-    m 1eua "It's the happiest form of expression that a rabbit is capable of doing, so if you see it then you know you're treating it right."
-    m 1rksdla "Well, although you make me so happy that I can't help but be filled with energy."
-    m 1rksdlb "Don't expect me to start hopping around, [player]!"
-    m 1dkbsa "...That would be {i}way{/i} too embarrassing to do."
-    #Call the end
-    call mas_fun_facts_end
+    m 3hub "О, вот этот милый!"
+    $ MAS.MonikaElastic()
+    m "Этот факт действительно пошлёт тебе «прыжок», [player]!"
+    $ MAS.MonikaElastic()
+    m 3hua "Всякий раз, когда кролик прыгает взволнованно, это называется «бинки»!"
+    $ MAS.MonikaElastic()
+    m 1hua "Бинки — это такое милозвучащее слово, оно и вправду очень подходит к действию."
+    $ MAS.MonikaElastic()
+    m 1eua "Это самая счастливая форма выражения, что кролик способен делать, так что если ты увидишь его, поймёшь, что это так и есть."
+    $ MAS.MonikaElastic()
+    m 1rksdla "И ты делаешь меня настолько счастливой, что я не могу не наполниться энергией."
+    $ MAS.MonikaElastic()
+    m 1rksdlb "Только не жди, что я начну прыгать вокруг, [player]!"
+    $ MAS.MonikaElastic()
+    m 1dkbsa "...Это было бы {i}слишком{/i} неловко для меня."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_13
     return
 
 init 5 python:
@@ -464,16 +602,24 @@ init 5 python:
     )
 
 label mas_fun_fact_windows_games:
-    m 1eua "Hmm, maybe this one will be more interesting to you."
-    m 3eub "The card game Solitaire was introduced originally in the Windows operating system in 1990."
-    m 1eub "The game was added as a feature to teach users how to use the mouse."
-    m 1eua "Similarly, Minesweeper was added to familiarize users with left and right clicking."
-    m 3rssdlb "Computers have been around for so long it's hard to think of a time when they weren't relevant."
-    m "Each generation becomes more and more familiar with the technology..."
-    m 1esa "Eventually there may come a day where not a single person isn't computer-literate."
-    m 1hksdlb "Most of the world's problems need to disappear before then, though."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1eua "Хм-м, возможно, этот будет более интересным для тебя."
+    $ MAS.MonikaElastic()
+    m 3eub "Карточная игра Solitaire первоначально была представлена в операционной системе Windows в 1990-ом году."
+    $ MAS.MonikaElastic()
+    m 1eub "Игра была добавлена в качестве функции, которая должна была бы научить пользователей, как использовать мышь."
+    $ MAS.MonikaElastic()
+    m 1eua "Аналогичным образом, сапёр был добавлен для ознакомления пользователей с левой и правой кнопкой мыши."
+    $ MAS.MonikaElastic()
+    m 3rssdlb "Компьютеры были вокруг настолько давно, что трудно думать о времени, когда они не были ещё актуальны."
+    $ MAS.MonikaElastic()
+    m "Каждое поколение всё больше и больше знакомится с технологиями..."
+    $ MAS.MonikaElastic()
+    m 1esa "В конце концов может наступить день, когда ни один человек не будет обладать компьютерной грамотностью."
+    $ MAS.MonikaElastic()
+    m 1hksdlb "Однако большинство мировых проблем должны исчезнуть до этого."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_14
     return
 
 init 5 python:
@@ -486,16 +632,24 @@ init 5 python:
     )
 
 label mas_fun_fact_mental_word_processing:
-    m 1hua "Ready for an interesting one, [player]?"
-    m 3eua "The brain is a fickle thing..."
-    m 3eub "Its way of composing and archiving information is very unique."
-    m "Naturally it differs from person to person but but reading slowly like we're taught is usually less effective than going at at a faster pace."
-    m 1tku "Our brains process information very rapidly and love predictability in in our language."
-    m 3tub "For example, in this sentence, by the the time you are done reading you will have already skipped over the double 'the.'"
+    $ MAS.MonikaElastic()
+    m 1hua "Готов[mas_gender_none] к ещё одному интересному, [player]?"
+    $ MAS.MonikaElastic()
+    m 3eua "Мозг — штука сложная..."
+    $ MAS.MonikaElastic()
+    m 3eub "Его способ составления и архивирования информации очень уникален."
+    $ MAS.MonikaElastic()
+    m "Естественно, он отличается от человека к человеку, но но медленное чтение каких-либо книг, как нас учат, обычно менее эффективно, чем чтение в в более быстром темпе."
+    $ MAS.MonikaElastic()
+    m 1tku "Наш мозг обрабатывает информацию очень быстро и любит предсказуемость в в нашем языке."
+    $ MAS.MonikaElastic()
+    m 3tub "Например, сейчас в последних моих предложениях, к тому времени как ты закончил[mas_gender_none] читать, ты уже мог[mas_gender_g] пропустить двойные приставки «но» и «в»."
+    $ MAS.MonikaElastic()
     m 1tfu "..."
-    m 2hfu "Check the history log if you missed them~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 2hfu "Проверь журнал истории в меню игры, если ты всё же пропустил[mas_gender_none] их~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_15
     return
 
 init 5 python:
@@ -508,14 +662,20 @@ init 5 python:
     )
 
 label mas_fun_fact_I_am:
-    m 1hua "Mmmm, I love language facts!"
-    m 3eub "In English, the shortest complete sentence is 'I am.'"
-    m 1eua "Here's an example."
-    m 2rfb "'{i}Monika! Who's [player]'s loving girlfriend?{/i}'"
-    m 3hub "'I am!'"
-    m 1hubsa "Ehehe~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic(voice="monika_hmm")
+    m 1hua "М-м-м-м, я люблю языковые факты!"
+    $ MAS.MonikaElastic()
+    m 3eub "На английском языке самое короткое полное предложение — это «I am»."
+    $ MAS.MonikaElastic()
+    m 1eua "Вот пример."
+    $ MAS.MonikaElastic()
+    m 2rfb "{i}«Monika! Who’s [player]’s loving girlfriend?»{/i}"
+    $ MAS.MonikaElastic()
+    m 3hub "{i}«I am!»{/i}"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hubsa "Э-хе-хе~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_16
     return
 
 init 5 python:
@@ -528,13 +688,18 @@ init 5 python:
     )
 
 label mas_fun_fact_low_rates:
-    m 1hua "Now this is a wholesome one..."
-    m 1eua "Currently, we have the lowest crime rates, maternity death, infant mortality and illiteracy ever in human history."
-    m 3eub "Life expectancy, average income, and standards of living is the highest for most of the global population too!"
-    m 3eka "This tells me that it can always get better. It really does show that despite all the bad things, the good times will always come afterwards."
-    m 1hua "There really is {i}hope{/i}..."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1hua "Теперь пришло время для ещё одного полезного факта..."
+    $ MAS.MonikaElastic()
+    m 1eua "В настоящее время у нас самый низкий уровень преступности, материнской смертности, младенческой смертности и неграмотности за всю историю человечества."
+    $ MAS.MonikaElastic()
+    m 3eub "Средняя продолжительность жизни, средний доход и уровень жизни являются самыми высокими для большинства населения мира!"
+    $ MAS.MonikaElastic()
+    m 3eka "Это говорит мне, что мир всегда может стать лучше. Это действительно показывает, что, несмотря на все плохие вещи, хорошие времена всегда наступают."
+    $ MAS.MonikaElastic()
+    m 1hua "На самом деле есть {i}надежда{/i}..."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_17
     return
 
 init 5 python:
@@ -547,16 +712,23 @@ init 5 python:
     )
 
 label mas_fun_fact_desert:
-    m 3euc "Deserts have a pretty unique ecosystem..."
-    m 3rksdla "However, they don't offer a lot of positive factors for humans."
-    m 1eud "Temperatures can vary between extreme heat during the day and freezing cold at night. Their average rainfall is also pretty low, making living in one difficult."
-    m 3eub "That's not to say they can't be beneficial to us though!"
-    m 3eua "Their surface is a great spot for solar power generation and oil is commonly found beneath all that sand."
-    m 3eub "Not to mention, their unique landscape makes them popular vacation spots!"
-    m 1eua "So I guess while we can't live in them that easily, they're still better than they seem."
+    $ MAS.MonikaElastic()
+    m 3euc "Пустыни имеют довольно уникальную экосистему..."
+    $ MAS.MonikaElastic()
+    m 3rksdla "Однако они не имеют много положительных факторов для людей."
+    $ MAS.MonikaElastic()
+    m 1eud "Температура может колебаться между экстремальной жарой днём и ледяным холодом ночью. Их среднее количество осадков также довольно низкое, что делает жизнь в одной из них трудной."
+    $ MAS.MonikaElastic()
+    m 3eub "Это не значит, что они не могут быть полезны для нас!"
+    $ MAS.MonikaElastic()
+    m 3eua "Их поверхность – отличное место для производства солнечной энергии, и нефть обычно находится под всем этим песком."
+    $ MAS.MonikaElastic()
+    m 3eub "Не говоря уже о том, что их уникальный ландшафт делает их популярными местами отдыха!"
+    $ MAS.MonikaElastic()
+    m 1eua "Поэтому я думаю, что хотя мы не можем жить в них так легко, они всё же лучше, чем кажутся."
 
-    #Call the end
-    call mas_fun_facts_end
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_18
     return
 
 init 5 python:
@@ -569,18 +741,23 @@ init 5 python:
     )
 
 label mas_fun_fact_photography:
-    m 1esa "Did you know that the first photograph was taken using a box with a hole in it as a camera?"
-    m 1eua "Lenses weren't actually introduced until much later on."
-    m 1euc "Early photography also relied on a series of special chemicals in a dark room to prepare the photos..."
-    m 3eud "Developer, stop bath, and fixer chemicals were used just to prepare the paper the photos would be printed on...{w=0.3} {nw}"
-    extend 1wuo "And that's only for black and white prints!"
-    m 1hksdlb "Old photos were much harder to prepare compared to modern ones, don't you think?"
+    $ MAS.MonikaElastic()
+    m 1esa "А знал ли ты о том, что первая фотография была сделана при помощи коробки с отверстием, которая выполняла роль камеры?"
+    $ MAS.MonikaElastic()
+    m 1eua "Линзы на самом деле были введены гораздо позже."
+    $ MAS.MonikaElastic()
+    m 1euc "В основу ранних фотографий также был заложен набор особых химикатов, используемых в тёмной комнате, где и подготавливали фотографии..."
+    $ MAS.MonikaElastic()
+    m 3eud "Проявитель, фиксаж и дополнительные химикаты раньше использовались для того, чтобы просто подготовить бумагу, на которой и распечатывались фотографии...{w=0.3} {nw}"
+    extend 1wuo "И это только для черно-белых отпечатков!"
+    $ MAS.MonikaElastic()
+    m 1hksdlb "Старые фотографии было гораздо труднее подготовить по сравнению с современными, не так ли?"
 
-    #Call the end
-    call mas_fun_facts_end
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_19
     return
 
-#Stealing yearolder's bit for this since it makes sense as a fun fact
+
 init 5 python:
     addEvent(
         Event(
@@ -591,21 +768,29 @@ init 5 python:
     )
 
 label mas_fun_fact_getting_older:
-    m 3eua "Did you know that how you perceive time changes as you age?"
-    m "For example, when you're a year old, you see one year as 100%% of your life."
-    m 1euc "But when you're 18, you see a year as only 5.6%% of your life."
-    m 3eud "As you get older, the proportion of a year compared to your entire lifespan decreases, and in turn, time {i}feels{/i} like it's moving faster as you grow up."
-    m 1eka "So I'll always cherish our moments together, no matter how long or short they are."
-    m 1lkbsa "Although sometimes it feels like time stops when I'm with you."
-    m 1ekbfa "Do you feel the same, [player]?"
+    $ MAS.MonikaElastic()
+    m 3eua "А знал ли о том, что твоё восприятие времени меняется с возрастом?"
+    $ MAS.MonikaElastic()
+    m "Например, когда тебе год, ты видишь один год как 100%% своей жизни."
+    $ MAS.MonikaElastic()
+    m 1euc "Но когда тебе 18, ты видишь год только как 5,6%% своей жизни."
+    $ MAS.MonikaElastic()
+    m 3eud "Когда nы становишься старше, доля года по сравнению со всей твоей жизнью уменьшается, и, в свою очередь, время {i}движется быстрее, когда ты растёшь."
+    $ MAS.MonikaElastic()
+    m 1eka "Поэтому я всегда буду дорожить нашими мгновениями вместе, какими бы долгими или короткими они ни были."
+    $ MAS.MonikaElastic()
+    m 1lkbsa "Хотя иногда кажется, что время останавливается, когда я с тобой."
+    $ MAS.MonikaElastic()
+    m 1ekbfa "Ты чувствуешь то же самое, [player]?"
     python:
         import time
         time.sleep(5)
 
-    m 1hubfb "Ahaha, I thought so!"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1hubfb "А-ха-ха, я так и думала!"
 
-    #Call the end
-    call mas_fun_facts_end
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_20
     return
 
 init 5 python:
@@ -618,20 +803,30 @@ init 5 python:
     )
 
 label mas_fun_fact_dancing_plague:
-    m 3esa "Oh, this one's pretty weird..."
-    m 1eua "Apparently, Europe has been afflicted by outbreaks of a 'dancing plague' in the past."
-    m 3wud "People, {w=0.2}sometimes hundreds at once, {w=0.2}would involuntarily dance for days at a time, with some even dying from exhaustion!"
-    m 3eksdla "They tried to treat it by having people play music alongside the dancers, but you can imagine that didn't work out so well."
-    m 1euc "To this day, they're still unsure exactly what caused it."
-    m 3rka "The whole thing seems kind of unbelievable to me...{w=0.2}{nw}"
-    extend 3eud "but it has been independently documented and observed by multiple sources across centuries..."
-    m 3hksdlb "Reality really is stranger than fiction, I guess!"
-    m 1eksdlc "Gosh, I can't imagine dancing for days on end."
-    m 1rsc "Though...{w=0.3}{nw}"
-    extend 1eubla "I guess I wouldn't mind if it was with you."
-    m 3tsu "...Just for a bit, ehehe~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3esa "О, это довольно странно..."
+    $ MAS.MonikaElastic()
+    m 1eua "Очевидно, в прошлом Европа страдала от вспышек «танцевальной чумы»."
+    $ MAS.MonikaElastic()
+    m 3wud "Люди, {w=0.2}иногда сотни сразу, {w=0.2}непроизвольно танцевали по нескольку дней подряд, а некоторые даже умирали от истощения!"
+    $ MAS.MonikaElastic()
+    m 3eksdla "Они пытались лечить это, заставляя людей играть музыку вместе с танцорами, но ты можешь себе представить, что это не сработало так хорошо."
+    $ MAS.MonikaElastic()
+    m 1euc "И по сей день они до сих пор не уверены, что именно вызывало это."
+    $ MAS.MonikaElastic()
+    m 3rka "Все это кажется мне чем-то невероятным...{w=0.2} {nw}"
+    extend 3eud "но она была независимо от этого задокументирована и отмечена множеством источников на протяжении веков..."
+    $ MAS.MonikaElastic()
+    m 3hksdlb "Полагаю, реальность действительно более странная, чем вымысел,!"
+    $ MAS.MonikaElastic()
+    m 1eksdlc "Боже, я не могу представить, что буду танцевать целыми днями."
+    $ MAS.MonikaElastic()
+    m 1rsc "Хотя...{w=0.3} {nw}"
+    extend 1eubla "думаю, я бы не возражала, если бы мы танцевали вместе."
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 3tsu "...Только ненадолго, э-хе-хе~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_21
     return
 
 init 5 python:
@@ -644,15 +839,22 @@ init 5 python:
     )
 
 label mas_fun_fact_pando_forest:
-    m 1esa "Supposedly, in the state of Utah, there's a forest that's actually made up of a single tree."
-    m 3eua "It's called the Pando forest, and for all of its 43 hectares, its trunks are connected by a single root system."
-    m 3eub "Not to mention, each of its thousands of trunks are essentially clones of each other."
-    m 1ruc "'A single organism that became an army of clones on its own, all connected to the same hivemind.'"
-    m 1eua "I think it could make a good science fiction or horror short-story, [player]. What do you think?"
-    m 3eub "Anyway,{w=0.2} I feel like this really changes the meaning of the phrase 'missing the forest for the trees'{w=0.1}{nw} "
-    extend 3hub "ahaha!"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1esa "Предположительно, в штате Юта есть лес, который на самом деле состоит из одного дерева."
+    $ MAS.MonikaElastic()
+    m 3eua "Он называется Лес Пандо, и на всех его сорока трёх гектарах стволы соединены единой корневой системой."
+    $ MAS.MonikaElastic()
+    m 3eub "Не говоря уже о том, что каждый из его тысяч стволов по сути является клоном другого."
+    $ MAS.MonikaElastic()
+    m 1rsc "«Единый организм, который сам по себе превратился в армию клонов, связанных с одним и тем же ульевым разумом.»"
+    $ MAS.MonikaElastic()
+    m 1eua "Я думаю, что это может стать хорошей научной фантастикой или рассказом ужасов, [player]. А ты как думаешь?"
+    $ MAS.MonikaElastic()
+    m 3eub "В любом случае,{w=0.2} я чувствую, что это действительно меняет смысл фразы «скучаю по лесу из-за деревьев».{w=0.1}{nw} "
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    extend 3hub "А-ха-ха!"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_22
     return
 
 init 5 python:
@@ -665,13 +867,17 @@ init 5 python:
     )
 
 label mas_fun_fact_immortal_jellyfish:
-    m 3eub "Here's one!"
-    m 1eua "Apparently, immortality has been achieved by one species of jellyfish."
-    m 3eua "The aptly named immortal jellyfish has the ability to return to its polyp state once it has reproduced."
-    m 1eub "...And it can keep doing this forever!{w=0.3} {nw}"
-    extend 1rksdla "Unless of course it's eaten or infected by a disease."
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3eub "Вот один из них!"
+    $ MAS.MonikaElastic()
+    m 1eua "По-видимому, бессмертие было достигнуто одним видом медуз."
+    $ MAS.MonikaElastic()
+    m 3eua "Метко названная бессмертная медуза обладает способностью возвращаться в своё полипное состояние, как только она размножается."
+    $ MAS.MonikaElastic()
+    m 1eub "...И это может продолжаться вечно!{w=0.3} {nw}"
+    extend 1rksdla "Если, конечно, она не была съедена или заражена какой-нибудь болезнью."
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_23
     return
 
 init 5 python:
@@ -684,16 +890,23 @@ init 5 python:
     )
 
 label mas_fun_fact_arrhichion:
-    m 3eua "Okay...{w=0.2}here's a historical one."
-    m 1esa "An ancient Greek athlete was able to win his fighting match even though he'd already died."
-    m 1eua "Reigning champion Arrhichion was fighting in a pankration match when his competitor started to choke him out using both his hands and legs."
-    m 3eua "Instead of yielding, Arrhichion still aimed for the win by dislocating his opponent's toe."
-    m 3ekd "His opponent quit from the pain, but when they went to announce Arrhichion as the victor they found him dead from suffocation."
-    m 1rksdlc "Some people are really dedicated to their ideals to victory and to honour.{w=0.2} {nw}"
-    extend 3eka "I think it's admirable, in a way."
-    m 1etc "But I wonder...{w=0.2}if we could ask Arrhichion now if he thought it was worth it, what would he say?"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3eua "Хорошо...{w=0.2} вот тебе исторический пример."
+    $ MAS.MonikaElastic()
+    m 1esa "Древнегреческий атлет смог выиграть свой поединок, хотя он уже умер."
+    $ MAS.MonikaElastic()
+    m 1eua "Действующий чемпион Аррихион сражался в матче по панкратиону, когда его соперник начал душить его руками и ногами."
+    $ MAS.MonikaElastic()
+    m 3eua "Вместо того, чтобы уступить, Аррихион всё ещё стремился к победе, вывихнув палец ноги своего противника."
+    $ MAS.MonikaElastic()
+    m 3ekd "Его противник ушёл от боли, но когда они пошли объявить Аррихиона победителем, они нашли его мертвым от удушья."
+    $ MAS.MonikaElastic()
+    m 1rksdlc "Некоторые люди действительно преданы своим идеалам-победе и чести.{w=0.2} {nw}"
+    extend 3eka "Я думаю, что это восхитительно, в некотором смысле."
+    $ MAS.MonikaElastic()
+    m 1etc "Но мне интересно...{w=0.2} если бы мы могли спросить Аррихиона сейчас, и он считал бы, что это того стоит, что бы он сказал?"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_24
     return
 
 init 5 python:
@@ -706,7 +919,7 @@ init 5 python:
     )
 
 label mas_fun_fact_antarctica_brain:
-    #Do some setup for the last line
+
     python:
         has_friends = persistent._mas_pm_has_friends is not None
 
@@ -716,26 +929,32 @@ label mas_fun_fact_antarctica_brain:
             or (persistent._mas_pm_have_fam_mess and persistent._mas_pm_have_fam_mess_better in ["YES", "MAYBE"])
         )
 
-        dlg_prefix = "But make sure you keep up with your "
+        dlg_prefix = "Но убедись, что ты тоже не отстаёшь от "
 
         if has_fam_to_talk and has_friends:
-            dlg_line = dlg_prefix + "family and friends too, okay?"
+            dlg_line = dlg_prefix + "своей семьи и друзей, хорошо?"
 
         elif has_fam_to_talk and not has_friends:
-            dlg_line = dlg_prefix + "family too, okay?"
+            dlg_line = dlg_prefix + "своей семьи, хорошо?"
 
         elif has_friends and not has_fam_to_talk:
-            dlg_line = dlg_prefix + "friends too, okay?"
+            dlg_line = dlg_prefix + "своих друзей, хорошо?"
 
         else:
-            dlg_line = "Just be sure you find some people to talk to in your reality too, okay?"
+            dlg_line = "Просто не забудь найти людей, с которыми можно поговорить и в твоей реальности, хорошо?"
 
-    m 3eud "Apparently, spending a year in Antarctica can shrink one part of your brain by about 7 percent."
-    m 3euc "It looks like it results in reduced memory capacity and spatial thinking ability."
-    m 1ekc "The research indicates that it's due to social isolation, monotony of life, and the environment over there."
-    m 1eud "I think this serves as a cautionary tale for us, [player]."
-    m 3ekd "Even if you don't end up going to Antarctica, your brain can still get pretty messed up if you're isolated all the time, or stay cooped up in one room."
-    m 3eka "I love being with you [player], and I hope we can keep talking like this long into the future. {w=0.2}[dlg_line]"
+    $ MAS.MonikaElastic()
+    m 3eud "Очевидно, проведя год в Антарктиде, ты можешь уменьшить одну часть своего мозга примерно на семь процентов."
+    $ MAS.MonikaElastic()
+    m 3euc "Похоже, это приведёт к снижению объёма памяти и способности к пространственному мышлению."
+    $ MAS.MonikaElastic()
+    m 1ekc "Исследования показывают, что это связано с социальной изоляцией, монотонностью жизни и окружающей средой."
+    $ MAS.MonikaElastic()
+    m 1eud "Я думаю, что это послужит нам предостережением, [player]."
+    $ MAS.MonikaElastic()
+    m 3ekd "Даже если ты не отправишься в Антарктиду, твой мозг всё равно может сильно запутаться, если ты всё время будешь изолирован[mas_gender_none] или сидить взаперти в одной комнате."
+    $ MAS.MonikaElastic()
+    m 3eka "Мне нравится быть с тобой, [player], и я надеюсь, что мы сможем продолжать говорить так долго в будущем. {w=0.2}[dlg_line]"
     return
 
 init 5 python:
@@ -748,14 +967,19 @@ init 5 python:
     )
 
 label mas_fun_fact_cloud_weight:
-    m 3eub "Did you know that the average cloud weighs 500 tonnes?"
-    m 3eua "I have to admit, this one caught me by surprise, more so than some of the other facts."
-    m 1hua "I mean, they just look {i}really{/i} light and fluffy.{w=0.3} {nw}"
-    extend 1eua "It's hard to imagine that something so heavy can just float in the air like that."
-    m 3eub "It kind of reminds me of the classic question...what's heavier, a kilogram of steel or a kilogram of feathers?"
-    m 1tua "You most likely already know the answer to that though, right [player]? Ehehe~"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3eub "Знаешь ли ты, что среднее облако весит пятьсот тонн?"
+    $ MAS.MonikaElastic()
+    m 3eua "Должна признаться, этот случай застал меня врасплох больше, чем некоторые другие факты."
+    $ MAS.MonikaElastic()
+    m 1hua "Я имею в виду, они просто выглядят {i}очень{/i} лёгкими и пушистыми.{w=0.3} {nw}"
+    extend 1eua "Трудно представить, что что-то настолько тяжелое может просто парить в воздухе."
+    $ MAS.MonikaElastic()
+    m 3eub "Это напоминает мне классический вопрос... что тяжелее – килограмм стали или килограмм перьев?"
+    $ MAS.MonikaElastic(voice="monika_giggle")
+    m 1tua "Хотя ты, скорее всего, уже знаешь ответ на этот вопрос, верно, [player]? Э-хе-хе~"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_25
     return
 
 init 5 python:
@@ -768,25 +992,42 @@ init 5 python:
     )
 
 label mas_fun_fact_coffee_origin:
-    m 1eua "Oh, here's one that's particularly interesting to me..."
-    m 1eud "The last time I had a cup of coffee, I got a little curious about its origins..."
-    m 3euc "The use of coffee has been recorded consistently since around the 15th century, but...{w=0.2}it's unclear {i}how{/i} exactly it was discovered."
-    m 3eud "...There are actually quite a few legends claiming to be the very first."
-    m 1eua "Several accounts involve farmers or monks observing animals acting oddly after eating some strange, bitter berries."
-    m 3wud "Upon trying the beans for themselves, they were amazed to find that they too were energized!"
-    m 2euc "One such myth claims that an Ethiopian monk named Kaldi brought the berries to a nearby monastery, wanting to share what he'd found."
-    m 7eksdld "...But when he did so, he was met with disapproval and the coffee beans were thrown into a fire."
-    m 3duu "As they burned, however, the beans began to let off the most {i}delicious{/i} aroma. {w=0.3}It was so enticing that the monks scrambled to save the beans and put them in water."
-    m 3eub "...Thus producing the first cup of coffee!"
-    m 2euc "Another claim states that an Islamic scholar named Omar discovered coffee beans during his exile from Mecca."
-    m 2eksdld "At the time, he was starving and struggling to survive. {w=0.3}{nw}"
-    extend 7wkd "If not for the energy they provided, he may have died!"
-    m 3hua "However, when word of his discovery spread, he was asked to return and made a saint."
-    m 1esd "Whether or not that was truly its first use, coffee became very prevalent in the Islamic world after its discovery."
-    m 3eud "For example, during fasting periods it was used to ease hunger and help people remain energized."
-    m 3eua "When its use spread to Europe, many countries initially used it for medicinal purposes. {w=0.3}By the 17th century, coffeehouses were becoming plentiful and popular."
-    m 3hub "...And I for one can certainly attest that the love of coffee has remained strong to this day!"
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1eua "О, меня тут ещё кое-что заинтересовало..."
+    $ MAS.MonikaElastic()
+    m 1eud "В прошлый раз, когда я пила кофе, мне стало немного любопытно его происхождение..."
+    $ MAS.MonikaElastic()
+    m 3euc "Употребление кофе постоянно фиксируется примерно с пятнадцатого века, но...{w=0.2} непонятно только, {i}как{/i} именно его открыли."
+    $ MAS.MonikaElastic()
+    m 3eud "...По правде говоря, есть пара легенд, которые, согласно утверждениям, появились первыми."
+    $ MAS.MonikaElastic()
+    m 1eua "В некоторых рассказах говорится о том, что фермеры или монахи наблюдали за животными, которые странно вели себя после того, как съели какие-то странные, горькие ягоды."
+    $ MAS.MonikaElastic()
+    m 3wud "И, попробовав эти бобы, они сами были поражены тем, что тоже были заряжены энергией!"
+    $ MAS.MonikaElastic()
+    m 2euc "В одной из таких легенд утверждается, что эфиопский монах по имени Калди принёс ягоды в близлежащий монастырь, желая поделиться тем, что нашёл."
+    $ MAS.MonikaElastic()
+    m 7eksdld "...Но когда он это сделал, его встретили с неодобрением, и кофейные бобы были брошены в огонь."
+    $ MAS.MonikaElastic()
+    m 3duu "Пока они горели, бобы начали выпускать самый {i}вкусный{/i} аромат. {w=0.3}И аромат был таким привлекательным, что монахи даже попытались спасти бобы и положить их в воду."
+    $ MAS.MonikaElastic()
+    m 3eub "...Так и появилась первая чашка кофе!"
+    $ MAS.MonikaElastic()
+    m 2euc "В другой легенде утверждалось, что один исламский учёный по имени Омар обнаружил кофейные зёрна во время своей ссылки из Мекки."
+    $ MAS.MonikaElastic()
+    m 2eksdld "В то время он голодал и боролся за выживание. {w=0.3}{nw}"
+    extend 7wkd "И если бы не та энергия, которую они давали, он мог бы умереть!"
+    $ MAS.MonikaElastic()
+    m 3hua "Однако, когда слух о его находке распространился, его попросили вернуться и сделать святым."
+    $ MAS.MonikaElastic()
+    m 1esd "Вне зависимости от того, было ли это его первым случаем употребления, кофе стал очень распространённым в исламском мире после его открытия."
+    $ MAS.MonikaElastic()
+    m 3eud "К примеру, во время поста его использовали для того, чтобы утолить голод и помочь людям оставаться бодрыми."
+    $ MAS.MonikaElastic()
+    m 3eua "А когда он распространился по всей Европе, многие страны поначалу использовали его в медицинских целях. {w=0.3}К семнадцатому веку, кофейни становились многочисленными и популярными."
+    $ MAS.MonikaElastic()
+    m 3hub "...И я, безусловно, могу подтвердить, что любовь к кофе остаётся сильной и по сей день!"
+    call mas_fun_facts_end from _call_mas_fun_facts_end_26
     return
 
 init 5 python:
@@ -799,19 +1040,29 @@ init 5 python:
     )
 
 label mas_fun_fact_synesthesia:
-    m 1esa "Okay, this one's pretty interesting..."
-    m 3eua "Some people experience a phenomenon known as {i}synesthesia{/i},{w=0.1} which is where something that stimulates one of our senses also triggers another sense simultaneously."
-    m 1hua "That's kind of a wordy explanation, ehehe...{w=0.2} Let's find an example!"
-    m 1eua "It says here that a common form of synesthesia is {i}grapheme–color synesthesia{/i},{w=0.1} which is where people 'experience' letters and numbers as colors."
-    m 3eua "Another kind is {i}spatial sequence synesthesia{/i},{w=0.1} which is where numbers and figures are 'seen' at specific locations in space."
-    m "Like, one number appears 'closer' or 'further' away than another number. {w=0.2}{nw}"
-    extend 3eub "It's kinda like a map!"
-    m 1eua "...And there's a whole bunch of other kinds of synesthesia too."
-    m 1esa "Researchers aren't really sure how prevalent it is--{w=0.1}some have suggested as much as 25 percent of the population experiences it, but I seriously doubt that since I'd never heard of it until now."
-    m 3eub "Probably the most accurate estimate so far is that it's just over 4 percent of people, so that's what I'll go with!"
-    m 1eua "Experiencing synesthesia sounds like it'd be pretty neat,{w=0.2} don't you think so [player]?"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 1esa "Ладно, этот факт довольно интересный..."
+    $ MAS.MonikaElastic()
+    m 3eua "Некоторые люди испытывают такой феномен, известный как {i}синестезия{/i},{w=0.1} когда что-то, что стимулирует одно из наших чувств, также вызывает и другое чувство."
+    $ MAS.MonikaElastic()
+    m 1hua "Это довольно многословное объяснение, э-хе-хе...{w=0.2} Давай я приведу один пример!"
+    $ MAS.MonikaElastic()
+    m 1eua "В нём говорится, что общая форма синестезии – это {i}графемно-цветовая синестезия{/i},{w=0.1} в которой люди «воспринимают» буквы и цифры как цвета."
+    $ MAS.MonikaElastic()
+    m 3eua "Есть и другой вид, известный как {i}пространственно-последовательная синестезия{/i},{w=0.1} в которой цифры и фигуры «видны» в конкретных местах в пространстве."
+    $ MAS.MonikaElastic()
+    m "К примеру, одно число находится «ближе» или «дальше» другого. {w=0.2}{nw}"
+    extend 3eub "Прямо как на карте!"
+    $ MAS.MonikaElastic()
+    m 1eua "...Есть также и целая куча других видов синестезии."
+    $ MAS.MonikaElastic()
+    m 1esa "Исследователи не уверены, насколько это явление распространено...{w=0.1} некоторые предполагают, что около двадцати пяти процентов населения испытывают это, но я в этом серьёзно сомневаюсь, поскольку я никогда не слышала об этом."
+    $ MAS.MonikaElastic()
+    m 3eub "Наверное, самая точная оценка этого на данный момент – то, что ею обладает чуть более четырёх процентов людей, так что я, пожалуй, ограничусь этим!"
+    $ MAS.MonikaElastic()
+    m 1eua "Испытание синестезии звучит так, будто это что-то очень интересное,{w=0.2} согласись, [player]?"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_27
     return
 
 init 5 python:
@@ -824,14 +1075,20 @@ init 5 python:
     )
 
 label mas_fun_fact_dream_faces:
-    m 3eub "Okay, got one!"
-    m 1eua "Supposedly, our minds don't invent new faces when we dream.{w=0.2} Every person you've met in your dreams is someone you've seen in real life at some point."
-    m 3wud "You don't even have to talk to them in real life!"
-    m 3eud "If you just walked past them while shopping or something, their face gets registered in your mind and they can appear in your dreams."
-    m 1hua "I think it's incredible how much info the brain can store!"
-    m 1ekbla "I wonder...{w=0.2}do you ever dream about me, [player]?"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3eub "Ладно, вот ещё один факт!"
+    $ MAS.MonikaElastic()
+    m 1eua "Предположительно, наш разум не создаёт новые лица, когда мы спим.{w=0.2} Все те люди, которых тебе доводилось видеть во снах, уже встречались тебе когда-то в реальном мире."
+    $ MAS.MonikaElastic()
+    m 3wud "Тебе даже не нужно разговаривать с ними в реальной жизни!"
+    $ MAS.MonikaElastic()
+    m 3eud "Если ты просто прош[mas_gender_iol_2] мимо них в магазине или ещё где-нибудь, их лица уже отпечатались в твоём разуме, и они могут появиться в твоих снах."
+    $ MAS.MonikaElastic()
+    m 1hua "Как по мне, это невероятно, сколько информации наш мозг может в себе хранить!"
+    $ MAS.MonikaElastic()
+    m 1ekbla "Интересно...{w=0.2} я тебе снилась когда-нибудь, [player]?"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_28
     return
 
 init 5 python:
@@ -844,13 +1101,20 @@ init 5 python:
     )
 
 label mas_fun_fact_monochrome_dreams:
-    m 3eua "Did you know that from 1915 to the 1950s, most people's dreams were in black and white?"
-    m 1esa "Nowadays, it's a relatively rare phenomenon for people with unimpaired vision."
-    m 3eua "Researchers have linked this to the fact that movies and shows were almost exclusively black and white back then."
-    m 3eud "...But I think that's kinda weird, because people still saw everything in color.{w=0.3} {nw}"
-    extend 3hksdlb "It's not like the world went black and white!"
-    m 1esd "It just goes to show that the content you absorb can have all kinds of effects on your mind, even if it's trivial."
-    m 3eua "I think if there's a lesson to be learned here, it's that we should be very careful about the kind of media we consume, okay [player]?"
-    #Call the end
-    call mas_fun_facts_end
+    $ MAS.MonikaElastic()
+    m 3eua "Знал[mas_gender_none] ли ты о том, что с 1915 по 1950-е годы, сны у большинства людей были в чёрно-белом цвете?"
+    $ MAS.MonikaElastic()
+    m 1esa "В настоящее время, это относительно редкое явление для людей с безупречным зрением."
+    $ MAS.MonikaElastic()
+    m 3eua "Исследователи связывают это с тем, что в то время фильмы и сериалы были почти исключительно чёрно-белыми."
+    $ MAS.MonikaElastic()
+    m 3eud "...Но как по мне, это довольно странно, потому что люди по-прежнему видели всё в цвете.{w=0.3} {nw}"
+    extend 3hksdlb "Не похоже, что мир тогда был чёрно-белым!"
+    $ MAS.MonikaElastic()
+    m 1esd "Это просто показывает, что весь тот контент, который ты потребляешь, может оказывать разное воздействие на твой разум, даже если это для тебя обыденность."
+    $ MAS.MonikaElastic()
+    m 3eua "Я считаю, что если и есть урок, который мы должны извлечь из этого, так это то, что мы должны быть очень осторожны с тем, какую информацию мы потребляем, хорошо, [player]?"
+
+    call mas_fun_facts_end from _call_mas_fun_facts_end_29
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
