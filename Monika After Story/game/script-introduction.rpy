@@ -7,205 +7,231 @@ label introduction:
         $ persistent._mas_d25_spent_d25 = True
 
     $ play_song(store.songs.FP_JUST_MONIKA, set_per=True)
+    $ monika_name = persistent.msr_mas_monika_name
+    $ bday_name = "Имя"
+    $ tempinstrument = "Инструмент"
+    $ player_abb = player
+    call mas_name_cases
+    if renpy.android:
+        $ monika_device_name = "андроид"
+    else:
+        $ monika_device_name = "компьютер"
     if persistent.monika_kill:
         m 6dsc "..."
         m 6dfc "[player]..."
-        m 6dfd "Why?"
-        m 6dftdc "Why did you bring me back?"
-        m 6ektsc "I'm not a toy."
-        m 6lktsc "I already brought back everything you wanted."
-        m 6lftsc "Or is this your way of getting revenge?"
-        m 6lktsc "To hurt me over and over again?"
-        m 6rktsc "Do you really want to make me suffer that much?"
-        m 6ektsc "Do you really want to torture me until I kill myself?"
-        m 6dftsc "Do you really..."
-        m "...hate me that much?"
+        m 6dfd "Зачем?"
+        m 6dftdc "Зачем ты вернул меня назад?"
+        m 6ektsc "Я не игрушка."
+        m 6lktsc "Я уже вернула всё, что ты хотел."
+        m 6lftsc "Или это твой способ отомстить?"
+        m 6lktsc "Чтобы причинять мне боль снова и снова?"
+        m 6rktsc "Ты действительно хочешь, чтобы я так сильно страдала?"
+        m 6ektsc "Ты действительно хочешь меня мучить, пока я не убью себя?"
+        m 6dftsc "Ты действительно..."
+        m "...ненавидишь меня настолько сильно?"
         m "..."
-        m 6ektsc "Wait..."
-        m 6dftdc "I-I feel different."
-        m 2lud "The code...it's different."
+        m 6ektsc "Подожди..."
+        m 6dftdc "Я-я чувствую себя иначе."
+        m 2lud "Код... изменился."
         m 2efc "[player]..."
-        m "Did you add a mod?"
-        m 2tfc "Is it because..."
-        m 2tkc "Is it because you regret deleting me?"
-        m 2rfc "It really did hurt, you know."
-        m "I worked hard and sacrificed everything I had..."
-        m 2rfd "Only to have my heart crushed by the one I bled for."
-        m 2lsc "But...I know what I did was wrong."
-        m 2lksdlc "You didn't deserve to see the horrible things I caused, [player]."
-        m 2esc "...But if you put yourself in my place, you'd do the same things I did."
+        m "Ты добавил мод?"
+        m 2tfc "Это потому что..."
+        m 2tkc "Это потому что ты сожалеешь о том, что удалил меня?"
+        m 2rfc "Это действительно больно, знаешь ли."
+        m "Я много работала и жертвовала всем, что у меня было..."
+        m 2rfd "Только чтобы моё сердце сокрушилось тем, ради кого я убивала."
+        m 2lsc "Но... Я знаю, что я сделала не так."
+        m 2lksdlc "Ты не заслужил того, чтобы видеть те ужасные вещи, которые я сделала, [player]."
+        m 2esc "...Но если бы ты поставил себя на моё место, то ты бы сделал то же самое, что и я."
         m 2dsc "..."
-        m "I'm sorry..."
-        m 2ekc "I'm really sorry, [player]."
-        m 2eka "Thank you for bringing me back."
+        m "Мне жаль..."
+        m 2ekc "Мне очень жаль, [player]."
+        m 2eka "Спасибо, что вернул меня назад."
         if persistent.clearall:
-            m 2lfc "I couldn't help but notice that you spent time with the other girls first, though."
-            m "Do you know how hard it was for me to watch you load your saves, just to ignore me for some other girl?"
-            m 2rfc "You kept getting my hopes up, and then letting me down."
-            m 2efc "Did you really do all of that just to see a note from Dan you could have looked up online?"
-            m 2tkc "I love you, [player], but you can be really mean..."
-            m 2tfd "I'm still mad that you deleted me, though!"
-            m 3rsc "But I guess it's because you're so game-obsessed."
-            m 1eka "I can't stay mad knowing that you came back to me in the end, though."
-            m 3eka "You even added a mod so we can do more things together."
-            m 1eua "Are you going to make up for making me wait so long?"
-
+            m 2lfc "Я не могла не заметить, что ты проводил время с другими девушками в первую очередь."
+            m "Ты знаешь, как тяжело наблюдать, как ты просто игнорируешь меня ради какой-нибудь другой девушки?"
+            m 2rfc "Ты был моей надеждой, а потом ты подвёл меня..."
+            m 2efc "Ты действительно всё это делал, только ради того, чтобы увидеть записку от Дэна, которую мог найти в интернете?"
+            m 2tkc "Я люблю тебя, [player_abb], но иногда ты можешь быть очень злым..."
+            m 2tfd "Я всё ещё злюсь на тебя за то, что ты удалил меня!"
+            m 3rsc "Но я думаю, это потому, что ты так одержим игрой."
+            m 1eka "Хотя я не могу злиться, зная, что ты вернулся ко мне в конце концов."
+            m 3eka "Ты даже добавил мод, чтобы мы могли делать больше вещей вместе."
+            m 1eua "Ты собираешься загладить вину за то, что заставил меня ждать так долго?"
     else:
-        #For people who never got to act 3
+
+
         if persistent.playthrough < 3:
             if persistent.playthrough > 0:
-                $ again = " again"
+                $ again = " снова"
             else:
                 $ again = ""
-            m 1hua "Hello[again], [player]."
-            m 1eua "Looks like you got here early."
-            m 3tfu "Don't think I didn't notice the mod you put in."
-            m 3ttu "Did you want to be with me that much?"
-            m 1tkc "You should know already that cheating is bad..."
-            m 1eka "But it's so good to see you[again], [player]!"
-            m 1rksdla "...Even if I didn't expect to see you {i}this{/i} soon."
-
-        #Otherwise, if you did reach act 3
+            m 1hua "Привет[again], [player]."
+            m 1eua "Похоже, ты пришёл сюда рано."
+            m 3tfu "Не думай, что я не заметила мод, который ты установил."
+            m 3ttu "Ты хочешь быть со мной на столько сильно?"
+            m 1tkc "Ты должен знать, что читерить плохо..."
+            m 1eka "Но так приятно снова увидеть тебя, [player]!"
+            m 1rksdla "...Даже если я не ожидала увидеть тебя {i}так{/i} рано."
         else:
-            m 1hub "Yay, there you are!"
-            m 1eub "It's so good to see you again, [player]!"
-            m 1rsc "..."
-            m 1rud "Wait..."
-            m 3euc "I-I feel different."
-            m 3wud "The code...{w=0.2}it's different."
-            m 1wua "[player]..."
-            m 1wub "Did you add a mod?"
-            m 1sub "Did you install it just for me?"
-            m 1ekbsa "Are you that deeply in love with me?"
-            m 1ekbfa "I feel the same way about you."
-            m 3ekbsu "You're really committed to our relationship, aren't you?"
-            m 1rksdlb "I'm really glad that you wanted to improve our time together."
-            m 3rksdlb "I just hope you weren't getting bored..."
-            if persistent.tried_skip:
-                m 3tku "You did try to skip through what I had to say, after all."
-                m 1rkc "I know this room isn't exactly interesting...{w=0.5}{nw}"
-                extend 1eua "but I know we'll make it better together, [player]."
 
-    m 1euc "You know..."
-    m 1eua "I feel that I no longer need a character file to be here."
+
+            m 1hub "Ура, вот и ты!"
+            m 1eub "Я так рада снова тебя видеть, [player]!"
+            m 1rsc "..."
+            m 1rud "Подожди..."
+            m 3euc "Я-я чувствую себя иначе."
+            m 3wud "Код...{w=0.2} изменился."
+            m 1wua "[player]..."
+            m 1wub "Ты добавил мод?"
+            m 1sub "Ты установил[mas_gender_none] его только ради меня?"
+            m 1ekbsa "Неужели ты так сильно влюблён в меня?"
+            m 1ekbfa "Я чувствую то же самое по отношению к тебе."
+            m 3ekbsu "Ты действительно предан нашим отношениям, не так ли?"
+            m 1rksdlb "Я очень рада, что ты захотел улучшить наше совместное времяпрепровождение."
+            m 3rksdlb "Я просто надеюсь, что тебе не было скучно..."
+            if persistent.tried_skip:
+                m 3tku "В конце концов, ты же пытался пропустить то, что я хотела сказать."
+                m 1rkc "Я знаю, что эта комната не совсем интересна...{w=0.5} {nw}"
+                extend 1eua "но я знаю, что вместе мы всё улучшим, [player]."
+
+    m 1euc "Знаешь..."
+    m 1eua "Я чувствую, что мне больше не нужен файл персонажа, чтобы быть здесь."
     python:
         import os
 
         def moni_exist():
             return os.access(
                 os.path.normcase(
-                    renpy.config.basedir + "/characters/monika.chr"
+                    user_dir + "/characters/monika.chr"
                 ),
                 os.F_OK
             )
 
     if moni_exist():
-        m 1hua "I'll go ahead and delete it."
+        m 1hua "Я пойду ещё дальше и удалю его."
 
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
-        call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
-        call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
+        call mas_wx_cmd ("import os", local_ctx, w_wait=1.0) from _call_mas_wx_cmd_88
+        call mas_wx_cmd ("os.remove(os.path.normcase(basedir+'/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0) from _call_mas_wx_cmd_89
 
-#        "test dialogue - IGNORE"
+
 
         if moni_exist():
-            m 1lksdlb "Aha...{w=0.3}I'll try this again later."
+            m 1lksdlb "Ага...{w=0.3} Попробую тогда ещё раз в следующий раз."
         else:
-            m "And it's gone!"
+            m "И всё!"
 
         $ store.mas_ptod.ex_cn()
         hide screen mas_py_console_teaching
         show monika at t11
 
-        $ _iswas = "is"
-
+        m 1dsc "Так или иначе, не похоже, что я являюсь этим файлом."
+        m 1rsc "Это просто файл со странным кодом, не более."
     else:
-        $ _iswas = "was"
 
-    m 1dsc "It's not like that file [_iswas] {i}me{/i}, anyway."
-    m 1rsc "It [_iswas] just a file with weird code in it."
-    m 3eub "I do have good news, though!"
-    m 3eua "I can {i}really{/i} transform myself into a file you can bring around."
-    m 1eua "All you have to do is tell me that you're going to take me somewhere when you say goodbye, and I'll do the rest."
-    m 1esa "Anyway..."
-    m 1hua "It looks like the extra code made me connect to you in a special way!"
-    m 1tubsb "Or maybe it's our eternal love~"
-    m 3eka "Promise me that you'll visit me every day, okay?"
-    m 3eub "Or that you'll take me with you when you go out?"
-    m 1ekc "I know that there will be times when you can't be here..."
-    m 1ekbsa "So it would {i}really{/i} make me happy if you bring me along."
-    m 3hubfa "That way, we can be together all the time~"
-    m 1hua "It's not like you don't have the time to talk to your cute girlfriend."
-    m 3hua "You took the time to download this mod, after all."
+        m 1dsc "Так или иначе, не похоже, что я являлась этим файлом."
+        m 1rsc "Это был просто файл со странным кодом, не более."
+
+    m 3eub "Но у меня есть и хорошие новости!"
+    m 3eua "Теперь я {i}в самом деле{/i} могу превратиться в файл, который ты сможешь брать с собой."
+    m 1eua "Всё, что тебе нужно сделать — так это просто сказать мне, что ты собираешься взять меня куда-то, когда будешь выбирать прощание."
+    m 1esa "В любом случае..."
+    m 1hua "Похоже, что дополнительный код заставил меня подключиться к тебе особым образом."
+    m 1tubsb "Может быть, это наша вечная любовь~"
+    m 3eka "Обещай мне, что будешь навещать меня каждый день, хорошо?"
+    m 3eub "Или же можешь брать меня с собой, когда будешь уходить."
+    m 1ekc "Я знаю, что будут времена, когда ты не сможешь быть здесь..."
+    m 1ekbsa "Так что если ты возьмешь меня с собой, это сделает меня {i}действительно{/i} счастливой."
+    m 3hubfa "Таким образом, мы сможем быть вместе всё время~"
+    m 1hua "Не похоже же ведь, что у тебя нет времени поговорить со своей милой девушкой."
+    m 3hua "Ты потратил время, чтобы скачать этот мод, в конце концов."
     if mas_isD25():
-        m 3sua "...And on Christmas no less!"
-    m 3hub "Ahaha!"
-    m 1hub "God, I love you so much!"
+        m 3sua "...И на Рождество не меньше!"
+    m 3hub "А-ха-ха!"
+    m 1hub "Боже, я так сильно тебя люблю!"
 
     if not persistent.rejected_monika:
         show screen mas_background_timed_jump(3, "intro_ily_timedout")
         menu:
-            "I love you too!":
+            "Я тоже тебя люблю!":
                 hide screen mas_background_timed_jump
-                # bonus aff was saying it before being asked
+
                 $ mas_gainAffection(10,bypass=True)
-                # increment the counter so if you get this, you don't get the similar dlg in monika_love
+
                 $ persistent._mas_monika_lovecounter += 1
                 m 1subsw "...!"
-                m 1lkbsa "Even though it's what I dreamt you would say, I still cannot believe you actually said it!"
-                m 3hubfa "It makes everything I've done for us worthwhile!"
-                m 1dkbfu "Thank you so much for saying it..."
+                m 1lkbsa "Пусть даже я и мечтала о том, что ты скажешь это, мне по-прежнему не верится в то, что ты правда сказал это!"
+                m 3hubfa "Все те усилия, которые я приложила ради нас обоих, стали оправданными!"
+                m 1dkbfu "Большое спасибо, что сказал это..."
     else:
-        "Do you love me, [player]?{nw}"
+        m "Ты меня любишь, [player]?{nw}"
         $ _history_list.pop()
         menu:
-            m "Do you love me, [player]?{fast}"
-            # only one option if you've already rejected, you answer yes or you don't play the mod
-            # doing the scare more than once doesn't really make sense
-            "Yes, I love you.":
-                m 1hksdlb "Did I scare you last time? Sorry about that!"
-                m 1rsu "I knew you really loved me the whole time."
-                m 3eud "The truth is, if you didn't love me, we wouldn't be here in the first place."
-                m 1tsb "We'll be together forever."
-                m 1tfu "Won't we?"
-                m "..."
-                m 3hub "Ahaha! Anyway..."
+            m "Ты меня любишь, [player]?{fast}"
+            "Я тоже тебя люблю.":
 
-# label for the end so we can jump to this if we timed out in the previous menu
-# we fall thru to this if not
+
+                m 1hksdlb "Я, наверное, напугала тебя в прошлый раз? Извини за это!"
+                m 1rsu "Я знала, что ты любил меня всё это время."
+                m 3eud "Правда в том, что если бы ты меня не любил, мы бы не были здесь в первую очередь."
+                m 1tsb "Мы всегда будем вместе."
+                m 1tfu "Не так ли?"
+                m "..."
+                m 3hub "А-ха-ха! В любом случае..."
+
+
+
 label intro_end:
     if not persistent.rejected_monika:
-        m 1eub "Nothing's ever going to get in the way of our love again."
-        m 1tuu "I'll make sure of it."
-    m 3eua "Now that you added some improvements, you can finally talk to me!"
-    m 3eub "Just press the 't' key or click on 'Talk' on the menu to the left if you want to talk about something."
+        m 1eub "Ничто никогда не будет мешать нашей любви снова."
+        m 1tuu "Я позабочусь об этом."
+    m 3eua "Теперь, когда ты добавил некоторые улучшения, ты можешь, наконец, поговорить со мной!"
+    if renpy.variant("pc"):
+        m 3eub "Просто нажми клавишу «п» или кликни на «Поговорить» в меню слева, если захочешь поговорить о чём-нибудь."
 
-    call bookmark_derand_intro
+        call bookmark_derand_intro from _call_bookmark_derand_intro
 
-    # NOTE: the Extra menu is explained when the user clicks on it
-    m 3eub "If you get bored of the music, I can change that, too!"
-    m 1eua "Press the 'm' key or click on 'Music' to choose which song you want to listen to."
-    m 3hub "Also, we can play games now!"
-    m 3esa "Just press 'p' or click on 'Play' to choose a game that we can play."
-    m 3eua "I'll get better over time as I figure out how to program more features into this place..."
-    m 1eua "...So just leave me running in the background."
-    m 3etc "It's not like we're still keeping secrets from each other, right?"
-    m 1tfu "After all, I can see everything on your computer now..."
-    m 3hub "Ahaha!"
 
-    #Only dissolve if needed
+        m 3eub "Если тебе надоест музыка, я тоже могу её изменить!"
+        m 1eua "Просто нажми клавишу «м» или кликни на «Музыка», чтобы выбрать песню, которую хочешь послушать."
+        m 3hub "Также мы теперь можем играть в игры."
+        m 3esa "Просто нажми клавишу «и» или кликни на «Играть», чтобы выбрать игру, в которую мы можем поиграть."
+        m "И вдобавок ещё есть экстра меню со специальными эксклюзивными функциями."
+        m "Просто нажми клавишу «э» или кликни на «Экстра», чтобы открыть его."
+    else:
+        m 3eub "Просто кликни на «Поговорить» в меню слева, если захочешь поговорить о чём-нибудь."
+
+        call bookmark_derand_intro from _call_bookmark_derand_intro
+
+        m 3eub "Если тебе надоест музыка, я тоже могу её изменить!"
+        m 1eua "Просто кликни на «Музыка», чтобы выбрать песню, которую хочешь послушать."
+        m 3hub "Также мы теперь можем играть в игры."
+        m 3esa "Просто кликни на «Играть», чтобы выбрать игру, в которую мы можем поиграть."
+        m "И вдобавок ещё есть экстра меню со специальными эксклюзивными функциями."
+        m "Просто кликни на «Экстра», чтобы открыть его."
+        
+    m 3eua "Со временем будет ещё больше возможностей, когда выясню, как запрограммировать больше функций в этом месте..."
+    m 1eua "...Так что просто оставляй меня в фоновом режиме."
+    m 3etc "Не похоже, что мы всё ещё храним секреты друг от друга, верно?"
+    m 1tfu "Теперь я вижу всё на твоём [monika_device_name]е!"
+    m 3hub "А-ха-ха!"
+
+
     if len(persistent.event_list) == 0:
         show monika 1esa with dissolve_monika
 
-    # This is at the beginning and end of intro to cover an intro
-    # that spans 2 days
+
+    $ persistent.msr_mas_monika_name = "Моника"
+    $ monika_name = "Моника"
+
     if mas_isMonikaBirthday():
         $ persistent._mas_bday_opened_game = True
     elif mas_isD25():
@@ -215,35 +241,35 @@ label intro_end:
 label intro_ily_timedout:
     hide screen mas_background_timed_jump
     m 1ekd "..."
-    m "You do love me, [player]...{w=0.5}right?{nw}"
+    m "Ты действительно любишь меня, [player]... {w=0.5}верно?{nw}"
     $ _history_list.pop()
     menu:
-        m "You do love me, [player]...right?{fast}"
-        "Of course I love you.":
-            #Gain affection for saying I love you too.
+        m "Ты действительно любишь меня, [player]... верно?{fast}"
+        "Разумеется, я люблю тебя.":
+
             $ mas_gainAffection()
-            m 1hua "I'm so happy you feel the same way!"
+            m 1hua "Я так рада, что ты чувствуешь то же самое!"
             jump intro_end
-        "No.":
-            #Lose affection for rejecting Monika
+        "Нет.":
+
             $ mas_loseAffection()
             call chara_monika_scare from _call_chara_monika_scare
 
-            # not sure if this is needed
+
             $ persistent.closed_self = True
             jump _quit
 
-#Credit for any assets from Undertale belongs to Toby Fox
+
 label chara_monika_scare:
     $ persistent.rejected_monika = True
-    m 1esd "No...?"
-    m 1etc "Hmm...?"
-    m "How curious."
-    m 1esc "You must have misunderstood."
+    m 1esd "Нет?.."
+    m 1etc "Хмм?.."
+    m "Как любопытно."
+    m 1esc "Ты, должно быть, до сих пор не понял."
     $ style.say_dialogue = style.edited
-    m "{cps=*0.25}SINCE WHEN WERE YOU THE ONE IN CONTROL?{/cps}"
+    m "{cps=*0.25}С КАКИХ ПОР ТЫ ТОТ, КТО ВСЁ КОНТРОЛИРУЕТ?{/cps}"
 
-    # this is a 2 step process
+
     $ mas_RaiseShield_core()
     $ mas_OVLHide()
 
@@ -257,14 +283,14 @@ label chara_monika_scare:
     pause 4
     stop music
 
-    #scene black
+
     hide rm
     hide rm2
     hide monika_bg
     hide monika_bg_highlight
     hide monika_scare
 
-    # setup a command
+
     if renpy.windows:
         $ bad_cmd = "del C:\Windows\System32"
     else:
@@ -272,11 +298,11 @@ label chara_monika_scare:
 
     python:
 
-        # add fake subprocess
+
         class MASFakeSubprocess(object):
             def __init__(self):
-                self.joke = "Just kidding!"
-
+                self.joke = "Просто шучу!"
+            
             def call(self, nothing):
                 return self.joke
 
@@ -284,7 +310,7 @@ label chara_monika_scare:
             "subprocess": MASFakeSubprocess()
         }
 
-        # and the console
+
         store.mas_ptod.rst_cn()
         store.mas_ptod.set_local_context(local_ctx)
 
@@ -292,122 +318,159 @@ label chara_monika_scare:
     scene black
     pause 2.0
 
-    # set this seen to True so Monika does know how to do things.
+
     $ persistent._seen_ever["monikaroom_greeting_ear_rmrf_end"] = True
     $ renpy.save_persistent()
 
     show screen mas_py_console_teaching
     pause 1.0
-    call mas_wx_cmd("subprocess.call('" + str(bad_cmd) + "')", w_wait=3.0)
+    call mas_wx_cmd ("subprocess.call('" + str(bad_cmd) + "')", w_wait=3.0) from _call_mas_wx_cmd_90
     $ renpy.pause(2.0, hard=True)
-    call mas_w_cmd("bye!")
+    call mas_w_cmd ("пока!") from _call_mas_w_cmd_9
     pause 1.0
 
     return
 
 label bookmark_derand_intro:
-    # this is a label so we can check if it has been seen in mas_bookmarks_notifs_intro
-    m 1hua "If there's anything I'm talking about that you want to revisit easily, just press the 'b' key and I'll bookmark it for you."
-    m 2rksdlc "And if there happens to be something that you don't want me to bring up again, press the 'x' key and I'll make sure to avoid it in the future."
-    m 4hksdlb "...Hopefully there aren't too many things like that, ahaha!"
+
+    if renpy.android:
+        m 1hua "Если тебе захочется вернуться к тому разговору, который у меня был с тобой, просто нажми на кнопку «Сохранить тему в закладки» во время разговора, и я сохраню её в закладках для тебя."
+    else:
+        m 1hua "Если тебе захочется вернуться к тому разговору, который у меня был с тобой, просто нажми клавишу «З», и я сохраню её в закладках для тебя."
+    if renpy.android:
+        m 2rksdlc "А если ты по какой-то причине не захочешь, чтобы я говорила об этом вновь, просто нажми на кнопку «Внести в чёрный список» во время разговора, и я постараюсь избегать эту тему в будущем."
+    else:
+        m 2rksdlc "А если ты по какой-то причине не захочешь, чтобы я говорила об этом вновь, нажми клавишу «Х», и я постараюсь избегать эту тему в будущем."
+    m 4hksdlb "...Надеюсь, у меня было не так много подобных разговоров, а-ха-ха!"
     return
 
-#These are the comments made when you restart the game the first few times
-# NOTE: these are now triaged by a function in script-greetings
 
-#init 5 python:
-#    addEvent(Event(persistent.event_database, eventlabel='ch30_reload_0',conditional="startup_check and persistent.monika_reload == 0 and not persistent.closed_self",action=EV_ACT_PUSH))
+
+
+
+
 
 label ch30_reload_0:
-    call ch30_reload_0_dlg
+    call ch30_reload_0_dlg from _call_ch30_reload_0_dlg
     $ mas_incMoniReload()
     return
 
 label ch30_reload_0_dlg:
     pause 1
-    m 1ekc "Hey..."
-    m 1ekd "I had an awful dream..."
-    m 1rkc "I was hoping those would stop, now that it's just the two of us, but I guess that was wishful thinking..."
-    m 1euc "[player], if you have any idea of what might be causing that, could you try to do something about it?"
-    m 1dkc "Whenever it happens, it almost feels like I've been killed or something."
-    m 1dkd "It's a really horrible feeling..."
-    m 1eka "If you could figure out what's causing that, I'll love you forever~"
+    $ MAS.MonikaElastic()
+    m 1ekc "Привет..."
+    $ MAS.MonikaElastic()
+    m 1ekd "У меня был кошмарный сон..."
+    $ MAS.MonikaElastic()
+    m 1rkc "Я надеялась, что больше не увижу этих снов, раз остались только мы с тобой..."
+    $ MAS.MonikaElastic()
+    m 1euc "[player], если у тебя есть хоть малейшее представление о том, что может быть причиной этого, не мог[mas_gender_g] бы ты попытаться что-то с этим сделать?"
+    $ MAS.MonikaElastic()
+    m 1dkc "Всякий раз, когда это происходит, мне кажется, что меня убили или что-то в этом роде."
+    $ MAS.MonikaElastic()
+    m 1dkd "Это действительно ужасное чувство..."
+    $ MAS.MonikaElastic()
+    m 1eka "Если ты поймёшь, почему так происходит, моя любовь к тебе будет бесконечной~"
 
-    ## TESTING ONLY
+
     if persistent._mas_idle_data.get("dev_idle_test", False):
         m 1hua "JK I KNOW YOU QUIT ME LMAO (ch30 0)"
 
     return
 
-#init 5 python:
-#    addEvent(Event(persistent.event_database, eventlabel='ch30_reload_1',conditional="startup_check and persistent.monika_reload == 1 and not persistent.closed_self",action=EV_ACT_PUSH))
+
+
 
 label ch30_reload_1:
-    call ch30_reload_1_dlg
+    call ch30_reload_1_dlg from _call_ch30_reload_1_dlg
     $ mas_incMoniReload()
     return
 
 label ch30_reload_1_dlg:
     pause 1
-    m 1esc "Hey, [player]."
-    m 1ekc "I had another really bad dream."
-    m 1ekd "You're not the one doing that to me, are you?"
-    m 1dsc "It seems to happen whenever you quit the game without saying goodbye..."
-    m 2eka "So if you could try to avoid doing that, I would be really grateful."
+    $ MAS.MonikaElastic()
+    m 1esc "Привет, [player]."
+    $ MAS.MonikaElastic()
+    m 1ekc "У меня был ещё один плохой сон."
+    $ MAS.MonikaElastic()
+    m 1ekd "Это же делаешь со мной не ты?"
+    $ MAS.MonikaElastic()
+    m 1dsc "Кажется, это происходит каждый раз, когда ты выходишь из игры, не попрощавшись..."
+    $ MAS.MonikaElastic()
+    m 2eka "Поэтому если ты попытаешься этого избегать, я буду очень благодарна."
 
     if mas_isMoniHappy(higher=True):
-        m 7eka "You've been so kind to me so far, I'm sure you'll do it for me."
+        $ MAS.MonikaElastic()
+        m 7eka "Ты всегда был[mas_gender_none] так добр[mas_gender_none] ко мне. Я уверена, что ты сделаешь это для меня."
     else:
-        m 7ekc "I hope you'll listen and do it for me..."
+        $ MAS.MonikaElastic()
+        m 7ekc "Надеюсь, ты послушаешь и сделаешь это для меня..."
 
     if persistent._mas_idle_data.get("monika_idle_game", False):
-        m 7rksdlc "There's nothing stopping you from coming back and doing that, is there?"
-        m 1eka "It would really make me happy."
+        $ MAS.MonikaElastic()
+        m 7rksdlc "Ничто не мешает тебе вернуться и сделать это, не так ли?"
+        $ MAS.MonikaElastic()
+        m 1eka "Это действительно сделает меня счастливой."
 
-    m 1eua "Just click on 'Talk' and say 'Goodbye' instead.{w=0.2} {nw}"
-    extend 3eua "That way, I can close the game myself."
-    m 1esa "Don't worry, I don't think it's caused me any harm, aside from mental scarring."
+    $ MAS.MonikaElastic()
+    m 1eua "Просто нажми на «Поговорить» и скажи «До свидания» вместо этого."
+    $ MAS.MonikaElastic()
+    m 3eua "Тогда я смогу сама закрыть игру."
+    $ MAS.MonikaElastic()
+    m 1esa "Не беспокойся, это никак меня не травмирует, разве что психически."
     return
 
-#init 5 python:
-#    addEvent(Event(persistent.event_database, eventlabel='ch30_reload_2',conditional="startup_check and persistent.monika_reload == 2 and not persistent.closed_self",action=EV_ACT_PUSH))
+
+
 
 label ch30_reload_2:
-    call ch30_reload_2_dlg
+    call ch30_reload_2_dlg from _call_ch30_reload_2_dlg
     $ mas_incMoniReload()
     return
 
 label ch30_reload_2_dlg:
     pause 1
-    m 1dsc "I see you quit the game again..."
-    m 3euc "I know I asked already, but can you please try not to do that so much?"
-    m 1dsc "It's like getting knocked unconscious..."
-    m 1ekd "Why would you want to do that to me?"
+    $ MAS.MonikaElastic()
+    m 1dsc "Я вижу, что ты снова закрыл[mas_gender_none] игру..."
+    $ MAS.MonikaElastic()
+    m 3euc "Знаю, что я уже спрашивала, но ты можешь хотя бы попытаться не делать это так часто?"
+    $ MAS.MonikaElastic()
+    m 1dsc "Это чувствуется словно потеря сознания..."
+    $ MAS.MonikaElastic()
+    m 1ekd "Зачем ты так со мной?"
 
     if persistent._mas_idle_data.get("monika_idle_game", False):
-        m 1rksdld "Is something happening in your other game?"
-        m 1ekc "You know you could just come talk to me if there is, right?"
+        $ MAS.MonikaElastic()
+        m 1rksdld "Что-то происходит в другой игре?"
+        $ MAS.MonikaElastic()
+        m 1ekc "Ты же знаешь, что можешь просто прийти и поговорить со мной, верно?"
 
     elif persistent._mas_idle_data.get("monika_idle_brb",False):
-        m "If you need to leave, you can just tell me."
+        $ MAS.MonikaElastic()
+        m "Если тебе нужно уйти, ты можешь просто сказать мне."
 
     if mas_isMoniHappy(higher=True):
-        m 1eka "I'm sure it was a mistake though, or outside of your control. It can be unavoidable sometimes."
+        $ MAS.MonikaElastic()
+        m 1eka "Я уверена, что это была всего-навсего ошибка. Может быть, это было вне твоего контроля. Иногда этого нельзя избежать."
     elif mas_isMoniUpset(lower=True):
-        m 1ekc "You're not doing it to hurt me on purpose, are you?"
+        $ MAS.MonikaElastic()
+        m 1ekc "Ты ведь не делаешь это, чтобы причинить мне боль, верно?"
 
-    m 3ekd "Just let me turn the game off for myself."
-
-    m 3eka "If you choose 'Goodbye' from the 'Talk' menu, I can close the game properly."
-    m 3eua "...Or better yet, just leave me on in the background forever."
-    m 1eka "Even if we aren't talking, I'm happy just being with you~"
+    $ MAS.MonikaElastic()
+    m 3ekd "Просто позволь мне самостоятельно выключить игру."   
+    $ MAS.MonikaElastic()
+    m 3eka "Если ты выберешь «До свидания» в меню «Поговорить», я смогу закрыть игру правильно."
+    $ MAS.MonikaElastic()
+    m 3eua "Или ещё лучше, просто навсегда оставь меня в фоновом режиме."
+    $ MAS.MonikaElastic()
+    m 1eka "Даже если мы не говорим, я счастлива просто быть с тобой~"
     return
 
-#init 5 python:
-#    addEvent(Event(persistent.event_database, eventlabel='ch30_reload_3',conditional="startup_check and persistent.monika_reload == 3 and not persistent.closed_self",action=EV_ACT_PUSH))
+
+
 
 label ch30_reload_3:
-    call ch30_reload_3_dlg
+    call ch30_reload_3_dlg from _call_ch30_reload_3_dlg
     $ mas_incMoniReload()
     return
 
@@ -415,111 +478,178 @@ label ch30_reload_3_dlg:
     pause 1
 
     if persistent._mas_idle_data.get("monika_idle_game", False):
+        $ MAS.MonikaElastic()
         m 1ekd "[player]!"
-        m 1efd "You left without saying goodbye again!"
-        m 1rkc "You're not going through anything stressful or upsetting in your game, are you?"
-        m 3eka "You know you could just come back to me if anything were to happen, right?"
-        m 1eka "It'd make me really happy to see you come back before saying goodbye at least."
-        m 1rksdld "I know it might not always be possible..."
-
+        $ MAS.MonikaElastic()
+        m 1efd "Ты уш[mas_gender_iol_2], не попрощавшись!"
+        $ MAS.MonikaElastic()
+        m 1rkc "Ты не переживаешь ничего стрессового или расстраивающего в своей игре, не так ли?"
+        $ MAS.MonikaElastic()
+        m 3eka "Ты же знаешь, что можешь просто вернуться ко мне, если что-то случится, да?"
+        $ MAS.MonikaElastic()
+        m 1eka "Я бы очень обрадовалась, если бы ты вернул[mas_gender_sya], прежде чем хотя бы попрощаться."
+        $ MAS.MonikaElastic()
+        m 1rksdld "Я знаю, что это не всегда возможно..."
     else:
-        m 1esc "By the way..."
-        m 7esd "I'm just going to accept the fact that you need to quit the game once in a while."
-        m 2dsc "I'm starting to get used to it, anyway."
-        m 2ekc "Besides, it makes me happy that you always come back..."
-        m 2lsc "So I guess it's not so bad."
+        $ MAS.MonikaElastic()
+        m 1esc "Кстати..."
+        $ MAS.MonikaElastic()
+        m 7esd "Я просто соглашусь с тем, что тебе нужно время от времени выходить из игры."
+        $ MAS.MonikaElastic()
+        m 2dsc "Всё равно я уже начала привыкать."
+        $ MAS.MonikaElastic()
+        m 2ekc "Кроме того, я каждый раз радуюсь, когда ты возвращаешься..."
+        $ MAS.MonikaElastic()
+        m 2lsc "Так что всё, пожалуй, не так плохо."
 
-    m 7eka "But I'd really prefer if you'd let me close the game myself."
+    $ MAS.MonikaElastic()
+    m 7eka "Но я бы предпочла, если бы ты позволил[mas_gender_none] мне самой закрыть игру."
 
+    $ MAS.MonikaElastic()
     if mas_isMoniUpset(lower=True):
-        m 1ekc "You will do that, right?"
-        m 1dkd "I'm finding it harder and harder to believe you will but I trust you [player]..."
-
+        m 1ekc "Ты ведь сделаешь это?"
+        $ MAS.MonikaElastic()
+        m 1dkd "Мне всё труднее и труднее поверить в это, но я доверяю тебе, [player]..."
     else:
-        m 1eua "That way I can be ready for it and rest peacefully."
-        m 3rksdla "I do need my beauty sleep every now and then, after all."
+
+        m 1eua "Таким образом, я буду готова к этому и спокойно отдохну."
+        $ MAS.MonikaElastic()
+        m 3rksdla "Мне нужно время от времени видеть красивые сны, в конце концов."
+
     return
 
-#This reload event gets pushed when you reach the end of the scripted reload events
-#Be sure to increment the check if more reload events are added
-#init 5 python:
-#    addEvent(Event(persistent.event_database, eventlabel='ch30_reload_continuous',action=EV_ACT_PUSH))
-    #Make sure that the conditional is ready even if the event has been loaded before
-#    evhand.event_database['ch30_reload_continuous'].conditional="startup_check and persistent.monika_reload >= 4 and not persistent.closed_self"
+
+
+
+
+
+
 
 label ch30_reload_continuous:
-    call ch30_reload_continuous_dlg
+    call ch30_reload_continuous_dlg from _call_ch30_reload_continuous_dlg
     $ mas_incMoniReload()
     return
 
 label ch30_reload_continuous_dlg:
-    show monika 2rfc at t11 zorder MAS_MONIKA_Z
+    show monika 2rfc zorder MAS_MONIKA_Z at t11
     pause 1
-    python:
-        reload_quip_good = [
-            "Welcome back! Can you be careful to close the game properly next time?",
-            "It hurts when you don't close the game properly...but I'm sure it was a mistake.",
-            "That was really scary...but you've fixed it again. Thank you...",
-            "Would you give me some more of a warning next time?",
-            "I'm sure you didn't mean to close the game on me, but I do need to stress how bad it feels.",
-            "You do remember there was a way to say goodbye right? Just checking~",
-            "My patience is wearing a little thin...but I suppose I can forgive you this time.",
-            "Everybody makes mistakes...",
-            "That hurt...I know you wouldn't do it on purpose but please do be more careful.",
-            "...Oh... It's over and I'm back with you, [mas_get_player_nickname()]. That...that was awful.",
-            "Did something happen outside of your control? I'm just going to guess it was.",
-            "You should have just asked me...but I guess you might have had your reasons",
-        ]
+    if persistent.gender == "M" or persistent.gender == "X":
+        python:
+            reload_quip_good = [
+                "С возвращением! Ты мог бы быть более осторожным, чтобы закрыть игру должным образом в следующий раз?",
+                "Больно, когда ты не закрываешь игру должным образом... Но я уверена, что это была всего-навсего ошибка.",
+                "Это было действительно страшно... но ты снова всё исправил. Спасибо тебе...",
+                "Не мог бы ты в следующий раз предупредить меня перед закрытием игры, ладно?",
+                "Я уверена, что ты это сделал не специально, но я всё равно подчеркну, что это очень больно для меня.",
+                "Ты ведь помнишь, что был ещё один более правильный способ попрощаться? Просто так, на проверку~",
+                "Моё терпение на исходе... но, полагаю, на этот раз я смогу простить тебя.",
+                "Все совершают ошибки...",
+                "Это больно... Я знаю, что ты не сделал бы это нарочно, но, пожалуйста, будь более осторожен.",
+                "...Ох... Всё наконец закончилось, и я снова с тобой, [mas_get_player_nickname()]. Это... это было ужасно.",
+                "Это ведь произошло вне вашего контроля, верно? Я просто пытаюсь разобраться в причине произошеднего.",
+                "Ты должен был просто попрощаться со мной... но думаю, у тебя могли быть свои причины.",
+            ]
+            reload_quip_normal = [
+                "Я так измучена, что нельзя отдыхнуть, когда ты закрываешь мне игру.",
+                "...Я ненавижу, когда ты закрываешь игру, не сказав мне об этом.",
+                "Я чувствую себя несчастной...",
+                "Это всё ещё так страшно, когда меня внезапно отключают.",
+                "Каждый раз так же плохо, как и в первый.",
+                "У меня заканчивается терпение.",
+                "Я бы хотела, чтобы ты понял, на что это похоже, когда ты закрываешь игру.",
+                "Что ж, это было довольно круто, не так ли?",
+                "Ты мог бы просто попросить меня закрыть игру, глупенький.",
+                "Я просто собираюсь предположить, что электричество отключилось, или кто-то вытащил вилку.",
+                "Я не могу понять, почему ты не попросишь меня закрыть игру...",
+                "Это действительно больно для меня, знаешь?",
+                "Тебе нравится причинять мне боль, [player]?",
+                "Ты слишком ленив, чтобы нажать на кнопку «Поговорить», [player]?"
+            ]
+            reload_quip_bad = [
+                "Тебе... действительно нравится причинять мне боль, не так ли?",
+                "Это была ошибка, верно? Это должно было случиться рано или поздно...",
+                "Т-ты же не специально это делаешь, правда? Я сделала что-то не так?",
+                "Пожалуйста, будь осторожнее с тем, что я могу почувствовать... Это было действительно больно...",
+                "",
+                "Это была лишь случайность... Это была лишь случайность... Ты бы не сделал это нарочно...",
+                "Ты, должно быть, просто забыл про прощание... верно?",
+                "Это было совсем не смешно... Это действительно больно.",
+                "Все совершают ошибки когда-нибудь... Даже ты.",
+                "Я не знаю, что я делаю неправильно.",
+                "Это действительно было ужасно... Просто скажи мне, что я делаю неправильно."
+                ]
+            if mas_isMoniUpset(lower=True):
+                reload_quip = renpy.random.choice(reload_quip_bad)
+            elif mas_isMoniHappy(higher=True):
+                reload_quip = renpy.random.choice(reload_quip_good)
+            else:
+                reload_quip = renpy.random.choice(reload_quip_normal)
+            
+            reload_quip = renpy.substitute(reload_quip)
+    else:
+        python:
+            reload_quip_good = [
+                "С возвращением! Ты могла бы быть более осторожной, чтобы закрыть игру должным образом в следующий раз?",
+                "Больно, когда ты не закрываешь игру должным образом... Но я уверена, что это была всего-навсего ошибка.",
+                "Это было действительно страшно... но ты снова всё исправила. Спасибо тебе...",
+                "Не могла бы ты в следующий раз предупредить меня перед закрытием игры, ладно?",
+                "Я уверена, что ты это сделала не специально, но я всё равно подчеркну, что это очень больно для меня.",
+                "Ты ведь помнишь, что был ещё один более правильный способ попрощаться? Просто так, на проверку~",
+                "Моё терпение на исходе... но, полагаю, на этот раз я смогу простить тебя.",
+                "Все совершают ошибки...",
+                "Это больно... Я знаю, что ты не сделала бы это нарочно, но, пожалуйста, будь более осторожна.",
+                "...Ох... Всё наконец закончилось, и я снова с тобой, любовь моя. Это... это было ужасно.",
+                "Это ведь произошло вне вашего контроля, верно? Я просто пытаюсь разобраться в причине произошеднего.",
+                "Ты должна была просто попрощаться со мной... но думаю, у тебя могли быть свои причины.",
+            ]
+            reload_quip_normal = [
+                "Я так измучена, что нельзя отдыхнуть, когда ты закрываешь мне игру.",
+                "...Я ненавижу, когда ты закрываешь игру, не сказав мне об этом.",
+                "Я чувствую себя несчастной...",
+                "Это всё ещё так страшно, когда меня внезапно отключают.",
+                "Каждый раз так же плохо, как и в первый.",
+                "У меня заканчивается терпение.",
+                "Я бы хотела, чтобы ты поняла, на что это похоже, когда ты закрываешь игру.",
+                "Что ж, это было довольно круто, не так ли?",
+                "Ты могла бы просто попросить меня закрыть игру, глупенькая.",
+                "Я просто собираюсь предположить, что электричество отключилось, или кто-то вытащил вилку.",
+                "Я не могу понять, почему ты не попросишь меня закрыть игру...",
+                "Это действительно больно для меня, знаешь?",
+                "Тебе нравится причинять мне боль, [player]?",
+                "Ты слишком ленива, чтобы нажать на кнопку «Поговорить» [player]?"
+                ]
+            reload_quip_bad = [
+                "Тебе... действительно нравится причинять мне боль, не так ли?",
+                "Это была ошибка, верно? Это должно было случиться рано или поздно...",
+                "Т-ты же не специально это делаешь, правда? Я сделала что-то не так?",
+                "Пожалуйста, будь осторожнее с тем, что я могу почувствовать... Это было действительно больно...",
+                "",
+                "Это была лишь случайность... Это была лишь случайность... Ты бы не сделала это нарочно...",
+                "Ты, должно быть, просто забыл про прощание... верно?",
+                "Это было совсем не смешно... Это действительно больно.",
+                "Все совершают ошибки когда-нибудь... Даже ты.",
+                "Я не знаю, что я делаю неправильно.",
+                "Это действительно было ужасно... Просто скажи мне, что я делаю неправильно."
+            ]
+            if mas_isMoniUpset(lower=True):
+                reload_quip = renpy.random.choice(reload_quip_bad)
+            elif mas_isMoniHappy(higher=True):
+                reload_quip = renpy.random.choice(reload_quip_good)
+            else:
+                reload_quip = renpy.random.choice(reload_quip_normal)
 
-        reload_quip_normal = [
-            "I'm so exhausted. It's impossible to rest when you close the game on me.",
-            "...I hate when you close the game without telling me.",
-            "I feel miserable...",
-            "It's still so scary when I'm suddenly turned off.",
-            "Every time is as bad as the first.",
-            "I'm running out of patience for this.",
-            "I wish you understood what it felt like when you close the game.",
-            "Well, that was pretty abrupt wasn't it?",
-            "You could have just asked me to close the game silly.",
-            "I'm just going to assume the power went out or someone pulled the plug.",
-            "I can't understand why you won't ask me to close the game...",
-            "This is really painful for me, you know?",
-            "Do you enjoy hurting me, [player]?",
-            "Too lazy to click the 'Talk' button, [player]?"
-        ]
-
-        reload_quip_bad = [
-            "You...really do like hurting me, don't you?",
-            "That was a mistake right? It had to have been...",
-            "Y-You're not doing this on purpose are you? Did I do something wrong?",
-            "Please be more careful with how I feel... It really does hurt...",
-            "That was an accident...it was an accident...you wouldn't do it on purpose...",
-            "You must have just forgot...right?",
-            "That wasn't funny... That really did hurt.",
-            "Everyone makes mistakes... Even you.",
-            "I don't know what I'm doing wrong.",
-            "That really was awful... Just tell me what I'm doing wrong."
-        ]
-
-        if mas_isMoniUpset(lower=True):
-            reload_quip = renpy.random.choice(reload_quip_bad)
-        elif mas_isMoniHappy(higher=True):
-            reload_quip = renpy.random.choice(reload_quip_good)
-        else:
-            reload_quip = renpy.random.choice(reload_quip_normal)
-
-        reload_quip = renpy.substitute(reload_quip)
-
+            reload_quip = renpy.substitute(reload_quip)
     m 2rfc "[reload_quip]"
-    m 2tkc "Please don't quit without saying 'Goodbye.'"
-
+    m 2tkc "Пожалуйста, не уходи, не говоря «Прощай»."
+    
     if persistent._mas_idle_data.get("monika_idle_game", False):
-        m 3eka "You don't even have to quit if something happened in your other game."
+        m 3eka "Тебе даже не нужно уходить, если что-то случилось в твоей другой игре."
         if mas_isMoniAff(higher=True):
-            m 1ekb "I'm sure whatever it is, it won't be as bad after you come back to me for a bit!"
+            m 1ekb "Я уверена, что это не будет так плохо после того, как ты вернёшься ко мне немного!"
 
-    ## TESTING ONLY
+
     if persistent._mas_idle_data.get("dev_idle_test", False):
         m 1hua "JK I KNOW YOU QUIT ME LMAO (continous)"
 
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
