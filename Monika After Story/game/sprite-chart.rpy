@@ -1,107 +1,107 @@
-# Monika's sprites!
-# To add new images, use the sprite adder tool in MonikaModDev/tools/toolsmenu
-#
-###### SPRITE CODE (IMG010)
-#
-# The sprite code system is a way of picking an appropriate sprite without
-# having to look up what the sprite looks like.
-# All expressions use this code system. the original 19 expressions (with
-# counterparts have been aliased to the correct code system. Please avoid
-# using the og 19+ coutnerparts)
-#
-# For aliases, see [IMG032]
-#
-# The sprite code system consists of:
-# <pose number><eyes type><eyebrow type><nose type><eyebag type><blush type>
-# <tears type><sweat type><emote type><mouth type>
-#
-# Only <pose number><eyes type><eyebrow type><mouth type> are required
-#
-# Here are the available values for each type:
-# <pose number> - arms/body pose to use
-#   1 - resting on hands (steepling)
-#   2 - arms crossed (crossed)
-#   3 - resting on left arm, pointing to the right (restleftpointright)
-#   4 - pointing right (pointright)
-#   5 - leaning (def)
-#   6 - arms down (down)
-#   7 - down left arm, rest point right (downleftpointright)
-#
-# <eyes type> - type of eyes
-#   e - normal eyes (normal)
-#   w - wide eyes (wide)
-#   s - sparkly eyes (sparkle)
-#   t - straight/smug eyes (smug)
-#   c - crazy eyes (crazy)
-#   r - look right eyes (right)
-#   l - look left eyes (left)
-#   h - closed happy eyes (closedhappy)
-#   d - closed sad eyes (closedsad)
-#   k - left eye wink (winkleft)
-#   n - right eye wink (winkright)
-#   f - soft eyes (soft)
-#
-# <eyebrow type> - type of eyebrow
-#   f - furrowed / angery (furrowed)
-#   u - up / happy (up)
-#   k - knit / upset / concerned (knit)
-#   s - straight / normal / regular (mid)
-#   t - thinking (think)
-#
-# <nose type> - type of nose
-#   nd - default nose (def) NOTE: UNUSED
-#
-# <eyebag type> - type of eyebags
-#   ebd - default eyebags (def) NOTE: UNUSED
-#
-# <blush type> - type of blush
-#   bl - blush lines (lines)
-#   bs - blush shade (shade)
-#   bf - full blush / lines and shade blush (full)
-#
-# <tears type> - type of tears
-#   ts - tears streaming / running (streaming)
-#   td - dried tears (dried)
-#   tp - like dried tears but with no redness (pooled)
-#   tu - tears, single stream, both eyes (up)
-#
-# <sweat type> - type of sweat drop
-#   sdl - sweat drop left (def)
-#   sdr - sweat drop right (right)
-#
-# <emote type> - type of emote
-#   ec - confusion emote (confuse) NOTE: UNUSED
-#
-# <mouth type> - type of mouth
-#   a - smile (smile)
-#   b - open smile (big)
-#   c - apathetic / straight mouth / neither smile nor frown (smirk)
-#   d - open mouth (small)
-#   o - gasp / open mouth (gasp)
-#   u - smug (smug)
-#   w - wide / open mouth (wide)
-#   x - angery (angry)
-#   p - tsundere/ puffy cheek (pout)
-#   t - triangle (triangle)
-#   g - disgust/uwah (disgust)
-#
-# For example, the expression code 1sub is:
-#   1 - resting on hands pose
-#   s - sparkly eyes
-#   u - happy eyebrows
-#   b - big open smile
-#
-# NOTE:
-# not every possible combination has been created as an image. If you want
-# a particular expression, make a github issue about it and why we need it.
-#
-# hmmmmmm (1etecc)
 
-# This defines a dynamic displayable for Monika whose position and style changes
-# depending on the variables is_sitting
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 define is_sitting = True
 
-# accessories list
+
 default persistent._mas_acs_pre_list = []
 default persistent._mas_acs_bbh_list = []
 default persistent._mas_acs_bse_list = []
@@ -115,28 +115,77 @@ default persistent._mas_acs_afh_list = []
 default persistent._mas_acs_mid_list = []
 default persistent._mas_acs_pst_list = []
 
-# zoom levels
+
 default persistent._mas_zoom_zoom_level = None
 
 default persistent._mas_force_clothes = False
-# Set to True if the user manually set clothes
+
 
 default persistent._mas_force_hair = False
-# Set to True if the user manually set hair
 
-define m = DynamicCharacter('m_name', image='monika', what_prefix='', what_suffix='', ctc="ctc", ctc_position="fixed")
 
-#image night_filter = Solid("#20101897", xsize=1280, ysize=850)
+# image monika g1:
+#     "monika/g1.png"
+#     xoffset 35 yoffset 55
+#     parallel:
+#         zoom 1.00
+#         linear 0.10 zoom 1.03
+#         repeat
+#     parallel:
+#         xoffset 35
+#         0.20
+#         xoffset 0
+#         0.05
+#         xoffset -10
+#         0.05
+#         xoffset 0
+#         0.05
+#         xoffset -80
+#         0.05
+#         repeat
+#     time 1.25
+#     xoffset 0 yoffset 0 zoom 1.00
+#     "monika 3"
+
+# image monika g2:
+#     block:
+#         choice:
+#             "monika/g2.png"
+#         choice:
+#             "monika/g3.png"
+#         choice:
+#             "monika/g4.png"
+#     block:
+#         choice:
+#             pause 0.05
+#         choice:
+#             pause 0.1
+#         choice:
+#             pause 0.15
+#         choice:
+#             pause 0.2
+#     repeat
+
+define m = DynamicCharacter('monika_name', image='monika', what_prefix='', what_suffix='', ctc="ctc", ctc_position="fixed")
+
+
+image mas_bday_banners = ConditionSwitch(
+    "morning_flag",
+    "mod_assets/location/spaceroom/bday/birthday_decorations_rus.png",
+    "not morning_flag",
+    "mod_assets/location/spaceroom/bday/birthday_decorations-n_rus.png"
+)
+
 
 image mas_finalnote_idle = "mod_assets/poem_finalfarewell_desk.png"
 
-# Monika's piano sprite
+
 image mas_piano = MASFilterSwitch("mod_assets/other/mas_piano.png")
 
-### ACS TYPE + DEFAULTING FRAMEWORK ###########################################
-# this contains special acs type mappings
-# basically on startup, we evaluate each acs and add mux types and other
-# properties.
+
+
+
+
 
 init -101 python in mas_sprites:
 
@@ -151,7 +200,7 @@ init -101 python in mas_sprites:
             ex_props - default exprops dict for this template
             keep_on_desk - default keep on desk flag for this templat
         """
-
+        
         def __init__(self,
                 acs_type,
                 mux_type=None,
@@ -177,7 +226,7 @@ init -101 python in mas_sprites:
             self.mux_type = mux_type
             self.ex_props = ex_props
             self.keep_on_desk = keep_on_desk
-
+        
         def _apply_ex_props(self, acs):
             """
             Applies ex prop defaults to the given ACS.
@@ -189,13 +238,13 @@ init -101 python in mas_sprites:
             """
             if self.ex_props is None:
                 return
-
+            
             if acs.ex_props is None:
                 acs.ex_props = dict(self.ex_props)
-
+            
             else:
                 acs.ex_props.update(self.ex_props)
-
+        
         def _apply_keep_on_desk(self, acs):
             """
             Applies keep_on_desk defaults to the given ACS.
@@ -207,13 +256,13 @@ init -101 python in mas_sprites:
             """
             if self.keep_on_desk is None:
                 return
-
+            
             acs.keep_on_desk = self.keep_on_desk
-
+        
         def _apply_mux_type(self, acs):
             """
-            Applies mux type defaults to the given ACS.
-
+            Applies mux type defaults to the given ACS. 
+            
             acs_type is NOT checked.
 
             IN:
@@ -221,15 +270,15 @@ init -101 python in mas_sprites:
             """
             if self.mux_type is None:
                 return
-
+            
             if acs.mux_type is None:
                 acs.mux_type = list(self.mux_type)
-
+            
             else:
                 for mux_type in self.mux_type:
                     if mux_type not in acs.mux_type:
                         acs.mux_type.append(mux_type)
-
+        
         def apply(self, acs):
             """
             Applies the defaults to the given ACS. (NOTE: acs type is checked)
@@ -242,94 +291,91 @@ init -101 python in mas_sprites:
 
 init -100 python in mas_sprites:
 
-    # --- exprops ---
 
-    # ---- ACS ----
+
+
 
     EXP_A_EXCLHP = "excluded-hair-props"
-    # v: list of strings
-    # marks that an ACS requires a hairstyle with none of the value'd props
-    # to be worn
+
+
+
 
     EXP_A_LHSEL = "left-hair-strand-eye-level"
-    # v: ignored
-    # marks that an ACS is located at the left hair strand, eye level
+
+
 
     EXP_A_RQHP = "required-hair-prop"
-    # v: string
-    # marks that an ACS requires a hairstyle with the value'd prop to be worn
+
+
 
     EXP_A_LD = "left-desk-acs"
-    # v: ignored
-    # marks that this ACS is on the left side (Monika's left) of the desk
+
+
 
     EXP_A_RBL = "ribbon-like"
-    # v: ignored
-    # marks that an ACS is like a ribbon in function
+
+
 
     EXP_A_TWRB = "twin-ribbon"
-    # v: ignored
-    # marks that an ACS is a twin ribbon-based acs
+
+
 
     EXP_A_FOOD = "food"
-    # v: ignored
-    # marks that this ACS is a food
+
+
 
     EXP_A_DRINK = "drink"
-    # v: ignored
-    # marks that this ACS is a drink
 
-    # ---- HAIR ----
+
+
+
 
     EXP_H_TT = "twintails"
-    # v: ignored
-    # marks that a hair style is a twintails style
+
+
 
     EXP_H_RQCP = "required-clothes-prop"
-    # v: string
-    # marks that a hair style requires clothes with the value'd prop to be worn
+
+
 
     EXP_H_EXCLCP = "excluded-clothes-props"
-    # v: list of strings
-    # marks that a hair style requires clothes with none of the value'd props
-    # to be worn
+
+
+
 
     EXP_H_TS = "tiedstrand"
-    # v: ignored
-    # marks that a hair style is a tied strand style
+
+
 
     EXP_H_NT = "no-tails"
-    # v: ignored
-    # marks that a hair style has no tails. By default we assume ponytail.
+
 
     EXP_H_TB = "twinbraid"
-    #v: ignored
-    #marks the hair as a twinbraid hairstyle
 
-    # ---- CLOTHES ----
+
 
     EXP_C_BRS = "bare-right-shoulder"
-    # v: ignored
-    # marks that a clothing item has a bare right shoulder
+
+
 
     EXP_C_COST = "costume"
-    # v: costume type as string (o31, d25, etc..)
-    # marks that a clothing item is a costume
+
+
 
     EXP_C_COSP = "cosplay"
-    # v: ignored
-    # marks that a clothing item is a cosplay outfit
+
+
 
     EXP_C_LING = "lingerie"
-    # v: ignored
-    # marks that a clothing item is lingerie
 
-    # --- default exprops ---
+
+
+
 
     DEF_EXP_TT_EXCL = [EXP_H_TT]
-    # twin tail exclusions
 
-    # --- default mux types ---
+
+
 
     DEF_MUX_RB = [
         "ribbon",
@@ -339,7 +385,7 @@ init -100 python in mas_sprites:
         "s-type-ribbon",
         "twin-ribbons",
     ]
-    # default mux types for ribbon-based items.
+
 
     DEF_MUX_HS = [
         "headset",
@@ -349,7 +395,7 @@ init -100 python in mas_sprites:
         "headphones",
         "left-hair-flower-ear",
     ]
-    # default mux types for headset-based items
+
 
     DEF_MUX_HB = [
         "headband",
@@ -357,10 +403,10 @@ init -100 python in mas_sprites:
         "headphones",
         "headset",
     ]
-    # default mux types for headband-based items
+
 
     DEF_MUX_LHC = ["left-hair-clip"]
-    # default mux types for left hair clip-based items
+
 
     DEF_MUX_LHFE = [
         "left-hair-flower-ear",
@@ -371,14 +417,14 @@ init -100 python in mas_sprites:
         "headphones",
         "left-hair-flower",
     ]
-    # default mux types for left hair flower-baesd items
+
 
     DEF_MUX_LD = [
         "plush_q",
         "chocs",
         "plate"
     ]
-    # default mux types for left-desk related items (namely foods)
+
 
     DEF_MUX_HAT = [
         "hat",
@@ -394,9 +440,9 @@ init -100 python in mas_sprites:
         "s-type-ribbon",
         "twin-ribbons",
     ]
-    # default mux types for hats
 
-    # maps ACS types to their ACS template
+
+
     ACS_DEFS = {
         "bow": ACSTemplate(
             "bow",
@@ -489,7 +535,7 @@ init -100 python in mas_sprites:
                 EXP_A_FOOD: True
             }
         ),
-        # ring
+        
         "ribbon": ACSTemplate(
             "ribbon",
             mux_type=DEF_MUX_RB
@@ -572,27 +618,27 @@ init -100 python in mas_sprites:
 
 
 init -5 python in mas_sprites:
-    # specific image generation functions
+
     import store
 
-    # main art path
+
     MOD_ART_PATH = "mod_assets/monika/"
     STOCK_ART_PATH = "monika/"
 
-    # delimiters
+
     ART_DLM = "-"
 
-    # important keywords
+
     KW_STOCK_ART = "def"
 
-    ### other paths:
-    # H - hair
-    # C - clothing
-    # B - base
-    # F - face parts
-    # A - accessories
-    # S - standing
-    # T - table
+
+
+
+
+
+
+
+
     H_MAIN = MOD_ART_PATH + "h/"
     C_MAIN = MOD_ART_PATH + "c/"
     B_MAIN = MOD_ART_PATH + "b/"
@@ -601,19 +647,19 @@ init -5 python in mas_sprites:
     S_MAIN = MOD_ART_PATH + "s/"
     T_MAIN = MOD_ART_PATH + "t/"
 
-    # sitting standing parts
-#    S_MAIN = "standing/"
 
-    # facial parts
+
+
+
     F_T_MAIN = F_MAIN
-#    F_S_MAIN = F_MAIN + S_MAIN
 
-    # accessories parts
+
+
     A_T_MAIN = A_MAIN
 
-    ### End paths
 
-    # location stuff for some of the compsoite
+
+
     LOC_REG = "(1280, 850)"
     LOC_LEAN = "(1280, 850)"
     LOC_Z = "(0, 0)"
@@ -623,12 +669,12 @@ init -5 python in mas_sprites:
     LOC_H = 850
     LOC_WH = (1280, 850)
 
-    # composite stuff
+
     I_COMP = "LiveComposite"
     L_COMP = "LiveComposite"
     TRAN = "Transform"
 
-    # zoom
+
     ZOOM = "zoom="
 
     default_zoom_level = 3
@@ -645,18 +691,18 @@ init -5 python in mas_sprites:
     value_zoom = default_value_zoom
     max_zoom = 20
 
-    # adjustable location stuff
+
     default_x = 0
     default_y = 0
     adjust_x = default_x
     adjust_y = default_y
-#    y_step = 40
+
     y_step = 20
 
-    # adding optimized initial parts of the sprite string
+
     PRE_SPRITE_STR = TRAN + "(" + L_COMP + "("
 
-    # Prefixes for files
+
     PREFIX_TORSO = "torso" + ART_DLM
     PREFIX_TORSO_LEAN = "torso-leaning" + ART_DLM
     PREFIX_BODY = "body" + ART_DLM
@@ -683,11 +729,11 @@ init -5 python in mas_sprites:
     PREFIX_TABLE = "table" + ART_DLM
     PREFIX_CHAIR = "chair" + ART_DLM
 
-    # keys
+
     FHAIR = "front"
     BHAIR = "back"
 
-    # suffixes
+
     NIGHT_SUFFIX = ART_DLM + "n"
     SHADOW_SUFFIX = ART_DLM + "s"
     FHAIR_SUFFIX  = ART_DLM + FHAIR
@@ -695,21 +741,21 @@ init -5 python in mas_sprites:
     HLITE_SUFFIX = ART_DLM + "h"
     FILE_EXT = ".png"
 
-    # other const
+
     DEF_BODY = "def"
     NEW_BODY_STR = PREFIX_BODY + DEF_BODY
 
-    # base constants
+
     BASE_BODY_STR = PREFIX_BODY + DEF_BODY + ART_DLM
     BASE_BODY_STR_LEAN = PREFIX_BODY_LEAN + DEF_BODY + ART_DLM
 
-    # table strings
+
     TC_GEN = "".join((
         T_MAIN,
-        "{0}", # prefix table or chair
-        "{1}", # table or chair tag
-        "{2}", # shadow suffix
-        "{3}", # night suffix
+        "{0}", 
+        "{1}", 
+        "{2}", 
+        "{3}", 
         FILE_EXT
     ))
 
@@ -730,7 +776,7 @@ init -5 python in mas_sprites:
         if inc_night:
             alt_night(v_list, prefix + ART_DLM + "0")
             alt_night(v_list, prefix + ART_DLM + "1")
-
+        
         else:
             v_list.append(prefix + ART_DLM + "0" + FILE_EXT)
             v_list.append(prefix + ART_DLM + "1" + FILE_EXT)
@@ -751,30 +797,30 @@ init -5 python in mas_sprites:
         if inc_night:
             alt_night(v_list, prefix + FHAIR_SUFFIX)
             alt_night(v_list, prefix + BHAIR_SUFFIX)
-
+        
         else:
             v_list.append(prefix + FHAIR_SUFFIX + FILE_EXT)
             v_list.append(prefix + BHAIR_SUFFIX + FILE_EXT)
 
 
-    ## BLK010
-    # ACCESSORY BLACKLIST
+
+
     lean_acs_blacklist = [
         "test"
     ]
 
-    # list of available hairstyles
+
     HAIRS = [
-        "def", # ponytail
-        "down" # hair down
+        "def", 
+        "down" 
     ]
 
-    # list of available clothes
+
     CLOTHES = [
-        "def" # school uniform
+        "def" 
     ]
 
-    # zoom adjuster
+
     def adjust_zoom():
         """
         Sets the value zoom to an appropraite amoutn based on the current
@@ -787,17 +833,17 @@ init -5 python in mas_sprites:
                 (zoom_level-default_zoom_level) * zoom_step
             )
             adjust_y = default_y + ((zoom_level-default_zoom_level) * y_step)
-
+        
         elif zoom_level < default_zoom_level:
             value_zoom = default_value_zoom - (
                 (default_zoom_level-zoom_level) * zoom_step
             )
             adjust_y = default_y
         else:
-            # zoom level is at 10
+            
             value_zoom = default_value_zoom
             adjust_y = default_y
-
+        
         store.persistent._mas_zoom_zoom_level = zoom_level
 
 
@@ -821,8 +867,8 @@ init -5 python in mas_sprites:
         adjust_zoom()
 
 
-    # tryparses for the hair and clothes
-    # TODO: adjust this for docking station when ready
+
+
     def tryparsehair(_hair, default="def"):
         """
         Returns the given hair if it exists, or the default if not exist
@@ -836,11 +882,11 @@ init -5 python in mas_sprites:
         """
         if _hair in HAIRS:
             return _hair
-
+        
         return default
 
 
-    # TODO: adjust this for docking station when ready
+
     def tryparseclothes(_clothes, default="def"):
         """
         Returns the given clothes if it exists, or the default if not exist
@@ -854,20 +900,20 @@ init -5 python in mas_sprites:
         """
         if _clothes in CLOTHES:
             return _clothes
-
+        
         return default
 
 
-    ## Accessory dictionary
+
     ACS_MAP = dict()
 
-    ## hair dictionary
+
     HAIR_MAP = dict()
 
-    ## clothes dictionary
+
     CLOTH_MAP = dict()
 
-    ### SP CONSTANTS
+
     SP_ACS = store.mas_sprites_json.SP_ACS
     SP_HAIR = store.mas_sprites_json.SP_HAIR
     SP_CLOTHES = store.mas_sprites_json.SP_CLOTHES
@@ -878,12 +924,12 @@ init -5 python in mas_sprites:
         SP_CLOTHES: CLOTH_MAP
     }
 
-    # available lean types
+
     LEAN_TYPES = [
         "def"
     ]
 
-    # Numerical pose map
+
     NUM_POSE = {
         1: "steepling",
         2: "crossed",
@@ -894,8 +940,8 @@ init -5 python in mas_sprites:
         7: "downleftpointright",
     }
 
-    ## Pose list
-    # NOTE: do NOT include leans in here.
+
+
     POSES = [
         NUM_POSE[1],
         NUM_POSE[2],
@@ -905,21 +951,21 @@ init -5 python in mas_sprites:
         NUM_POSE[7],
     ]
 
-    ## lean poses
-    # NOTE: these should be like:
-    #   lean|arms
-    # NOTE: do NOT include regular poses in here
+
+
+
+
     L_POSES = [
         NUM_POSE[5],
     ]
 
-    # all poses
-    # this is purely for iterative purposes
+
+
     ALL_POSES = []
     ALL_POSES.extend(POSES)
     ALL_POSES.extend(L_POSES)
 
-    # arms
+
     NUM_ARMS = {
         1: "crossed",
         2: "left-down",
@@ -932,29 +978,29 @@ init -5 python in mas_sprites:
         9: "def|right-def",
     }
 
-    # NOTE: arm mapping happens at the base level
+
     ARMS = list(NUM_ARMS.values())
 
-    # leaning arms
-    # NOTE: no number should be linked to more than one lean type
+
+
     LEAN_ARMS = {
         LEAN_TYPES[0]: (8, 9),
     }
 
-    # reverse map for eaiser lookup
+
     ARMS_LEAN = {}
     for lean, values in LEAN_ARMS.iteritems():
         for value in values:
             ARMS_LEAN[value] = lean
 
-    # sprite exprop - list of topics
+
     EXPROP_TOPIC_MAP = {
         EXP_A_LHSEL: [
             "monika_hairclip_select"
         ],
     }
 
-    # sprite acs type - topic
+
     ACSTYPE_TOPIC_MAP = {
         "ribbon": "monika_ribbon_select"
     }
@@ -973,7 +1019,7 @@ init -5 python in mas_sprites:
         key_list = list(keys)
         for lean in LEAN_TYPES:
             key_list.extend([lean + "|" + key for key in keys])
-
+        
         return tuple(key_list)
 
 
@@ -1011,7 +1057,7 @@ init -5 python in mas_sprites:
                 lean,
                 ART_DLM
             ))
-
+        
         else:
             sprite_list.append(PREFIX_ACS)
 
@@ -1032,7 +1078,7 @@ init -5 python in mas_sprites:
                 lean,
                 ART_DLM
             ))
-
+        
         return PREFIX_FACE
 
 
@@ -1073,8 +1119,8 @@ init -5 python in mas_sprites:
             raise Exception(
                 "MASAccessory name '{0}' already exists.".format(mas_acs.name)
             )
-
-        # otherwise, unique name
+        
+        
         ACS_MAP[mas_acs.name] = mas_acs
 
 
@@ -1089,8 +1135,8 @@ init -5 python in mas_sprites:
             raise Exception(
                 "MASHair name '{0}' already exists.".format(mas_hair.name)
             )
-
-        # otherwise, unique name
+        
+        
         HAIR_MAP[mas_hair.name] = mas_hair
 
 
@@ -1105,8 +1151,8 @@ init -5 python in mas_sprites:
             raise Exception(
                 "MASClothes name '{0}' already exists.".format(mas_cloth.name)
             )
-
-        # otherwise, unique name
+        
+        
         CLOTH_MAP[mas_cloth.name] = mas_cloth
 
 
@@ -1186,21 +1232,21 @@ init -5 python in mas_sprites:
         """
         if lean is None:
             return False
-
-        # otherwise check blacklist elements
+        
+        
         if len(character.lean_acs_blacklist) > 0:
-            # monika is wearing a blacklisted accessory
+            
             return True
-
+        
         larms = lean + "|" + arms
-
+        
         if not character.hair.pose_map.l_map.get(larms, False):
             return True
-
+        
         if not character.clothes.pose_map.l_map.get(larms, False):
             return True
-
-        # otherwise, this is good
+        
+        
         return False
 
 
@@ -1223,36 +1269,36 @@ init -5 python in mas_sprites:
         Returns the sprite object with the given sprite name and sprite type.
         Or None if we couldn't find one.
         """
-        # NOTE: we have to use the module because we need updated maps.
+        
         sprite_map = SP_MAP.get(sprite_type, None)
         if sprite_map is None:
             return None
-
-        # otherwise we have a map
+        
+        
         return sprite_map.get(sprite_name, None)
 
 
-##### special mas monika functions (hooks)
-    # NOTE: set flag "abort" to True in prechange points to prevent
-    #   change/add/removal. This is dependent on the specific hook.
-    #   ACS: only wear_mux_pre_change and rm_exit_pre_change
-    #   HAIR: hair_exit_pre_change
-    #   CLOTHES: clothes_exit_pre_change
-    # NOTE: available temp_space flags by type:
-    #   ACS:
-    #       abort - see above
-    #       acs_list - list of acs Monika is currently wearing
-    #
-    #   HAIR:
-    #       abort - see above
-    #       by_user - True if set by the user, False if not
-    #       startup - True if we are in startup flow, false if not
-    #
-    #   CLOTHES:
-    #       abort - see above
-    #       by_user - same as hair
-    #       startup - same as hair
-    #       outfit_mode - True if in outfit mode, False if not
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def acs_rm_exit_pre_change(temp_space, moni_chr, rm_acs, acs_loc):
         """
@@ -1291,7 +1337,7 @@ init -5 python in mas_sprites:
             new_acs - acs we are adding
             acs_loc - acs location to wear this acs
         """
-        # abort if current hair not compatible wtih CAS
+        
         if not is_hairacs_compatible(moni_chr.hair, new_acs):
             temp_space["abort"] = True
 
@@ -1360,8 +1406,8 @@ init -5 python in mas_sprites:
             prev_cloth - current clothes
             new_cloth - clothes we are changing to
         """
-
-        # if clothes had a desired ribbon, restore to previous
+        
+        
         desired_ribbon = prev_cloth.getprop("desired-ribbon")
         if (
                 desired_ribbon is not None
@@ -1371,7 +1417,7 @@ init -5 python in mas_sprites:
             temp_ribbon = temp_storage.get("hair.ribbon", None)
             if temp_ribbon is None:
                 moni_chr.remove_acs(ACS_MAP[desired_ribbon])
-
+            
             else:
                 moni_chr.wear_acs(temp_ribbon)
 
@@ -1387,8 +1433,8 @@ init -5 python in mas_sprites:
             new_cloth - clothes we are changing to
         """
         if prev_cloth.hasprop("baked outfit"):
-            # a baked outfit causes selector issues. we need to re-evaluate
-            # certain cases.
+            
+            
             _hair_unlock_select_if_needed()
             store.mas_selspr._validate_group_topics()
 
@@ -1404,8 +1450,8 @@ init -5 python in mas_sprites:
             new_cloth - clothes we are changing to
         """
         outfit_mode = temp_space.get("outfit_mode", False)
-
-        # if clothes has a desired ribbon, change to it if outfit mode
+        
+        
         desired_ribbon = new_cloth.getprop("desired-ribbon")
         if (
                 outfit_mode
@@ -1416,15 +1462,15 @@ init -5 python in mas_sprites:
             prev_ribbon = moni_chr.get_acs_of_type("ribbon")
             if prev_ribbon is None:
                 prev_ribbon = moni_chr.get_acs_of_exprop("ribbon-like")
-
+            
             if prev_ribbon != store.mas_acs_ribbon_blank:
                 temp_storage["hair.ribbon"] = prev_ribbon
-
+            
             moni_chr.wear_acs(ACS_MAP[desired_ribbon])
-
-        # if current hair is incompatible, swap to def.
-        # NOTE: we will enforce def has a hairstyle that all clothing
-        #   items MUST work with.
+        
+        
+        
+        
         if not is_clotheshair_compatible(new_cloth, moni_chr.hair):
             moni_chr.reset_hair(False)
 
@@ -1440,11 +1486,11 @@ init -5 python in mas_sprites:
             prev_hair - current hair
             new_hair - hair we are changing to
         """
-        # abort if current clothes is not comaptible with new hair
+        
         if not is_clotheshair_compatible(moni_chr.clothes, new_hair):
             temp_space["abort"] = True
             return
-
+        
         all_acs = moni_chr.get_acs()
         for acs in all_acs:
             if not is_hairacs_compatible(new_hair, acs):
@@ -1488,48 +1534,48 @@ init -5 python in mas_sprites:
             new_hair - hair we are changing to
         """
         startup = temp_space.get("startup", False)
-
+        
         if new_hair.hasprop("ribbon"):
-            # new hair is enabled for ribbon
-
+            
+            
             if new_hair.hasprop("ribbon-restore"):
                 temp_ribbon = temp_storage.get("hair.ribbon", None)
-
-                # dont force ribbon on startup
+                
+                
                 if not startup and temp_ribbon is not None:
-                    # force ribbon means that we need to force a ribbon
+                    
                     _acs_wear_if_not_wearing_type(
                         moni_chr,
                         "ribbon",
                         temp_ribbon
-#                        temp_storage.get(
-#                            "hair.ribbon",
-#                            store.mas_acs_ribbon_def
-#                        )
-                    )
 
+
+
+
+                    )
+            
             elif new_hair.hasprop("ribbon-off"):
-                # take ribbon off for this hairstyle
+                
                 _acs_ribbon_save_and_remove(moni_chr)
                 _acs_ribbon_like_save_and_remove(_moni_chr)
-
+            
             if not moni_chr.is_wearing_clothes_with_exprop("baked outfit"):
-                # unlock selector for ribbons if you have more than one
+                
                 store.mas_filterUnlockGroup(SP_ACS, "ribbon")
-
-            # also change name of the ribbon select prompt
+            
+            
             if moni_chr.is_wearing_ribbon():
                 store.mas_selspr.set_prompt("ribbon", "change")
-
+            
             else:
                 store.mas_selspr.set_prompt("ribbon", "wear")
-
+        
         else:
-            # new hair not enabled for ribbon
+            
             _acs_ribbon_save_and_remove(moni_chr)
             _acs_ribbon_like_save_and_remove(moni_chr)
 
-    # hook function helpers
+
 
     def is_hairacs_compatible(hair, acs):
         """
@@ -1541,18 +1587,18 @@ init -5 python in mas_sprites:
 
         RETURNS: True if hair+acs is compatible, False if not
         """
-        # first check for required hair prop
+        
         req_hair_prop = acs.getprop(EXP_A_RQHP, None)
         if req_hair_prop is not None and not hair.hasprop(req_hair_prop):
             return False
-
-        # then check exclusions
+        
+        
         excl_hair_props = acs.getprop(EXP_A_EXCLHP, None)
         if excl_hair_props is not None:
             for excl_hair_prop in excl_hair_props:
                 if hair.hasprop(excl_hair_prop):
                     return False
-
+        
         return True
 
 
@@ -1566,22 +1612,22 @@ init -5 python in mas_sprites:
 
         RETURNS: True if clothes+hair is comaptible, False if not
         """
-        # first check for required clothes prop
+        
         req_cloth_prop = hair.getprop(EXP_H_RQCP, None)
         if req_cloth_prop is not None and not clothes.hasprop(req_cloth_prop):
             return False
-
-        # then check exclusions
+        
+        
         excl_cloth_props = hair.getprop(EXP_H_EXCLCP, None)
         if excl_cloth_props is not None:
             for excl_cloth_prop in excl_cloth_props:
                 if clothes.hasprop(excl_cloth_prop):
                     return False
-
+        
         return True
 
 
-    # sprite maker functions
+
 
     def _ms_head(clothing, hair, head):
         """
@@ -1595,7 +1641,7 @@ init -5 python in mas_sprites:
         RETURNS:
             head string
         """
-        # NOTE: untested
+        
         return "".join([
             build_loc(),
             ',"',
@@ -1622,7 +1668,7 @@ init -5 python in mas_sprites:
         RETURNS:
             left side stirng
         """
-        # NOTE UNTESTED
+        
         return "".join([
             build_loc(),
             ',"',
@@ -1649,7 +1695,7 @@ init -5 python in mas_sprites:
         RETURNS:
             right body string
         """
-        # NOTE: UNTESTED
+        
         return "".join([
             build_loc(),
             ',"',
@@ -1682,7 +1728,7 @@ init -5 python in mas_sprites:
         RETURNS:
             custom standing sprite
         """
-        # NOTE: UNTESTED
+        
         return "".join([
             I_COMP,
             "(",
@@ -1718,8 +1764,8 @@ init -5 python in mas_sprites:
         RETURNS:
             stock standing string
         """
-        # TODO: update this to work with the more optimized system for
-        # building sprites
+        
+        
         if single:
             return "".join([
                 I_COMP,
@@ -1732,10 +1778,10 @@ init -5 python in mas_sprites:
                 single,
                 FILE_EXT,
                 '"',
-#                _ms_accessorylist(acs_list, False, False),
+
                 ")"
             ])
-
+        
         return "".join([
             I_COMP,
             "(",
@@ -1759,14 +1805,10 @@ init -5 python in mas_sprites:
             head,
             FILE_EXT,
             '"',
-#            _ms_accessorylist(acs_list, False, False),
+
             ")"
         ])
 
-
-# Dynamic sprite builder
-# retrieved from a Dress Up Renpy Cookbook
-# https://lemmasoft.renai.us/forums/viewtopic.php?f=51&t=30643
 
 
 init -10 python:
@@ -1788,8 +1830,8 @@ init -10 python:
         PROPERTIES:
             None. Use provided functions to manipulate the map.
         """
-        __KEY_ALL = "*"
-
+        _m1_sprite0x2dchart__KEY_ALL = "*"
+        
         def __init__(self, keys, default=None):
             """
             Constructor
@@ -1801,25 +1843,25 @@ init -10 python:
                 default - value to use as the default/catch all object. This
                     is assigned to the KEY_ALL key.
             """
-            self.__map = { self.__KEY_ALL: default }
-
-            # remove keyall
+            self._m1_sprite0x2dchart__map = { self._m1_sprite0x2dchart__KEY_ALL: default }
+            
+            
             key_list = list(keys)
-            if self.__KEY_ALL in key_list:
-                key_list.remove(self.__KEY_ALL)
-
-            # remove duplicate
-            self.__valid_keys = tuple(set(key_list))
-
+            if self._m1_sprite0x2dchart__KEY_ALL in key_list:
+                key_list.remove(self._m1_sprite0x2dchart__KEY_ALL)
+            
+            
+            self._m1_sprite0x2dchart__valid_keys = tuple(set(key_list))
+        
         def __iter__(self):
             """
             Iterator object (generator)
             """
-            for key in self.__valid_keys:
+            for key in self._m1_sprite0x2dchart__valid_keys:
                 item = self.get(key)
                 if item is not None:
                     yield item
-
+        
         def _add_key(self, new_key, new_value=None):
             """
             Adds a key to the valid keys list. Also adds a value if desired
@@ -1833,12 +1875,12 @@ init -10 python:
                 new_value - new value to associate with this key
                     (Default: None)
             """
-            if new_key not in self.__valid_keys and new_key != self.__KEY_ALL:
-                key_list = list(self.__valid_keys)
+            if new_key not in self._m1_sprite0x2dchart__valid_keys and new_key != self._m1_sprite0x2dchart__KEY_ALL:
+                key_list = list(self._m1_sprite0x2dchart__valid_keys)
                 key_list.append(new_key)
-                self.__valid_keys = tuple(key_list)
+                self._m1_sprite0x2dchart__valid_keys = tuple(key_list)
                 self.add(new_key, new_value)
-
+        
         def add(self, key, value):
             """
             Adds value to map.
@@ -1854,13 +1896,13 @@ init -10 python:
             if value is None:
                 self.clear(key)
                 return
-
-            if key == self.__KEY_ALL or key not in self.__valid_keys:
+            
+            if key == self._m1_sprite0x2dchart__KEY_ALL or key not in self._m1_sprite0x2dchart__valid_keys:
                 return
-
-            # otherwise valid to add
-            self.__map[key] = value
-
+            
+            
+            self._m1_sprite0x2dchart__map[key] = value
+        
         def apply(self, mapping):
             """
             Applies the given dict mapping to this MASHighlightMap.
@@ -1873,7 +1915,7 @@ init -10 python:
             """
             for key in mapping:
                 self.add(key, mapping[key])
-
+        
         def clear(self, key):
             """
             Clears value with the given key.
@@ -1882,9 +1924,9 @@ init -10 python:
             IN:
                 key - key to clear with
             """
-            if key != self.__KEY_ALL and key in self.__map:
-                self.__map.pop(key)
-
+            if key != self._m1_sprite0x2dchart__KEY_ALL and key in self._m1_sprite0x2dchart__map:
+                self._m1_sprite0x2dchart__map.pop(key)
+        
         @staticmethod
         def clear_hl_mapping(hl_mpm_data):
             """
@@ -1902,7 +1944,7 @@ init -10 python:
             if hl_mpm_data is None:
                 return None
             return (hl_mpm_data[0], {})
-
+        
         @staticmethod
         def convert_mpm(hl_keys, mpm):
             """
@@ -1914,8 +1956,8 @@ init -10 python:
             """
             if mpm is None:
                 return
-
-            # first, build modify pargs map
+            
+            
             pargs = {}
             for param in MASPoseMap.P_PARAM_NAMES:
                 hl_data = mpm.get(MASPoseMap.pn2lp(param), None)
@@ -1927,10 +1969,10 @@ init -10 python:
                         hl_data[0],
                         hl_data[1]
                     )
-
-            # then modify the mpm
+            
+            
             mpm._modify(**pargs)
-
+        
         @staticmethod
         def create_from_mapping(hl_keys, hl_def, hl_mapping):
             """
@@ -1946,7 +1988,7 @@ init -10 python:
             mhm = MASHighlightMap(hl_keys, default=hl_def)
             mhm.apply(hl_mapping)
             return mhm
-
+        
         def fltget(self, key, flt, defval=None):
             """
             Combines getting from here and getting the resulting MASFilterMap
@@ -1966,9 +2008,9 @@ init -10 python:
             mfm = self.get(key)
             if mfm is None:
                 return defval
-
+            
             return mfm.get(flt, defval=defval)
-
+        
         @staticmethod
         def fromJSON(json_obj, msg_log, ind_lvl, hl_keys):
             """
@@ -1992,35 +2034,35 @@ init -10 python:
                     value: MASFilterMap object
                 or None if no data, False if failure in parsing occured
             """
-            # first log loading
+            
             msg_log.append((
                 store.mas_sprites_json.MSG_INFO_T,
                 ind_lvl,
                 store.mas_sprites_json.MHM_LOADING
             ))
-
-            # parse the data
+            
+            
             hl_data = MASHighlightMap._fromJSON_hl_data(
                 json_obj,
                 msg_log,
                 ind_lvl + 1,
                 hl_keys
             )
-
-            # check fai/succ
+            
+            
             if hl_data is False:
-                # loggin should take care of this already
+                
                 return False
-
-            # log success
+            
+            
             msg_log.append((
                 store.mas_sprites_json.MSG_INFO_T,
                 ind_lvl,
                 store.mas_sprites_json.MHM_SUCCESS
             ))
-
+            
             return hl_data
-
+        
         def get(self, key):
             """
             Gets value wth the given key.
@@ -2030,28 +2072,28 @@ init -10 python:
 
             RETURNS: MASFilterMap object, or None if not found
             """
-            if key in self.__map:
-                return self.__map[key]
-
-            # otherwise return default
+            if key in self._m1_sprite0x2dchart__map:
+                return self._m1_sprite0x2dchart__map[key]
+            
+            
             return self.getdef()
-
+        
         def getdef(self):
             """
             Gets the default value
 
             RETURNS: MASFilterMap object, or NOne if not found
             """
-            return self.__map.get(self.__KEY_ALL, None)
-
+            return self._m1_sprite0x2dchart__map.get(self._m1_sprite0x2dchart__KEY_ALL, None)
+        
         def keys(self):
             """
             gets keys in this map
 
             RETURNS: tuple of keys
             """
-            return self.__valid_keys
-
+            return self._m1_sprite0x2dchart__valid_keys
+        
         @staticmethod
         def o_fltget(mhm, key, flt, defval=None):
             """
@@ -2069,9 +2111,9 @@ init -10 python:
             """
             if mhm is None or flt is None:
                 return defval
-
+            
             return mhm.fltget(key, flt, defval=defval)
-
+        
         def setdefault(self, value):
             """
             Sets the default value
@@ -2080,39 +2122,39 @@ init -10 python:
                 value - value to use as default
             """
             if value is None or isinstance(value, MASFilterMap):
-                self.__map[self.__KEY_ALL] = value
+                self._m1_sprite0x2dchart__map[self._m1_sprite0x2dchart__KEY_ALL] = value
 
 
 init -3 python:
-#    import renpy.store as store
-#    import renpy.exports as renpy # we need this so Ren'Py properly handles rollback with classes
-#    from operator import attrgetter # we need this for sorting items
+
+
+
     import math
     from collections import namedtuple
 
-    # Monika character base
+
     class MASMonika(renpy.store.object):
         import store.mas_sprites as mas_sprites
-
-        # CONSTANTS
-        PRE_ACS = 0 # PRE ACCESSORY (before body)
-        MID_ACS = 1 # MID ACCESSORY (between face and front arms)
-        PST_ACS = 2 # post accessory (after front arms)
-        BBH_ACS = 3 # betweeen Body and Back Hair accessory
-        BFH_ACS = 4 # between Body and Front Hair accessory
-        AFH_ACS = 5 # between face and front hair accessory
-        BBA_ACS = 6 # between body and back arms
-        MAB_ACS = 7 # between middle arms and boobs
-        BSE_ACS = 8 # between base and clothes
-        ASE_ACS = 9 # between base arms and clothes
-        BAT_ACS = 10 # between base arms and table
-        MAT_ACS = 11 # between middle arms and table
-
-        # valid rec layers
-        # NOTE: this MUST be in the same order as save_state/load_State
-        # NOTE: do not remove layers. Because of load state, we can only
-        #   ignore layers if needed, but not remove. BEtter to just replace
-        #   a layer than remove it.
+        
+        
+        PRE_ACS = 0 
+        MID_ACS = 1 
+        PST_ACS = 2 
+        BBH_ACS = 3 
+        BFH_ACS = 4 
+        AFH_ACS = 5 
+        BBA_ACS = 6 
+        MAB_ACS = 7 
+        BSE_ACS = 8 
+        ASE_ACS = 9 
+        BAT_ACS = 10 
+        MAT_ACS = 11 
+        
+        
+        
+        
+        
+        
         REC_LAYERS = (
             PRE_ACS,
             BBH_ACS,
@@ -2127,14 +2169,13 @@ init -3 python:
             BAT_ACS,
             MAT_ACS,
         )
-
-        # split layers
+        
+        
         SPL_LAYERS = (
             BSE_ACS,
             ASE_ACS,
         )
 
-        # rec layers in standard render order
         RENDER_ORDER = (
             PRE_ACS,
             BBH_ACS,
@@ -2149,7 +2190,7 @@ init -3 python:
             MID_ACS,
             PST_ACS,
         )
-
+        
         def __init__(self):
             """
             Constructor
@@ -2157,85 +2198,84 @@ init -3 python:
             self.name="Monika"
             self.haircut="default"
             self.haircolor="default"
-            self.skin_hue=0 # monika probably doesn't have different skin color
-            self.lipstick="default" # i guess no lipstick
-
-            self.clothes = mas_clothes_def # default clothes is school outfit
-            self.hair = mas_hair_def # default hair is the usual whtie ribbon
-            #self.table = mas_table_def # default table
-
-            # list of lean blacklisted accessory names currently equipped
+            self.skin_hue=0 
+            self.lipstick="default" 
+            
+            self.clothes = mas_clothes_def 
+            self.hair = mas_hair_def 
+            
+            
+            
             self.lean_acs_blacklist = []
-
-            # setup acs dict
+            
             self.acs = {
-                # accesories to be rendereed before anything
+                
                 self.PRE_ACS: [],
 
-                # accessories to be rendered after back hair, before body
+                
                 self.BBH_ACS: [],
 
-                # accessories to be rendered after base body, before body clothes
+                
                 self.BSE_ACS: [],
 
-                # accessories to be rendered after body, before back arms
+                
                 self.BBA_ACS: [],
 
-                # accessories to be rendered after base arms, before arm clothes
+                
                 self.ASE_ACS: [],
 
-                # accessories to be rendered after back arms, before table
+                
                 self.BAT_ACS: [],
 
-                # accessories to be rendered after table, before middle arms
+                
                 self.MAT_ACS: [],
 
-                # accessories to be rendered after middle arms before boobs
+                
                 self.MAB_ACS: [],
 
-                # accessories to be rendered after boobs, before front hair
+                
                 self.BFH_ACS: [],
 
-                # accessories to be rendered after fornt hair, before face
+                
                 self.AFH_ACS: [],
 
-                # accessories to be rendered after face, before front arms
+                
                 self.MID_ACS: [],
 
-                # accessories to be rendered last
+                
                 self.PST_ACS: [],
             }
-
-            # use this dict to map acs IDs with which acs list they are in.
-            # this will increase speed of removal and checking.
+            
+            
+            
             self.acs_list_map = {}
-
-            # LOCK VARS
-            # True if we should block any changes to hair
+            
+            
+            
             self.lock_hair = False
-
-            # True if we should block any chnages to clothes
+            
+            
             self.lock_clothes = False
-
-            # True if we should block any changes to cas
+            
+            
             self.lock_acs = False
-
-            # set to True to allow ACS overriding
+            
+            
             self._override_rec_layer = False
-
-            # the current table/chair combo we
-            # NOTE: this is associated with monika because we could definitely
-            # have multiple table/chairs in a MASBackground.
-            # NOTE: replacing this is untested, but will be required because
-            #   of highlights
+            
+            
+            
+            
+            
+            
             self.tablechair = MASTableChair("def", "def")
-
+        
         def __repr__(self):
             """
             this is lengthy and will contain all objects
             """
-            # build ACS strings
-            # this determines order to show ACS in
+            
+            
             acs_str_map = (
                 "PRE",
                 "BBH",
@@ -2253,18 +2293,18 @@ init -3 python:
             acs_str = []
             for idx, pfx in enumerate(acs_str_map):
                 rec_layer = self.RENDER_ORDER[idx]
-                acs_list = self.__get_acs(rec_layer)
+                acs_list = self._m1_sprite0x2dchart__get_acs(rec_layer)
                 if len(acs_list) > 0:
                     acs_str.append("{0}: {1}".format(pfx, acs_list))
-
+            
             return "<Monika: ({0}, {1}, {2}, {3})>".format(
                 self.clothes,
                 self.hair,
                 ", ".join(acs_str),
                 self.tablechair
             )
-
-        def __get_acs(self, acs_type):
+        
+        def _m1_sprite0x2dchart__get_acs(self, acs_type):
             """
             Returns the accessory list associated with the given type
 
@@ -2275,7 +2315,7 @@ init -3 python:
                 accessory list, or None if the given acs_type is not valid
             """
             return self.acs.get(acs_type, None)
-
+        
         def _determine_poses(self, lean, arms):
             """
             determines the lean/pose/hair/baked data for monika based on
@@ -2293,58 +2333,58 @@ init -3 python:
                 [4] - base arms to use
                 [5] - pose arms to use
             """
-            # first check black list
+            
             if store.mas_sprites.should_disable_lean(lean, arms, self):
-                # set lean to None if its on the blacklist
-                # NOTE: this function checks pose_maps
+                
+                
                 lean = None
                 arms = "steepling"
-
-            # fallback adjustments:
+            
+            
             if self.hair.pose_map.is_fallback():
                 arms, lean = self.hair.get_fallback(arms, lean)
-
+            
             if self.clothes.pose_map.is_fallback():
                 arms, lean = self.clothes.get_fallback(arms, lean)
-
-            # get the mapped hair for the current clothes
+            
+            
             if self.clothes.has_hair_map():
                 hair = store.mas_sprites.HAIR_MAP.get(
                     self.clothes.get_hair(self.hair.name),
                     mas_hair_def
                 )
-
+            
             else:
                 hair = self.hair
-
-            # combined pose with lean for efficient
+            
+            
             if lean is not None:
                 leanpose = lean + "|" + arms
             else:
                 leanpose = arms
-
-            # MASPoseArms rules:
-            #   1. If the pose_arms property in clothes is None, then we assume
-            #   that the clothes follows the base pose rules.
-            #   2. If the pose_arms property exists, and the
-            #   corresponding pose in that map is None, then we assume that
-            #   the clothes does NOT have layers for this pose.
-            # select MASPoseArms for baes and outfit
-
-            # NOTE: we can always assume that base arms exist
-            # NOTE: but we will default steepling justin case
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             base_arms = [
                 store.mas_sprites.base_arms.get(arm_id)
                 for arm_id in store.mas_sprites.base_mpm.get(leanpose, [7])
             ]
             if self.clothes.pose_arms is None:
                 pose_arms = base_arms
-
+            
             else:
                 pose_arms = self.clothes.pose_arms.getflp(leanpose)
-
+            
             return (lean, leanpose, arms, hair, base_arms, pose_arms)
-
+        
         def _same_state_acs(self, a1, a2):
             """
             Compares given acs lists as acs objects
@@ -2357,23 +2397,23 @@ init -3 python:
 
             RETURNS: True if the same, False if not
             """
-            # quick chec
+            
             if len(a1) != len(a2):
                 return False
-
-            # make a list of names for comparison
+            
+            
             a2_names = [acs.name for acs in a2]
-
-            # now do comparison
+            
+            
             same_count = 0
             for a1_acs in a1:
                 if a1_acs.name in a2_names:
                     same_count += 1
                 else:
                     return False
-
+            
             return len(a2_names) == same_count
-
+        
         def _same_state_acs_prims(self, a1, a2):
             """
             Compares given acs lists as primitive data.
@@ -2386,19 +2426,19 @@ init -3 python:
 
             RETURNS: True if the same, False if not
             """
-            # quick check
+            
             if len(a1) != len(a2):
                 return False
-
+            
             same_count = 0
             for a1_name in a1:
                 if a1_name in a2:
                     same_count += 1
                 else:
                     return False
-
+            
             return len(a2) == same_count
-
+        
         def _same_state(self, data):
             """
             Compares the given state as objects
@@ -2408,30 +2448,30 @@ init -3 python:
 
             RETURNS: True if the same, False if not
             """
-            # object data is sprite objects, but we compare names
-
-            # get current monikas state
+            
+            
+            
             curr_state = self.save_state(True, True, True, False)
-
-            # first compare size
+            
+            
             if len(data) != len(curr_state):
                 return False
-
-            # clothes
+            
+            
             if data[0].name != curr_state[0].name:
                 return False
-
-            # hair
+            
+            
             if data[1].name != curr_state[1].name:
                 return False
-
-            # acs lists
+            
+            
             for index in range(2, len(data)):
                 if not self._same_state_acs(data[index], curr_state[index]):
                     return False
-
+            
             return True
-
+        
         def _same_state_prims(self, data):
             """
             Compares the given state as primitives
@@ -2441,32 +2481,31 @@ init -3 python:
 
             RETURNS: True if the same, False if not
             """
-            # primtiive data is stored as names
-
-            # get current monika's state
+            
+            
+            
             curr_state = self.save_state(True, True, True, True)
-
-            # first compare state size
+            
+            
             if len(data) != len(curr_state):
                 return False
-
-            # clothes
+            
+            
             if data[0] != curr_state[0]:
                 return False
-
-            # hair
+            
+            
             if data[1] != curr_state[1]:
                 return False
-
-            # acs lists
+            
+            
             for index in range(2, len(data)):
                 if not self._same_state_acs_prims(data[index], curr_state[index]):
                     return False
-
+            
             return True
-
+        
         def _load(self,
-                # NOTE: this is in REC_LAYER order
                 _clothes_name,
                 _hair_name,
                 _acs_pre_names,
@@ -2506,15 +2545,14 @@ init -3 python:
                 startup - True if we are loading on start, False if not
                     (Default: False)
             """
-            # clothes and hair
+            
             self.change_outfit(
                 store.mas_sprites.CLOTH_MAP.get(_clothes_name, store.mas_clothes_def),
                 store.mas_sprites.HAIR_MAP.get(_hair_name, store.mas_hair_def),
                 startup=startup
             )
-
-            # acs
-            # NOTE: this is in render layer order
+            
+            
             self._load_acs(_acs_pre_names, self.PRE_ACS)
             self._load_acs(_acs_bbh_names, self.BBH_ACS)
             self._load_acs(_acs_bse_names, self.BSE_ACS)
@@ -2527,7 +2565,7 @@ init -3 python:
             self._load_acs(_acs_afh_names, self.AFH_ACS)
             self._load_acs(_acs_mid_names, self.MID_ACS)
             self._load_acs(_acs_pst_names, self.PST_ACS)
-
+        
         def _load_acs(self, per_acs, acs_type):
             """
             Loads accessories from the given persistent into the given
@@ -2541,7 +2579,7 @@ init -3 python:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs:
                     self.wear_acs_in(_acs, acs_type)
-
+        
         def _load_acs_obj(self, acs_objs, acs_type):
             """
             Loads accessories from a given list of accessory objects into
@@ -2552,10 +2590,10 @@ init -3 python:
                 acs_type - acs type to load acs into
             """
             for _acs in acs_objs:
-                # must verify sprite before loading
+                
                 if _acs.name in store.mas_sprites.ACS_MAP:
                     self.wear_acs_in(_acs, acs_type)
-
+        
         def _save_acs(self, acs_type, force_acs=False):
             """
             Generates list of accessory names to save to persistent.
@@ -2574,7 +2612,7 @@ init -3 python:
                 for acs in self.acs[acs_type]
                 if force_acs or acs.stay_on_start
             ]
-
+        
         def _save_acs_obj(self, acs_type, force_acs=False):
             """
             Generaltes list of acs objects to save
@@ -2593,19 +2631,19 @@ init -3 python:
                 for acs in self.acs[acs_type]
                 if force_acs or acs.stay_on_start
             ]
-
+        
         @staticmethod
         def _verify_rec_layer(val, allow_none=True):
             if val is None:
                 return allow_none
             return val in MASMonika.REC_LAYERS
-
+        
         @staticmethod
         def _verify_spl_layer(val, allow_none=True):
             if val is None:
                 return allow_none
             return val in MASMonika.SPL_LAYERS
-
+        
         def change_clothes(
                 self,
                 new_cloth,
@@ -2633,72 +2671,72 @@ init -3 python:
             """
             if self.lock_clothes and not startup:
                 return
-
-            # setup temp space
+            
+            
             temp_space = {
                 "by_user": by_user,
                 "startup": startup,
                 "outfit_mode": outfit_mode
             }
-
+            
             prev_cloth = self.clothes
-
-            # run pre clothes change logic
+            
+            
             store.mas_sprites.clothes_exit_pre_change(
                 temp_space,
                 self,
                 prev_cloth,
                 new_cloth
             )
-
-            # abort if asked
+            
+            
             if temp_space.get("abort", False):
                 return
-
-            # exit point
+            
+            
             self.clothes.exit(
                 self,
                 new_clothes=new_cloth,
                 outfit_mode=outfit_mode
             )
-
-            # post exit, pre change
+            
+            
             store.mas_sprites.clothes_exit_pst_change(
                 temp_space,
                 self,
                 prev_cloth,
                 new_cloth
             )
-
-            # change
+            
+            
             self.clothes = new_cloth
-
-            # post change, pre entry
+            
+            
             store.mas_sprites.clothes_entry_pre_change(
                 temp_space,
                 self,
                 prev_cloth,
                 new_cloth
             )
-
-            # entry point
+            
+            
             self.clothes.entry(
                 self,
                 prev_clothes=prev_cloth,
                 outfit_mode=outfit_mode
             )
-
-            # post entry point
+            
+            
             store.mas_sprites.clothes_entry_pst_change(
                 temp_space,
                 self,
                 prev_cloth,
                 new_cloth
             )
-
+            
             if by_user is not None:
                 persistent._mas_force_clothes = bool(by_user)
-
+        
         def change_hair(self, new_hair, by_user=None, startup=False):
             """
             Changes hair to the given hair. also sets the persistent force
@@ -2715,64 +2753,64 @@ init -3 python:
             """
             if self.lock_hair and not startup:
                 return
-
-            # setup temp space
+            
+            
             temp_space = {
                 "by_user": by_user,
                 "startup": startup,
             }
-
+            
             prev_hair = self.hair
-
-            # run pre hair change logic
+            
+            
             store.mas_sprites.hair_exit_pre_change(
                 temp_space,
                 self,
                 prev_hair,
                 new_hair
             )
-
-            # abort if asked
+            
+            
             if temp_space.get("abort", False):
                 return
-
-            # exit point
+            
+            
             self.hair.exit(self, new_hair=new_hair)
-
-            # post exit , pre hair change
+            
+            
             store.mas_sprites.hair_exit_pst_change(
                 temp_space,
                 self,
                 prev_hair,
                 new_hair
             )
-
-            # change
+            
+            
             self.hair = new_hair
-
-            # post change, pre entry
+            
+            
             store.mas_sprites.hair_entry_pre_change(
                 temp_space,
                 self,
                 prev_hair,
                 new_hair
             )
-
-            # entry point
+            
+            
             self.hair.entry(self, prev_hair=prev_hair)
-
-            # post entry point
+            
+            
             store.mas_sprites.hair_entry_pst_change(
                 temp_space,
                 self,
                 prev_hair,
                 new_hair
             )
-
+            
             if by_user is not None:
                 persistent._mas_force_hair = bool(by_user)
-
-
+        
+        
         def change_outfit(
                 self,
                 new_cloth,
@@ -2795,8 +2833,8 @@ init -3 python:
             """
             self.change_clothes(new_cloth, by_user=by_user, startup=startup)
             self.change_hair(new_hair, by_user=by_user, startup=startup)
-
-
+        
+        
         def get_acs(self):
             """
             Gets all acs objects currently worn by Monika
@@ -2808,10 +2846,10 @@ init -3 python:
                 acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if acs is not None:
                     acs_items.append(acs)
-
+            
             return acs_items
-
-
+        
+        
         def get_acs_by_desk(self, flag_value=True):
             """
             Returns all acs that have a keep_on_desk flag set to flag_value
@@ -2828,10 +2866,10 @@ init -3 python:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.keep_on_desk == flag_value:
                     acs_items.append(_acs)
-
+            
             return acs_items
-
-
+        
+        
         def get_acs_of_exprop(self, exprop, get_all=False):
             """
             Gets the acs objects currently being work of a given ex prop
@@ -2842,26 +2880,26 @@ init -3 python:
                     False will return the first one
                     (Default: False)
 
-            RETURNS: single matching acs or None if get_all is False, list of
+            RETURNS: single matching acs or None if get_all is False, list of 
                 matching acs or empty list if get_all is True.
             """
             if get_all:
                 acs_items = []
             else:
                 acs_items = None
-
+            
             for acs_name in self.acs_list_map:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.hasprop(exprop):
                     if get_all:
                         acs_items.append(_acs)
-
+                    
                     else:
                         return _acs
-
+            
             return acs_items
-
-
+        
+        
         def get_acs_of_type(self, acs_type, get_all=False):
             """
             Gets the acs objects currently being worn of a given type.
@@ -2879,7 +2917,7 @@ init -3 python:
                 acs_items = []
             else:
                 acs_items = None
-
+            
             for acs_name in self.acs_list_map:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.acs_type == acs_type:
@@ -2887,10 +2925,10 @@ init -3 python:
                         acs_items.append(_acs)
                     else:
                         return _acs
-
+            
             return acs_items
-
-
+        
+        
         def get_outfit(self):
             """
             Returns the current outfit
@@ -2901,8 +2939,8 @@ init -3 python:
                     [1] - current hair
             """
             return (self.clothes, self.hair)
-
-
+        
+        
         def is_wearing_acs(self, accessory):
             """
             Checks if currently wearing the given accessory
@@ -2914,8 +2952,8 @@ init -3 python:
                 True if wearing accessory, false if not
             """
             return accessory.name in self.acs_list_map
-
-
+        
+        
         def is_wearing_acs_with_exprop(self, exprop):
             """
             Checks if currently wearing any accessory with given exprop
@@ -2929,10 +2967,10 @@ init -3 python:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.hasprop(exprop):
                     return True
-
+            
             return False
-
-
+        
+        
         def is_wearing_acs_type(self, acs_type):
             """
             Checks if currently wearing any accessory with given type
@@ -2946,10 +2984,10 @@ init -3 python:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.acs_type == acs_type:
                     return True
-
+            
             return False
-
-
+        
+        
         def is_wearing_acs_types(self, *acs_types):
             """
             multiple arg version of is_wearing_acs_type
@@ -2962,9 +3000,9 @@ init -3 python:
             for acs_type in acs_types:
                 if self.is_wearing_acs_type(acs_type):
                     return True
-
+            
             return False
-
+        
         def is_wearing_acs_with_mux(self, acs_type):
             """
             Checks if currently wearing any ACS with the given acs_type in its
@@ -2981,9 +3019,9 @@ init -3 python:
                         and acs_type in acs.mux_type
                 ):
                     return True
-
+            
             return False
-
+        
         def is_wearing_acs_in(self, accessory, acs_type):
             """
             Checks if the currently wearing the given accessory as the given
@@ -2996,14 +3034,14 @@ init -3 python:
             RETURNS:
                 True if wearing accessory, False if not
             """
-            acs_list = self.__get_acs(acs_type)
-
+            acs_list = self._m1_sprite0x2dchart__get_acs(acs_type)
+            
             if acs_list is not None:
                 return accessory in acs_list
-
+            
             return False
-
-
+        
+        
         def is_wearing_clothes_with_exprop(self, exprop):
             """
             Checks if we are currently wearing clothes with the given exprop
@@ -3014,8 +3052,8 @@ init -3 python:
             RETURNS: True if wearing clothes with the exprop, False if not
             """
             return self.clothes.hasprop(exprop)
-
-
+        
+        
         def is_wearing_hair_with_exprop(self, exprop):
             """
             Checks if we are currently wearing hair with the given exprop
@@ -3026,8 +3064,8 @@ init -3 python:
             RETURNS: True if wearing hair with the exprop, False if not
             """
             return self.hair.hasprop(exprop)
-
-
+        
+        
         def is_wearing_ribbon(self):
             """
             Checks if we are currently wearing a ribbon or ribbon-like ACS
@@ -3036,10 +3074,10 @@ init -3 python:
                 ribbon-like ex prop
             """
             return (
-                self.is_wearing_acs_type("ribbon")
+                self.is_wearing_acs_type("ribbon") 
                 or self.is_wearing_acs_with_exprop("ribbon-like")
             )
-
+        
         def load(self, startup=False):
             """
             Loads hair/clothes/accessories from persistent.
@@ -3066,8 +3104,8 @@ init -3 python:
                 store.persistent._mas_acs_mat_list,
                 startup=startup
             )
-
-        # TODO: consider adding startup to this
+        
+        
         def load_state(self, _data, as_prims=False):
             """
             Loads clothes/hair/acs from a tuple data format that was saved
@@ -3094,18 +3132,18 @@ init -3 python:
                     (Default: False)
             """
             if as_prims:
-                # for prims, we can just call an existing function
+                
                 self._load(*_data)
                 return
-
-            # otherwise, we need to set things ourselves
-            # clothes and hair
+            
+            
+            
             self.change_outfit(_data[0], _data[1])
-
-            # acs
+            
+            
             for index, rec_layer in enumerate(self.REC_LAYERS):
                 self._load_acs_obj(_data[index+2], rec_layer)
-
+        
         def reset_all(self, by_user=None):
             """
             Resets all of monika
@@ -3118,7 +3156,7 @@ init -3 python:
             self.reset_clothes(by_user)
             self.reset_hair(by_user)
             self.remove_all_acs()
-
+        
         def remove_acs(self, accessory):
             """
             Removes the given accessory. this uses the map to determine where
@@ -3131,8 +3169,8 @@ init -3 python:
                 accessory,
                 self.acs_list_map.get(accessory.name, None)
             )
-
-
+        
+        
         def remove_acs_exprop(self, exprop):
             """
             Removes all ACS of given exprop.
@@ -3144,8 +3182,8 @@ init -3 python:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.hasprop(exprop):
                     self.remove_acs_in(_acs, self.acs_list_map[acs_name])
-
-
+        
+        
         def remove_acs_mux(self, mux_types):
             """
             Removes all ACS with a mux type in the given list.
@@ -3157,8 +3195,8 @@ init -3 python:
                 _acs = store.mas_sprites.ACS_MAP.get(acs_name, None)
                 if _acs and _acs.acs_type in mux_types:
                     self.remove_acs_in(_acs, self.acs_list_map[acs_name])
-
-
+        
+        
         def remove_acs_in(self, accessory, acs_type):
             """
             Removes the given accessory from the given accessory list type
@@ -3169,55 +3207,55 @@ init -3 python:
             """
             if self.lock_acs:
                 return
-
-            acs_list = self.__get_acs(acs_type)
+            
+            acs_list = self._m1_sprite0x2dchart__get_acs(acs_type)
             temp_space = {
                 "acs_list": acs_list,
             }
-
+            
             if acs_list is not None and accessory in acs_list:
-
-                # run pre exit point code
+                
+                
                 store.mas_sprites.acs_rm_exit_pre_change(
                     temp_space,
                     self,
                     accessory,
                     acs_type
                 )
-
-                # abort removal if we were told to abort
+                
+                
                 if temp_space.get("abort", False):
                     return
-
-                # run programming point
+                
+                
                 accessory.exit(self)
-
-                # run post exit code
+                
+                
                 store.mas_sprites.acs_rm_exit_pst_change(
                     temp_space,
                     self,
                     accessory,
                     acs_type
                 )
-
-                # cleanup blacklist
+                
+                
                 if accessory.name in self.lean_acs_blacklist:
                     self.lean_acs_blacklist.remove(accessory.name)
-
-                # cleanup mapping
+                
+                
                 if accessory.name in self.acs_list_map:
                     self.acs_list_map.pop(accessory.name)
-
-                # now remove
+                
+                
                 acs_list.remove(accessory)
-
+        
         def remove_all_acs(self):
             """
             Removes all accessories from all accessory lists
             """
             for rec_layer in self.REC_LAYERS:
                 self.remove_all_acs_in(rec_layer)
-
+        
         def remove_all_acs_in(self, acs_type):
             """
             Removes all accessories from the given accessory type
@@ -3227,24 +3265,24 @@ init -3 python:
             """
             if self.lock_acs:
                 return
-
+            
             if acs_type in self.acs:
-                # need to clear blacklisted
+                
                 for acs in self.acs[acs_type]:
-                    # run programming point
+                    
                     acs.exit(self)
-
-                    # cleanup blacklist
+                    
+                    
                     if acs.name in self.lean_acs_blacklist:
                         self.lean_acs_blacklist.remove(acs.name)
-
-                    # remove from mapping
+                    
+                    
                     if acs.name in self.acs_list_map:
                         self.acs_list_map.pop(acs.name)
-
+                
                 self.acs[acs_type] = list()
-
-
+        
+        
         def reset_clothes(self, by_user=None):
             """
             Resets clothing to default
@@ -3255,8 +3293,8 @@ init -3 python:
                     (Default: None)
             """
             self.change_clothes(mas_clothes_def, by_user)
-
-
+        
+        
         def reset_hair(self, by_user=None):
             """
             Resets hair to default
@@ -3267,8 +3305,8 @@ init -3 python:
                     (Default: None)
             """
             self.change_hair(mas_hair_def, by_user)
-
-
+        
+        
         def reset_outfit(self, by_user=None):
             """
             Resetse clothing and hair to default
@@ -3280,7 +3318,7 @@ init -3 python:
             """
             self.reset_clothes(by_user)
             self.reset_hair(by_user)
-
+        
         def restore(self, _data, as_prims=False):
             """
             Restores monika to a previous state. This will reset outfit and
@@ -3293,7 +3331,7 @@ init -3 python:
             self.reset_outfit()
             self.remove_all_acs()
             self.load_state(_data, as_prims=as_prims)
-
+        
         def save(self, force_hair=False, force_clothes=False, force_acs=False):
             """
             Saves hair/clothes/acs to persistent
@@ -3309,14 +3347,14 @@ init -3 python:
                     stay_on_start is False
                     (Default: False)
             """
-            # hair and clothes
+            
             if force_hair or self.hair.stay_on_start:
                 store.persistent._mas_monika_hair = self.hair.name
-
+            
             if force_clothes or self.clothes.stay_on_start:
                 store.persistent._mas_monika_clothes = self.clothes.name
-
-            # acs
+            
+            
             store.persistent._mas_acs_pre_list = self._save_acs(
                 self.PRE_ACS,
                 force_acs
@@ -3357,8 +3395,8 @@ init -3 python:
                 self.PST_ACS,
                 force_acs
             )
-
-
+        
+        
         def same_state(self, data, as_prims=False):
             """
             compares if the given state is the same as current monika
@@ -3371,9 +3409,9 @@ init -3 python:
             """
             if as_prims:
                 return self._same_state_prims(data)
-
+            
             return self._same_state(data)
-
+        
         def save_state(self,
                 force_hair=False,
                 force_clothes=False,
@@ -3417,36 +3455,36 @@ init -3 python:
                 [12]: bat acs data (Default: [])
                 [13]: mat acs data (Default: [])
             """
-            # determine which clothes to save
+            
             if force_clothes or self.clothes.stay_on_start:
                 cloth_data = self.clothes
             else:
                 cloth_data = mas_clothes_def
-
-            # determine which hair to save
+            
+            
             if force_hair or self.hair.stay_on_start:
                 hair_data = self.hair
             else:
                 hair_data = mas_hair_def
-
+            
             state_data = []
-
-            # save clothes and hair
+            
+            
             if as_prims:
                 state_data.extend((cloth_data.name, hair_data.name))
             else:
                 state_data.extend((cloth_data, hair_data))
-
-            # now acs
+            
+            
             for rec_layer in self.REC_LAYERS:
                 if as_prims:
                     state_data.append(self._save_acs(rec_layer, force_acs))
                 else:
                     state_data.append(self._save_acs_obj(rec_layer, force_acs))
-
-            # finally return results
+            
+            
             return tuple(state_data)
-
+        
         def wear_acs(self, acs):
             """
             Wears the given accessory in that accessory's recommended
@@ -3456,7 +3494,7 @@ init -3 python:
                 acs - accessory to wear
             """
             self.wear_acs_in(acs, acs.get_rec_layer())
-
+        
         def wear_acs_in(self, accessory, acs_type):
             """
             Wears the given accessory
@@ -3469,87 +3507,87 @@ init -3 python:
                 acs_type - layer to wear the acs in.
             """
             if self.lock_acs or accessory.name in self.acs_list_map:
-                # we never wear dupes
+                
                 return
-
-            # if the given layer does not match rec layer, force the correct
-            # layer unless override
+            
+            
+            
             if (
                     acs_type != accessory.get_rec_layer()
                     and not self._override_rec_layer
             ):
                 acs_type = accessory.get_rec_layer()
-
-            # verify aso_type is valid for the desired acs layer
-            # unless override
+            
+            
+            
             if not self._override_rec_layer:
                 if acs_type in (self.BSE_ACS, self.ASE_ACS):
                     valid_aso_type = MASAccessoryBase.ASO_SPLIT
                 else:
                     valid_aso_type = MASAccessoryBase.ASO_REG
-
+                
                 if accessory.aso_type != valid_aso_type:
                     return
-
-            acs_list = self.__get_acs(acs_type)
+            
+            acs_list = self._m1_sprite0x2dchart__get_acs(acs_type)
             temp_space = {
                 "acs_list": acs_list,
             }
-
+            
             if acs_list is not None and accessory not in acs_list:
-
-                # run pre exclusion code
+                
+                
                 store.mas_sprites.acs_wear_mux_pre_change(
                     temp_space,
                     self,
                     accessory,
                     acs_type
                 )
-
-                # abort wearing if we were told to abort
+                
+                
                 if temp_space.get("abort", False):
                     return
-
-                # run mutual exclusion for acs
+                
+                
                 if accessory.mux_type is not None:
                     self.remove_acs_mux(accessory.mux_type)
-
-                # run post exclusion code
+                
+                
                 store.mas_sprites.acs_wear_mux_pst_change(
                     temp_space,
                     self,
                     accessory,
                     acs_type
                 )
-
-                # now insert the acs
+                
+                
                 mas_insertSort(acs_list, accessory, MASAccessory.get_priority)
-
-                # add to mapping
+                
+                
                 self.acs_list_map[accessory.name] = acs_type
-
+                
                 if accessory.name in mas_sprites.lean_acs_blacklist:
                     self.lean_acs_blacklist.append(accessory.name)
-
-                # run pre entry
+                
+                
                 store.mas_sprites.acs_wear_entry_pre_change(
                     temp_space,
                     self,
                     accessory,
                     acs_type
                 )
-
-                # run programming point for acs
+                
+                
                 accessory.entry(self)
-
-                # run post entry
+                
+                
                 store.mas_sprites.acs_wear_entry_pst_change(
                     temp_space,
                     self,
                     accessory,
                     acs_type
                 )
-
+        
         def wear_acs_pre(self, acs):
             """DEPRECATED
             Wears the given accessory in the pre body accessory mode
@@ -3558,8 +3596,8 @@ init -3 python:
                 acs - accessory to wear
             """
             self.wear_acs_in(acs, self.PRE_ACS)
-
-
+        
+        
         def wear_acs_bbh(self, acs):
             """DEPRECATED
             Wears the given accessory in the post back hair accessory loc
@@ -3568,8 +3606,8 @@ init -3 python:
                 acs - accessory to wear
             """
             self.wear_acs_in(acs, self.BBH_ACS)
-
-
+        
+        
         def wear_acs_bfh(self, acs):
             """DEPRECATED
             Wears the given accessory in the pre front hair accesory log
@@ -3578,8 +3616,8 @@ init -3 python:
                 acs - accessory to wear
             """
             self.wear_acs_in(acs, self.BFH_ACS)
-
-
+        
+        
         def wear_acs_afh(self, acs):
             """DEPRECATED
             Wears the given accessory in the between front hair and arms
@@ -3589,8 +3627,8 @@ init -3 python:
                 acs - accessory to wear
             """
             self.wear_acs_in(acs, self.AFH_ACS)
-
-
+        
+        
         def wear_acs_mid(self, acs):
             """DEPRECATED
             Wears the given accessory in the mid body acessory mode
@@ -3599,8 +3637,8 @@ init -3 python:
                 acs - acessory to wear
             """
             self.wear_acs_in(acs, self.MID_ACS)
-
-
+        
+        
         def wear_acs_pst(self, acs):
             """DEPRECATED
             Wears the given accessory in the post body accessory mode
@@ -3611,36 +3649,36 @@ init -3 python:
             self.wear_acs_in(acs, self.PST_ACS)
 
 
-    # hues, probably not going to use these
-#    hair_hue1 = im.matrix([ 1, 0, 0, 0, 0,
-#                        0, 1, 0, 0, 0,
-#                        0, 0, 1, 0, 0,
-#                        0, 0, 0, 1, 0 ])
-#    hair_hue2 = im.matrix([ 3.734, 0, 0, 0, 0,
-#                        0, 3.531, 0, 0, 0,
-#                        0, 0, 1.375, 0, 0,
-#                        0, 0, 0, 1, 0 ])
-#    hair_hue3 = im.matrix([ 3.718, 0, 0, 0, 0,
-#                        0, 3.703, 0, 0, 0,
-#                        0, 0, 3.781, 0, 0,
-#                        0, 0, 0, 1, 0 ])
-#    hair_hue4 = im.matrix([ 3.906, 0, 0, 0, 0,
-#                        0, 3.671, 0, 0, 0,
-#                        0, 0, 3.375, 0, 0,
-#                        0, 0, 0, 1, 0 ])
-#    skin_hue1 = hair_hue1
-#    skin_hue2 = im.matrix([ 0.925, 0, 0, 0, 0,
-#                        0, 0.840, 0, 0, 0,
-#                        0, 0, 0.806, 0, 0,
-#                        0, 0, 0, 1, 0 ])
-#    skin_hue3 = im.matrix([ 0.851, 0, 0, 0, 0,
-#                        0, 0.633, 0, 0, 0,
-#                        0, 0, 0.542, 0, 0,
-#                        0, 0, 0, 1, 0 ])
-#
-#    hair_huearray = [hair_hue1,hair_hue2,hair_hue3,hair_hue4]
-#
-#    skin_huearray = [skin_hue1,skin_hue2,skin_hue3]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     class MASTableChair(object):
@@ -3661,14 +3699,14 @@ init -3 python:
                     c - chair
         """
         from store.mas_sprites import TC_GEN, PREFIX_TABLE, SHADOW_SUFFIX, NIGHT_SUFFIX
-        __MHM_KEYS = ("t", "ts", "c")
-
+        _m1_sprite0x2dchart__MHM_KEYS = ("t", "ts", "c")
+        
         def __init__(self, table, chair, hl_data=None):
             """
             constructor
 
             IN:
-                table - table tag to use
+                table - table tag to use 
                 chair - chair tag to use
                 hl_data - highlight mapping data. format:
                     [0] - default highilght to use. Pass in None to not set
@@ -3682,16 +3720,16 @@ init -3 python:
             self.chair = chair
             self.has_shadow = False
             self.prepare()
-
+            
             if hl_data is None:
                 self.hl_map = None
             else:
                 self.hl_map = MASHighlightMap.create_from_mapping(
-                    self.__MHM_KEYS,
+                    self._m1_sprite0x2dchart__MHM_KEYS,
                     hl_data[0],
                     hl_data[1]
                 )
-
+        
         def __repr__(self):
             return "<TableChair: (table: {0}, chair: {1})>".format(
                 self.table,
@@ -3710,27 +3748,27 @@ init -3 python:
                     ""
                 ))
             )
-
+        
         def setTable(self, new_table):
             """
             sets the table tag and checks shadow
 
             IN:
                 new_table - the new table tag to set
-                    if an invalid string or NOne is passed in, we reset to
+                    if an invalid string or NOne is passed in, we reset to 
                     default
             """
             if new_table:
                 self.table = new_table
             else:
                 self.table = "def"
-
+            
             self.prepare()
 
 
     class MASArm(object):
         """
-        Representation of an "Arm"
+        Representation of an "Arm" 
 
         Each Arm consists of of a layered combination:
         NOTE: we re using spaced layers so we can insert more if needed.
@@ -3745,13 +3783,14 @@ init -3 python:
                 value: True if exists, False if not
             hl_map - MASHighlightMap with layer code keys
         """
-
+        
         LAYER_BOT = "0"
         LAYER_MID = "5"
+        LAYER_MID_2 = "5^10"
         LAYER_TOP = "10"
-
-        __MPA_KEYS = (LAYER_BOT, LAYER_MID, LAYER_TOP)
-
+        
+        _m1_sprite0x2dchart__MPA_KEYS = (LAYER_BOT, LAYER_MID, LAYER_MID_2, LAYER_TOP)
+        
         def __init__(self, tag, layer_map, hl_data=None):
             """
             Constructor
@@ -3762,7 +3801,7 @@ init -3 python:
                     key: image layer code
                     value: True if exists, False if not
                 hl_data - highlght map data. tuple of the following formaT:
-                    [0] - default MASFilterMap to use. Pass in None to
+                    [0] - default MASFilterMap to use. Pass in None to 
                         not set a default highlight
                     [1] - highlight mapping to use. Format:
                         key: image layer code
@@ -3772,17 +3811,17 @@ init -3 python:
             self.tag = tag
             self.clean_map(layer_map)
             self.layer_map = layer_map
-
+            
             if hl_data is not None:
                 self.hl_map = MASHighlightMap.create_from_mapping(
-                    self.__MPA_KEYS,
+                    self._m1_sprite0x2dchart__MPA_KEYS,
                     hl_data[0],
                     hl_data[1]
                 )
             else:
                 self.hl_map = None
-
-        def __build_loadstrs_hl(self, prefix, layer_code):
+        
+        def _m1_sprite0x2dchart__build_loadstrs_hl(self, prefix, layer_code):
             """
             Builds load strings for a hlight from a given map
 
@@ -3795,12 +3834,12 @@ init -3 python:
             """
             if self.hl_map is None:
                 return []
-
+            
             mfm = self.hl_map.get(layer_code)
             if mfm is None:
                 return []
-
-            # generate for all unique
+            
+            
             return [
                 prefix + [
                     store.mas_sprites.HLITE_SUFFIX,
@@ -3809,7 +3848,7 @@ init -3 python:
                 ]
                 for hlc in mfm.unique_values()
             ]
-
+        
         @classmethod
         def _fromJSON(cls, json_obj, msg_log, ind_lvl, build_class):
             """
@@ -3826,9 +3865,9 @@ init -3 python:
             RETURNS: MASArm instance built with the JSON, or None if failed
             """
             params = {}
-            # start with required params
-            # tag
-            # layers
+            
+            
+            
             if not store.mas_sprites_json._validate_params(
                     json_obj,
                     params,
@@ -3841,24 +3880,24 @@ init -3 python:
                     ind_lvl
             ):
                 return None
-
-            # additional processing for the layers to ensure valid data
+            
+            
             layer_map = {}
             for layer in params.pop("layers").split("^"):
-                if layer in cls.__MPA_KEYS:
+                if layer in cls._m1_sprite0x2dchart__MPA_KEYS:
                     layer_map[layer] = True
-
+                
                 else:
-                    # invalid layer
-                    # warn and ignore
+                    
+                    
                     msg_log.append((
                         store.mas_sprites_json.MSG_WARN_T,
                         ind_lvl,
                         store.mas_sprites_json.MA_INVALID_LAYER.format(layer)
                     ))
-
-            # NOTE: ERR if we have no layers for an arm. This is useless to
-            # include if no layers.
+            
+            
+            
             if len(layer_map) == 0:
                 msg_log.append((
                     store.mas_sprites_json.MSG_ERR_T,
@@ -3866,16 +3905,16 @@ init -3 python:
                     store.mas_sprites_json.MA_NO_LAYERS
                 ))
                 return None
-
-            # add layers to params
+            
+            
             params["layer_map"] = layer_map
-
-            # now check highlight
+            
+            
             if store.mas_sprites_json.HLITE in json_obj:
-
-                # parse
+                
+                
                 vhl_data = {}
-
+                
                 if store.mas_sprites_json._validate_highlight(
                         json_obj,
                         vhl_data,
@@ -3883,26 +3922,26 @@ init -3 python:
                         ind_lvl,
                         layer_map.keys()
                 ):
-                    # success
+                    
                     hl_data = vhl_data.get("hl_data", None)
                     if hl_data is not None:
                         params["hl_data"] = hl_data
-
+                
                 else:
-                    # failure
+                    
                     return None
-
-            # warn for extra properties
+            
+            
             for extra_prop in json_obj:
                 msg_log.append((
                     store.mas_sprites_json.MSG_WARN_T,
                     ind_lvl,
                     store.mas_sprites_json.EXTRA_PROP.format(extra_prop)
                 ))
-
-            # we now should have all the data we need to build
+            
+            
             return build_class(**params)
-
+        
         def build_loadstrs(self, prefix):
             """
             Builds loadstrs for this arm
@@ -3911,39 +3950,39 @@ init -3 python:
                 prefix - prefix to apply to the loadstrs
                     should be list of strings
 
-            RETURNS: list of lists of strings representing the load strings
-                for this arm, + highlights
+            RETURNS: list of lists of strings representing the load strings 
+                for this arm, + highlights 
             """
             if not self.tag:
                 return []
-
+            
             loadstrs = []
-
-            # add arms based on layer code
-            for layer_code in self.__MPA_KEYS:
-                # NOTE: we only add an arm + hlite if it exists for a layer
-                # code
-
+            
+            
+            for layer_code in self._m1_sprite0x2dchart__MPA_KEYS:
+                
+                
+                
                 if self.layer_map.get(layer_code, False):
-
-                    # generate image
+                    
+                    
                     new_img = prefix + [
                         self.tag,
                         store.mas_sprites.ART_DLM,
                         str(layer_code)
                     ]
-
-                    # add with extension
+                    
+                    
                     loadstrs.append(new_img + [store.mas_sprites.FILE_EXT])
-
-                    # generate highlights
-                    loadstrs.extend(self.__build_loadstrs_hl(
+                    
+                    
+                    loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(
                         new_img,
                         layer_code
                     ))
-
+            
             return loadstrs
-
+        
         def clean_map(self, mapping):
             """
             cleans the given map, ensuring it contains only valid layer
@@ -3953,9 +3992,9 @@ init -3 python:
                 mapping - mapping to clean
             """
             for map_key in mapping.keys():
-                if map_key not in self.__MPA_KEYS:
+                if map_key not in self._m1_sprite0x2dchart__MPA_KEYS:
                     mapping.pop(map_key)
-
+        
         def get(self, layer_code, prefix=[]):
             """
             Generates tag name + suffixes to use for
@@ -3973,18 +4012,18 @@ init -3 python:
             """
             if not self.tag:
                 return []
-
-            # should this item exist on tihs layer code?
+            
+            
             if not self.layer_map.get(layer_code, False):
                 return []
-
-            # should exist, generate the primary tag string
+            
+            
             return prefix + [
                 self.tag,
                 store.mas_sprites.ART_DLM,
                 str(layer_code)
             ]
-
+        
         def gethlc(self, layer_code, flt, defval=None):
             """
             Gets highlight code.
@@ -4003,15 +4042,15 @@ init -3 python:
                 flt,
                 defval
             )
-
+        
         def hl_keys(self):
             """
             Returns hl keys for a MASArm
 
             RETURNS: tuple of hl keys
             """
-            return self.__MPA_KEYS
-
+            return self._m1_sprite0x2dchart__MPA_KEYS
+        
         @classmethod
         def hl_keys_c(cls):
             """
@@ -4019,7 +4058,7 @@ init -3 python:
 
             RETURNS: tuple of hl keys
             """
-            return cls.__MPA_KEYS
+            return cls._m1_sprite0x2dchart__MPA_KEYS
 
 
     class MASArmBoth(MASArm):
@@ -4044,7 +4083,7 @@ init -3 python:
         PROPERTIES:
             see MASArm
         """
-
+        
         def build_loadstrs(self, prefix):
             """
             Generates loadstrs for this arm
@@ -4058,7 +4097,7 @@ init -3 python:
             return super(MASArmLeft, self).build_loadstrs(
                 prefix + [store.mas_sprites.PREFIX_ARMS_LEFT]
             )
-
+        
         def get(self, layer_code):
             """
             See MASArm.get
@@ -4080,7 +4119,7 @@ init -3 python:
         PROPERTIES:
             see MASArm
         """
-
+        
         def build_loadstrs(self, prefix):
             """
             Generates loadstrs for this arm
@@ -4094,7 +4133,7 @@ init -3 python:
             return super(MASArmRight, self).build_loadstrs(
                 prefix + [store.mas_sprites.PREFIX_ARMS_RIGHT]
             )
-
+        
         def get(self, layer_code):
             """
             See MASArm.get
@@ -4119,7 +4158,7 @@ init -3 python:
 
         """
         import store.mas_sprites_json as msj
-
+        
         def __init__(self, arm_data, def_base=True):
             """
             Constructor
@@ -4130,17 +4169,17 @@ init -3 python:
                     False will not
                     (Default: True)
             """
-            # must have a mas pose arm
+            
             if not store.mas_ev_data_ver._verify_dict(
                     arm_data,
                     allow_none=False
             ):
                 raise Exception("arm data required for MASPoseArms")
-
-            # clean arms before setting
+            
+            
             self._clean_arms(arm_data, def_base)
             self.arms = arm_data
-
+        
         def _clean_arms(self, arm_data, def_base):
             """
             Cleans arm data given
@@ -4154,32 +4193,32 @@ init -3 python:
             OUT:
                 arm_data - cleaned arm data
             """
-            # first validate the arm data
+            
             for arm_key in arm_data.keys():
-
-                # then check
+                
+                
                 if arm_key in store.mas_sprites.NUM_ARMS:
-                    # NOneify invalid data
+                    
                     if not isinstance(arm_data[arm_key], MASArm):
                         store.mas_utils.writelog(
                             "Invalid arm data at '{0}'\n".format(arm_key)
                         )
                         arm_data[arm_key] = None
-
+                
                 else:
-                    # remove invalid keys
+                    
                     arm_data.pop(arm_key)
-
-            # now go through the arm data and set base for all non-included
-            # arm data
+            
+            
+            
             if def_base:
                 for arm_key in store.mas_sprites.NUM_ARMS:
                     if arm_key not in arm_data:
                         arm_data[arm_key] = store.mas_sprites.use_bma(arm_key)
-
-                # NOTE: if def_base is False, then get will auto return
-                #   None so no need to set any data
-
+        
+        
+        
+        
         def build_loadstrs(self, prefix):
             """
             Generates loadstrs for this PoseArms object
@@ -4190,32 +4229,32 @@ init -3 python:
             RETURNS: list of lists of strings representing the load strs
             """
             loadstrs = []
-
-            # loop over all the arms we have
+            
+            
             for arm_key in self.arms:
-                # only od actual arms
+                
                 arm = self.arms[arm_key]
-
+                
                 if arm is not None:
-
-                    # check for leans
+                    
+                    
                     lean = store.mas_sprites.ARMS_LEAN.get(arm_key, None)
                     if lean is None:
-                        # no lean, do normal prefix
+                        
                         arm_prefix = prefix + [store.mas_sprites.PREFIX_ARMS]
                     else:
-                        # have lean, do lean prefix
+                        
                         arm_prefix = prefix + [
                             store.mas_sprites.PREFIX_ARMS_LEAN,
                             lean,
                             store.mas_sprites.ART_DLM
                         ]
-
-                    # pass in prefix to the arm
+                    
+                    
                     loadstrs.extend(arm.build_loadstrs(arm_prefix))
-
+            
             return loadstrs
-
+        
         @staticmethod
         def fromJSON(json_obj, msg_log, ind_lvl):
             """
@@ -4231,23 +4270,23 @@ init -3 python:
             RETURNS: MASPoseArms object built using the JSON, None if no
                 data to be made, False if error occured
             """
-            # NOTE: we can assume type is checked already
-
+            
+            
             arm_data = {}
-
-            # loop over valid arm data
+            
+            
             isbad = False
             for arm_id, arm_sid in store.mas_sprites.NUM_ARMS.iteritems():
                 if arm_sid in json_obj:
                     arm_obj = json_obj.pop(arm_sid)
-
-                    # check object first
+                    
+                    
                     if arm_obj is None:
-                        # None is okay
+                        
                         arm_data[arm_id] = None
-
+                    
                     elif not store.mas_sprites_json._verify_dict(arm_obj):
-                        # must be dict, however
+                        
                         msg_log.append((
                             store.mas_sprites_json.MSG_ERR_T,
                             ind_lvl,
@@ -4258,32 +4297,32 @@ init -3 python:
                             )
                         ))
                         isbad = True
-
+                    
                     else:
-                        # otherwise try and parse this data
-
-                        # log loading
+                        
+                        
+                        
                         msg_log.append((
                             store.mas_sprites_json.MSG_INFO_T,
                             ind_lvl,
                             store.mas_sprites_json.MA_LOADING.format(arm_sid)
                         ))
-
-                        # parse
+                        
+                        
                         arm = MASArm._fromJSON(
                             arm_obj,
                             msg_log,
                             ind_lvl + 1,
                             store.mas_sprites.NUM_MARMS[arm_id]
                         )
-
-                        # check valid
+                        
+                        
                         if arm is None:
-                            # failure case
+                            
                             isbad = True
-
+                        
                         else:
-                            # log success
+                            
                             msg_log.append((
                                 store.mas_sprites_json.MSG_INFO_T,
                                 ind_lvl,
@@ -4291,31 +4330,31 @@ init -3 python:
                                     arm_sid
                                 )
                             ))
-
-                            # and save the data
+                            
+                            
                             arm_data[arm_id] = arm
-
-            # now check for extras
+            
+            
             for extra_prop in json_obj:
                 msg_log.append((
                     store.mas_sprites_json.MSG_WARN_T,
                     ind_lvl,
                     store.mas_sprites_json.EXTRA_PROP.format(extra_prop)
                 ))
-
-            # quit if failures
+            
+            
             if isbad:
                 return False
-
-            # NOTE: no 0 data checks because a pose arms with nothing in it
-            #   would be considered sleeve/armless (think bikinis)
-
-            # otherwise we are good so we can build
-            # NOTE: we never use base options with JSONS.
-            #   spritepack creators should always describe each used arm
-            #   incase the base poses change
+            
+            
+            
+            
+            
+            
+            
+            
             return MASPoseArms(arm_data, def_base=False)
-
+        
         def get(self, arm_key):
             """
             Gets the arm data associated with the given arm key
@@ -4327,7 +4366,7 @@ init -3 python:
                 arm key
             """
             return self.arms.get(arm_key, None)
-
+        
         def getflp(self, leanpose):
             """
             Retrieves arms assocaited with the given leanpose
@@ -4336,7 +4375,7 @@ init -3 python:
                 leanpose - the leanpose to get arms for
 
             RETURNS: Tuple of arms associated with the leanpose. None may be
-                returned if no arms for the leanpose. The number of arms is
+                returned if no arms for the leanpose. The number of arms is 
                 not a guarantee.
             """
             arm_data = []
@@ -4344,15 +4383,14 @@ init -3 python:
                 arm = self.get(arm_key)
                 if arm is not None:
                     arm_data.append(arm)
-
+            
             if len(arm_data) > 0:
                 return tuple(arm_data)
-
-            # otherwse return None because no arms
+            
+            
             return None
 
 
-    # pose map helps map poses to an image
     class MASPoseMap(renpy.store.object):
         """
         The Posemap helps connect pose names to images
@@ -4367,57 +4405,57 @@ init -3 python:
         """
         from store.mas_sprites import POSES, L_POSES
         import store.mas_sprites_json as msj
-
-        # pargs
-        # NOTE: order MUST be same as POSES
+        
+        
+        
         PARAM_NAMES = (
-            "p1", # steeplnig
-            "p2", # crossed
-            "p3", # restleftpointright
-            "p4", # pointright
+            "p1", 
+            "p2", 
+            "p3", 
+            "p4", 
 
-            "p6", # down
-            "p7", # downleftpointright
+            "p6", 
+            "p7", 
         )
-
-        # NOTE: order MUST be same as L_POSES
+        
+        
         L_PARAM_NAMES = (
-            "p5", # LEAN - def|def
+            "p5", 
         )
-
+        
         P_PARAM_NAMES = tuple(list(PARAM_NAMES) + list(L_PARAM_NAMES))
-
-        # all params
+        
+        
         CONS_PARAM_NAMES = (
             "default",
             "l_default",
-#            "use_reg_for_l",
+
         ) + P_PARAM_NAMES
-
+        
         MPM_TYPE_ED = 0
-        # enable/disbale mode
-        # each pose should be True/False
-        # True enables the pose, False disables.
-
+        
+        
+        
+        
         MPM_TYPE_FB = 1
-        # fallback mode
-        # each pose should be a string of the pose to actually use
-        # the strings should be pose names (steepling/crossed/etc...)
-
+        
+        
+        
+        
         MPM_TYPE_AS = 2
-        # arm split mode
-        # each pose should contain one of the following strings:
-        # See MASAccessory for more info
-
+        
+        
+        
+        
         MPM_TYPE_PA = 3
-        # pose arms mode
-        # each pose should contain None or a MASPoseArms object
-
+        
+        
+        
         MPM_TYPE_IC = 4
-        # image code mode
-        # each pose is a string that determines the code to use
-        # NOTE: somewhat identical to FB mode in data held
-
+        
+        
+        
+        
         MPM_TYPES = (
             MPM_TYPE_ED,
             MPM_TYPE_FB,
@@ -4425,10 +4463,10 @@ init -3 python:
             MPM_TYPE_PA,
             MPM_TYPE_IC
         )
-
+        
         def __init__(self,
-                # NOTE: when updating params, make sure to modify param name
-                #   lists above accordingly.
+                
+                
                 mpm_type=0,
                 default=None,
                 l_default=None,
@@ -4452,33 +4490,33 @@ init -3 python:
                     is None, then we use the default instead of l_default
                     when rendering for lean poses
                 **pargs - the remaining name value pairs are checked in param
-                    names. Each apply to specific pose.
+                    names. Each apply to specific pose. 
                     (See MASPoseArms.PARAM_NAMES and L_PARAM_NAMES)
             """
-            # setup maps
-            poses, lposes = self.__listify(pargs)
-
+            
+            poses, lposes = self._m1_sprite0x2dchart__listify(pargs)
+            
             self.map = {}
             for index in range(len(self.POSES)):
                 self.map[self.POSES[index]] = poses[index]
-
+            
             self.l_map = {}
             for index in range(len(self.L_POSES)):
                 self.l_map[self.L_POSES[index]] = lposes[index]
-
-            # setup defaults
-            self.__default = default
-            self.__l_default = l_default
+            
+            
+            self._m1_sprite0x2dchart__default = default
+            self._m1_sprite0x2dchart__l_default = l_default
             self.use_reg_for_l = use_reg_for_l
-            self.__set_defaults()
-
-            # use all map for quick pose lookup
-            self.__all_map = {}
-            self.__sync_all()
-
+            self._m1_sprite0x2dchart__set_defaults()
+            
+            
+            self._m1_sprite0x2dchart__all_map = {}
+            self._m1_sprite0x2dchart__sync_all()
+            
             self._mpm_type = mpm_type
-
-        def __associate(self, pargs):
+        
+        def _m1_sprite0x2dchart__associate(self, pargs):
             """
             Associates the given pargs (retrieved from **pargs) and with
             index values related to POSES and L_POSES
@@ -4506,8 +4544,8 @@ init -3 python:
                     if self.L_PARAM_NAMES[index] in pargs
                 ]
             )
-
-        def __listify(self, pargs):
+        
+        def _m1_sprite0x2dchart__listify(self, pargs):
             """
             Takes the pargs and generates lists of them in the same order as
             POSES and L_POSES.
@@ -4525,22 +4563,22 @@ init -3 python:
                 [ pargs.get(param, None) for param in self.PARAM_NAMES ],
                 [ pargs.get(lparam, None) for lparam in self.L_PARAM_NAMES ],
             )
-
-        def __set_defaults(self):
+        
+        def _m1_sprite0x2dchart__set_defaults(self):
             """
             Sets all pose defaults
             """
-            self.__set_posedefs(self.map, self.__default)
+            self._m1_sprite0x2dchart__set_posedefs(self.map, self._m1_sprite0x2dchart__default)
             if (
                     self.use_reg_for_l
-                    and self.__l_default is None
-                    and self.__default is not None
+                    and self._m1_sprite0x2dchart__l_default is None
+                    and self._m1_sprite0x2dchart__default is not None
             ):
-                self.__set_posedefs(self.l_map, self.__default)
+                self._m1_sprite0x2dchart__set_posedefs(self.l_map, self._m1_sprite0x2dchart__default)
             else:
-                self.__set_posedefs(self.l_map, self.__l_default)
-
-        def __set_posedefs(self, pose_dict, _def):
+                self._m1_sprite0x2dchart__set_posedefs(self.l_map, self._m1_sprite0x2dchart__l_default)
+        
+        def _m1_sprite0x2dchart__set_posedefs(self, pose_dict, _def):
             """
             Sets pose defaults
 
@@ -4551,36 +4589,36 @@ init -3 python:
             for k in pose_dict:
                 if pose_dict[k] is None:
                     pose_dict[k] = _def
-
-        def __sync_all(self):
+        
+        def _m1_sprite0x2dchart__sync_all(self):
             """
             Syncs internal all map with the internal maps
             """
-            self.__all_map.update(self.map)
-            self.__all_map.update(self.l_map)
-
+            self._m1_sprite0x2dchart__all_map.update(self.map)
+            self._m1_sprite0x2dchart__all_map.update(self.l_map)
+        
         def _modify(self, **pargs):
             """
             Modifes poses based on given pargs.
-            NOTE: this can damage the sprite system if done incorrectly.
+            NOTE: this can damage the sprite system if done incorrectly. 
 
             IN:
                 **pargs - param name-value pairs. See MASPoseArms.PARAM_NAMES
                     and MASPoseArms.L_PARAM_NAMES
             """
-            pose_changes, lpose_changes = self.__associate(pargs)
+            pose_changes, lpose_changes = self._m1_sprite0x2dchart__associate(pargs)
             for index, new_value in pose_changes:
                 self.map[self.POSES[index]] = new_value
-
+            
             for index, new_value in lpose_changes:
                 self.l_map[self.L_POSES[index]] = new_value
-
-            # re-set defaults if needed
-            self.__set_defaults()
-
-            # now update the all map
-            self.__sync_all()
-
+            
+            
+            self._m1_sprite0x2dchart__set_defaults()
+            
+            
+            self._m1_sprite0x2dchart__sync_all()
+        
         def _transform(self, func):
             """
             Applies the given function to transform value in each pose
@@ -4595,13 +4633,13 @@ init -3 python:
                 self.map[pose] = func(self.map[pose])
             for lpose in self.l_map:
                 self.l_map[lpose] = func(self.l_map[lpose])
-
-            # set defaults if needed
-            self.__set_defaults()
-
-            # update the all map
-            self.__sync_all()
-
+            
+            
+            self._m1_sprite0x2dchart__set_defaults()
+            
+            
+            self._m1_sprite0x2dchart__sync_all()
+        
         @classmethod
         def _verify_mpm_item(cls,
                 mpm_data,
@@ -4627,11 +4665,11 @@ init -3 python:
             RETURNS: True if successful verification, False if not
             """
             if mpm_type == cls.MPM_TYPE_IC:
-                # image code usage means each item should be a string
-
+                
+                
                 if cls.msj._verify_str(prop_val):
                     mpm_data[prop_name] = prop_val
-
+                
                 else:
                     msg_log.append((
                         cls.msj.MSG_ERR_T,
@@ -4643,13 +4681,13 @@ init -3 python:
                         )
                     ))
                     return False
-
+            
             if mpm_type == cls.MPM_TYPE_AS:
-                # arm split mean each item should be a string
-
+                
+                
                 if MASSplitAccessory.verify_arm_split_val(prop_val):
                     mpm_data[prop_name] = prop_val
-
+                
                 else:
                     msg_log.append((
                         cls.msj.MSG_ERR_T,
@@ -4661,13 +4699,13 @@ init -3 python:
                         )
                     ))
                     return False
-
+            
             if mpm_type == cls.MPM_TYPE_ED:
-                # enable/disable uses bools
-
+                
+                
                 if cls.msj._verify_bool(prop_val):
                     mpm_data[prop_name] = prop_val
-
+                
                 else:
                     msg_log.append((
                         cls.msj.MSG_ERR_T,
@@ -4679,13 +4717,13 @@ init -3 python:
                         )
                     ))
                     return False
-
+            
             if mpm_type == cls.MPM_TYPE_FB:
-                # fallbacks use poses (as strings)
-
+                
+                
                 if cls.msj._verify_pose(prop_val, allow_none=False):
                     mpm_data[prop_name] = prop_val
-
+                
                 else:
                     msg_log.append((
                         cls.msj.MSG_ERR_T,
@@ -4696,10 +4734,10 @@ init -3 python:
                         )
                     ))
                     return False
-
-            # invalid types should not be an issue here, so no warning
+            
+            
             return True
-
+        
         @classmethod
         def fromJSON(cls, json_obj, msg_log, ind_lvl, valid_types=None):
             """
@@ -4721,8 +4759,8 @@ init -3 python:
             mpm_prop = "mpm_type"
             urfl_prop = "use_reg_for_l"
             mpm_data = {}
-
-            # verify mpm type
+            
+            
             if mpm_prop not in json_obj:
                 msg_log.append((
                     cls.msj.MSG_ERR_T,
@@ -4730,9 +4768,9 @@ init -3 python:
                     cls.msj.REQ_MISS.format(mpm_prop)
                 ))
                 return None
-
+            
             mpm_type = json_obj.pop(mpm_prop)
-
+            
             if not cls.msj._verify_int(mpm_type, allow_none=False):
                 msg_log.append((
                     cls.msj.MSG_ERR_T,
@@ -4740,7 +4778,7 @@ init -3 python:
                     cls.msj.BAD_TYPE.format(mpm_prop, int, type(mpm_type))
                 ))
                 return None
-
+            
             if mpm_type not in cls.MPM_TYPES:
                 msg_log.append((
                     cls.msj.MSG_ERR_T,
@@ -4748,7 +4786,7 @@ init -3 python:
                     cls.msj.MPM_BAD_TYPE.format(mpm_type)
                 ))
                 return None
-
+            
             if valid_types is not None and mpm_type not in valid_types:
                 msg_log.append((
                     cls.msj.MSG_ERR_T,
@@ -4756,10 +4794,10 @@ init -3 python:
                     cls.msj.MPM_TYPE_MISS.format(valid_types, mpm_type)
                 ))
                 return None
-
+            
             mpm_data[mpm_prop] = mpm_type
-
-            # verify use_reg_for_l
+            
+            
             if urfl_prop in json_obj:
                 use_reg_for_l = json_obj.pop(urfl_prop)
                 if not cls.msj._verify_bool(use_reg_for_l, allow_none=False):
@@ -4768,18 +4806,18 @@ init -3 python:
                         ind_lvl,
                         cls.msj.BAD_TYPE.format(
                             urfl_prop,
-                            str,
+                            str, 
                             type(use_reg_for_l)
                         )
                     ))
                     return None
-
+                
                 mpm_data[urfl_prop] = use_reg_for_l
-
+            
             else:
                 use_reg_for_l = None
-
-            # verify other params
+            
+            
             isbad = False
             for prop_name in json_obj.keys():
                 prop_val = json_obj.pop(prop_name)
@@ -4793,20 +4831,20 @@ init -3 python:
                             prop_val
                     ):
                         isbad = True
-
+                
                 else:
-                    # prop name NOT part of MASPoseMap. log as warning.
+                    
                     msg_log.append((
                         cls.msj.MSG_WARN_T,
                         ind_lvl,
                         cls.msj.EXTRA_PROP.format(prop_name)
                     ))
-
-            # finally check for valid params
+            
+            
             if isbad:
                 return None
-
-            # we should alwyas suggest a default
+            
+            
             _param_urfl = mpm_data.get("use_reg_for_l", False)
             if "default" not in mpm_data:
                 msg_log.append((
@@ -4814,23 +4852,23 @@ init -3 python:
                     ind_lvl,
                     cls.msj.MPM_DEF
                 ))
-
+            
             if "l_default" not in mpm_data and not _param_urfl:
-                # we suggest using lean default when in fallback mode or
-                #   acs
-                # and not using reg for l
+                
+                
+                
                 msg_log.append((
                     cls.msj.MSG_WARN_T,
                     ind_lvl,
                     cls.msj.MPM_DEF_L
                 ))
-
+            
             return MASPoseMap(**mpm_data)
-
+        
         def get(self, pose, defval):
             """
             Get passed to the internal pose map
-            only because its common to call get on this object.
+            only because its common to call get on this object. 
 
             IN:
                 pose - pose to get from pose map
@@ -4839,8 +4877,8 @@ init -3 python:
             RETURNS:
                 value of pose in internal dict, or defval if not found
             """
-            return self.__all_map.get(pose, defval)
-
+            return self._m1_sprite0x2dchart__all_map.get(pose, defval)
+        
         def is_fallback(self):
             """
             Checks if this posemap is a fallback one via type.
@@ -4848,11 +4886,11 @@ init -3 python:
             RETURNS: True if this posemap is a fallback one, False if not
             """
             return self._mpm_type == self.MPM_TYPE_FB
-
+        
         def unique_values(self):
             """
             Gets all unique non-None values in this MASPoseMap.
-            NOTE: because MPM's may not include hashable values, this is
+            NOTE: because MPM's may not include hashable values, this is 
             try/excepted to handle those cases. If something is non-hashable,
             we always return all values.
 
@@ -4860,14 +4898,14 @@ init -3 python:
             """
             try:
                 values = []
-                for value in self.__all_map.itervalues():
+                for value in self._m1_sprite0x2dchart__all_map.itervalues():
                     if value is not None and value not in values:
                         values.append(value)
-
+                
                 return values
             except:
                 return self.values()
-
+        
         def values(self):
             """
             Gets all non-None values in this MASPoseMap.
@@ -4876,10 +4914,10 @@ init -3 python:
             """
             return [
                 value
-                for value in self.__all_map.itervalues()
+                for value in self._m1_sprite0x2dchart__all_map.itervalues()
                 if value is not None
             ]
-
+        
         @staticmethod
         def lp2pn(leanpose):
             """
@@ -4892,14 +4930,14 @@ init -3 python:
             """
             if leanpose in MASPoseMap.POSES:
                 return MASPoseMap.PARAM_NAMES[MASPoseMap.POSES.index(leanpose)]
-
+            
             if leanpose in MASPoseMap.L_POSES:
                 return MASPoseMap.L_PARAM_NAMES[MASPoseMap.L_POSES.index(
                     leanpose
                 )]
-
+            
             return ""
-
+        
         @staticmethod
         def pn2lp(name):
             """
@@ -4912,13 +4950,13 @@ init -3 python:
             """
             if name in MASPoseMap.PARAM_NAMES:
                 return MASPoseMap.POSES[MASPoseMap.PARAM_NAMES.index(name)]
-
+            
             if name in MASPoseMap.L_PARAM_NAMES:
                 return MASPoseMap.L_POSES[MASPoseMap.L_PARAM_NAMES.index(name)]
-
+            
             return ""
 
-    # base class for MAS sprite things
+
     class MASSpriteBase(renpy.store.object):
         """
         Base class for MAS sprite objects
@@ -4943,7 +4981,7 @@ init -3 python:
                 classes
         """
         import store.mas_sprites_json as msj
-
+        
         def __init__(self,
                 name,
                 img_sit,
@@ -4992,7 +5030,7 @@ init -3 python:
                     if None, no highlights at all
                     (Default: None)
             """
-            self.__sp_type = -1
+            self._m1_sprite0x2dchart__sp_type = -1
             self.name = name
             self.img_sit = img_sit
             self.img_stand = img_stand
@@ -5001,28 +5039,28 @@ init -3 python:
             self.entry_pp = entry_pp
             self.exit_pp = exit_pp
             self.is_custom = False
-
+            
             if type(pose_map) != MASPoseMap:
                 raise Exception("PoseMap is REQUIRED")
-
-            #sets the ex_props to an empty dict if ex_props is None
+            
+            
             if ex_props is None:
                 self.ex_props = {}
             else:
                 self.ex_props = ex_props
-
-            # setup highlight map
-            self.__setup_hl_map(full_hl_data)
-
+            
+            
+            self._m1_sprite0x2dchart__setup_hl_map(full_hl_data)
+        
         def __eq__(self, other):
             """
             Equality override
             """
             if isinstance(other, MASSpriteBase):
                 return self.name == other.name
-
+            
             return NotImplemented
-
+        
         def __ne__(self, other):
             """
             Not equal override
@@ -5031,8 +5069,8 @@ init -3 python:
             if result is NotImplemented:
                 return result
             return not result
-
-        def __setup_hl_map(self, hl_data):
+        
+        def _m1_sprite0x2dchart__setup_hl_map(self, hl_data):
             """
             Sets up the highlight map
 
@@ -5042,20 +5080,20 @@ init -3 python:
             if hl_data is None:
                 self.hl_map = None
                 return
-
-            # no highlght if filled with Nones
+            
+            
             hl_keys, hl_def, hl_mapping = hl_data
             if hl_def is None and hl_mapping is None:
                 self.hl_map = None
                 return
-
-            # otherwise we can generate this map
+            
+            
             self.hl_map = MASHighlightMap.create_from_mapping(
                 hl_keys,
                 hl_def,
                 hl_mapping
             )
-
+        
         def addprop(self, prop):
             """
             Adds the given prop to the ex_props list
@@ -5064,7 +5102,7 @@ init -3 python:
                 prop - prop to add
             """
             self.ex_props[prop] = True
-
+        
         def build_loadstrs(self, prefix):
             """
             Build list of strings representing each image that may be used
@@ -5076,12 +5114,12 @@ init -3 python:
                 prefix - prefix to apply to each image. should be list of
                     strings
                     (DEfault: "")
-
+            
             RETURNS: list of lists of strings represented in this image.
                 use .join on each inner list to make the image
             """
             raise NotImplementedError
-
+        
         def entry(self, _monika_chr, **kwargs):
             """
             Calls the entry programming point if it exists
@@ -5092,7 +5130,7 @@ init -3 python:
             """
             if self.entry_pp is not None:
                 self.entry_pp(_monika_chr, **kwargs)
-
+        
         def exit(self, _monika_chr, **kwargs):
             """
             Calls the exit programming point if it exists
@@ -5103,7 +5141,7 @@ init -3 python:
             """
             if self.exit_pp is not None:
                 self.exit_pp(_monika_chr, **kwargs)
-
+        
         def gethlc(self, *args, **kwargs):
             """
             Gets highlight code
@@ -5114,7 +5152,7 @@ init -3 python:
             RETURNS: highlight code, or defval if no highlight
             """
             raise NotImplementedError
-
+        
         def getprop(self, prop, defval=None):
             """
             Gets the exprop
@@ -5124,22 +5162,22 @@ init -3 python:
                 defval - default value to return if prop not found
             """
             return self.ex_props.get(prop, defval)
-
+        
         def gettype(self):
             """
             Gets the type of this sprite object
 
             RETURNS: type of this sprite object
             """
-            return self.__sp_type
-
+            return self._m1_sprite0x2dchart__sp_type
+        
         def hasprogpoints(self):
             """
             RETURNS: true if this sprite object has at least 1 non-null prog
                 point, False otherwise
             """
             return self.entry_pp is not None or self.exit_pp is not None
-
+        
         def hasprop(self, prop):
             """
             Checks if this sprite object has the given prop
@@ -5150,7 +5188,7 @@ init -3 python:
             RETURNS: True if this sprite object has the ex_prop, False if not
             """
             return prop in self.ex_props
-
+        
         def hl_keys(self):
             """
             Gets keys used for the MASHighlightMap
@@ -5160,9 +5198,9 @@ init -3 python:
             """
             if self.hl_map is None:
                 return []
-
+            
             return self.hl_map.keys()
-
+        
         def rmprop(self, prop):
             """
             Removes the prop from this sprite's ex_props, if it exists
@@ -5175,9 +5213,9 @@ init -3 python:
             if prop in self.ex_props:
                 self.ex_props.pop(prop)
                 return True
-
+            
             return False
-
+        
         @staticmethod
         def sortkey(sprite_base):
             """
@@ -5185,7 +5223,7 @@ init -3 python:
             """
             if isinstance(sprite_base, MASSpriteBase):
                 return sprite_base.name
-
+            
             return ""
 
     class MASSpriteFallbackBase(MASSpriteBase):
@@ -5197,7 +5235,7 @@ init -3 python:
 
         SEE MASSpriteBase for inherited properties
         """
-
+        
         def __init__(self,
                 name,
                 img_sit,
@@ -5260,8 +5298,8 @@ init -3 python:
                 ex_props,
                 full_hl_data
             )
-            self.__sp_type = -2
-
+            self._m1_sprite0x2dchart__sp_type = -2
+        
         def get_fallback(self, pose, lean):
             """
             Gets the fallback pose for a given pose or lean
@@ -5281,25 +5319,25 @@ init -3 python:
                 [1]: lean type
                     - defualt for this is None
             """
-            # now check for fallbacks
+            
             if lean is not None:
-                # we have a lean, check for fallbacks
+                
                 fb_lean = self.pose_map.l_map.get(lean + "|" + pose, None)
-
-                # no fallback? assume steepling
+                
+                
                 if fb_lean is None:
                     return ("steepling", None)
-
-                # a pipe means we are dealing with a lean fallback
+                
+                
                 if "|" in fb_lean:
                     return fb_lean.split("|")
-
-                # otherwise we can assume its an arms fall back
+                
+                
                 return (fb_lean, None)
-
-            # otherwise check the pose
+            
+            
             return (self.pose_map.map.get(pose, "steepling"), None)
-
+        
         def get_leanpose(self, leanpose, defval=None):
             """
             Gets actual leanpose based on posemaps + fallback settings
@@ -5308,23 +5346,23 @@ init -3 python:
                 leanpose - leanpose we are trying to get actual leanpose for
                 defval - default value to return if no leanpose
                     (Default: None)
-
+                    
 
             RETURNS: actual leanpose, or defval if not found
             """
-            # cehck fallback
+            
             if self.pose_map.is_fallback():
                 return self.pose_map.get(leanpose, defval)
-
-            # check enabled
+            
+            
             if self.pose_map.get(leanpose, False):
                 return leanpose
-
-            # otherwise disabled so return defval
+            
+            
             return defval
 
 
-    # instead of clothes, these are accessories
+
     class MASAccessoryBase(MASSpriteBase):
         """
         MASAccesory base objects
@@ -5337,7 +5375,7 @@ init -3 python:
                 worn, all acs with a type in this property are removed.
             dlg_desc - user friendly way to describe this accessory in dialogue
                 Think "black bow" or "silver earrings"
-            dlg_plur - True if the dlg_desc should be used in the plural
+            dlg_plur - True if the dlg_desc should be used in the plural 
                 sense, like "these silver earrings", False if not, like:
                 "this black bow"
             keep_on_desk - Set to True to keep the ACS on the desk when monika
@@ -5347,20 +5385,20 @@ init -3 python:
 
         SEE MASSpriteBase for inherited properties
         """
-
-        # Accessory Sprite Object types
-
+        
+        
+        
         ASO_REG = 1
-        # regular accessory
-
+        
+        
         ASO_SPLIT = 2
-        # split accessory type
-
+        
+        
         ASO_TYPES = (
             ASO_REG,
             ASO_SPLIT
         )
-
+        
         def __init__(self,
                 aso_type,
                 name,
@@ -5424,7 +5462,7 @@ init -3 python:
                     [0] - string to use for dlg_desc
                     [1] - boolean value for dlg_plur
                     (Default: None)
-                keep_on_desk - determines if ACS should be shown if monika
+                keep_on_desk - determines if ACS should be shown if monika 
                     leaves
                     (Default: False)
                 hl_data - tuple of the following format:
@@ -5432,7 +5470,7 @@ init -3 python:
                         if None, no default highlight
                     [1] - dict-based highlight map data:
                         key: string. should match values used in pose_map
-                        value: highlight data. Determined by extended classes.
+                        value: highlight data. Determined by extended classes. 
                             if None, then no highlight for the key
                         if None, then no mapped highlights
                     if None, no highlights at all
@@ -5450,19 +5488,19 @@ init -3 python:
                 MASAccessoryBase._prepare_hl_data(hl_data, pose_map)
             )
             self.aso_type = aso_type
-            self.__rec_layer = rec_layer
-            self.__sp_type = store.mas_sprites_json.SP_ACS
+            self._m1_sprite0x2dchart__rec_layer = rec_layer
+            self._m1_sprite0x2dchart__sp_type = store.mas_sprites_json.SP_ACS
             self.priority=priority
             self.acs_type = acs_type
             self.mux_type = mux_type
             self.keep_on_desk = keep_on_desk
-
+            
             if dlg_data is not None and len(dlg_data) == 2:
                 self.dlg_desc, self.dlg_plur = dlg_data
             else:
                 self.dlg_desc = None
                 self.dlg_plur = None
-
+        
         @staticmethod
         def _prepare_hl_data(hl_data, pose_map):
             """
@@ -5474,19 +5512,19 @@ init -3 python:
 
             RETURNS: hl data to pass into MASSpriteBase
             """
-            # NOTE: if pose map is None, this will crash in MASSpriteBase
+            
             if hl_data is None or pose_map is None:
                 return None
-
-            # splitup ahl data
+            
+            
             hl_def, hl_mapping = hl_data
-
-            # pose map values are the keys
+            
+            
             hl_keys = pose_map.unique_values()
-
-            # now generate the hl data
+            
+            
             return (hl_keys, hl_def, hl_mapping)
-
+        
         @staticmethod
         def get_priority(acs):
             """
@@ -5495,7 +5533,7 @@ init -3 python:
             This is for sorting
             """
             return acs.priority
-
+        
         def get_arm_split_code(self, poseid):
             """DEPRECATED
             NOTE: we are keeping this around for compatiblity purposes
@@ -5506,7 +5544,7 @@ init -3 python:
             RETURNS: empty list
             """
             return []
-
+        
         def get_rec_layer(self):
             """
             Returns the recommended layer ofr this accessory
@@ -5514,11 +5552,11 @@ init -3 python:
             RETURNS:
                 recommend MASMOnika accessory type for this accessory
             """
-            return self.__rec_layer
-
+            return self._m1_sprite0x2dchart__rec_layer
+        
         def opt_gethlc(self, poseid, flt, arm_split, defval=None):
             """
-            Optimized highlight code getter. Implementation varies in
+            Optimized highlight code getter. Implementation varies in 
             extended classes.
             The point of this is to avoid additional lookups during render.
             """
@@ -5534,7 +5572,7 @@ init -3 python:
 
         See MASAccessoryBase for inherited properties.
         """
-
+        
         def __init__(self,
                 name,
                 img_sit,
@@ -5596,7 +5634,7 @@ init -3 python:
                     [0] - string to use for dlg_desc
                     [1] - boolean value for dlg_plur
                     (Default: None)
-                keep_on_desk - determines if ACS should be shown if monika
+                keep_on_desk - determines if ACS should be shown if monika 
                     leaves
                     (Default: False)
                 hl_data - ACS highlight data. Format: tuple:
@@ -5628,11 +5666,11 @@ init -3 python:
                 keep_on_desk,
                 hl_data
             )
-
+        
         def __repr__(self):
             return "<ACS: {0}>".format(self.name)
 
-        def __build_loadstrs_hl(self, prefix, poseid):
+        def _m1_sprite0x2dchart__build_loadstrs_hl(self, prefix, poseid):
             """
             Builds highlight load strs for a pose
 
@@ -5645,13 +5683,13 @@ init -3 python:
             """
             if self.hl_map is None:
                 return []
-
-            # get filter map
+            
+            
             mfm = self.hl_map.get(poseid)
             if mfm is None:
                 return []
-
-            # get all unique filter values
+            
+            
             return [
                 prefix + [
                     store.mas_sprites.HLITE_SUFFIX,
@@ -5660,31 +5698,31 @@ init -3 python:
                 ]
                 for hlc in mfm.unique_values()
             ]
-
+        
         def build_loadstrs(self, prefix):
             """
             See MASSpriteBase.build_loadstrs
             """
             loadstrs = []
-
-            # loop over MASPoseMap for pose ids
+            
+            
             for poseid in self.pose_map.unique_values():
-                # generate new img str
+                
                 new_img = prefix + [
                     store.mas_sprites.PREFIX_ACS,
                     self.img_sit,
                     store.mas_sprites.ART_DLM,
                     poseid,
                 ]
-
-                # add the image
+                
+                
                 loadstrs.append(new_img + [store.mas_sprites.FILE_EXT])
-
-                # highlights
-                loadstrs.extend(self.__build_loadstrs_hl(new_img, poseid))
-
+                
+                
+                loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(new_img, poseid))
+            
             return loadstrs
-
+        
         def gethlc(self, leanpose, flt, hl_key, defval=None):
             """
             Gets highlight code.
@@ -5705,10 +5743,10 @@ init -3 python:
                 None,
                 defval
             )
-
+        
         def opt_gethlc(self, poseid, flt, arm_split, defval=None):
             """
-            MASAccessory-specific gethlc.
+            MASAccessory-specific gethlc. 
             Optimized to only accept the args that actually matter for
             MASAccessory objects.
 
@@ -5730,9 +5768,9 @@ init -3 python:
         at split layers (ASE/BSE)
 
         PROPERTIES:
-            arm_split - MASPoseMap determining which arm position the ACS
+            arm_split - MASPoseMap determining which arm position the ACS 
                 should be visible in. This only applies to ACS that are
-                intended to be used in a BSE or ASE ACS layer.
+                intended to be used in a BSE or ASE ACS layer. 
                 This accepts the following values for poses;
                     "0" - sprite has "-0" version, and should be used for
                         arms-0 for this pose or body-0
@@ -5752,15 +5790,15 @@ init -3 python:
 
         See MASAccessoryBase for inherited propeties
         """
-
-        __MHM_KEYS = ("0", "1", "5", "10")
-        # valid MAShlightMap keys for this object
-        # also known as the arm codes
-
-        __ASE_KEYS = ("0", "5", "10")
-        __BSE_KEYS = ("0", "1")
-        # layer-specific keys
-
+        
+        _m1_sprite0x2dchart__MHM_KEYS = ("0", "1", "5", "10")
+        
+        
+        
+        _m1_sprite0x2dchart__ASE_KEYS = ("0", "5", "10")
+        _m1_sprite0x2dchart__BSE_KEYS = ("0", "1")
+        
+        
         def __init__(self,
                 name,
                 img_sit,
@@ -5826,10 +5864,10 @@ init -3 python:
                     [0] - string to use for dlg_desc
                     [1] - boolean value for dlg_plur
                     (Default: None)
-                keep_on_desk - determines if ACS should be shown if monika
+                keep_on_desk - determines if ACS should be shown if monika 
                     leaves
                     (Default: False)
-                hl_data - highlight data. Format:
+                hl_data - highlight data. Format: 
                     key: values used for pose_map
                     value: tuple:
                         [0] - default highlight ot use. pass in None to not
@@ -5860,13 +5898,13 @@ init -3 python:
                 keep_on_desk,
                 MASSplitAccessory._prepare_hl_data(hl_data)
             )
-
+            
             self.arm_split = arm_split
-
+        
         def __repr__(self):
             return "<SACS: {0}>".format(self.name)
 
-        def __build_loadstrs_hl(self, prefix, poseid, armcode):
+        def _m1_sprite0x2dchart__build_loadstrs_hl(self, prefix, poseid, armcode):
             """
             Builds highlight load strs for a pose and arm layer
 
@@ -5880,18 +5918,18 @@ init -3 python:
             """
             if self.hl_map is None:
                 return []
-
-            # get hl map for a pose
+            
+            
             mhm = self.hl_map.get(poseid)
             if mhm is None:
                 return []
-
-            # get filter map for an arm code
+            
+            
             mfm = mhm.get(armcode)
             if mfm is None:
                 return []
-
-            # get all unique filter values
+            
+            
             return [
                 prefix + [
                     store.mas_sprites.HLITE_SUFFIX,
@@ -5900,7 +5938,7 @@ init -3 python:
                 ]
                 for hlc in mfm.unique_values()
             ]
-
+        
         @classmethod
         def _prepare_hl_data(cls, hl_data):
             """
@@ -5914,54 +5952,54 @@ init -3 python:
             """
             if hl_data is None:
                 return None
-
-            # for each data element, we need to generate an MHM
+            
+            
             for key in hl_data:
                 data = hl_data[key]
                 if data is not None:
                     hl_data[key] = MASHighlightMap.create_from_mapping(
-                        cls.__MHM_KEYS,
+                        cls._m1_sprite0x2dchart__MHM_KEYS,
                         data[0],
                         data[1]
                     )
-
+            
             return (None, hl_data)
-
+        
         def build_loadstrs(self, prefix):
             """
             See MASSpriteBase.build_loadstrs
             """
             loadstrs = []
-
-            # loop over MASPoseMap for pose ids
+            
+            
             for poseid in self.pose_map.unique_values():
-
-                # generate new img str
+                
+                
                 new_img = prefix + [
                     store.mas_sprites.PREFIX_ACS,
                     self.img_sit,
                     store.mas_sprites.ART_DLM,
                     poseid,
                 ]
-
-                # check layers
+                
+                
                 for armcode in self.get_arm_split_code(poseid):
-
-                    # generate arm code img str
+                    
+                    
                     ac_img = new_img + [store.mas_sprites.ART_DLM, arm_code]
-
-                    # add that to list
+                    
+                    
                     loadstrs.append(ac_img + [store.mas_sprites.FILE_EXT])
-
-                    # highlights
-                    loadstrs.extend(self.__build_loadstrs_hl(
+                    
+                    
+                    loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(
                         ac_img,
                         poseid,
                         armcode
                     ))
-
+            
             return loadstrs
-
+        
         @classmethod
         def fromJSON_hl_data(cls,
                 json_obj,
@@ -5994,24 +6032,24 @@ init -3 python:
                         value: MASFilterMap object
                 or None if no data, False if failure in parsing occured
             """
-            # check rec layer for valid split
+            
             if rec_layer == MASMonika.BSE_ACS:
-                as_keys = cls.__BSE_KEYS
+                as_keys = cls._m1_sprite0x2dchart__BSE_KEYS
             elif rec_layer == MASMonika.ASE_ACS:
-                as_keys = cls.__ASE_KEYS
+                as_keys = cls._m1_sprite0x2dchart__ASE_KEYS
             else:
-                # silently fail in this case. This should never actually
-                # happen
+                
+                
                 return None
-
-            # log loading
+            
+            
             msg_log.append((
                 store.mas_sprites_json.MSG_INFO_T,
                 ind_lvl,
                 store.mas_sprites_json.MHM_S_LOADING
             ))
-
-            # check type
+            
+            
             if not store.mas_sprites_json._verify_dict(json_obj, False):
                 msg_log.append((
                     store.mas_sprites_json.MSG_ERR_T,
@@ -6022,25 +6060,25 @@ init -3 python:
                     )
                 ))
                 return False
-
+            
             shl_data = {}
-
-            # parse data as dict
-            # the initial level keys should be pose map ones
+            
+            
+            
             has_map_data = False
             isbad = False
             for pm_key in pm_keys:
                 if pm_key in json_obj:
                     hl_obj = json_obj.pop(pm_key)
-
-                    # log loading
+                    
+                    
                     msg_log.append((
                         store.mas_sprites_json.MSG_INFO_T,
                         ind_lvl + 1,
                         store.mas_sprites_json.MHM_SK_LOADING.format(pm_key)
                     ))
-
-                    # parse data
+                    
+                    
                     vhl_data = {}
                     if store.mas_sprites_json._validate_highlight_core(
                             hl_obj,
@@ -6049,9 +6087,9 @@ init -3 python:
                             ind_lvl + 2,
                             as_keys
                     ):
-                        # success
-
-                        # log success
+                        
+                        
+                        
                         msg_log.append((
                             store.mas_sprites_json.MSG_INFO_T,
                             ind_lvl + 1,
@@ -6059,50 +6097,50 @@ init -3 python:
                                 pm_key
                             )
                         ))
-
+                        
                         hl_data = vhl_data.get("hl_data", None)
-
+                        
                         if hl_data is not None:
-                            # none check the hl object for later
+                            
                             has_map_data = True
-
+                        
                         shl_data[pm_key] = hl_data
-
+                    
                     else:
-                        # failure case
+                        
                         isbad = True
-
-            # warn if any extras
+            
+            
             for extra_prop in json_obj:
                 msg_log.append((
                     store.mas_sprites_json.MSG_WARN_T,
                     ind_lvl,
                     store.mas_sprites_json.EXTRA_PROP.format(extra_prop)
                 ))
-
-            # quit if failure
+            
+            
             if isbad:
                 return False
-
-            # check if we actually have any data
+            
+            
             if len(shl_data) == 0 or not has_map_data:
-                # no data, warn but no failure
+                
                 msg_log.append((
                     store.mas_sprites_json.MSG_WARN_T,
                     ind_lvl,
                     store.mas_sprites_json.MHM_S_NO_DATA
                 ))
                 shl_data = None
-
-            # log success
+            
+            
             msg_log.append((
                 store.mas_sprites_json.MSG_INFO_T,
                 ind_lvl,
                 store.mas_sprites_json.MHM_S_SUCCESS
             ))
-
+            
             return shl_data
-
+        
         def get_arm_split_code(self, poseid):
             """
             Gets arm split code if needed
@@ -6110,23 +6148,23 @@ init -3 python:
             IN:
                 poseid - poseid to get arm split code for
 
-            RETURNS: arms split code as iterable, or empty list
+            RETURNS: arms split code as iterable, or empty list 
             """
             if self.arm_split is None:
                 return []
-
-            # find arm code
+            
+            
             arm_code = self.arm_split.get(poseid, None)
             if not arm_code:
                 return []
-
-            # valid arm code (or not empty string)
+            
+            
             if arm_code == "*":
-                return self.__MHM_KEYS
-
-            # otherwise split on delimter
+                return self._m1_sprite0x2dchart__MHM_KEYS
+            
+            
             return arm_code.split("^")
-
+        
         def gethlc(self, leanpose, flt, hl_key, defval=None):
             """
             Gets highlight code.
@@ -6143,19 +6181,19 @@ init -3 python:
             """
             return self.opt_gethlc(
                 self.pose_map.get(leanpose, None),
-                flt,
+                flt, 
                 hl_key,
                 defval
             )
-
+        
         def hl_keys(self):
             """
             Returns keys used for MASHighlightMap.
 
             RETURNS: keys used for all MASHighlightMaps for MASAccessories.
             """
-            return self.__MHM_KEYS
-
+            return self._m1_sprite0x2dchart__MHM_KEYS
+        
         @classmethod
         def hl_keys_c(cls):
             """
@@ -6163,8 +6201,8 @@ init -3 python:
 
             RETURNS: tuple of hl keys
             """
-            return cls.__MHM_KEYS
-
+            return cls._m1_sprite0x2dchart__MHM_KEYS
+        
         def opt_gethlc(self, poseid, flt, arm_split, defval=None):
             """
             MASSplitAccessory-specific gethlc.
@@ -6182,14 +6220,14 @@ init -3 python:
             """
             if self.hl_map is None or arm_split is None:
                 return defval
-
+            
             return MASHighlightMap.o_fltget(
                 self.hl_map.get(poseid),
                 arm_split,
                 flt,
                 defval
             )
-
+        
         @classmethod
         def verify_arm_split_val(cls, value):
             """
@@ -6200,7 +6238,7 @@ init -3 python:
 
             RETURNS: True if valid, false if not
             """
-            return value in cls.__MHM_KEYS
+            return value in cls._m1_sprite0x2dchart__MHM_KEYS
 
 
     class MASHair(MASSpriteFallbackBase):
@@ -6229,9 +6267,9 @@ init -3 python:
         POSEMAP explanations:
             Use an empty string to
         """
-
-        __MHM_KEYS = store.mas_sprites._genLK(("front", "back"))
-
+        
+        _m1_sprite0x2dchart__MHM_KEYS = store.mas_sprites._genLK(("front", "back"))
+        
         def __init__(self,
                 name,
                 img_sit,
@@ -6297,17 +6335,17 @@ init -3 python:
                 ex_props,
                 MASHair._prepare_hl_data(hl_data)
             )
-            self.__sp_type = store.mas_sprites_json.SP_HAIR
-
+            self._m1_sprite0x2dchart__sp_type = store.mas_sprites_json.SP_HAIR
+            
             if split is not None and type(split) != MASPoseMap:
                 raise Exception("split MUST be PoseMap")
-
+            
             self.split = split
-
+        
         def __repr__(self):
             return "<Hair: {0}>".format(self.name)
 
-        def __build_loadstrs_hl(self, prefix, hl_key):
+        def _m1_sprite0x2dchart__build_loadstrs_hl(self, prefix, hl_key):
             """
             Builds highlight load strs for a split layer
 
@@ -6315,17 +6353,17 @@ init -3 python:
                 prefix - prefix to apply to the load strings
                     should be a list of strings
                 hl_key - key of the hl to use
-
+                
             RETURNS: list of lists of strings
             """
             if self.hl_map is None:
                 return []
-
-            # get filter map
+            
+            
             mfm = self.hl_map.get(hl_key)
             if mfm is None:
                 return []
-
+            
             return [
                 prefix + [
                     store.mas_sprites.HLITE_SUFFIX,
@@ -6334,7 +6372,7 @@ init -3 python:
                 ]
                 for hlc in mfm.unique_values()
             ]
-
+        
         @classmethod
         def _prepare_hl_data(cls, hl_data):
             """
@@ -6347,42 +6385,42 @@ init -3 python:
             """
             if hl_data is None:
                 return None
-
+            
             hl_def, hl_mapping = hl_data
             if hl_def is None and hl_mapping is None:
                 return None
-
-            return (cls.__MHM_KEYS, hl_def, hl_mapping)
-
+            
+            return (cls._m1_sprite0x2dchart__MHM_KEYS, hl_def, hl_mapping)
+        
         def build_loadstrs(self, prefix):
             """
             See MASSpriteBase.build_loadstrs
             """
             loadstrs = []
-
-            # NOTE: we only allow split layers, but this check is to ensure
-            #   we don't have any weirdness going on
+            
+            
+            
             all_split = self.split is None
-
-            # loop over all poses
+            
+            
             for leanpose in store.mas_sprites.ALL_POSES:
-
-                # determine actual pose
+                
+                
                 actual_pose = self.get_leanpose(leanpose)
-
-                # check for valid pose
-                # and only allow splits
+                
+                
+                
                 if (
                         actual_pose
                         and (all_split or self.split.get(actual_pose, False))
                 ):
-                    # determine lean
+                    
                     islean = "|" in leanpose
-
-                    # generate img string
+                    
+                    
                     new_img = list(prefix)
-
-                    # determine starting prefix
+                    
+                    
                     if islean:
                         lean = leanpose.partition("|")[0]
                         hl_key = lean + "|{0}"
@@ -6394,30 +6432,30 @@ init -3 python:
                     else:
                         hl_key = "{0}"
                         new_img.append(store.mas_sprites.PREFIX_HAIR)
-
-                    # add the tag
+                    
+                    
                     new_img.append(self.img_sit)
-
-                    # genreate back and front images
+                    
+                    
                     back_img = new_img + [store.mas_sprites.BHAIR_SUFFIX]
                     front_img = new_img + [store.mas_sprites.FHAIR_SUFFIX]
-
-                    # add them to list
+                    
+                    
                     loadstrs.append(back_img + [store.mas_sprites.FILE_EXT])
                     loadstrs.append(front_img + [store.mas_sprites.FILE_EXT])
-
-                    # highlights
-                    loadstrs.extend(self.__build_loadstrs_hl(
+                    
+                    
+                    loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(
                         back_img,
                         hl_key.format(store.mas_sprites.BHAIR)
                     ))
-                    loadstrs.extend(self.__build_loadstrs_hl(
+                    loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(
                         front_img,
                         hl_key.format(store.mas_sprites.FHAIR)
                     ))
-
+            
             return loadstrs
-
+        
         def gethlc(self, hair_key, lean, flt, defval=None):
             """
             Gets highlight code
@@ -6433,27 +6471,27 @@ init -3 python:
             """
             if self.hl_map is None:
                 return defval
-
+            
             if lean:
                 hl_key = "|".join((lean, hair_key))
             else:
                 hl_key = hair_key
-
+            
             return MASHighlightMap.o_fltget(
                 self.hl_map,
                 hl_key,
                 flt,
                 defval
             )
-
+        
         def hl_keys(self):
             """
             Returns keys used for MASHighlightMap.
 
             RETURNS: keys used for all MASHighlightMaps for MASHair objects
             """
-            return self.__MHM_KEYS
-
+            return self._m1_sprite0x2dchart__MHM_KEYS
+        
         @classmethod
         def hl_keys_c(cls):
             """
@@ -6461,7 +6499,7 @@ init -3 python:
 
             RETURNS: tuple of hl keys
             """
-            return cls.__MHM_KEYS
+            return cls._m1_sprite0x2dchart__MHM_KEYS
 
 
     class MASClothes(MASSpriteFallbackBase):
@@ -6492,9 +6530,9 @@ init -3 python:
         SEE MASSpriteFallbackBase for inherited properties
         """
         import store.mas_sprites as mas_sprites
-
-        __MHM_KEYS = store.mas_sprites._genLK(("0", "1"))
-
+        
+        _m1_sprite0x2dchart__MHM_KEYS = store.mas_sprites._genLK(("0", "1"))
+        
         def __init__(self,
                 name,
                 img_sit,
@@ -6568,21 +6606,21 @@ init -3 python:
                 ex_props,
                 MASClothes._prepare_hl_data(hl_data)
             )
-            self.__sp_type = store.mas_sprites_json.SP_CLOTHES
-
+            self._m1_sprite0x2dchart__sp_type = store.mas_sprites_json.SP_CLOTHES
+            
             self.hair_map = hair_map
             self.pose_arms = pose_arms
-
-            # add defaults if we need them
+            
+            
             if "all" in hair_map:
                 for hair_name in mas_sprites.HAIR_MAP:
                     if hair_name not in self.hair_map:
                         self.hair_map[hair_name] = self.hair_map["all"]
-
+        
         def __repr__(self):
             return "<Clothes: {0}>".format(self.name)
-
-        def __build_loadstrs_hl(self, prefix, hl_key):
+        
+        def _m1_sprite0x2dchart__build_loadstrs_hl(self, prefix, hl_key):
             """
             Builds loadstrs for body highlights
 
@@ -6595,12 +6633,12 @@ init -3 python:
             """
             if self.hl_map is None:
                 return []
-
-            # get filter map
+            
+            
             mfm = self.hl_map.get(hl_key)
             if mfm is None:
                 return []
-
+            
             return [
                 prefix + [
                     store.mas_sprites.HLITE_SUFFIX,
@@ -6609,7 +6647,7 @@ init -3 python:
                 ]
                 for hlc in mfm.unique_values()
             ]
-
+        
         @classmethod
         def _prepare_hl_data(cls, hl_data):
             """
@@ -6622,29 +6660,29 @@ init -3 python:
             """
             if hl_data is None:
                 return None
-
+            
             hl_def, hl_mapping = hl_data
             if hl_def is None and hl_mapping is None:
                 return None
-
-            return (cls.__MHM_KEYS, hl_def, hl_mapping)
-
+            
+            return (cls._m1_sprite0x2dchart__MHM_KEYS, hl_def, hl_mapping)
+        
         def build_loadstrs(self, prefix):
             """
             See MASSpriteBase.build_loadstrs
             """
             loadstrs = []
-
-            # prefix + folder name
+            
+            
             c_prefix = prefix + [
                 self.img_sit,
                 "/"
             ]
-
-            # start with body
-            # upright first
-            # NOTE: if we have different body types, we will need to change
-            #   this
+            
+            
+            
+            
+            
             loadstrs.append(c_prefix + [
                 store.mas_sprites.NEW_BODY_STR,
                 store.mas_sprites.ART_DLM,
@@ -6657,19 +6695,19 @@ init -3 python:
                 "1",
                 store.mas_sprites.FILE_EXT
             ])
-
-            # leaning types
+            
+            
             for lpose in store.mas_sprites.L_POSES:
-
-                # determine actual pose
+                
+                
                 actual_pose = self.get_leanpose(lpose)
-
-                # only accept valid poses and leanables
+                
+                
                 if actual_pose and "|" in actual_pose:
-                    # get lean type from pose
+                    
                     lean, pose = actual_pose.split("|")
-
-                    # build prefix and add file
+                    
+                    
                     l_prefix = c_prefix + [
                         store.mas_sprites.PREFIX_BODY_LEAN,
                         lean,
@@ -6679,28 +6717,28 @@ init -3 python:
                     l1_prefix = l_prefix + ["1"]
                     loadstrs.append(l0_prefix + [store.mas_sprites.FILE_EXT])
                     loadstrs.append(l1_prefix + [store.mas_sprites.FILE_EXT])
-
-                    # check hl map for leans
-                    loadstrs.extend(self.__build_loadstrs_hl(
+                    
+                    
+                    loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(
                         l0_prefix,
                         lean + "|0"
                     ))
-                    loadstrs.extend(self.__build_loadstrs_hl(
+                    loadstrs.extend(self._m1_sprite0x2dchart__build_loadstrs_hl(
                         l1_prefix,
                         lean + "|1"
                     ))
-
-            # now do arms
+            
+            
             if self.pose_arms is None:
-                # use base arms
+                
                 pose_arms = store.mas_sprites.base_arms
             else:
                 pose_arms = self.pose_arms
-
+            
             loadstrs.extend(pose_arms.build_loadstrs(c_prefix))
-
+            
             return loadstrs
-
+        
         def determine_arms(self, leanpose):
             """
             Determines arms pose to use for a given leanpose
@@ -6711,17 +6749,17 @@ init -3 python:
             RETURNS: MASPoseArms object to use for this leanpose, or None if
                 no MASPoseArms to use
             """
-            # check our arms
-            # NOTE: if no arms, we always use base
+            
+            
             if self.pose_arms is None:
                 return store.mas_sprites.base_pose_arms_map.get(
                     leanpose,
                     None
                 )
-
-            # otherwise use our arms but return None if not need to render
+            
+            
             return self.pose_arms.get(leanpose, None)
-
+        
         def get_hair(self, hair):
             """
             Given a hair type, grabs the available mapping for this hair type
@@ -6733,7 +6771,7 @@ init -3 python:
                 the hair mapping to use inplace for the given hair type
             """
             return self.hair_map.get(hair, self.hair_map.get("all", hair))
-
+        
         def gethlc(self, bcode, lean, flt, defval=None):
             """
             Gets highlight code
@@ -6749,33 +6787,33 @@ init -3 python:
             """
             if self.hl_map is None:
                 return defval
-
+            
             if lean:
                 hl_key = "|".join((lean, bcode))
             else:
                 hl_key = bcode
-
+            
             return MASHighlightMap.o_fltget(
                 self.hl_map,
                 hl_key,
                 flt,
                 defval
             )
-
+        
         def has_hair_map(self):
             """
             RETURNS: True if we have a mapping to check, False otherwise
             """
             return len(self.hair_map) > 0
-
+        
         def hl_keys(self):
             """
             Returns keys used for MASHighlightMap.
 
             RETURNS: keys used for all MASHighlightMaps for MASHair objects
             """
-            return self.__MHM_KEYS
-
+            return self._m1_sprite0x2dchart__MHM_KEYS
+        
         @classmethod
         def hl_keys_c(cls):
             """
@@ -6783,8 +6821,8 @@ init -3 python:
 
             RETURNS: tuple of hl keys
             """
-            return cls.__MHM_KEYS
-
+            return cls._m1_sprite0x2dchart__MHM_KEYS
+        
         @staticmethod
         def by_exprop(exprop, value=True):
             """
@@ -6797,7 +6835,7 @@ init -3 python:
             RETURNS: list of MASClothes objects with the given exprop and value
             """
             clothes = []
-
+            
             for c_name in store.mas_sprites.CLOTH_MAP:
                 clothing = store.mas_sprites.CLOTH_MAP[c_name]
                 if (
@@ -6808,23 +6846,23 @@ init -3 python:
                         )
                 ):
                     clothes.append(clothing)
-
+            
             return clothes
 
 
-    # The main drawing function...
+
     def mas_drawmonika(
             st,
             at,
             character,
 
-            # requried sitting parts
+            
             eyebrows,
             eyes,
             nose,
             mouth,
 
-            # optional sitting parts
+            
             lean=None,
             arms="steepling",
             eyebags=None,
@@ -6833,7 +6871,7 @@ init -3 python:
             tears=None,
             emote=None,
 
-            # optional standing parts
+            
             head="",
             left="",
             right="",
@@ -6874,29 +6912,29 @@ init -3 python:
             single - type of single standing image (standing)
                 (Default: None)
         """
-        # NOTE: we only support stand sprites strings
-
-        # TODO: this is missing img_stand checks
-        # TODO change this to an elif and else the custom stnading mode
-#        elif stock:
-            # stock standing mode
+        
+        
+        
+        
+        
+        
         cmd = store.mas_sprites._ms_standingstock(
             head,
             left,
             right,
-            [], # TODO maybe need a ring in standing mode?
+            [], 
             single=single
         )
-
-
-        return eval(cmd),None # Unless you're using animations, you can set refresh rate to None
+        
+        
+        return eval(cmd),None 
 
 
 init -2 python in mas_sprites:
-    # base-related sprtie stuff
-    # NOTE: this should be made AFTER the sprite object classes are defined
 
-    # ARMS to MASArm object mapping
+
+
+
     NUM_MARMS = {
         1: store.MASArmBoth,
         2: store.MASArmLeft,
@@ -6909,10 +6947,10 @@ init -2 python in mas_sprites:
         9: store.MASArmRight,
     }
 
-    # the base arms
-    base_arms = store.MASPoseArms({
 
-        # crossed
+    base_arms = store.MASPoseArms({
+        
+        
         1: NUM_MARMS[1](
             "crossed",
             {
@@ -6921,7 +6959,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # left-down
+        
         2: NUM_MARMS[2](
             "down",
             {
@@ -6929,7 +6967,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # left-rest
+        
         3: NUM_MARMS[3](
             "rest",
             {
@@ -6937,7 +6975,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # right-down
+        
         4: NUM_MARMS[4](
             "down",
             {
@@ -6945,7 +6983,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # right-point
+        
         5: NUM_MARMS[5](
             "point",
             {
@@ -6953,7 +6991,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # right-restpoint
+        
         6: NUM_MARMS[6](
             "restpoint",
             {
@@ -6961,7 +6999,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # steepling
+        
         7: NUM_MARMS[7](
             "steepling",
             {
@@ -6969,7 +7007,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # def|left-def
+        
         8: NUM_MARMS[8](
             "def",
             {
@@ -6977,7 +7015,7 @@ init -2 python in mas_sprites:
             }
         ),
 
-        # def|right-def
+        
         9: NUM_MARMS[9](
             "def",
             {
@@ -6987,33 +7025,33 @@ init -2 python in mas_sprites:
         ),
     })
 
-    # the base pose arm map
+
     base_mpm = store.MASPoseMap(
 
-        # steepling
+        
         p1=(7,),
 
-        # crossed
+        
         p2=(1,),
 
-        # restleftpointright - left-rest / right-restpoint
+        
         p3=(3, 6),
 
-        # pointright - left-down / right-point
+        
         p4=(2, 5),
 
-        # leaning-def - def|left-def / def|right-def
+        
         p5=(8, 9),
 
-        # down - left-down / right-down
+        
         p6=(2, 4),
 
-        # downleftpointright - left-down / right-restpoint
+        
         p7=(2, 6)
 
     )
 
-    # NOTE: consider allowing spritejsons to do this
+
     def use_bma(arm_id):
         """
         Returns base MASArm for an armid
@@ -7028,7 +7066,7 @@ init -2 python in mas_sprites:
     def use_bmpm(posenum):
         """
         Returns tuple of MASArms for a pose num
-
+        
         IN:
             posenum - numerical digit for a pose. This corresponds to
                 NUM_POSE.
@@ -7051,7 +7089,7 @@ init -2 python in mas_sprites:
 
 
 init -1 python in mas_sprites:
-    # other post-sprite object functions (do NOT put base stuff in here)
+
 
     def show_empty_desk():
         """
@@ -7064,216 +7102,108 @@ init -1 python in mas_sprites:
             zorder=store.MAS_MONIKA_Z - 1
         )
 
-# Monika
+
 define monika_chr = MASMonika()
 
-# empty desk should be defined after MASMonika
+
 image emptydesk = DynamicDisplayable(
     mas_drawemptydesk_rk,
     character=monika_chr
 )
 
 
-#### IMAGE START (IMG030)
-# Image are created using a DynamicDisplayable to allow for runtime changes
-# to sprites without having to remake everything. This saves us on image
-# costs.
-#
-# To create a new image, these parts are required:
-#   eyebrows, eyes, nose, mouth (for sitting)
-#   head, left, right OR a single image (for standing)
-#
-# Optional parts for sitting is:
-#   sweat, tears, blush, emote, eyebags
-#
-# Non-leaning poses require an ARMS part.
-# leaning poses require a LEAN part.
-#
-# For more information see mas_drawmonika function
-#
-#### FOLDER IMAGE RULES: (IMG031)
-# To ensure that the images are created correctly, all images must be placed in
-# a specific folder heirarchy.
-#
-# mod_assets/monika/f/<facial expressions>
-# mod_assets/monika/c/<clothing types>/<body/arms/poses>
-# mod_assets/monika/h/<hair types>
-# mod_assets/monika/a/<accessories>
-#
-# All layers must have a night version, which is denoted using the -n suffix.
-# All leaning layers must have a non-leaning fallback
-#
-## FACIAL EXPRESSIONS:
-# Non leaning filenames:
-#   face-{face part type}-{face part name}{-n}.png
-#   (ie: face-mouth-big.png / face-mouth-big-n.png)
-# leaning filenames:
-#   face-leaning-{lean type}-{face part type}-{face part name}{-n}.png
-#   (ie: face-leaning-eyes-sparkle.png / face-leaning-eyes-sparkle-n.png)
-#
-## BODY / POSE:
-# NEW
-# Non leaning:
-#   body-def{-n}.png
-#   arms-{arms name}{-n}.png
-# Leaning:
-#   body-leaning-{lean type}{-n}.png
-#   arms-leaning-{lean type}-{arms pose}{-n}.png
-#
-# OLD:
-# Non leaning filenames / parts:
-#   torso-{hair type}{-n}.png
-#   arms-{arms name}{-n}.png
-#   (ie: torso-def.png / torso-def-n.png)
-#   (ie: arms-def-steepling.png / arms-def-steepling-n.png)
-# Leaning filenames:
-#   torso-leaning-{hair type}-{lean name}{-n}.png
-#   (ie: torso-leaning-def-def.png / torso-leaning-def-def-n.png)
-#
-## HAIR:
-# hair-{hair type}-{front/back}{-n}.png
-#
 
-# NOTE: all sprites moved to sprite-chart-00
 
-### [IMG032]
-# Image aliases
-# NOTE: if you want to use a standing sprite, it must be one of these
-#   HOWEVER: you may need to use the static variants because not every
-#   sprite has closed eye versions.
-#   The only sprite combos with closed eyes standing are _sc and _sd.
-#   everything else does not have a closed eye variant. sux to succ
 
-#NOTE: KEEPING THIS FOR REFERENCE AS TO WHAT SPRITES HAVE A STANDING EQUIVALENT
-## pose 1
-#monika 1 = "monika 1esa"
-#monika 1a = "monika 1eua"
-#monika 1b = "monika 1eub"
-#monika 1c = "monika 1euc"
-#monika 1d = "monika 1eud"
-#monika 1e = "monika 1eka"
-#monika 1f = "monika 1ekc"
-#monika 1g = "monika 1ekd"
-#monika 1h = "monika 1esc"
-#monika 1i = "monika 1esd"
-#monika 1j = "monika 1hua"
-#monika 1k = "monika 1hub"
-#monika 1l = "monika 1hksdlb"
-#monika 1ll = "monika 1hksdrb"
-#monika 1m = "monika 1lksdla"
-#monika 1mm = "monika 1rksdla"
-#monika 1n = "monika 1lksdlb"
-#monika 1nn = "monika 1rksdlb"
-#monika 1o = "monika 1lksdlc"
-#monika 1oo = "monika 1rksdlc"
-#monika 1p = "monika 1lksdld"
-#monika 1pp = "monika 1rksdld"
-#monika 1q = "monika 1dsc"
-#monika 1r = "monika 1dsd"
-#
-## pose 2
-#monika 2 = "monika 2esa"
-#monika 2a = "monika 2eua"
-#monika 2b = "monika 2eub"
-#monika 2c = "monika 2euc"
-#monika 2d = "monika 2eud"
-#monika 2e = "monika 2eka"
-#monika 2f = "monika 2ekc"
-#monika 2g = "monika 2ekd"
-#monika 2h = "monika 2esc"
-#monika 2i = "monika 2esd"
-#monika 2j = "monika 2hua"
-#monika 2k = "monika 2hub"
-#monika 2l = "monika 2hksdlb"
-#monika 2ll = "monika 2hksdrb"
-#monika 2m = "monika 2lksdla"
-#monika 2mm = "monika 2rksdla"
-#monika 2n = "monika 2lksdlb"
-#monika 2nn = "monika 2rksdlb"
-#monika 2o = "monika 2lksdlc"
-#monika 2oo = "monika 2rksdlc"
-#monika 2p = "monika 2lksdld"
-#monika 2pp = "monika 2rksdld"
-#monika 2q = "monika 2dsc"
-#monika 2r = "monika 2dsd"
-#
-## pose 3
-#monika 3 = "monika 3esa"
-#monika 3a = "monika 3eua"
-#monika 3b = "monika 3eub"
-#monika 3c = "monika 3euc"
-#monika 3d = "monika 3eud"
-#monika 3e = "monika 3eka"
-#monika 3f = "monika 3ekc"
-#monika 3g = "monika 3ekd"
-#monika 3h = "monika 3esc"
-#monika 3i = "monika 3esd"
-#monika 3j = "monika 3hua"
-#monika 3k = "monika 3hub"
-#monika 3l = "monika 3hksdlb"
-#monika 3ll = "monika 3hksdrb"
-#monika 3m = "monika 3lksdla"
-#monika 3mm = "monika 3rksdla"
-#monika 3n = "monika 3lksdlb"
-#monika 3nn = "monika 3rksdlb"
-#monika 3o = "monika 3lksdlc"
-#monika 3oo = "monika 3rksdlc"
-#monika 3p = "monika 3lksdld"
-#monika 3pp = "monika 3rksdld"
-#monika 3q = "monika 3dsc"
-#monika 3r = "monika 3dsd"
-#
-## pose 4
-#monika 4 = "monika 4esa"
-#monika 4a = "monika 4eua"
-#monika 4b = "monika 4eub"
-#monika 4c = "monika 4euc"
-#monika 4d = "monika 4eud"
-#monika 4e = "monika 4eka"
-#monika 4f = "monika 4ekc"
-#monika 4g = "monika 4ekd"
-#monika 4h = "monika 4esc"
-#monika 4i = "monika 4esd"
-#monika 4j = "monika 4hua"
-#monika 4k = "monika 4hub"
-#monika 4l = "monika 4hksdlb"
-#monika 4ll = "monika 4hksdrb"
-#monika 4m = "monika 4lksdla"
-#monika 4mm = "monika 4rksdla"
-#monika 4n = "monika 4lksdlb"
-#monika 4nn = "monika 4rksdlb"
-#monika 4o = "monika 4lksdlc"
-#monika 4oo = "monika 4rksdlc"
-#monika 4p = "monika 4lksdld"
-#monika 4pp = "monika 4rksdld"
-#monika 4q = "monika 4dsc"
-#monika 4r = "monika 4dsd"
-#
-## pose 5
-#monika 5 = "monika 5eua"
-#monika 5a = "monika 5eua"
-#monika 5b = "monika 5euc"
 
-### [IMG040]
-# Custom animated sprites
-# Currently no naming convention, but please keep them somehwat consistent
-# with the current setup:
-# <pose number>ATL_<short descriptor>
-#
-# NOTE: if we do blinking, please make that a separate section from this
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 image monika 6ATL_cryleftright:
     block:
 
-        # select an image
+
         block:
             choice:
                 "monika 6lktsc"
             choice:
                 "monika 6rktsc"
-
-        # select a wait time
         block:
+
+
             choice:
                 0.9
             choice:
@@ -7287,19 +7217,19 @@ image monika 6ATL_cryleftright:
 
         repeat
 
-# similar to cryleft and right
-# meant for DISTRESSED
+
+
 image monika 6ATL_lookleftright:
 
-    # select image
+
     block:
         choice:
             "monika 6rkc"
         choice:
             "monika 6lkc"
-
-    # select a wait time
     block:
+
+
         choice:
             5.0
         choice:
@@ -7314,27 +7244,27 @@ image monika 6ATL_lookleftright:
             10.0
     repeat
 
-### [IMG045]
-# special purpose ATLs that cant really be used for other things atm
 
-# Below 0 to upset affection
+
+
+
 image monika ATL_0_to_upset:
 
-    # 1 time this part
+
     "monika 2esc"
     5.0
-
-    # repeat this part
     block:
-        # select image
+
+
+
         block:
             choice 0.95:
                 "monika 2esc"
             choice 0.05:
                 "monika 5tsc"
-
-        # select wait time
         block:
+
+
             choice:
                 10.0
             choice:
@@ -7350,9 +7280,9 @@ image monika ATL_0_to_upset:
 
         repeat
 
-# affectionate
+
 image monika ATL_affectionate:
-    # select image
+
     block:
         choice 0.02:
             "monika 1eua"
@@ -7364,15 +7294,15 @@ image monika ATL_affectionate:
                 "monika 1kua"
                 1.5
             "monika 1eua"
-
         choice 0.98:
+
             choice 0.94898:
                 "monika 1eua"
             choice 0.051020:
                 "monika 1hua"
-
-    # select wait time
     block:
+
+
         choice:
             20.0
         choice:
@@ -7388,16 +7318,16 @@ image monika ATL_affectionate:
 
     repeat
 
-# enamored
+
 image monika ATL_enamored:
 
-    # 1 time this part
+
     "monika 1eua"
     5.0
-
-    # repeat
     block:
-        # select image
+
+
+
         block:
             choice 0.02:
                 "monika 1eua"
@@ -7409,8 +7339,8 @@ image monika ATL_enamored:
                     "monika 1kua"
                     1.5
                 "monika 1eua"
-
             choice 0.98:
+
                 choice 0.765306:
                     "monika 1eua"
                 choice 0.112245:
@@ -7419,9 +7349,9 @@ image monika ATL_enamored:
                     "monika 5tsu"
                 choice 0.061224:
                     "monika 1huu"
-
-        # select wait time
         block:
+
+
             choice:
                 20.0
             choice:
@@ -7437,16 +7367,16 @@ image monika ATL_enamored:
 
         repeat
 
-# love
+
 image monika ATL_love:
 
-    # 1 time this parrt
+
     "monika 1eua"
     5.0
-
-    # repeat
     block:
-        # select image
+
+
+
         block:
             choice 0.02:
                 "monika 1eua"
@@ -7458,8 +7388,8 @@ image monika ATL_love:
                     "monika 1kua"
                     1.5
                 "monika 1eua"
-
             choice 0.98:
+
                 choice 0.510104:
                     "monika 1eua"
                 choice 0.255102:
@@ -7470,9 +7400,9 @@ image monika ATL_love:
                     "monika 1huu"
                 choice 0.051020:
                     "monika 5eubla"
-
-        # select wait time
         block:
+
+
             choice:
                 20.0
             choice:
@@ -7488,7 +7418,7 @@ image monika ATL_love:
 
         repeat
 
-# random exps for love_too at normal thru aff
+
 image monika ATL_love_too_norm_plus:
     block:
         choice:
@@ -7512,7 +7442,7 @@ image monika ATL_love_too_norm_plus:
         choice:
             "monika 5eka"
 
-# random exps for love_too at enam+
+
 image monika ATL_love_too_enam_plus:
     block:
         choice 0.05:
@@ -7538,13 +7468,13 @@ image monika ATL_love_too_enam_plus:
         choice 0.10:
             "monika 5esu"
 
-### [IMG050]
-# condition-switched images for old school image selecting
+
+
 image monika idle = ConditionSwitch(
     "mas_isMoniBroken(lower=True)", "monika 6ckc",
     "mas_isMoniDis()", "monika 6ATL_lookleftright",
-#    "mas_isMoniUpset()", "monika 2efc"
-#    "mas_isMoniNormal() and mas_isBelowZero()", "monika ATL_0_to_upset",
+
+
     "mas_isBelowZero()", "monika ATL_0_to_upset",
     "mas_isMoniHappy()", "monika 1eua",
     "mas_isMoniAff()", "monika ATL_affectionate",
@@ -7555,33 +7485,34 @@ image monika idle = ConditionSwitch(
 )
 
 
-### [IMG100]
-# chibi monika sprites
+
+
 image chibika smile = "gui/poemgame/m_sticker_1.png"
 image chibika sad = "mod_assets/other/m_sticker_sad.png"
 image chibika 3 = "gui/poemgame/m_sticker_2.png"
 
-#Ghost monika
+
 image ghost_monika:
     "mod_assets/other/ghost_monika.png"
     zoom 1.25
 
-### [IMG200]
-# transition labels
 
-# transiton to empty desk
-# NOTE: to hide a desk ACS, set that ACS to not keep on desk b4 calling this
+
+
+
+
 label mas_transition_to_emptydesk:
     $ store.mas_sprites.show_empty_desk()
     hide monika with dissolve_monika
     return
 
-# transition from empty desk
-# NOTE: to unhide a desk ACS, set that ACS to keep on desk AFTER calling this
-# IN:
-#   exp - expression to show when monika is shown
+
+
+
+
 label mas_transition_from_emptydesk(exp="monika 1eua"):
     $ renpy.show(exp, tag="monika", at_list=[i11], zorder=MAS_MONIKA_Z)
     $ renpy.with_statement(dissolve)
     hide emptydesk
     return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
