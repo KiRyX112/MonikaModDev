@@ -55,10 +55,10 @@ init python:
             import balloontip
             
             
-            _m1_zz_windowreacts__tip = balloontip.WindowsBalloonTip()
+            __tip = balloontip.WindowsBalloonTip()
             
             
-            _m1_zz_windowreacts__tip.hwnd = None
+            __tip.hwnd = None
         
         except:
             
@@ -391,10 +391,10 @@ init python:
             
             if (renpy.windows):
                 
-                notif_success = _m1_zz_windowreacts__tip.showWindow(renpy.substitute(title), renpy.substitute(renpy.random.choice(body)))
+                notif_success = __tip.showWindow(renpy.substitute(title), renpy.substitute(renpy.random.choice(body)))
                 
                 
-                destroy_list.append(_m1_zz_windowreacts__tip.hwnd)
+                destroy_list.append(__tip.hwnd)
             
             elif (renpy.macintosh):
                 
@@ -419,7 +419,7 @@ init python:
         NOTE: WINDOWS ONLY
         """
         store.mas_clearNotifs()
-        win32gui.UnregisterClass(_m1_zz_windowreacts__tip.classAtom, _m1_zz_windowreacts__tip.hinst)
+        win32gui.UnregisterClass(__tip.classAtom, __tip.hinst)
 
 
 
@@ -530,7 +530,7 @@ init 5 python:
         Event(
             persistent._mas_windowreacts_database,
             eventlabel="mas_wrs_youtube",
-            category=['ютуб'],
+            category=['youtube'],
             rules={"notif-group": "Window Reactions", "skip alert": None},
             show_in_idle=True
         ),
@@ -557,7 +557,7 @@ init 5 python:
         Event(
             persistent._mas_windowreacts_database,
             eventlabel="mas_wrs_r34m",
-            category=['rule34', 'моника'],
+            category=['rule34', 'monika'],
             rules={"skip alert": None},
             show_in_idle=True
         ),
@@ -633,9 +633,9 @@ label mas_wrs_twitter:
 
 
         ily_quips_map = {
-            "Смотришь всё, чем хочешь поделиться со мной, [player]?",
-            "Что-нибудь интересное, чем ты хочешь поделиться, [player]?",
-            "280 подписчиков? Мне только нужно [temp_len]...\n[temp_line]"
+            "Смотришь всё, чем хочешь поделиться со мной, [player]?": False,
+            "Что-нибудь интересное, чем ты хочешь поделиться, [player]?": False,
+            "280 подписчиков? Мне только нужно [temp_len]...\n[temp_line]": True
         }
         quip = renpy.random.choice(ily_quips_map.keys())
 
