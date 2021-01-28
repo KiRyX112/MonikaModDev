@@ -2180,7 +2180,7 @@ label bye_prompt_hangout:
                 $ MAS.MonikaElastic()
                 m 3eub "Ты долж[mas_gender_en] как-нибудь познакомить меня с ними!"
                 $ MAS.MonikaElastic()
-                m 3hua "Если они твои друзья, я уверенf, что они мне понравятся."
+                m 3hua "Если они твои друзья, я уверена, что они мне понравятся."
             else:
 
                 if persistent._mas_pm_has_friends is False:
