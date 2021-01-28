@@ -3769,7 +3769,7 @@ label greeting_back_from_work:
                 ("Мне пришлось задержаться на работе.", ".work_late", False, False),
                 ("Я сегодня не успел[mas_gender_none] закончить все дела.", ".little_done", False, False),
                 ("Просто очередной неудачный день.", ".bad_day", False, False),
-                ("Я чувствовал себя нехорошо сегодня.", ".sick", False, False),
+                ("Я чувствовал[mas_gender_none] себя нехорошо сегодня.", ".sick", False, False),
             ]
 
         show monika 2ekc at t21
@@ -3812,7 +3812,7 @@ label greeting_back_from_work:
             $ MAS.MonikaElastic()
             m 2lfd "{i}Особенно{/i} когда ты так много сделал[mas_gender_none] и твой поступок явно остался незамеченным."
             $ MAS.MonikaElastic()
-            m 1ekc "Ты можешь выглядеть немного подавленным, когда говоришь что-нибудь, так что ты просто должен продолжать стараться, и однажды, уверена, это принесёт свои плоды."
+            m 1ekc "Ты можешь выглядеть немного подавленн[mas_gender_iim], когда говоришь что-нибудь, так что ты просто должен[mas_gender_none] продолжать стараться, и однажды, уверена, это принесёт свои плоды."
             $ MAS.MonikaElastic()
             m 1eua "И пока ты стараешься изо всех сил, ты сможешь делать хорошие вещи и дальше, и ты однажды получишь своё признание."
             $ MAS.MonikaElastic()
@@ -3846,7 +3846,7 @@ label greeting_back_from_work:
                     $ MAS.MonikaElastic()
                     m 2tkx "Это очень плохо!"
                     $ MAS.MonikaElastic()
-                    m 2tsc "Особенно когда рабочий день уже подошёл к концу и ты уже собрался идти домой..."
+                    m 2tsc "Особенно когда рабочий день уже подошёл к концу и ты уже собрал[mas_gender_sya] идти домой..."
                     $ MAS.MonikaElastic()
                     m 2dsc "А потом тебе внезапно пришлось задержаться на работе, без какого-либо предупреждения."
                     $ MAS.MonikaElastic()
@@ -3987,9 +3987,9 @@ label greeting_back_from_sleep:
 
     elif mas_isMoniDis():
         $ MAS.MonikaElastic()
-        m 6rkc "O...{w=1}ты проснулся."
+        m 6rkc "O...{w=1}ты проснул[mas_gender_sya]."
         $ MAS.MonikaElastic()
-        m 6ekc "Надеюсь, ты смог отдохнуть."
+        m 6ekc "Надеюсь, ты смог[mas_gender_g] отдохнуть."
         $ MAS.MonikaElastic()
         m 6dkc "Мне трудно отдыхать в такие дни, и ещё куча мыслей в голове..."
     else:
@@ -5067,7 +5067,7 @@ label greeting_back_from_shopping:
     elif mas_isMoniDis():
         m 6rkc "Ох...{w=0.5} ты вернул[mas_gender_sya]."
         $ MAS.MonikaElastic()
-        m 6ekc "Надеюсь, ты хорошо пров[mas_gender_none] время в магазине. {w=0.2}Купил еду?"
+        m 6ekc "Надеюсь, ты хорошо пров[mas_gender_iol] время в магазине. {w=0.2}Купил еду?"
         $ MAS.MonikaElastic()
         m 6dkd "Задумывал[mas_gender_sya] ли ты о том, что привычка много есть, может влиять на твоё настроение?"
         $ MAS.MonikaElastic()
@@ -5099,7 +5099,7 @@ label greeting_back_from_hangout:
         if persistent._mas_pm_has_friends:
             m 1eua "Добро пожаловать, [player]."
             $ MAS.MonikaElastic()
-            m 3hub "Я надеюсь ты хорошо пров[mas_gender_none] время!"
+            m 3hub "Я надеюсь ты хорошо пров[mas_gender_iol] время!"
 
             $ anyway_lets = "Давай"
         else:
@@ -5159,7 +5159,7 @@ label greeting_back_from_hangout:
     elif mas_isMoniDis(higher=True):
         m 2euc "Привет снова, [player]."
         $ MAS.MonikaElastic()
-        m 2eud "Надеюсь, ты хорошо пров[mas_gender_iol] время с друзьями"
+        m 2eud "Надеюсь, ты хорошо пров[mas_gender_iol] время с друзьями."
         if renpy.random.randint(1,5) == 1:
             m 2rkc "{cps=*2}Интересно, на что это похоже{/cps}{nw}"
             $ _history_list.pop()
