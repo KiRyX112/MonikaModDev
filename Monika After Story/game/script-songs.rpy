@@ -21,9 +21,9 @@ init -10 python in mas_songs:
 
 
 
-    TYPE_LONG = "долгая"
-    TYPE_SHORT = "короткая"
-    TYPE_ANALYSIS = "анализ"
+    TYPE_LONG = "long"
+    TYPE_SHORT = "short"
+    TYPE_ANALYSIS = "analysis"
 
 init python in mas_songs:
     import store
@@ -200,9 +200,9 @@ init python in mas_songs:
             - ev.category contains only one type
         """
         prompt_suffix_map = {
-            TYPE_SHORT: " (Короткая)",
-            TYPE_LONG: " (Долгая)",
-            TYPE_ANALYSIS: " (Анализ)"
+            TYPE_SHORT: " (Short)",
+            TYPE_LONG: " (Long)",
+            TYPE_ANALYSIS: " (Analysis)"
         }
         return prompt_suffix_map.get(ev.category[0], "")
 
@@ -226,7 +226,7 @@ label monika_sing_song_pool:
 
     $ have_both_types = False
 
-    $ switch_str = "full"
+    $ switch_str = "полную"
 
     $ end = ""
 
@@ -347,7 +347,7 @@ label mas_sing_song_rerandom:
         mas_bookmarks_derand.caller_label = "mas_sing_song_rerandom"
         mas_bookmarks_derand.persist_var = persistent._mas_player_derandomed_songs
 
-    call mas_rerandom from _call_mas_rerandom
+    call mas_rerandom
     return _return
 
 label mas_song_derandom:
