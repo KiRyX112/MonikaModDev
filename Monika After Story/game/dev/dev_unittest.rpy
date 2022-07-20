@@ -10,6 +10,9 @@ init -1 python in mas_dev_unit_tests:
         ("MASHistorySaver", "dev_unit_test_mhs", False, False),
         ("MASHistorySaver - correct_pbday_mhs", "dev_unit_test_mhs_cpm", False, False),
         ("UTC APIs", "dev_unit_test_utc_api", False, False),
+        ("WRS REGEXP Tests", "dev_unit_test_wrs_regexpchecks", False, False),
+        ("strict_can_pickle", "dev_unit_test_strict_can_pickle", False, False),
+        ("mas_set_pronouns", "dev_unit_test_mas_set_pronouns", False, False)
     ]
 
     class MASUnitTest(object):
@@ -106,10 +109,10 @@ init -1 python in mas_dev_unit_tests:
                 ))
                 return False
 
-            # now check keys + values 
+            # now check keys + values
             a_keys = sorted(actual.keys())
             for e_key in expected:
-                
+
                 if e_key not in a_keys:
                     self.tests.append(MASUnitTest(
                         self.test_name,
@@ -120,12 +123,12 @@ init -1 python in mas_dev_unit_tests:
                     ))
                     return False
 
-                # pop key off 
+                # pop key off
                 a_keys.remove(e_key)
                 if not self.assertEqual(expected[e_key], actual[e_key]):
                     return False
 
-            # if any keys remain in a, then we had a mismatch 
+            # if any keys remain in a, then we had a mismatch
             if len(a_keys) > 0:
                 self.tests.append(MASUnitTest(
                     self.test_name,
@@ -379,7 +382,7 @@ label dev_unit_tests_show_pass:
 
 label dev_unit_tests_show_fail:
     m 1ektsc "!!!FAILED!!!"
-    return 
+    return
 
 label dev_unit_tests_show_msgs(msg_list, format_text=False):
     $ index = 0
@@ -494,7 +497,7 @@ label dev_unit_test_event_yearadjust:
         end_dt = now_dt - datetime.timedelta(days=380)
         expected = (add_years(start_dt, 2), add_years(end_dt, 2), True)
         actual = Event._yearAdjust(start_dt, end_dt, [])
-        eya_tester.assertEqual(expected, actual)       
+        eya_tester.assertEqual(expected, actual)
 
         eya_tester.prepareTest("ahead now, same year")
         now_dt = datetime.datetime.now()
@@ -502,7 +505,7 @@ label dev_unit_test_event_yearadjust:
         end_dt = now_dt + datetime.timedelta(days=10)
         expected = (start_dt, end_dt, False)
         actual = Event._yearAdjust(start_dt, end_dt, [])
-        eya_tester.assertEqual(expected, actual)              
+        eya_tester.assertEqual(expected, actual)
 
         eya_tester.prepareTest("ahead now, diff year")
         now_dt = datetime.datetime.now()
@@ -537,7 +540,7 @@ label dev_unit_test_json_masposemap:
             return gen_data(MASPoseArms.J_NAME_LEFT, ldata)
 
         def gen_right(rdata):
-            return gen_data(MASPoseArms.J_NAME_RIGHT, rdata)       
+            return gen_data(MASPoseArms.J_NAME_RIGHT, rdata)
 
         def arms_both(extra=False):
             data = gen_both(("both_pa", True, True))
@@ -1776,7 +1779,7 @@ label dev_unit_test_mhs:
         mhs_tester.assertEqual(test_data[0], test_mhs.trigger)
         mhs_tester.assertFalse(test_mhs.use_year_before)
         store.mas_globals.tt_detected = prev_data[0]
-        MASHistorySaver.first_sesh = prev_data[1]       
+        MASHistorySaver.first_sesh = prev_data[1]
 
         mhs_tester.prepareTest("isActive|continuous")
         test_mhs = gen_fresh_mhs()
@@ -2478,6 +2481,31 @@ label dev_unit_test_mhs_cpm:
         )
         rs_mhs(prev_data)
 
+        test_name = "2-29|"
+        prev_data, test_mhs = sv_mhs()
+        test_now = datetime.datetime.now()
+        bday = datetime.date(2000, 2, 29)
+        inc_year = int(mas_utils.add_years(bday, test_now.year - bday.year) < test_now.date())
+        store.mas_player_bday_event.correct_pbday_mhs(bday)
+        mhs_tester.prepareTest(test_name + "start dt")
+        mhs_tester.assertEqual(
+            datetime.datetime(test_now.year + inc_year, 3, 1),
+            test_mhs.start_dt
+        )
+        mhs_tester.prepareTest(test_name + "end dt")
+        mhs_tester.assertEqual(
+            datetime.datetime(test_now.year + inc_year, 3, 3),
+            test_mhs.end_dt
+        )
+        mhs_tester.prepareTest(test_name + "use year before")
+        mhs_tester.assertFalse(test_mhs.use_year_before)
+        mhs_tester.prepareTest(test_name + "trigger")
+        mhs_tester.assertEqual(
+            datetime.datetime(test_now.year + inc_year, 3, 3),
+            test_mhs.trigger
+        )
+        rs_mhs(prev_data)
+
     call dev_unit_tests_finish_test(mhs_tester)
 
     return
@@ -2514,5 +2542,253 @@ label dev_unit_test_utc_api:
         utc_tester.assertEqual(local_time, new_time.replace(tzinfo=None))
 
     call dev_unit_tests_finish_test(utc_tester)
+
+    return
+
+label dev_unit_test_wrs_regexpchecks:
+    m "Running tests..."
+
+    python:
+        wrs_tester = store.mas_dev_unit_tests.MASUnitTester()
+
+        #Basic YT Detection
+        wrs_tester.prepareTest("Normal YT detection")
+        wrs_tester.assertTrue(
+            mas_isInActiveWindow(
+                "- YouTube",
+                "CA Celeste Piano Collections: 11 Reach for the Summit (Lena Raine, Trevor Alan Gomes) - YouTube"
+            )
+        )
+
+        #Jpn characters
+        wrs_tester.prepareTest("Japanese Character Checks")
+        wrs_tester.assertTrue(
+            mas_isInActiveWindow(
+                "ドキドキ",
+                "【DDLC】ドキドキ文芸部に入部してみるぺこ！【ホロライブ/兎田ぺこら】 - YouTube - Opera"
+            )
+        )
+
+
+        #r34 (titles are taken from images/posts w/o explicit content)
+        r34_regexp = r"(?i)(((r34|rule\s?34).*monika)|(post \d+:[\w ]+monika)|([[\w \]\-()]*monika[\w?()\-: ]*(r34|rule34)))"
+        wrs_tester.prepareTest("r34 title (r34xxx)|")
+        wrs_tester.assertTrue(
+            mas_isInActiveWindow(
+                r34_regexp,
+                "Rule 34 - 1girls black legwear black thighhighs blondynkitezgraja blue skirt brown hair cleavage clothing doki doki literature club female female only green eyes long hair medium breasts monika monika (doki doki literature club) piano skirt skirt lift thighhighs | 4046712"
+            )
+        )
+        wrs_tester.prepareTest("r34 title (r34paheal)|")
+        wrs_tester.assertTrue(
+            mas_isInActiveWindow(
+                r34_regexp,
+                "Post 4187900: Monika cosplay squchan tagme"
+            )
+        )
+        wrs_tester.prepareTest("r34 title (DDLCRule34)|")
+        wrs_tester.assertTrue(
+            mas_isInActiveWindow(
+                r34_regexp,
+                "[Commission] Office Monika for Hisame-kun (light nsfw) : DDLCRule34"
+            )
+        )
+
+    call dev_unit_tests_finish_test(wrs_tester)
+    return
+
+label dev_unit_test_strict_can_pickle:
+    m "Running tests..."
+
+    python:
+        # setup
+        scp = store.mas_ev_data_ver._strict_can_pickle
+
+        can_pickle = (True, False)
+        cannot_pickle = (False, False)
+        recur_error = (False, True)
+
+        good_iter_data = [1, 2, True, "test"]
+        bad_iter_data = [1, 2, True, MASEventContext(), "test"]
+
+        good_dict_data = { 1: 2, True: "test" }
+        bad_dict_data_key = { 1: 2, mas_hair_def: True, "test": 100 }
+        bad_dict_data_val = { 1: 2, True: MASEventContext(), "test": 100}
+
+        recur_dict = {}
+        recur_list = [ recur_dict ]
+        recur_dict[10] = recur_list
+
+        class FakeTzInfo(datetime.tzinfo):
+
+            def utcoffset(self, dt):
+                return datetime.timedelta()
+
+            def dst(self, dt):
+                return datetime.timedelta()
+
+            def tzname(self, dt):
+                return "Fake/Timezone"
+
+        # begin tests
+        scp_tester = store.mas_dev_unit_tests.MASUnitTester()
+
+        # none check
+        scp_tester.prepareTest("None check")
+        scp_tester.assertEqual(can_pickle, scp(None))
+
+        # non-structure types
+        scp_tester.prepareTest("strings check")
+        scp_tester.assertEqual(can_pickle, scp(str("test")))
+        scp_tester.assertEqual(can_pickle, scp(unicode("test")))
+
+        scp_tester.prepareTest("bool check")
+        scp_tester.assertEqual(can_pickle, scp(bool(1)))
+
+        scp_tester.prepareTest("numbers check")
+        scp_tester.assertEqual(can_pickle, scp(int(1)))
+        scp_tester.assertEqual(can_pickle, scp(float(1)))
+        scp_tester.assertEqual(can_pickle, scp(long(1)))
+        scp_tester.assertEqual(can_pickle, scp(complex(1)))
+
+        scp_tester.prepareTest("date, timedelta check")
+        scp_tester.assertEqual(can_pickle, scp(datetime.timedelta()))
+        scp_tester.assertEqual(can_pickle, scp(datetime.date.today()))
+
+        # datetime special
+        scp_tester.prepareTest("datetime, time - no tzinfo")
+        scp_tester.assertEqual(can_pickle, scp(datetime.datetime.utcnow()))
+        scp_tester.assertEqual(can_pickle, scp(datetime.time()))
+
+        scp_tester.prepareTest("datetime, time - with tzinfo")
+        scp_tester.assertEqual(
+            cannot_pickle,
+            scp(datetime.datetime.now(FakeTzInfo()))
+        )
+        scp_tester.assertEqual(
+            cannot_pickle,
+            scp(datetime.time(tzinfo=FakeTzInfo()))
+        )
+
+        # lists
+        scp_tester.prepareTest("lists - empty")
+        scp_tester.assertEqual(can_pickle, scp(
+            store.mas_ev_data_ver.__builtin__.list()
+        ))
+        scp_tester.assertEqual(can_pickle, scp(list()))
+        scp_tester.assertEqual(can_pickle, scp([]))
+        scp_tester.assertEqual(can_pickle, scp(renpy.python.RevertableList()))
+
+        scp_tester.prepareTest("list - with good values")
+        scp_tester.assertEqual(can_pickle, scp(good_iter_data))
+
+        scp_tester.prepareTest("list - with bad values")
+        scp_tester.assertEqual(cannot_pickle, scp(bad_iter_data))
+
+        scp_tester.prepareTest("list - recursion")
+        scp_tester.assertEqual(recur_error, scp(recur_list))
+
+        # sets
+        scp_tester.prepareTest("sets - empty")
+        scp_tester.assertEqual(can_pickle, scp(
+            store.mas_ev_data_ver.__builtin__.set()
+        ))
+        scp_tester.assertEqual(can_pickle, scp(
+            store.mas_ev_data_ver.__builtin__.frozenset()
+        ))
+        scp_tester.assertEqual(can_pickle, scp(set()))
+        scp_tester.assertEqual(can_pickle, scp(frozenset()))
+        scp_tester.assertEqual(can_pickle, scp(renpy.python.RevertableSet()))
+
+        scp_tester.prepareTest("sets - with good values")
+        scp_tester.assertEqual(can_pickle, scp(set(good_iter_data)))
+
+        scp_tester.prepareTest("sets - with bad values")
+        scp_tester.assertEqual(cannot_pickle, scp(set(bad_iter_data)))
+
+        # tuple
+        scp_tester.prepareTest("tuple - with good values")
+        scp_tester.assertEqual(can_pickle, scp(tuple(good_iter_data)))
+
+        scp_tester.prepareTest("tuple - with bad values")
+        scp_tester.assertEqual(cannot_pickle, scp(tuple(bad_iter_data)))
+
+        # dicts
+        scp_tester.prepareTest("dict - empty")
+        scp_tester.assertEqual(can_pickle, scp(
+            store.mas_ev_data_ver.__builtin__.dict()
+        ))
+        scp_tester.assertEqual(can_pickle, scp({}))
+        scp_tester.assertEqual(can_pickle, scp(dict()))
+        scp_tester.assertEqual(can_pickle, scp(renpy.python.RevertableDict()))
+
+        scp_tester.prepareTest("dict - with good values")
+        scp_tester.assertEqual(can_pickle, scp(good_dict_data))
+
+        scp_tester.prepareTest("dict - with bad values")
+        scp_tester.assertEqual(cannot_pickle, scp(bad_dict_data_key))
+        scp_tester.assertEqual(cannot_pickle, scp(bad_dict_data_val))
+
+        scp_tester.prepareTest("dict - recursion")
+        scp_tester.assertEqual(recur_error, scp(recur_dict))
+
+    call dev_unit_tests_finish_test(scp_tester)
+
+    return
+
+label dev_unit_test_mas_set_pronouns:
+    m "Running tests..."
+
+    $ pronouns_tester = store.mas_dev_unit_tests.MASUnitTester()
+
+    python hide:
+        pronouns_tester.prepareTest("Validate map size and keys")
+        expected_map_size = None
+        for key, sub_map in store.MAS_PRONOUN_GENDER_MAP.items():
+            sub_map = dict(sub_map)
+
+            if expected_map_size is None:
+                expected_map_size = len(sub_map)
+            else:
+                sub_map_size = len(sub_map)
+                pronouns_tester.prepareTest(
+                    "Validating map size for key {}, expected {}, got {}".format(
+                        key,
+                        expected_map_size,
+                        sub_map_size
+                    )
+                )
+                pronouns_tester.assertEqual(expected_map_size, sub_map_size)
+
+            for k in ("M", "F", "X"):
+                pronouns_tester.prepareTest(
+                    "Validating the key {} is in the map".format(k)
+                )
+                pronouns_tester.assertTrue(k in sub_map)
+
+        pronouns_tester.prepareTest("Check global pronouns variables")
+        for gender in ("M", "F", "X"):
+            # Verify the func works
+            mas_set_pronouns(gender)
+
+            fallback = object()
+            for word, sub_map in store.MAS_PRONOUN_GENDER_MAP.items():
+                # Verify the func set correct values
+                global_value = getattr(store, word, fallback)
+                map_value = sub_map[gender]
+                pronouns_tester.prepareTest(
+                    "Check global pronouns variable match: {}, expected {}, got {}".format(
+                        word,
+                        map_value,
+                        global_value
+                    )
+                )
+                pronouns_tester.assertEqual(global_value, map_value)
+
+        # This is just to reset pronouns
+        mas_set_pronouns()
+
+    call dev_unit_tests_finish_test(pronouns_tester)
+    $ del pronouns_tester
 
     return

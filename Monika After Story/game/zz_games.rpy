@@ -19,7 +19,7 @@ init -10 python in mas_games:
 init 1 python in mas_games:
     #Constant for hangman name
     #NOTE: This is adjusted in the mas_pick_a_game label
-    HANGMAN_NAME = _("Hangman") if not store.persistent._mas_sensitive_mode else _("Word Guesser")
+    HANGMAN_NAME = _("Hangman")
 
     def _total_games_played(exclude_list=[]):
         """
@@ -77,7 +77,7 @@ init 8 python:
         if game_ev:
             return (
                 game_ev.unlocked
-                and (not game_ev.conditional or (game_ev.conditional and eval(game_ev.conditional)))
+                and game_ev.checkConditional()
                 and game_ev.checkAffection(store.mas_curr_affection)
             )
         return False
@@ -172,13 +172,29 @@ label mas_piano:
     call mas_piano_start
     return
 
+init 5 python:
+    addEvent(
+        Event(
+            persistent._mas_game_database,
+            eventlabel="mas_nou",
+            prompt="NOU",
+            aff_range=(mas_aff.NORMAL, None)
+        ),
+        code="GME",
+        restartBlacklist=True
+    )
+
+label mas_nou:
+    call mas_nou_game_start
+    return
+
 label mas_pick_a_game:
     # we can assume that getting here means we didnt cut off monika
     $ mas_RaiseShield_dlg()
 
     python:
         #Adjust for this name
-        mas_games.HANGMAN_NAME = _("Hangman") if not persistent._mas_sensitive_mode else _("Word Guesser")
+        mas_games.HANGMAN_NAME = _("Hangman")
 
         #Decide the say dialogue
         play_menu_dlg = store.mas_affection.play_quip()[1]
@@ -205,7 +221,7 @@ label mas_pick_a_game:
 
     if selected_game:
         show monika at t11
-        if selected_game != "mas_piano":
+        if selected_game != "mas_piano" and not (selected_game == "mas_pong" and played_pong_this_session):
             python:
                 if mas_isMoniUpset(lower=True):
                     begin_quips = [

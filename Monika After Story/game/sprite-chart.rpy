@@ -109,6 +109,8 @@ default persistent._mas_acs_bbh_list = []
 default persistent._mas_acs_bse_list = []
 default persistent._mas_acs_bba_list = []
 default persistent._mas_acs_ase_list = []
+default persistent._mas_acs_bmh_list = []
+default persistent._mas_acs_mmh_list = []
 default persistent._mas_acs_bat_list = []
 default persistent._mas_acs_mat_list = []
 default persistent._mas_acs_mab_list = []
@@ -129,7 +131,7 @@ default persistent._mas_force_hair = False
 default persistent._mas_last_ahoge_dt = None
 # set to the dt of when we last set the ahoge
 
-define m = DynamicCharacter('m_name', image='monika', what_prefix='', what_suffix='', ctc="ctc", ctc_position="fixed")
+define m = DynamicCharacter('m_name', image='monika', what_prefix='', what_suffix='', ctc="ctc", ctc_position="fixed", show_function=store.mas_core.show_display_say)
 
 #image night_filter = Solid("#20101897", xsize=1280, ysize=850)
 
@@ -137,6 +139,26 @@ image mas_finalnote_idle = "mod_assets/poem_finalfarewell_desk.png"
 
 # Monika's piano sprite
 image mas_piano = MASFilterSwitch("mod_assets/other/mas_piano.png")
+
+init -10 python in mas_core:
+    import renpy
+    _last_text = None
+
+    def show_display_say(who, what_string, **kwargs):
+        """
+        semi-override of show_display_say so we can force text to render
+        immediately.
+        """
+        global _last_text
+        rv = renpy.character.show_display_say(who, what_string, **kwargs)
+
+        if isinstance(rv, tuple):
+            # r7-specific handling.
+            # purposely not doing *rv in case tom changes stuff again
+            rv = renpy.display.screen.get_widget(rv[0], rv[1], rv[2])
+
+        _last_text = rv
+        return _last_text
 
 ### ACS TYPE + DEFAULTING FRAMEWORK ###########################################
 # this contains special acs type mappings
@@ -261,8 +283,9 @@ init -100 python in mas_sprites:
     # marks that an ACS is located at the left hair strand, eye level
 
     EXP_A_RQHP = "required-hair-prop"
-    # v: string
-    # marks that an ACS requires a hairstyle with the value'd prop to be worn
+    # v: string/list
+    # marks that an ACS requires a hairstyle with the value'd prop(s) to be
+    # worn
 
     EXP_A_LD = "left-desk-acs"
     # v: ignored
@@ -284,6 +307,10 @@ init -100 python in mas_sprites:
     # v: ignored
     # marks that this ACS is a drink
 
+    EXP_A_DYNAMIC = "dynamic"
+    # v: ignored
+    # marks this ACS as dynamic (see: MASDynamicAccessory)
+
     # ---- HAIR ----
 
     EXP_H_TT = "twintails"
@@ -291,8 +318,9 @@ init -100 python in mas_sprites:
     # marks that a hair style is a twintails style
 
     EXP_H_RQCP = "required-clothes-prop"
-    # v: string
-    # marks that a hair style requires clothes with the value'd prop to be worn
+    # v: string/list
+    # marks that a hair style requires clothes with the value'd prop(s) to be
+    # worn
 
     EXP_H_EXCLCP = "excluded-clothes-props"
     # v: list of strings
@@ -311,11 +339,36 @@ init -100 python in mas_sprites:
     #v: ignored
     #marks the hair as a twinbraid hairstyle
 
+    # Value: ignored
+    # Marks that a hair obj is wet (appropriate for a bath/shower/pool/etc)
+    EXP_H_WET = "wet"
+
+    EXP_H_SB = "straight-bangs"
+    # v: ignored
+    # marks that a hair style has straight bangs
+
     # ---- CLOTHES ----
+
+    EXP_C_BLS = "bare-left-shoulder"
+    # v: ignored
+    # marks that a clothing item has a bare left shoulder
+    # this is auto-added if bare-shoulders is added
 
     EXP_C_BRS = "bare-right-shoulder"
     # v: ignored
     # marks that a clothing item has a bare right shoulder
+    # this is auto-added if bare-shoulders is added
+
+    EXP_C_BS = "bare-shoulders"
+    # v: ignored
+    # marks that a clothing item has bare shoulders
+    # this is auto-added if both left/right bare shoulders are added
+
+    EXP_C_C_DTS = "compat-downtiedstrand"
+    # v: ignored
+    # compatibilty exprop saying that these clothes work with the
+    # downtiedstrand hair style
+    # NOTE: THIS IS AN EXCEPTION. We should not be doing exprops like this.
 
     EXP_C_COST = "costume"
     # v: costume type as string (o31, d25, etc..)
@@ -328,6 +381,10 @@ init -100 python in mas_sprites:
     EXP_C_LING = "lingerie"
     # v: ignored
     # marks that a clothing item is lingerie
+
+    # Value: ignored
+    # Marks that a clothing item is wet (appropriate for a bath/shower/pool/etc)
+    EXP_C_WET = "wet"
 
     # --- default exprops ---
 
@@ -349,6 +406,7 @@ init -100 python in mas_sprites:
         "hat",
         "s-type-ribbon",
         "twin-ribbons",
+        "mini-ribbon"
     ]
     # default mux types for ribbon-based items.
 
@@ -405,6 +463,7 @@ init -100 python in mas_sprites:
         "ribbon",
         "s-type-ribbon",
         "twin-ribbons",
+        "mini-ribbon"
     ]
     # default mux types for hats
 
@@ -436,6 +495,13 @@ init -100 python in mas_sprites:
             ex_props={
                 "bare neck": True
             }
+        ),
+        # TODO - add earrings here
+        "front-bow": ACSTemplate(
+            "front-bow",
+            mux_type=[
+                "front-bow"
+            ]
         ),
         "front-hair-flower-crown": ACSTemplate(
             "front-hair-flower-crown",
@@ -517,6 +583,13 @@ init -100 python in mas_sprites:
                 EXP_A_RBL: True,
             }
         ),
+        "mini-ribbon": ACSTemplate(
+            "mini-ribbon",
+            mux_type=DEF_MUX_RB,
+            ex_props={
+                EXP_A_RBL: True,
+            }
+        ),
         "thermos-mug": ACSTemplate(
             "thermos-mug",
             mux_type=["mug", "thermos-mug"],
@@ -528,7 +601,7 @@ init -100 python in mas_sprites:
             ex_props={
                 EXP_A_TWRB: True,
                 EXP_A_RBL: True,
-                EXP_A_RQHP: EXP_H_TT,
+                EXP_A_RQHP: [EXP_H_TT],
             }
         ),
         "wrist-bracelet": ACSTemplate(
@@ -640,7 +713,7 @@ init -5 python in mas_sprites:
     LOC_WH = (1280, 850)
 
     # composite stuff
-    I_COMP = "LiveComposite"
+    I_COMP = "im.Composite"
     L_COMP = "LiveComposite"
     TRAN = "Transform"
 
@@ -702,12 +775,17 @@ init -5 python in mas_sprites:
     # keys
     FHAIR = "front"
     BHAIR = "back"
+    MHAIR = "mid"
+
+    # head
+    HEAD = "head"
 
     # suffixes
     NIGHT_SUFFIX = ART_DLM + "n"
     SHADOW_SUFFIX = ART_DLM + "s"
     FHAIR_SUFFIX  = ART_DLM + FHAIR
     BHAIR_SUFFIX = ART_DLM + BHAIR
+    MHAIR_SUFFIX = ART_DLM + MHAIR
     HLITE_SUFFIX = ART_DLM + "h"
     FILE_EXT = ".png"
 
@@ -1010,7 +1088,7 @@ init -5 python in mas_sprites:
             return allow_none
         return _verify_uprightpose(val) or _verify_leaningpose(val)
 
-
+    @store.mas_utils.deprecated(should_raise=True)
     def acs_lean_mode(sprite_list, lean):
         """
         NOTE: DEPRECATED
@@ -1276,6 +1354,83 @@ init -5 python in mas_sprites:
         # otherwise we have a map
         return sprite_map.get(sprite_name, None)
 
+    def get_installed_sprites(sprite_type, predicate=None):
+        """
+        Returns ALL available sprite objects
+        NOTE: Runtime only
+
+        IN:
+            sprite_type - the sprite type constant
+            predicate - the predicate function
+                (Default: None)
+
+        OUT:
+            list of sprite objects
+        """
+        sprite_map = SP_MAP.get(sprite_type, None)
+
+        if not sprite_map:
+            return []
+
+        if predicate:
+            return [
+                spr_object
+                for spr_object in sprite_map.itervalues()
+                if predicate(spr_object)
+            ]
+
+        else:
+            return sprite_map.values()
+
+    def get_installed_acs(predicate=None):
+        """
+        get_installed_sprites for acs objects
+
+        IN:
+            predicate - the predicate function
+                (Default: None)
+
+        OUT:
+            list of acs sprite objects
+        """
+        return get_installed_sprites(
+            sprite_type=store.mas_sprites_json.SP_ACS,
+            predicate=predicate
+        )
+
+    def get_installed_hair(predicate=None):
+        """
+        get_installed_sprites for hair objects
+
+        IN:
+            predicate - the predicate function
+                (Default: None)
+
+        OUT:
+            list of hair sprite objects
+        """
+        return get_installed_sprites(
+            sprite_type=store.mas_sprites_json.SP_HAIR,
+            predicate=predicate
+        )
+
+    def get_installed_clothes(predicate=None):
+        """
+        get_installed_sprites for clothes objects
+
+        IN:
+            predicate - the predicate function
+                (Default: None)
+
+        OUT:
+            list of clothes sprite objects
+        """
+        return get_installed_sprites(
+            sprite_type=store.mas_sprites_json.SP_CLOTHES,
+            predicate=predicate
+        )
+
+
 
 ##### special mas monika functions (hooks)
     # NOTE: set flag "abort" to True in prechange points to prevent
@@ -1421,6 +1576,12 @@ init -5 python in mas_sprites:
             prev_cloth - current clothes
             new_cloth - clothes we are changing to
         """
+        # remove outfit mode stuff if appropriate
+        if temp_space["outfit_mode"]:
+            moni_chr.apply_outfit_change_data(
+                temp_space["outfit_exit_data"],
+                False
+            )
 
         # if clothes had a desired ribbon, restore to previous
         desired_ribbon = prev_cloth.getprop("desired-ribbon")
@@ -1465,6 +1626,13 @@ init -5 python in mas_sprites:
             new_cloth - clothes we are changing to
         """
         outfit_mode = temp_space.get("outfit_mode", False)
+
+        # add outfit mode stuff if appropriate
+        if outfit_mode:
+            moni_chr.apply_outfit_change_data(
+                temp_space["outfit_entry_data"],
+                True
+            )
 
         # if clothes has a desired ribbon, change to it if outfit mode
         desired_ribbon = new_cloth.getprop("desired-ribbon")
@@ -1603,9 +1771,11 @@ init -5 python in mas_sprites:
         RETURNS: True if hair+acs is compatible, False if not
         """
         # first check for required hair prop
-        req_hair_prop = acs.getprop(EXP_A_RQHP, None)
-        if req_hair_prop is not None and not hair.hasprop(req_hair_prop):
-            return False
+        req_hair_props = acs.getprop(EXP_A_RQHP, None)
+        if req_hair_props is not None:
+            for req_hair_prop in req_hair_props:
+                if not hair.hasprop(req_hair_prop):
+                    return False
 
         # then check exclusions
         excl_hair_props = acs.getprop(EXP_A_EXCLHP, None)
@@ -1628,9 +1798,11 @@ init -5 python in mas_sprites:
         RETURNS: True if clothes+hair is comaptible, False if not
         """
         # first check for required clothes prop
-        req_cloth_prop = hair.getprop(EXP_H_RQCP, None)
-        if req_cloth_prop is not None and not clothes.hasprop(req_cloth_prop):
-            return False
+        req_cloth_props = hair.getprop(EXP_H_RQCP, None)
+        if req_cloth_props is not None:
+            for req_cloth_prop in req_cloth_props:
+                if not clothes.hasprop(req_cloth_prop):
+                    return False
 
         # then check exclusions
         excl_cloth_props = hair.getprop(EXP_H_EXCLCP, None)
@@ -2166,8 +2338,10 @@ init -3 python:
         MAB_ACS = 7 # between middle arms and boobs
         BSE_ACS = 8 # between base and clothes
         ASE_ACS = 9 # between base arms and clothes
-        BAT_ACS = 10 # between base arms and table
+        BAT_ACS = 10 # between mid hair and table
         MAT_ACS = 11 # between middle arms and table
+        BMH_ACS = 12 # between back arms and mid hair
+        MMH_ACS = 13 # between mid hair and head
 
         # valid rec layers
         # NOTE: this MUST be in the same order as save_state/load_State
@@ -2187,6 +2361,8 @@ init -3 python:
             ASE_ACS,
             BAT_ACS,
             MAT_ACS,
+            BMH_ACS,
+            MMH_ACS,
         )
 
         # split layers
@@ -2202,6 +2378,8 @@ init -3 python:
             BSE_ACS,
             BBA_ACS,
             ASE_ACS,
+            BMH_ACS,
+            MMH_ACS,
             BAT_ACS,
             MAT_ACS,
             MAB_ACS,
@@ -2245,7 +2423,13 @@ init -3 python:
                 # accessories to be rendered after base arms, before arm clothes
                 self.ASE_ACS: [],
 
-                # accessories to be rendered after back arms, before table
+                # accessories to be rendered after back arms, before mid hair
+                self.BMH_ACS: [],
+
+                # accessories to be rendered after mid hair, before head
+                self.MMH_ACS: [],
+
+                # accessories to be rendered after head, before table
                 self.BAT_ACS: [],
 
                 # accessories to be rendered after table, before middle arms
@@ -2314,6 +2498,8 @@ init -3 python:
                 "BSE",
                 "BBA",
                 "ASE",
+                "BMH",
+                "MMH",
                 "BAT",
                 "MAT",
                 "MAB",
@@ -2609,6 +2795,8 @@ init -3 python:
                 _acs_ase_names,
                 _acs_bat_names,
                 _acs_mat_names,
+                _acs_bmh_names,
+                _acs_mmh_names,
                 startup=False
             ):
             """
@@ -2631,6 +2819,8 @@ init -3 python:
                 _acs_ase_names - list of ase acs names to load
                 _acs_bat_names - list of bat acs names to load
                 _acs_mat_names - list of mat acs names to load
+                _acs_bmh_names - list of bmh acs names to load
+                _acs_mmh_names - list of mmh acs names to load
                 startup - True if we are loading on start, False if not
                     (Default: False)
             """
@@ -2648,6 +2838,8 @@ init -3 python:
             self._load_acs(_acs_bse_names, self.BSE_ACS)
             self._load_acs(_acs_bba_names, self.BBA_ACS)
             self._load_acs(_acs_ase_names, self.ASE_ACS)
+            self._load_acs(_acs_bmh_names, self.BMH_ACS)
+            self._load_acs(_acs_mmh_names, self.MMH_ACS)
             self._load_acs(_acs_bat_names, self.BAT_ACS)
             self._load_acs(_acs_mat_names, self.MAT_ACS)
             self._load_acs(_acs_mab_names, self.MAB_ACS)
@@ -2737,6 +2929,24 @@ init -3 python:
                 return allow_none
             return val in MASMonika.SPL_LAYERS
 
+        def apply_outfit_change_data(self, outfit_change_data, wear):
+            """
+            Applies hair and ACS changes from the given outfit change data
+
+            IN:
+                outfit_change_data - the outfit change data to apply
+                wear - pass True if this should wear the items in the change
+                    data, False to remove them.
+            """
+            # start with hair first
+            if wear and outfit_change_data.will_hair_change():
+                self.change_hair(outfit_change_data._hair)
+
+            # then ACS
+            for acs_name, change in outfit_change_data._acs_change.items():
+                if change and acs_name in outfit_change_data._acs:
+                    self.set_acs(outfit_change_data._acs[acs_name], wear)
+
         def change_clothes(
                 self,
                 new_cloth,
@@ -2765,14 +2975,24 @@ init -3 python:
             if self.lock_clothes and not startup:
                 return
 
+            prev_cloth = self.clothes
+
             # setup temp space
             temp_space = {
                 "by_user": by_user,
                 "startup": startup,
-                "outfit_mode": outfit_mode
-            }
+                "outfit_mode": outfit_mode,
 
-            prev_cloth = self.clothes
+                # NOTE: always include these - helps avoid crashes.
+                #   we just won't use any of it if outfit mode is False
+                "outfit_exit_data": MASOutfitChangeData(
+                    acs=prev_cloth.outfit_acs
+                ),
+                "outfit_entry_data": MASOutfitChangeData(
+                    hair=new_cloth.outfit_hair,
+                    acs=new_cloth.outfit_acs
+                ),
+            }
 
             # run pre clothes change logic
             store.mas_sprites.clothes_exit_pre_change(
@@ -2790,7 +3010,9 @@ init -3 python:
             self.clothes.exit(
                 self,
                 new_clothes=new_cloth,
-                outfit_mode=outfit_mode
+                outfit_mode=outfit_mode,
+                outfit_entry_data=temp_space["outfit_entry_data"],
+                outfit_exit_data=temp_space["outfit_exit_data"]
             )
 
             # post exit, pre change
@@ -2816,7 +3038,9 @@ init -3 python:
             self.clothes.entry(
                 self,
                 prev_clothes=prev_cloth,
-                outfit_mode=outfit_mode
+                outfit_mode=outfit_mode,
+                outfit_entry_data=temp_space["outfit_entry_data"],
+                outfit_exit_data=temp_space["outfit_exit_data"]
             )
 
             # post entry point
@@ -3195,6 +3419,8 @@ init -3 python:
                 store.persistent._mas_acs_ase_list,
                 store.persistent._mas_acs_bat_list,
                 store.persistent._mas_acs_mat_list,
+                store.persistent._mas_acs_bmh_list,
+                store.persistent._mas_acs_mmh_list,
                 startup=startup
             )
 
@@ -3220,6 +3446,8 @@ init -3 python:
                     [11]: ase acs data
                     [12]: bat acs data
                     [13]: mat acs data
+                    [14]: bmh acs data
+                    [15]: mmh acs data
                 as_prims - True if this data was saved as primitive data types,
                     false if as objects
                     (Default: False)
@@ -3480,6 +3708,22 @@ init -3 python:
                 self.ASE_ACS,
                 force_acs
             )
+            store.persistent._mas_acs_bmh_list = self._save_acs(
+                self.BMH_ACS,
+                force_acs
+            )
+            store.persistent._mas_acs_mmh_list = self._save_acs(
+                self.MMH_ACS,
+                force_acs
+            )
+            store.persistent._mas_acs_bat_list = self._save_acs(
+                self.BAT_ACS,
+                force_acs
+            )
+            store.persistent._mas_acs_mat_list = self._save_acs(
+                self.MAT_ACS,
+                force_acs
+            )
             store.persistent._mas_acs_mab_list = self._save_acs(
                 self.MAB_ACS,
                 force_acs
@@ -3559,6 +3803,8 @@ init -3 python:
                 [11]: ase acs data (Default: [])
                 [12]: bat acs data (Default: [])
                 [13]: mat acs data (Default: [])
+                [14]: bmh acs data (Default: [])
+                [15]: mmh acs data (Default: [])
             """
             # determine which clothes to save
             if force_clothes or self.clothes.stay_on_start:
@@ -3589,6 +3835,20 @@ init -3 python:
 
             # finally return results
             return tuple(state_data)
+
+        def set_acs(self, acs, wear):
+            """
+            Basically a single function so callers don't need to 
+            if-statement-toggle wearing and removal of ACS.
+
+            IN:
+                acs - the ACS to wear or remove
+                wear - pass True to wear ACS, False to remove.
+            """
+            if wear:
+                self.wear_acs(acs)
+            else:
+                self.remove_acs(acs)
 
         def wear_acs(self, acs):
             """
@@ -3698,6 +3958,7 @@ init -3 python:
                     acs_layer
                 )
 
+        @store.mas_utils.deprecated("wear_acs_in")
         def wear_acs_pre(self, acs):
             """DEPRECATED
             Wears the given accessory in the pre body accessory mode
@@ -3707,7 +3968,7 @@ init -3 python:
             """
             self.wear_acs_in(acs, self.PRE_ACS)
 
-
+        @store.mas_utils.deprecated("wear_acs_in")
         def wear_acs_bbh(self, acs):
             """DEPRECATED
             Wears the given accessory in the post back hair accessory loc
@@ -3717,7 +3978,7 @@ init -3 python:
             """
             self.wear_acs_in(acs, self.BBH_ACS)
 
-
+        @store.mas_utils.deprecated("wear_acs_in")
         def wear_acs_bfh(self, acs):
             """DEPRECATED
             Wears the given accessory in the pre front hair accesory log
@@ -3727,7 +3988,7 @@ init -3 python:
             """
             self.wear_acs_in(acs, self.BFH_ACS)
 
-
+        @store.mas_utils.deprecated("wear_acs_in")
         def wear_acs_afh(self, acs):
             """DEPRECATED
             Wears the given accessory in the between front hair and arms
@@ -3738,7 +3999,7 @@ init -3 python:
             """
             self.wear_acs_in(acs, self.AFH_ACS)
 
-
+        @store.mas_utils.deprecated("wear_acs_in")
         def wear_acs_mid(self, acs):
             """DEPRECATED
             Wears the given accessory in the mid body acessory mode
@@ -3748,7 +4009,7 @@ init -3 python:
             """
             self.wear_acs_in(acs, self.MID_ACS)
 
-
+        @store.mas_utils.deprecated("wear_acs_in")
         def wear_acs_pst(self, acs):
             """DEPRECATED
             Wears the given accessory in the post body accessory mode
@@ -4309,8 +4570,8 @@ init -3 python:
                 if arm_key in store.mas_sprites.NUM_ARMS:
                     # NOneify invalid data
                     if not isinstance(arm_data[arm_key], MASArm):
-                        store.mas_utils.writelog(
-                            "Invalid arm data at '{0}'\n".format(arm_key)
+                        store.mas_utils.mas_log.warning(
+                            "Invalid arm data at '{0}'".format(arm_key)
                         )
                         arm_data[arm_key] = None
 
@@ -4804,7 +5065,7 @@ init -3 python:
                         ind_lvl,
                         cls.msj.MPM_AS_BAD_TYPE.format(
                             prop_name,
-                            str(MASSplitAccessory.hl_keys()),
+                            str(MASSplitAccessory.hl_keys_c()),
                             prop_val
                         )
                     ))
@@ -5149,6 +5410,7 @@ init -3 python:
             self.entry_pp = entry_pp
             self.exit_pp = exit_pp
             self.is_custom = False
+            self._dynamic = False
 
             if type(pose_map) != MASPoseMap:
                 raise Exception("PoseMap is REQUIRED")
@@ -5158,6 +5420,10 @@ init -3 python:
                 self.ex_props = {}
             else:
                 self.ex_props = ex_props
+
+            # setup exprop related material
+            self.default_exprops()
+            self.format_exprops()
 
             # setup highlight map
             self.__setup_hl_map(full_hl_data)
@@ -5230,6 +5496,18 @@ init -3 python:
             """
             raise NotImplementedError
 
+        def default_exprops(self):
+            """
+            Called after sprite creation in the base class. This should be
+            implemented by sprite object classes as appropraite.
+
+            the only things that should happen in here are defaulting of
+            exprops as a result of other exprops.
+
+            All code in here should be safe to call more than once.
+            """
+            pass
+
         def entry(self, _monika_chr, **kwargs):
             """
             Calls the entry programming point if it exists
@@ -5251,6 +5529,19 @@ init -3 python:
             """
             if self.exit_pp is not None:
                 self.exit_pp(_monika_chr, **kwargs)
+
+        def format_exprops(self):
+            """
+            Called after sprite creation in the base class, after exprops
+            have been defaulted in. This should be implemented by sprite object
+            classes as appropriate.
+
+            The only things that should happen here are adjusting formats
+            of exprops so they are valid/uniform/as expected by consuming code
+
+            All code in here should be safe to call more than once.
+            """
+            pass
 
         def gethlc(self, *args, **kwargs):
             """
@@ -5311,6 +5602,14 @@ init -3 python:
 
             return self.hl_map.keys()
 
+        def is_dynamic(self):
+            """
+            Is this a dynamic sprite?
+
+            REUTRNS: True if this is a dynamic sprite
+            """
+            return self._dynamic
+
         def rmprop(self, prop):
             """
             Removes the prop from this sprite's ex_props, if it exists
@@ -5335,6 +5634,21 @@ init -3 python:
                 return sprite_base.name
 
             return ""
+
+    class MASDynamicSpriteBase(renpy.store.object):
+        """
+        Special sprite type for dynamic sprites - all dynamic based sprites
+        should inherit this as a 2nd type and call dyn_init in init
+
+        PROPERTIES:
+            disp - Displayable to associate with this sprite. Can be dynamic.
+            hl_disp - Displayable to use for highlights. Can be dynamic.
+        """
+
+        def dyn_init(self, disp, hl_disp=None):
+            self.disp = disp
+            self.hl_disp = hl_disp
+            self._dynamic = True
 
     class MASSpriteFallbackBase(MASSpriteBase):
         """
@@ -5635,6 +5949,18 @@ init -3 python:
             # now generate the hl data
             return (hl_keys, hl_def, hl_mapping)
 
+        def format_exprops(self):
+            """
+            Override of base class function
+            """
+            super(MASAccessoryBase, self).format_exprops()
+
+            # format required-hair-prop into list if itsnt
+            # NOTE: no handilng for non-string types
+            req_hair_prop = self.getprop(store.mas_sprites.EXP_A_RQHP)
+            if store.mas_sprites_json._verify_str(req_hair_prop, False):
+                self.ex_props[store.mas_sprites.EXP_A_RQHP] = [req_hair_prop]
+
         @staticmethod
         def get_priority(acs):
             """
@@ -5644,6 +5970,7 @@ init -3 python:
             """
             return acs.priority
 
+        @store.mas_utils.deprecated()
         def get_arm_split_code(self, poseid):
             """DEPRECATED
             NOTE: we are keeping this around for compatiblity purposes
@@ -6351,6 +6678,102 @@ init -3 python:
             return value in cls.__MHM_KEYS
 
 
+    class MASDynamicAccessory(MASAccessoryBase, MASDynamicSpriteBase):
+        """
+        A Dynamic MAS Accessory. This can vary an ACS based on displayables.
+
+        NOTE: does NOT support split ACS.
+
+        PROPERTIES:
+            No Additional.
+        See MASAccessory and MASDynamicSpriteBase for inherited properties.
+        """
+
+        def __init__(self,
+                name,
+                disp,
+                pose_map,
+                rec_layer=MASMonika.PST_ACS,
+                priority=10,
+                stay_on_start=False,
+                entry_pp=None,
+                exit_pp=None,
+                acs_type=None,
+                mux_type=None,
+                ex_props=None,
+                dlg_data=None,
+                keep_on_desk=False,
+                hl_disp=None
+        ):
+            """
+            Dynamic accessory constructor.
+
+            For simplicity, this passes in fake values to the accessory base.
+
+            IN:
+                name - name of this accessory
+                disp - displayable to associate with this accessory. Can be
+                    dynamic.
+                pose_map - MASPoseMap - this is assumed to be in enable/disable
+                    mode.
+                rec_layer - recommended layer to place this accessory
+                    (Must be one the ACS types in MASMonika)
+                    (Default: MASMonika.PST_ACS)
+                priority - render priority. Lower is rendered first
+                    (Default: 10)
+                stay_on_start - True means the accessory is saved for next
+                    startup. False means the accessory is dropped on next
+                    startup.
+                    (Default: False)
+                entry_pp - programming point to call when wearing this sprite
+                    the MASMonika object that is being changed is fed into this
+                    function
+                    (Default: None)
+                exit_pp - programming point to call when taking off this sprite
+                    the MASMonika object that is being changed is fed into this
+                    function
+                    (Default: None)
+                acs_type - type, for ease of organization of acs
+                    This works with mux type to determine if an ACS can work
+                    with another ACS.
+                    (Default: None)
+                mux_type - list of acs types that should be
+                    mutually exclusive with this acs.
+                    this works with acs_type to determine if this works with
+                    other ACS.
+                    (Default: None)
+                ex_props - dict of additional properties to apply to this
+                    sprite object.
+                    (Default: None)
+                dlg_data - tuple of the following format:
+                    [0] - string to use for dlg_desc
+                    [1] - boolean value for dlg_plur
+                    (Default: None)
+                keep_on_desk - determines if ACS should be shown if monika
+                    leaves
+                    (Default: False)
+                hl_disp - displayable to use for Highlights. Can be dynamic.
+                    (Default: None)
+            """
+            super(MASDynamicAccessory, self).__init__(
+                MASAccessoryBase.ASO_REG, # no support for split
+                name,
+                "",
+                pose_map,
+                rec_layer=rec_layer,
+                priority=priority,
+                stay_on_start=stay_on_start,
+                entry_pp=entry_pp,
+                exit_pp=exit_pp,
+                acs_type=acs_type,
+                mux_type=mux_type,
+                ex_props=ex_props,
+                dlg_data=dlg_data,
+                keep_on_desk=keep_on_desk
+            )
+            self.dyn_init(disp, hl_disp=hl_disp)
+
+
     class MASHair(MASSpriteFallbackBase):
         """
         MASHair objects
@@ -6365,12 +6788,18 @@ init -3 python:
                 keys:
                     "front" - front hair
                     "back" - back hair
+                    "mid" - mid hair
                     "<lean>|front" - front hair for a leaning type
                         NOTE: can be multiple of this format
                     "<lean>|back" - back hair for a leaning type
                         NOTE: can be multiple of this format
+                    "<lean>|mid" - mid hair for a leaning type
+                        NOTE: can be multiple of this format
                 values:
                     MASFilterMap objects
+            mpm_mid - MASPoseMap for mid hair layer.
+                Determines if the mid layer should be used for a pose.
+                This is the enable/disable type
 
         SEE MASSpriteFallbackBase for inherited properties
 
@@ -6378,7 +6807,7 @@ init -3 python:
             Use an empty string to
         """
 
-        __MHM_KEYS = store.mas_sprites._genLK(("front", "back"))
+        __MHM_KEYS = store.mas_sprites._genLK(("front", "back", "mid"))
 
         def __init__(self,
                 name,
@@ -6391,7 +6820,8 @@ init -3 python:
                 exit_pp=None,
                 split=None,
                 ex_props=None,
-                hl_data=None
+                hl_data=None,
+                mpm_mid=None
             ):
             """
             MASHair constructor
@@ -6432,6 +6862,10 @@ init -3 python:
                         value: MASFilterMap object, or None if no highlight
                     if None, then no highlights at all.
                     (Default: None)
+                mpm_mid - MASPoseMap for mid hair usage.
+                    Determines if a mid layer should be used for a pose.
+                    Should be enable/disable type or else we crash
+                    (Default: None)
             """
             super(MASHair, self).__init__(
                 name,
@@ -6450,7 +6884,15 @@ init -3 python:
             if split is not None and type(split) != MASPoseMap:
                 raise Exception("split MUST be PoseMap")
 
+            if (
+                    mpm_mid is not None
+                    and not isinstance(mpm_mid, MASPoseMap)
+                    and mpm_mid._mpm_type != MASPoseMap.MPM_TYPE_ED
+            ):
+                raise Exception("mpm_mid must be MASPoseMap of type ED / 0")
+
             self.split = split
+            self.mpm_mid = mpm_mid
 
         def __repr__(self):
             return "<Hair: {0}>".format(self.name)
@@ -6550,9 +6992,21 @@ init -3 python:
                     back_img = new_img + [store.mas_sprites.BHAIR_SUFFIX]
                     front_img = new_img + [store.mas_sprites.FHAIR_SUFFIX]
 
+                    # mid images as well
+                    if (
+                            self.mpm_mid is not None
+                            and self.mpm_mid.get(leanpose, False)
+                    ):
+                        mid_img = new_img + [store.mas_sprites.MHAIR_SUFFIX]
+
+                    else:
+                        mid_img = None
+
                     # add them to list
                     loadstrs.append(back_img + [store.mas_sprites.FILE_EXT])
                     loadstrs.append(front_img + [store.mas_sprites.FILE_EXT])
+                    if mid_img is not None:
+                        loadstrs.append(mid_img + [store.mas_sprites.FILE_EXT])
 
                     # highlights
                     loadstrs.extend(self.__build_loadstrs_hl(
@@ -6563,8 +7017,25 @@ init -3 python:
                         front_img,
                         hl_key.format(store.mas_sprites.FHAIR)
                     ))
+                    if mid_img is not None:
+                        loadstrs.extend(self.__build_loadstrs_hl(
+                            mid_img,
+                            hl_key.format(store.mas_sprites.MHAIR)
+                        ))
 
             return loadstrs
+
+        def format_exprops(self):
+            """
+            Override of base class function
+            """
+            super(MASHair, self).format_exprops()
+
+            # format required-clothes-prop into list if it isn't.
+            # NOTE: no handling for non-string types
+            req_cloth_prop = self.getprop(store.mas_sprites.EXP_H_RQCP)
+            if store.mas_sprites_json._verify_str(req_cloth_prop, False):
+                self.ex_props[store.mas_sprites.EXP_H_RQCP] = [req_cloth_prop]
 
         def gethlc(self, hair_key, lean, flt, defval=None):
             """
@@ -6626,6 +7097,10 @@ init -3 python:
                 are not found.
             pose_arms - MASPoseArms object containing the arms for these
                 clothes.
+            outfit_hair - MASHair object of the hair that should be worn with
+                these clothes in outfit mode
+            outfit_acs - dict of MASAccessory objects of the ACS that should be
+                worn with these clothes in outfit mode
             hl_map - MASHighlightMap with the following format:
                 keys:
                     "0" - body-0 layer
@@ -6641,6 +7116,9 @@ init -3 python:
         """
         import store.mas_sprites as mas_sprites
 
+        delay_outfit_validation = True
+        # global flag - set to False once sprite jsons have been loaded.
+
         __MHM_KEYS = store.mas_sprites._genLK(("0", "1"))
 
         def __init__(self,
@@ -6655,7 +7133,9 @@ init -3 python:
                 exit_pp=None,
                 ex_props=None,
                 pose_arms=None,
-                hl_data=None
+                hl_data=None,
+                outfit_hair=None,
+                outfit_acs=None
             ):
             """
             MASClothes constructor
@@ -6703,6 +7183,17 @@ init -3 python:
                         value: MASFilterMap object, or None if no highlight
                     if None, then no highlights at all.
                     (Default: None)
+                outfit_hair - MASHair object that should be used with these
+                    clothes in outfit mode
+                    (Default: None)
+                outfit_acs - MASAccessory objects that should be used with
+                    these clothes in outfit mode. The following types are
+                    accepted:
+                        1 - dictionary
+                            key: acs name
+                            value: acs object
+                        2 - list of acs names/acs objects - mixed types allowed
+                    (Default: None)
             """
             super(MASClothes, self).__init__(
                 name,
@@ -6717,9 +7208,13 @@ init -3 python:
                 MASClothes._prepare_hl_data(hl_data)
             )
             self.__sp_type = store.mas_sprites_json.SP_CLOTHES
+            self.__outfit_proc_acs = {}
+            self.__outfit_proc_hair = None
 
             self.hair_map = hair_map
             self.pose_arms = pose_arms
+            self.outfit_hair = self._format_outfit_hair(outfit_hair)
+            self.outfit_acs = self._format_outfit_acs(outfit_acs)
 
             # add defaults if we need them
             if "all" in hair_map:
@@ -6776,6 +7271,114 @@ init -3 python:
                 return None
 
             return (cls.__MHM_KEYS, hl_def, hl_mapping)
+
+        def _format_outfit_acs(self, outfit_acs_data):
+            """
+            Formats the given data so its ready for outfit_acs property.
+            This also validates the data with the ACS map, and will delay
+            validation until later if needed.
+
+            IN:
+                outfit_acs_data - outfit acs data to format
+
+            RETURNS: data ready for the outfit_acs property
+            """
+            if outfit_acs_data is None:
+                return None
+
+            data = {}
+
+            for acs_name_or_obj in outfit_acs_data:
+                if isinstance(acs_name_or_obj, MASAccessoryBase):
+                    # direct add if obj
+                    data[acs_name_or_obj.name] = acs_name_or_obj
+
+                elif self.delay_outfit_validation:
+                    # save off for lookup later if still in startup
+                    self.__outfit_proc_acs[acs_name_or_obj] = True
+
+                elif acs_name_or_obj in store.mas_sprites.ACS_MAP:
+                    # lookup ACS otherwise
+                    acs = store.mas_sprites.get_sprite(
+                        store.mas_sprites.SP_ACS,
+                        acs_name_or_obj
+                    )
+                    if acs is not None:
+                        data[acs.name] = acs
+
+            if len(data) > 0:
+                return data
+
+            return None
+
+        def _format_outfit_hair(self, outfit_hair_data):
+            """
+            Formats the given data so its ready for the outfit_hair property.
+            This also validates the data with the HAIR map, and will delay
+            validation until later if needed.
+
+            IN:
+                outfit_hair_data - outfit hair data to format
+
+            RETURNS: data ready for the outfit_hair property
+            """
+            if outfit_hair_data is None:
+                return None
+
+            if isinstance(outfit_hair_data, MASHair):
+                # direct obj, this is ok
+                return outfit_hair_data
+
+            if self.delay_outfit_validation:
+                # save off for lookup later if still in startup
+                self.__outfit_proc_hair = outfit_hair_data
+                return None
+
+            return store.mas_sprites.get_sprite(
+                store.mas_sprites.SP_HAIR,
+                outfit_hair_data
+            )
+
+        def _proc_delayed_outfit_data(self):
+            """
+            Proccesses any delayed outfit hair/acs
+            """
+            # outfit_hair
+            if self.__outfit_proc_hair is not None:
+                self.outfit_hair = store.mas_sprites.get_sprite(
+                    store.mas_sprites.SP_HAIR,
+                    self.__outfit_proc_hair
+                )
+                self.__outfit_proc_hair = None
+
+            # outfit acs
+            data = {}
+            for acs_name in self.__outfit_proc_acs:
+                acs = store.mas_sprites.get_sprite(
+                    store.mas_sprites.SP_ACS,
+                    acs_name
+                )
+                if acs is not None:
+                    data[acs.name] = acs
+
+            self.__outfit_proc_acs = None
+
+            # store delayed outfit acs into outfit_acs
+            if len(data) > 0:
+                if self.outfit_acs is None:
+                    self.outfit_acs = data
+                else:
+                    self.outfit_acs.update(data)
+
+        @classmethod
+        def process_delayed_outfits(cls):
+            """
+            Processes all the delayed outfits data for all clothes.
+            Also sets the delayed outfit validation flag.
+            """
+            cls.delay_outfit_validation = False
+            for c_name in mas_sprites.CLOTH_MAP:
+                mas_sprites.CLOTH_MAP[c_name]._proc_delayed_outfit_data()
 
         def build_loadstrs(self, prefix):
             """
@@ -6848,6 +7451,26 @@ init -3 python:
             loadstrs.extend(pose_arms.build_loadstrs(c_prefix))
 
             return loadstrs
+
+        def default_exprops(self):
+            """
+            Override of base class function
+            """
+            super(MASClothes, self).default_exprops()
+
+            # default bare shoulder exprops
+            if self.hasprop(store.mas_sprites.EXP_C_BS):
+                self.addprop(store.mas_sprites.EXP_C_BLS)
+                self.addprop(store.mas_sprites.EXP_C_BRS)
+            elif (
+                    self.hasprop(store.mas_sprites.EXP_C_BLS)
+                    and self.hasprop(store.mas_sprites.EXP_C_BRS)
+            ):
+                self.addprop(store.mas_sprites.EXP_C_BS)
+
+            # default DTS compat if BRS is set
+            if self.hasprop(store.mas_sprites.EXP_C_BRS):
+                self.addprop(store.mas_sprites.EXP_C_C_DTS)
 
         def determine_arms(self, leanpose):
             """
@@ -6960,6 +7583,99 @@ init -3 python:
             return clothes
 
 
+    class MASOutfitChangeData(object):
+        """
+        contains data related to outfit mode changes.
+        Meant to be worked with in prog points.
+
+        Use the functions to modify outfit data as appropriate.
+
+        Supports:
+            - preventing ACS from being removed 
+            - preventing hair or ACS from being worn
+        """
+
+        def __init__(self, hair=None, acs=None):
+            """
+            Constructor
+
+            IN:
+                hair - initial hair to associate with the outfit
+                    (Default: None)
+                acs - dict of ACS to initially associate with the outfit
+                    key: name of the ACS
+                    value: the ACS object
+                    (Default: None)
+            """
+            # setup hair
+            self._hair = hair
+            self._hair_change = False if hair is None else True
+
+            # setup acs
+            if acs is None:
+                acs = {}
+            self._acs = acs
+            self._acs_change = {}
+
+            for acs_name in acs:
+                self._acs_change[acs_name] = True
+
+        def set_acs_change(self, acs_name, value):
+            """
+            Enables or disables a specific ACS changing as part of outfit mode.
+
+            IN:
+                acs_name - the name of the ACS to enable/disable
+                value - pass True to enable, False to disable
+            """
+            if acs_name in self._acs_change:
+                self._acs_change[acs_name] = value
+
+        def set_acs_change_all(self, value):
+            """
+            Enables or disables ALL ACS changing as part of outfit mode
+            
+            IN:
+                value - pass True to enable, False to disable
+            """
+            for acs_name in self._acs_change:
+                self._acs_change[acs_name] = value
+
+        def will_acs_change(self, acs_name):
+            """
+            Checks if a specific acs will change as part of outfit mode.
+
+            IN:
+                acs_name - the name of the ACS to check
+            """
+            return (
+                self._acs_change.get(acs_name, False)
+                and acs_name in self._acs
+            )
+
+        def set_hair_change(self, value):
+            """
+            Enables or disables hair changing as part of outfit mode.
+
+            IN:
+                value - pass True to enable, False to disable.
+                    if there is no hair to change, this value will not change.
+            """
+            if self._hair is not None:
+                self._hair_change = value
+
+        def will_hair_change(self):
+            """
+            Checks if the hair will change as part of outfit mode.
+
+            RETURNS: True if the hair will be changed, False if not
+            """
+            if self._hair is None:
+                return False
+
+            return self._hair_change
+
+
     # The main drawing function...
     def mas_drawmonika(
             st,
@@ -7042,6 +7758,7 @@ init -3 python:
 python early:
 # # # START: Idle disp stuff
     import random
+    import collections
 
     class IdleExpException(Exception):
         """
@@ -7072,7 +7789,7 @@ python early:
         MIN_WEIGHT = 1
         MAX_WEIGHT = 100
 
-        exp_tags_map = dict()
+        exp_tags_map = collections.defaultdict(list)
         _conditional_cache = dict()
 
         def __init__(self, code, duration=(20, 30), aff_range=None, conditional=None, weight=50, tag=None, repeatable=True, add_to_tag_map=True):
@@ -7081,7 +7798,10 @@ python early:
 
             IN:
                 code - exp code
-                duration - duration for this exp in seconds. This can be int or a tuple of 2 ints. If it's a tuple, the duration is being choosen at random between 2 values
+                duration - duration for this exp in seconds. This can be a single number or a tuple of 2 number. If it's a tuple,
+                    the duration is being chosen at random between 2 values.
+                    If the numbers are floats, we use random.uniform, otherwise random.randint.
+                    NOTE: Do not mix ints with floats.
                     (Default: tuple (20, 30))
                 aff_range - affection range for this exp. If not None, assuming it's a tuple of 2 aff constants.
                     Values can be None to not limit lower or upper bounds
@@ -7107,23 +7827,23 @@ python early:
                 _len = len(duration)
                 if _len != 2:
                     raise IdleExpException(
-                        "Expected a tuple/list of 2 items for the duration property. Got the tuple/list of {0} item{1} instead.".format(
+                        "Expected a tuple of 2 items for the duration property. Got a tuple of {0} item{1} instead.".format(
                             _len,
                             "s" if _len != 1 else ""
                         )
                     )
 
-                elif duration[0] < 1 or duration[1] < 1:
+                elif duration[0] <= 0 or duration[1] <= 0:
                     raise IdleExpException(
-                        "Duration for idle expression must be at least one second long. Got: {0} and {1}.".format(
+                        "Duration for idle expression must be a positive number. Got: {0} and {1}.".format(
                             duration[0],
                             duration[1]
                         )
                     )
 
-            elif duration < 1:
+            elif duration <= 0:
                 raise IdleExpException(
-                    "Duration for idle expression must be at least one second long. Got: {0}.".format(
+                    "Duration for idle expression must be a positive number. Got: {0}.".format(
                         duration[0]
                     )
                 )
@@ -7154,18 +7874,17 @@ python early:
 
             if weight is not None and not MASMoniIdleExp.MIN_WEIGHT <= weight <= MASMoniIdleExp.MAX_WEIGHT:
                 raise IdleExpException(
-                    "Weight must be between 0 and 100. Got {0}.".format(
+                    "The weight property must be between {0} and {1}. Got {2}.".format(
+                        MASMoniIdleExp.MIN_WEIGHT,
+                        MASMoniIdleExp.MAX_WEIGHT,
                         weight
                     )
                 )
             self.weight = weight
 
             if tag is not None and add_to_tag_map:
-                if tag in MASMoniIdleExp.exp_tags_map:
-                    MASMoniIdleExp.exp_tags_map[tag].append(self)
+                MASMoniIdleExp.exp_tags_map[tag].append(self)
 
-                else:
-                    MASMoniIdleExp.exp_tags_map[tag] = [self]
             self.tag = tag
             self._add_to_tag_map = add_to_tag_map
 
@@ -7196,10 +7915,14 @@ python early:
             A method to select duration for this exp
 
             OUT:
-                int in range of the duration property of this exp, or the prop itself if it's not a range
+                int/float
             """
             if isinstance(self.duration, tuple):
+                if isinstance(self.duration[0], float) and isinstance(self.duration[1], float):
+                    return random.uniform(self.duration[0], self.duration[1])
+
                 return random.randint(self.duration[0], self.duration[1])
+
             return self.duration
 
         def check_aff(self, aff=None):
@@ -7557,17 +8280,28 @@ python early:
             exp_map - (dict) map between exps and aff lvls
             forced_exps - (list) forced exps
             current_exp - (MASMoniIdleExp) currently selected exp
+            dissolve - (Dissolve) the Dissolve transform we're currently rendering
             exp_groups - (list) MASMoniIdleExpGroup objects that are being 'itered' through
             fallback - (MASMoniIdleExp) fallback exp. Must ALWAYS be available
-            required_st - (int) required shown timebase to switch to the next exp
+            redraw_st - (int/float) required shown timebase to switch to the next exp
             current_st - (float) current shown timebase
             duration - (float) duration (in seconds) for the current exp
-                (basically the difference between required_st and current_st)
+                (basically the difference between redraw_st and current_st)
+            dissolve_duration - (float) the duration of the current dissolve
             forced_mode - (boolean) indicates that we've forced an expression
             group_mode - (boolean) - indicates that we're handling a group of expressions
         """
         # eyes codes whose transforms we manually reset
-        EYES_EXP_CODES = ("k", "n")
+        # EYES_EXP_CODES = ("k", "n")
+        # Dissolve for exp changes
+        QUICK_DISSOLVE = 0.1
+        # Dissolve for pose changes
+        SLOW_DISSOLVE = 0.25
+
+        BLIT_COORDS = (0, 0)
+
+        # Cache the dissolves so we can reuse them
+        _transform_cache = dict()
 
         def __init__(self, exps=None, fallback=None):
             """
@@ -7606,10 +8340,13 @@ python early:
             self.fallback = fallback
             self.current_exp = fallback
             self._predicted_exp = None
+            self.current_img = None
+            self._skip_dissolve = False
 
-            self.__last_st = 0.0
-            self.required_st = 0
+            self._last_st = 0.0
+            self.redraw_st = 0.0
             self.current_st = 0.0
+            self.dissolve_duration = 0.0
 
         def __repr__(self):
             """
@@ -7629,14 +8366,15 @@ python early:
             OUT:
                 float - duration of the current exp in seconds
             """
-            return round(self.required_st - self.current_st, 1)
+            return round(self.redraw_st - self.current_st, 1)
 
         def update(self):
             """
             This causes this disp to update
             """
-            self.required_st = 0
-            renpy.redraw(self, 0)
+            self.redraw_st = 0.0
+            self.dissolve_duration = 0.0
+            renpy.redraw(self, 0.0)
 
         def add(self, exps, redraw=False):
             """
@@ -7670,8 +8408,7 @@ python early:
                     (Default: False)
                 kwargs - additional kwargs that will be passed into MASMoniIdleExp
             """
-            if "add_to_tag_map" not in kwargs:
-                kwargs["add_to_tag_map"] = False
+            kwargs.setdefault("add_to_tag_map", False)
 
             self.add(
                 MASMoniIdleExp(code, **kwargs),
@@ -7752,7 +8489,7 @@ python early:
             if redraw and need_redraw:
                 self.update()
 
-        def force(self, exps, clear=True, redraw=True):
+        def force(self, exps, clear=True, redraw=True, skip_dissolve=False):
             """
             Forces current idle expression to be exps
             NOTE: the weight and repeatable params are ignored
@@ -7763,6 +8500,8 @@ python early:
                     (Default: True)
                 redraw - whether or not we're forcing a redraw
                     (Default: True)
+                skip_dissolve - whether or not we skip dissolve transition for the next exp change
+                    (Default: False)
             """
             if clear:
                 self.forced_exps[:] = list()
@@ -7779,10 +8518,13 @@ python early:
             if clear:
                 self._predicted_exp = None
 
+            if skip_dissolve:
+                self._skip_dissolve = True
+
             if redraw:
                 self.update()
 
-        def force_by_code(self, code, clear=True, redraw=True, **kwargs):
+        def force_by_code(self, code, clear=True, redraw=True, skip_dissolve=False, **kwargs):
             """
             Forces current idle expression to a new exp using exp code
             NOTE: the exp won't be added to the tag map unless you specify it to
@@ -7793,18 +8535,20 @@ python early:
                     (Default: True)
                 redraw - whether or not we're forcing a redraw
                     (Default: True)
+                skip_dissolve - whether or not we skip dissolve transition for the next exp change
+                    (Default: False)
                 kwargs - additional kwargs that will be passed into MASMoniIdleExp
             """
-            if "add_to_tag_map" not in kwargs:
-                kwargs["add_to_tag_map"] = False
+            kwargs.setdefault("add_to_tag_map", False)
 
             self.force(
                 MASMoniIdleExp(code, **kwargs),
                 clear=clear,
+                skip_dissolve=skip_dissolve,
                 redraw=redraw
             )
 
-        def force_by_tag(self, tag, clear=True, redraw=True):
+        def force_by_tag(self, tag, clear=True, redraw=True, skip_dissolve=False):
             """
             Forces current idle expression to a new exp using exp tag.
             If there's several exp with the same tag, we use weighted choice.
@@ -7815,20 +8559,24 @@ python early:
                     (Default: True)
                 redraw - whether or not we're forcing a redraw
                     (Default: True)
+                skip_dissolve - whether or not we skip dissolve transition for the next exp change
+                    (Default: False)
             """
             exps = MASMoniIdleExp.exp_tags_map.get(tag, tuple())
             exp = MASMoniIdleExp.weighted_choice(exps)
             if exp is not None:
-                self.force(exp, clear=clear, redraw=redraw)
+                self.force(exp, clear=clear, redraw=redraw, skip_dissolve=skip_dissolve)
 
-        def unforce(self, exp, redraw=True):
+        def unforce(self, exp, redraw=True, skip_dissolve=False):
             """
-            Removes forced exp by insance
+            Removes forced exp by instance
 
             IN:
                 exp - MASMoniIdleExp / MASMoniIdleExpGroup object
                 redraw - whether or not we're forcing a redraw
                     (Default: True)
+                skip_dissolve - whether or not we skip dissolve transition for the next exp change
+                    (Default: False)
             """
             if not (self.forced_mode or self.forced_exps or self._predicted_modes["forced_mode"]):
                 return
@@ -7849,10 +8597,13 @@ python early:
             if self._predicted_exp is exp:
                 self._predicted_exp = None
 
+            if skip_dissolve:
+                self._skip_dissolve = True
+
             if redraw and need_redraw:
                 self.update()
 
-        def unforce_by_tag(self, tag, redraw=True):
+        def unforce_by_tag(self, tag, redraw=True, skip_dissolve=False):
             """
             Removes forced exp by tag
 
@@ -7860,6 +8611,8 @@ python early:
                 tag - tag to filter by
                 redraw - whether or not we're forcing a redraw
                     (Default: True)
+                skip_dissolve - whether or not we skip dissolve transition for the next exp change
+                    (Default: False)
             """
             if not (self.forced_mode or self.forced_exps or self._predicted_modes["forced_mode"]):
                 return
@@ -7880,16 +8633,21 @@ python early:
             if self._predicted_exp is not None and self._predicted_exp.tag == tag:
                 self._predicted_exp = None
 
+            if skip_dissolve:
+                self._skip_dissolve = True
+
             if redraw and need_redraw:
                 self.update()
 
-        def unforce_all(self, redraw=True):
+        def unforce_all(self, redraw=True, skip_dissolve=False):
             """
             Removes all forced exp
 
             IN:
                 redraw - whether or not we're forcing a redraw
                     (Default: True)
+                skip_dissolve - whether or not we skip dissolve transition for the next exp change
+                    (Default: False)
             """
             if not (self.forced_mode or self.forced_exps or self._predicted_modes["forced_mode"]):
                 return
@@ -7903,6 +8661,9 @@ python early:
             self._predicted_exp = None
 
             self.forced_exps[:] = list()
+
+            if skip_dissolve:
+                self._skip_dissolve = True
 
             if redraw:
                 self.update()
@@ -7944,7 +8705,6 @@ python early:
         def __select_exp(self):
             """
             Selects an appropriate expression that we can show now
-            TODO: support dissolve in/out of poses?
 
             OUT:
                 MASMoniIdleExp
@@ -8053,38 +8813,109 @@ python early:
             self.group_mode = self._predicted_modes["group_mode"]
 
             # We meed to reset some params for wink transforms since RenPy is dum
-            if exp.code[1] in MASMoniIdleDisp.EYES_EXP_CODES:
-                MASMoniIdleDisp.__reset_transform(exp.ref._target(), exp.code)
+            # if exp.code[1] in MASMoniIdleDisp.EYES_EXP_CODES:
+            #     MASMoniIdleDisp.__reset_transform(exp.ref._target(), exp.code)
 
             return exp
 
         def render(self, width, height, st, at):
             """
             Render for this disp
+            I have no idea how this works
             """
-            if st > self.__last_st:
-                self.current_st += (st - self.__last_st)
+            if st > self._last_st:
+                self.current_st += (st - self._last_st)
 
-            self.__last_st = st
+            # else:
+            #     self.current_st += st
 
+            self._last_st = st
+
+            # Is it the time to select a new exp/stop dissolving?
             if (
-                self.required_st <= self.current_st
+                self.current_st >= self.redraw_st
                 or (
-                    not self.current_exp.check_aff()
-                    or not self.current_exp.check_conditional()
+                    self.dissolve_duration == 0.0
+                    and (
+                        not self.current_exp.check_aff()
+                        or not self.current_exp.check_conditional()
+                    )
                 )
             ):
-                self.current_exp = self.select_exp()
-                self.required_st = self.current_exp.select_duration()
                 self.current_st = 0.0
-                redraw_time = self.required_st + 0.1
 
+                # If we were dissolving, we just finished
+                # Set next redraw using the exp duration
+                if self.dissolve_duration != 0.0:
+                    self.current_img = self.current_exp.ref
+                    self.dissolve_duration = 0.0
+                    self.redraw_st = self.current_exp.select_duration()
+                    redraw_time = self.redraw_st
+
+                # The current exp has expired, we need to select a new one
+                else:
+                    next_exp = self.select_exp()
+
+                    # New pose? Dissolve
+                    if not self._skip_dissolve and next_exp.code[0] != self.current_exp.code[0]:
+                        key = (MASMoniIdleDisp.SLOW_DISSOLVE, self.current_exp.code, next_exp.code)
+
+                        if key not in MASMoniIdleDisp._transform_cache:
+                            self.current_img = renpy.display.transition.Dissolve(
+                                time=MASMoniIdleDisp.SLOW_DISSOLVE,
+                                old_widget=self.current_exp.ref,
+                                new_widget=next_exp.ref,
+                                alpha=True
+                            )
+                            MASMoniIdleDisp._transform_cache[key] = self.current_img
+
+                        else:
+                            self.current_img = MASMoniIdleDisp._transform_cache[key]
+
+                        self.dissolve_duration = MASMoniIdleDisp.SLOW_DISSOLVE
+                        self.redraw_st = MASMoniIdleDisp.SLOW_DISSOLVE
+                        redraw_time = self.redraw_st
+
+                    # Different exp? Dissolve
+                    elif not self._skip_dissolve and next_exp.code != self.current_exp.code:
+                        key = (MASMoniIdleDisp.QUICK_DISSOLVE, self.current_exp.code, next_exp.code)
+
+                        if key not in MASMoniIdleDisp._transform_cache:
+                            self.current_img = renpy.display.transition.Dissolve(
+                                time=MASMoniIdleDisp.QUICK_DISSOLVE,
+                                old_widget=self.current_exp.ref,
+                                new_widget=next_exp.ref,
+                                alpha=True
+                            )
+                            MASMoniIdleDisp._transform_cache[key] = self.current_img
+
+                        else:
+                            self.current_img = MASMoniIdleDisp._transform_cache[key]
+
+                        self.dissolve_duration = MASMoniIdleDisp.QUICK_DISSOLVE
+                        self.redraw_st = MASMoniIdleDisp.QUICK_DISSOLVE
+                        redraw_time = self.redraw_st
+
+                    # Otherwise we don't need to dissolve since the exp is the same (or we decided to skip dissolve in/out)
+                    else:
+                        self.current_img = next_exp.ref
+                        self.dissolve_duration = 0.0
+                        self._skip_dissolve = False
+                        self.redraw_st = next_exp.select_duration()
+                        redraw_time = self.redraw_st
+
+                    # Now we can set the current exp
+                    self.current_exp = next_exp
+
+            # Otherwise we come here too early
             else:
-                redraw_time = self.required_st - self.current_st + 0.1
+                redraw_time = self.redraw_st - self.current_st
 
-            exp_render = renpy.render(self.current_exp.ref, width, height, st, at)
-            main_render = renpy.Render(exp_render.width, exp_render.height)
-            main_render.place(self.current_exp.ref, 0, 0)
+            img_render = renpy.render(self.current_img, width, height, self.current_st, at)
+
+            main_render = renpy.Render(img_render.width, img_render.height)
+            # main_render.place(img, x=0, y=0, st=render_st)
+            main_render.blit(img_render, MASMoniIdleDisp.BLIT_COORDS)
 
             renpy.redraw(self, redraw_time)
 
@@ -8125,35 +8956,653 @@ python early:
                 if self.group_mode:
                     self.exp_groups[:] = list()
                     self._predicted_exp = None
+                    self._skip_dissolve = True
                     self.update()
 
                 # If the current exp expires soon, we just skip it to avoid unnatural exp/pose changes
                 elif self.duration < 2:
+                    self._skip_dissolve = True
                     self.update()
 
-        @staticmethod
-        def __reset_transform(transform, code):
+        # @staticmethod
+        # def __reset_transform(transform, code):
+        #     """
+        #     A method to partially reset a transform
+
+        #     IN:
+        #         transform - transform to reset params for
+        #         code - exp code that's used to reset the transforms' child
+        #     """
+        #     transform.st = 0
+        #     transform.at = 0
+        #     transform.block = None
+        #     # transform.predict_block = None
+        #     transform.atl_state = None
+        #     transform.done = False
+        #     transform.transform_event = None
+        #     transform.last_transform_event = None
+        #     transform.last_child_transform_event = None
+        #     transform.atl_st_offset = 0
+
+        #     og_child = renpy.display.image.ImageReference(("monika", code,))
+        #     transform.set_child(og_child)
+        #     transform.raw_child = og_child
+
+    class MASMoniBlinkTransform(renpy.display.core.Displayable):
+        """
+        A displayable which makes blinking possible
+        (replaces the old ATL which was quite buggy)
+        """
+        # Consts for blink steps
+        STEP_START = "start"
+        STEP_DB_START = "db_start"
+        STEP_DB_END = "db_end"
+        STEP_END = "end"
+
+        # The chance for double blink
+        DB_CHANCE = 0.01
+
+        # Blink timings (min, max)
+        STEP_START_DUR_MIN = 3
+        STEP_START_DUR_MAX = 7
+
+        STEP_END_DUR_MIN = 0.06
+        STEP_END_DUR_MAX = 0.07
+
+        STEP_END_INTO_DB_DUR_MIN = 0.02
+        STEP_END_INTO_DB_DUR_MAX = 0.04
+
+        STEP_DB_START_DUR_MIN = 0.1
+        STEP_DB_START_DUR_MAX = 0.15
+
+        STEP_DB_END_DUR_MIN = STEP_END_DUR_MIN
+        STEP_DB_END_DUR_MAX = STEP_END_DUR_MAX
+
+        # Dissolves durations
+        STEP_START_DIS_DUR = 0.01
+        STEP_END_DIS_DUR = 0.01
+        STEP_DB_START_DIS_DUR = STEP_START_DIS_DUR
+        STEP_DB_END_DIS_DUR = STEP_END_DIS_DUR
+
+        WINK_EYES = ("k", "n")
+
+        BLIT_COORDS = (0, 0)
+
+        # We keep these params in the class' namespace so we can keep the blink state between different exp
+        current_img = None
+        current_step = STEP_START
+        next_step = STEP_START
+        _last_at = 0.0
+        current_at = 0.0
+        redraw_at = 0.0
+
+        def __init__(self, open_eyes_img, closed_eyes_img):
             """
-            A method to partially reset a transform
+            Constructor
+            NOTE: this takes in full image names, with prefixes and suffixes
 
             IN:
-                transform - transform to reset params for
-                code - exp code that's used to reset the transforms' child
+                open_eyes_img - FULL name of the image for open eyes
+                closed_eyes_img - FULL name of the image for closed eyes
             """
-            transform.st = 0
-            transform.at = 0
-            transform.block = None
-            # transform.predict_block = None
-            transform.atl_state = None
-            transform.done = False
-            transform.transform_event = None
-            transform.last_transform_event = None
-            transform.last_child_transform_event = None
-            transform.atl_st_offset = 0
+            super(MASMoniBlinkTransform, self).__init__(self)
 
-            og_child = renpy.display.image.ImageReference(("monika", code,))
-            transform.set_child(og_child)
-            transform.raw_child = og_child
+            self.open_eyes_img = renpy.display.image.ImageReference(open_eyes_img)
+            self.closed_eyes_img = renpy.display.image.ImageReference(closed_eyes_img)
+            self.transform_map = {
+                MASMoniBlinkTransform.STEP_START: renpy.display.transition.Dissolve(
+                    time=MASMoniBlinkTransform.STEP_START_DIS_DUR,
+                    old_widget=self.closed_eyes_img,
+                    new_widget=self.open_eyes_img,
+                    alpha=True
+                ),
+                MASMoniBlinkTransform.STEP_END: renpy.display.transition.Dissolve(
+                    time=MASMoniBlinkTransform.STEP_END_DIS_DUR,
+                    old_widget=self.open_eyes_img,
+                    new_widget=self.closed_eyes_img,
+                    alpha=True
+                ),
+                MASMoniBlinkTransform.STEP_DB_START: renpy.display.transition.Dissolve(
+                    time=MASMoniBlinkTransform.STEP_DB_START_DIS_DUR,
+                    old_widget=self.closed_eyes_img,
+                    new_widget=self.open_eyes_img,
+                    alpha=True
+                ),
+                MASMoniBlinkTransform.STEP_DB_END: renpy.display.transition.Dissolve(
+                    time=MASMoniBlinkTransform.STEP_DB_END_DIS_DUR,
+                    old_widget=self.open_eyes_img,
+                    new_widget=self.closed_eyes_img,
+                    alpha=True
+                )
+            }
+            # Do this here to save some time during rendering
+            self.is_wink = bool(open_eyes_img.split("monika ")[-1].split("_")[0][1] in MASMoniBlinkTransform.WINK_EYES)
+
+        def render(self, width, height, st, at):
+            """
+            Render of this disp
+            """
+            # If st == 0, we do not increment the current at,
+            # that's so Monika doesn't blink immediately after closed eyes
+            if at > MASMoniBlinkTransform._last_at and st != 0:
+                MASMoniBlinkTransform.current_at += (at - MASMoniBlinkTransform._last_at)
+
+            MASMoniBlinkTransform._last_at = at
+
+            # st == 0 means we just switched to this exp, might want to extend the blink dur for little bit
+            if st == 0 and MASMoniBlinkTransform.current_step in (MASMoniBlinkTransform.STEP_START, MASMoniBlinkTransform.STEP_DB_START):
+                # NOTE: If this is a wink and we just started showing it, we extend the blink duration
+                # so Monika can finish her wink. This is a bit gross, but gives us better visuals.
+                # If we ever need such handling for the other eyes, we might need a better system
+                if self.is_wink:
+                    MASMoniBlinkTransform.current_at = MASMoniBlinkTransform.redraw_at - MASMoniWinkTransform.STEP_START_DUR
+
+                # Otherwise just some arbitrary number if it's the time to blink soon
+                elif MASMoniBlinkTransform.redraw_at - MASMoniBlinkTransform.current_at < 0.5:
+                    MASMoniBlinkTransform.current_at = MASMoniBlinkTransform.redraw_at - 0.25
+
+                # Sanitize it
+                # MASMoniBlinkTransform.redraw_at = min(MASMoniBlinkTransform.redraw_at, MASMoniBlinkTransform.STEP_START_DUR_MAX)
+                MASMoniBlinkTransform.current_at = max(0, MASMoniBlinkTransform.current_at)
+
+            # at == 0 means we just showed Monika, no transition at all
+            if at == 0:
+                MASMoniBlinkTransform.current_step = MASMoniBlinkTransform.STEP_START
+                MASMoniBlinkTransform.current_at = 0.0
+                MASMoniBlinkTransform.current_img = self.open_eyes_img
+                MASMoniBlinkTransform.redraw_at = random.randint(MASMoniBlinkTransform.STEP_START_DUR_MIN, MASMoniBlinkTransform.STEP_START_DUR_MAX)
+                MASMoniBlinkTransform.next_step = MASMoniBlinkTransform.STEP_END
+
+            # Otherwise check if we should move to the next step
+            elif MASMoniBlinkTransform.current_at >= MASMoniBlinkTransform.redraw_at:
+                MASMoniBlinkTransform.current_at = 0.0
+                MASMoniBlinkTransform.current_img = self.transform_map[MASMoniBlinkTransform.next_step]
+
+                # First step (open eyes)
+                if MASMoniBlinkTransform.next_step == MASMoniBlinkTransform.STEP_START:
+                    MASMoniBlinkTransform.current_step = MASMoniBlinkTransform.STEP_START
+                    MASMoniBlinkTransform.redraw_at = random.randint(MASMoniBlinkTransform.STEP_START_DUR_MIN, MASMoniBlinkTransform.STEP_START_DUR_MAX)
+                    MASMoniBlinkTransform.next_step = MASMoniBlinkTransform.STEP_END
+
+                # Last step (close eyes)
+                elif MASMoniBlinkTransform.next_step == MASMoniBlinkTransform.STEP_END:
+                    MASMoniBlinkTransform.current_step = MASMoniBlinkTransform.STEP_END
+                    # Do we want a double blink?
+                    if random.random() > MASMoniBlinkTransform.DB_CHANCE:
+                        # No
+                        MASMoniBlinkTransform.redraw_at = random.uniform(MASMoniBlinkTransform.STEP_END_DUR_MIN, MASMoniBlinkTransform.STEP_END_DUR_MAX)
+                        MASMoniBlinkTransform.next_step = MASMoniBlinkTransform.STEP_START
+
+                    else:
+                        # Yes
+                        MASMoniBlinkTransform.redraw_at = random.uniform(MASMoniBlinkTransform.STEP_END_INTO_DB_DUR_MIN, MASMoniBlinkTransform.STEP_END_INTO_DB_DUR_MAX)
+                        MASMoniBlinkTransform.next_step = MASMoniBlinkTransform.STEP_DB_START
+
+                # Substep start (double blink open eyes)
+                elif MASMoniBlinkTransform.next_step == MASMoniBlinkTransform.STEP_DB_START:
+                    MASMoniBlinkTransform.current_step = MASMoniBlinkTransform.STEP_DB_START
+                    MASMoniBlinkTransform.redraw_at = random.uniform(MASMoniBlinkTransform.STEP_DB_START_DUR_MIN, MASMoniBlinkTransform.STEP_DB_START_DUR_MAX)
+                    MASMoniBlinkTransform.next_step = MASMoniBlinkTransform.STEP_DB_END
+
+                # Substep end (double blink close eyes)
+                elif MASMoniBlinkTransform.next_step == MASMoniBlinkTransform.STEP_DB_END:
+                    MASMoniBlinkTransform.current_step = MASMoniBlinkTransform.STEP_DB_END
+                    MASMoniBlinkTransform.redraw_at = random.uniform(MASMoniBlinkTransform.STEP_DB_END_DUR_MIN, MASMoniBlinkTransform.STEP_DB_END_DUR_MAX)
+                    MASMoniBlinkTransform.next_step = MASMoniBlinkTransform.STEP_START
+
+            # Otherwise we're here too early, request a redraw
+            else:
+                # NOTE: It's important to update the curr img here
+                MASMoniBlinkTransform.current_img = self.transform_map[MASMoniBlinkTransform.current_step]
+
+            img_render = renpy.render(MASMoniBlinkTransform.current_img, width, height, MASMoniBlinkTransform.current_at, at)
+            rv = renpy.Render(img_render.width, img_render.height)
+            rv.blit(img_render, MASMoniBlinkTransform.BLIT_COORDS)
+
+            # I'd like to save us redraws, but we can't. At minimum we need a redraw every 0.1-0.2 sec
+            renpy.redraw(self, 0.1)
+
+            return rv
+
+        def visit(self):
+            """
+            Returns imgs for prediction
+
+            OUT:
+                list of displayables
+            """
+            return self.transform_map.values()
+
+    class MASMoniWinkTransform(renpy.display.core.Displayable):
+        """
+        A displayable which makes winks possible
+        (replaces the old ATL which was quite buggy)
+        """
+        STEP_START = "start"
+        STEP_END = "end"
+        STEP_DONE = "done"
+
+        STEP_START_DUR = 1.0
+        STEP_END_DIS_DUR = 0.01
+
+        RESETTING_EVS = ("replace", "replaced")
+        BLIT_COORDS = (0, 0)
+
+        def __init__(self, wink_img, open_eyes_img):
+            """
+            Constructor
+            NOTE: this takes in full image names, with prefixes and suffixes
+
+            IN:
+                wink_img - FULL name of the image for wink eyes
+                open_eyes_img - FULL name of the image for opened eyes
+            """
+            super(MASMoniWinkTransform, self).__init__(self)
+
+            self.wink_img = renpy.display.image.ImageReference(wink_img)
+            self.open_eyes_img = renpy.display.image.ImageReference(open_eyes_img)
+            self.current_img = self.wink_img
+            self.wink_into_open_eyes_dis = renpy.display.transition.Dissolve(
+                time=MASMoniBlinkTransform.STEP_END_DIS_DUR,
+                old_widget=self.wink_img,
+                new_widget=self.open_eyes_img,
+                alpha=True
+            )
+
+            self.next_step = MASMoniWinkTransform.STEP_START
+
+            self._last_st = 0.0
+            self.current_st = 0.0
+            self.redraw_st = 0.0
+
+        def render(self, width, height, st, at):
+            """
+            Render of this disp
+            """
+            if st > self._last_st:
+                self.current_st += (st - self._last_st)
+
+            else:
+                self.__reset()
+                # self.current_st += st
+
+            self._last_st = st
+
+            if (
+                self.redraw_st is not None
+                and self.current_st >= self.redraw_st
+            ):
+                self.current_st = 0.0
+
+                # First step (wink)
+                if self.next_step == MASMoniWinkTransform.STEP_START:
+                    self.current_img = self.wink_img
+                    self.redraw_st = MASMoniWinkTransform.STEP_START_DUR
+                    self.next_step = MASMoniWinkTransform.STEP_END
+
+                # "Last" step (open eyes)
+                elif self.next_step == MASMoniWinkTransform.STEP_END:
+                    self.current_img = self.wink_into_open_eyes_dis
+                    self.redraw_st = None
+
+            img_render = renpy.render(self.current_img, width, height, self.current_st, at)
+            rv = renpy.Render(img_render.width, img_render.height)
+            rv.blit(img_render, MASMoniWinkTransform.BLIT_COORDS)
+
+            if self.redraw_st is not None:
+                renpy.redraw(self, self.redraw_st - self.current_st)
+
+            return rv
+
+        def visit(self):
+            """
+            Returns imgs for prediction
+
+            OUT:
+                list of displayables
+            """
+            return [self.wink_img, self.wink_into_open_eyes_dis]
+
+        def __reset(self):
+            """
+            A method to reset params of this disp
+            """
+            self.next_step = MASMoniWinkTransform.STEP_START
+            self._last_st = 0.0
+            self.current_st = 0.0
+            self.redraw_st = 0.0
+            # self.current_img = self.open_eyes_img
+            self.transform_event = None
+
+        def _hide(self, st, at, kind):
+            """
+            This method is being called (sometimes) when the disp is being hidden.
+            We use it to reset some params
+            NOTE: must always return None
+            """
+            self.__reset()
+            return None
+
+        def _show(self):
+            """
+            This method is being called (sometimes) when the disp is being shown.
+            We use it to reset some params
+            """
+            self.__reset()
+
+    class MASMoniTearsTransform(renpy.display.core.Displayable):
+        """
+        A displayable which makes tears possible
+        (replaces the old ATL which was quite buggy)
+        """
+        # Transforms "steps" consts
+        STEP_START = "start"
+        STEP_END = "end"
+
+        # Timings consts
+        STEP_START_DUR_MIN = 9
+        STEP_START_DUR_MAX = 12
+
+        STEP_END_DUR_MIN = 0.14
+        STEP_END_DUR_MAX = 0.16
+
+        # Dissolve duration consts
+        STEP_START_DIS_DUR = 0.01
+        STEP_END_DIS_DUR = 0.01
+
+        BLIT_COORDS = (0, 0)
+
+        current_img = None
+        current_step = STEP_START
+        next_step = STEP_START
+        _last_at = 0.0
+        current_at = 0.0
+        redraw_at = 0.0
+
+        def __init__(self, open_eyes_img, closed_eyes_img):
+            """
+            Constructor
+            NOTE: this takes in full image names, with prefixes and suffixes
+
+            IN:
+                open_eyes_img - FULL name of the image for open eyes
+                closed_eyes_img - FULL name of the image for closed eyes
+            """
+            super(MASMoniTearsTransform, self).__init__(self)
+
+            self.open_eyes_img = renpy.display.image.ImageReference(open_eyes_img)
+            self.closed_eyes_img = renpy.display.image.ImageReference(closed_eyes_img)
+            self.transform_map = {
+                MASMoniTearsTransform.STEP_START: renpy.display.transition.Dissolve(
+                    time=MASMoniTearsTransform.STEP_START_DIS_DUR,
+                    old_widget=self.closed_eyes_img,
+                    new_widget=self.open_eyes_img,
+                    alpha=True
+                ),
+                MASMoniTearsTransform.STEP_END: renpy.display.transition.Dissolve(
+                    time=MASMoniTearsTransform.STEP_END_DIS_DUR,
+                    old_widget=self.open_eyes_img,
+                    new_widget=self.closed_eyes_img,
+                    alpha=True
+                )
+            }
+
+        def render(self, width, height, st, at):
+            """
+            Render of this disp
+            """
+            if at > MASMoniTearsTransform._last_at and st != 0:
+                MASMoniTearsTransform.current_at += (at - MASMoniTearsTransform._last_at)
+
+            MASMoniTearsTransform._last_at = at
+
+            # st == 0 means we just switched to this exp, might want to extend the blink dur for little bit
+            if (
+                st == 0
+                and MASMoniTearsTransform.current_step == MASMoniTearsTransform.STEP_START
+                and MASMoniTearsTransform.redraw_at - MASMoniTearsTransform.current_at < 0.5
+            ):
+                MASMoniTearsTransform.current_at = max(0, MASMoniTearsTransform.redraw_at - 0.25)
+
+            if at == 0:
+                MASMoniTearsTransform.current_step = MASMoniTearsTransform.STEP_START
+                MASMoniTearsTransform.current_at = 0.0
+                MASMoniTearsTransform.current_img = self.open_eyes_img
+                MASMoniTearsTransform.redraw_at = random.randint(MASMoniTearsTransform.STEP_START_DUR_MIN, MASMoniTearsTransform.STEP_START_DUR_MAX)
+                MASMoniTearsTransform.next_step = MASMoniTearsTransform.STEP_END
+
+            elif MASMoniTearsTransform.current_at >= MASMoniTearsTransform.redraw_at:
+                MASMoniTearsTransform.current_at = 0.0
+                MASMoniTearsTransform.current_img = self.transform_map[MASMoniTearsTransform.next_step]
+
+                # First step (close eyes)
+                if MASMoniTearsTransform.next_step == MASMoniTearsTransform.STEP_START:
+                    MASMoniTearsTransform.current_step = MASMoniTearsTransform.STEP_START
+                    MASMoniTearsTransform.redraw_at = random.randint(MASMoniTearsTransform.STEP_START_DUR_MIN, MASMoniTearsTransform.STEP_START_DUR_MAX)
+                    MASMoniTearsTransform.next_step = MASMoniTearsTransform.STEP_END
+
+                # Last step (open eyes)
+                elif MASMoniTearsTransform.next_step == MASMoniTearsTransform.STEP_END:
+                    MASMoniTearsTransform.current_step = MASMoniTearsTransform.STEP_END
+                    MASMoniTearsTransform.redraw_at = random.uniform(MASMoniTearsTransform.STEP_END_DUR_MIN, MASMoniTearsTransform.STEP_END_DUR_MAX)
+                    MASMoniTearsTransform.next_step = MASMoniTearsTransform.STEP_START
+
+            else:
+                MASMoniTearsTransform.current_img = self.transform_map[MASMoniTearsTransform.current_step]
+
+            img_render = renpy.render(MASMoniTearsTransform.current_img, width, height, MASMoniTearsTransform.current_at, at)
+            rv = renpy.Render(img_render.width, img_render.height)
+            rv.blit(img_render, MASMoniTearsTransform.BLIT_COORDS)
+
+            renpy.redraw(self, 0.1)
+
+            return rv
+
+        def visit(self):
+            """
+            Returns imgs for prediction
+
+            OUT:
+                list of displayables
+            """
+            return self.transform_map.values()
+
+    class _MASMoniFollowTransformDissolve(renpy.display.transition.Dissolve):
+        """
+        Dissolve subclass that allows to pass different st and at values to its widgets
+        """
+        def __init__(self, *args, **kwargs):
+            """
+            Adds 4 new params
+            """
+            super(_MASMoniFollowTransformDissolve, self).__init__(*args, **kwargs)
+
+            # KEY CHANGES
+            self.new_widget_st = None
+            self.new_widget_at = None
+            self.old_widget_st = None
+            self.old_widget_at = None
+
+        def render(self, width, height, st, at):
+            """
+            Makes use of the new params
+            """
+            if renpy.game.less_updates:
+                return renpy.display.transition.null_render(self, width, height, st, at)
+
+            if st >= self.time:
+                self.events = True
+                return renpy.display.transition.render(self.new_widget, width, height, st, at)
+
+            complete = min(1.0, st / self.time)
+
+            if self.time_warp is not None:
+                complete = self.time_warp(complete)
+
+            # KEY CHANGES
+            old_widget_st = self.old_widget_st if self.old_widget_st is not None else st
+            old_widget_at = self.old_widget_at if self.old_widget_at is not None else at
+            new_widget_st = self.new_widget_st if self.new_widget_st is not None else st
+            new_widget_at = self.new_widget_at if self.new_widget_at is not None else at
+
+            bottom = renpy.display.transition.render(self.old_widget, width, height, old_widget_st, old_widget_at)
+            top = renpy.display.transition.render(self.new_widget, width, height, new_widget_st, new_widget_at)
+
+            width = min(top.width, bottom.width)
+            height = min(top.height, bottom.height)
+
+            rv = renpy.display.render.Render(width, height, opaque=not self.alpha)
+
+            rv.operation = renpy.display.render.DISSOLVE
+            rv.operation_alpha = self.alpha
+            rv.operation_complete = complete
+
+            rv.blit(bottom, (0, 0), focus=False, main=False)
+            rv.blit(top, (0, 0), focus=True, main=True)
+
+            renpy.display.render.redraw(self, 0)
+
+            return rv
+
+    class MASMoniFollowTransform(renpy.display.core.Displayable):
+        """
+        A displayable which makes follow sprites possible
+        (replaces conditionswitch for dissolves and optimization)
+        """
+        REDRAW_PAUSE = 0.1
+
+        DIS_DUR = 0.1
+
+        BLIT_COORDS = (0, 0)
+
+        def __init__(self, norm_eyes_img, left_eyes_img, right_eyes_img, up_eyes_img=None, down_eyes_img=None):
+            """
+            Constructor
+            NOTE: this takes in full image names, with prefixes and suffixes
+
+            IN:
+                norm_eyes_img - FULL name of the image for look straight eyes
+                left_eyes_img - FULL name of the image for look left eyes
+                right_eyes_img - FULL name of the image for look right eyes
+                up_eyes_img - FULL name of the image for look up eyes
+                    NOTE: unused since we don't have the sprites yet
+                down_eyes_img - FULL name of the image for look down eyes
+                    NOTE: unused since we don't have the sprites yet
+            """
+            super(MASMoniFollowTransform, self).__init__(self)
+
+            self.norm_eyes_code = norm_eyes_img
+            self.norm_eyes_img = renpy.display.image.ImageReference(norm_eyes_img)
+            self.left_eyes_code = left_eyes_img
+            self.left_eyes_img = renpy.display.image.ImageReference(left_eyes_img)
+            self.right_eyes_code = right_eyes_img
+            self.right_eyes_img = renpy.display.image.ImageReference(right_eyes_img)
+            # self.up_eyes_code = up_eyes_img
+            # self.up_eyes_img = renpy.display.image.ImageReference(up_eyes_img)
+            # self.down_eyes_code = down_eyes_img
+            # self.down_eyes_img = renpy.display.image.ImageReference(down_eyes_img)
+
+            self.current_img = self.norm_eyes_img
+            self.current_exp_code = self.norm_eyes_code
+
+            # NOTE: keys here are tuples of strings of the current and next exp
+            self.transform_map = dict()
+            img_map = {
+                self.norm_eyes_code: self.norm_eyes_img,
+                self.left_eyes_code: self.left_eyes_img,
+                self.right_eyes_code: self.right_eyes_img,
+                # self.up_eyes_code: self.up_eyes_img,
+                # self.down_eyes_code: self.down_eyes_img
+            }
+            for first_img_code in img_map.iterkeys():
+                for second_img_code in img_map.iterkeys():
+                    if first_img_code != second_img_code:
+                        self.transform_map[(first_img_code, second_img_code)] = _MASMoniFollowTransformDissolve(
+                            time=MASMoniFollowTransform.DIS_DUR,
+                            old_widget=img_map[first_img_code],
+                            new_widget=img_map[second_img_code],
+                            alpha=True
+                        )
+
+            self._last_st = 0.0
+            self.current_st = 0.0
+            self.redraw_st = 0.0
+
+        def render(self, width, height, st, at):
+            """
+            Render of this disp
+            """
+            if st > self._last_st:
+                self.current_st += (st - self._last_st)
+
+            # else:
+            #     self.current_st += st
+
+            self._last_st = st
+
+            if st == 0 or self.current_st >= self.redraw_st:
+                self.current_st = 0.0
+                self.redraw_st = MASMoniFollowTransform.REDRAW_PAUSE
+
+                mouse_pos = store.mas_windowutils.getMousePosRelative()
+                if mouse_pos[0] < 0:
+                    next_img = self.left_eyes_img
+                    next_exp_code = self.left_eyes_code
+
+                elif mouse_pos[0] > 0:
+                    next_img = self.right_eyes_img
+                    next_exp_code = self.right_eyes_code
+
+                # elif mouse_pos[1] > 0:
+                #     next_img = self.up_eyes_img
+                #     next_exp_code = self.up_eyes_code
+
+                # elif mouse_pos[1] < 0:
+                #     next_img = self.down_eyes_img
+                #     next_exp_code = self.down_eyes_code
+
+                else:
+                    next_img = self.norm_eyes_img
+                    next_exp_code = self.norm_eyes_code
+
+                if st != 0 and self.current_exp_code != next_exp_code:
+                    self.current_img = self.transform_map[(self.current_exp_code, next_exp_code)]
+                    self.current_exp_code = next_exp_code
+                    # Pass the st and at params to the transforms widgets
+                    # so we can keep their states regardless of the transition
+                    self.current_img.old_widget_st = st
+                    self.current_img.old_widget_at = at
+                    self.current_img.new_widget_st = st
+                    self.current_img.new_widget_at = at
+                    render_st = self.current_st
+
+                else:
+                    self.current_img = next_img
+                    self.current_exp_code = next_exp_code
+                    render_st = st
+
+                redraw_time = self.redraw_st
+
+            else:
+                redraw_time = self.redraw_st - self.current_st
+                render_st = st
+
+            img_render = renpy.render(self.current_img, width, height, render_st, at)
+            rv = renpy.Render(img_render.width, img_render.height)
+            rv.blit(img_render, MASMoniFollowTransform.BLIT_COORDS)
+
+            renpy.redraw(self, redraw_time)
+
+            return rv
+
+        def visit(self):
+            """
+            Returns imgs for prediction
+
+            OUT:
+                list of displayables
+            """
+            return self.transform_map.values()
 
 # # # END: Idle disp stuff
 
@@ -8973,6 +10422,7 @@ label mas_transition_to_emptydesk(hide_dlg_box=True):
 label mas_transition_from_emptydesk(exp="monika 1eua", show_dlg_box=True):
     if show_dlg_box:
         window auto
-    show expression exp as monika at i11 zorder MAS_MONIKA_Z with dissolve_monika
+    $ renpy.show(exp, tag="monika", at_list=[i11], zorder=MAS_MONIKA_Z)
+    $ renpy.with_statement(dissolve_monika)
     hide emptydesk
     return
