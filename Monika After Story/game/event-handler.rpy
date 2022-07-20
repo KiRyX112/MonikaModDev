@@ -3263,17 +3263,18 @@ label prompt_menu:
         elif cb_label is not None:
             $ mas_idle_mailbox.send_idle_cb(cb_label)
 
-        $ pushEvent("mas_idle_mode_greeting_cleanup")
-        $ mas_idle_mailbox.send_skipmidloopeval()
+        #Show idle exp here so we dissolve like other topics
+        if not renpy.showing("monika idle"):
+            show monika idle at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
-
-
+        # NOTE: we only need to enable music hotkey since we are in dlg mode
+        #$ mas_DropShield_idle()
         $ store.mas_hotkeys.music_enabled = True
 
         jump prompt_menu_end
 
     python:
-
+        #We want to adjust the time of day vars
         mas_setTODVars()
 
         unlocked_events = Event.filterEvents(
@@ -3283,8 +3284,8 @@ label prompt_menu:
         )
         sorted_event_labels = Event.getSortedKeys(unlocked_events,include_none=True)
 
-
-
+        # we exclude 'mas_show_unseen' from the unseen list since it's only unlocked when the unseen menu is hidden
+        # having it added to the unseen list just messes up the counter in the 'mas_show_unseen' prompt
         unseen_event_labels = [
             ev_label
             for ev_label in sorted_event_labels
