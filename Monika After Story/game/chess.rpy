@@ -43,7 +43,7 @@ init python in mas_chess:
 
     CHESS_SAVE_PATH = "/chess_games/"
     CHESS_SAVE_EXT = ".pgn"
-    CHESS_SAVE_NAME = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789"
+    CHESS_SAVE_NAME = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789абвгдеёжзийклмнопрстуфхчшщцьыъэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЧШЩЦЬЫЪЭЮЯ"
     CHESS_PROMPT_FORMAT = "{0} | {1} | Turn: {2} | You: {3}"
 
     #chess modes
@@ -56,7 +56,7 @@ init python in mas_chess:
 
     CHESS_MENU_WAIT_VALUE = "MATTE"
     CHESS_MENU_WAIT_ITEM = (
-        _("I can't make this decision right now..."),
+        _("Я не могу принять это решение прямо сейчас..."),
         CHESS_MENU_WAIT_VALUE,
         False,
         False,
@@ -163,10 +163,10 @@ init python in mas_chess:
         """
         if pgn_game is None:
             return None
-
+        
         if pgn_game.headers["Result"] != "*":
             return None
-
+        
         # now which one is the player?
         if pgn_game.headers["White"] == mth:
             the_player = "Black"
@@ -174,14 +174,14 @@ init python in mas_chess:
             the_player = "White"
         else: # monika must be a player
             return None
-
+        
         # otherwise, we can now add this as an in progress game
         # first, though we need number of turns
         # this will store the number of turns in board.fullmove_number
         board = pgn_game.board()
         for move in pgn_game.main_line():
             board.push(move)
-
+        
         return (
             CHESS_PROMPT_FORMAT.format(
                 pgn_game.headers["Date"].replace(".","-"),
@@ -210,14 +210,14 @@ init python in mas_chess:
         """
         if filename[-4:] != CHESS_SAVE_EXT:
             return None
-
+        
         pgn_game = None
         with open(
             os.path.normcase(CHESS_SAVE_PATH + filename),
             "r"
         ) as loaded_game:
             pgn_game = chess.pgn.read_game(loaded_game)
-
+        
         return _checkInProgressGame(pgn_game, mth)
 
     def _increment_chess_difficulty():
@@ -225,17 +225,17 @@ init python in mas_chess:
         Increments chess difficulty
         """
         level, sublevel = store.persistent._mas_chess_difficulty
-
+        
         if sublevel == 5 and level < 9:
             level += 1
             sublevel = 1
-
+        
         elif sublevel < 5:
             sublevel += 1
-
+        
         else:
             return
-
+        
         store.persistent._mas_chess_difficulty = (level, sublevel)
 
     def _decrement_chess_difficulty():
@@ -246,13 +246,13 @@ init python in mas_chess:
         if sublevel == 1 and level > 0:
             level -= 1
             sublevel = 5
-
+        
         elif sublevel > 1:
             sublevel -= 1
-
+        
         else:
             return
-
+        
         store.persistent._mas_chess_difficulty = (level, sublevel)
 
     def _get_player_color(loaded_game):
@@ -280,7 +280,7 @@ init python in mas_chess:
             tuple - (piece_type, weight) of the piece
         """
         prelim_value = (float(available_points) / PIECE_POINT_MAP[piece_type]) - selected_pieces_count_dict[piece_type]
-
+        
         return (
             piece_type,
             prelim_value if prelim_value > 0 else 1
@@ -298,23 +298,23 @@ init python in mas_chess:
         """
         #Generate the random chances
         piece_pool = list()
-
+        
         if remaining_points >= 3:
             piece_pool.extend([
                 _get_piece_chance('b', selected_pieces_count_dict, remaining_points),
                 _get_piece_chance('n', selected_pieces_count_dict, remaining_points)
             ])
-
+            
             if remaining_points >= 5:
                 piece_pool.append(_get_piece_chance('r', selected_pieces_count_dict, remaining_points))
-
+                
                 if remaining_points >= 9:
                     piece_pool.append(_get_piece_chance('q', selected_pieces_count_dict, remaining_points))
-
+            
             #Get our piece and update the dict
             selected_piece = store.mas_utils.weightedChoice(piece_pool)
             selected_pieces_count_dict[selected_piece] += 1
-
+            
             return selected_piece
         #Otherwise, since we can't afford to expend more, we just get pawns
         return 'p'
@@ -333,10 +333,10 @@ init python in mas_chess:
             2 strings representing a random assortment of pieces (front row and back row)
         """
         king_pos = random.randint(0, 7)
-
+        
         back_row = list()
         front_row = list()
-
+        
         #Counts how many pieces of the types we've picked
         selected_pieces_count = {
             'q': 0,
@@ -344,40 +344,40 @@ init python in mas_chess:
             'n': 0,
             'b': 0
         }
-
+        
         side_indeces = range(0, 16)
         random.shuffle(side_indeces)
         # Subtract points worth 14 pawns
         # (skip one pawn to get some free points for replacement)
         max_side_value -= 14
-
+        
         for ind in side_indeces:
             if ind == king_pos:
                 piece_to_add = 'k'
-
+            
             else:
                 piece_to_add = select_piece(max_side_value, selected_pieces_count)
                 # Subtract points for this piece, add back points for the pawn we replaced
                 max_side_value -= PIECE_POINT_MAP[piece_to_add] - 1
-
+            
             #Capitalize if necessary
             if white:
                 piece_to_add = piece_to_add.capitalize()
-
+            
             #Add to the appropriate list
             if ind < 8:
                 back_row.append(piece_to_add)
             else:
                 front_row.append(piece_to_add)
-
+        
         #Shuffle the rows
         random.shuffle(front_row)
         random.shuffle(back_row)
-
+        
         #Reorder if needed
         if not white:
             back_row, front_row = front_row, back_row
-
+        
         return "".join(front_row), "".join(back_row)
 
     def _validate_sides(white_front, white_back, black_front, black_back):
@@ -464,13 +464,13 @@ init python in mas_chess:
             ):
                 return False
             return True
-
+        
         white_king_id = white_back.index("K")
         white_is_good = validate(white_king_id, black_front)
-
+        
         black_king_id = black_back.index("k")
         black_is_good = validate(black_king_id, white_front)
-
+        
         return white_is_good and black_is_good
 
     def generate_random_fen(is_player_white=True):
@@ -485,18 +485,18 @@ init python in mas_chess:
         # Use a cubic function to adjust players' points
         p_value_adj = int(round(-((float(difficulty) - 27)**3) / 984))
         m_value_adj = -p_value_adj
-
+        
         delta = abs(p_value_adj)
-
+        
         base_piece_value = random.randint(LOWEST_SIDE_WORTH, HIGHEST_SIDE_WORTH)
-
+        
         #Setup max piece value for the player
         max_piece_value = max(min(base_piece_value + p_value_adj, HIGHEST_SIDE_WORTH), LOWEST_SIDE_WORTH)
-
+        
         #Now the inverse from the max of that should be Monika's piece value
         #(lower player value, higher monika value, vice versa)
         monika_max_piece_value =  max(min(base_piece_value + m_value_adj, HIGHEST_SIDE_WORTH), LOWEST_SIDE_WORTH)
-
+        
         good_to_go = False
         attempts = 0
         while (
@@ -507,21 +507,21 @@ init python in mas_chess:
             attempts += 1
             player_first_row, player_second_row = _gen_side(is_player_white, max_piece_value)
             monika_first_row, monika_second_row = _gen_side(not is_player_white, monika_max_piece_value)
-
+            
             if is_player_white:
                 white_front = player_first_row
                 white_back = player_second_row
                 black_front = monika_second_row
                 black_back = monika_first_row
-
+            
             else:
                 white_front = monika_first_row
                 white_back = monika_second_row
                 black_front = player_second_row
                 black_back = player_first_row
-
+            
             good_to_go = _validate_sides(white_front, white_back, black_front, black_back)
-
+        
         #Now place things correctly
         if is_player_white:
             return BASE_FEN.format(
@@ -530,7 +530,7 @@ init python in mas_chess:
                 white_pieces_front=player_first_row,
                 white_pieces_back=player_second_row
             )
-
+        
         else:
             return BASE_FEN.format(
                 black_pieces_back=player_first_row,
@@ -610,7 +610,7 @@ init python in mas_chess:
         for line in iter(out.readline, b''):
             with lock:
                 queue.appendleft(line)
-
+        
         out.close()
 
 #START: Main game label
@@ -672,6 +672,7 @@ label game_chess:
                     return
 
             else:
+
                 python:
                     import os
                     import struct
@@ -679,7 +680,7 @@ label game_chess:
                     # load up the unfinished games and corrupt them
                     pgn_files = os.listdir(mas_chess.CHESS_SAVE_PATH)
                     if pgn_files:
-
+                        
                         # grab only unfnished games
                         valid_files = list()
                         for filename in pgn_files:
@@ -687,10 +688,10 @@ label game_chess:
                                 filename,
                                 mas_monika_twitter_handle
                             )
-
+                            
                             if in_prog_game:
                                 valid_files.append((filename, in_prog_game[1]))
-
+                        
                         # now break those games
                         if len(valid_files) > 0:
                             for filename,pgn_game in valid_files:
@@ -713,7 +714,7 @@ label game_chess:
         # if player did bad, then we dont do file checks anymore
         if persistent._mas_chess_skip_file_checks:
             $ loaded_game = quicksaved_game[1]
-            m "Let's continue our unfinished game."
+            m "Давай доведём нашу партию до конца."
 
             if loaded_game:
                 python:
@@ -739,7 +740,7 @@ label game_chess:
                         quicksaved_filename,
                         mas_monika_twitter_handle
                     )
-
+                
                 else:
                     mas_utils.mas_log.error("Failed to access quickfile.")
                     quicksaved_file = None
@@ -765,7 +766,7 @@ label game_chess:
                                 quicksaved_filename,
                                 mas_monika_twitter_handle
                             )
-
+                        
                         else:
                             mas_utils.mas_log.error("Failed to access quickfile.")
                             quicksaved_file = None
@@ -780,9 +781,9 @@ label game_chess:
                         mas_loseAffection(modifier=0.5)
 
                     m 2wfw "[player]!"
-                    m 2wfx "You removed the save again."
+                    m 2wfx "Ты снова удалил сохранение."
                     pause 0.7
-                    m 2rfc "Let's just play chess at another time, then."
+                    m 2rfc "Давай сыграем в шахматы в другой раз."
                     return
 
             # do we have a backup
@@ -841,87 +842,90 @@ label game_chess:
 
         # otherwise we are in good hands
         else:
+
+
             $ loaded_game = quicksaved_game
 
             if failed_to_load_save:
-                # we successfully loaded the unfinished game and player did not
-                # cheat
-                m 1eua "We still have an unfinished game in progress."
 
-            label .load_check:
+
+                m 1eua "Мы ещё не закончили играть эту партию."
+
+            label game_chess.load_check:
                 pass
 
-            m 1efb "Get ready!"
+            m 1efb "Приготовься!"
 
     if loaded_game:
         python:
             is_player_white = mas_chess._get_player_color(loaded_game)
 
-            #Always read these values back so if we play again, the same game rules are maintained
-            #These also override the base settings as to play a continuation
+
+
             practice_mode = eval(loaded_game.headers.get("Practice", "False"))
             casual_rules = eval(loaded_game.headers.get("CasualRules", "False"))
+            do_really_bad_chess = loaded_game.headers["FEN"] != MASChessDisplayableBase.START_FEN
 
         jump mas_chess_start_chess
 
-    #FALL THROUGH
+
 
 label mas_chess_remenu:
     python:
         menu_contents = {
             "gamemode_select": {
                 "options": [
-                    ("Normal Chess", mas_chess.MODE_NORMAL, False, (chessmode == mas_chess.MODE_NORMAL)),
-                    ("Randomized Chess", mas_chess.MODE_BAD_CHESS, False, (chessmode == mas_chess.MODE_BAD_CHESS)),
-                    ("Chess 960", mas_chess.MODE_960, False, (chessmode == mas_chess.MODE_960))
+                    ("Обычные шахматы", mas_chess.MODE_NORMAL, False, (chessmode == mas_chess.MODE_NORMAL)),
+                    ("Случайные шахматы", mas_chess.MODE_BAD_CHESS, False, (chessmode == mas_chess.MODE_BAD_CHESS)),
+                    ("Шахматы-960", mas_chess.MODE_960, False, (chessmode == mas_chess.MODE_960))
                 ],
                 "final_items": [
-                    ("Ruleset", "ruleset_select", False, False, 20),
-                    ("Practice or Play", "mode_select", False, False, 0),
-                    ("Color", "color_select", False, False, 0),
-                    ("Let's play!", "confirm", False, False, 20),
-                    ("Nevermind.", -1, False, False, 0)
+                    ("Набор правил", "ruleset_select", False, False, 20),
+                    ("Тренироваться или играть", "mode_select", False, False, 0),
+                    ("Цвет", "color_select", False, False, 0),
+                    ("Давай играть!", "confirm", False, False, 20),
+                    ("Не важно.", -1, False, False, 0)
                 ]
             },
             "ruleset_select": {
                 "options": [
-                    ("Casual Rules", True, False, casual_rules),
-                    ("Traditional Rules", False, False, not casual_rules),
-                    ("What's the difference?", 0, False, False)
+                    ("Простые правила", True, False, casual_rules),
+                    ("Традиционные правила", False, False, not casual_rules),
+                    ("В чём разница?", 0, False, False)
                 ],
                 "final_items": [
-                    ("Gamemode", "gamemode_select", False, False, 20),
-                    ("Practice or Play", "mode_select", False, False, 0),
-                    ("Color", "color_select", False, False, 0),
-                    ("Let's play!", "confirm", False, False, 20),
-                    ("Nevermind.", -1, False, False, 0)
+                    ("Режим игры", "gamemode_select", False, False, 20),
+                    ("Тренироваться или играть", "mode_select", False, False, 0),
+                    ("Цвет", "color_select", False, False, 0),
+                    ("Давай играть!", "confirm", False, False, 20),
+                    ("Не важно.", -1, False, False, 0)
                 ]
             },
             "mode_select": {
                 "options": [
-                    ("Practice", True, False, practice_mode),
-                    ("Play", False, False, not practice_mode)
+                    ("Тренироваться", True, False, practice_mode),
+                    ("Играть", False, False, not practice_mode)
                 ],
                 "final_items": [
-                    ("Gamemode", "gamemode_select", False, False, 20),
-                    ("Ruleset", "ruleset_select", False, False, 0),
-                    ("Color", "color_select", False, False, 0),
-                    ("Let's play!", "confirm", False, False, 20),
-                    ("Nevermind.", -1, False, False, 0)
+                    ("Режим игры", "gamemode_select", False, False, 20),
+                    ("Набор правил", "ruleset_select", False, False, 0),
+                    ("Цвет", "color_select", False, False, 0),
+                    ("Давай играть!", "confirm", False, False, 20),
+                    ("Не важно.", -1, False, False, 0)
                 ]
             },
             "color_select": {
                 "options": [
-                    ("White", True, False, is_player_white),
-                    ("Black", False, False, is_player_white is False),
-                    ("Let's draw lots!", 0, False, is_player_white is 0) #Is check here specifically for states
+                    ("Белые", True, False, is_player_white),
+                    ("Чёрные", False, False, is_player_white is False),
+                    ("Давай бросим жребий!", 0, False, is_player_white is 0) 
                 ],
                 "final_items": [
-                    ("Gamemode", "gamemode_select", False, False, 20),
-                    ("Ruleset", "ruleset_select", False, False, 0),
-                    ("Practice or Play", "mode_select", False, False, 0),
-                    ("Let's play!", "confirm", False, False, 20),
-                    ("Nevermind.", -1, False, False, 0)
+                    ("Режим игры", "gamemode_select", False, False, 20),
+                    ("Набор правил", "ruleset_select", False, False, 0),
+                    ("Цвет", "mode_select", False, False, 0),
+                    ("Давай играть!", "confirm", False, False, 20),
+                    ("Не важно.", -1, False, False, 0)
                 ]
             }
         }
@@ -931,7 +935,7 @@ label mas_chess_remenu:
     $ menu_options = menu_contents[menu_category]["options"]
     $ final_items = menu_contents[menu_category]["final_items"]
 
-    m "How would you like to play?[('{fast}' if loopback else '')]" nointeract
+    m "Как бы ты хотел сыграть?[('{fast}' if loopback else '')]" nointeract
 
     #Now we show menu
     call screen mas_gen_scrollable_menu(menu_options, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, *final_items)
@@ -941,8 +945,8 @@ label mas_chess_remenu:
     #We're quitting out
     if _return == -1:
         show monika at t11
-        m 1ekc "...Alright, [player].{w=0.3} I was really looking forward to playing with you."
-        m 1eka "We'll play another time though, right?"
+        m 1ekc "...Хорошо, [player].{w=0.3} Жаль, я так хотела сыграть с тобой."
+        m 1eka "Но у нас ещё будет время, правда?"
         return
 
     #We're changing the main group of settings we wish to change
@@ -964,9 +968,8 @@ label mas_chess_remenu:
         elif menu_category == "ruleset_select":
             if _return is 0:
                 show monika at t11
-                m 1eua "If we play with casual rules, we just won't count stalemates as draws.{w=0.2} {nw}"
-                extend 3eub "Essentially, the player who is not trapped is declared the winner."
-
+                m 1eua "Игра с простыми правилами будет означать, то противник при тупиковой (патовой) ситуации, автоматически проигрывает.{w=0.2} {nw}"
+                extend 3eub "В этом случае, никакой ничьи не будет."
             else:
                 $ casual_rules = _return
 
@@ -1044,35 +1047,35 @@ label mas_chess_start_chess:
         #Monika wins by player surrender
         if is_surrender:
             if num_turns < 5:
-                m 1ekc "Don't give up so easily..."
-                m 1eka "I'm sure if you keep trying, you can beat me."
+                m 1ekc "Не сдавайся так легко..."
+                m 1eka "Я уверена, если ты постараешься, то сможешь меня победить."
                 m 1ekc "..."
-                m 1eka "I hope you don't get frustrated when you play with me."
-                m 3ekb "It really means a lot to me that you keep playing if you do~"
-                m 3hua "Let's play again soon, alright?"
-
+                m 1eka "Я надеюсь, ты не расстраиваешься."
+                m 3ekb "Для меня очень много значит, что ты продолжаешь со мной играть~"
+                m 3hua "Давай сыграем снова в ближайшее время, хорошо?"
             else:
-                m 1ekc "Giving up, [player]?"
-                m 1eub "Alright, but even if things aren't going too well, it's more fun to play to the end!"
-                m 3eka "In the end, I'm just happy to be spending time with you~"
-                m 1eua "Anyway..."
 
-        #Monika wins by checkmate
+                m 1ekc "Сдаёшься, [player]?"
+                m 1eub "Ладно, но будет лучше, если доиграем до конца."
+                m 3eka "В конце концов, я просто хочу подольше побыть с тобой~."
+                m 1eua "В любом случае..."
         else:
-            m 1sub "I won, yay!~"
 
-            #Some setup
+
+            m 1sub "Я выиграла, ура!"
+
+
             python:
                 total_losses = persistent._mas_chess_stats.get("practice_losses", 0) + persistent._mas_chess_stats.get("losses", 0)
                 total_wins = persistent._mas_chess_stats.get("practice_wins", 0) + persistent._mas_chess_stats.get("wins", 0)
 
-            #Responses based on win rate
+
             if float(total_wins)/total_losses < 0.3:
                 call mas_chess_dlg_game_monika_wins_often
 
             else:
                 call mas_chess_dlg_game_monika_wins_sometimes
-                m 1eua "Anyway..."
+                m 1eua "В любом случае..."
 
         if not is_surrender:
             #Monika plays a little easier if you didn't just surrender
@@ -1086,69 +1089,71 @@ label mas_chess_start_chess:
     #Stalemate
     elif game_result == "1/2-1/2":
         if new_pgn_game.headers.get("DrawRequested"):
-            m 1eua "Sure, we'll call this game a draw."
-            m 3wuo "That was a pretty long game!"
-            $ line_start = "Great job though"
-
+            m 1eua "Конечно, мы объявим эту игру ничьей."
+            m 3wuo "Это была довольно долгая игра!"
+            $ line_start = "Отличная работа"
         else:
-            m 1eka "Aw, looks like we have a stalemate."
-            $ line_start = "But on the bright side"
+
+            m 1eka "Ой, похоже, что у нас тупик."
+            $ line_start = "Но с другой стороны"
 
         if not persistent._mas_ever_won["chess"]:
-            m 3hub "[line_start], you're getting closer and closer to beating me, [player]~"
-
+            m 3hub "[line_start], ты постепенно близишься к тому, чтобы победить меня., [player]~"
         else:
-            m 1hua "Nice work on getting this far, [player]~"
+
+            m 1hua "Молодец, с таким исходом, ты хорошо сыграл, [player]~"
 
         $ persistent._mas_chess_stats["practice_draws" if practice_mode else "draws"] += 1
 
     #Player wins
     else:
+
+
         python:
             player_win_quips = [
-                _("I'm so proud of you, [player]!"),
-                _("I'm proud of you, [player]!~"),
-                _("Well played, [player]!"),
-                _("It makes me really happy to see you win~"),
-                _("I'm happy to see you win!"),
-                _("No matter the outcome, I'll always enjoy playing with you.")
+                _("Я так горжусь тобой., [player]!"),
+                _("Я горжусь тобой, [player]!~"),
+                _("Хорошо сыграно, [player]!"),
+                _("Я очень рада, что ты победил.~"),
+                _("Я счастлива, что ты победил!"),
+                _("Независимо от результата, мне всегда будет приятно играть с тобой.")
             ]
             persistent._mas_chess_stats["practice_wins" if practice_mode else "wins"] += 1
 
-            #Give player XP if this is their first win
+
             if not persistent._mas_ever_won['chess']:
                 persistent._mas_ever_won['chess'] = True
 
-        #Main dialogue
+
         if practice_mode:
-            m 3hub "Congratulations [player], you won!"
+            m 3hub "Поздравляю, ты меня победил!"
 
             $ undo_count = new_pgn_game.headers.get("UndoCount", 0)
             if not undo_count:
-                m 1wuo "You didn't undo a single move!{w=0.2} {nw}"
-                extend 3hub "That's amazing!"
+                m 1wuo "Ты за всю игру ни разу не отменил ход!{w=0.2} {nw}"
+                extend 3hub "Это удивительно!"
 
             elif undo_count == 1:
-                m 1hua "You only undid once. {w=0.2}{nw}"
-                extend 3hub "Great job!"
+                m 1hua "Ты за всю игру, только один раз отменил ход!. {w=0.2}{nw}"
+                extend 3hub "Отличная работа!"
 
             elif undo_count <= 5:
-                m 1hua "You only undid [undo_count] times too, great job."
+                m 1hua "Ты за всю игру, только [undo_count] раз отменил ход, хорошая работа."
 
             elif undo_count <= 10:
-                m 1eua "[undo_count] undos, not bad at all. If we keep practicing together, I'm sure we can lower that~"
-
+                m 1eua "[undo_count] раз. Именно столько было отменено ходов. Совсем не плохо. Если мы продолжим тренироваться вместе, я уверена, что мы сможем снизить это число~."
             else:
-                m 1eka "You undid [undo_count] moves though.{w=0.3} {nw}"
-                extend 3eua "But I'm sure if we keep practicing, we can get that number lower."
+
+                m 1eka "Ты [undo_count] раз отменил ход.{w=0.3} {nw}"
+                extend 3eua "Я уверена, что если мы продолжим тренироваться, то сможем снизить это число."
 
             m 3hua "[renpy.substitute(random.choice(player_win_quips))]"
-
         else:
-            m 3eub "Great job, you won!"
+
+            m 3eub "Отличная работа, ты победил!"
             m 3hub "[renpy.substitute(random.choice(player_win_quips))]"
 
-        m 1eua "Anyway..."
+        m 1eua "В любом случае..."
 
         $ mas_chess._increment_chess_difficulty()
 
@@ -1163,52 +1168,52 @@ label mas_chess_start_chess:
 
     #We only save a game if there's enough turns
     if num_turns > 4:
-        m 1eua "Would you like to save this game?{nw}"
+        m 1eua "Хочешь сохранить эту игру?{nw}"
         $ _history_list.pop()
         menu:
-            m "Would you like to save this game?{fast}"
+            m "Хочешь сохранить эту игру?{fast}"
+            "Да.":
 
-            "Yes.":
-                call mas_chess_savegame
+                call mas_chess_savegame from _call_mas_chess_savegame_2
+            "Нет.":
 
-            "No.":
                 pass
 
     # FALL THROUGH
 
 label mas_chess_play_again_ask:
-    m 1eua "Would you like to play again?{nw}"
+    m 1eua "Хочешь сыграть снова?{nw}"
     $ _history_list.pop()
     menu:
-        m "Would you like to play again?{fast}"
+        m "Хочешь сыграть снова?{fast}"
+        "Да.":
 
-        "Yes.":
             $ mas_assignModifyEVLPropValue("mas_chess", "shown_count", "+=", 1)
             if drew_lots:
                 call mas_chess_draw_lots
 
             jump mas_chess_start_chess
+        "Да, но с другими правилами.":
 
-        "Yes, but with different rules.":
             $ mas_assignModifyEVLPropValue("mas_chess", "shown_count", "+=", 1)
             jump mas_chess_remenu
+        "Нет.":
 
-        "No.":
-            m 1eua "Alright, let's play again soon."
+            m 1eua "Хорошо, поиграем в другой раз."
 
     return
 
 label mas_chess_draw_lots(begin=True):
     show monika at t11
     $ drew_lots = True
-    $ lets_begin = "{w=0.2} Let's begin." if begin else ""
+    $ lets_begin = "{w=0.2} Приступим." if begin else ""
 
     if random.randint(0, 1) == 0:
         $ is_player_white = chess.WHITE
-        m 2eub "Oh look, I drew black![lets_begin]"
+        m 2eub "О, значит, я играю чёрными![lets_begin]"
     else:
         $ is_player_white = chess.BLACK
-        m 2eub "Oh look, I drew white![lets_begin]"
+        m 2eub "Ох, значит, я играю белыми![lets_begin]"
     return
 
 label mas_chess_savegame(silent=False, allow_return=True):
@@ -1231,12 +1236,14 @@ label mas_chess_savegame(silent=False, allow_return=True):
 
     # otherwise ask for name
     else:
+
+
         python:
             # get file name
             save_name = ""
             while len(save_name) == 0:
                 save_name = mas_input(
-                    "Enter a name for this game:",
+                    "Введите название игры:",
                     allow=mas_chess.CHESS_SAVE_NAME,
                     length=15,
                     screen_kwargs={"use_return_button": allow_return}
@@ -1262,16 +1269,16 @@ label mas_chess_savegame(silent=False, allow_return=True):
 
         # check if this file exists already
         if is_file_exist:
-            m 1eka "We already have a game named '[save_name].'"
+            m 1eka "У нас уже есть игра с названием «[save_name]»."
 
-            m "Should I overwrite it?{nw}"
+            m "Мне перезаписать её?{nw}"
             $ _history_list.pop()
             menu:
-                m "Should I overwrite it?{fast}"
-                "Yes.":
+                m "Мне перезаписать её?{fast}"
+                "Да.":
                     pass
 
-                "No.":
+                "Нет.":
                     #NOTE: Since jumping back to the main label causes arg resets, we jump to a local label inside to prevent that
                     #TODO: Jump with args
                     jump .save_start
@@ -1291,35 +1298,36 @@ label mas_chess_savegame(silent=False, allow_return=True):
 
     if not silent:
         m 1dsc ".{w=0.5}.{w=0.5}.{nw}"
-        m 1hua "I've saved our game in '[display_file_path]'!"
+        m 1hua "Я сохранила нашу игру в '[display_file_path]'!"
 
         if not renpy.seen_label("mas_chess_savegame.pgn_explain"):
             label .pgn_explain:
                 pass
 
-            m 1esa "It's in a format called 'Portable Game Notation.'{w=0.2} {nw}"
-            extend 1eua "You can find PGN analyzers online to open it and see where you made your mistakes."
-            m 3eub "Whether you win, lose, surrender, or draw, there's always something you could've done better, so loading these games up can really help you improve!"
+            m 1esa "Это формат под названием «Portable Game Notation»{w=0.2} {nw}"
+            extend 1eua "Ты можешь найти в интернете программы, которые работают с форматом «PGN», чтобы открыть его и посмотреть, где ты мог допустить ошибку."
+            m 3eub "Выиграл ты, проиграл, сдался или сыграл вничью, всегда будет что-то, что ты можешь улучшить в своей игре, так что разбор своих партий поможет тебе стать лучше!"
 
             if game_result == mas_chess.IS_ONGOING:
-                m 1lksdlb "It's possible to edit this file and change the outcome of the game...{w=0.5} {nw}"
-                extend 1tsu "but I'm sure you wouldn't do that."
+                m 1lksdlb "Можно отредактировать этот файл и изменить исход игры...{w=0.5} {nw}"
+                extend 1tsu "но я уверена, что ты бы этого не сделал."
 
-                m 1tku "Right, [player]?{nw}"
+                m 1tku "Верно, [player]?{nw}"
                 $ _history_list.pop()
                 menu:
-                    m "Right, [player]?{fast}"
+                    m "Верно, [player]?{fast}"
+                    "Разумеется, нет.":
 
-                    "Of course not.":
-                        m 1hua "Yay~"
+                        m 1hua "Ура~"
 
         if game_result == mas_chess.IS_ONGOING:
-            m 1eub "Let's continue this game soon!"
+            m 1eub "Давай доиграем партию потом."
     return
 
+
 label mas_chess_locked_no_play:
-    m 1euc "No thanks, [player]."
-    m 1rsc "I don't really feel like playing chess right now."
+    m 1euc "Нет, спасибо, [player]."
+    m 1rsc "Мне сейчас не очень хочется играть в шахматы."
     return
 
 label mas_chess_cannot_work_embarrassing:
@@ -1327,28 +1335,28 @@ label mas_chess_cannot_work_embarrassing:
     $ quick_menu = True
     show monika at t11
     m 1rksdla "..."
-    m 3hksdlb "Well that's embarrassing, it seems I can't actually get chess to work on your system..."
-    m 1ekc "Sorry about that, [player]."
-    m 1eka "Maybe we can do something else instead?"
+    m 3hksdlb "Что ж, это смущает, похоже, я действительно не могу заставить шахматы работать в вашей системе..."
+    m 1ekc "Прости, [player]."
+    m 1eka "Может, займёмся чем-нибудь другим?"
     return
 
 label mas_chess_dlg_game_monika_wins_often:
-    m 1eka "Sorry you didn't win this time, [player]..."
-    m 1ekc "I hope you'll at least keep trying though."
-    m 1eua "Let's play again soon, okay?"
+    m 1eka "Жаль, что на этот раз ты не победил, [player]..."
+    m 1ekc "Я надеюсь, что ты, по крайней мере, продолжишь пытаться."
+    m 1eua "Давай сыграем в другой раз?"
 
     if not persistent._mas_ever_won["chess"]:
-        m 1hua "You'll beat me someday~"
+        m 1hua "Когда-нибудь ты победишь меня~"
     return
 
 label mas_chess_dlg_game_monika_wins_sometimes:
-    m 1hub "That was really fun, [player]!"
-    m 3eka "No matter the outcome, I always enjoy playing chess with you~"
-    m 3hua "I bet if you keep practicing, you'll be even better than me someday!"
+    m 1hub "Это было очень весело., [player]!"
+    m 3eka "Независимо от результата, мне всегда нравится играть с тобой в шахматы~."
+    m 3hua "Уверена, если ты продолжишь тренироваться, то однажды станешь ещё лучше меня!"
 
     #If the difficulty is above base level, we'll mention lowering it
     if persistent._mas_chess_difficulty != (0, 1):
-        m 3eua "Until then though, I'll try and go a little easier on you."
+        m 3eua "Но до тех пор я постараюсь не играть так жёстко."
     return
 
 # label for new context for confirm screen
@@ -1377,7 +1385,7 @@ label mas_chess_save_migration:
                     filename,
                     mas_monika_twitter_handle
                 )
-
+                
                 if in_prog_game:
                     pgn_games.append((
                         in_prog_game[0],
@@ -1395,16 +1403,16 @@ label mas_chess_save_migration:
         # only show this if we even have multiple pgn games
         if game_count > 1:
             if renpy.seen_label("mas_chess_save_multi_dlg"):
-                $ pick_text = _("You still need to pick a game to keep.")
-
+                $ pick_text = _("Вам всё ещё нужно выбрать игру, чтобы продолжить.")
             else:
+
                 label mas_chess_save_multi_dlg:
-                    m 1eua "So I've been thinking, [player]..."
-                    m 1euc "Most people who leave in the middle of a chess game don't come back to start a new one."
-                    m 3eud "...So it makes no sense for me to keep track of more than one unfinished game between us."
-                    m 1rka "And since we have [game_count] games in progress..."
-                    m 3euc "I have to ask you to pick only one to keep.{w=0.2} Sorry, [player]."
-                    $ pick_text = _("Pick a game you'd like to keep.")
+                    m 1eua "Я тут подумала, [player]..."
+                    m 1euc "Большинство людей, которые уходят в середине шахматной партии, не возвращаются, чтобы начать новую."
+                    m 3eud "Поэтому для меня нет никакого смысла отслеживать более одной незаконченной игры между нами..."
+                    m 1rka "И пока у нас есть [game_count], игра будет идти..."
+                    m 3euc "Я должна попросить тебя выбрать только одну партию, чтобы сохранить её.{w=0.2} Прости, [player]."
+                    $ pick_text = _("Выберите игру, которую хотели бы сохранить.")
 
             show monika 1euc at t21
             $ renpy.say(m, pick_text, interact=False)
@@ -1413,15 +1421,15 @@ label mas_chess_save_migration:
 
             show monika at t11
             if _return == mas_chess.CHESS_MENU_WAIT_VALUE:
-                # user backs out
-                m 2dsc "I see."
-                m 2eua "In that case, please take your time."
-                m 1eua "We'll play chess again once you've made your decision."
-                return False
 
+                m 2dsc "Понятно."
+                m 2eua "В таком случае, пожалуйста, не торопись."
+                m 1eua "Мы снова сыграем в шахматы, как только ты примешь решение."
+                return False
             else:
-                # user selected a game
-                m 1eua "Alright."
+
+
+                m 1eua "Хорошо."
                 python:
                     sel_game = actual_pgn_games.pop(_return)
                     for pgn_game in actual_pgn_games:
@@ -1448,29 +1456,29 @@ label mas_chess_dlg_quicksave_lost:
         persistent._mas_chess_dlg_actions[mas_chess.QS_LOST] += 1
         qs_gone_count = persistent._mas_chess_dlg_actions[mas_chess.QS_LOST]
 
-    m 2lksdlb "Uh, [player]...{w=0.5} I think I messed up in saving our last game, and now I can't open it anymore."
+    m 2lksdlb "Ух, [player]...{w=0.5} Кажется, я напортачила при сохранении нашей последней игры, и теперь не смогу открыть её."
 
     if qs_gone_count == 2:
-        m 1lksdld "I'm really, really sorry, [player]..."
+        m 1lksdld "Мне очень, очень жаль, [player]..."
         show monika 1ekc
         pause 1.0
-        m 1eka "But don't worry, I'll make it up to you...{w=0.3}{nw}"
-        extend 3hua "by starting a new game!"
-        m 3hub "Ahaha~"
+        m 1eka "Но не волнуйся, я всё исправлю....{w=0.3}{nw}"
+        extend 3hua "Начав новую игру!"
+        m 3hub "Ахахаха~"
 
     elif qs_gone_count == 3:
-        m 1lksdlc "I'm so clumsy, [player]...{w=0.3} I'm sorry."
-        m 3eksdla "Let's start a new game instead."
+        m 1lksdlc "Я такая неуклюжая, [player]...{w=0.3} Прости."
+        m 3eksdla "Давай начнём новую игру."
 
     elif qs_gone_count % 5 == 0:
-        m 2esc "This has happened [qs_gone_count] times now..."
-        m 2tsc "I wonder if this is a side effect of {i}someone{/i} trying to edit the saves.{w=1}.{w=1}."
-        m 7rsc "Anyway..."
-        m 1esc "Let's start a new game."
-
+        m 2esc "Это случилось уже [qs_gone_count] раз..."
+        m 2tsc "Интересно, является ли это побочным эффектом того, что {i}кто-то{/i} пытается внести изменения в файл сохранения.{w=1}.{w=1}."
+        m 7rsc "В любом случае..."
+        m 1esc "Давай начнём новую игру."
     else:
-        m 1lksdlc "I'm sorry..."
-        m 3eka "Let's start a new game instead."
+
+        m 1lksdlc "Прости..."
+        m 3eka "Давай начнём новую игру."
 
     return None
 
@@ -1478,44 +1486,44 @@ label mas_chess_dlg_quicksave_lost:
 ### quickfile lost
 # main label for quickfile lost flow
 label mas_chess_dlg_quickfile_lost:
-    m 2lksdla "Well this is embarrassing..."
-    m 2ekc "I could have sworn that we had an unfinished game, but I can't find the save file."
+    m 2lksdla "Что ж, это неловко..."
+    m 2ekc "Могу поклясться, что у нас была незаконченная партия, но я не могу найти файл сохранения."
 
-    m 2tkc "Did you mess with the saves, [player]?{nw}"
+    m 2tkc "Ты что-то напутал с сохранениями?, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did you mess with the saves, [player]?{fast}"
+        m "Ты что-то напутал с сохранениями, [player]?{fast}"
+        "Я удалил сохранение.":
 
-        "I deleted the save.":
             jump mas_chess_dlg_quickfile_lost_deleted
+        "Это вышло случайно!":
 
-        "It was an accident!":
             jump mas_chess_dlg_quickfile_lost_accident
+        "Может быть...":
 
-        "Maybe...":
             jump mas_chess_dlg_quickfile_lost_maybe
+        "Разумеется, нет!":
 
-        "Of course not!":
             jump mas_chess_dlg_quickfile_lost_ofcoursenot
 
 
 #Player deleted the saves
 label mas_chess_dlg_quickfile_lost_deleted:
-    m 1eka "Thanks for being honest with me, [player]."
+    m 1eka "Спасибо за честность, [player]."
 
-    m 3ekd "Did you not want to continue that game?{nw}"
+    m 3ekd "Ты не хотел продолжать ту партию?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did you not want to continue that game?{fast}"
+        m "Ты не хотел продолжать ту партию?{fast}"
+        "Да.":
 
-        "Yeah.":
-            m 1eka "I understand, [player]."
-            m 1hua "Let's start a new game~"
+            m 1eka "Поняла, [player]."
+            m 1hua "Давай начнём новую игру~"
+        "Нет.":
 
-        "No.":
-            m 1etc "Oh?"
-            m 1rsc "I guess you just deleted it by mistake then."
-            m 1eua "Let's just start a new game."
+            m 1etc "А?"
+            m 1rsc "Думаю, ты нечаянно удалил его."
+            m 1eua "Начнём новую игру."
     return
 
 #Of course not flow
@@ -1526,19 +1534,19 @@ label mas_chess_dlg_quickfile_lost_ofcoursenot:
 
     if qf_gone_count in [3,4]:
         m 2esc "..."
-        m "[player],{w=0.2} did you..."
-        m 2dsc "Nevermind."
-        m 1esc "Let's play a new game."
+        m "[player],{w=0.2} ты..."
+        m 2dsc "Забудь."
+        m 1esc "Начнём новую игру."
 
     elif qf_gone_count == 5:
         $ mas_loseAffection()
         m 2esc "..."
-        m "[player],{w=0.2} this is happening way too much."
-        m 2dsc "I really don't believe you this time."
+        m "[player],{w=0.2} это происходит слишком часто."
+        m 2dsc "Я не верю тебе. Не в этот раз."
         pause 2.0
-        m 2esc "I hope you're not messing with me."
+        m 2esc "Надеюсь, ты не издеваешься надо мной."
         m "..."
-        m 1esc "Whatever.{w=0.5} Let's just play a new game."
+        m 1esc "Итак.{w=0.5} Начнём новую игру."
 
     elif qf_gone_count >= 6:
         python:
@@ -1551,17 +1559,17 @@ label mas_chess_dlg_quickfile_lost_ofcoursenot:
             persistent._mas_chess_timed_disable = True
 
         m 2dfc "..."
-        m 2efc "[player],{w=0.3} I don't believe you."
-        m 2efd "If you're just going to throw away our chess games like that..."
-        m 6wfw "Then I don't want to play chess with you anymore!"
+        m 2efc "[player],{w=0.3} Я не верю тебе."
+        m 2efd "Если ты продолжишь удалять наши шахматные партии..."
+        m 6wfw "То я больше не буду играть с тобой в шахматы!"
         return True
-
     else:
-        m 1lksdlb "Ah, yeah. You wouldn't do that to me."
-        m "I must have misplaced the save file."
-        m 1lksdlc "Sorry, [player]."
-        m 1eka "I'll make it up to you...{w=0.3}{nw}"
-        extend 1eub "by starting a new game!"
+
+        m 1lksdlb "A, да. Ты бы так со мной не поступил."
+        m "Должно быть, я потеряла файл сохранения."
+        m 1lksdlc "Прости, [player]."
+        m 1eka "Я заглажу свою вину перед тобой...{w=0.3}{nw}"
+        extend 1eub "Начнём новую партию!"
 
     return None
 
@@ -1573,23 +1581,24 @@ label mas_chess_dlg_quickfile_lost_maybe:
         qf_gone_count = persistent._mas_chess_dlg_actions[mas_chess.QF_LOST_MAYBE]
 
     if qf_gone_count == 1:
-        m 2ekd "[player]!{w=0.2} I should have known you were just messing with me!"
+        m 2ekd "[player]!{w=0.2} Я должна была догадаться, что ты просто издеваешься надо мной!"
         jump mas_chess_quickfile_lost_filechecker
 
     if qf_gone_count == 2:
-        m 2ekd "[player]!{w=0.2} Stop messing with me!"
+        m 2ekd "[player]!{w=0.2} Прекрати издеваться надо мной!"
         jump mas_chess_quickfile_lost_filechecker
 
     else:
+
         $ persistent._mas_chess_skip_file_checks = True
 
-        m 2ekd "[player]! That's--"
+        m 2ekd "[player]! Ни..."
         m 2dkc "..."
-        m 1esa "...not a problem at all."
-        m "I knew you were going to do this again..."
-        m 1hub "...so I kept a backup of our save!"
-        m 1kua "You can't trick me anymore, [player]."
-        m "Now let's continue our game."
+        m 1esa "...каких проблем."
+        m "Я знала, что ты сделаешь это снова..."
+        m 1hub "Поэтому сохранила резервную копию нашего сохранения!"
+        m 1kua "Ты меня не проведёшь, [player]."
+        m "Продолжим нашу игру."
         return store.mas_chess.CHESS_GAME_BACKUP
 
 
@@ -1600,7 +1609,7 @@ label mas_chess_quickfile_lost_filechecker:
     if os.access(game_file, os.F_OK):
         jump mas_chess_dlg_quickfile_lost_maybe_save_found
 
-    m 1eka "Can you put the save back so we can play?"
+    m 1eka "Не мог бы ты вернуть сохранение, чтобы мы могли играть?"
 
     show monika 1eua
 
@@ -1628,26 +1637,26 @@ label mas_chess_quickfile_lost_maybe_filechecker_loop:
     show screen mas_background_timed_jump(4, "mas_chess_quickfile_lost_maybe_filechecker_loop")
     $ seconds += 4
     menu:
-        "I deleted the save...":
+        "Я удалил сохранение...":
             hide screen mas_background_timed_jump
             jump mas_chess_dlg_quickfile_lost_maybe_filechecker_no_file
 
 label mas_chess_dlg_quickfile_lost_maybe_filechecker_file_found:
-    m 1hua "Yay!{w=0.2} Thanks for putting it back, [player]."
-    m "Now we can continue our game."
+    m 1hua "Ура!{w=0.2} Спасибо, что вернул сохранение, [player]."
+    m "Теперь продолжим игру."
     show monika 1eua
     return mas_chess.CHESS_GAME_CONT
 
 label mas_chess_dlg_quickfile_lost_maybe_filechecker_no_file:
     m 1ekd "[player]..."
-    m 1eka "That's okay. Let's just play a new game."
+    m 1eka "Всё в порядке. Начнём новую игру."
     return None
 
 # generic maybe monika, found file
 label mas_chess_dlg_quickfile_lost_maybe_save_found:
-    m 2eua "Oh!"
-    m 1hua "There's the save.{w=0.2} Thanks for putting it back, [player]."
-    m 1eua "Now we can continue our game."
+    m 2eua "Ох!"
+    m 1hua "А вот и сохранение.{w=0.2} Спасибо, что вернул его, [player]."
+    m 1eua "Теперь мы можем продолжить игру."
     return store.mas_chess.CHESS_GAME_CONT
 
 ## Accident monika flow
@@ -1657,21 +1666,20 @@ label mas_chess_dlg_quickfile_lost_accident:
         qf_gone_count = persistent._mas_chess_dlg_actions[mas_chess.QF_LOST_ACDNT]
 
     if qf_gone_count == 2:
-        m 1eka "Again? Don't be so clumsy, [player]."
-        m 1hua "But that's okay."
-        m 1eua "We'll just play a new game instead."
+        m 1eka "Снова? Не будь таким неуклюжим, [player]."
+        m 1hua "Но всё в порядке."
+        m 1eua "Мы просто начнём новую игру."
 
     elif qf_gone_count >= 3:
         $ persistent._mas_chess_skip_file_checks = True
-        m 1eka "I had a feeling this would happen again."
-        m 3tub "So I kept a backup of our save!"
-        m 1hua "Now we can continue our game~"
+        m 1eka "У меня было предчувствие, что это повторится снова."
+        m 3tub "Поэтому я создала резервную копию сохранения!"
+        m 1hua "Теперь продолжим игру~"
         return store.mas_chess.CHESS_GAME_BACKUP
-
     else:
         m 1ekc "[player]...{w=0.3} {nw}"
-        extend 1eka "That's okay.{w=0.3} Accidents happen."
-        m 1eua "Let's play a new game instead."
+        extend 1eka "Всё в порядке.{w=0.3} Такое случается."
+        m 1eua "Начнём новую игру."
     return None
 
 ### quickfile edited
@@ -1679,15 +1687,15 @@ label mas_chess_dlg_quickfile_lost_accident:
 label mas_chess_dlg_quickfile_edited:
     m 2lksdlc "[player]..."
 
-    m 2ekc "Did you edit the save file?{nw}"
+    m 2ekc "Ты отредактировал файл сохранения?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did you edit the save file?{fast}"
+        m "Ты отредактировал файл сохранения?{fast}"
+        "Да.":
 
-        "Yes.":
             jump mas_chess_dlg_quickfile_edited_yes
+        "Нет.":
 
-        "No.":
             jump mas_chess_dlg_quickfile_edited_no
 
 
@@ -1698,44 +1706,43 @@ label mas_chess_dlg_quickfile_edited_yes:
         qf_edit_count = persistent._mas_chess_dlg_actions[mas_chess.QF_EDIT_YES]
 
     if qf_edit_count == 1:
-        m 1dsc "I'm disappointed in you."
-        m 1eka "But I'm glad that you were honest with me."
+        m 1dsc "Я разочарована."
+        m 1eka "Но рада, что ты честен со мной."
 
         # we want a timed menu here. Let's give the player 5 seconds to say sorry
         show screen mas_background_timed_jump(5, "mas_chess_dlg_quickfile_edited_yes.game_ruined")
         menu:
-            "I'm sorry.":
+            "Прости меня.":
                 hide screen mas_background_timed_jump
                 # light affection boost for being honest
                 $ mas_gainAffection(modifier=0.5)
-                m 1hua "Apology accepted!"
-                m 1eua "Luckily, I still remember a little bit of the last game, so we can continue it from there."
+                m 1hua "Извинения приняты!"
+                m 1eua "К счастью, я всё ещё немного помню последнюю игру, так что мы можем продолжить её."
                 return store.mas_chess.CHESS_GAME_BACKUP
-
             "...":
                 label .game_ruined:
                     pass
 
                 hide screen mas_background_timed_jump
-                m 1lfc "Since that game's been ruined, let's just play a new game."
+                m 1lfc "Поскольку эта игра была испорчена, давай начнём новую партию."
 
     elif qf_edit_count == 2:
         python:
             persistent._mas_chess_timed_disable = datetime.datetime.now()
             mas_loseAffection(modifier=0.5)
 
-        m 2dfc "I am incredibly disappointed in you..."
-        m 2rfc "Let's play chess some other time.{w=0.2} I don't feel like playing right now."
+        m 2dfc "Я невероятно разочарована в тебе..."
+        m 2rfc "Сыграем в другой раз.{w=0.2} Я уже не в настроении играть."
         return True
 
     else:
         $ mas_loseAffection()
         $ persistent._mas_chess_skip_file_checks = True
 
-        m 2dsc "I'm not surprised..."
-        m 2esc "But I am prepared."
-        m 7esc "I kept a backup of our game just in case you did this again."
-        m 1esa "Now let's finish this game."
+        m 2dsc "Я не удивлена..."
+        m 2esc "Но была готова к этому."
+        m 7esc "Я сохранила резервную копию нашей игры на случай, если ты сделаешь это снова."
+        m 1esa "А теперь завершим нашу партию."
         return store.mas_chess.CHESS_GAME_BACKUP
 
     return None
@@ -1750,33 +1757,33 @@ label mas_chess_dlg_quickfile_edited_no:
     if qf_edit_count == 1:
         $ mas_loseAffection()
 
-        m 1dsc "Hmm..."
-        m 1etc "The save file looks different from how I last remembered it,{w=0.2} {nw}"
-        extend 1rksdlc "{nw}but maybe that's just my memory failing me..."
-        m 1eua "Let's continue this game."
+        m 1dsc "Хм..."
+        m 1etc "Сохраненный файл выглядит не так, как я его запомнил в последний раз,{w=0.2} {nw}"
+        extend 1rksdlc "{nw}но, может, я что-то забыла..."
+        m 1eua "Продолжим игру."
         return store.mas_chess.CHESS_GAME_FILE
 
     elif qf_edit_count == 2:
         $ mas_loseAffection(modifier=2)
 
-        m 1ekc "I see."
+        m 1ekc "Понятно."
         m "..."
-        m "Let's just continue this game."
+        m "Продолжим."
         return store.mas_chess.CHESS_GAME_FILE
 
     else:
         $ mas_loseAffection(modifier=3)
         m 2dfc "[player]..."
-        m 2dftdc "I kept a backup of our game.{w=0.5} I know you edited the save file."
-        m 6dktuc "I just-"
+        m 2dftdc "Я сохранила резервную копию нашей игры.{w=0.5} Я знаю, что файл сохранения был изменён."
+        m 6dktuc "Я просто..."
         $ _history_list.pop()
-        m 6ektud "I just{fast} can't believe you would cheat and {i}lie{/i} to me..."
+        m 6ektud "Я просто{fast} не могу поверить, что ты жульничаешь и {i}лжёшь{/i} мне..."
         m 6dktuc "..."
 
         #NOTE: This is the ultimate choice, it dictates whether we delete everything or not
         show screen mas_background_timed_jump(3, "mas_chess_dlg_quickfile_edited_no.menu_silent")
         menu:
-            "I'm sorry.":
+            "Прости меня.":
                 hide screen mas_background_timed_jump
                 # light affection boost for apologizing
                 $ mas_gainAffection(modifier=0.5)
@@ -1788,7 +1795,7 @@ label mas_chess_dlg_quickfile_edited_no:
                 pause 1.0
                 show monika 2ektsc
                 pause 1.0
-                m 6ektpc "I forgive you, [player], but please don't do this to me again."
+                m 6ektpc "Я прощаю тебя, [player], но, пожалуйста, не делай так больше."
                 m 2dktdc "..."
                 return store.mas_chess.CHESS_GAME_BACKUP
 
@@ -1804,8 +1811,8 @@ label mas_chess_dlg_quickfile_edited_no_quicksave:
         mas_loseAffection()
 
     m 2dfc "[player]..."
-    m 2tfc "I see you've edited my backup saves."
-    m 2lfd "If you want to be like that right now, then we'll play chess some other time."
+    m 2tfc "Вижу, ты и резервные копии отредактировал."
+    m 2lfd "Если тебе необходимо вести себя так, то лучше сыграем в шахматы в другой раз."
     return True
 
 # 3rd time no edit, no sorry
@@ -1815,8 +1822,8 @@ label mas_chess_dlg_pre_go_ham:
         persistent._mas_chess_mangle_all = True
         persistent.autoload = "mas_chess_go_ham_and_delete_everything"
 
-    m 6ektsc "I can't trust you anymore."
-    m 6dktsd "Goodbye, [player].{nw}"
+    m 6ektsc "Я не доверяю тебе больше."
+    m 6dktsd "Прощай, [player].{nw}"
 
     # do some permanent stuff
 label mas_chess_go_ham_and_delete_everything:
@@ -1863,17 +1870,18 @@ screen mas_chess_confirm(prompt):
             yalign .5
             spacing 30
 
-            label prompt:
-                style "confirm_prompt"
-                text_color mas_globals.button_text_idle_color
-                xalign 0.5
+        label prompt:
+            style "confirm_prompt"
+            text_color mas_globals.button_text_idle_color
+            xalign 0.5
 
-            hbox:
-                xalign 0.5
-                spacing 100
+        hbox:
+            xalign 0.5
+            spacing 100
 
-                textbutton _("Yes") action Return(True)
-                textbutton _("No") action Return(False)
+            textbutton _("Да") action Return(True)
+            textbutton _("Нет") action Return(False)
+
 
 # promotion screen for chess
 screen mas_chess_promote(q, r, n, b):
@@ -1892,19 +1900,19 @@ screen mas_chess_promote(q, r, n, b):
             yalign .5
             spacing 30
 
-            label _("Select piece to promote to"): # only use : if the choices are to the right of the label
-                style "confirm_prompt"
-                text_color mas_globals.button_text_idle_color
-                xalign 0.5
+        label _("Выберите фрагмент для продвижения"):
+            style "confirm_prompt"
+            text_color mas_globals.button_text_idle_color
+            xalign 0.5
 
-            hbox:
-                xalign 0.5
-                spacing 10
+        hbox:
+            xalign 0.5
+            spacing 10
 
-                imagebutton idle q action Return('q')
-                imagebutton idle r action Return('r')
-                imagebutton idle n action Return('n')
-                imagebutton idle b action Return('b')
+            imagebutton idle q action Return('q')
+            imagebutton idle r action Return('r')
+            imagebutton idle n action Return('n')
+            imagebutton idle b action Return('b')
 
 label mas_chess_promote_context(is_player_white):
     $ _return = renpy.call_screen(
@@ -1934,11 +1942,11 @@ init python:
     if mas_games.is_platform_good_for_chess():
         try:
             file_path = os.path.normcase(config.basedir + mas_chess.CHESS_SAVE_PATH)
-
+            
             if not os.access(file_path, os.F_OK):
                 os.mkdir(file_path)
             mas_chess.CHESS_SAVE_PATH = file_path
-
+        
         except:
             mas_utils.mas_log.error("Chess game folder could not be created '{0}'".format(file_path))
 
@@ -1955,13 +1963,13 @@ init python:
             pygame.MOUSEBUTTONUP,
             pygame.MOUSEBUTTONDOWN
         )
-
+        
         #Put the static vars up here
         MONIKA_WAITTIME = 50
         # MONIKA_DEPTH = 1
         MONIKA_OPTIMISM = 33
         # MONIKA_THREADS = 1
-
+        
         START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         BOARD_IMAGE = Image("mod_assets/games/chess/chess_board.png")
         PIECE_HIGHLIGHT_RED_IMAGE = Image("mod_assets/games/chess/piece_highlight_red.png")
@@ -1970,7 +1978,7 @@ init python:
         PIECE_HIGHLIGHT_MAGENTA_IMAGE = Image("mod_assets/games/chess/piece_highlight_magenta.png")
         MOVE_INDICATOR_PLAYER = Image("mod_assets/games/chess/move_indicator_player.png")
         MOVE_INDICATOR_MONIKA = Image("mod_assets/games/chess/move_indicator_monika.png")
-
+        
         #The sizes of the images.
         BOARD_BORDER_WIDTH = 15
         BOARD_BORDER_HEIGHT = 15
@@ -1978,52 +1986,52 @@ init python:
         PIECE_HEIGHT = 57
         BOARD_WIDTH = BOARD_BORDER_WIDTH * 2 + PIECE_WIDTH * 8
         BOARD_HEIGHT = BOARD_BORDER_HEIGHT * 2 + PIECE_HEIGHT * 8
-
+        
         INDICATOR_HEIGHT = 96
         BUTTON_WIDTH = 120
         BUTTON_HEIGHT = 35
         BUTTON_INDICATOR_X_SPACING = 10
         BUTTON_Y_SPACING = 10
-
+        
         #Vertical and horizontal offsets to modify the position of the entire board and game
         #NOTE: These are from the left/bottom of the screen respectively
         DISP_X_OFFSET = 200
         DISP_Y_OFFSET = 200
-
+        
         ##Calculate positions
         #X and Y positions of the TOP LEFT corner of the board
         BOARD_X_POS = int(1280 - BOARD_WIDTH - DISP_X_OFFSET)
         BOARD_Y_POS = int(720 - BOARD_HEIGHT - DISP_Y_OFFSET)
-
+        
         #Base piece positions
         BASE_PIECE_Y = BOARD_Y_POS + BOARD_BORDER_HEIGHT
         BASE_PIECE_X = BOARD_X_POS + BOARD_BORDER_WIDTH
-
+        
         #X position of buttons/indicator
         BUTTON_INDICATOR_X = int(BOARD_X_POS + BOARD_WIDTH + BUTTON_INDICATOR_X_SPACING)
-
+        
         #Indicator Y position
         INDICATOR_Y = int(BOARD_Y_POS + ((BOARD_HEIGHT - INDICATOR_HEIGHT)/ 2))
-
+        
         #Absolute indicator position
         INDICATOR_POS = (BUTTON_INDICATOR_X, INDICATOR_Y)
-
+        
         #Button Positions
         DRAWN_BUTTON_Y_TOP = BOARD_Y_POS
         DRAWN_BUTTON_Y_MID = DRAWN_BUTTON_Y_TOP + BUTTON_HEIGHT + BUTTON_Y_SPACING
         DRAWN_BUTTON_Y_MID_LOW = DRAWN_BUTTON_Y_MID + BUTTON_HEIGHT + BUTTON_Y_SPACING
         DRAWN_BUTTON_Y_BOT = BOARD_Y_POS + BOARD_HEIGHT - BUTTON_HEIGHT
-
+        
         #Win states
         STATE_BLACK_WIN = "0-1"
         STATE_WHITE_WIN = "1-0"
-
+        
         #Reflect over x, reflect over y tuples
         COORD_REFLECT_MAP = {
-            True: (False, True), #White reflects over y
-            False: (True, False) #Black reflects over x
+            True: (False, True), 
+            False: (True, False) 
         }
-
+        
         #Button handling bits
         def __init__(
             self,
@@ -2065,124 +2073,124 @@ init python:
                 self.check_buttons
             """
             renpy.Displayable.__init__(self)
-
+            
             #Some core vars
             self.num_turns = 0
             self.move_stack = list()
             self.casual_rules = casual_rules
-
+            
             #Are we sensitive to the user input?
             self.sensitive = True
-
+            
             #TODO: Make these quips category ordered so we can have specialized ones for different scenarios
             self.player_move_prompts = player_move_prompts
             self.monika_move_quips = monika_move_quips
-
+            
             #Check if these exist, if not we add them in and default them to empty lists
             if "_visible_buttons" not in self.__dict__:
                 self._visible_buttons = list()
-
+            
             if "_visible_buttons_winner" not in self.__dict__:
                 self._visible_buttons_winner = list()
-
+            
             #Now handle setup for a potential engine
             self.additional_setup()
-
+            
             # Board for integration with python-chess.
             self.board = None
-
+            
             self.undo_count = 0
             self.move_history = list()
-
+            
             #If we're basing off an existing pgn, let's load the relevant data
             if pgn_game:
                 #Casual rules
                 self.casual_rules = eval(pgn_game.headers.get("CasualRules", "False"))
-
+                
                 #Correct the starting FEN
                 self.starting_fen = pgn_game.headers.get("FEN", "None")
-
+                
                 #Load this game into the board, push turns
                 self.board = MASBoard.from_board(pgn_game.board(), self.casual_rules)
-
+                
                 #Now push all the moves
                 for move in pgn_game.main_line():
                     self.board.push(move)
-
+                
                 #Whose turn?
                 self.current_turn = self.board.turn
-
+                
                 #Colors?
                 self.is_player_white = mas_chess._get_player_color(pgn_game)
-
+                
                 #Last move
                 last_move = self.board.peek().uci()
                 self.last_move_src, self.last_move_dst = MASChessDisplayableBase.uci_to_coords(last_move)
-
+                
                 #Practice mode
                 self.practice_mode = eval(pgn_game.headers.get("Practice", "False"))
-
+                
                 #Check if we lost in practice
                 self.practice_lost = eval(pgn_game.headers.get("PracticeLost", "False"))
-
+                
                 #Undo count
                 self.undo_count = int(pgn_game.headers.get("UndoCount", 0))
-
+                
                 #Move history
                 self.move_history = eval(pgn_game.headers.get("MoveHist", "[]"))
-
+                
                 #And finally, the fullmove number
                 self.num_turns = self.board.fullmove_number
-
+            
             else:
                 #Start off with traditional board, or initialize with the starting fen if using a custom scenario
                 self.board = MASBoard(fen=starting_fen, casual_rules=casual_rules)
-
+                
                 #Stuff we need to save to the board
                 self.today_date = datetime.date.today().strftime("%Y.%m.%d")
-
+                
                 #New board, so white goes first
                 self.current_turn = chess.WHITE
-
+                
                 #However, if we have a starting FEN, then we need to check who's move it is
                 if starting_fen is not None:
                     ind_of_space = starting_fen.find(' ')
-
+                    
                     #Verify validity of this and only set if we can. Otherwise we'll assume the stock order (white's turn)
                     if ind_of_space > 0:
                         self.current_turn = starting_fen[ind_of_space + 1 : ind_of_space + 2] == 'w'
-
+                
                 #Set up player color
                 self.is_player_white = is_player_white
-
+                
                 #Set up last move
                 self.last_move_src = None
                 self.last_move_dst = None
-
+            
             self.selected_piece = None
             self.possible_moves = set([])
             self.is_game_over = False
-
+            
             #If this's true, we interrupt the game loop and hide the displayable
             self.quit_game = False
-
+            
             #Set up a pgn (could be None, in which case we are playing a fresh game)
             self.pgn_game = pgn_game
-
+            
             #Requested highlights to draw, contains board-coord tuples of squares to highlight
             self.requested_highlights = set()
-
+            
             #If it's Monika's turn, send her the board positions so that she can start analyzing.
             if not self.is_player_turn():
                 self.start_monika_analysis()
-
+            
             #Set buttons
             self.set_button_states()
-
+            
             #Now run a conversion to turn all `chess.Piece`s into `MASPiece`s
             self.piece_map = dict()
             self.update_pieces()
-
+        
         #START: NON-IMPLEMENTED FUNCTIONS
         def additional_setup(self):
             """
@@ -2194,7 +2202,7 @@ init python:
             It is only required to initialize a chess engine
             """
             return
-
+        
         def start_monika_analysis(self):
             """
             Starts Monika's analysis of the board
@@ -2205,7 +2213,7 @@ init python:
             It is only required if and only if we want Monika to play using an engine rather than manually queued moves
             """
             return NotImplemented
-
+        
         def poll_monika_move(self):
             """
             Polls for a Monika move
@@ -2216,7 +2224,7 @@ init python:
             It is only required if and only if we want Monika to play using an engine rather than manually queued moves
             """
             return NotImplemented
-
+        
         def set_button_states(self):
             """
             Sets button states
@@ -2225,7 +2233,7 @@ init python:
             If is only required for chess displayables which would need to manage any buttons for states
             """
             return NotImplemented
-
+        
         def check_buttons(self, ev, x, y, st):
             """
             Runs button checks/functions if pressed
@@ -2238,7 +2246,7 @@ init python:
                 NotImplementedError - Provided the displayable has buttons and is run
             """
             raise NotImplementedError("Function 'check_buttons' was not implemented.")
-
+        
         def handle_monika_move(self):
             """
             Handles Monika's move
@@ -2247,11 +2255,11 @@ init python:
             """
             if not self.move_stack:
                 return
-
+            
             move_str = self.move_stack.pop(0)
-
+            
             self.__push_move(move_str)
-
+        
         def handle_player_move(self, *args):
             """
             Handles the player's move
@@ -2260,14 +2268,14 @@ init python:
             """
             if self.is_game_over:
                 return
-
+            
             if not self.move_stack:
                 return
-
+            
             move_str = self.move_stack.pop(0)
-
+            
             self.__push_move(move_str)
-
+        
         #END: Non-implemented functions
         def toggle_sensitivity(self):
             """
@@ -2278,7 +2286,7 @@ init python:
             """
             self.sensitive = not self.sensitive
             return self.sensitive
-
+        
         def queue_move(self, move_str):
             """
             Queues a move to the player move stack
@@ -2287,29 +2295,29 @@ init python:
                 move_str - uci move string
             """
             self.move_stack.append(move_str)
-
+        
         def is_player_turn(self):
             """
             Checks if it's currently the player's turn
             """
             return self.is_player_white == self.current_turn
-
+        
         def check_redraw(self):
             """
             Checks if we need to redraw the MASPieces on the board and redraws if necessary
             """
             if self.board.request_redraw:
                 self.update_pieces()
-
+            
             self.board.request_redraw = False
-
+        
         def update_pieces(self):
             """
             Updates the position of all MASPieces
             """
             #Empty the piece map
             self.piece_map = dict()
-
+            
             #And refill it
             for position, Piece in self.board.piece_map().iteritems():
                 MASPiece.fromPiece(
@@ -2317,7 +2325,7 @@ init python:
                     MASChessDisplayableBase.square_to_board_coords(position),
                     self.piece_map
                 )
-
+        
         def get_piece_at(self, px, py):
             """
             Gets the piece at the given coordinates
@@ -2327,7 +2335,7 @@ init python:
                 None otherwise
             """
             return self.piece_map.get((px, py), None)
-
+        
         def request_highlight(self, board_pos):
             """
             Requests the renderer to draw a highlight on the square at the specified square
@@ -2337,9 +2345,9 @@ init python:
             """
             x = MASChessDisplayableBase.uci_alpha_to_x_coord(board_pos[0])
             y = int(board_pos[1]) - 1
-
+            
             self.requested_highlights.add((x, y))
-
+        
         def remove_highlight(self, board_pos):
             """
             Removes a requested highlight from the board-coordinates provided
@@ -2349,9 +2357,9 @@ init python:
             """
             x = MASChessDisplayableBase.uci_alpha_to_x_coord(board_pos[0])
             y = int(board_pos[1]) - 1
-
+            
             self.requested_highlights.discard((x, y))
-
+        
         def __push_move(self, move_str):
             """
             Internal function which pushes a uci move to the board and all MASPieces, handling promotions as necessary
@@ -2363,38 +2371,38 @@ init python:
             """
             #Step 1: Get our move locations
             (x1, y1), (x2, y2) = MASChessDisplayableBase.uci_to_coords(move_str)
-
+            
             #Now get the piece
             piece = self.get_piece_at(x1, y1)
-
+            
             #Move the piece
             piece.move(x2, y2)
-
+            
             #Promote it if we need to
             if len(move_str) > 4:
                 piece.promote_to(move_str[4])
-
+            
             #Add this undo if it's the player's turn
             if self.is_player_turn():
                 self.move_history.append(self.board.fen())
-
+            
             self.last_move_src = (x1, y1)
             self.last_move_dst = (x2, y2)
-
+            
             #We push the move here because we need to update fens and game history
             self.board.push_uci(move_str)
-
+            
             #Check if we need to redraw MASPieces
             self.check_redraw()
-
+            
             #'not self.current_turn' is the equivalent of saying the current turn is Black's turn, as chess.BLACK is False
             if not self.current_turn:
                 self.num_turns += 1
-
+            
             #It's player's turn
             self.current_turn = not self.current_turn
             self.is_game_over = self.board.is_game_over()
-
+        
         def game_loop(self):
             """
             Runs the game loop
@@ -2412,13 +2420,13 @@ init python:
                     )
                     store._history_list.pop()
                     self.handle_monika_move()
-
+                
                 # prepare a quip before the player turn loop
                 should_update_quip = False
                 quip = renpy.random.choice(
                     self.player_move_prompts["check"] if self.board.is_check() else self.player_move_prompts["generic"]
                 )
-
+                
                 # player turn actions
                 # 'is_game_over' is to allow interaction at the end of the game
                 while self.is_player_turn() or self.is_game_over:
@@ -2430,18 +2438,18 @@ init python:
                             and "{fast}" not in quip
                         ):
                             quip = quip + "{fast}"
-
+                        
                         should_update_quip = True
                         renpy.say(m, quip, False)
                         store._history_list.pop()
-
+                    
                     # interactions are handled in the event method
                     interaction = ui.interact(type="minigame")
                     # Check if the palyer wants to quit the game
                     if self.quit_game:
                         return interaction
             return None
-
+        
         def show(self):
             """
             Shows this displayable
@@ -2449,7 +2457,7 @@ init python:
             ui.layer("minigames")
             ui.implicit_add(self)
             ui.close()
-
+        
         def hide(self):
             """
             Hides this displayable
@@ -2457,7 +2465,7 @@ init python:
             ui.layer("minigames")
             ui.remove(self)
             ui.close()
-
+        
         def is_player_winner(self):
             """
             Checks if Monika has won the game
@@ -2468,30 +2476,30 @@ init python:
                     - False if not, or the game is still in progress
             """
             result = self.board.result()
-
+            
             return(
                 (result == MASChessDisplayableBase.STATE_WHITE_WIN and self.is_player_white) #Player is white, so monika is black
                 or (result == MASChessDisplayableBase.STATE_BLACK_WIN and not self.is_player_white) #Player is black, so monika is white
             )
-
+        
         # Renders the board, pieces, etc.
         def render(self, width, height, st, at):
             #SETUP
             #The Render object we'll be drawing into.
             renderer = renpy.Render(width, height)
-
+            
             # Prepare the board as a renderer.
             board = renpy.render(MASChessDisplayableBase.BOARD_IMAGE, 1280, 720, st, at)
-
+            
             # Prepare the highlights as a renderers.
             highlight_red = renpy.render(MASChessDisplayableBase.PIECE_HIGHLIGHT_RED_IMAGE, 1280, 720, st, at)
             highlight_green = renpy.render(MASChessDisplayableBase.PIECE_HIGHLIGHT_GREEN_IMAGE, 1280, 720, st, at)
             highlight_yellow = renpy.render(MASChessDisplayableBase.PIECE_HIGHLIGHT_YELLOW_IMAGE, 1280, 720, st, at)
             highlight_magenta = renpy.render(MASChessDisplayableBase.PIECE_HIGHLIGHT_MAGENTA_IMAGE, 1280, 720, st, at)
-
+            
             #Get our mouse pos
             mx, my = mas_getMousePos()
-
+            
             #Since different buttons show during the game vs post game, we'll sort out what's shown here
             visible_buttons = list()
             if self.is_game_over:
@@ -2500,17 +2508,17 @@ init python:
                     (b.render(width, height, st, at), b.xpos, b.ypos)
                     for b in self._visible_buttons_winner
                 ]
-
+            
             else:
                 # otherwise use the regular buttons list
                 visible_buttons = [
                     (b.render(width, height, st, at), b.xpos, b.ypos)
                     for b in self._visible_buttons
                 ]
-
+            
             #(Re)draw the board.
             renderer.blit(board, (MASChessDisplayableBase.BOARD_X_POS, MASChessDisplayableBase.BOARD_Y_POS))
-
+            
             # Draw the move indicator
             renderer.blit(
                 renpy.render((
@@ -2521,16 +2529,16 @@ init python:
                     1280, 720, st, at),
                 MASChessDisplayableBase.INDICATOR_POS
             )
-
+            
             #Draw the buttons
             for b in visible_buttons:
                 renderer.blit(b[0], (b[1], b[2]))
-
+            
             #If we have a last move, we should render that now
             if self.last_move_src and self.last_move_dst:
                 #Get our highlight color
                 highlight = highlight_magenta if self.is_player_turn() else highlight_green
-
+                
                 #Render the from highlight
                 renderer.blit(
                     highlight,
@@ -2547,7 +2555,7 @@ init python:
                         MASChessDisplayableBase.COORD_REFLECT_MAP[self.is_player_white]
                     )
                 )
-
+            
             #Do possible move highlighting here
             if self.selected_piece and self.possible_moves:
                 #There's possible moves, we need to filter things out
@@ -2555,7 +2563,7 @@ init python:
                     lambda x: MASChessDisplayableBase.square_to_board_coords(x.from_square) == (self.selected_piece[0], self.selected_piece[1]),
                     self.possible_moves
                 )
-
+                
                 for move in possible_moves_to_draw:
                     renderer.blit(
                         highlight_green,
@@ -2564,31 +2572,31 @@ init python:
                             MASChessDisplayableBase.COORD_REFLECT_MAP[self.is_player_white]
                         )
                     )
-
+            
             #Now render requested highlights if any
             for hl in self.requested_highlights:
                 renderer.blit(highlight_yellow, MASChessDisplayableBase.board_coords_to_screen_coords(hl))
-
+            
             #Draw the pieces on the Board renderer.
             for piece_location, Piece in self.piece_map.iteritems():
                 #Unpack the location
                 ix, iy = piece_location
-
+                
                 #Copy this for future use
                 iy_orig = iy
                 ix_orig = ix
-
+                
                 #White
                 if self.is_player_white:
                     iy = 7 - iy
-
+                
                 #Black
                 else:
                     #Black player should be reversed X
                     ix = 7 - ix
-
+                
                 x, y = MASChessDisplayableBase.board_coords_to_screen_coords((ix, iy))
-
+                
                 #Don't render the currently held piece again
                 if (
                     self.selected_piece is not None
@@ -2597,15 +2605,15 @@ init python:
                 ):
                     renderer.blit(highlight_yellow, (x, y))
                     continue
-
+                
                 piece = self.get_piece_at(ix_orig, iy_orig)
-
+                
                 possible_move_str = None
                 blit_rendered = False
-
+                
                 if piece is None:
                     continue
-
+                
                 if (
                     self.selected_piece is None
                     and not self.is_game_over
@@ -2618,37 +2626,37 @@ init python:
                     )
                 ):
                     renderer.blit(highlight_green, (x, y))
-
+                
                 #Winner check
                 if self.is_game_over:
                     result = self.board.result()
-
+                    
                     #Black won
                     if piece.symbol == "K" and result == MASChessDisplayableBase.STATE_BLACK_WIN:
                         renderer.blit(highlight_red, (x, y))
-
+                    
                     #White won
                     elif piece.symbol == "k" and result == MASChessDisplayableBase.STATE_WHITE_WIN:
                         renderer.blit(highlight_red, (x, y))
-
+                
                 #Render the piece
                 piece.render(width, height, st, at, x, y, renderer)
-
+            
             if self.selected_piece is not None:
                 #Draw the selected piece.
                 piece = self.get_piece_at(self.selected_piece[0], self.selected_piece[1])
-
+                
                 px, py = mas_getMousePos()
                 px -= MASChessDisplayableBase.PIECE_WIDTH / 2
                 py -= MASChessDisplayableBase.PIECE_HEIGHT / 2
                 piece.render(width, height, st, at, px, py, renderer)
-
+            
             #Ask that we be re-rendered ASAP, so we can show the next frame.
             renpy.redraw(self, 0)
-
+            
             #Return the Render object.
             return renderer
-
+        
         #Handles events.
         def event(self, ev, x, y, st):
             #Buttons are always sensitive since they are only semi-part of this displayable
@@ -2658,10 +2666,10 @@ init python:
                 #Run button checks if there are any in a function which requires implementation
                 if self._visible_buttons or self._visible_buttons_winner:
                     ret_value = self.check_buttons(ev, x, y, st)
-
+                
                 if ret_value is not None:
                     return ret_value
-
+            
             elif config.developer and ev.type == pygame.KEYDOWN:
                 # debug keys for dev testing
                 if ev.key == pygame.K_d:
@@ -2670,7 +2678,7 @@ init python:
                         self._button_draw.enable()
                     else:
                         self._button_draw.disable()
-
+            
             #Board events however respect the displayable state
             if self.sensitive:
                 # Mousebutton down == possibly select the piece to move
@@ -2691,24 +2699,24 @@ init python:
                         )
                     ):
                         piece = test_piece
-
+                        
                         self.possible_moves = self.board.legal_moves
                         self.selected_piece = (px, py)
                         return "mouse_button_down"
-
+                
                 # Mousebutton up == possibly release the selected piece
                 if (
                     ev.type == pygame.MOUSEBUTTONUP
                     and ev.button == 1
                 ):
                     self.handle_player_move()
-
+                    
                     self.selected_piece = None
                     self.possible_moves = set([])
                     return "mouse_button_up"
-
+            
             return None
-
+        
         def get_piece_pos(self):
             """
             Gets the piece position of the current piece held by the mouse
@@ -2721,21 +2729,21 @@ init python:
             my -= MASChessDisplayableBase.BASE_PIECE_Y
             px = mx / MASChessDisplayableBase.PIECE_WIDTH
             py = my / MASChessDisplayableBase.PIECE_HEIGHT
-
+            
             #White
             if self.is_player_white:
                 py = 7 - py
-
+            
             #Black
             else:
                 #Black player should be reversed X
                 px = 7 - px
-
+            
             if py >= 0 and py < 8 and px >= 0 and px < 8:
                 return (px, py)
-
+            
             return (None, None)
-
+        
         @staticmethod
         def coords_to_uci(x, y):
             """
@@ -2751,7 +2759,7 @@ init python:
             x = chr(x + ord('a'))
             y += 1
             return "{0}{1}".format(x, y)
-
+        
         @staticmethod
         def uci_to_coords(uci):
             """
@@ -2767,9 +2775,9 @@ init python:
             x2 = MASChessDisplayableBase.uci_alpha_to_x_coord(uci[2])
             y1 = int(uci[1]) - 1
             y2 = int(uci[3]) - 1
-
+            
             return [(x1, y1), (x2, y2)]
-
+        
         @staticmethod
         def uci_alpha_to_x_coord(alpha):
             """
@@ -2779,7 +2787,7 @@ init python:
                 alpha - alphabet to convert to a board x-coord
             """
             return ord(alpha) - 97
-
+        
         @staticmethod
         def square_to_board_coords(sq_num):
             """
@@ -2792,7 +2800,7 @@ init python:
                 tuple - (x, y) coords representing board coordinates for the square provided
             """
             return (sq_num % 8, sq_num / 8)
-
+        
         @staticmethod
         def board_coords_to_screen_coords(pos_tuple, inversion_tuple=(False,False)):
             """
@@ -2807,17 +2815,17 @@ init python:
             """
             x = pos_tuple[0]
             y = pos_tuple[1]
-
+            
             if inversion_tuple[0]:
                 x = MASChessDisplayableBase.invert_coord(x)
             if inversion_tuple[1]:
                 y = MASChessDisplayableBase.invert_coord(y)
-
+            
             return (
                 int(MASChessDisplayableBase.BASE_PIECE_X + (x * MASChessDisplayableBase.PIECE_WIDTH)),
                 int(MASChessDisplayableBase.BASE_PIECE_Y + (y * MASChessDisplayableBase.PIECE_HEIGHT))
             )
-
+        
         @staticmethod
         def invert_coord(value):
             """
@@ -2844,22 +2852,22 @@ init python:
             x_pos - x coordinate of this piece on the board
             y_pos - y coordinate of this piece on the board
         """
-
+        
         #Default base piece filepath
         DEF_PIECE_FP_BASE = "mod_assets/games/chess/pieces/{0}{1}.png"
-
+        
         #Color map
         FP_COLOR_LOOKUP = {
             True: "w",
             False: "b"
         }
-
+        
         IMG_MAP = {
             color + (symbol.upper() if color == "w" else symbol): Image("mod_assets/games/chess/pieces/{0}{1}.png".format(color, (symbol.upper() if color == "w" else symbol)))
             for color in FP_COLOR_LOOKUP.itervalues()
             for symbol in mas_chess.PIECE_POOL
         }
-
+        
         def __init__(
             self,
             is_white,
@@ -2880,20 +2888,20 @@ init python:
             """
             self.is_white = is_white
             self.symbol = symbol
-
+            
             #Store an internal reference to the piece map so we can execute moves from the piece
             self.piece_map = piece_map
-
+            
             #Store the internal reference to this piece's image fp for use in rendering
             self.__piece_image = MASPiece.IMG_MAP[MASPiece.FP_COLOR_LOOKUP[is_white] + symbol]
-
+            
             #Internal reference to the position
             self.x_pos = posX
             self.y_pos = posY
-
+            
             #And add it to the piece map
             piece_map[(posX, posY)] = self
-
+        
         def __eq__(self, other):
             """
             Checks if this piece is the same as another piece
@@ -2901,13 +2909,13 @@ init python:
             if not isinstance(other, MASPiece):
                 return False
             return self.symbol == other.symbol
-
+        
         def __repr__(self):
             """
             Handles a representation of this piece
             """
             return "MASPiece which: {0} and symbol: {1}".format("is white" if self.is_white else "is black", self.symbol)
-
+        
         @staticmethod
         def fromPiece(piece, pos_tuple, piece_map):
             """
@@ -2929,7 +2937,7 @@ init python:
                 pos_tuple[1],
                 piece_map
             )
-
+        
         def get_type(self):
             """
             Gets the type of piece as the lowercase letter that is its symbol
@@ -2938,7 +2946,7 @@ init python:
                 The lower only symbol, representing the type of piece this is
             """
             return self.symbol.lower()
-
+        
         def get_location(self):
             """
             Gets the location of this piece
@@ -2947,7 +2955,7 @@ init python:
                 Tuple, (x, y) coords representing the location of the piece on the board
             """
             return (self.x_pos, self.y_pos)
-
+        
         def promote_to(self, promoted_piece_symbol):
             """
             Promotes this piece and builds a new render for it
@@ -2958,20 +2966,20 @@ init python:
             self.symbol = promoted_piece_symbol.upper() if self.is_white else promoted_piece_symbol
             #Update the piece image
             self.__piece_image = MASPiece.IMG_MAP[MASPiece.FP_COLOR_LOOKUP[self.is_white] + self.symbol]
-
+        
         def move(self, new_x, new_y):
             """
             Moves the piece from the given position, to the given position
             """
             self.piece_map.pop((self.x_pos, self.y_pos))
-
+            
             #Adjust internal positions
             self.x_pos = new_x
             self.y_pos = new_y
-
+            
             #Add back to the piece map
             self.piece_map[(new_x, new_y)] = self
-
+        
         def render(self, width, height, st, at, x, y, renderer):
             """
             Internal render call to render the pieces. To be called by the board
@@ -3007,13 +3015,13 @@ init python:
             """
             if fen is None:
                 fen = chess.STARTING_FEN
-
+            
             super(MASBoard, self).__init__(fen, chess960)
-
+            
             #Flag for needing to request a redraw for the board
             self.request_redraw = False
             self.casual_rules = casual_rules
-
+        
         @staticmethod
         def from_board(Board, casual_rules=False):
             """
@@ -3027,7 +3035,7 @@ init python:
                 MASBoard object representing the given Board.
             """
             return MASBoard(Board.fen(), Board.chess960, casual_rules)
-
+        
         def push(self, move):
             """
             push override
@@ -3043,112 +3051,112 @@ init python:
             # Remember game state.
             self.stack.append(chess._BoardState(self))
             self.move_stack.append(move)
-
+            
             move = self._to_chess960(move)
-
+            
             # Reset en passant square.
             ep_square = self.ep_square
             self.ep_square = None
-
+            
             # Increment move counters.
             self.halfmove_clock += 1
             if not self.turn:
                 self.fullmove_number += 1
-
+            
             # On a null move, simply swap turns and reset the en passant square.
             if not move:
                 self.turn = not self.turn
                 return
-
+            
             # Drops.
             if move.drop:
                 self._set_piece_at(move.to_square, move.drop, self.turn)
                 self.turn = not self.turn
                 return
-
+            
             # Zero the half-move clock.
             if self.is_zeroing(move):
                 self.halfmove_clock = 0
-
+            
             from_bb = chess.BB_SQUARES[move.from_square]
             to_bb = chess.BB_SQUARES[move.to_square]
-
+            
             promoted = self.promoted & from_bb
             piece_type = self._remove_piece_at(move.from_square)
             capture_square = move.to_square
             captured_piece_type = self.piece_type_at(capture_square)
-
+            
             #Update castling rights
             self.castling_rights = self.clean_castling_rights() & ~to_bb & ~from_bb
-
+            
             if piece_type == chess.KING and not promoted:
                 if self.turn:
                     self.castling_rights &= ~chess.BB_RANK_1
                 else:
                     self.castling_rights &= ~chess.BB_RANK_8
-
+            
             elif captured_piece_type == chess.KING and not self.promoted & to_bb:
                 if self.turn and chess.square_rank(move.to_square) == 7:
                     self.castling_rights &= ~chess.BB_RANK_8
-
+                
                 elif not self.turn and chess.square_rank(move.to_square) == 0:
                     self.castling_rights &= ~chess.BB_RANK_1
-
+            
             #Handle special pawn moves
             if piece_type == chess.PAWN:
                 diff = move.to_square - move.from_square
-
+                
                 if diff == 16 and chess.square_rank(move.from_square) == 1:
                     self.ep_square = move.from_square + 8
-
+                
                 elif diff == -16 and chess.square_rank(move.from_square) == 6:
                     self.ep_square = move.from_square - 8
-
+                
                 elif move.to_square == ep_square and abs(diff) in [7, 9] and not captured_piece_type:
                     #Remove pawns captured en passant
                     down = -8 if self.turn == chess.WHITE else 8
                     capture_square = ep_square + down
                     captured_piece_type = self._remove_piece_at(capture_square)
-
+                    
                     #MASPiece needs to redraw, ASAP
                     self.request_redraw = True
-
+            
             #Promotion
             if move.promotion:
                 promoted = True
                 piece_type = move.promotion
-
+            
             #Castling
             castling = piece_type == chess.KING and self.occupied_co[self.turn] & to_bb
-
+            
             if castling:
                 a_side = chess.square_file(move.to_square) < chess.square_file(move.from_square)
-
+                
                 self._remove_piece_at(move.from_square)
                 self._remove_piece_at(move.to_square)
-
+                
                 if a_side:
                     self._set_piece_at(chess.C1 if self.turn == chess.WHITE else chess.C8, chess.KING, self.turn)
                     self._set_piece_at(chess.D1 if self.turn == chess.WHITE else chess.D8, chess.ROOK, self.turn)
-
+                
                 else:
                     self._set_piece_at(chess.G1 if self.turn == chess.WHITE else chess.G8, chess.KING, self.turn)
                     self._set_piece_at(chess.F1 if self.turn == chess.WHITE else chess.F8, chess.ROOK, self.turn)
-
+                
                 #MASPiece needs to redraw, ASAP
                 self.request_redraw = True
-
+            
             # Put the piece on the target square.
             if not castling and piece_type:
                 was_promoted = self.promoted & to_bb
                 self._set_piece_at(move.to_square, piece_type, self.turn, promoted)
-
+                
                 if captured_piece_type:
                     self._push_capture(move, capture_square, captured_piece_type, was_promoted)
-
+            
             # Swap turn.
             self.turn = not self.turn
-
+        
         def result(self, claim_draw=False):
             """
             Gets the game result.
@@ -3164,30 +3172,30 @@ init python:
                 return "1-0" if self.turn == chess.WHITE else "0-1"
             elif self.is_variant_draw():
                 return "1/2-1/2"
-
+            
             #Checkmate
             if self.is_checkmate():
                 #self.turn being True means white turn
                 return "0-1" if self.turn else "1-0"
-
+            
             #Draw claimed
             if claim_draw and self.can_claim_draw():
                 return "1/2-1/2"
-
+            
             #Seventyfive-move rule or fivefold repetition
             if self.is_seventyfive_moves() or self.is_fivefold_repetition():
                 return "1/2-1/2"
-
+            
             #Insufficient material
             if self.is_insufficient_material():
                 return "1/2-1/2"
-
+            
             #Stalemate
             if not any(self.generate_legal_moves()):
                 if self.casual_rules:
                     return "0-1" if self.turn else "1-0"
                 return "1/2-1/2"
-
+            
             #Still in progress
             return "*"
 
@@ -3200,17 +3208,17 @@ init python:
             practice_mode=False,
             casual_rules=False
         ):
-
+            
             self.practice_mode = practice_mode
             self.starting_fen = starting_fen
             self.casual_rules = casual_rules
-
+            
             self.surrendered = False
             self.practice_lost = False
-
+            
             #Init the 4 buttons
             self._button_save = MASButtonDisplayable.create_stb(
-                _("Save"),
+                _("Сохранить"),
                 True,
                 MASChessDisplayableBase.BUTTON_INDICATOR_X,
                 MASChessDisplayableBase.DRAWN_BUTTON_Y_TOP,
@@ -3219,9 +3227,9 @@ init python:
                 hover_sound=gui.hover_sound,
                 activate_sound=gui.activate_sound
             )
-
+            
             self._button_giveup = MASButtonDisplayable.create_stb(
-                _("Surrender"),
+                _("Сдаться"),
                 True,
                 MASChessDisplayableBase.BUTTON_INDICATOR_X,
                 MASChessDisplayableBase.DRAWN_BUTTON_Y_MID,
@@ -3230,9 +3238,9 @@ init python:
                 hover_sound=gui.hover_sound,
                 activate_sound=gui.activate_sound
             )
-
+            
             self._button_draw = MASButtonDisplayable.create_stb(
-                _("Call Draw"),
+                _("Ничья"),
                 True,
                 MASChessDisplayableBase.BUTTON_INDICATOR_X,
                 MASChessDisplayableBase.DRAWN_BUTTON_Y_MID_LOW,
@@ -3241,13 +3249,13 @@ init python:
                 hover_sound=gui.hover_sound,
                 activate_sound=gui.activate_sound
             )
-
+            
             #If player is Black, this button is enabled until Monika's first move.
             #Not sure why, but defaulting buttons to disable at first is fine.
             self._button_draw.disable()
-
+            
             self._button_done = MASButtonDisplayable.create_stb(
-                _("Done"),
+                _("Готово"),
                 False,
                 MASChessDisplayableBase.BUTTON_INDICATOR_X,
                 MASChessDisplayableBase.DRAWN_BUTTON_Y_TOP,
@@ -3256,9 +3264,9 @@ init python:
                 hover_sound=gui.hover_sound,
                 activate_sound=gui.activate_sound
             )
-
+            
             self._button_undo = MASButtonDisplayable.create_stb(
-                _("Undo"),
+                _("Откат хода"),
                 True,
                 MASChessDisplayableBase.BUTTON_INDICATOR_X,
                 MASChessDisplayableBase.DRAWN_BUTTON_Y_BOT,
@@ -3267,7 +3275,7 @@ init python:
                 hover_sound=gui.hover_sound,
                 activate_sound=gui.activate_sound
             )
-
+            
             #Init the base displayable
             super(MASChessDisplayable, self).__init__(
                 is_player_white,
@@ -3276,34 +3284,34 @@ init python:
                 casual_rules,
                 player_move_prompts={
                     "generic": [
-                        "It's your turn, [player].",
-                        "Your move, [player]~",
-                        "What will you do, I wonder...",
-                        "Alright, your turn, [player]~",
-                        "You got this, [player]!"
+                        "Твоя очередь, [player].",
+                        "Твой ход, [player]~",
+                        "Интересно, что ты будешь делать?",
+                        "Хорошо, твоя очередь, [player]~",
+                        "Ты сможешь, [player]!"
                     ],
                     "check": [
-                        "[mas_quipExp('3tfb')]Check!",
-                        "[mas_quipExp('3huu')]I've got you now, [player]!",
-                        "[mas_quipExp('3hub')]Looks like you're in check!"
+                        "[mas_quipExp('3tfb')]Шах!",
+                        "[mas_quipExp('3huu')]Теперь ты мой, [player]!",
+                        "[mas_quipExp('3hub')]Похоже, у тебя появились проблемы!"
                     ]
                 },
                 monika_move_quips={
                     "generic": [
-                        "Alright, let's see...",
-                        "Okay, my turn...",
-                        "Let's see what I can do.",
-                        "I think I'll try this...",
-                        "Okay, I'll move this here then."
+                        "Ладно, посмотрим...",
+                        "Ладно, моя очередь...",
+                        "Посмотрим, что я могу сделать.",
+                        "Думаю, я попробую это...",
+                        "Хорошо, тогда я перенесу это сюда."
                     ],
                     "check": [
-                        "[mas_quipExp('1eusdlc')]Uh oh...",
-                        "[mas_quipExp('1rksdlc')]Hmm...{w=0.2}I need to get out of this...",
-                        "[mas_quipExp('1etc')]What's the right move here..."
+                        "[mas_quipExp('1eusdlc')]Ох...",
+                        "[mas_quipExp('1rksdlc')]Хм-м...{w=0.2} как мне теперь исправить ситуацию...",
+                        "[mas_quipExp('1etc')]Как правильно поступить..."
                     ]
                 }
             )
-
+            
             if self.practice_mode:
                 #Setup the visible buttons list
                 self._visible_buttons = [
@@ -3312,27 +3320,27 @@ init python:
                     self._button_giveup,
                     self._button_draw
                 ]
-
+                
                 self._visible_buttons_winner = [
                     self._button_done,
                     self._button_undo
                 ]
-
+            
             else:
                 self._visible_buttons = [
                     self._button_save,
                     self._button_giveup,
                     self._button_draw
                 ]
-
+                
                 self._visible_buttons_winner = [
                     self._button_done
                 ]
-
+        
         def __del__(self):
             self.stockfish.stdin.close()
             self.stockfish.wait()
-
+        
         def poll_monika_move(self):
             """
             Polls stockfish for a move for Monika to make
@@ -3347,9 +3355,9 @@ init python:
                     match = re.match(r"^bestmove (\w+)", line)
                     if match:
                         res = match.group(1)
-
+            
             return res
-
+        
         def start_monika_analysis(self):
             """
             Starts Monika's analysis of the board
@@ -3357,7 +3365,7 @@ init python:
             self.stockfish.stdin.write("position fen {0}\n".format(self.board.fen()))
             self.stockfish.stdin.write("go depth {0}\n".format(persistent._mas_chess_difficulty[1]))
             self.stockfish.stdin.write("go movetime {0}\n".format(self.MONIKA_WAITTIME))
-
+        
         def additional_setup(self):
             """
             Additional stockfish setup to get the game going using it as Monika's engine
@@ -3378,15 +3386,15 @@ init python:
                         stdout=subprocess.PIPE,
                         startupinfo=startupinfo
                     )
-
+                
                 #Catch the permission error
                 except OSError as os_err:
                     if not renpy.windows:
                         renpy.show("monika 1etsdlc", at_list=[t11])
-                        renpy.say(m, "Hmm, that's odd. It seems some permissions were changed and I can't get chess running on your system.")
+                        renpy.say(m, "Хм, это странно. Похоже, некоторые права доступа были изменены, и я не могу запустить шахматы на вашей системе.")
                         renpy.show("monika 3eua")
-                        renpy.say(m, "Hold on a second, [player]. I'm going to try something quickly.{w=0.3}.{w=0.3}.{w=0.3}{nw}")
-
+                        renpy.say(m, "Подожди секунду, [player]. Я попробую кое-что.{w=0.3}.{w=0.3}.{w=0.3}{nw}")
+                        
                         store.mas_ptod.rst_cn()
                         local_ctx = {
                             "basedir": renpy.config.basedir
@@ -3405,7 +3413,7 @@ init python:
                             local_ctx
                         )
                         renpy.pause(2.0)
-
+                        
                         renpy.hide_screen("mas_py_console_teaching")
                         #Try again
                         try:
@@ -3415,58 +3423,58 @@ init python:
                                 stdout=subprocess.PIPE,
                                 startupinfo=startupinfo
                             )
-
+                            
                             renpy.show("monika 3hua", at_list=[t11])
-                            renpy.say(m, "Yay! We should be able to play now~")
+                            renpy.say(m, "Ура! Теперь мы сможем поиграть~")
                             renpy.show("monika", at_list=[t21])
                             return stockfish_proc
-
+                        
                         #If it still doesn't work, just log it and fail out
                         except Exception as ex:
                             os_err = ex
-
+                    
                     mas_utils.mas_log.exception(os_err)
                     renpy.jump("mas_chess_cannot_work_embarrassing")
-
+                
                 #Basically a last resort jump. If this happens it pretty much means you launched MAS from commandline
                 except Exception as ex:
                     mas_utils.mas_log.exception(ex)
                     renpy.jump("mas_chess_cannot_work_embarrassing")
-
+            
             # Launch the appropriate version based on the architecture and OS.
             if not mas_games.is_platform_good_for_chess():
                 # This is the last-resort check, the availability of the chess game should be checked independently beforehand.
                 renpy.jump("mas_chess_cannot_work_embarrassing")
-
+            
             is_64_bit = sys.maxsize > 2**32
-
+            
             if renpy.windows:
                 startupinfo = subprocess.STARTUPINFO()
                 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
+                
                 self.stockfish = open_stockfish(
                     'mod_assets/games/chess/stockfish_8_windows_x{0}.exe'.format("64" if is_64_bit else "32"),
                     startupinfo
                 )
-
+            
             elif is_64_bit:
                 fp = "mod_assets/games/chess/stockfish_8_{0}_x64".format("linux" if renpy.linux else "macosx")
-
+                
                 os.chmod(config.basedir + "/game/".format(fp), 0755)
                 self.stockfish = open_stockfish(fp)
-
+            
             #Set Monika's parameters
             self.stockfish.stdin.write("setoption name Skill Level value {0}\n".format(persistent._mas_chess_difficulty[0]))
             self.stockfish.stdin.write("setoption name Contempt value {0}\n".format(self.MONIKA_OPTIMISM))
             self.stockfish.stdin.write("setoption name Ponder value False\n")
-
+            
             #And set up facilities for asynchronous communication
             self.queue = collections.deque()
             self.lock = threading.Lock()
             thrd = threading.Thread(target=store.mas_chess.enqueue_output, args=(self.stockfish.stdout, self.queue, self.lock))
             thrd.daemon = True
             thrd.start()
-
+        
         def check_buttons(self, ev, x, y, st):
             """
             Runs button checks/functions if pressed
@@ -3477,34 +3485,34 @@ init python:
                     #User clicks Done
                     self.quit_game = True
                     return self._quitPGN()
-
+                
                 elif self._button_undo.event(ev, x, y, st):
                     return self.undo_move()
-
+            
             # inital check for buttons
             elif self.is_player_turn():
                 if self._button_save.event(ev, x, y, st):
-                    wants_save = renpy.call_in_new_context("mas_chess_confirm_context", prompt=_("You'd like to continue later?"))
+                    wants_save = renpy.call_in_new_context("mas_chess_confirm_context", prompt=_("Ты хочешь продолжить позже?"))
                     if wants_save:
                         #User wants to save this game
                         self.quit_game = True
                         return self._quitPGN()
-
+                
                 elif self._button_draw.event(ev, x, y, st):
                     #User wants to request a draw
                     self.quit_game = True
                     return self._quitPGN(2)
-
+                
                 elif self._button_undo.event(ev, x, y, st):
                     return self.undo_move()
-
+                
                 elif self._button_giveup.event(ev, x, y, st):
-                    wants_quit = renpy.call_in_new_context("mas_chess_confirm_context", prompt=_("Are you sure you want to give up?"))
+                    wants_quit = renpy.call_in_new_context("mas_chess_confirm_context", prompt=_("Ты уверен, что хочешь сдаться?"))
                     if wants_quit:
                         #User wishes to surrender
                         self.quit_game = True
                         return self._quitPGN(1)
-
+        
         def undo_move(self):
             """
             Undoes the last move
@@ -3516,15 +3524,15 @@ init python:
             #NOTE: While the chess.Board object has a pop function, we cannot use it here due to the nature of saving these as
             #pgn files. As such we pop somewhat inefficiently, but we do it such that the fen can always be used to restore
             last_move_fen = self.move_history.pop(-1)
-
+            
             #Remove the last move since we've undone
             old_board = self.board
             old_board.move_stack = old_board.move_stack[:len(old_board.move_stack)-2]
             old_board.stack = old_board.stack[:len(old_board.stack)-2]
-
+            
             #Update the board to the undo
             self.board = MASBoard(fen=last_move_fen)
-
+            
             #Now transfer the move data
             self.board.move_stack = old_board.move_stack
             self.board.stack = old_board.stack
@@ -3533,25 +3541,25 @@ init python:
             if self.board.move_stack:
                 last_move_uci = self.board.move_stack[-1].uci()
                 self.last_move_src, self.last_move_dst = MASChessDisplayableBase.uci_to_coords(last_move_uci)
-
+            
             else:
                 self.last_move_src = None
                 self.last_move_dst = None
-
+            
             #Adjust MASPieces
             self.update_pieces()
-
+            
             #Increment the undo counter
             self.undo_count += 1
-
+            
             #If this is checkmate, mark this as a practice loss
             if self.is_game_over:
                 self.practice_lost = True
                 self.is_game_over = False
-
+            
             self.set_button_states()
             return None
-
+        
         def handle_player_move(self):
             """
             Manages player move
@@ -3560,14 +3568,14 @@ init python:
             if self.is_game_over:
                 self.set_button_states()
                 return
-
+            
             px, py = self.get_piece_pos()
-
+            
             move_str = None
-
+            
             if px is not None and py is not None and self.selected_piece is not None:
                 move_str = self.coords_to_uci(self.selected_piece[0], self.selected_piece[1]) + self.coords_to_uci(px, py)
-
+                
                 #Promote if needed
                 if (
                     chess.Move.from_uci(move_str + 'q') in self.possible_moves
@@ -3576,22 +3584,22 @@ init python:
                 ):
                     #Set selected piece to None to drop it
                     self.selected_piece = None
-
+                    
                     #Now call the promotion screen
                     promote = renpy.call_in_new_context("mas_chess_promote_context", self.is_player_white)
                     move_str += promote
-
+            
             if move_str is None:
                 return
-
+            
             if chess.Move.from_uci(move_str) in self.possible_moves:
                 self.__push_move(move_str)
                 self.set_button_states()
-
+                
                 #Setup Monika's go
                 if not self.is_game_over:
                     self.start_monika_analysis()
-
+        
         def handle_monika_move(self):
             """
             Manages Monika's move
@@ -3600,21 +3608,21 @@ init python:
             if not self.is_game_over:
                 #Queue a Moni move if this is implemented
                 monika_move = self.poll_monika_move()
-
+                
                 if monika_move is not None:
                     #Now verify legality
                     monika_move_check = chess.Move.from_uci(monika_move)
-
+                    
                     if self.board.is_legal(monika_move_check):
                         #Monika is thonking
                         renpy.pause(1.5)
-
+                        
                         #Push her move
                         self.__push_move(monika_move)
-
+                        
                         #Set the buttons
                         self.set_button_states()
-
+        
         def set_button_states(self):
             """
             Manages button states
@@ -3625,32 +3633,32 @@ init python:
                     self._button_draw.enable()
                 else:
                     self._button_draw.disable()
-
+                
                 #Can give up from the get go
                 if self.board.fullmove_number > 0:
                     self._button_giveup.enable()
-
+                
                 else:
                     self._button_giveup.disable()
-
+                
                 #At least one move, so we can give up, save, and undo if in practice mode
                 if self.board.fullmove_number > 1:
                     self._button_save.enable()
-
+                
                 else:
                     self._button_save.disable()
-
+                
                 #Game isn't over, but since we could undo from a checkmate, we'll disable the done button
                 self._button_done.disable()
-
+            
             else:
                 self._button_giveup.disable()
                 self._button_save.disable()
-
+                
                 #If the game is over, then we should enable done
                 if self.is_game_over:
                     self._button_done.enable()
-
+            
             #Since we can undo a checkmate, we basically want to be able to undo only if Monika has checkmated the player
             if (
                 self.practice_mode
@@ -3659,10 +3667,10 @@ init python:
                 and not self.is_player_winner()
             ):
                 self._button_undo.enable()
-
+            
             else:
                 self._button_undo.disable()
-
+        
         def _quitPGN(self, quit_reason=0):
             """
             Generates a pgn of the board, and depending on if we are
@@ -3686,7 +3694,7 @@ init python:
                 [3]: number of turns of this game
             """
             new_pgn = chess.pgn.Game.from_board(self.board)
-
+            
             if quit_reason == 1:
                 #Player is playing white
                 if self.is_player_white:
@@ -3694,38 +3702,38 @@ init python:
                 #Player is playing black
                 else:
                     new_pgn.headers["Result"] = MASChessDisplayableBase.STATE_WHITE_WIN
-
+            
             elif quit_reason == 2:
                 new_pgn.headers["Result"] = "1/2-1/2"
                 #And a special header to indicate this was a requested draw
                 new_pgn.headers["DrawRequested"] = True
-
+            
             #Monika's ingame name will be her twitter handle
             #Player plays white
             if self.is_player_white:
                 new_pgn.headers["White"] = persistent.playername
                 new_pgn.headers["Black"] = mas_monika_twitter_handle
-
+            
             #Player plays black
             else:
                 new_pgn.headers["White"] = mas_monika_twitter_handle
                 new_pgn.headers["Black"] = persistent.playername
-
+            
             # date, site, and fen
             new_pgn.headers["Site"] = "MAS"
             new_pgn.headers["Date"] = datetime.date.today().strftime("%Y.%m.%d")
             new_pgn.headers["FEN"] = self.starting_fen if self.starting_fen is not None else MASChessDisplayableBase.START_FEN
             new_pgn.headers["SetUp"] = "1"
-
+            
             #Hist related to undo + practice mode
             new_pgn.headers["Practice"] = self.practice_mode
             new_pgn.headers["CasualRules"] = self.casual_rules
             new_pgn.headers["MoveHist"] = self.move_history
             new_pgn.headers["UndoCount"] = self.undo_count
-
+            
             #Store this just to mark the pgn that it was lost in practice
             new_pgn.headers["PracticeLost"] = self.practice_lost
-
+            
             return (
                 new_pgn,
                 (
@@ -3741,3 +3749,4 @@ init python:
                 quit_reason == 1, #Did player surrender?
                 self.board.fullmove_number
             )
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
