@@ -159,7 +159,7 @@ init -999 python in mas_ev_data_ver:
     def _verify_evact(val, allow_none=True):
         if val is None:
             return allow_none
-
+        
         return val in store.EV_ACTIONS
 
 
@@ -174,7 +174,7 @@ init -999 python in mas_ev_data_ver:
     def _verify_str(val, allow_none=True):
         if val is None:
             return allow_none
-
+        
         return isinstance(val, str) or isinstance(val, unicode)
 
 
@@ -191,7 +191,7 @@ init -999 python in mas_ev_data_ver:
     def _verify_tuli(val, allow_none=True):
         if val is None:
             return allow_none
-
+        
         return isinstance(val, __builtin__.list) or isinstance(val, tuple)
 
 
@@ -202,7 +202,7 @@ init -999 python in mas_ev_data_ver:
     def _verify_tuli_aff(val, allow_none=True):
         if val is None:
             return allow_none
-
+        
         return isinstance(val, tuple) and len(val) == 2
 
 
@@ -222,7 +222,7 @@ init -999 python in mas_ev_data_ver:
         """
         if val is None:
             return allow_none
-
+        
         # otherwise check item
         return isinstance(val, _type)
 
@@ -231,7 +231,7 @@ init -999 python in mas_ev_data_ver:
         """
         Allows for currying of a verification function
         """
-
+        
         def __init__(self, verifier, allow_none):
             """
             Constructor
@@ -243,8 +243,8 @@ init -999 python in mas_ev_data_ver:
             """
             self.verifier = verifier
             self.allow_none = allow_none
-
-
+        
+        
         def __call__(self, value):
             """
             Callable override
@@ -267,18 +267,18 @@ init -998 python in mas_ev_data_ver:
         verifies persistent data and ensure mod times are not in the future
         """
         curr_time = time.time()
-
+        
         # check renpy persistent mtime
         if renpy.persistent.persistent_mtime > curr_time:
             renpy.persistent.persistent_mtime = curr_time
-
+        
         # then save location mtime
         if renpy.loadsave.location is not None:
             locs = renpy.loadsave.location.locations
             if locs is not None and len(locs) > 0 and locs[0] is not None:
                 if locs[0].persistent_mtime > curr_time:
                     locs[0].persistent_mtime = curr_time
-
+        
         # then individual mtimes
         for varkey in store.persistent._changed:
             if store.persistent._changed[varkey] > curr_time:
@@ -337,7 +337,7 @@ init -950 python in mas_ev_data_ver:
             if verify is not None and not verify(ev_line[index]):
                 # verification failed!
                 return False
-
+        
         return True
 
 
@@ -352,11 +352,11 @@ init -950 python in mas_ev_data_ver:
         """
         if per_db is None:
             return
-
+        
         for ev_label in per_db.keys():
             # pull out the data
             ev_line = per_db[ev_label]
-
+            
             if not _verify_data_line(ev_line):
                 # verification failed! pop this element
                 store.mas_utils.mas_log.error(
@@ -427,7 +427,7 @@ init -500 python:
 
     for ev_key in persistent._mas_event_init_lockdb:
         stored_lock_row = persistent._mas_event_init_lockdb[ev_key]
-
+        
         if len(mas_init_lockdb_template) != len(stored_lock_row):
             # splice and dice
             lock_row = list(mas_init_lockdb_template)
@@ -529,12 +529,12 @@ init 6 python:
             "show_in_idle": False,
             "flags": 0,
         }
-
+        
         _null_dicts = {
             "per_eventdb": 0,
             "rules": 0,
         }
-
+        
         def __init__(self, evl):
             """
             Constructor
@@ -543,56 +543,56 @@ init 6 python:
                 evl - event label to build context manager for
             """
             self._ev = mas_getEV(evl)
-
+        
         def __repr__(self):
             return repr(self._ev)
-
+        
         def __enter__(self):
             return self
-
+        
         def __exit__(self, exc_type, exc_value, traceback):
             return False # always propagate exceptions
-
+        
         def __getattr__(self, name):
             if self._ev is None:
-
+                
                 # event props
                 if name in MAS_EVL._default_values:
                     return MAS_EVL._default_values.get(name)
-
+                
                 # event props where we dont want static vars to collide
                 if name in MAS_EVL._null_dicts:
                     return {}
-
+                
                 if callable(Event.__dict__.get(name)):
                     # functions (on object, not class)
                     return MASDummyClass()
-
+                
                 # everything else gets whatever we have in event
                 return getattr(Event, name)
-
+            
             return getattr(self._ev, name)
-
+        
         def __setattr__(self, name, value):
             if name == "_ev":
                 self.__dict__["_ev"] = value
-
+            
             elif self._ev is None:
                 return
-
+            
             elif self._ev is not None:
                 setattr(self._ev, name, value)
-
+            
             else:
                 super(self, MAS_EVL).__setattr__(name, value)
-
+        
         def __eq__(self, other):
             if self._ev is None:
                 return False
             if isinstance(other, Event):
                 return self._ev == other
             return False
-
+        
         def __ne__(self, other):
             if self._ev is None:
                 return False
@@ -628,10 +628,10 @@ init 6 python:
         NOTE: Does nothing if the ev does not exist
         """
         ev = mas_getEV(ev_label)
-
+        
         if ev is None:
             return False
-
+        
         return predicate(ev)
 
     def mas_getEVLPropValue(ev_label, prop, default=None):
@@ -648,7 +648,7 @@ init 6 python:
             Value of the given property name, or default if not found/no ev exists
         """
         ev = mas_getEV(ev_label)
-
+        
         return getattr(ev, prop, default)
 
     def mas_setEVLPropValues(ev_label, **kwargs):
@@ -664,13 +664,13 @@ init 6 python:
             False if not (ev does not exist)
         """
         ev = mas_getEV(ev_label)
-
+        
         if ev is None:
             return False
-
+        
         for attr, new_value in kwargs.iteritems():
             setattr(ev, attr, new_value)
-
+        
         return True
 
     def mas_isPoolEVL(ev_label):
@@ -752,10 +752,10 @@ init 6 python:
             False if the event doesn't exist or any provided keys aren't present in the rules dict
         """
         ev_rules = mas_getEVLPropValue(ev_label, "rules", dict())
-
+        
         if not ev_rules:
             return False
-
+        
         for rule_key in args:
             if rule_key not in ev_rules:
                 return False
@@ -778,7 +778,7 @@ init 6 python:
         ev = mas_getEV(ev_label)
         if not ev:
             return False
-
+        
         else:
             try:
                 exec("ev.{0} {1} {2}".format(propname, operation, value))
@@ -864,10 +864,10 @@ init 6 python:
             if the label should not be randomed if it's in persistent._mas_player_derandomed
             use mas_protectedShowEVL
         """
-
+        
         if _random:
             store.mas_bookmarks_derand.removeDerand(ev_label)
-
+        
         store.mas_showEvent(
             mas_all_ev_db_map.get(code, {}).get(ev_label, None),
             unlock=unlock,
@@ -947,14 +947,14 @@ init 6 python:
                 start_date=None,
                 end_date=None
             )
-
+        
         else:
             mas_setEVLPropValues(
                 ev_label,
                 conditional=None,
                 action=None
             )
-
+        
         if list_pop:
             mas_rmEVL(ev_label)
 
@@ -1007,15 +1007,15 @@ init 4 python:
             ev = mas_getEV(ev_label)
         except:
             ev = None
-
+        
         #If we can't get the ev or it hasn't been seen before, then we can't do anything and we'll just return False
         if not ev or not ev.last_seen:
             return False
-
+        
         #If no year provided, assume current year
         if year is None:
             year = datetime.date.today().year
-
+        
         #Otherwise return this evaluation
         return ev.last_seen.year == year
 
@@ -1076,7 +1076,7 @@ init -880 python:
     # right below this is the class definition that should be used for general
     # purpose
     if persistent._mas_delayed_action_list is None:
-
+        
         # this list will only contain DelayedAction IDs
         # we will match these IDs using the delayed action map.
         persistent._mas_delayed_action_list = list()
@@ -1117,8 +1117,8 @@ init -880 python:
             NOTE: we do not check callable for correctness
         """
         ERR_COND = "delayed action has bad conditional '{0}' | {1}"
-
-
+        
+        
         def __init__(self,
                 _id,
                 ev,
@@ -1160,7 +1160,7 @@ init -880 python:
                         str(e)
                     ))
                     raise e
-
+            
             self.cond_is_callable = cond_is_callable
             self.conditional = conditional
             self.action = action
@@ -1169,8 +1169,8 @@ init -880 python:
             self.executed = False
             self.ev = ev
             self.id = _id
-
-
+        
+        
         def __call__(self):
             """
             Checks if the conditional passes then performs the action
@@ -1183,22 +1183,22 @@ init -880 python:
             # NO event? dont even do this
             if self.ev is None or self.executed or self.action is None:
                 return False
-
+            
             # this should already have been checked on start
             try:
-
+                
                 # test conditional
                 if self.cond_is_callable:
-
+                    
                     if self.conditional is None:
                         # no conditional, then we dont do anything
                         return False
-
+                    
                     condition_passed = self.conditional(ev=self.ev)
-
+                
                 else:
                     condition_passed = eval(self.conditional)
-
+                
                 # run event if condition passed
                 if condition_passed:
                     if self.action in Event.ACTION_MAP:
@@ -1206,21 +1206,21 @@ init -880 python:
                             self.ev, unlock_time=datetime.datetime.now()
                         )
                         self.executed = True
-
+                    
                     else:
                         # action must be a callable
                         self.executed = self.action(ev=self.ev)
-
+            
             except Exception as e:
                 store.mas_utils.mas_log.error(self.ERR_COND.format(
                     self.conditional,
                     str(e)
                 ))
 #                raise e
-
+            
             return self.executed
-
-
+        
+        
         @staticmethod
         def makeWithLabel(
                 _id,
@@ -1272,7 +1272,7 @@ init -880 python:
         """
         if _id in persistent._mas_delayed_action_list:
             persistent._mas_delayed_action_list.remove(_id)
-
+        
         if _id in mas_delayed_action_map:
             mas_delayed_action_map.pop(_id)
 
@@ -1309,17 +1309,17 @@ init -880 python:
         """
         if flow not in MAS_FC_CONSTANTS:
             return
-
+        
         # otherwise, lets try going thru the list
         for action_id in list(mas_delayed_action_map):
             action = mas_delayed_action_map[action_id]
-
+            
             # bitcheck the flow
             if (action.flowcheck & flow) > 0:
                 if action():
                     # then pop the item if it was successful
                     mas_removeDelayedAction(action_id)
-
+                
                 # we have now checked this action
                 action.been_checked = True
 
@@ -1338,15 +1338,15 @@ init -880 python:
         """
         if _id in mas_delayed_action_map:
             return
-
+        
         # otherwise, lets get the constructor for the delayedaction
         make_action = store.mas_delact.MAP.get(_id, None)
         if make_action is None:
             return
-
+        
         # we have a constructor, lets create!
         mas_delayed_action_map[_id] = make_action()
-
+        
         # and lastlty, check persistent as well
         if _id not in persistent._mas_delayed_action_list:
             persistent._mas_delayed_action_list.append(_id)
@@ -1567,48 +1567,48 @@ init -1 python in evhand:
             False, # notify
             None, # context
         )
-
+        
         ITEM_LEN = len(DEFAULT_VALUES) + 1 # defaults + event label
-
+        
         IDX_EVENT_LABEL = 0
         IDX_NOTIFY = 1
         IDX_CONTEXT = 2
-
+        
         def __init__(self, data):
             """
             Constructor
-
+        
             IN:
                 data - the data directly from event list
             """
             self._eli = data
-
+        
         def __repr__(self):
             return "<{}: (data: {})>".format(
                 type(self).__name__,
                 self._eli
             )
-
+        
         @staticmethod
         def build(evl, *args):
             """
             Builds an ELI.
-
+        
             IN:
                 evl - event label
                 *args - the other args for an EventListItem.
-
+        
             RETURNS: EventListItem object
             """
             return EventListItem(EventListItem._build_raw(evl, *args))
-
+        
         @staticmethod
         def _build_raw(evl, *args):
             """
             Builds raw data for an ELI.
-
+        
             args are same as EventListItem.build
-
+        
             RETURNS: raw data
             """
             data = list(
@@ -1619,50 +1619,50 @@ init -1 python in evhand:
             ctx = data[EventListItem.IDX_CONTEXT]
             if isinstance(ctx, store.MASEventContext):
                 data[EventListItem.IDX_CONTEXT] = ctx._to_dict()
-
+        
             return tuple(data)
-
+        
         def _raw(self):
             """
             Gets the data for this EventListItem that is ready for
             the actual event list.
-
+        
             RETURNS: raw event list data
             """
             return self._eli
-
+        
         @property
         def event_label(self):
             """
             Gets the event label from this EventListItem
-
+        
             Aliases: ev_label, evl
-
+        
             RETURNS: event label
             """
             return self._eli[self.IDX_EVENT_LABEL]
-
+        
         # aliases
         eventlabel = event_label # because Event
         ev_label = event_label
         evl = event_label
-
+        
         @property
         def notify(self):
             """
             Gets the notify value from this EventListItem
-
+        
             RETURNS: notify
             """
             return self._eli[self.IDX_NOTIFY]
-
+        
         @property
         def context(self):
             """
             Gets the context from this EventListItem
-
+        
             Aliases: ctx
-
+        
             RETURNS: context (MASEventContext object)
             """
             return store.MASEventContext(self._eli[self.IDX_CONTEXT])
@@ -1719,21 +1719,21 @@ init -1 python in evhand:
         RETURNS:
             True if the Event's start_date is in the future, False otherwise
         """
-
+        
         # sanity check
         if ev is None:
             return False
-
+        
         # if no date is passed
         if date is None:
             date = datetime.datetime.now()
-
+        
         start_date = ev.start_date
-
+        
         # if we don't have an end date we return false
         if start_date is None:
             return False
-
+        
         return date < start_date
 
 
@@ -1751,21 +1751,21 @@ init -1 python in evhand:
         RETURNS:
             True if the Event's end_date is in the past, False otherwise
         """
-
+        
         # if there's no event to check return False
         if ev is None:
             return False
-
+        
         # if no date is passed
         if date is None:
             date = datetime.datetime.now()
-
+        
         end_date = ev.end_date
-
+        
         # if we don't have an end date we return false
         if end_date is None:
             return False
-
+        
         return end_date < date
 
 
@@ -1784,16 +1784,16 @@ init -1 python in evhand:
         # check we have an event
         if ev is None:
             return False
-
+        
         start_date = ev.start_date
         end_date = ev.end_date
-
+        
         current = datetime.datetime.now()
-
+        
         # return false if either start or end is None
         if start_date is None or end_date is None:
             return False
-
+        
         return start_date <= current <= end_date
 
 
@@ -1808,16 +1808,16 @@ init -1 python in evhand:
         Internalized hideEvent
         """
         if event:
-
+            
             if lock:
                 event.unlocked = False
-
+            
             if derandom:
                 event.random = False
-
+            
             if depool:
                 event.pool = False
-
+            
             if decond:
                 event.conditional = None
 
@@ -1834,7 +1834,7 @@ init -1 python in evhand:
         Internalized hideEventLabel
         """
         ev = eventdb.get(eventlabel, None)
-
+        
         _hideEvent(
             ev,
             lock=lock,
@@ -1908,12 +1908,12 @@ init -1 python in evhand:
         """
         if evl not in store.persistent._mas_ev_yearset_blacklist:
             return False
-
+        
         expire_dt = store.persistent._mas_ev_yearset_blacklist[evl]
         if expire_dt <= datetime.datetime.now():
             store.persistent._mas_ev_yearset_blacklist.pop(evl)
             return False
-
+        
         return True
 
 
@@ -2372,7 +2372,7 @@ init python:
         """
         if eventdb is None:
             eventdb = mas_all_ev_db_map.get(code, None)
-
+        
         if type(eventdb) is not dict:
             raise EventException("Given db is not of type dict")
         if type(event) is not Event:
@@ -2390,19 +2390,19 @@ init python:
         if not skipCalendar and type(event.start_date) is datetime.datetime:
             # add it to the calendar database
             store.mas_calendar.addEvent(event)
-
+        
         # verify the event's dates
         # NOTE: this covers time travel
         if not store.evhand.isYearsetBlacklisted(event.eventlabel):
             Event._verifyAndSetDatesEV(event)
-
+        
         # check whether we should add the event in the restart blacklist
         if restartBlacklist:
             evhand.RESTART_BLKLST.append(event.eventlabel)
-
+        
         if markSeen:
             persistent._seen_ever[event.eventlabel] = True
-
+        
         # now this event has passsed checks, we can add it to the db
         eventdb.setdefault(event.eventlabel, event)
 
@@ -2548,10 +2548,10 @@ init python:
         if ev:
             if unlock:
                 ev.unlocked = True
-
+            
             if _random:
                 ev.random = True
-
+            
             if _pool:
                 ev.pool = True
 
@@ -2646,8 +2646,8 @@ init python:
             persistent.event_list
         """
         MASEventList.push(event_label, skipeval, notify)
-
-
+        
+        
     @store.mas_utils.deprecated("MASEventList.queue")
     def queueEvent(event_label, notify=False):
         """
@@ -2665,7 +2665,7 @@ init python:
             persistent.event_list
         """
         MASEventList.queue(event_label, notify)
-
+        
 
     @store.mas_utils.deprecated("mas_unlockEvent", should_raise=True)
     def unlockEvent(ev):
@@ -2769,7 +2769,7 @@ init python:
         Use MASEventList.pop instead (not exactly the same)
         """
         pass
-
+        
 
     def seen_event(event_label):
         """
@@ -2805,7 +2805,7 @@ init python:
         for index, item in enumerate(MASEventList.iter()):
             if item.evl == event_label:
                 return index
-
+        
         return -1
 
 
@@ -2852,9 +2852,9 @@ init python:
         back on the stack with a little comment.
         """
         curr_eli = MASEventList.load_current()
-
+            
         if curr_eli is None:
-            return
+        return
 
         # don't push greetings back on the stack
         if not mas_isRstBlk(curr_eli.evl):
@@ -2874,23 +2874,23 @@ init python:
         """
         if not topic_label:
             return True
-
+        
         if topic_label.startswith("greeting_"):
             return True
-
+        
         if topic_label.startswith("bye"):
             return True
-
+        
         if topic_label.startswith("i_greeting"):
             return True
-
+        
         if topic_label.startswith("ch30_reload"):
             return True
-
+        
         # check the blacklist
         if topic_label in evhand.RESTART_BLKLST:
             return True
-
+        
         return False
 
     def mas_cleanEventList():
@@ -2916,18 +2916,18 @@ init python:
         import datetime
         now = datetime.datetime.now()
         cleanlist = list()
-
+        
         for evlabel in eventlist:
             ev = db.get(evlabel, None)
-
+            
             if ev:
                 if ev.last_seen:
                     if now - ev.last_seen >= store.evhand.LAST_SEEN_DELTA:
                         cleanlist.append(evlabel)
-
+                
                 else:
                     cleanlist.append(evlabel)
-
+        
         return cleanlist
 
 
@@ -2946,17 +2946,17 @@ init python:
         import datetime
         now = datetime.datetime.now()
         cleaned_list = list()
-
+        
         for ev in ev_list:
             if ev.last_seen is not None:
                 # this topic has been seen before, must check time
                 if now - ev.last_seen >= store.evhand.LAST_SEEN_DELTA:
                     cleaned_list.append(ev)
-
+            
             else:
                 # topic never seen before, its clean!
                 cleaned_list.append(ev)
-
+        
         return cleaned_list
 
 
@@ -2981,7 +2981,7 @@ init python:
             )
         ]
         u_count = count
-
+        
         # unlock until we out of available ones or unlock credits
         while len(pool_evs) > 0 and u_count > 0:
             ev_index = renpy.random.randint(0, len(pool_evs)-1)
@@ -2989,11 +2989,11 @@ init python:
             mas_unlockEvent(ev)
             ev.unlock_date = datetime.datetime.now()
             u_count -= 1
-
+        
         # save remaining to pool unlocks
         if u_count > 0:
             persistent._mas_pool_unlocks += u_count
-
+        
         # determine return value
         # if these are different, then we unlocked something
         return u_count != count
@@ -3129,6 +3129,7 @@ label call_next_event:
         # refetch just in case
         $ ev = mas_getEV(_ev_list_item.evl)
 
+        $ ev = evhand.event_database.get(event_label, None)
         if ev is not None:
 
             # if this is a random topic, make sure it's unlocked for prompts
@@ -3183,7 +3184,7 @@ label call_next_event:
                                 _match.group("exp"),
                                 duration=int(_match.group("duration"))
                             )
-
+                        
                         elif _match.group("tag") is not None:
                             _exp = MASMoniIdleExp.weighted_choice(
                                 MASMoniIdleExp.exp_tags_map.get(
@@ -3256,24 +3257,23 @@ label prompt_menu:
             $ mas_resetIdleMode()
             # NOTE: Clear this here because closing during idle
             # or idle callback could launch a specific greeting
-            $ persistent._mas_greeting_type = None
+        $ persistent._mas_greeting_type = None
 
         # Otherwise we have to send the callback label again
         elif cb_label is not None:
             $ mas_idle_mailbox.send_idle_cb(cb_label)
 
-        #Show idle exp here so we dissolve like other topics
-        if not renpy.showing("monika idle"):
-            show monika idle at t11 zorder MAS_MONIKA_Z with dissolve_monika
+        $ pushEvent("mas_idle_mode_greeting_cleanup")
+        $ mas_idle_mailbox.send_skipmidloopeval()
 
-        # NOTE: we only need to enable music hotkey since we are in dlg mode
-        #$ mas_DropShield_idle()
+
+
         $ store.mas_hotkeys.music_enabled = True
 
         jump prompt_menu_end
 
     python:
-        #We want to adjust the time of day vars
+
         mas_setTODVars()
 
         unlocked_events = Event.filterEvents(
@@ -3283,8 +3283,8 @@ label prompt_menu:
         )
         sorted_event_labels = Event.getSortedKeys(unlocked_events,include_none=True)
 
-        # we exclude 'mas_show_unseen' from the unseen list since it's only unlocked when the unseen menu is hidden
-        # having it added to the unseen list just messes up the counter in the 'mas_show_unseen' prompt
+
+
         unseen_event_labels = [
             ev_label
             for ev_label in sorted_event_labels
@@ -3296,7 +3296,7 @@ label prompt_menu:
             unseen_num = len(unseen_event_labels)
             mas_setEVLPropValues(
                 "mas_show_unseen",
-                prompt="I would like to see 'Unseen' ([unseen_num]) again"
+                prompt="Я бы хотел увидеть «Непрочитанное» ([unseen_num]) снова"
             )
         else:
             mas_hideEVL('mas_show_unseen','EVE',lock=True)
@@ -3317,21 +3317,21 @@ label prompt_menu:
     python:
         talk_menu = []
         if len(unseen_event_labels)>0 and not persistent._mas_unsee_unseen:
-            # show unseen if we have unseen events and the player hasn't chosen to hide it
-            talk_menu.append((_("{b}Unseen{/b}"), "unseen"))
+            
+            talk_menu.append((_("{b}Непрочитанное{/b}"), "unseen"))
         if mas_hasBookmarks():
-            talk_menu.append((_("Bookmarks"),"bookmarks"))
-        talk_menu.append((_("Hey, [m_name]..."), "prompt"))
+            talk_menu.append((_("Закладки"),"bookmarks"))
+        talk_menu.append((_("Эй, [m_name]..."), "prompt"))
         if len(repeatable_events)>0:
-            talk_menu.append((_("Repeat conversation"), "repeat"))
+            talk_menu.append((_("Повторить разговор"), "repeat"))
         if _mas_getAffection() > -50:
             if mas_passedILY(pass_time=datetime.timedelta(0,10)):
-                talk_menu.append((_("I love you too!"),"love_too"))
+                talk_menu.append((_("Я тебя тоже люблю!"),"love_too"))
             else:
-                talk_menu.append((_("I love you!"), "love"))
-        talk_menu.append((_("I feel..."), "moods"))
-        talk_menu.append((_("Goodbye"), "goodbye"))
-        talk_menu.append((_("Nevermind"),"nevermind"))
+                talk_menu.append((_("Я люблю тебя!"), "love"))
+        talk_menu.append((_("Мне сейчас..."), "moods"))
+        talk_menu.append((_("До свидания"), "goodbye"))
+        talk_menu.append((_("Не важно"),"nevermind"))
 
         renpy.say(m, store.mas_affection.talk_quip()[1], interact=False)
         madechoice = renpy.display_menu(talk_menu, screen="talk_choice")
@@ -3374,7 +3374,7 @@ label prompt_menu_end:
     if store.mas_globals.in_idle_mode:
         $ mas_dlgToIdleShield()
     else:
-        $ mas_DropShield_dlg()
+    $ mas_DropShield_dlg()
     jump ch30_visual_skip
 
 label show_prompt_list(sorted_event_labels):
@@ -3390,8 +3390,8 @@ label show_prompt_list(sorted_event_labels):
         hide_unseen_event = mas_getEV("mas_hide_unseen")
 
         final_items = (
-            (_("I don't want to see this menu anymore"), "mas_hide_unseen", False, False, 20),
-            (_("Nevermind"), False, False, False, 0)
+            (_("Я больше не хочу видеть это меню."), "mas_hide_unseen", False, False, 20),
+            (_("Не важно."), False, False, False, 0)
         )
 
     call screen mas_gen_scrollable_menu(prompt_menu_items, mas_ui.SCROLLABLE_MENU_LOW_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, *final_items)
@@ -3410,7 +3410,7 @@ label prompts_categories(pool=True):
 
     $ current_category = list()
     $ import store.evhand as evhand
-    $picked_event = False
+    $ picked_event = False
     python:
 
         # get list of unlocked events for the master category list
@@ -3461,11 +3461,11 @@ label prompts_categories(pool=True):
                 main_items = None
 
             else:
-
+                
                 # in this case, we have to generate the next menu
                 # current_category contains the selected categories, so we
                 # need to search using those categories
-
+                
                 # get list of unlocked events
                 unlocked_events = Event.filterEvents(
                     evhand.event_database,
@@ -3476,30 +3476,30 @@ label prompts_categories(pool=True):
                     aff=mas_curr_affection,
                     flag_ban=EV_FLAG_HFM
                 )
-
+                
                 # add deeper categories to a list
                 # NOTE: not implemented because we dont have subfolders atm.
                 #   maybe one day, but we would need a structure to link
                 #   main categories to subcats
-
+                
                 # otherwise make sort event list
                 no_cat_list = sorted(
                     unlocked_events.values(),
                     key=Event.getSortPrompt
                 )
-
+                
                 # but remake into display
                 no_cat_list = [(x.prompt, x.eventlabel) for x in no_cat_list]
-
+                
                 # NOTE: if we have subcategories, then we need to make a main
                 # pane
-
+                
                 # no cateogries here
                 main_cats = []
-
+                
                 # setup items
                 main_items = no_cat_list
-
+                
                 """ KEEP this for legacy purposes
 #            sorted_event_keys = Event.getSortedKeys(unlocked_events,include_none=True)
 
@@ -3582,13 +3582,13 @@ label mas_bookmarks:
             # only if it is not flagged to be hidden
             if Event._filterEvent(ev, flag_ban=EV_FLAG_HFM):
                 label_prefix = mas_bookmarks_derand.getLabelPrefix(ev.eventlabel)
-
+                
                 #Get the suffix function
                 suffix_func = prompt_suffix_map.get(label_prefix)
-
+                
                 #Now call it if it exists to get the suffix
                 prompt_suffix = suffix_func(ev) if suffix_func else ""
-
+                
                 #Now append based on the delegate
                 bookmarks_items.append(
                     (renpy.substitute(ev.prompt + prompt_suffix), ev.eventlabel, False, False)
@@ -3660,27 +3660,27 @@ label mas_bookmarks_unbookmark(bookmarks_items):
             """
             if convert_into == "CHECK_ITEMS":
                 new_items = []
-
+                
                 for item in items:
                     prompt = item[0]
                     # italic
                     if item[2]:
                         prompt = "{0}{1}{2}".format("{i}", prompt, "{/i}")
-
+                    
                     # bold
                     if item[3]:
                         prompt = "{0}{1}{2}".format("{b}", prompt, "{/b}")
-
+                    
                     new_items.append(
                         (prompt, item[1], False, True, False)
                     )
-
+            
             else:
                 new_items = [
                     (item[0], item[1], False, False)
                     for item in items
                 ]
-
+            
             return new_items
 
         bookmarks_items = _convert_items(bookmarks_items, "CHECK_ITEMS")
@@ -3689,10 +3689,10 @@ label mas_bookmarks_unbookmark(bookmarks_items):
 
     # decicde which prompt
     if len(bookmarks_items) > 1:
-        $ renpy.say(m, "Which bookmarks do you want to remove?", interact=False)
-
+        $ renpy.say(m, "Какие закладки нужно удалить?", interact=False)
     else:
-        $ renpy.say(m, "Just select the bookmark if you're sure you want to remove it.", interact=False)
+
+        $ renpy.say(m, "Просто выбери закладку, если ты уверен, что хочешь её удалить.", interact=False)
 
     call screen mas_check_scrollable_menu(bookmarks_items, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, selected_button_prompt="Remove selected")
 
@@ -3711,7 +3711,7 @@ label mas_bookmarks_unbookmark(bookmarks_items):
             bookmarks_items = filter(lambda item: item[1] not in bookmarks_to_remove, bookmarks_items)
 
         show monika at t11
-        m 1dsa "Okay, [player].{w=0.2}.{w=0.2}.{w=0.2}{nw}"
-        m 3hua "All done!"
+        m 1dsa "Поняла, [player].{w=0.2}.{w=0.2}.{w=0.2}{nw}"
+        m 3hua "Готово!"
 
     return bookmarks_items
