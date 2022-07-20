@@ -1,37 +1,11 @@
-## This file contains options that can be changed to customize your game.
-##
-## Lines beginning with two '#' marks are comments, and you shouldn't uncomment
-## them. Lines beginning with a single '#' mark are commented-out code, and you
-## may want to uncomment them when appropriate.
 
-
-## Basics ######################################################################
 python early:
-    ## A human-readable name of the game. This is used to set the default window
-    ## title, and shows up in the interface and error reports.
-    ##
-    ## The _() surrounding the string marks it as eligible for translation.
-    renpy.config.name = "Monika After Story"
 
-    ## The version of the game.
-    renpy.config.version = "0.12.9"
+    renpy.config.name = "Моника: Эпилог"
 
-    #Triple space suffix to avoid potential issues with same names in window title
-    config.window_title = "Monika After Story   "
+    renpy.config.version = "0.12.8"
 
-    ## Save directory ##############################################################
-    ##
-    ## Controls the platform-specific place Ren'Py will place the save files for
-    ## this game. The save files will be placed in:
-    ##
-    ## Windows: %APPDATA\RenPy\<config.save_directory>
-    ##
-    ## Macintosh: $HOME/Library/RenPy/<config.save_directory>
-    ##
-    ## Linux: $HOME/.renpy/<config.save_directory>
-    ##
-    ## This generally should not be changed, and if it is, should always be a
-    ## literal string, not an expression.
+    # config.window_title = "Monika After Story   "
 
     renpy.config.save_directory = "Monika After Story"
 
