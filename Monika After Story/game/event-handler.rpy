@@ -2852,9 +2852,9 @@ init python:
         back on the stack with a little comment.
         """
         curr_eli = MASEventList.load_current()
-            
+
         if curr_eli is None:
-        return
+            return
 
         # don't push greetings back on the stack
         if not mas_isRstBlk(curr_eli.evl):
@@ -3257,7 +3257,7 @@ label prompt_menu:
             $ mas_resetIdleMode()
             # NOTE: Clear this here because closing during idle
             # or idle callback could launch a specific greeting
-        $ persistent._mas_greeting_type = None
+            $ persistent._mas_greeting_type = None
 
         # Otherwise we have to send the callback label again
         elif cb_label is not None:
@@ -3375,7 +3375,7 @@ label prompt_menu_end:
     if store.mas_globals.in_idle_mode:
         $ mas_dlgToIdleShield()
     else:
-    $ mas_DropShield_dlg()
+        $ mas_DropShield_dlg()
     jump ch30_visual_skip
 
 label show_prompt_list(sorted_event_labels):

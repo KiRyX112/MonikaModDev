@@ -878,7 +878,7 @@ screen navigation():
         if store.mas_submod_utils.submod_map:
             textbutton _("Надстройки") action [ShowMenu("submods"), SensitiveIf(renpy.get_screen("submods") == None)]
 
-            if store.mas_windowreacts.can_show_notifs and not main_menu:
+        if store.mas_windowreacts.can_show_notifs and not main_menu:
             textbutton _("События") action [ShowMenu("notif_settings"), SensitiveIf(renpy.get_screen("notif_settings") == None)]
 
         textbutton _("Гор. клавиши") action [ShowMenu("hot_keys"), SensitiveIf(renpy.get_screen("hot_keys") == None)]
@@ -1060,42 +1060,42 @@ screen game_menu(title, scroll=None):
         hbox:
 
             # Reserve space for the navigation section.
-        frame:
-            style "game_menu_navigation_frame"
+            frame:
+                style "game_menu_navigation_frame"
 
-        frame:
-            style "game_menu_content_frame"
+            frame:
+                style "game_menu_content_frame"
 
-            if scroll == "viewport":
+                if scroll == "viewport":
 
-                viewport:
-                    scrollbars "vertical"
-                    mousewheel True
-                    draggable True
-                    yinitial 1.0
+                    viewport:
+                        scrollbars "vertical"
+                        mousewheel True
+                        draggable True
+                        yinitial 1.0
 
-                    side_yfill True
+                        side_yfill True
 
                         vbox:
+                            transclude
+
+                elif scroll == "vpgrid":
+
+                    vpgrid:
+                        cols 1
+                        yinitial 1.0
+
+                        scrollbars "vertical"
+                        mousewheel True
+                        draggable True
+
+                        side_yfill True
+
+                        transclude
+
+                else:
+
                     transclude
-
-            elif scroll == "vpgrid":
-
-                vpgrid:
-                    cols 1
-                    yinitial 1.0
-
-                    scrollbars "vertical"
-                    mousewheel True
-                    draggable True
-
-                    side_yfill True
-
-                    transclude
-
-            else:
-
-                transclude
 
     use navigation
 
@@ -2139,7 +2139,7 @@ screen name_input(message, ok_action):
             xalign 0.5
             spacing 100
 
-                textbutton _("OK") action ok_action
+            textbutton _("ОК") action ok_action
 
 screen dialog(message, ok_action):
     ## Ensure other screens do not get input while this screen is displayed.
@@ -2164,7 +2164,7 @@ screen dialog(message, ok_action):
             xalign 0.5
             spacing 100
 
-                textbutton _("OK") action ok_action
+            textbutton _("OK") action ok_action
 
 screen quit_dialog(message, ok_action):
     ## Ensure other screens do not get input while this screen is displayed.
@@ -2217,17 +2217,17 @@ screen confirm(message, yes_action, no_action):
                 add "confirm_glitch" xalign 0.5
 
             else:
-        label _(message):
-            style "confirm_prompt"
-            xalign 0.5
+                label _(message):
+                    style "confirm_prompt"
+                    xalign 0.5
 
         hbox:
             xalign 0.5
             spacing 100
 
             if mas_in_finalfarewell_mode:
-                    textbutton _("-") action yes_action
-                    textbutton _("-") action yes_action
+                textbutton _("-") action yes_action
+                textbutton _("-") action yes_action
             else:
                 textbutton _("Да") action [SetField(persistent, "_mas_game_crashed", False), Show(screen="quit_dialog", message=layout.QUIT_YES, ok_action=yes_action)]
                 textbutton _("Нет") action no_action, Show(screen="dialog", message=layout.QUIT_NO, ok_action=Hide("dialog"))
@@ -2652,14 +2652,14 @@ screen twopane_scrollable_menu(prev_items, main_items, left_area, left_align, ri
                     arrowkeys True
 
                     vbox:
-                    for ev in flt_evs:
-                        textbutton ev.prompt:
-                            if renpy.has_label(ev.eventlabel) and not seen_event(ev.eventlabel):
-                                style "scrollable_menu_new_button"
-                            else:
-                                style "scrollable_menu_button"
-                            xsize right_area[0] - left_area[0] + right_area[2]
-                            action [Function(mas_ui.twopane_menu_delegate_callback, ev.eventlabel), Return(ev.eventlabel)]
+                        for ev in flt_evs:
+                            textbutton ev.prompt:
+                                if renpy.has_label(ev.eventlabel) and not seen_event(ev.eventlabel):
+                                    style "scrollable_menu_new_button"
+                                else:
+                                    style "scrollable_menu_button"
+                                xsize right_area[0] - left_area[0] + right_area[2]
+                                action [Function(mas_ui.twopane_menu_delegate_callback, ev.eventlabel), Return(ev.eventlabel)]
 
                 null height 20
 
@@ -2703,15 +2703,15 @@ screen twopane_scrollable_menu(prev_items, main_items, left_area, left_align, ri
                     arrowkeys True
 
                     vbox:
-                    for i_caption, i_label in prev_items:
-                        textbutton i_caption:
-                            if renpy.has_label(i_label) and not seen_event(i_label):
-                                style "twopane_scrollable_menu_new_button"
+                        for i_caption, i_label in prev_items:
+                            textbutton i_caption:
+                                if renpy.has_label(i_label) and not seen_event(i_label):
+                                    style "twopane_scrollable_menu_new_button"
 
-                            elif not renpy.has_label(i_label):
-                                style "twopane_scrollable_menu_special_button"
+                                elif not renpy.has_label(i_label):
+                                    style "twopane_scrollable_menu_special_button"
 
-                            action Return(i_label)
+                                action Return(i_label)
 
                 if cat_length != 1:
                     null height 20
@@ -2744,15 +2744,15 @@ screen twopane_scrollable_menu(prev_items, main_items, left_area, left_align, ri
                         arrowkeys True
 
                         vbox:
-                        for i_caption, i_label in main_items:
-                            textbutton i_caption:
-                                if renpy.has_label(i_label) and not seen_event(i_label):
-                                    style "twopane_scrollable_menu_new_button"
+                            for i_caption, i_label in main_items:
+                                textbutton i_caption:
+                                    if renpy.has_label(i_label) and not seen_event(i_label):
+                                        style "twopane_scrollable_menu_new_button"
 
-                                elif not renpy.has_label(i_label):
-                                    style "twopane_scrollable_menu_special_button"
+                                    elif not renpy.has_label(i_label):
+                                        style "twopane_scrollable_menu_special_button"
 
-                                action [Return(i_label), Function(store.prev_adj.change, 0)]
+                                    action [Return(i_label), Function(store.prev_adj.change, 0)]
 
                     null height 20
 
@@ -2813,15 +2813,15 @@ screen scrollable_menu(items, display_area, scroll_align, nvm_text, remove=None)
                 mousewheel True
 
                 vbox:
-                for i_caption, i_label in items:
-                    textbutton i_caption:
-                        if renpy.has_label(i_label) and not seen_event(i_label):
-                            style "scrollable_menu_new_button"
+                    for i_caption, i_label in items:
+                        textbutton i_caption:
+                            if renpy.has_label(i_label) and not seen_event(i_label):
+                                style "scrollable_menu_new_button"
 
-                        elif not renpy.has_label(i_label):
-                            style "scrollable_menu_special_button"
+                            elif not renpy.has_label(i_label):
+                                style "scrollable_menu_special_button"
 
-                        action Return(i_label)
+                            action Return(i_label)
 
             null height 20
 
@@ -2876,19 +2876,19 @@ screen mas_gen_scrollable_menu(items, display_area, scroll_align, *args):
                 mousewheel True
 
                 vbox:
-                for item_prompt, item_value, is_italic, is_bold in items:
-                    textbutton item_prompt:
-                        if is_italic and is_bold:
-                            style "scrollable_menu_crazy_button"
+                    for item_prompt, item_value, is_italic, is_bold in items:
+                        textbutton item_prompt:
+                            if is_italic and is_bold:
+                                style "scrollable_menu_crazy_button"
 
-                        elif is_italic:
-                            style "scrollable_menu_new_button"
+                            elif is_italic:
+                                style "scrollable_menu_new_button"
 
-                        elif is_bold:
-                            style "scrollable_menu_special_button"
+                            elif is_bold:
+                                style "scrollable_menu_special_button"
 
-                        xsize display_area[2]
-                        action Return(item_value)
+                            xsize display_area[2]
+                            action Return(item_value)
 
             for final_items in args:
                 if final_items[4] > 0:
@@ -2963,11 +2963,11 @@ screen mas_check_scrollable_menu(
                 mousewheel True
 
                 vbox:
-                for button_prompt, button_key, start_selected, true_value, false_value in items:
-                    textbutton button_prompt:
-                        selected buttons_data[button_key]["return_value"] == buttons_data[button_key]["true_value"]
-                        xsize display_area[2]
-                        action ToggleDict(
+                    for button_prompt, button_key, start_selected, true_value, false_value in items:
+                        textbutton button_prompt:
+                            selected buttons_data[button_key]["return_value"] == buttons_data[button_key]["true_value"]
+                            xsize display_area[2]
+                            action ToggleDict(
                                 buttons_data[button_key],
                                 "return_value",
                                 true_value,
@@ -3023,8 +3023,8 @@ screen mas_generic_restart:
 # TODO: that would tie into the knowing how long player is out
 #            label _("Tell Monika that you'll be right back?"):
             label _("Перезапустите модификацию «Моника: Эпилог»."):
-            style "confirm_prompt"
-            xalign 0.5
+                style "confirm_prompt"
+                xalign 0.5
 
         hbox:
             xalign 0.5
