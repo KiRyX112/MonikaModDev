@@ -15,16 +15,18 @@ init -2 python:
 Попробуйте запустить "DDLC.exe"/"DDLC-32.exe" от имени администратора. Если эта ошибка появится вновь, попробуйте запустить указанную службу вручную: https://ru.stackoverflow.com/a/770247
 """)
             os.startfile(config.basedir+"/test_err.txt")
-            renpy.quit()
-        if "\\u" in os.environ["USERNAME"].encode("unicode-escape"):
-            open(config.basedir+"/username_err.txt", "w").write("""В имени пользователя обнаружена кириллица.
+            subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
+        if "\\u" in os.environ["USERNAME"].encode("unicode-escape") or "\\u" in config.basedir.encode("unicode-escape"):
+            open(config.basedir+"/username_err.txt", "w").write("""В имени пользователя или директории игры обнаружена кириллица.
 
 Ren'Py на данный момент времени испытывает проблемы с ANSI-кодировкой, используемой ОС Windows для обработки кириллических знаков, из-за чего возникают проблемы с использованием механизма сохранений, в связи с чем запуск игры был прекращён.
 Пожалуйста, создайте вторую учётную запись с именем *на латинице, без специальных символов*, желательно без знаков препинания; и обязательно задайте пароль, сойдёт даже банальщина а-ля 0000; в Контрольных вопросах можно написать всякую несуразицу.
 После этого зажмите клавишу Shift, нажмите Правой кнопкой мыши по исполняемому файлу и выберите Запуск от имени другого пользователя.
+
+Во втором же случае, пожалуйста, переместите папку игры в другую папку, имя которой *состоит только из латиницы*.
 """)
             os.startfile(config.basedir+"/username_err.txt")
-            renpy.quit()
+            subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
         try:
             import codecs
             pc_model, pc_manufacturer = [
@@ -40,7 +42,7 @@ Ren'Py на данный момент времени испытывает про
             ][1::2]
             for i in pc_model, pc_manufacturer:
                 i = codecs.decode(i, "utf8")
-            if "wine" in (pc_model.lower(), pc_manufacturer.lower()): renpy.quit()
+            if "wine" in (pc_model.lower(), pc_manufacturer.lower()): subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
         except ValueError:
             ten_version, pc_model, pc_manufacturer = [
                 line.strip()
@@ -55,7 +57,7 @@ Ren'Py на данный момент времени испытывает про
                 ).split("\n")
                 if line
             ][1::2]
-            if "virtual" in pc_model.lower() or any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")): renpy.quit()
+            if "virtual" in pc_model.lower() or any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")): subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
             import codecs
             activation_status = subprocess.check_output(
                 "cscript /nologo \"C:\Windows\System32\slmgr.vbs\" /dli",
@@ -68,7 +70,9 @@ Ren'Py на данный момент времени испытывает про
             ).decode("utf8").strip().replace("\r","").split("\n")[3]
     elif renpy.linux:
         pc_manufacturer = subprocess.check_output("cat /sys/devices/virtual/dmi/id/sys_vendor", universal_newlines=True, shell=True).strip()
-        if any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")): renpy.quit()
+        if any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")):
+            aa = subprocess.check_output("pidof DDLC", universal_newlines=True, shell=True).strip()
+            subprocess.check_output("kill -9 "+aa, shell=True)
     elif renpy.macintosh:
         mac_fw_ver = subprocess.check_output("system_profiler SPHardwareDataType | awk '/System/ {print $4}'", universal_newlines=True, shell=True).strip()
         mac_sn_ver = subprocess.check_output("system_profiler SPHardwareDataType | awk '/Serial/ {print $4}'", universal_newlines=True, shell=True).strip()
@@ -96,8 +100,8 @@ Ren'Py на данный момент времени испытывает про
         ) or ("x86" in cpu and name not in ["android-x86", "rpi"]):
             renpy.quit()
         if version < "28": os_blk = True
-    if renpy.windows and (platform.release() in ["Vista", "8"] or platform.release() == "7" and ten_version != "7601") or renpy.macintosh and int(macos_build[3:5]) < 15 and int(macos_build[:2]) <= 10: renpy.quit()
-    if renpy.windows and platform.release() == "10" and ten_version.startswith("2") and ten_version < "22000": renpy.quit()
+    if renpy.windows and (platform.release() in ["Vista", "8"] or platform.release() == "7" and ten_version != "7601") or renpy.macintosh and int(macos_build[3:5]) < 15 and int(macos_build[:2]) <= 10: subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
+    if renpy.windows and platform.release() == "10" and ten_version.startswith("2") and ten_version < "22000": subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
     if renpy.windows:
         if platform.release() == "10":
             os_blk = False if ten_version >= "22000" or ten_version in ten_platforms else True
