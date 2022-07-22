@@ -15,11 +15,10 @@ label start:
     #If they quit during a pause, we have to set _dismiss_pause to false again (I hate this hack)
     $ _dismiss_pause = config.developer
 
-    # Each of the girls' names before the MC learns their name throughout ch0.
-    $ s_name = "Sayori"
-    $ m_name = "Monika"
-    $ n_name = "Natsuki"
-    $ y_name = "Yuri"
+    # $ s_name = "Sayori"
+    $ m_name = "Моника"
+    # $ n_name = "Natsuki"
+    # $ y_name = "Yuri"
 
     $ style.say_dialogue = style.normal
     $ quick_menu = True
