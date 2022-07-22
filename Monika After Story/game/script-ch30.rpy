@@ -17,13 +17,13 @@ define mas_in_intro_flow = False
 # True means disable animations, False means enable
 default persistent._mas_disable_animations = False
 
-init -998 python:
-    #We need to flow hijack here if we're running unstable mode files but on a fresh persistent
-    if "unstable" in config.version and not persistent.sessions:
-        raise Exception(
-            _("Unstable mode files in install on first session. This can cause issues.\n"
-            "Please reinstall the latest stable version of Monika After Story to ensure that there will be no data issues.")
-        )
+# init -998 python:
+
+#     if "unstable" in config.version and not persistent.sessions:
+#         raise Exception(
+#             _("Unstable mode files in install on first session. This can cause issues.\n"
+#             "Please reinstall the latest stable version of Monika After Story to ensure that there will be no data issues.")
+#         )
 
 init -890 python in mas_globals:
     import datetime
@@ -103,7 +103,7 @@ init 970 python:
 
     if persistent._mas_moni_chksum is not None:
 #        mas_temp_moni_chksum = persistent._mas_moni_chksum
-
+        
         # do check for monika existence
         store.mas_dockstat.init_findMonika(mas_docking_station)
 
@@ -119,56 +119,56 @@ init -10 python:
 
         See MASMailbox for properties
         """
-
+        
         # NOTE: add keys here
         REBUILD_EV = 1
         # rebuilds the event list in idle
-
+        
         DOCKSTAT_GRE_TYPE = 2
         # used by the bye_going_somewhere farewell as a type
-
+        
         IDLE_MODE_CB_LABEL = 3
         # label to call when returning from idle mode
-
+        
         SKIP_MID_LOOP_EVAL = 4
         # True if we want idle to skip mid loop eval once
-
+        
         SCENE_CHANGE = 5
         # TRue if want the scene to change
-
+        
         DISSOLVE_ALL = 6
         # True if we want to dissolve all
-
+        
         FORCED_EXP = 7
         # Value is the exp to set for spaceroom render
-
+        
         # end keys
-
+        
         def __init__(self):
             """
             Constructor for the idle mailbox
             """
             super(MASIdleMailbox, self).__init__()
-
+        
         # NOTE: add additoinal functions below when appropriate.
         def send_rebuild_msg(self):
             """
             Sends the rebuild message to the mailbox
             """
             self.send(self.REBUILD_EV, True)
-
+        
         def get_rebuild_msg(self):
             """
             Gets rebuild message
             """
             return self.get(self.REBUILD_EV)
-
+        
         def send_ds_gre_type(self, gre_type):
             """
             Sends greeting type to mailbox
             """
             self.send(self.DOCKSTAT_GRE_TYPE, gre_type)
-
+        
         def get_ds_gre_type(self, default=None):
             """
             Gets dockstat greeting type
@@ -179,56 +179,56 @@ init -10 python:
             if result is None:
                 return default
             return result
-
+        
         def send_idle_cb(self, cb_label):
             """
             Sends idle callback label to mailbox
             """
             self.send(self.IDLE_MODE_CB_LABEL, cb_label)
-
+        
         def get_idle_cb(self):
             """
             Gets idle callback label
             """
             return self.get(self.IDLE_MODE_CB_LABEL)
-
+        
         def send_skipmidloopeval(self):
             """
             Sends skip mid loop eval message to mailbox
             """
             self.send(self.SKIP_MID_LOOP_EVAL, True)
-
+        
         def get_skipmidloopeval(self):
             """
             Gets skip midloop eval value
             """
             return self.get(self.SKIP_MID_LOOP_EVAL)
-
+        
         def send_scene_change(self):
             """
             Sends scene change message to mailbox
             NOTE: only do this if a scene is acutally necessary
             """
             self.send(self.SCENE_CHANGE, True)
-
+        
         def get_scene_change(self):
             """
             Gets scene change value
             """
             return self.get(self.SCENE_CHANGE)
-
+        
         def send_dissolve_all(self):
             """
             Sends dissolve all message to mailbox
             """
             self.send(self.DISSOLVE_ALL, True)
-
+        
         def get_dissolve_all(self):
             """
             Gets dissolve all value
             """
             return self.get(self.DISSOLVE_ALL)
-
+        
         def send_forced_exp(self, exp):
             """
             Sends forced exp message to mailbox
@@ -237,7 +237,7 @@ init -10 python:
                 exp - full exp code to force (None to use idle disp)
             """
             self.send(self.FORCED_EXP, exp)
-
+        
         def get_forced_exp(self):
             """
             Gets forced exp value
@@ -290,23 +290,9 @@ image monika_body_glitch2:
     0.15
     "images/cg/monika/monika_glitch4.png"
 
+
+
 image room_glitch = "images/cg/monika/monika_bg_glitch.png"
-
-
-# Gender specific word replacement
-define MAS_PRONOUN_GENDER_MAP = {
-    "his": {"M": "his", "F": "her", "X": "their"},
-    "he": {"M": "he", "F": "she", "X": "they"},
-    "hes": {"M": "he's", "F": "she's", "X": "they're"},
-    "heis": {"M": "he is", "F": "she is", "X": "they are"},
-    "bf": {"M": "boyfriend", "F": "girlfriend", "X": "partner"},
-    "man": {"M": "man", "F": "woman", "X": "person"},
-    "boy": {"M": "boy", "F": "girl", "X": "person"},
-    "guy": {"M": "guy", "F": "girl", "X": "person"},
-    "him": {"M": "him", "F": "her", "X": "them"},
-    "himself": {"M": "himself", "F": "herself", "X": "themselves"},
-    "hero": {"M": "hero", "F": "heroine", "X": "hero"}
-}
 
 init python:
     import subprocess
@@ -326,16 +312,16 @@ init python:
             process_list = subprocess.check_output("wmic process get Description", shell=True).lower().replace("\r", "").replace(" ", "").split("\n")
         except:
             pass
-        try:
-            for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
-                user = os.environ.get(name)
-                if user:
-                    currentuser = user
-        except:
-            pass
+    if renpy.linux or renpy.macintosh:
+        import pwd
+        currentuser = pwd.getpwuid(os.getuid()).pw_gecos.replace(",","")
+    elif renpy.windows:
+        currentuser = os.environ["USERNAME"]
+    else:
+        currentuser = "Amanda Watson"
 
     try:
-        renpy.file("../characters/monika.chr")
+        open(user_dir + "/characters/monika.chr")
         initial_monika_file_check = True
     except:
         #Monika will mention that you don't have a char file in ch30_main instead
@@ -393,12 +379,15 @@ init python:
 
         RETURNS: current user if found, or None if not found
         """
-        for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
-            user = os.environ.get(name)
-            if user:
-                return user
+        if renpy.linux or renpy.macintosh:
+            import pwd
+            currentuser = pwd.getpwuid(os.getuid()).pw_gecos.replace(",","")
+        elif renpy.windows:
+            currentuser = os.environ["USERNAME"]
+        else:
+            currentuser = "Amanda Watson"
 
-        return None
+        return currentuser
 
 
     def mas_enable_quitbox():
@@ -444,10 +433,10 @@ init python:
         """
         # get current weather masks
         mask = mas_current_weather.get_mask()
-
+        
         # now show the mask
         renpy.show(mask, tag="rm")
-
+        
         if dissolve_masks:
             renpy.with_statement(Dissolve(1.0))
 
@@ -470,18 +459,19 @@ init python:
         Opens the calendar if we can
         """
         mas_HKBRaiseShield()
-
+        
         if not persistent._mas_first_calendar_check:
             renpy.call('_first_time_calendar_use')
-
+        
         renpy.call_in_new_context("mas_start_calendar_read_only")
-
+        
         if store.mas_globals.in_idle_mode:
-            # IDLe only enables talk extra and music
+            
             store.hkb_button.talk_enabled = True
-            store.hkb_button.extra_enabled = True
-            store.hkb_button.music_enabled = True
-
+            if not os_blk:
+                store.hkb_button.extra_enabled = True
+                store.hkb_button.music_enabled = True
+        
         else:
             mas_HKBDropShield()
 
@@ -511,12 +501,12 @@ init python:
         #     config.allow_skipping = False
         #     renpy.jump("ch30_noskip")
         #     return
-
+        
         if event == "show" or event == "begin":
             store.mas_hotkeys.set_dismiss(False)
 #            config.keymap['dismiss'] = []
 #            renpy.display.behavior.clear_keymap_cache()
-
+        
         elif event == "slow_done":
             store.mas_hotkeys.set_dismiss(True)
 #            config.keymap['dismiss'] = dismiss_keys
@@ -546,7 +536,7 @@ init python:
         curr_flt = store.mas_sprites.get_filter()
         new_flt = mas_current_background.progress()
         store.mas_sprites.set_filter(new_flt)
-
+        
         return curr_flt != new_flt
 
     @store.mas_utils.deprecated(should_raise=True)
@@ -590,7 +580,7 @@ init python:
             #   - Snow: 50%
             #   - Overcast: 20%
             #   - Sunny: 30%
-
+            
             if mas_isSpring():
                 return mas_weather._determineCloudyWeather(
                     40,
@@ -598,7 +588,7 @@ init python:
                     15,
                     rolled_chance=chance
                 )
-
+            
             elif mas_isSummer():
                 return mas_weather._determineCloudyWeather(
                     10,
@@ -606,7 +596,7 @@ init python:
                     5,
                     rolled_chance=chance
                 )
-
+            
             elif mas_isFall():
                 return mas_weather._determineCloudyWeather(
                     30,
@@ -614,24 +604,24 @@ init python:
                     15,
                     rolled_chance=chance
                 )
-
+            
             else:
                 #Chance of snow
                 if chance <= 50:
                     return mas_weather_snow
                 elif chance <= 70:
                     return mas_weather_overcast
-
+        
         #Otherwise rain based on how Moni's feeling
         elif mas_isMoniUpset() and chance <= MAS_RAIN_UPSET:
             return mas_weather_overcast
-
+        
         elif mas_isMoniDis() and chance <= MAS_RAIN_DIS:
             return mas_weather_rain
-
+        
         elif mas_isMoniBroken() and chance <= MAS_RAIN_BROKEN:
             return mas_weather_thunder
-
+        
         return None
 
 
@@ -657,15 +647,15 @@ init python:
             persistent._mas_current_season
         """
         _s_tag = store.mas_seasons._currentSeason()
-
+        
         if persistent._mas_current_season != _s_tag:
-
+            
             _s_pp = store.mas_seasons._season_pp_map.get(_s_tag, None)
             if _s_pp is not None:
-
+                
                 # executes programming point
                 _s_pp()
-
+                
                 # sets global to given tag
                 persistent._mas_current_season = _s_tag
 
@@ -697,13 +687,13 @@ init python:
         """
         if config.developer and not ignoredev:
             mas_enableTextSpeed()
-
+        
         elif (
                 mas_isMoniHappy(higher=True)
                 and persistent._mas_text_speed_enabled
             ):
             mas_enableTextSpeed()
-
+        
         else:
             mas_disableTextSpeed()
 
@@ -718,9 +708,9 @@ init python:
         """
         Checks the player derandom lists for events that are not random and derandoms them
         """
-
+        
         derand_list = store.mas_bookmarks_derand.getDerandomedEVLs()
-
+        
         #Now iter through this to derand what's rand
         for ev_label in derand_list:
             #Get the ev
@@ -742,20 +732,20 @@ init python:
             List of bookmarked topics as evs
         """
         bookmarkedlist = []
-
+        
         #Iterate and add to bookmarked list
         for index in range(len(bookmarked_evls)-1,-1,-1):
             #Get the ev
             ev = mas_getEV(bookmarked_evls[index])
-
+            
             #If no ev, we'll pop it as we shouldn't actually keep it here
             if not ev:
                 bookmarked_evls.pop(index)
-
+            
             #Otherwise, we add it to the menu item list
             elif ev.unlocked and ev.checkAffection(mas_curr_affection):
                 bookmarkedlist.append(ev)
-
+        
         return bookmarkedlist
 
     def mas_get_player_derandoms(derandomed_evls):
@@ -770,20 +760,20 @@ init python:
             List of player derandomed topics in mas_check_scrollable_menu form
         """
         derandlist = []
-
+        
         #Iterate and add to derand list
         for index in range(len(derandomed_evls)-1,-1,-1):
             #Get the ev
             ev = mas_getEV(derandomed_evls[index])
-
+            
             #No ev. Pop it as we shouldn't actually keep it here
             if not ev:
                 derandomed_evls.pop(index)
-
+            
             #Ev exists. Add it to the menu item list
             elif ev.unlocked:
                 derandlist.append((renpy.substitute(ev.prompt), ev.eventlabel, False, True, False))
-
+        
         return derandlist
 
 
@@ -798,32 +788,11 @@ init python:
         """
         return store.persistent._mas_pm_cares_about_dokis is False
 
-    def mas_set_pronouns(key=None):
-        """
-        Sets gender specific word replacements
 
-        Few examples:
-            "It is his pen." (if the player's gender is declared as male)
-            "It is her pen." (if the player's gender is declared as female)
-            "It is their pen." (if player's gender is not declared)
 
-        For all available pronouns/words check the keys in MAS_PRONOUN_GENDER_MAP
 
-        IN:
-            key - Optional[Literal["M", "F", "X"]] - key (perhaps current gender) to set the pronouns for
-                If None, uses persistent.gender
-        """
-        store = renpy.store
 
-        if key is None:
-            key = store.persistent.gender
 
-        for word, sub_map in store.MAS_PRONOUN_GENDER_MAP.items():
-            if key in sub_map:
-                value = sub_map[key]
-            else:
-                value = sub_map["X"]
-            setattr(store, word, value)
 
 
 # IN:
@@ -871,6 +840,18 @@ init python:
 label spaceroom(start_bg=None, hide_mask=None, hide_monika=False, dissolve_all=False, dissolve_masks=False, scene_change=False, force_exp=None, hide_calendar=None, day_bg=None, night_bg=None, show_emptydesk=True, progress_filter=True, bg_change_info=None):
 
     with None
+    if mas_globals.time_of_day_4state == "morning":
+        $ persistent.mas_monika_good_tod_1 = 'Доброе '
+        $ persistent.mas_monika_good_tod_2 = 'утро'
+        $ persistent.mas_monika_good_tod = persistent.mas_monika_good_tod_1 + persistent.mas_monika_good_tod_2
+    elif mas_globals.time_of_day_4state == "afternoon":
+        $ persistent.mas_monika_good_tod_1 = 'Добрый '
+        $ persistent.mas_monika_good_tod_2 = 'день'
+        $ persistent.mas_monika_good_tod = persistent.mas_monika_good_tod_1 + persistent.mas_monika_good_tod_2
+    else:
+        $ persistent.mas_monika_good_tod_1 = 'Добрый '
+        $ persistent.mas_monika_good_tod_2 = 'вечер'
+        $ persistent.mas_monika_good_tod = persistent.mas_monika_good_tod_1 + persistent.mas_monika_good_tod_2
 
     #Get all of the params
     if hide_mask is None:
@@ -927,7 +908,7 @@ label spaceroom(start_bg=None, hide_mask=None, hide_monika=False, dissolve_all=F
         if hide_monika:
             if not scene_change:
                 renpy.hide("monika")
-
+            
             if show_emptydesk:
                 store.mas_sprites.show_empty_desk()
 
@@ -936,15 +917,15 @@ label spaceroom(start_bg=None, hide_mask=None, hide_monika=False, dissolve_all=F
                 force_exp = "monika idle"
                 # if dissolve_all:
                 #     force_exp = store.mas_affection._force_exp()
-
+            
                 # else:
                 #     force_exp = "monika idle"
-
+            
             if not renpy.showing(force_exp):
                 # NOTE: if Monika jumps when this is called, make sure to
                 #   dissolve all
                 renpy.show(force_exp, tag="monika", at_list=[t11], zorder=MAS_MONIKA_Z)
-
+                
                 if not dissolve_all:
                     renpy.with_statement(None)
 
@@ -987,14 +968,14 @@ label spaceroom(start_bg=None, hide_mask=None, hide_monika=False, dissolve_all=F
             if not scene_change:
                 for h_adf in bg_change_info.hides.itervalues():
                     h_adf.hide()
-
+            
             for s_tag, s_info in bg_change_info.shows.iteritems():
                 s_tag_real, s_adf = s_info
                 s_adf.show(s_tag_real)
-
+            
             if len(bg_change_info) > 0 and not dissolve_all:
                 renpy.with_statement(Dissolve(1.0))
-
+            
             bg_change_info = None
             mas_current_background._deco_man.changed = False
 
@@ -1091,24 +1072,24 @@ label ch30_main:
     jump ch30_preloop
 
 label continue_event:
-    m "Now, where was I..."
+    m "Так, на чём я остановилась?.."
     return
 
 label ch30_noskip:
     show screen fake_skip_indicator
-    m 1esc "...Are you trying to fast-forward?"
-    m 1ekc "I'm not boring you, am I?"
-    m "Oh gosh..."
-    m 2esa "...Well, just so you know, there's nothing to fast-forward to, [player]."
-    m "It's just the two of us, after all..."
-    m 1eua "But aside from that, time doesn't really exist anymore, so it's not even going to work."
-    m "Here, I'll go ahead and turn that off for you..."
+    m 1esc "...Ты попытался включить быструю прокрутку текста?"
+    m 1ekc "Надеюсь, я тебя не утомляю?"
+    m "Боже..."
+    m 2esa "...Но тебе совершенно некуда спешить, [player]."
+    m "В конце концов, тут только ты и я..."
+    m 1eua "Кроме того, времени больше не существует, так что эта кнопка даже не заработает."
+    m "Давай я выключу её, чтобы ты не отвлекался..."
     pause 0.4
     hide screen fake_skip_indicator
     pause 0.4
-    m 1hua "There we go!"
-    m 1esa "You'll be a sweetheart and listen to me from now on, right?"
-    m "Thanks~"
+    m 1hua "Готово!"
+    m 1esa "Ты ведь умничка и будешь внимательно меня слушать, правда?"
+    m "Спасибо~"
     hide screen fake_skip_indicator
 
     #Get back to what you were talking about
@@ -1291,18 +1272,18 @@ label mas_ch30_post_holiday_check:
 
         if sel_greeting_ev is None:
             # special cases to deal with when no greeting is found.
-
+            
             if persistent._mas_in_idle_mode:
                 # currently in idle mode? reset please
                 mas_resetIdleMode()
-
+            
             if just_crashed:
                 # but if we just crashed, then we want to select the
                 # only crashed greeting.
                 # NOTE: we shouldnt actually have to do this ever, but
                 #   its here as a sanity check
                 sel_greeting_ev = mas_getEV("mas_crashed_start")
-
+            
             elif forced_quit:
                 # if we just forced quit, then we want to select the only
                 # reload greeting.
@@ -1314,17 +1295,17 @@ label mas_ch30_post_holiday_check:
         #   didnt get a greeting to show.
         if sel_greeting_ev is not None:
             selected_greeting = sel_greeting_ev.eventlabel
-
+            
             # store if we have to skip visuals ( used to prevent visual bugs)
             mas_skip_visuals = MASGreetingRule.should_skip_visual(
                 event=sel_greeting_ev
             )
-
+            
             # see if we need to do a label
             setup_label = MASGreetingRule.get_setup_label(sel_greeting_ev)
             if setup_label is not None and renpy.has_label(setup_label):
                 gre_cb_label = setup_label
-
+            
             # Set an exp for first spaceroom render
             mas_idle_mailbox.send_forced_exp(MASGreetingRule.get_forced_exp(sel_greeting_ev))
 
@@ -1345,13 +1326,13 @@ label ch30_post_restartevent_check:
     python:
         if persistent.sessions['last_session_end'] is not None and persistent.closed_self:
             away_experience_time=datetime.datetime.now()-persistent.sessions['last_session_end'] #Time since end of previous session
-
+            
             #Reset the idlexp total if monika has had at least 6 hours of rest
             if away_experience_time.total_seconds() >= times.REST_TIME:
-
+                
                 #Grant good exp for closing the game correctly.
                 mas_gainAffection()
-
+            
             # unlock extra pool topics if we can
             while persistent._mas_pool_unlocks > 0 and mas_unlockPrompt():
                 persistent._mas_pool_unlocks -= 1
@@ -1871,7 +1852,7 @@ label ch30_reset:
             if mas_hasRPYFiles():
                 if not mas_inEVL("monika_rpy_files"):
                     MASEventList.queue("monika_rpy_files")
-
+            
             else:
                 if persistent.current_monikatopic == "monika_rpy_files":
                     MASEventList.clear_current()
@@ -1984,16 +1965,16 @@ label ch30_reset:
                 if tp_time > max_time:
                     # cut the max time and reset totalplaytime to it
                     persistent.sessions["total_playtime"] = max_time // 100
-
+                    
                     # set the monika size
                     store.mas_dockstat.setMoniSize(
                         persistent.sessions["total_playtime"]
                     )
-
+                
                 elif tp_time < datetime.timedelta(0):
                     # 0 out the total playtime
                     persistent.sessions["total_playtime"] = datetime.timedelta(0)
-
+                    
                     # set the monika size
                     store.mas_dockstat.setMoniSize(
                         persistent.sessions["total_playtime"]
@@ -2132,10 +2113,10 @@ label ch30_reset:
     python:
         if store.mas_dockstat.retmoni_status is not None:
             monika_chr.remove_acs(mas_acs_quetzalplushie)
-
+            
             #We don't want to set up any drink vars/evs if we're potentially returning home this sesh
             MASConsumable._reset()
-
+            
             #Let's also push the event to get rid of the thermos too
             if not mas_inEVL("mas_consumables_remove_thermos"):
                 queueEvent("mas_consumables_remove_thermos")
