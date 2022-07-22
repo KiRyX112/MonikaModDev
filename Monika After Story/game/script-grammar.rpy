@@ -32,12 +32,12 @@ init 4 python in mas_gtod:
             true if the tip has been seen and a day has past since it was
             unlocked, False otherwise
         """
-
+        
         tip_ev = evhand.event_database.get(
             M_GTOD.format(tip_num),
             None
         )
-
+        
         return (
             tip_ev is not None
             and tip_ev.last_seen is not None
@@ -50,24 +50,24 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip000",
-            category=["grammar tips"],
-            prompt="Can you teach me about grammar?",
+            category=["советы по грамматике"],
+            prompt="Можешь научить меня грамматике?",
             pool=True,
             rules={"bookmark_rule": store.mas_bookmarks_derand.BLACKLIST}
         )
     )
 
 label monika_gtod_tip000:
-    m 3eub "Of course I'll teach you about grammar, [player]!"
-    m 3hua "It makes me really happy you want to improve your writing skills."
-    m 1eub "I've actually been reviewing some books on writing, and I think there are some interesting things we can talk about!"
-    m 1rksdla "I'll admit...{w=0.5}it kind of sounds strange to discuss something as specific as grammar."
-    m 1rksdlc "I know it's not the most exciting thing that comes up in people's minds."
-    m 3eksdld "...Maybe you think of strict teachers, or stuck-up editors..."
-    m 3eka "But I think that there's a certain beauty in mastering how you write and eloquently delivering your message."
-    m 1eub "So...{w=0.5}starting today, I'll be sharing Monika's Grammar Tip of the Day!"
-    m 1hua "Let's improve our writing together, [mas_get_player_nickname()]~"
-    m 3eub "We'll start with clauses, the basic building blocks of sentences!"
+    m 3eub "Конечно, я обучу тебя грамматике, [player]!"
+    m 3hua "Я так рада тому, что ты хочешь улучшить свои писательские навыки."
+    m 1eub "По правде говоря, я читала пару книг про правописание, и, думаю, мы можем обсудить несколько интересных тем!"
+    m 1rksdla "Должна признать... {w=0.5}как-то странно обсуждать что-то специфичное, как грамматику."
+    m 1rksdlc "Знаю, это не самая интересная вещь, которая приходит людям на ум."
+    m 3eksdld "...Наверное, ты думаешь о строгих учителях, или даже о высокомерных редакторах..."
+    m 3eka "Но я считаю, что в освоении написания и красноречивом передаче своего посыла есть определённая красота."
+    m 1eub "И поэтому... {w=0.5}начиная с сегодняшнего дня, я дам тебе грамматический совет дня от Моники!"
+    m 1hua "Давай улучшим наш стиль письма вместе, [mas_get_player_nickname()]~"
+    m 3eub "Мы начнём с формулировки, основных схем построения предложений!"
 
     # hide the intro topic after viewing
     $ mas_hideEVL("monika_gtod_tip000", "EVE", lock=True, depool=True)
@@ -85,20 +85,20 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip001",
-            category=["grammar tips"],
-            prompt="Clauses"
+            category=["советы по грамматике"],
+            prompt="Формулировки"
         )
     )
 
 label monika_gtod_tip001:
-    m 3eud "You probably know this already, but a clause is a group of words that has a subject and an action, or predicate."
-    m 1euc "For the most part, clauses can be sorted into either independent or dependent clauses."
-    m 1esd "Independent clauses can stand on their own as sentences, such as in the sentence '{b}I wrote that.{/b}'"
-    m 3euc "Dependent clauses, on the other hand, can't stand on their own and usually appear as parts of longer sentences."
-    m 3eua "An example of one could be '{b}who saved her.{/b}'"
-    m 3eud "There's a subject, '{b}who{/b},' and an action, '{b}saved her{/b},' but of course, the clause can't be a sentence by itself."
-    m 1ekbsa "...{w=0.5}I think you know how to finish that sentence, [player]~"
-    m 3eub "Okay, that's all for today's lesson. Thanks for listening!"
+    m 3eud "Возможно, ты уже знаешь об этом, но формулировка является группой слов, у которых есть подлежащее и сказуемое, или только основа."
+    m 1euc "В основном, формулировки делятся на независимые и зависимые формы."
+    m 1esd "Независимые формулировки могут сами образовывать предложения, например: {b}«я написала это»{/b}."
+    m 3euc "Зависимые формы, с другой стороны, не могут образовать предложение, и они, как правило, являются частями более длинного предложения."
+    m 3eua "Примером такой формы может послужить фраза {b}«тот, кто спас её»{/b}.'"
+    m 3eud "Здесь есть подлежащее {b}«кто»{/b} и сказуемое {b}«спас»{/b}, но сама формулировка не может сама по себе являться предложением."
+    m 1ekbsa "...{w=0.5}Думаю, ты знаешь, как закончить это предложение, [player]~"
+    m 3eub "Ладно, на сегодня урок окончен. Спасибо, что выслушал!"
     return
 
 init 5 python:
@@ -106,8 +106,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip002",
-            category=["grammar tips"],
-            prompt="Comma Splices and Run-ons",
+            category=["советы по грамматике"],
+            prompt="Связи запятыми и пунктуация",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(1)",
             action=EV_ACT_UNLOCK,
@@ -116,21 +116,21 @@ init 5 python:
     )
 
 label monika_gtod_tip002:
-    m 1eua "Do you remember when we talked about clauses, [player]?"
-    m 1eud "There's actually a very common mistake that many writers fall into when joining them."
-    m 3esc "When you join two independent clauses together, this is called a comma splice."
-    m 3esa "Here's an example:{w=0.5} '{b}I visited the park, I looked at the sky, I saw many stars.{/b}"
-    m 1eua "This doesn't seem like a problem at first, but you could imagine adding more and more clauses to that sentence..."
-    m 3wud "The result would be a mess!"
-    m 1esd "'{b}I visited the park, I looked at the sky, I saw many stars, I saw some constellations, one of them looked like a crab{/b}...'{w=0.5} It could go on and on."
-    m 1eua "The best way to avoid this mistake is to separate independent clauses with periods, conjunctions, or semicolons."
-    m 1eud "A conjunction is basically a word that you use to connect two clauses or phrases together."
-    m 3eub "They're a pretty interesting topic on their own, so we can go over them in a future tip!"
-    m 3eud "Anyway, taking that example we had earlier, let's add a conjunction and a period to make our sentence flow better..."
-    m 1eud "'{b}I visited the park, and I looked at the sky. I saw many stars.{/b}'"
-    m 3hua "Much better, don't you think?"
-    m 1eub "That's all I have for today, [player]."
-    m 3hub "Thanks for listening!"
+    m 1eua "Помнишь, как мы разговаривали о формулировках, [player]?"
+    m 1eud "Есть одна очень распространённая ошибка, которую допускают писатели, когда связывают их."
+    m 3esc "Когда ты связываешь две независимые формулировки вместе, это – связь запятыми."
+    m 3esa "Вот пример: {w=0.5}{b}«Я зашла в парк, я взглянула на небо, я увидела множество звёзд»{/b}."
+    m 1eua "На первый взгляд, это не кажется проблемой, но ты только представь, как к этому предложению добавляется всё больше и больше формулировок..."
+    m 3wud "В результате получается полная неразбериха!"
+    m 1esd "{b}«Я зашла в парк, я взглянула на небо, я увидела множество звёзд, я увидела пару созвездий, и одно из них было похоже на краба...». {w=0.5}Это может продолжаться до бесконечности."
+    m 1eua "Лучший способ не допустить эту ошибку – разделить независимые формулировки точками, союзами или точками с запятой."
+    m 1eud "Союз, в основном, является словом, которое ты используешь для связи двух формулировок или предложений."
+    m 3eub "Сами по себе они являются довольно интересной темой, мы перейдём к их изучению в будущем совете!"
+    m 3eud "Ладно, давай возьмём тот пример, что мы придумали раньше, и добавим к нему союз и точку, чтобы сделать наше предложение более эффективным..."
+    m 1eud "«Я зашла в парк и взглянула на небо, и там я увидела множество звёзд»."
+    m 3hua "Намного лучше, согласен?"
+    m 1eub "Это всё на сегодня, [player]."
+    m 3hub "Спасибо, что выслушал!"
     return
 
 init 5 python:
@@ -138,8 +138,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip003",
-            category=["grammar tips"],
-            prompt="Conjunctions",
+            category=["советы по грамматике"],
+            prompt="Союзы",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(2)",
             action=EV_ACT_UNLOCK,
@@ -148,32 +148,32 @@ init 5 python:
     )
 
 label monika_gtod_tip003:
-    m 1eub "Okay, [player]! I think it's time we talk about...{w=0.5}conjunctions!"
-    m 3esa "Like I said before, conjunctions are words or phrases that bring two ideas together."
-    m 3wud "When you think about it, that's a big category! There are so many words we use to accomplish that."
-    m 1euc "Just imagine speaking without conjunctions..."
-    m 1esc "It would be dull.{w=0.3} You would sound choppy.{w=0.3} These ideas all relate.{w=0.3} We should connect them."
-    m 3eua "As you will see, conjunctions are great for combining ideas, and at the same time, they make your writing sound fluid and more similar to how we actually talk."
-    m 1eua "Now, let's revisit our earlier example, this time with conjunctions..."
-    m 1eub "'{b}It would be dull, and you would sound choppy. Since these ideas all relate, we should connect them.{/b}'"
-    m 3hua "Much better, don't you think?"
-    m 1esa "Anyway, there are three types of conjunctions:{w=0.5} coordinating, correlative, and subordinating."
-    m 1hksdla "Their names may sound a little daunting, but I promise they'll make more sense as we go through them. I'll give you examples as we go along."
-    m 1esd "Coordinating clauses bridge two words, phrases, or clauses of the same 'rank' together. This just means that they have to be of the same type...words with words, or clauses with clauses."
-    m 3euc "Some common examples include:{w=0.5} '{b}and{/b},' '{b}or{/b},' '{b}but{/b},' '{b}so{/b},' and '{b}yet{/b}.'"
-    m 3eub "You can connect independent clauses, {i}and{/i} you can avoid comma splices!"
-    m 1esd "Correlative conjunctions are pairs of conjunctions used to connect ideas."
-    m 3euc "A few common pairs are:{w=0.5} '{b}either{/b}/{b}or{/b},' '{b}both{/b}/{b}and{/b},' and '{b}whether{/b}/{b}or{/b}.'"
-    m 3eub "{i}Whether{/i} you realize it {i}or{/i} not, we use them all the time...like in this sentence!"
-    m 1esd "Lastly, subordinating conjunctions bring together independent and dependent clauses."
-    m 3eub "As you can imagine, there are many ways we can do that!"
-    m 3euc "Examples include:{w=0.5} '{b}although{/b},' '{b}until{/b},' '{b}since{/b},' '{b}while{/b},' and '{b}as long as{/b}.'"
-    m 3eub "{i}Since{/i} there are so many, this category of conjunctions is the widest!"
-    m 3tsd "Oh, and another thing...{w=0.5} A pretty common misconception is that you shouldn't begin sentences with conjunctions."
-    m 3hub "As I just showed you with the last two examples, you definitely can, ahaha!"
-    m 1rksdla "But just avoid going overboard with them. Or else you sound a little forced."
-    m 1eub "I think that's enough for today, [player]."
-    m 3hub "Thanks for listening!"
+    m 1eub "Итак, [player]! Думаю, пришла пора поговорить нам о...{w=0.5} союзах!"
+    m 3esa "Как я уже говорила раньше, союзы являются словами или фразами, которые соединяют два предложения вместе."
+    m 3wud "Если подумать, то это довольно обширная категория! В ней так много слов, которые мы можем использовать для достижения этого."
+    m 1euc "Только представь разговор без союзов..."
+    m 1esc "Это было бы скучно. {w=0.3}У тебя было бы неспокойное звучание. {w=0.3}Эти предложения связаны меж собой. {w=0.3}Мы должны их соединить."
+    m 3eua "Как видишь, союзы прекрасно подходят для объединения идей, и в то же время, они придают твоему стилю письма спокойное звучание и большую схожесть с реальной манерой речи."
+    m 1eua "А теперь, давай вернёмся к нашему прошлому примеру, но на этот раз мы применим союзы..."
+    m 1eub "{b}«Это было бы скучно, да и у тебя было бы неспокойное звучание. Поскольку эти предложения связаны меж собой, мы должны их соединить»{/b}."
+    m 3hua "Намного лучше, согласен?"
+    m 1esa "Так или иначе, есть три типа союзов: {w=0.5}cоединительные, сравнительные и подчинительные."
+    m 1hksdla "Их названия могут звучать немного обескураживающе, но я уверяю, что в них окажется гораздо больше смысла, как только мы пройдёмся по ним. Я буду давать тебе примеры по ходу дела."
+    m 1esd "Соединительные формулировки связывают два слова, фразы или формулировки такого же «ранга» вместе. Это лишь означает, что они должны быть одного типа... слова со словами, или формулировки с формулировками."
+    m 3euc "В некоторые распространённые примеры входят следующие союзы: {w=0.5}{b}«и»{/b}, {b}«или»{/b}, {b}«но»{/b}, {b}«так»{/b} и {b}«пока»{/b}."
+    m 3eub "Ты можешь связать независимые формулировки, {i}и{/i} ты сможешь избежать применения связей запятыми!"
+    m 1esd "Сравнительные союзы являются формой союзов, применяемой для связывания идей."
+    m 3euc "Есть несколько распространённых пар: {w=0.5}«{b}либо{/b}/{b}или{/b}», «{b}оба{/b}/{b}и{/b}» и «{b}независимо от того{/b}/{b}или{/b}»."  
+    m 3eub "{i}Независимо от того{/i}, осознал ты это {i}или{/i} нет, мы используем их всё время... прямо как в этом предложении!"  
+    m 1esd "Кроме того, подчинительные союзы соединяют вместе независимые и зависимые формулировки."  
+    m 3eub "Как ты понимаешь, есть много способов сделать это!"  
+    m 3euc "Сюда входят следующие примеры: {w=0.5}{b}«хотя»{/b}, {b}«до тех пор»{/b}, {b}«с тех пор, как»{/b}, {b}«пока»{/b} и {b}«раз уж»{/b}."  
+    m 3eub "И {i}раз уж{/i} их существует целое множество, эта категория союзов является самой широкой!"
+    m 3tsd "О, и ещё кое-что... {w=0.5}есть довольно распространённое заблуждение касающееся того, что ты не должен начинать предложения с союзов."
+    m 3hub "Раз уж я показала тебе те два примера, ты определённо можешь это сделать, а-ха-ха!"
+    m 1rksdla "Но их использованием лучше пренебречь. Иначе у тебя получится неестественное звучание."
+    m 1eub "Думаю, на сегодня этого будет достаточно, [player]."
+    m 3hub "Спасибо, что выслушал!"
     return
 
 init 5 python:
@@ -181,8 +181,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip004",
-            category=["grammar tips"],
-            prompt="Semicolons",
+            category=["советы по грамматике"],
+            prompt="Точки с запятыми",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(3)",
             action=EV_ACT_UNLOCK,
@@ -191,24 +191,24 @@ init 5 python:
     )
 
 label monika_gtod_tip004:
-    m 1eua "Today we will talk about a rarely used and commonly misunderstood punctuation mark..."
-    m 3eub "The semicolon!"
-    m 3eua "Some interesting things have been written about semicolons, including this from the author Lewis Thomas..."
-    m 1esd "'{i}Sometimes you get a glimpse of a semicolon coming, a few lines farther on, and it is like climbing a steep path through woods and seeing a wooden bench just at a bend in the road ahead{/i}...'"
-    m 1esa "'{i}...a place where you can expect to sit for a moment, catching your breath.{/i}'"
-    m 1hua "I really appreciate how eloquently he describes something as simple as a punctuation mark!"
-    m 1euc "Some people think you can use a semicolon as a substitute for a colon, while others treat it as a period..."
-    m 1esd "If you recall our talk on clauses, the semicolon is actually meant to connect two independent clauses."
-    m 3euc "For example, if I wanted to keep two ideas together, such as '{b}You're here{/b}' and '{b}I'm happy{/b},' I could write them as..."
-    m 3eud "'{b}You're here; I'm happy{/b}' instead of '{b}You're here, and I'm happy{/b}' or '{b}You're here. I'm happy{/b}.'"
-    m 1eub "All three sentences convey the same message, but in comparison, '{b}You're here; I'm happy{/b}' connects the two clauses at a happy medium."
-    m 1esa "In the end, this always depends on the ideas you want to connect, but I think that Thomas puts it well when you compare them to periods or commas."
-    m 1eud "Unlike a period, which opens up to a completely different sentence, or a comma, which shows you there is more to come in the same one..."
-    m 3eub "A semicolon really is that in-between, or, as Thomas says, '{i}a place where you can expect to sit for a moment and catch your breath.{/i}'"
-    m 1esa "At least this gives you a whole other option; hopefully, you can now make better use of the semicolon when you're writing..."
-    m 1hua "Ehehe."
-    m 1eub "Okay, that's enough for today, [player]."
-    m 3hub "Thanks for listening!"
+    m 1eua "Сегодня мы поговорим о довольно редком и самом распространённом заблуждении, связанным с знаком препинания..."
+    m 3eub "Точка с запятой!"
+    m 3eua "О точке с запятой написали парочку интересных вещей, в их числе и этот рассказ от Льюиса Томаса..."
+    m 1esd "{i}«Бывает, глядишь мельком на точки с запятой приход, пара линий стремится вдаль, и это словно восхождение на крутую тропу через лес, и в глаза деревянная скамья бросается, что стоит на изгибе дороги...»." 
+    m 1esa "{i}«...место, где ты можешь присесть на минутку и дыхание перевести»{/i}."
+    m 1hua "Я правда ценю то, как ярко он описал такой простой предмет, как знак препинания!"
+    m 1euc "Некоторые люди считают, что ты можешь использовать точку с запятой как альтернативу двоеточию, в то время как остальные используют его в качестве точки..."
+    m 1esd "Если ты помнишь наш разговор про формулировки, двоеточие предназначено для соединения двух независимых формулировок."
+    m 3euc "Например, если бы я хотела свести два предложения, а именно – {b}«ты здесь»{/b} и {b}«я счастлива»{/b}, вместе, то я бы записала их следующим образом..."
+    m 3eud "{b}«Ты здесь; я счастлива»{/b}, а не {b}«Ты здесь и я счастлива»{/b} или {b}«Ты здесь. Я счастлива»{/b}."
+    m 1eub "Все три предложения несут в себе один и тот же посыл, но, по сравнению с ними, {b}«Ты здесь; я счастлива»{/b} связывает две формулировки, достигнув золотой середины."
+    m 1esa "В конце концов, это всегда зависит от предложений, которые ты хочешь связать, но я считаю, что Томас удачно высказался по этому поводу, если сравнивать их с точками или запятыми."
+    m 1eud "В отличие от точки, которая раскрывает совершенно иное предложение, или запятой, которая показывает тебе, что в одном и том же предложении есть нечто большее..."
+    m 3eub "Точка с запятой является чем-то посередине, или, как говорил Томас – {i}«место, где ты можешь присесть на минутку и дыхание перевести»{/i}."
+    m 1esa "По крайней мере, это даёт тебе совершенно иной выбор; надеюсь, теперь ты найдёшь лучшее применение точке с запятой во время написания текста..."
+    m 1hua "Э-хе-хе."
+    m 1eub "Ладно, на сегодня это всё, [player]."
+    m 3hub "Спасибо, что выслушал!"
     return
 
 init 5 python:
@@ -216,8 +216,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip005",
-            category=["grammar tips"],
-            prompt="Subjects and Objects",
+            category=["советы по грамматике"],
+            prompt="Субъекты и объекты",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(4)",
             action=EV_ACT_UNLOCK,
@@ -226,20 +226,20 @@ init 5 python:
     )
 
 label monika_gtod_tip005:
-    m 1eua "Today we'll talk about subjects and objects, [player]."
-    m 1eud "Remember when I told you about clauses having an action and a verb?"
-    m 3eub "The object is the person or thing that the subject acts on!"
-    m 1eua "So, in the sentence '{b}We watched the fireworks together{/b},' the object would be...{w=0.5}the '{b}fireworks{/b}.'"
-    m 3esd "Oh, it's important to note that objects aren't necessary to form complete sentences..."
-    m 1eua "The sentence could very well have been, '{b}We watched.{/b}'"
-    m 3hksdlb "That's a complete sentence...although it's an ambiguous one, ahaha!"
-    m 1eud "There's also nothing that says that the object has to come last, but I'll discuss that in more detail another time."
-    m 3esa "Just remember that the subject is doing the action and the object is acted upon."
-    m 1eub "Okay, that's all for today..."
-    m 3hub "Thanks for listening, [player]! I love."
+    m 1eua "Сегодня мы поговорим о субъектах и объектах, [player]."
+    m 1eud "Помнишь, как я говорила о формулировках с подлежащим и сказуемым?"
+    m 3eub "Объект – это человек или предмет, к которому обращается подлежащее!"
+    m 1eua "То есть, в предложении {b}«Мы вместе смотрели на фейерверки»{/b} объектом будут являться...{w=0.5}{b}«фейерверки»{/b}."
+    m 3esd "О, следует также учесть, что для сформирования полных предложений упоминание объектов не является обязательным..."
+    m 1eua "Предложение вполне может состоять только из следующих слов: {b}«Мы смотрели»{/b}."
+    m 3hksdlb "Это полное предложение... хоть и самое неоднозначное, а-ха-ха!"
+    m 1eud "И нигде не сказано о том, что объект должен упоминаться в последнюю очередь, но я расскажу об этом в подробностях позже."
+    m 3esa "Просто помни о том, что субъект выполняет действие, а с объектом взаимодействуют."
+    m 1eub "Ладно, это всё на сегодня..."
+    m 3hub "Спасибо, что выслушал, [player]! Я люблю..."
     m 1eua "..."
     m 1tuu "..."
-    m 3hub "You!"
+    m 3hub "Тебя!"
     return "love"
 
 init 5 python:
@@ -247,8 +247,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip006",
-            category=["grammar tips"],
-            prompt="Active and Passive Voices",
+            category=["советы по грамматике"],
+            prompt="Активный и пассивный залоги",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(5)",
             action=EV_ACT_UNLOCK,
@@ -257,19 +257,19 @@ init 5 python:
     )
 
 label monika_gtod_tip006:
-    m 1eud "[player], do you know about voices in writing?"
-    m 3eua "There's the active voice and the passive voice."
-    m 3euc "If you remember our talk on subjects and objects, the big difference between the two voices is whether the subject or the object comes first."
-    m 1esd "Let's say the subject is '{b}Sayori{/b}' and the object is a '{b}cupcake{/b}.'"
-    m 3eud "Here's the sentence in an active voice:{w=0.5} '{b}Sayori ate the last cupcake.{/b}'"
-    m 3euc "Here it is again in a passive voice:{w=0.5} '{b}The last cupcake was eaten.{/b}'"
-    m 1eub "As you can see, you can use the passive voice to be secretive about the subject yet still have a complete sentence."
-    m 1tuu "It's true; you {i}can{/i} use the passive voice to be sneaky!{w=0.5} It does have other uses, though."
-    m 3esd "For example, in some careers, people have to use the passive voice to be impersonal."
-    m 3euc "Scientists describe experiments with '{b}the results were documented{/b}...' since the important part is their work and not who did it."
-    m 1esa "Anyway, for the most part, stick with the active voice for readability and, you know, to directly tell who's doing what."
-    m 1eub "I think that's enough for today, [player]."
-    m 3hub "Thanks for listening!"
+    m 1eud "[player], ты знаешь о залогах в письме?"
+    m 3eua "Есть как активный залог, так и пассивный."
+    m 3euc "Если ты помнишь наш разговор о субъектах и объектах, большое отличие между двумя залогами заключается в том, что идёт первым: субъект или объект."
+    m 1esd "Предположим, субъектом является {b}«Сайори»{/b}, а объектом – {b}«кекс»{/b}."
+    m 3eud "Вот предложение в активном залоге: {w=0.5}{b}«Сайори съела последний кекс»{/b}."
+    m 3euc "А вот оно же, но в пассивном залоге: {w=0.5}{b}«Последний кекс был съеден»{/b}."
+    m 1eub "Как видишь, ты можешь использовать пассивный залог, чтобы скрыть субъект, хоть он и остался по-прежнему в полном предложении."
+    m 1tuu "Это правда; ты {i}можешь{/i} использовать пассивный залог, чтобы не выдать себя! {w=0.5}Впрочем, у него есть и другие виды применения."
+    m 3esd "К примеру, в некоторых профессиях, люди должны использовать пассивный залог, чтобы не упоминать свою личность."
+    m 3euc "Учёные описывают эксперименты фразой {b}«результаты были записаны...»{/b}, поскольку самой главной частью является их работа, а не тот, кто сделал её."
+    m 1esa "Так или иначе, в основном, активный залог используют для читабельности и, ну, знаешь, чтобы прямо сказать о том, кто и что сделал."
+    m 1eub "Думаю, этого будет достаточно на сегодня, [player]."
+    m 3hub "Спасибо, что выслушал!"
     return
 
 init 5 python:
@@ -277,8 +277,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip007",
-            category=["grammar tips"],
-            prompt="Who vs. Whom",
+            category=["советы по грамматике"],
+            prompt="Кто против Который",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(6)",
             action=EV_ACT_UNLOCK,
@@ -287,20 +287,20 @@ init 5 python:
     )
 
 label monika_gtod_tip007:
-    m 1eua "Today we will talk about the uses of '{b}who{/b}' and '{b}whom{/b}.'"
-    m 3hub "Most of the time, it seems like people just use '{b}who{/b}' without bothering to learn the difference, ahaha."
-    m 1esd "The difference is that '{b}who{/b}' refers to a subject, and '{b}whom{/b}' refers to an object."
-    m 3eub "It turns out that it's pretty easy to figure out when to use one or the other!"
-    m 1euc "'{b}Who{/b}' corresponds to '{b}he{/b}/{b}she{/b}/{b}they{/b}' while '{b}whom{/b}' corresponds to '{b}him{/b}/{b}her{/b}/{b}them{/b}.'"
-    m 3eud "Simply replace the possible '{b}who{/b}' or '{b}whom{/b}' with '{b}he{/b}/{b}she{/b}/{b}they{/b}' or '{b}him{/b}/{b}her{/b}/{b}them{/b}.'"
-    m 1eua "Only one replacement should make sense, and that should tell you which one to use!"
-    m 3eua "Let's take, for example, the title of my poem, {i}The Lady who Knows Everything{/i}."
-    m 3esd "If we just look at the clause '{b}who knows everything{/b}' and replace the '{b}who{/b},' we get..."
-    m 1esd "'{b}She knows everything{/b}' or '{b}her knows everything{/b}.'"
-    m 3euc "Only '{b}she knows everything{/b}' makes sense, so the correct phrase is '{b}who knows everything{/b}.'"
-    m 1hksdla "Who said writing was hard?"
-    m 1eub "That's all I have for today, [player]."
-    m 3hub "Thanks for listening!"
+    m 1eua "Сегодня мы поговорим об использовании {b}«кто»{/b} и {b}«который»{/b}."
+    m 3hub "В большинстве случаев, похоже, люди просто используют {b}«кто»{/b}, не имея никакого желания понять разницу, а-ха-ха."
+    m 1esd "Разница в том, что {b}«кто»{/b} отсылается на субъект, а {b}«который»{/b} – на объект."
+    m 3eub "Оказывается, выяснить, когда надо использовать то или иное слово, довольно просто!"
+    m 1euc "{b}«Кто»{/b} соответствует словам «{b}он{/b}/{b}она{/b}/{b}они{/b}», в то время как {b}«который»{/b} соответствует «{b}ему{/b}/{b}ей{/b}/{b}им{/b}»."
+    m 3eud "Просто замени возможное {b}«кто»{/b} или {b}«который»{/b} на «{b}он{/b}/{b}она{/b}/{b}они{/b}» или «{b}ему{/b}/{b}ей{/b}/{b}им{/b}»."
+    m 1eua "Всего одна замена должна нести в себе смысл, и это подскажет тебе, какое слово использовать!"
+    m 3eua "Давай, в качестве примера, возьмём название моего стихотворения, {i}«Леди, которая знает всё»{/i}."
+    m 3esd "Если мы взглянем на формулировку {b}«которая знает всё»{/b} и поменяем слово {b}«которая»{/b}, то мы получим..."
+    m 1esd "{b}«Она знает всё»{/b} или {b}«ей всё известно»{/b}."
+    m 3euc "Более осмысленной кажется фраза {b}«она знает всё»{/b}, следовательно, правильно будет {b}«которая знает всё»{/b}."
+    m 1hksdla "Кто сказал, что писать тексты сложно?"
+    m 1eub "Это всё на сегодня, [player]."
+    m 3hub "Спасибо, что выслушал!"
     return
 
 init 5 python:
@@ -308,8 +308,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_gtod_tip008",
-            category=["grammar tips"],
-            prompt="And I vs. And me",
+            category=["советы по грамматике"],
+            prompt="Оксфордская запятая",
             pool=True,
             conditional="store.mas_gtod.has_day_past_tip(7)",
             action=EV_ACT_UNLOCK,
@@ -318,87 +318,13 @@ init 5 python:
     )
 
 label monika_gtod_tip008:
-    m 1eua "Last time, we talked about the difference between '{b}who{/b}' and '{b}whom{/b}.'"
-    m 1esd "Another couple of words that can be just as confusing to use are '{b}and I{/b}' and '{b}and me{/b}.'"
-    m 3etc "Is it '{b}[player] and I went on a date{/b}' or '{b}[player] and me went on a date{/b}?'"
-    m 3eud "Just like with '{b}who{/b}' and '{b}whom{/b},' the issue boils down to one of subjects and objects."
-    m 1esd "If the speaker is the subject of the sentence, '{b}and I{/b}' is correct."
-    m 1euc "Conversely, if the speaker is the object of the sentence, '{b}and me{/b}' is correct."
-    m 3eub "Luckily, just like when we talked about '{b}who{/b}' versus '{b}whom{/b},' it turns out there's a simple way to figure out which one is correct!"
-    m 1euc "In our example, if you just take out '{b}[player] and{/b}' from the sentence, only one should make sense."
-    m 1hua "Let's try it out!"
-    m 3eud "The end result is:{w=0.5} '{b}I went on a date{/b}' or '{b}me went on a date{/b}.'"
-    m 3eub "Clearly, only the first one makes sense, so it's '{b}[player] and I went on a date{/b}.'"
-    m 1tuu "Oh, sorry, [player]...{w=1}did it make you feel left out when I said only '{b}I went on a date{/b}?'"
-    m 1hksdlb "Ahaha! Don't worry, I'd never leave you behind."
-    m 3eub "Now, on the other hand, if I was the object of the sentence, I would need to use '{b}and me{/b}' instead."
-    m 3eua "For example:{w=0.5} '{b}Natsuki asked [player] and me if we liked her cupcakes.{/b}'"
-    m 1eub "I hope that helps the next time you come across this situation while writing, [player]!"
-    m 3hub "Anyway, that's all for today, thanks for listening!"
-    return
-
-init 5 python:
-    addEvent(
-        Event(
-            persistent.event_database,
-            eventlabel="monika_gtod_tip009",
-            category=["grammar tips"],
-            prompt="Apostrophes",
-            pool=True,
-            conditional="store.mas_gtod.has_day_past_tip(8)",
-            action=EV_ACT_UNLOCK,
-            rules={"no_unlock":None}
-        )
-    )
-
-# Note: formatted apostrophes have been used in examples in this tip for clarity. Please DO NOT remove them.
-label monika_gtod_tip009:
-    if player[-1].lower() == 's':
-        $ tempname = player
-    else:
-        $ tempname = 'Alexis'
-
-    m 1eua "Today we're going to talk about apostrophes. Pretty straightforward, right?"
-    m 3eua "Add them to show possession: '{b}Sayori’s fork, Natsuki’s spoon, Yuri’s knife{/b}...'"
-    m 1esd "I guess the issue that can come up is when you have to add an apostrophe to a word that ends with an '{b}s{/b}.'"
-    m 3eub "For plural words, this is simple; just add the apostrophe at the end:{w=0.5} '{b}monkeys’{/b}.'"
-    m 1hksdla "It's pretty clear that '{b}monkey’s{/b},' which would indicate possession belonging to a single monkey, or '{b}monkeys’s{/b}' would be wrong."
-    m 1eud "The gray area that comes up is when we bring in people's names, like '{b}Sanders{/b}' or '{b}[tempname]{/b}.'"
-    m 1euc "In some style guides I've read, it seems that we usually add an apostrophe and '{b}s{/b}' as usual, with the exception of historical names like '{b}Sophocles{/b}' or '{b}Zeus{/b}.'"
-    m 3eub "Personally, I think all that matters here is consistency!"
-    m 3esd "If you're going to go with '{b}[tempname]’{/b},' then it's fine as long as you use '{b}[tempname]’{/b}' for the entire text."
-    m 1tuu "That matters more than honoring some old Greeks to me."
-    m 3eud "One interesting exception is the case of '{b}its{/b}' versus '{b}it’s{/b}.'"
-    m 3etc "You would think that for the possessive form of '{b}it{/b}' you would add an apostrophe, making it '{b}it’s{/b},' right?"
-    m 3euc "Normally this would be correct, but in this case the possessive form of '{b}it{/b}' is simply '{b}its{/b}.'"
-    m 1esd "This is because '{b}it’s{/b}' is reserved for the contracted form of '{b}it is{/b}.'"
-    m 1eua "If you're wondering, a contraction is simply a shortened version of a word or words, with an apostrophe indicating where letters have been left out to make the contraction."
-    m 1eub "Okay, [player], {i}it's{/i} about time to wrap it up...{w=0.5}I think this lesson has run {i}its{/i} course."
-    m 3hub "Ehehe. Thanks for listening!"
-    return
-
-init 5 python:
-    addEvent(
-        Event(
-            persistent.event_database,
-            eventlabel="monika_gtod_tip010",
-            category=["grammar tips"],
-            prompt="The Oxford Comma",
-            pool=True,
-            conditional="store.mas_gtod.has_day_past_tip(9)",
-            action=EV_ACT_UNLOCK,
-            rules={"no_unlock":None}
-        )
-    )
-
-label monika_gtod_tip010:
-    m 3eud "Did you know there's actually a debate about the placement of a specific comma in a list of three items?"
-    m 3eub "This is called the Oxford, or serial, comma, and it's been known to completely change the meaning of a sentence!"
-    m 1esa "Let me show you what I mean..."
-    m 1hub "With the Oxford comma, I would say '{b}I love [player], reading, and writing.{/b}'"
-    m 1eua "Without the Oxford comma, I would say '{b}I love [player], reading and writing.{/b}'"
-    m 3eud "The confusion lies in whether I'm referring to loving three separate things, or if I'm referring to just loving you when you read and write."
-    m 3hub "Of course, both of those meanings are true, so there's no confusion there for me, ahaha!"
-    m 1eua "That's all I have for today, [player]."
-    m 3hub "Thanks for listening!"
+    m 3eud "А знал ли ты о том, что одна дискуссия, касающаяся расположения конкретной запятой в списке из трёх элементов, не утихает и по сей день?"
+    m 3eub "Её называют Оксфордской – или серийной – запятой, и она стала известной благодаря полному изменению смысла предложения!"
+    m 1esa "Позволь мне показать тебе, что я имею в виду..."
+    m 1hub "С Оксфордской запятой, я бы сказала следующее: {b}«Я люблю тебя, читать, и писать»{/b}."
+    m 1eua "Без Оксфордской запятой, я бы сказала следующее: {b}«Я люблю тебя, читать и писать»{/b}."
+    m 3eud "Путаница заключается в том, что я имею в виду: люблю ли я три разные вещи, или я люблю только тебя, когда ты читаешь и пишешь."
+    m 3hub "Разумеется, оба варианта здесь справедливы, поэтому никакой путаницы для меня здесь не возникает, а-ха-ха!"
+    m 1eua "Это всё на сегодня, [player]."
+    m 3hub "Спасибо, что выслушал!"
     return
