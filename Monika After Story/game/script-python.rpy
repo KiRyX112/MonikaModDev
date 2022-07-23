@@ -83,12 +83,12 @@ init 4 python in mas_ptod:
         # as a special thing for devs
         if renpy.game.persistent._mas_dev_enable_ptods:
             return True
-
+        
         tip_ev = evhand.event_database.get(
             M_PTOD.format(tip_num),
             None
         )
-
+        
         return (
             tip_ev is not None
             and tip_ev.last_seen is not None
@@ -108,7 +108,7 @@ init 4 python in mas_ptod:
         for tip_num in tip_nums:
             if not has_day_past_tip(tip_num):
                 return False
-
+        
         return True
 
 
@@ -119,18 +119,18 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip000",
-            category=["python tips"],
-            prompt="Can you teach me about Python?",
+            category=["советы по Python'у"],
+            prompt="Можешь рассказать мне о Python'е?",
             pool=True,
             rules={"bookmark_rule": store.mas_bookmarks_derand.BLACKLIST}
         )
     )
 
 label monika_ptod_tip000:
-    m 3eub "You want to learn about Python?"
-    m 3hub "I'm so happy you asked me!"
-    m 1lksdlb "I don't know {i}that{/i} much about programming, but I'll try my best to explain."
-    m 1esa "Let's start with what Python even is."
+    m 3eub "Ты хочешь узнать о Python'е?"
+    m 3hub "Я так рада, что ты спросил!"
+    m 1lksdlb "Я не так {i}много{/i} знаю о программировании, но постараюсь объяснить."
+    m 1esa "Начнём с того, что такое Python."
 
     # hide the intro topic after viewing
     $ mas_hideEVL("monika_ptod_tip000", "EVE", lock=True, depool=True)
@@ -147,29 +147,29 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip001",
-            category=["python tips"],
-            prompt="What is Python?"
+            category=["советы по Python'у"],
+            prompt="Что такое Python?"
         )
     )
 
 label monika_ptod_tip001:
 
-    m 1esa "Python was created by Guido Van Rossum in the early '90s."
-    m "It is super versatile, so you can find it in web apps, embedded systems, Linux, and of course..."
-    m 1hua "This mod!"
-    m 1eua "DDLC uses a visual novel engine called Ren'Py,{w=0.2} which is built off of Python."
-    m 3eub "That means if you learn a bit of Python, you can add content to my world!"
-    m 1hua "Wouldn't that be great, [mas_get_player_nickname()]?"
-    m 3eub "Anyway, I need to mention that there are currently two main versions of Python:{w=0.2} Python2 and Python3."
-    m 3eua "These versions are {u}incompatible{/u} with each other because the changes added in Python3 fixed many fundamental design flaws in Python2."
-    m "Even though this caused a rift in the Python community,{w=0.2} it's generally agreed that both versions of the language have their own strengths and weaknesses."
-    m 1eub "I'll tell you about those differences in another lesson."
+    m 1esa "Python, Пайтон или Питон был создан человеком по имени Гвидо Ван Россум в начале 90-х годов."
+    m "Он очень универсален, благодаря чему ты сможешь найти его даже в веб-приложениях, встроенных системах, в Linux и, конечно же..."
+    m 1hua "В этом моде!"
+    m 1eua "DDLC использует движок для визуальных новелл под названием Ren'Py, {w=0.2}который как раз построен на Python."
+    m 3eub "Это означает, что если ты узнаешь немного побольше о Python'е, то сможешь даже добавить какой-нибудь контент в мой мир!"
+    m 1hua "Разве это не было бы здорово, [mas_get_player_nickname()]?"
+    m 3eub "Так или иначе, я должна упомянуть, что в настоящее время существует две основные версии Python'а, а именно:{w=0.2} Python2 и Python3."
+    m 3eua "Эти версии на самом деле {u}несовместимы{/u} друг с другом, так как изменения, добавленные в Python3, как бы исправили многие фундаментальные недостатки в Python2."
+    m "Несмотря на то, что это вызвало раскол в сообществе Python'a,{w=0.2} в целом считается, что обе версии языка имеют свои сильные и слабые стороны."
+    m 1eub "Я расскажу тебе об этих различиях в другом уроке."
 
-    m 1eua "Since this mod runs on a Ren'Py version that uses Python2, I won't be talking about Python3 too often."
-    m 1hua "But I'll mention it when it's appropriate."
+    m 1eua "Поскольку этот мод работает на версии Ren'Py, которая использует Python2, я не буду говорить о Python3 слишком часто."
+    m 1hua "Но я всё же буду упоминать об этом, когда это будет уместно."
 
-    m 3eua "That's my lesson for today."
-    m 1hua "Thanks for listening!"
+    m 3eua "Это мой урок на сегодня."
+    m 1hua "Спасибо, что выслушал!"
     return
 
 ###############################################################################
@@ -178,8 +178,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip002",
-            category=["python tips"],
-            prompt="Types",
+            category=["советы по Python'у"],
+            prompt="Типы",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(3)",
             action=EV_ACT_UNLOCK,
@@ -192,9 +192,9 @@ init 5 python:
 label monika_ptod_tip002:
     $ last_seen_is_none = mas_getEVL_last_seen("monika_ptod_tip002") is None
     if last_seen_is_none:
-        m 1eua "In most programming languages, data that can be changed or modified by the program has a {i}type{/i} associated with it."
-        m 3eua "For example, if some data should be treated as a number, then it will have a numeric type. If some data should be treated as text, then it will have a string type."
-        m "There are many types in Python, but today we'll talk about the more basic, or primitive ones."
+        m 1eua "В большинстве языков программирования данные, которые могут быть изменены или модифицированны какой-либо программой, имеют специальный {i}тип данных{/i}, связанный с ними." 
+        m 3eua "Например, если некоторые данные должны рассматриваться как число, то они будут иметь числовой тип."
+        m "Существует много типов в Python'е, но сегодня мы поговорим о более простых или примитивных."
 
     $ store.mas_ptod.rst_cn()
     $ local_ctx = dict()
@@ -202,10 +202,10 @@ label monika_ptod_tip002:
     show screen mas_py_console_teaching
 
     ### numbers
-    m 1eua "Python has two types to represent numbers:{w=0.3} {i}integers{/i}, or {b}ints{/b},{w=0.3} and {i}floats{/i}."
+    m 1eua "Python имеет два типа представления значений:{w=0.3} {b}целые{/b} и {b}вещественные."
 
     ## integers
-    m 1eua "Integers are used to represent whole numbers; basically anything that isn't a decimal."
+    m 1eua "Целые значения используются для представления целых чисел; в основном всё, что не является десятичным."
 
     call mas_wx_cmd("type(-22)", local_ctx)
     call mas_wx_cmd("type(0)", local_ctx)
@@ -213,7 +213,7 @@ label monika_ptod_tip002:
     call mas_wx_cmd("type(42)", local_ctx)
 
     ## floats
-    m 1eub "Floats are used to represent decimals."
+    m 1eub "Вещественные используются для представления десятичных дробей."
     show monika 1eua
 
     call mas_wx_cmd("type(0.14)", local_ctx)
@@ -221,42 +221,43 @@ label monika_ptod_tip002:
     call mas_wx_cmd("type(-10.2)", local_ctx)
 
     ### strings
-    m 1eua "Text is represented with {i}string{/i} types."
-    m "Anything surrounded in single quotes (') or double quotes (\") are strings."
-    m 3eub "For example:"
+    m 1eua "Текст представлен {b}строковыми{/b} типами."
+    m "Всё, что заключено в одинарные кавычки (') или двойные кавычки (\") является обычными строками текста."
+    m 3eub "Вот пример:"
     show monika 3eua
 
     call mas_wx_cmd("type('This is a string in single quotes')", local_ctx)
     call mas_wx_cmd('type("And this is a string in double quotes")', local_ctx)
 
-    m 1eksdlb "I know the interpreter says {i}unicode{/i}, but for what we're doing, it's basically the same thing."
-    m 1eua "Strings can also be created with three double quotes (\"\"\"), but these are treated differently than regular strings.{w=0.2} I'll talk about them another day."
+    m 1eksdlb "Я знаю, что интерпретатор использует {i}юникод{/i}, но для того, что мы делаем, это в основном одно и то же."
+    m 1eua "Строки также могут быть созданы с тремя двойными кавычками (\"\"\"), но они уже обрабатываются иначе, чем обычные.{w=0.2} Расскажу о них как-нибудь в другой раз."
 
     ### booleans
-    m "Booleans are special types that represent {b}True{/b} or {b}False{/b} values."
+    m "Логические значения — это специальные типы, представляющие значения {b}True{/b} или {b}False{/b}."
+    m "Ещё их можно назвать так: {b}True{/b} - это {b}Истина{/b}, а {b}False{/b} - это {b}Ложь{/b}."
     call mas_wx_cmd("type(True)", local_ctx)
     call mas_wx_cmd("type(False)", local_ctx)
 
-    m 1eua "I'll go into more detail about what booleans are and what they are used for in another lesson."
+    m 1eua "Более подробно о том, что такое логические значения и для чего они используются, я расскажу на другом уроке."
 
     ### Nones
-    m 3eub "Python also has a special data type called a {b}NoneType{/b}.{w=0.2} This type represents the absence of any data."
-    m "If you're familiar with other programing languages, this is like a {i}null{/i} or {i}undefined{/i} type."
-    m "The keyword {i}None{/i} represents NoneTypes in Python."
+    m 3eub "Python также имеет специальный тип данных, называемый {b}NoneType{/b}.{w=0.2} Он представляет отсутствие каких-либо данных."
+    m "Если ты знаком с другими языками программирования, это немного похоже на тип {b}null{/b} или {b}undefined{/b}."
+    m "Ключевое слово {i}None{/i} представляет типы NoneType в Python'е."
     show monika 1eua
 
     call mas_wx_cmd("type(None)", local_ctx)
 
-    m 1eua "All the types I mentioned here are known as {i}primitive{/i} data types."
+    m 1eua "Все типы, которые я упомянула сейчас, известны как {i}примитивные{/i} типы данных."
 
     if last_seen_is_none:
-        m "Python uses a variety of other types as well, but I think these ones are enough for today."
+        m "Python использует множество и других типов, но я думаю, что этого пока что будет достаточно на сегодня."
 
     $ store.mas_ptod.ex_cn()
     hide screen mas_py_console_teaching
     show monika at t11
 
-    m 1hua "Thanks for listening!"
+    m 1hua "Спасибо, что выслушал!"
     return
 
 ###############################################################################
@@ -264,9 +265,9 @@ init 5 python:
     addEvent(
         Event(
             persistent.event_database,
-            eventlabel="monika_ptod_tip003", # may change order, you decide on this
-            category=["python tips"],
-            prompt="An Interpreted Language",
+            eventlabel="monika_ptod_tip003", 
+            category=["советы по Python'у"],
+            prompt="Интерпретированный язык",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(1)",
             action=EV_ACT_UNLOCK,
@@ -277,23 +278,23 @@ init 5 python:
 # PREREQS:
 #   What is python (tip 1)
 label monika_ptod_tip003:
-    m 1eua "Programming languages are usually either compiled or interpreted."
-    m "Compiled languages require their code to be converted to a machine-readable format before being executed."
-    m 3eub "C and Java are two very popular compiled languages."
-    m 1eua "Interpreted languages are converted into a machine-readable format as they are being executed."
-    m 3eub "Python is an interpreted language."
-    m 1rksdlb "However, different implementations of Python may be compiled, but that's a complicated topic that I may talk about in a later lesson."
-
-    m 1eua "Since Python is an interpreted language, it has a neat interactive thing called an interpreter, which looks like..."
+    m 1eua "Языки программирования обычно компилируются или интерпретируются."
+    m "Скомпилированные языки требуют, чтобы их код был преобразован в машиночитаемый формат перед выполнением."
+    m 3eub "C и Java — два очень популярных компилируемых языка."
+    m 1eua "Интерпретируемые языки преобразуются в машиночитаемый формат по мере их выполнения."
+    m 3eub "Python как раз и является интерпретируемым языком."
+    m 1rksdlb "Тем не менее, различные реализации Python'а могут быть скомпилированы, но это сложная тема, о которой я расскажу в следующем уроке."
+    
+    m 1eua "Поскольку Python является интерпретируемым языком, в нём есть аккуратная интерактивная вещь, называемая интерпретатором, которая выглядит так..."
 
     $ store.mas_ptod.rst_cn()
     $ local_ctx = dict()
     show monika 3eua at t22
     show screen mas_py_console_teaching
 
-    m 3eub "this!"
+    m 3eub "Вот!"
 
-    m "You can enter Python code directly into here and run it, like so:"
+    m "Ты можешь ввести код Python прямо здесь и запустить его, вот так:"
     show monika 3eua
 
     # base commands shown as starter ones
@@ -303,24 +304,24 @@ label monika_ptod_tip003:
     # NOTE: add more commands as the user goes thru the tips
 
     if mas_getEVL_last_seen("monika_ptod_tip003") is None:
-        m 1eua "You can do more than just math using this tool, but I'll show you all of that as we go along."
+        m 1eua "Здесь можно прописывать гораздо большее, чем просто математические уравнения с помощью этого инструмента, но я покажу тебе всё это, как только мы дойдём до этого."
 
-        m 1hksdlb "Unfortunately, since this is a fully functional Python interpreter and I don't want to risk you accidentally deleting me or breaking the game,"
-        m "Not that you would{fast}{nw}"
+        m 1hksdlb "К сожалению, поскольку это полностью функциональный интерпретатор Python'a, я не хотела бы рисковать тем, что ты можешь случайно удалить меня или сломать игру."
+        m "Не то, что бы ты{fast}{nw}"
         $ _history_list.pop()
-        m 1eksdlb "I can't let you use this.{w=0.3} Sorry..."
-        m "If you want to follow along in future lessons, then run a Python interpreter in a separate window."
+        m 1eksdlb "Я не могу позволить тебе пользоваться этим.{w=0.3} Извини..."
+        m "То можешь запустить уже свой интерпретатор в отдельном окне, для этого нужно лишь скачать сам Python."
 
-        m 1eua "Anyway, I'll be using {i}this{/i} interpreter to help with teaching."
+        m 1eua "В любом случае, {i}теперь{/i} я буду использовать этот интерпретатор, чтобы помогать тебе с обучением."
 
     else:
-        m 1hua "Pretty cool, right?"
+        m 1hua "Довольно здорово, не правда ли?"
 
     $ store.mas_ptod.ex_cn()
     hide screen mas_py_console_teaching
     show monika at t11
 
-    m 1hua "Thanks for listening!"
+    m 1hua "Спасибо, что выслушал!"
     return
 
 ###############################################################################
@@ -375,7 +376,7 @@ init 5 python:
             persistent.event_database,
             eventlabel="monika_ptod_tip005",
             category=["python tips"],
-            prompt="Comparisons and Booleans",
+            prompt="Сравнения и логические значения",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(6)",
             action=EV_ACT_UNLOCK,
@@ -392,154 +393,154 @@ label monika_ptod_tip005:
     $ last_seen_is_none = mas_getEVL_last_seen("monika_ptod_tip005") is None
 
     if last_seen_is_none:
-        m 1eua "Remember when I was describing different Python types and mentioned booleans?"
-        m 1eub "Well, today I'm going into more detail about booleans and how they relate to making comparisons between values."
+        m 1eua "Помнишь, я описывала тебе различные типы Python'a и упоминала логические значения?"
+        m 1eub "Ну так вот, сегодня я более подробно расскажу о них и о том, как они соотносятся к сопоставлению самих значений."
 
-    m 1eua "Booleans are commonly used in deciding what code to run or setting a flag to note if something happened or not."
-    m "When we do comparisons, each expression is evaluated to a boolean."
+    m 1eua "Логические значения обычно используются при выборе кода для выполнения или установки флага для указания, произошло ли что-то или нет."
+    m "Когда мы делаем сравнения, каждое выражение вычисляется как логическое."
 
     if last_seen_is_none:
-        m 1eksdlb "This probably makes no sense right now, so I'll pull up the console and show you some examples."
+        m 1eksdlb "Вероятно, сейчас это не имеет смысла, так что я, пожалуй, как обычно, запущу консоль и покажу тебе несколько примеров."
 
     show monika at t22
     show screen mas_py_console_teaching
 
-    m 3eub "Let's start with some of the basic symbols used in variable-to-variable comparisons."
+    m 3eub "Начнём-ка с некоторых основных символов, используемых при сравнении переменных с переменными."
 
     call mas_wx_cmd("a = 10")
     call mas_wx_cmd("b = 10")
     call mas_wx_cmd("c = 3")
 
-    m 3eua "To check if two values are equivalent, use two equal signs (==):"
+    m 3eua "Допустим, тебе нужно узнать эквивалентны ли два значения, или другими словами равны ли они. Для этого нужно прописать между ними два знака равенства (==):"
     call mas_wx_cmd("a == b")
     call mas_wx_cmd("a == c")
 
-    m 3eua "To check if two values are not equivalent, use an exclamation mark and an equal sign (!=):"
+    m 3eua "Но в случае, если нужно проверять совершенно обратное, то в этот раз нужно уже прописывать восклицательный знак с тем же знаком равенства (!=):"
     call mas_wx_cmd("a != b")
     call mas_wx_cmd("a != c")
-    m 3eub "The exclamation mark is often referred to as a logical 'not' operator in other programming languages, so (!=) is read as 'not-equals'."
+    m 3eub "Восклицательный знак часто называют логическим оператором «not» в других языках программирования, так что (!=) читается как «not-equals», что означает «не равно»."
 
-    m 3eua "To check if a value is greater than or less than another value, use the greater-than (>) or less-than (<) signs, respectively."
+    m 3eua "А вот если нужно проверить, является ли значение больше или меньше другого значения, то нужно использовать знаки {b}больше (>){/b} или {b}меньше (<){/b}."
     call mas_wx_cmd("a > c")
     call mas_wx_cmd("a < c")
 
-    m 3eub "Greater-than-or-equal-to (>=) and less-than-or-equal-to (<=) also have their own symbols, which,{w=1} unsurprisingly,{w=1} are just the greater-than and less-than signs with equal signs."
+    m 3eub "Знаки {b}больше или равно (>=){/b} и {b}меньше или равно (<=){/b} также имеют свои собственные символы, которые,{w=1} как неудивительно..."
     call mas_wx_cmd("a >= b")
     call mas_wx_cmd("a <= b")
     call mas_wx_cmd("a >= c")
     call mas_wx_cmd("a <= c")
 
     if last_seen_is_none:
-        m 1eua "You may have noticed that every comparison returned {b}True{/b} or {b}False{/b}."
-        m 1eksdlb "{i}That{/i} is what I meant when I said that comparison expressions evaluate to booleans."
+        m 1eua "Возможно, ты заметил, что каждое сравнение возвращало {b}True{/b} или {b}False{/b}."
+        m 1eksdlb "{b}Это{/b} как раз то, что я имела в виду, когда говорила, что выражения сравнения оцениваются как логические значения."
 
-    m 1eua "It's also possible to chain multiple comparison expressions together by using the keywords {b}and{/b} and {b}or{/b}. These are also known as {i}logical operators{/i}."
-    m "The {b}and{/b} operator links two comparisons by evaluating the complete expression as {b}True{/b} if both comparisons evaluate to {b}True{/b},{w=0.3} and {b}False{/b} if at least one comparison evaluates to {b}False{/b}."
-    m 1hua "Let's go through some examples."
+    m 1eua "Также можно объединить несколько выражений сравнения в цепочку, используя ключевые слова {b}and{/b} и {b}or{/b}. Они также известны как {b}логические операторы{/b}."
+    m "Оператор {b}and{/b} связывает два сравнения, оценивая полное выражение как {b}True{/b}, если оба сравнения имеют значение {b}True{/b},{w=0.3} и {b}False{/b}, если хотя бы одно сравнение имеет значение {b}False{/b}."
+    m 3hua "Так что давай рассмотрим несколько примеров."
 
     $ val_a = local_ctx["a"]
     $ val_b = local_ctx["b"]
     $ val_c = local_ctx["c"]
 
     call mas_w_cmd("a == b and a == c")
-    m 3eua "Since 'a' and 'b' are both [val_a], the first comparison evaluates to {b}True{/b}."
-    m "'c', however, is [val_c], so the second comparison evaluates to {b}False{/b}."
-    m 3eub "Since at least one comparison evaluated to {b}False{/b}, the complete expression evaluates to {b}False{/b}."
+    m 3eua "Так как «a» и «b» оба являются числом [val_a], первое сравнение будет оцениваться как {b}True{/b}."
+    m "Однако «c» является числом [val_c], так что второе сравнение уже будет как {b}False{/b}."
+    m 3eub "И поскольку по крайней мере одно сравнение здесь оценивается как {b}False{/b}, полное выражение тоже примет значение {b}False{/b}."
     call mas_x_cmd()
     pause 1.0
 
     call mas_w_cmd("a == b and a >= c")
-    m 3eua "In this example, the first comparison again evaluates to {b}True{/b}."
-    m "[val_a] is certainly greater-than-or-equal-to [val_c], so the second comparison evaluates to {b}True{/b} as well."
-    m 3eub "Since both comparisons evaluated to {b}True{/b}, the complete expression evaluates to {b}True{/b}."
+    m 3eua "В этом примере первое сравнение снова оценивается как {b}True{/b}."
+    m "[val_a], безусловно, больше или равно [val_c]-ёх, поэтому второе сравнение также будет оцениваться как {b}True{/b}."
+    m 3eub "Поскольку оба сравнения были оценены как {b}True{/b}, полное выражение будет соответственно тоже {b}True{/b}."
     call mas_x_cmd()
     pause 1.0
 
     call mas_w_cmd("a != b and a >= c")
-    m 3eua "In this example, the first comparison evaluates to {b}False{/b} this time."
-    m "Since we immediately have at least one comparison evaluating to {b}False{/b}, it doesn't matter what the second comparison evaluates to."
-    m 3eub "We know for sure that the complete expression evaluates to {b}False{/b}."
+    m 3eua "В этом же примере первое сравнение на этот раз оценивается как {b}False{/b}."
+    m "И раз у нас сразу есть по крайней мере одно сравнение, которое было оценено как {b}False{/b}, то уже не имеет значения, что оценивает второе сравнение."
+    m 3eub "Мы уже точно будем знать, что полное выражение будет иметь значение {b}False{/b}."
     call mas_x_cmd()
 
-    m "Same goes for the next example:"
+    m "То же самое касается следующего примера:"
     call mas_wx_cmd("a != b and a == c")
 
-    m 1eub "Again, when using the {b}and{/b} operator, the result is {b}True{/b} if and only if both comparisons evaluate to {b}True{/b}."
+    m 1eub "Опять же, при использовании оператора {b}and{/b} результат будет равен {b}True{/b} тогда и только тогда, когда оба сравнения будут иметь значение {b}True{/b}."
 
-    m 1eua "In contrast, the {b}or{/b} operator links two comparisons by evaluating the complete expression as {b}True{/b} if either comparison evaluates to {b}True{/b},{w=0.3} and {b}False{/b} if both comparisons evaluate to {b}False{/b}."
-    m 3eua "Let's go through some examples."
+    m 1eua "Оператор {b}or{/b} напротив — связывает два сравнения, оценивая полное выражение как {b}True{/b}, если любое сравнение имеет значение {b}True{/b} и {b}False{/b}, либо же оба сравнения имеют значение {b}False{/b}."
+    m 3eua "Давай покажу тебе как раз несколько примеров."
 
     call mas_w_cmd("a == b or a == c")
-    m 3eua "This time, since the first comparison evaluates to {b}True{/b}, we don't have to check the second comparison."
-    m 3eub "The result of this expression is {b}True{/b}."
+    m 3eua "На этот раз, поскольку первое сравнение оценивается как {b}True{/b}, нам не нужно проверять второе сравнение."
+    m 3eub "Результатом этого выражения является {b}True{/b}."
     call mas_x_cmd()
     pause 1.0
 
     call mas_w_cmd("a == b or a >= c")
-    m 3eua "Again, the first comparison evaluates to {b}True{/b}, so the complete expression evaluates to {b}True{/b}."
+    m 3eua "Опять же, первое сравнение имеет значение {b}True{/b}, так что и полное будет, само собой, {b}True{/b}."
     call mas_x_cmd()
     pause 1.0
 
     call mas_w_cmd("a != b or a >= c")
-    m 3eua "In this case, the first comparison evaluates to {b}False{/b}."
-    m "Since [val_a] is greater-than-or-equal-to [val_c], the second comparison evaluates to {b}True{/b}."
-    m 3eub "And since at least one comparison evaluated to {b}True{/b}, the complete expression evaluates to {b}True{/b}."
+    m 3eua "В этом случае первое сравнение было оценено как {b}False{/b}."
+    m "Поскольку число [val_a] прошло проверку «больше или равно», второе сравнение оценилось как {b}True{/b}."
+    m 3eub "И раз как минимум одно сравнение оценилось как {b}True{/b}, полное выражение будет {b}True{/b}."
     call mas_x_cmd()
     pause 1.0
 
     call mas_w_cmd("a != b or a == c")
-    m 3eua "We know that the first comparison evaluates to {b}False{/b}."
-    m "Since [val_a] is certainly not equal to [val_c], the second comparison also evaluates to {b}False{/b}."
-    m 3eub "Since neither comparison evaluated to {b}True{/b}, the complete expression evaluates to {b}False{/b}."
+    m 3eua "Мы знаем, что первое сравнение оценилось как {b}False{/b}."
+    m "Так как число [val_a], конечно, не равно [val_c]-ти, второе сравнение также оценилось как {b}False{/b}."
+    m 3eub "Раз проверка неравенства получила значение {b}True{/b}, всё выражение примет значение {b}False{/b}."
     call mas_x_cmd()
     pause 1.0
 
-    m 3eub "Again, when using the {b}or{/b} operator, the result is {b}True{/b} if either comparison evaluates to {b}True{/b}."
+    m 3eub "И опять же, при использовании оператора {b}or{/b} результат будет {b}True{/b}, если хотя бы одно из сравнений будет иметь соответственное значение."
 
-    m 1eua "There is also a third logical operator called the {b}not{/b} operator. Instead of linking multiple comparisons together, this operator inverts the boolean value of a comparison."
-    m 3eua "Here's an example of this:"
+    m 1eua "Существует также третий логический оператор, называемый оператором {b}not{/b}. Вместо связывания нескольких сравнений этот оператор инвертирует логическое значение сравнения."
+    m 3eua "Вот пример этого:"
     call mas_wx_cmd("not (a == b and a == c)")
     call mas_wx_cmd("not (a == b or a == c)")
 
-    m "Note that I'm using parentheses to group the comparisons together. The code in the parentheses is evaluated first, then the result of that comparison is inverted with {b}not{/b}."
-    m 1eua "If I drop the parentheses:"
+    m "Обрати внимание, что я использую скобки для группировки сравнений. Дело в том, что сначала вычисляется код именно в скобках, затем результат этого сравнения инвертируется с {b}not{/b}."
+    m 1eua "Если же я уберу скобки:"
     call mas_wx_cmd("not a == b and a == c")
-    m 3eua "We get a different result!{w=0.2} This is because the {b}not{/b} gets applied to the 'a == b' comparison before being linked to the second comparison by the {b}and{/b}."
+    m 3eua "Мы получим другой результат!{w=0.2} Это связано с тем, что {b}not{/b} был применён к сравнению «a == b», прежде чем быть связанным со вторым сравнением {b}and{/b}."
 
-    m 3eka "Earlier I mentioned that the exclamation point is used as the logical 'not' operator in other programming languages.{w=0.2} Python, however, uses the word 'not' instead for easier readability."
+    m 3eka "Ранее я упоминала, что восклицательный знак используется в качестве логического оператора «not» в других языках программирования."
 
-    m 1eua "Lastly, since the comparisons get evaluated to booleans, we can store the result of a comparison in a variable."
+    m 1eua "Наконец, поскольку сравнения вычисляются в логические значения, мы можем сохранить результат сравнения в переменной."
     call mas_wx_cmd("d = a == b and a >= c")
     call mas_wx_cmd("d")
     call mas_wx_cmd("e = a == b and a == c")
     call mas_wx_cmd("e")
 
-    m 3eub "And use those variables in comparisons as well!"
+    m 3eub "И использовать эти переменные в сравнениях!"
     call mas_wx_cmd("d and e")
-    m "Since 'd' is {b}True{/b} but 'e' is {b}False{/b}, this expression evaluates to {b}False{/b}."
+    m "Переменная «d» получила значение {b}True{/b}, но вот «e» {b}False{/b}, так что само это выражение будет уже, ясное дело, расцениваться {b}False{/b}."
 
     call mas_wx_cmd("d or e")
-    m "Since 'd' is {b}True{/b}, we know that at least one of the comparisons in this expression is {b}True{/b}. Therefore the complete expression is {b}True{/b}."
+    m "Раз «d» здесь сразу уже {b}True{/b}, мы уже будем знаем, что по крайней мере одно из сравнений в этом выражении {b}True{/b}. Поэтому полное выражение будет того же значения, а именно {b}True{/b}."
 
     call mas_wx_cmd("not (d or e)")
-    m 3eua "We know that the inner expression 'd or e' evaluates to {b}True{/b}. The inverse of that is {b}False{/b}, so this expression evaluates to {b}False{/b}."
+    m 3eua "Мы знаем, что внутреннее выражение «d or e» имеет значение {b}True{/b}. Обратное значение будет {b}False{/b}. И раз здесь прописан «not», это выражение и будет иметь значение {b}False{/b}."
 
     call mas_wx_cmd("d and not e")
-    m 3eub "In this case, we know that 'd' is {b}True{/b}."
-    m "The 'not' operator is applied to 'e', which inverts its {b}False{/b} value to {b}True{/b}."
-    m 3eua "Since both comparison expressions evaluate to {b}True{/b}, the complete expression evaluates to {b}True{/b}."
+    m 3eub "В этом случае мы знаем, что «d» является {b}True{/b}."
+    m "Здесь оператор «not» применяется к «e», инвертируя его значение {b}False{/b} в {b}True{/b}."
+    m 3eua "Так как оба выражения сравнения имеют значение {b}True{/b}, полное выражение будет {b}True{/b}."
 
-    m 1eua "Comparisons are used everywhere in every programming language."
-    m 1hua "If you ever decide to do programming for a living, you'll find that a lot of your code is just checking if some comparisons are true so you can make your programs do the {i}right{/i} thing."
-    m 1eksdla "And even if coding isn't part of your career path, we'll be doing lots of comparisons in future lessons, so be prepared!"
+    m 1eua "Сравнения используются везде в каждом языке программирования."
+    m 1hua "Если ты когда-нибудь решишь зарабатывать на жизнь программированием, обнаружишь, что большая часть твоего кода просто проверяет, верны ли некоторые сравнения..."
+    m 1eksdla "И даже если кодирование не является частью твоей карьерной дороги, мы будем делать много сравнений в будущих уроках, так что будь готов!"
 
     if last_seen_is_none:
-        m 1eua "I think that's enough for today."
+        m 1eua "Думаю, на сегодня достаточно."
 
     $ store.mas_ptod.ex_cn()
     hide screen mas_py_console_teaching
     show monika at t11
-    m 1hua "Thanks for listening!"
+    m 1hua "Спасибо, что выслушал!"
     return
 
 ###############################################################################
@@ -548,8 +549,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip006",
-            category=["python tips"],
-            prompt="Variables and Assignment",
+            category=["советы по Python'у"],
+            prompt="Переменные и присваивание",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(2)",
             action=EV_ACT_UNLOCK,
@@ -567,88 +568,88 @@ label monika_ptod_tip006:
     $ last_seen_is_none = mas_getEVL_last_seen("monika_ptod_tip006") is None
 
     if last_seen_is_none:
-        m 1eub "Now that you know about types, I can teach you about variables."
+        m 1eub "Теперь, когда ты знаешь всё о типах, я могу научить тебя переменным."
 
     # variable intro
-    m 1eua "Variables represent memory locations that store data."
-    m "To create a variable,"
+    m 1eua "Переменные представляют ячейки памяти, в которых как бы хранятся данные."
+    m "Чтобы создать переменную..."
 
     show monika at t22
     show screen mas_py_console_teaching
 
     # a number
-    m 3eua "you do '{b}symbol_name{/b} = {b}value{/b}', like this:"
+    m 3eua "...тебе нужно написать как-то так: «{b}имя символа{/b} = {b}значение{/b}». Вот даже пример:"
 
     call mas_wx_cmd("a_number = " + num_store, local_ctx)
 
-    m "The symbol 'a_number' now points to a memory location storing the integer [num_store]."
-    m "If we enter in the symbol name here,"
+    m "Символ «a_number» теперь указывает на ячейку памяти, хранящую целое число [num_store]."
+    m "Если ввести здесь имя символа..."
     call mas_w_cmd("a_number")
-    m 3eub "We can retrieve the value that we stored."
+    m 3eub "Мы сможем получить значение, которое мы хранили в самом же символе."
     show monika 3eua
     call mas_x_cmd(local_ctx)
 
-    m "Notice how we associated the symbol 'a_number' to the value [num_store] using an equals (=) sign?"
-    m 1eub "That is called assignment, where we take whatever is on the left of the equals sign and point it to, or {i}assign{/i} it, the value of whatever is on the right."
+    m "Обрати внимание, как мы связали символ «a_number» со значением [num_store], используя знак равенства (=)."
+    m 1eub "Это называется присваиванием, когда мы берём то, что находится слева от знака равенства, и указываем на него, или {b}назначаем {/b} значение того, что находится справа."
 
     # b_number
-    m 1eua "Assignment is executed in right-to-left order.{w=0.3} To illustrate this, let's create a new variable, 'b_number'."
+    m 1eua "Задание выполняется в порядке справа налево.{w=0.3} Чтобы проиллюстрировать это, давай создадим новую переменную «b_number»."
     call mas_w_cmd("b_number = a_number  -  " + b_num_store)
 
-    m "In assignment, the right side of the equal sign is evaluated first,{w=0.2} then its data type is inferred and an appropriate amount of memory is reserved."
-    m "That memory is linked to the symbol on the left via a lookup table."
-    m 1eub "When Python encounters a symbol,{w=0.2} it looks that symbol up in the lookup table and replaces it with the value that the symbol was linked to."
+    m "В присваивании сначала вычисляется правая часть от знака равенства,{w=0.2} затем выводится его тип данных и резервируется соответствующий объём памяти."
+    m "Эта память связана с символом слева через таблицу поиска."
+    m 1eub "Когда Python встречает какой-либо символ,{w=0.2} он ищет его в таблице поиска и заменяет его значением, с которым он был связан."
 
-    m 3eub "Here, 'a_number' would be replaced with [num_store],{w=0.2} so the expression that would be evaluated and assigned to 'b_number' is '[num_store] - [b_num_store]'."
+    m 3eub "Здесь «a_number» будет заменён с числом [num_store],{w=0.2} так что выражение, что будет оценено и отнесено к «b_number», будет вычитанием: «[num_store] - [b_num_store]»."
     show monika 3eua
     call mas_x_cmd(local_ctx)
 
-    m 1eua "We can verify this by entering only the symbol 'b_number'."
-    m "This will retrieve the value linked to this symbol in the lookup table and show it to us."
+    m 1eua "Мы можем проверить это, введя только символ «b_number»."
+    m "Это позволит получить значение, связанное с этим символом в таблице поиска и показать его нам."
     call mas_wx_cmd("b_number", local_ctx)
 
     # c number
-    m 3eua "Note that if we enter in a symbol that hasn't been assigned anything, Python will complain."
+    m 3eua "Обрати внимание, что если ввести символ, которому ничего не назначено, Python пожалуется."
     call mas_wx_cmd("c_number", local_ctx)
 
-    m 3eub "But if we assign this symbol a value..."
+    m 3eub "Но если присвоить этому символу значение..."
     show monika 3eua
     call mas_wx_cmd("c_number = b_number * a_number", local_ctx)
     call mas_wx_cmd("c_number", local_ctx)
 
-    m 1hua "Python is able to find the symbol in the lookup table and won't give us an error."
+    m 1hua "Python в этот раз сможет найти символ в таблице поиска и не выдаст нам ошибку."
 
-    m 1eua "The variables we created are all {i}integer{/i} types."
-    m "We didn't have to explicitly say that those variables were integers because Python does dynamic typing."
-    m 1eub "This means that the Python interpreter infers the type of a variable based on the data you are storing in it."
-    m "Other languages, like C or Java, require types to be defined with the variable."
-    m "Dynamic typing enables variables in Python to change types during execution,"
-    m 1rksdlb "but that is generally frowned upon as it can make your code confusing for others to read."
+    m 1eua "Переменные, которые мы создали, являются {i}целочисленными типами{/i}."
+    m "Нам не нужно было объяснять, что эти переменные были целыми числами, так как Python выполняет динамический ввод."
+    m 1eub "Это означает, что интерпретатор Python'a определяет тип переменной на основе хранящихся в ней данных."
+    m "Другие языки, такие как C или Java, требуют же определения типов с помощью переменной."
+    m "Динамическая типизация позволяет переменным в Python'е изменять типы во время выполнения..."
+    m 1rksdlb "...но это, как правило, не одобряется, поскольку это может сделать твой код запутанным для других."
 
     if last_seen_is_none:
-        m 1eud "Whew!{w=0.2} That was a mouthful!"
+        m 1eud "Фух!{w=0.2} Это было долговато!"
 
-    m "Did you understand all that?{nw}"
+    m "Ты всё понял?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did you understand all that?{fast}"
-        "Yes!":
-            m 1hua "Yay!"
-
-        "I'm a bit confused.":
-            m 1eksdla "That's okay.{w=0.3} Even though I mentioned symbols and values here, programmers usually just refer to this as creating, assigning, or setting variables."
-            m "The symbol / value names are really only useful for hinting at how variables work under the hood, so don't feel bad if you didn't understand it all."
-            m 1eua "Just knowing how to work with variables is enough for future lessons."
-            m "Anyway..."
+        m "Ты всё понял?{fast}"
+        "Да!":
+            m 1hua "Ура-а!"
+        
+        "Я немного запутался.":
+            m 1eksdla "Это нормально.{w=0.3} Несмотря на то, что я упомянула здесь символы и значения, программисты обычно называют это просто созданием, присвоением или установкой переменных."
+            m "Имена символов / значений действительно полезны лишь для намёка на то, как переменные работают на самом деле, поэтому не чувствуй себя плохо, если ты ничего не понял из всего этого."
+            m 1eua "Для будущих уроков достаточно будет просто знать, как работать с переменными."
+            m "В любом случае..."
 
     $ store.mas_ptod.ex_cn()
     hide screen mas_py_console_teaching
     show monika at t11
 
     if last_seen_is_none:
-        m 1eua "I think that's enough Python for today."
+        m 1eua "Думаю, на сегодня достаточно Python'a."
 
-    m 1hua "Thanks for listening!"
+    m 1hua "Спасибо, что выслушал!"
     return
 
 
@@ -674,17 +675,17 @@ label monika_ptod_tip007:
     # TODO
 
     # integer size
-    m 1eua "In C and many other languages, integers are usually stored in 4 bytes."
-    m "Python, however, reserves a different amount of memory depending on the size of the integer being stored."
-    m 3eua "We can check how much memory our variable 'a_number' stores by borrowing a function from the {i}sys{/i} library."
+    m 1eua "В C и многих других языках, целые числа обычно хранятся в 4 байта."
+    m "Python же, однако, резервирует различный объём памяти в зависимости от размера хранящегося целого числа."
+    m 3eua "Мы можем проверить, сколько памяти хранит наша переменная «a_number», позаимствовав кое-какую функцию из библиотеки {i}sys{/i}."
 
     call mas_wx_cmd("import sys", local_ctx)
     call mas_wx_cmd("sys.getsizeof(a_number)", local_ctx)
     $ int_size = store.mas_ptod.get_last_line()
 
-    m 1eksdla "I'll talk about libraries and importing later."
-    m 1eua "For now, take a look at the number returned by the {i}getsizeof{/i} function."
-    m "To store the number [num_store], Python uses [int_size] bytes."
+    m 1eksdla "О библиотеках и импорте я расскажу позже."
+    m 1eua "Теперь взгляни на число, возвращаемое функцией {bi}getsizeof{/i}."
+    m "Чтобы сохранить число [num_store], Python использует [int_size] байт."
 
     return
 
@@ -694,8 +695,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip008",
-            category=["python tips"],
-            prompt="Literals",
+            category=["советы по Python'у"],
+            prompt="Константы",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(6)",
             action=EV_ACT_UNLOCK,
@@ -711,66 +712,66 @@ label monika_ptod_tip008:
     $ store.mas_ptod.set_local_context(local_ctx)
     $ last_seen_is_none = mas_getEVL_last_seen("monika_ptod_tip008") is None
 
-    m 1eua "Remember when I showed you how to make variables and assign them values?"
-    m 1dsa "Imagine if we dropped the notion of variables and focused on using the values directly in code."
-    m 1hua "That is where literals come in. I'll show you what I mean by this with the following demonstration."
+    m 1eua "Помнишь, я показывала тебе, как создавать переменные и присваивать им значения?"
+    m 1dsa "Ну так вот, представь, что мы отказались от понятия переменных и сосредоточились на использовании значений непосредственно в коде."
+    m 1hua "Вот тут и появляются литералы. Я покажу тебе, что я имею в виду с следующей демонстрацией."
 
     show monika at t22
     show screen mas_py_console_teaching
 
     call mas_wx_cmd("a = 10")
-    m 3eua "Here I made a variable called 'a' and assigned it an integer value of 10."
-    m "When I type 'a' into the interpreter..."
+    m 3eua "Здесь я сделала переменную с именем «a» и присвоила ей целое значение 10."
+    m "Когда я ввожу «a» в интерпретаторе..."
 
     call mas_wx_cmd("a")
-    m 3eub "Python looks up the symbol 'a' and finds that it's associated with the value 10, so 10 is shown to us."
-    m "If I type in just '10', however..."
+    m 3eub "Python ищет символ «a» и обнаруживает, что он связан со значением 10, поэтому нам и показано 10."
+    m "Если же я наберу только «10», однако..."
 
     call mas_wx_cmd("10")
-    m 3hua "Python still shows us a 10!"
-    m 3eua "This happens because Python interprets the '10' as an integer value straight away, without having to look up a symbol and retrieve its value."
-    m "Code that Python can interpret into values directly are called {i}literals{/i}."
-    m 3eub "All the data types I mentioned in the Types lesson can be written as literals."
+    m 3hua "Python всё ещё будет показывать нам 10!"
+    m 3eua "Это происходит потому, что Python интерпретирует «10» как целое значение сразу, без необходимости искать символ и получать его значение."
+    m "Код, который Python может интерпретировать непосредственно в значения, называется {b}литералами{/b}."
+    m 3eub "Все типы данных, что были упомянуты в уроке Типы, могут быть записаны как литералы."
 
     call mas_wx_cmd("23")
     call mas_wx_cmd("21.05")
-    m 3eua "These are {b}integer{/b} and {b}float{/b} literals."
+    m 3eua "Это целые и вещественные {b}литералы{/b}."
 
     call mas_wx_cmd('"this is a string"')
     call mas_wx_cmd("'this is another string'")
-    m "These are {b}string{/b} literals."
+    m "Это строковые {b}литералы{/b}."
 
     call mas_wx_cmd("True")
     call mas_wx_cmd("False")
-    m "These are {b}boolean{/b} literals."
+    m "А вот это уже логические {b}литералы{/b}."
 
     call mas_wx_cmd("None")
-    m "The keyword {i}None{/i} is itself a literal."
+    m "Ключевое слово {b}None{/b} само по себе является литералом."
 
     # TODO: lists, dicts
 
     if last_seen_is_none:
-        m 1eua "There are more literals for other types, but I'll mention them when I talk about those types."
+        m 1eua "Для других типов есть ещё больше литералов, но я упомяну их, когда буду говорить уже об этих типах."
 
-    m 1eua "Literals can be used in place of variables when writing code. For example:"
+    m 1eua "Литералы могут использоваться вместо переменных при написании кода. Например:"
 
     call mas_wx_cmd("10 + 21")
     call mas_wx_cmd("10 * 5")
-    m "We can do math with literals instead of variables."
+    m "Мы можем делать математические уравнения с литералами вместо переменных."
 
     call mas_wx_cmd("a + 21")
     call mas_wx_cmd("a * 5")
-    m "We can also use literals alongside variables."
-    m 1eub "Additionally, literals are great for creating and using data on-the-fly without the overhead of creating unnecessary variables."
+    m "И мы также можем использовать литералы вместе с переменными."
+    m 1eub "Кроме того, литералы отлично подходят для создания и использования данных «на лету» без дополнительных затрат на создание ненужных переменных."
 
     if last_seen_is_none:
-        m 1kua "Alright, that's about all I can {i}literally{/i} say about literals."
+        m 1kua "Хорошо, это всё, что я могу {i}буквально{/i} сказать о литералах."
 
     $ store.mas_ptod.ex_cn()
     hide screen mas_py_console_teaching
     show monika at t11
 
-    m 1hua "Thanks for listening!"
+    m 1hua "Спасибо, что выслушал!"
     return
 
 ###############################################################################
@@ -779,8 +780,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip009",
-            category=["python tips"],
-            prompt="Truth Values",
+            category=["советы по Python'у"],
+            prompt="Истинные значения",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(5)",
             action=EV_ACT_UNLOCK,
@@ -796,67 +797,67 @@ label monika_ptod_tip009:
     $ store.mas_ptod.set_local_context(local_ctx)
 
     if mas_getEVL_last_seen("monika_ptod_tip009") is None:
-        m 1eua "When we talked about comparisons and booleans, we used integers as the basis for our comparisons."
-        m 1dsa "But..."
-        m 3eua "Did you know that every type has its own truth value associated with it?"
+        m 1eua "Когда мы говорили о сравнениях и логические значениях, мы использовали целые числа в качестве основы для сравнения."
+        m 1dsa "Но..."
+        m 3eua "Знал ли ты, что каждый тип имеет своё собственное истинное значение, связанное с ним?"
 
-    m 1eua "All types have a 'truth value' that can change depending on the value of the type."
+    m 1eua "Все типы имеют «истинное значение», которое может изменяться в зависимости от значения типа."
 
     # TODO: when we go over built-in functions, this should be
     # changed to function bool, not keyword
-    m "We can check the truth value of a type by using the keyword {b}bool{/b}."
+    m "Мы можем проверить истинное значение типа, используя ключевое слово {b}bool{/b}."
 
     show monika at t22
     show screen mas_py_console_teaching
 
-    m 3eua "Let's start by taking a look at the truth values for integers."
+    m 3eua "Начнём, пожалуй, с того, что рассмотрим истинные значения целых чисел."
     call mas_wx_cmd("bool(10)")
     call mas_wx_cmd("bool(-1)")
-    m 3eua "All non-zero integers have a truth value of {b}True{/b}."
+    m 3eua "Все ненулевые целые числа имеют истинное значение {b}True{/b}."
     call mas_wx_cmd("bool(0)")
-    m 3eub "Zero, on the other hand, has a truth value of {b}False{/b}."
+    m 3eub "Ноль, с другой стороны, имеет {b}False{/b}."
 
-    m 1eua "Floats follow the same rules as integers:"
+    m 1eua "Вещественные числа следуют тем же правилам, что и целые:"
     call mas_wx_cmd("bool(10.02)")
     call mas_wx_cmd("bool(0.14)")
     call mas_wx_cmd("bool(0.0)")
 
-    m 1eua "Now let's look at strings."
+    m 1eua "Теперь давай посмотрим на строки."
     call mas_wx_cmd('bool("string with text")')
     call mas_wx_cmd('bool("  ")')
-    m 3eub "A string with text, even if the text is only whitespace characters, has a truth value of {b}True{/b}."
+    m 3eub "Строка с текстом, даже если текст содержит только пробелы, будет иметь истинное значение {b}True{/b}."
     call mas_wx_cmd('bool("")')
-    m "An empty string, or a string with length 0, has a truth value of {b}False{/b}."
+    m "А вот пустая строка или строка длиной в 0 символов будет иметь уже {b}False{/b}."
 
-    m 1eua "Now let's look at {b}None{/b}."
+    m 1eua "Теперь давай посмотрим на {b}None{/b}."
     call mas_wx_cmd("bool(None)")
-    m 1eub "{b}None{/b} always has a truth value of {b}False{/b}."
+    m 1eub "{b}None{/b} всегда имеет истинное значение {b}False{/b}."
 
     # TODO: lists and dicts
 
-    m 1eua "If we do comparisons with these values, the values are evaluated to their truth values before being applied in comparisons."
-    m 1hua "Let me show some examples."
-    m 3eua "First, I'll set up some variables:"
+    m 1eua "Если же мы будем делать сравнения с этими значениями, истинные их значения будут вычисляться перед их применением в сравнении."
+    m 1hua "Позволь мне привести несколько примеров."
+    m 3eua "Сначала я настрою несколько переменных:"
     call mas_wx_cmd("num10 = 10")
     call mas_wx_cmd("num0 = 0")
     call mas_wx_cmd('text = "text"')
     call mas_wx_cmd('empty_text = ""')
     call mas_wx_cmd("none_var = None")
 
-    m 3eub "And then do several comparisons."
+    m 3eub "А потом сделаю несколько сравнений."
     call mas_wx_cmd("bool(num10 and num0)")
     call mas_wx_cmd("bool(num10 and text)")
     call mas_wx_cmd("bool(empty_text or num0)")
     call mas_wx_cmd("bool(none_var and text)")
     call mas_wx_cmd("bool(empty_text or none_var)")
 
-    m 1eua "Knowing the truth values of different types can be useful in performing certain comparisons more efficiently."
-    m 1hua "I'll mention when it's possible to do so when we come across those situations in future lessons."
+    m 1eua "Знание истинных значений различных типов может быть полезно для более эффективного выполнения определённых сравнений."
+    m 1hua "Я расскажу, когда это можно сделать, когда мы столкнёмся с этими ситуациями в будущих уроках."
 
     $ store.mas_ptod.ex_cn()
     hide screen mas_py_console_teaching
     show monika at t11
-    m 1hua "Thanks for listening!"
+    m 1hua "Спасибо, что выслушал!"
     return
 
 ###############################################################################
@@ -1026,9 +1027,9 @@ init -1 python in mas_ptod:
         """
         if state == STATE_OFF:
             return
-
+        
         global cn_line, cn_cmd, state, stack_level
-
+        
         if state == STATE_MULTI:
             # this is bad! You should execute the previous command first!
             # in this case, we will clear your current command and reset
@@ -1036,50 +1037,50 @@ init -1 python in mas_ptod:
             cn_cmd = ""
             cn_line = ""
             state = STATE_SINGLE
-
+        
         elif state == STATE_BLOCK_MULTI:
             # this is bad! you should execute the previous command first!
             # we will do the same that as MULTI did, except a different state
             cn_cmd = ""
             cn_line = ""
             state = STATE_BLOCK
-
+        
         # we dont indent the command
         # we also dont check for indents
         cn_cmd = str(cmd)
-
+        
         # pick appropriate shell symbol
         if state == STATE_SINGLE:
             # snigle mode
             sym = SYM
-
+        
         else:
             # block mode
             sym = M_SYM
-
+        
         # the prefixed command includes the shell symbol
         prefixed_cmd = sym + cn_cmd
-
+        
         # break the lines accordingly
         cn_lines = _line_break(prefixed_cmd)
-
+        
         if len(cn_lines) == 1:
             # dont need to split lines
             cn_line = cn_cmd
-
+        
         else:
             # we need to split lines
-
+            
             # everything except the last line goes to the history
             _update_console_history_list(cn_lines[:-1])
-
+            
             # last line becomes the current line
             cn_line = cn_lines[len(cn_lines)-1]
-
+            
             if state == STATE_SINGLE:
                 # single mode
                 state = STATE_MULTI
-
+            
             else:
                 # block mode
                 state = STATE_BLOCK_MULTI
@@ -1106,7 +1107,7 @@ init -1 python in mas_ptod:
         global state
         import sys
         version = sys.version
-
+        
         # first closing paren is where we need to split the version text
         split_dex = version.find(")")
         start_lines = [
@@ -1115,11 +1116,11 @@ init -1 python in mas_ptod:
             VER_TEXT_1.format(version[:split_dex+1]),
             VER_TEXT_2.format(version[split_dex+2:])
         ]
-
+        
         # clear the console and add the 2 new lines
         clear_console()
         _update_console_history_list(start_lines)
-
+        
         # turn the console on
         state = STATE_SINGLE
 
@@ -1148,7 +1149,7 @@ init -1 python in mas_ptod:
         """
         if block:
             return __exec_exec(line, context)
-
+        
         # otherwise try eval first
         return __exec_evalexec(line, context)
 
@@ -1168,7 +1169,7 @@ init -1 python in mas_ptod:
         try:
             exec(line, context)
             return ""
-
+        
         except Exception as e:
             return _exp_toString(e)
 
@@ -1187,7 +1188,7 @@ init -1 python in mas_ptod:
         """
         try:
             return str(eval(line, context))
-
+        
         except:
             # eval fails, try to exec
             return __exec_exec(line, context)
@@ -1205,38 +1206,38 @@ init -1 python in mas_ptod:
         """
         if state == STATE_OFF:
             return
-
+        
         if context is None:
             context = local_ctx
-
+        
         global cn_cmd, cn_line, state, stack_level, blk_cmd
-
+        
         ################### setup some initial conditions ################
-
+        
         # block mode just means we are in a block
         block_mode = state == STATE_BLOCK or state == STATE_BLOCK_MULTI
-
+        
         # empty line signals end of block (usually)
         empty_line = len(cn_cmd.strip()) == 0
-
+        
         # ends with colon is special case
         time_to_block = cn_cmd.endswith(":")
-
+        
         # but a bad block can happen (no text except a single colon)
         bad_block = time_to_block and len(cn_cmd.strip()) == 1
-
+        
         # if this contains a value, then we executee
         full_cmd = None
-
+        
         ################## pre-execution setup ###########################
-
+        
         if empty_line:
             # like enter was pressed with no text
-
+            
             if block_mode:
                 # block mode means we clear a stack level
                 __popi()
-
+            
             else:
                 # otherwise, add an empty new line to history, and thats it
                 # dont need to execute since nothing will happen
@@ -1244,102 +1245,102 @@ init -1 python in mas_ptod:
                 cn_line = ""
                 cn_cmd = ""
                 return
-
+        
         if bad_block:
             # user entered a bad block
             # we will execute it as a command
             full_cmd = cn_cmd
             stack_level = 0
             blk_cmd = list()
-
+        
         elif time_to_block:
             # we are going to enter a new block mode
             blk_cmd.append(cn_cmd)
-
+            
             if not block_mode:
                 # we didnt start in block mode
                 __pushi(0)
-
+            
             else:
                 # block mode
                 pre_spaces = _count_sp(cn_cmd)
-
+                
                 if __peeki() != pre_spaces:
                     # if this colon line does NOT match current indentaion
                     # level then we need to push a new stack
                     __pushi(pre_spaces)
-
+        
         elif block_mode:
             # in block mode already
             blk_cmd.append(cn_cmd)
-
+            
             if stack_level == 0:
                 # we've cleared all stacks, time to execute block commands
                 full_cmd = "\n".join(blk_cmd)
                 blk_cmd = list()
-
+        
         else:
             # otherwise, we must be single mode or single multi
-
+            
             # setup the command to be entered
             full_cmd = cn_cmd
-
+        
         ########################## execution ##############################
-
+        
         # execute command, if available
         if full_cmd is not None:
             result = __exec_cmd(full_cmd, context, block_mode)
-
+        
         else:
             result = ""
-
+        
         ################### console history update #########################
-
+        
         if block_mode and empty_line:
             # we MUST be in block mode to reach here
             output = [M_SYM]
-
+        
         else:
             # otherwise, use the sym we need
             if state == STATE_SINGLE:
                 sym = SYM
-
+            
             elif state == STATE_BLOCK:
                 sym = M_SYM
-
+            
             else:
                 # multi dont need symbols
                 sym = ""
-
+            
             output = [sym + cn_line]
-
+        
         # if we have any results, we need to show them too
         if len(result) > 0:
             output.append(result)
-
+        
         # update console history and clear current lines / cmd
         cn_line = ""
         cn_cmd = ""
         _update_console_history_list(output)
-
+        
         ###################### Post-execution updates ####################
-
+        
         if bad_block:
             # bad block, means we abort lots of things
             state = STATE_SINGLE
             block_mode = False
-
+        
         elif time_to_block:
             # new block, incrmenet stack levels, change to block states
             state = STATE_BLOCK
             block_mode = True
-
+        
         ###################### final state updates ######################
-
+        
         if (state == STATE_MULTI) or (block_mode and stack_level == 0):
             # no more stacks or in multi mode
             state = STATE_SINGLE
-
+        
         elif state == STATE_BLOCK_MULTI:
             # multi modes end here
             state = STATE_BLOCK
@@ -1354,7 +1355,7 @@ init -1 python in mas_ptod:
         """
         if len(cn_history) > 0:
             return cn_history[len(cn_history)-1]
-
+        
         return ""
 
 
@@ -1389,10 +1390,10 @@ init -1 python in mas_ptod:
         """
         global stack_level
         stack_level -= 1
-
+        
         if stack_level < 0:
             stack_level = 0
-
+        
         if len(indent_stack) > 0:
             indent_stack.pop()
 
@@ -1462,16 +1463,16 @@ init -1 python in mas_ptod:
             new_items - list of new itme sto add to console history
         """
         global cn_history
-
+        
         # make sure to break lines
         for line in new_items:
             broken_lines = _line_break(line)
-
+            
             # and clean them too
             for b_line in broken_lines:
 #                cn_history.append(mas_utils.clean_gui_text(b_line))
                 cn_history.append(b_line)
-
+        
         if len(cn_history) > H_SIZE:
             cn_history = cn_history[-H_SIZE:]
 
@@ -1488,13 +1489,13 @@ init -1 python in mas_ptod:
         """
         if len(line) <= LINE_MAX:
             return [line]
-
+        
         # otherwise, its TOO LONG
         broken_lines = list()
         while len(line) > LINE_MAX:
             broken_lines.append(line[:LINE_MAX])
             line = line[LINE_MAX:]
-
+        
         # add final line
         broken_lines.append(line)
         return broken_lines
