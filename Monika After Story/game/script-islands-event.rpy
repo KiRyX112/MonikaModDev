@@ -43,11 +43,11 @@ init 1:
             # If None, get the current flt
             if flt is None:
                 flt = mas_sprites.get_filter()
-
+            
             # IF False, we don't need to check the flt
             elif flt is False:
                 return mas_decoded_islands
-
+            
             return mas_decoded_islands and mas_island_event.isFilterSupported(flt)
 
 
@@ -114,11 +114,11 @@ init -20 python in mas_island_event:
                 TYPE_OBJECT
             )
         )
-
+        
         DELIM = "_"
-
+        
         _data_map = dict()
-
+        
         def __init__(
             self,
             id_,
@@ -158,24 +158,24 @@ init -20 python in mas_island_event:
                 )
             if id_ in self._data_map:
                 raise Exception("Id '{}' has already been used.".format(id_))
-
+            
             self.id = id_
-
+            
             if type_ is not None:
                 if type_ not in self.TYPES:
                     raise ValueError("Bad type. Allowed types: {}, got: '{}'.".format(self.TYPES, type_))
-
+            
             else:
                 type_ = self._getType()
-
+            
             self.type = type_
-
+            
             self.default_unlocked = bool(default_unlocked)
             self.fp_map = fp_map if fp_map is not None else self._buildFPMap()
             self.partial_disp = partial_disp
-
+            
             self._data_map[id_] = self
-
+        
         def _getType(self):
             """
             Private method to get type of this sprite if it hasn't been passed in
@@ -184,7 +184,7 @@ init -20 python in mas_island_event:
                 str
             """
             return self.id.split(self.DELIM)[0]
-
+        
         def _buildFPMap(self):
             """
             Private method to build filepath map if one hasn't been passed in
@@ -197,10 +197,10 @@ init -20 python in mas_island_event:
             # Otherlays are a bit different
             if self.type == self.TYPE_OVERLAY:
                 suffixes = ("d", "n")
-
+            
             else:
                 suffixes = ("d", "d_r", "d_s", "n", "n_r", "n_s", "s", "s_r", "s_s")
-
+            
             # FIXME: Use f-strings with py3 pls
             return {
                 suffix: filepath_fmt.format(
@@ -210,7 +210,7 @@ init -20 python in mas_island_event:
                 )
                 for suffix in suffixes
             }
-
+        
         @classmethod
         def getDataFor(cls, id_):
             """
@@ -220,7 +220,7 @@ init -20 python in mas_island_event:
                 IslandsImageDefinition
             """
             return cls._data_map[id_]
-
+        
         @classmethod
         def getDefaultUnlocks(cls):
             """
@@ -234,7 +234,7 @@ init -20 python in mas_island_event:
                 id_: data.default_unlocked
                 for id_, data in cls._data_map.iteritems()
             }
-
+        
         @classmethod
         def getFilepathsForType(cls, type_):
             """
@@ -267,13 +267,13 @@ init -20 python in mas_island_event:
         amplitude = 0.02
         frequency_1 = 1.0 / 9.0
         frequency_2 = 1.0 / 3.0
-
+        
         transform.ypos = math.cos(at*frequency_1) * math.sin(at*frequency_2) * amplitude
         # We updated the transform, so we must update the sprite, too
         # But only once the transform is active (otherwise you get a recursive loop)
         if transform.active:
             transform.__parallax_sprite__.update_offsets()
-
+        
         return 0.0
 
     def __isld_2_transform_func(transform, st, at):
@@ -283,15 +283,15 @@ init -20 python in mas_island_event:
         y_amplitude = -0.01
         y_frequency_1 = 0.5
         y_frequency_2 = 0.25
-
+        
         x_amplitude = -0.0035
         x_frequency = 0.2
-
+        
         transform.ypos = math.sin(math.sin(at*y_frequency_1) + math.sin(at*y_frequency_2)) * y_amplitude
         transform.xpos = math.cos(at*x_frequency) * x_amplitude
         if transform.active:
             transform.__parallax_sprite__.update_offsets()
-
+        
         return 0.0
 
     def __isld_3_transform_func(transform, st, at):
@@ -301,11 +301,11 @@ init -20 python in mas_island_event:
         amplitude = 0.005
         frequency_1 = 0.25
         frequency_2 = 0.05
-
+        
         transform.ypos = (math.sin(at*frequency_1) + abs(math.cos(at*frequency_2))) * amplitude
         if transform.active:
             transform.__parallax_sprite__.update_offsets()
-
+        
         return 0.0
 
     def __isld_5_transform_func(transform, st, at):
@@ -315,15 +315,15 @@ init -20 python in mas_island_event:
         y_amplitude = -0.01
         y_frequency_1 = 1.0 / 10.0
         y_frequency_2 = 7.0
-
+        
         x_amplitude = 0.005
         x_frequency = 0.25
-
+        
         transform.ypos = math.sin(math.sin(at*y_frequency_1) * y_frequency_2) * y_amplitude
         transform.xpos = math.cos(at*x_frequency) * x_amplitude
         if transform.active:
             transform.__parallax_sprite__.update_offsets()
-
+        
         return 0.0
 
     def __chibi_transform_func(transform, st, at):
@@ -333,12 +333,12 @@ init -20 python in mas_island_event:
         roto_speed = -10
         amplitude = 0.065
         frequency = 0.5
-
+        
         transform.rotate = at % 360 * roto_speed
         transform.ypos = math.sin(at * frequency) * amplitude
         if transform.active:
             transform.__parallax_sprite__.update_offsets()
-
+        
         return 0.0
 
     def _play_thunder(transform, st, at):
@@ -651,7 +651,7 @@ init -25 python in mas_island_event:
         # FIXME: ideal solution would be split the images by seasons too
         if store.mas_isWinter():
             return mfwm.fw_get(mas_sprites.get_filter(), store.mas_weather_snow), None
-
+        
         return store.mas_fwm_select(st, at, mfwm)
 
     def IslandFilterWeatherDisplayable(**filter_pairs):
@@ -690,21 +690,21 @@ init -25 python in mas_island_event:
             True upon success, False otherwise
         """
         err_msg = "[ERROR] Failed to decode images: {}.\n"
-
+        
         pkg = islands_station.getPackage("our_reality")
-
+        
         if not pkg:
             mas_utils.writelog(err_msg.format("Missing package"))
             return False
-
+        
         pkg_data = islands_station.unpackPackage(pkg, pkg_slip=mas_ics.ISLAND_PKG_CHKSUM)
-
+        
         if not pkg_data:
             mas_utils.writelog(err_msg.format("Bad package."))
             return False
-
+        
         glitch_frames = None
-
+        
         def _read_zip(zip_file, map_):
             """
             Inner helper function to read zip and override maps
@@ -719,7 +719,7 @@ init -25 python in mas_island_event:
                     raw_data = zip_file.read(path)
                     img = store.MASImageData(raw_data, "{}_{}.png".format(name, sprite_type))
                     path_map[sprite_type] = img
-
+        
         try:
             with ZipFile(pkg_data, "r") as zip_file:
                 island_map = IslandsImageDefinition.getFilepathsForType(IslandsImageDefinition.TYPE_ISLAND)
@@ -729,20 +729,20 @@ init -25 python in mas_island_event:
                 # Now override maps to contain imgs instead of img paths
                 for map_ in (island_map, decal_map, bg_map, overlay_map):
                     _read_zip(zip_file, map_)
-
+                
                 # Anim frames are handled a bit differently
                 glitch_frames = tuple(
                     (store.MASImageData(zip_file.read(fn), fn + ".png") for fn in GLITCH_FPS)
                 )
-
+        
         except Exception as e:
             mas_utils.writelog(err_msg.format(e))
             return False
-
+        
         else:
             # We loaded the images, now create dynamic displayables
             _buildDisplayables(island_map, decal_map, bg_map, overlay_map, glitch_frames)
-
+        
         return True
 
     def _buildDisplayables(island_imgs_maps, decal_imgs_maps, bg_imgs_maps, overlay_imgs_maps, glitch_frames):
@@ -759,7 +759,7 @@ init -25 python in mas_island_event:
             glitch_frames - tuple of glitch raw anim frames
         """
         global island_disp_map, decal_disp_map, obj_disp_map, bg_disp_map, overlay_disp_map
-
+        
         # Build the islands
         for island_name, img_map in island_imgs_maps.iteritems():
             disp = IslandFilterWeatherDisplayable(
@@ -790,7 +790,7 @@ init -25 python in mas_island_event:
             )
             partial_disp = IslandsImageDefinition.getDataFor(island_name).partial_disp
             island_disp_map[island_name] = partial_disp(disp)
-
+        
         # Build the decals
         for decal_name, img_map in decal_imgs_maps.iteritems():
             disp = IslandFilterWeatherDisplayable(
@@ -821,7 +821,7 @@ init -25 python in mas_island_event:
             )
             partial_disp = IslandsImageDefinition.getDataFor(decal_name).partial_disp
             decal_disp_map[decal_name] = partial_disp(disp)
-
+        
         # Build the bg
         for bg_name, img_map in bg_imgs_maps.iteritems():
             disp = IslandFilterWeatherDisplayable(
@@ -852,7 +852,7 @@ init -25 python in mas_island_event:
             )
             partial_disp = IslandsImageDefinition.getDataFor(bg_name).partial_disp
             bg_disp_map[bg_name] = partial_disp(disp)
-
+        
         # Build the overlays
         overlay_speed_map = {
             "overlay_rain": 0.8,
@@ -881,7 +881,7 @@ init -25 python in mas_island_event:
                 ),
                 speed=overlay_speed_map.get(overlay_name, 1.0)
             )
-
+        
         # Build glitch disp
         def _glitch_transform_func(transform, st, at):
             """
@@ -889,23 +889,23 @@ init -25 python in mas_island_event:
             """
             redraw = random.uniform(0.3, 1.3)
             next_child = random.choice(glitch_frames)
-
+            
             transform.child = next_child
-
+            
             return redraw
-
+        
         glitch_disp = Transform(child=glitch_frames[0], function=_glitch_transform_func)
         partial_disp = IslandsImageDefinition.getDataFor("decal_glitch").partial_disp
         decal_disp_map["decal_glitch"] = partial_disp(glitch_disp)
-
+        
         # Build chibi disp
         partial_disp = IslandsImageDefinition.getDataFor("obj_shimeji").partial_disp
         obj_disp_map["obj_shimeji"] = partial_disp()
-
+        
         # Build thunder overlay
         partial_disp = IslandsImageDefinition.getDataFor("overlay_thunder").partial_disp
         overlay_disp_map["overlay_thunder"] = partial_disp()
-
+        
         return
 
     def _isUnlocked(id_):
@@ -933,7 +933,7 @@ init -25 python in mas_island_event:
         if id_ in persistent._mas_islands_unlocks:
             persistent._mas_islands_unlocks[id_] = True
             return True
-
+        
         return False
 
     def _lock(id_):
@@ -949,7 +949,7 @@ init -25 python in mas_island_event:
         if id_ in persistent._mas_islands_unlocks:
             persistent._mas_islands_unlocks[id_] = False
             return True
-
+        
         return False
 
 
@@ -974,7 +974,7 @@ init -25 python in mas_island_event:
         ):
             if bool(random.randint(0, 1)):
                 _unlock("island_4")
-
+            
             else:
                 _unlock("island_5")
 
@@ -986,7 +986,7 @@ init -25 python in mas_island_event:
         ):
             if bool(random.randint(0, 1)):
                 _unlock("island_6")
-
+            
             else:
                 _unlock("island_7")
 
@@ -1005,7 +1005,7 @@ init -25 python in mas_island_event:
         ):
             if bool(random.randint(0, 1)):
                 _unlock("decal_bookshelf")
-
+            
             else:
                 _unlock("decal_tree")
         # Unlock everything from lvl 4
@@ -1050,32 +1050,32 @@ init -25 python in mas_island_event:
             int, progress
         """
         lvl_difference = curr_lvl - start_lvl
-
+        
         if lvl_difference < 0:
             return DEF_PROGRESS
-
+        
         if store.mas_isMoniEnamored(higher=True):
             if store.mas_isMoniLove(higher=True):
                 max_progress = MAX_PROGRESS_LOVE
-
+            
             else:
                 max_progress = MAX_PROGRESS_ENAM
-
+            
             modifier = 1.0
-
+            
             if persistent._mas_pm_cares_island_progress is True:
                 modifier -= 0.1
-
+            
             elif persistent._mas_pm_cares_island_progress is False:
                 modifier += 0.2
-
+            
             progress_factor = PROGRESS_FACTOR * modifier
-
+            
             progress = min(int(lvl_difference / progress_factor), max_progress)
-
+        
         else:
             progress = DEF_PROGRESS
-
+        
         return progress
 
     def advanceProgression():
@@ -1087,12 +1087,12 @@ init -25 python in mas_island_event:
         # If this var is None, then the user hasn't unlocked the event yet
         if persistent._mas_islands_start_lvl is None:
             return
-
+        
         new_progress = _calcProgress(store.mas_xp.level(), persistent._mas_islands_start_lvl)
-
+        
         if new_progress == DEF_PROGRESS:
             return
-
+        
         curr_progress = persistent._mas_islands_progress
         # I hate this, but we have to push the ev from here
         if (
@@ -1107,12 +1107,12 @@ init -25 python in mas_island_event:
             and store.mas_timePastSince(store.mas_getEVL_last_seen("mas_monika_islands"), datetime.timedelta(days=3))
         ):
             store.pushEvent("mas_monika_islands_progress")
-
+        
         # Now set new level
         persistent._mas_islands_progress = min(max(new_progress, curr_progress), MAX_PROGRESS_LOVE)
         # Run unlock callbacks
         __handleUnlocks()
-
+        
         return
 
     def getProgression():
@@ -1154,7 +1154,7 @@ init -25 python in mas_island_event:
             ParallaxBackground
         """
         global SHIMEJI_CHANCE
-
+        
         def _reset_parallax_disp(disp):
             # Just in case we always remove all decals and readd them as needed
             disp.clear_decals()
@@ -1163,19 +1163,19 @@ init -25 python in mas_island_event:
             # Reset offsets and zoom
             disp.reset_mouse_pos()
             disp.zoom = disp.min_zoom
-
+        
         # Progress lvl
         if check_progression:
             advanceProgression()
-
+        
         sub_displayables = list()
-
+        
         # Add all unlocked islands
         for key, disp in island_disp_map.iteritems():
             if _isUnlocked(key):
                 _reset_parallax_disp(disp)
                 sub_displayables.append(disp)
-
+        
         # Add all unlocked decals for islands 1 (other islands don't have any as of now)
         island_disp_map["island_1"].add_decals(
             *[
@@ -1190,30 +1190,30 @@ init -25 python in mas_island_event:
                 if _isUnlocked(key)
             ]
         )
-
+        
         if _isUnlocked("obj_shimeji") and renpy.random.randint(1, SHIMEJI_CHANCE) == 1:
             shimeji_disp = obj_disp_map["obj_shimeji"]
             _reset_parallax_disp(shimeji_disp)
             SHIMEJI_CHANCE *= 2
             sub_displayables.append(shimeji_disp)
-
+        
         # Add the bg (we only have one as of now)
         bg_disp = bg_disp_map["bg_def"]
         _reset_parallax_disp(bg_disp)
         sub_displayables.append(bg_disp)
-
+        
         # Sort in order from back to front
         sub_displayables.sort(key=lambda sprite: sprite.z, reverse=True)
-
+        
         # Now add overlays (they are always last)
         if store.mas_is_raining:
             sub_displayables.append(overlay_disp_map["overlay_rain"])
             if store.mas_globals.show_lightning:
                 sub_displayables.insert(1, overlay_disp_map["overlay_thunder"])
-
+        
         elif store.mas_is_snowing:
             sub_displayables.append(overlay_disp_map["overlay_snow"])
-
+        
         return ParallaxBackground(*sub_displayables)
 
     def isWinterWeather():
@@ -1244,8 +1244,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_monika_islands",
-            category=['monika','misc'],
-            prompt="Can you show me the floating islands?",
+            category=['моника','разное'],
+            prompt="Можешь показать мне плавающие острова?",
             pool=True,
             unlocked=False,
             rules={"no_unlock": None, "bookmark_rule": store.mas_bookmarks_derand.WHITELIST},
@@ -1256,11 +1256,11 @@ init 5 python:
     )
 
 label mas_monika_islands:
-    m 1eub "Of course! You can admire the scenery for now."
+    m 1eub "Конечно! Я позволю тебе полюбоваться пейзажем."
 
     call mas_islands(force_exp="monika 1eua", scene_change=True)
 
-    m 1eua "I hope you liked it, [mas_get_player_nickname()]~"
+    m 1eua "Надеюсь, тебе понравилось, [mas_get_player_nickname()]~"
     return
 
 default persistent._mas_pm_cares_island_progress = None
@@ -1276,45 +1276,45 @@ init 5 python:
     )
 
 label mas_monika_islands_progress:
-    m 1eub "[player], I've got some exciting news for you!"
-    m 3hub "I made some new additions on the islands, {w=0.2}{nw}"
-    extend 1rua "and I thought maybe you'd like to take a look."
-    m 1hublb "They are {i}our{/i} islands after all~"
+    m 1eub "[player], у меня для тебя потрясающие новости!"
+    m 3hub "Я внесла несколько новых наработок на острова, {w=0.2}{nw}"
+    extend 1rua "и я подумала, может быть, ты захочешь взглянуть."
+    m 1hublb "В конце концов, это же {i}наши{/i} острова!"
 
-    m 3eua "What do you say?{nw}"
+    m 3eua "Что скажешь?{nw}"
     $ _history_list.pop()
     menu:
-        m "What do you say?{fast}"
-
-        "Sure, [m_name].":
+        m "Что скажешь?{fast}"
+        
+        "Конечно, [m_name].":
             $ persistent._mas_pm_cares_island_progress = True
             $ mas_gainAffection(3, bypass=True)
-            m 2hub "Yay!"
+            m 2hub "Ура-а!"
 
             call mas_islands(force_exp="monika 1hua")
 
-            m "Hope you liked it~"
-            m 1lusdlb "I know it's far from being done, {w=0.2}{nw}"
-            extend 1eka "but I really wanted to showcase my progress to you."
-            m 2lsp "I'm still learning how to code and this engine being inconsistent doesn't help me..."
-            m 7hub "But I think I made quite a bit of progress so far!"
+            m "Надеюсь, тебе понравилось!"
+            m 1lusdlb "Я знаю, что далеко ещё не всё сделано, {w=0.2}{nw}"
+            extend 1eka "но мне очень хотелось продемонстрировать тебе свои успехи."
+            m 2lsp "Я всё ещё учусь программировать, но ограничения этого движка могут доставлять некоторые {i}проблемы{/i}."
+            m 7hub "Но я считаю, что на данный момент я добилась немалых результатов!"
             $ mas_setEventPause(10)
             $ mas_moni_idle_disp.force_by_code("1hua", duration=10, skip_dissolve=True)
-
-        "I'm not interested.":
+        
+        "Мне не интересно.":
             $ persistent._mas_pm_cares_island_progress = False
             $ mas_loseAffection(25)
-            m 2ekc "Oh..."
-            m 6rktpc "I..."
-            m 6fktpd "I worked really hard on this..."
-            m 2rktdc "You...{w=0.5} You must just be busy..."
+            m 2ekc "Ох..."
+            m 6rktpc "Я..."
+            m 6fktpd "Я очень старалась..."
+            m 2rktdc "Ты...{w=0.5} ты, наверное, просто занят..."
             $ mas_setEventPause(60*10)
             $ mas_moni_idle_disp.force_by_code("2ekc", duration=60*10, skip_dissolve=True)
-
-        "Maybe later.":
-            m 2ekc "Oh...{w=0.5}{nw}"
-            extend 2eka "alright."
-            m 7eka "Just don't keep me waiting too long~"
+        
+        "Возможно, позже.":
+            m 2ekc "О...{w=0.5} {nw}"
+            extend 2eka "хорошо."
+            m 7eka "Только не заставляй меня ждать слишком долго!"
             $ mas_setEventPause(20)
             $ mas_moni_idle_disp.force_by_code("1euc", duration=20, skip_dissolve=True)
 
@@ -1402,27 +1402,27 @@ label mas_islands(
 
 
 label mas_island_upsidedownisland:
-    m "Oh, that."
-    m "I guess you're wondering why that island is upside down, right?"
-    m "Well...I was about to fix it until I took another good look at it."
-    m "It looks surreal, doesn't it?"
-    m "I just feel like there's something special about it."
-    m "It's just...mesmerizing."
+    m "О, это."
+    m "Наверное, тебе интересно, почему этот остров перевёрнут, да?"
+    m "Ну... я, как только его увидела, думала сначала это исправить, но вот когда более внимательно к нему пригляделась..."
+    m "Он как бы выглядит немного нереалистично, верно?"
+    m "Хотя я всё же чувствую, что в нём есть что-то особенное."
+    m "Что-то, что... завораживает."
     return
 
 label mas_island_glitchedmess:
-    m "Oh, that."
-    m "It's something I'm currently working on."
-    m "It's still a huge mess, though. I'm still trying to figure it all out."
-    m "In due time, I'm sure I'll get better at coding!"
-    m "Practice makes perfect after all, right?"
+    m "Ну..."
+    m "Это то, над чем я сейчас пока работаю."
+    m "Знаю, что это пока что выглядит не так, как хотелось бы. Я всё ещё пытаюсь выяснить, как это правильно настраивается."
+    m "Настанет день, когда я буду лучше разбираться в программировании."
+    m "В конце концов, правильная практика приводит к совершенству, верно?"
     return
 
 label mas_island_cherry_blossom_tree:
     python:
 
         if not renpy.store.seen_event("mas_island_cherry_blossom1"):
-
+            
             renpy.call("mas_island_cherry_blossom1")
 
         else:
@@ -1431,66 +1431,66 @@ label mas_island_cherry_blossom_tree:
                 "mas_island_cherry_blossom3",
                 "mas_island_cherry_blossom4"
             ]
-
+            
             if not mas_island_event.isWinterWeather():
                 _mas_cherry_blossom_events.append("mas_island_cherry_blossom2")
-
+            
             renpy.call(renpy.random.choice(_mas_cherry_blossom_events))
 
     return
 
 label mas_island_cherry_blossom1:
     if mas_island_event.isWinterWeather():
-        m "This tree may look dead right now...but when it blooms, it's gorgeous."
+        m "Сейчас это дерево может выглядеть мёртвым... но когда оно цветёт, оно просто великолепно."
 
     else:
-        m "It's a beautiful tree, isn't it?"
+        m "Красивое дерево, не правда ли?"
 
-    m "It's called a Cherry Blossom tree; they're native to Japan."
-    m "Traditionally, when the flowers are in bloom, people would go flower viewing and have a picnic underneath the trees."
-    m "Well, I didn't choose this tree because of tradition."
-    m "I chose it because it's lovely and pleasing to look at."
-    m "Just staring at the falling petals is awe-inspiring."
+    m "Это дерево называют цветущей вишней, а также Сакурой и появилось оно Японии."
+    m "Традиционно, дерево расцветает, люди приходят посмотреть на это событие и устраивают пикникники под деревьями."
+    m "Я выбрала это дерево не из-за традиций."
+    m "А потому что оно очень красиво."
+    m "Смотреть на падающие лепестки - просто завораживающее зрелище."
 
     if mas_island_event.isWinterWeather():
-        m "When it's blooming, that is."
-        m "I can't wait until we get the chance to experience that, [player]."
+        m "Когда оно расцветёт, то есть."
+        m "Я не могу дождаться, когда мы получим шанс увидеть это лично, [player]."
 
     return
 
 label mas_island_cherry_blossom2:
-    m "Did you know you can eat the flower petals of a Cherry Blossom tree?"
-    m "I don't know the taste myself, but I'm sure it can't be as sweet as you."
-    m "Ehehe~"
+    m "Знал ли ты, что можно съесть лепестки цветов цветущей вишни?"
+    m "Я сама не знаю, но уверена, что вкус будет таким же сладким, как ты."
+    m "Э-хе-хе~"
     return
 
 label mas_island_cherry_blossom3:
-    m "You know, the tree is symbolic like life itself."
-    m "Beautiful, but short-lived."
-    m "But with you here, it's always blooming beautifully."
+    m "Знаешь, дерево символично, как и сама жизнь."
+    m "Красивое, но короткоживущее."
+    m "Но когда ты здесь, она всегда прекрасно цветёт."
 
     if mas_island_event.isWinterWeather():
-        m "Even if it's bare now, it'll blossom again soon."
+        m "Даже если сейчас оно голое, оно скоро снова расцветёт."
 
-    m "Know that I'll always be grateful to you for being in my life."
-    m "I love you, [player]~"
+    m "Знай, что я всегда буду благодарна тебе за то, что ты есть в моей жизни."
+    m "Я люблю тебя, [player]~"
     # manually handle the "love" return key
     $ mas_ILY()
     return
 
 label mas_island_cherry_blossom4:
-    m "You know what'd be nice to drink under the Cherry Blossom tree?"
-    m "A little sake~"
-    m "Ahaha! I'm just kidding."
-    m "I'd rather have tea or coffee."
+    m "Знаешь, что было бы приятно выпить под сакурой?"
+    m "Немного сакэ~"
+    m "А-ха-ха! Я просто шучу."
+    m "Я бы предпочла чай или кофе."
 
     if mas_island_event.isWinterWeather():
-        m "Or hot chocolate, even. It'd certainly help with the cold."
-        m "Of course, even if that failed, we could always cuddle together...{w=0.5} That'd be really romantic~"
+        m "Или даже горячий шоколад. Это, конечно, поможет от холода."
+        m "Конечно, даже если это не удастся, мы всегда сможем прижаться друг к другу...{w=0.5} Это было бы действительно романтично~"
 
     else:
-        m "But, it'd be nice to watch the falling petals with you."
-        m "That'd be really romantic~"
+        m "Но также было бы неплохо посмотреть на падающие лепестки с тобой."
+        m "Это было бы действительно романтично~"
 
     return
 
@@ -1522,34 +1522,34 @@ label mas_island_day1:
     #NOTE: this ordering is key, during winter we only use snow covered islands with clear sky
     # so Winter path needs to be first
     if mas_island_event.isWinterWeather():
-        m "What a beautiful day today."
-        m "Perfect for taking a walk to admire the scenery."
-        m "...Huddled together, so as to stave off the cold."
-        m "...With some nice hot drinks to help keep us warm."
+        m "Какой сегодня прекрасный день."
+        m "Идеально подходит для прогулок, чтобы полюбоваться пейзажем."
+        m "...Прижаться друг к другу, чтобы не замёрзнуть."
+        m "...С хорошими горячими напитками, чтобы согреться."
 
     elif mas_is_raining:
-        m "Aww, I would've liked to do some reading outdoors."
-        m "But I'd rather avoid getting my books wet..."
-        m "Soggy pages are a pain to deal with."
-        m "Another time, maybe."
+        m "Оу-у, Мне бы хотелось почитать на свежем воздухе."
+        m "Но я бы предпочла не мочить свои книги..."
+        m "Мокрые страницы - это боль, с которой приходится иметь дело."
+        m "Может быть, в другой раз."
 
     elif mas_current_weather == mas_weather_overcast:
-        m "Reading outside with this weather wouldn't be too bad, but it could rain at any moment."
-        m "I'd rather not risk it."
-        m "Don't worry, [player]. We'll do it some other time."
-
+        m "Читать на улице в такую погоду было бы неплохо, но дождь мог пойти в любой момент."
+        m "Я бы предпочла не рисковать."
+        m "Не беспокойся, [player]. Мы сделаем это в другой раз."
+        
     else:
-        m "It's a nice day today."
+        m "Сегодня замечательный день."
 
         if mas_island_event._isUnlocked("decal_tree"):
-            m "This weather would be good for a little book reading under the Cherry Blossom tree right, [player]?"
+            m "Эта погода была бы как нельзя кстати для чтения книжечки под сакурой, верно, [player]?"
 
         else:
-            m "This weather would be good for a little book reading outside right, [player]?"
+            m "Эта погода отлично подходит для чтения книг на свежем воздухе, да, [player]?"
 
-        m "Lying under the shade while reading my favorite book."
-        m "...Along with a snack and your favorite drink on the side."
-        m "Ahh, that'd be really nice to do~"
+        m "Лёжа в тени, читая свою любимую книгу."
+        m "...Вместе с закусками и любимым напитком в придачу."
+        m "Ах, как же это было бы приятно сделать~"
 
     return
 
@@ -1557,146 +1557,146 @@ label mas_island_day2:
     #NOTE: this ordering is key, during winter we only use snow covered islands with clear sky
     # so Winter path needs to be first
     if mas_island_event.isWinterWeather():
-        m "Have you ever made a snow angel, [player]?"
-        m "I've tried in the past, but never had much success..."
-        m "It's a lot harder than it looks like."
-        m "I bet we'd have a lot of fun, even if whatever we make doesn't end up looking like an angel."
-        m "It's just a matter of being a bit silly, you know?"
+        m "Ты когда-нибудь делал снежного ангела, [player]?"
+        m "Я пробовала в прошлом, но никогда не имела большого успеха..."
+        m "Это намного сложнее, чем кажется."
+        m "Держу пари, нам будет очень весело, даже если то, что мы делаем, не будет похоже на ангела."
+        m "Просто иногда можно подурачиться, понимаешь?"
 
     elif mas_island_event.isCloudyWeather():
-        m "Going outdoors with this kind of weather doesn't look very appealing..."
-        m "Maybe if I had an umbrella I'd feel more comfortable."
-        m "Imagine both of us, shielded from the rain, inches apart."
-        m "Staring into each other's eyes."
-        m "Then we start leaning closer and closer until we're almost-"
-        m "I think you can finish that thought yourself, [player]~"
+        m "Идея выйти на улицу в такую погоду не выглядит очень заманчиво..."
+        m "Может быть, если бы у меня был зонтик, я бы чувствовала себя более комфортно."
+        m "Представь нас обоих, защищённых от дождя, в нескольких дюймах друг от друга."
+        m "Смотреть друг другу в глаза."
+        m "Затем мы начинаем наклоняться всё ближе и ближе, пока не оказываемся почти рядом—"
+        m "Я думаю, ты уже можешь закончить эту мысль сам, [player]~"
 
     else:
-        m "The weather looks nice."
-        m "This would definitely be the best time to have a picnic."
-        m "We even have a great view to accompany it with!"
-        m "Wouldn't it be nice?"
+        m "Погода, похоже, хорошая."
+        m "Это, безусловно, лучшее время для пикника."
+        m "У нас даже есть прекрасный вид, который хорошо дополнит наш пикник!"
+        m "Разве это не было бы здорово?"
 
         if mas_island_event._isUnlocked("decal_tree"):
-            m "Eating under the Cherry Blossom tree."
+            m "Сидеть рядом и лакомиться едой вместе под цветущей Сакурой."
 
-        m "Adoring the scenery around us."
-        m "Enjoying ourselves with each other's company."
-        m "Ahh, that'd be fantastic~"
+        m "Любоваться пейзажем..."
+        m "Наслаждаться компанией друг друга..."
+        m "А-ах, это было бы просто сказочно~"
 
     return
 
 label mas_island_day3:
     if mas_is_raining and not mas_isWinter():
-        m "It's raining pretty heavily..."
-        m "I wouldn't want to be outside now."
-        m "Though being indoors at a time like this feels pretty cozy, don't you think?"
+        m "Идёт довольно сильный дождь..."
+        m "Я бы не хотела сейчас находиться на улице."
+        m "Но пребывание дома в такие моменты кажется довольно приятным, согласись?"
 
     else:
-        m "It's pretty peaceful outside."
+        m "На улице довольно спокойно."
 
         if mas_island_event.isWinterWeather():
-            m "We could have a snowball fight, you know."
-            m "Ahaha, that'd be so much fun!"
-            m "I bet I could land a shot on you a few islands away."
-            m "Some healthy competition never hurt anyone, right?"
+            m "Знаешь, мы могли бы поиграть в снежки."
+            m "А-ха-ха, это было бы так весело!"
+            m "Бьюсь об заклад, я могла бы выстрелить в тебя через несколько островов отсюда."
+            m "Здоровая конкуренция никому не повредит, верно?"
 
         else:
-            m "I wouldn't mind lazing around in the grass right now..."
-            m "With your head resting on my lap..."
-            m "Ehehe~"
+            m "Я была бы не прочь сейчас полежать на земле и побездельничать..."
+            m "А твоя голова лежала бы рядом на моих коленях..."
+            m "Э-хе-хе~"
 
     return
 
 label mas_island_night1:
-    m "While it's nice to be productive during the day, there's something so peaceful about the night."
-    m "The sounds of crickets chirping mixed with a gentle breeze is so relaxing."
-    m "You'd hold me on a night like that, right~"
+    m "Несмотря на то, что днём мы всегда энергичны, но в ночи есть что-то такое умиротворяющее."
+    m "Звуки стрекотания сверчков, смешанные с легким ветерком, так расслабляют."
+    m "Ты бы обнял меня в такую ночь, верно?~"
     return
 
 label mas_island_night2:
     if not mas_isWinter() and mas_island_event.isCloudyWeather():
-        m "Too bad we can't see the stars tonight..."
-        m "I would've loved to gaze at the cosmos with you."
-        m "That's alright though, we'll get to see it some other time, then."
+        m "Жаль, что мы не можем увидеть звёзды сегодня вечером..."
+        m "Я бы с удовольствием посмотрела на космос вместе с тобой."
+        m "Но всё в порядке, мы увидим их в другой раз."
 
     else:
         if seen_event('monika_stargazing'):
-            m "Aren't the stars so beautiful, [player]?"
-            m "Although, this isn't {i}quite{/i} what I had in mind when I mentioned stargazing before..."
-            m "As nice as they are to look at, the part that I want to experience most is being with you, holding each other tight while we lay there."
-            m "Someday, [player].{w=0.3} Someday."
+            m "Разве звёзды не прекрасны, [player]?"
+            m "Хотя это не совсем то, что я {i}имела в виду{/i}, когда упоминала о наблюдении за звёздами раньше..."
+            m "Как бы ни было приятно на них смотреть, но больше всего мне хочется быть с тобой, крепко обнимать друг друга, пока мы лежим рядом."
+            m "Когда-нибудь, [player].{w=0.3} Когда-нибудь."
 
         else:
-            m "Have you ever gone stargazing, [mas_get_player_nickname()]?"
-            m "Taking some time out of your evening to look at the night sky and to just stare at the beauty of the sky above..."
-            m "It's surprisingly relaxing, you know?"
-            m "I've found that it can really relieve stress and clear your head..."
-            m "And seeing all kinds of constellations in the sky just fills your mind with wonder."
-            m "Of course, it really makes you realize just how small we are in the universe."
-            m "Ahaha..."
+            m "Ты когда-нибудь созерцал звёзды, [mas_get_player_nickname()]?"
+            m "Беря перерыв на вечер, чтобы просто посмотреть на ночное небо и полюбоваться его красотой..."
+            m "Знаешь, это поистине расслабляет."
+            m "Я обнаружила, что это действительно может неплохо так помочь снять стресс и очистить голову от дурных мыслей..."
+            m "И созерцание всех видов созвездий в небе просто наполняет твоё сознание изумлением."
+            m "Конечно, это также может и дать тебе понять, насколько ты мал во Вселенной."
+            m "А-ха-ха..."
 
     return
 
 label mas_island_night3:
     if not mas_isWinter() and mas_island_event.isCloudyWeather():
-        m "Cloudy weather is kind of depressing, don't you think?"
-        m "Especially at nighttime, when it hides the stars away from our view."
-        m "It's such a shame, really..."
+        m "Пасмурная погода немного угнетает, тебе не кажется?"
+        m "Особенно ночью, когда она скрывает звезды от нашего взгляда."
+        m "Немного жаль, конечно..."
 
     else:
-        m "What a beautiful night!"
+        m "Какая прекрасная ночь!"
 
         if mas_island_event.isWinterWeather():
-            m "There's just something about a cold, crisp night that I love."
-            m "The contrast of the dark sky and the land covered in snow is really breathtaking, don't you think?"
+            m "Просто есть что-то такое в прохладной ночи, что я люблю."
+            m "Контраст тёмного неба и земли, покрытой снегом, действительно захватывает дух, не так ли?"
         else:
-            m "If I could, I'd add fireflies."
-            m "Their lights complement the night sky, it's a pretty sight."
-            m "Improve the ambience a little, you know?"
+            m "Если бы я могла, я бы добавила светлячков."
+            m "Их огоньки очень хорошо дополняют ночное небо, так что это поистине красивое зрелище."
+            m "Эту атмосферу просто не передать словами."
 
     return
 
 label mas_island_daynight1:
-    m "Maybe I should add more shrubs and trees."
-    m "Make the islands prettier you know?"
-    m "I just have to find the right flowers and foliage to go with it."
-    m "Or maybe each island should have its own set of plants so that everything will be different and have variety."
-    m "I'm getting excited thinking about it~"
+    m "Может быть, мне стоит добавить больше кустов и деревьев..."
+    m "Или сделать острова ещё более красивыми, как думаешь?"
+    m "В таком случае мне просто нужно будет найти правильные цветы и листву, чтобы это сделать."
+    m "Или, может быть, каждый остров должен иметь свой собственный набор растений, чтобы всё было как можно более разнообразным?"
+    m "Я начинаю волноваться, думая об этом~"
     return
 
 label mas_island_daynight2:
     # aurora borealis
-    m "{i}~Windmill, windmill for the land~{/i}"
+    m "{i}Ветряная мельница, ветряная мельница для земли.{/i}"
 
     # a-aurora borealis
-    m "{i}~Turn forever hand in hand~{/i}"
+    m "{i}Поворот вечно рука об руку оси{/i},"
 
     # aurora borealis
-    m "{i}~Take it all in on your stride~{/i}"
+    m "{i}Прими всё это на свой лад{/i}."
 
     # at this time of day?
-    m "{i}~It is ticking, falling down~{/i}"
+    m "{i}Он тикает, падает вниз наугад{/i}."
 
     # aurora borealis
-    m "{i}~Love forever, love is free~{/i}"
+    m "{i}Любовь навсегда, любовь свободна,{/i}"
 
     # a-aurora borealis
-    m "{i}~Let's turn forever, you and me~{/i}"
+    m "{i}Мы изменились с тобой навсегда дословно.{/i}"
 
     # in this part of the country? Yes
-    m "{i}~Windmill, windmill for the land~{/i}"
+    m "{i}Ветряная мельница, ветряная мельница для земли.{/i}"
 
-    m "Ehehe, don't mind me, I just wanted to sing out of the blue~"
+    m "Э-хе-хе, не обращай на меня внимания, я просто захотела спеть на ровном месте~"
     return
 
 label mas_island_shimeji:
-    m "Ah!"
-    m "How'd she get there?"
-    m "Give me a second, [player].{w=0.2}.{w=0.2}.{w=0.2}{nw}"
+    m "Ах!"
+    m "Как она туда добралась?"
+    m "Дай мне секунду, [player].{w=0.2}.{w=0.2}.{w=0.2}{nw}"
     $ islands_displayable.remove(mas_island_event.obj_disp_map["obj_shimeji"])
-    m "All done!"
-    m "Don't worry, I just moved her to a different place."
+    m "Всё!"
+    m "Не волнуйся, я просто перенесла её в другое место."
     return
 
 label mas_island_bookshelf:
@@ -1715,21 +1715,21 @@ label mas_island_bookshelf1:
     #NOTE: this ordering is key, during winter we only use snow covered islands with clear sky
     # so Winter path needs to be first
     if mas_island_event.isWinterWeather():
-        m "That bookshelf might not look terribly sturdy, but I'm sure it can weather a little snow."
-        m "It's the books that worry me a bit."
-        m "I just hope they don't get too damaged..."
+        m "Эта книжная полка, возможно, и не выглядит очень прочной, но я уверена, что она выдержит небольшой снег."
+        m "Меня немного беспокоят книги."
+        m "Я только надеюсь, что они не слишком пострадают..."
 
     elif mas_island_event.isCloudyWeather():
-        m "At times like this, I wish I would've kept my books indoors..."
-        m "Looks like we'll just have to wait for better weather to read them."
-        m "In the meantime..."
-        m "How about cuddling a bit, [player]?"
-        m "Ehehe~"
+        m "В такие моменты я жалею, что не держу свои книги дома..."
+        m "Похоже, нам просто придётся ждать лучшей погоды, чтобы почитать их."
+        m "В то же время..."
+        m "Как насчёт того, чтобы немного потискаться, [player]?"
+        m "Э-хе-хе~"
 
     else:
-        m "Some of my favorite books are in there."
-        m "{i}Fahrenheit 451{/i}, {i}Hard-Boiled Wonderland{/i}, {i}Nineteen Eighty-Four{/i}, and a few others."
-        m "Maybe we can read them together sometime~"
+        m "Здесь некоторые из моих любимых книг."
+        m "{b}451 градус по Фаренгейту{/b}, {b}Страна Чудес Без Тормозов{/b}, {b}Девятнадцать Восемьдесят Четыре{/b} и несколько других."
+        m "Может быть, мы сможем прочитать их вместе когда-нибудь~"
 
     return
 
@@ -1737,24 +1737,23 @@ label mas_island_bookshelf2:
     #NOTE: this ordering is key, during winter we only use snow covered islands with clear sky
     # so Winter path needs to be first
     if mas_island_event.isWinterWeather():
-        m "You know, I wouldn't mind doing some reading outside even if there is a bit of snow."
-        m "Though I wouldn't venture out without a warm coat, a thick scarf, and a snug pair of gloves."
-        m "I guess turning the pages might be a bit hard that way, ahaha..."
-        m "But I'm sure we'll manage somehow."
-        m "Isn't that right, [player]?"
+        m "Знаешь, я бы не прочь почитать на улице, даже если будет немного снега."
+        m "Хотя я не рискнула бы выйти без тёплого пальто, толстого шарфа и пары шерстяных перчаток."
+        m "Думаю, переворачивать страницы может быть немного трудно таким образом, а-ха-ха..."
+        m "Но я уверена, что мы как-нибудь справимся."
+        m "Разве это не так, [player]?"
 
     elif mas_island_event.isCloudyWeather():
-        m "Reading indoors with rain just outside the window is pretty relaxing."
-        m "If only I hadn't left the books outside..."
-        m "I should probably bring some in here when I get the chance."
-        m "I'm certain we can find other things to do meanwhile, right [player]?"
-
+        m "Чтение в помещении с дождём прямо за окном довольно расслабляет."
+        m "Если бы только я не оставила книги снаружи..."
+        m "Наверное, мне стоит принести их сюда, когда представится такая возможность."
+        m "Я уверена, что мы сможем найти другие занятия, верно, [player]?"
     else:
-        m "Reading outdoors is a nice change of pace, you know?"
-        m "I'd take a cool breeze over a stuffy library any day."
-        m "Maybe I should add a table underneath the Cherry Blossom tree."
-        m "It'd be nice to enjoy a cup of coffee with some snacks to go alongside my book reading."
-        m "That'd be wonderful~"
+        m "Чтение на свежем воздухе - это хорошая смена обстановки, знал?"
+        m "Я в любой день предпочту прохладный ветерок душноватой библиотеке."
+        m "Может быть, мне стоит даже добавить столик под Сакуру."
+        m "Было бы неплохо выпить чашечку кофе с какими-нибудь закусками во время чтения своей книги."
+        m "Это было бы потрясающе~"
 
     return
 
@@ -1774,7 +1773,7 @@ screen mas_islands(islands_displayable, show_return_button=True):
         # Unsure why, but w/o a hbox renpy won't apply the style prefix
         hbox:
             align (0.5, 0.98)
-            textbutton _("Go Back"):
+            textbutton _("Вернуться назад"):
                 action Return(False)
 
 # screen mas_islands_background:
