@@ -28,12 +28,12 @@ init 10 python:
         """
         if clothes is None:
             return
-
+        
         if key is None:
             key = datetime.date.today()
-
+        
         persistent._mas_event_clothes_map[key] = clothes.name
-
+        
         #We also unlock the event clothes selector here
         mas_unlockEVL("monika_event_clothes_select", "EVE")
 
@@ -48,10 +48,10 @@ init 10 python:
         """
         if not clothes:
             return
-
+        
         #We have clothes, we need to create a generator for building a range
         daterange = mas_genDateRange(start_date, end_date)
-
+        
         #Now we need to iterate over the new range:
         for date in daterange:
             mas_addClothesToHolidayMap(clothes, date)
@@ -69,7 +69,7 @@ init 10 python:
         """
         if background_id is None:
             background_id = store.mas_current_background.background_id
-
+        
         for deco_tag in deco_tags:
             if MASImageTagDecoDefinition.get_adf(background_id, deco_tag):
                 return True
@@ -108,17 +108,17 @@ init -1 python:
             pbday_cap:
                 The cap to use when it's player bday (NOTE: if not provided, normal_cap is assumed)
         """
-
+        
         #If player bday cap isn't provided, we just use the one cap
         if persistent._mas_player_bday_in_player_bday_mode and pbday_cap:
             cap = pbday_cap
         else:
             cap = normal_cap
-
+        
         if persistent.__dict__[aff_gained_var] < cap:
             persistent.__dict__[aff_gained_var] += amount
             mas_gainAffection(amount, bypass=True)
-
+        
         return
 
     def mas_hasSpecialOutfit(_date=None):
@@ -132,42 +132,42 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date in persistent._mas_event_clothes_map
 
 init -10 python:
     def mas_isA01(_date=None):
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == datetime.date(_date.year,4,1)
 
 # Global labels
 label mas_lingerie_intro(holiday_str, lingerie_choice):
     m 1ekbfa "..."
-    m "Also, [player]..."
-    m 3ekbfsdla "There's...{w=1}s-something I want to show you."
-    m 2rkbfsdla "I've been wanting to do this for a while now actually, but...{w=1}well it's kind of embarrassing..."
+    m "Также, [player]..."
+    m 3ekbfsdla "Есть...{w=1} к-кое-что, что я хочу тебе показать."
+    m 2rkbfsdla "Я уже давно хотела это сделать, но...{w=1} ну это немного неловко..."
     m "..."
-    m 2hkbfsdlb "Oh gosh, I'm super nervous, ahaha!"
-    m 2rkbfsdlc "It's just I've never--{nw}"
-    m 2dkbfsdlc "Ah, okay, time to stop stalling and just do it."
-    m 2ekbfsdla "Just give me a few seconds, [player]."
+    m 2hkbfsdlb "О боже, я очень нервничаю, а-ха-ха!"
+    m 2rkbfsdlc "Просто я никогда этого не делала...{nw}"
+    m 2dkbfsdlc "Ах, ладно, пора перестать тянуть время и просто сделать это."
+    m 2ekbfsdla "Просто дай мне несколько секунд, [player]."
     call mas_clothes_change(outfit=lingerie_choice, outfit_mode=True, exp="monika 2rkbfsdlu", restore_zoom=False, unlock=True)
     pause 3.0
-    m 2ekbfsdlb "Ahaha, [player]...{w=1}you're staring..."
-    m 2ekbfu "Well...{w=1}do you like what you see?"
-    m 1lkbfa "I've never really...{w=1}worn anything like this before."
-    m "...At least not that anyone's seen."
+    m 2ekbfsdlb "А-ха-ха, [player]...{w=1} ты смотришь на меня..."
+    m 2ekbfu "Что ж...{w=1} тебе нравится то, на что ты смотришь?"
+    m 1lkbfa "Я никогда раньше...{w=1} не носила ничего подобного."
+    m "...По крайней мере, никто этого не видел."
 
     if mas_hasUnlockedClothesWithExprop("bikini"):
-        m 3hkbfb "Ahaha, what am I saying, you've seen me in a bikini before, which is essentially the same thing..."
-        m 2rkbfa "...Though for some reason this just feels...{w=0.5}{i}different{/i}."
+        m 3hkbfb "А-ха-ха, что я говорю, ты уже видел меня в бикини раньше, что по сути одно и то же..."
+        m 2rkbfa "...Но по какой-то причине, мне это кажется...{w=0.5} {i}чем-то другим{/i}."
 
-    m 2ekbfa "Anyway, something about being with you [holiday_str] seems really romantic, you know?"
-    m "It just felt like the perfect time for the next step in our relationship."
-    m 2rkbfsdlu "Now I know that we can't really--{nw}"
-    m 3hubfb "Ah! Nevermind, ahaha!"
+    m 2ekbfa "В любом случае, что-то в том, чтобы быть с тобой сегодня вечером в [holiday_str], кажется очень романтичным, понимаешь?"
+    m "Это было идеальное время для следующего шага в наших отношениях."
+    m 2rkbfsdlu "Теперь я знаю, что мы не можем на самом деле--{nw}"
+    m 3hubfb "Ах! Не важно, а-ха-ха!"
     return
 
 
@@ -376,7 +376,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_o31.replace(year=_date.year)
 
     def mas_o31ShowVisuals():
@@ -385,7 +385,7 @@ init -10 python:
         """
         for _tag in MAS_O31_DECO_TAGS:
             mas_showDecoTag(_tag)
-
+        
         monika_chr.wear_acs(mas_acs_desk_lantern)
         monika_chr.wear_acs(mas_acs_desk_candy_jack)
 
@@ -395,15 +395,15 @@ init -10 python:
         """
         for _tag in MAS_O31_DECO_TAGS:
             mas_hideDecoTag(_tag, hide_now=True)
-
+        
         #unlock hairdown greet if we don't have hairdown unlocked
         hair = store.mas_selspr.get_sel_hair(store.mas_hair_down)
         if hair is not None and not hair.unlocked:
             store.mas_unlockEVL("greeting_hairdown", "GRE")
-
+        
         # lock the event clothes selector
         store.mas_lockEVL("monika_event_clothes_select", "EVE")
-
+        
         # get back into reasonable clothing, so we queue a change to def
         if store.monika_chr.is_wearing_clothes_with_exprop("costume"):
             store.queueEvent('mas_change_to_def')
@@ -419,11 +419,11 @@ init -10 python:
             mas_acs_desk_lantern,
             mas_acs_desk_candy_jack
         )
-
+        
         for acs_ in o31_desk_acs_tuple:
             if monika_chr.is_wearing_acs(acs_):
                 return True
-
+        
         return False
 
     def mas_o31HideDeskAcs():
@@ -434,7 +434,7 @@ init -10 python:
             mas_acs_desk_lantern,
             mas_acs_desk_candy_jack
         )
-
+        
         for acs_ in o31_desk_acs_tuple:
             monika_chr.remove_acs(acs_)
 
@@ -490,10 +490,10 @@ init -10 python:
         """
         if selection_pool is None:
             selection_pool = MASClothes.by_exprop("costume", "o31")
-
+        
         # set to true if monika is wearing a costume right now
         wearing_costume = False
-
+        
         # filter the selection pool by criteria:
         #   1 - if spritepack-based, then must be gifted
         #   2 - if not spritepack-based, then is valid for selecting regardless
@@ -505,7 +505,7 @@ init -10 python:
                 sprite_key,
                 None
             )
-
+            
             if (
                 giftname is None
                 or sprite_key in persistent._mas_sprites_json_gifted_sprites
@@ -514,44 +514,44 @@ init -10 python:
                     filt_sel_pool.append(cloth)
                 else:
                     wearing_costume = True
-
-
+        
+        
         selection_pool = filt_sel_pool
-
+        
         if len(selection_pool) < 1:
             # no items to select from
-
+            
             if wearing_costume:
                 #Check if the current costume is in the cg map, and if so, prep the cg
                 if monika_chr.clothes in MAS_O31_COSTUME_CG_MAP:
                     store.mas_o31_event.cg_decoded = store.mas_o31_event.decodeImage(MAS_O31_COSTUME_CG_MAP[monika_chr.clothes])
-
+                
                 return monika_chr.clothes
             return None
-
+        
         elif len(selection_pool) < 2:
             # only 1 item to select from, just return
             return selection_pool[0]
-
+        
         # otherwise, create list of non worn costumes
         non_worn = [
             costume
             for costume in selection_pool
             if not mas_o31CostumeWorn(costume)
         ]
-
+        
         if len(non_worn) > 0:
             # randomly select from non worn
             random_outfit = random.choice(non_worn)
-
+        
         else:
             # otherwise randomly select from overall
             random_outfit = random.choice(selection_pool)
-
+        
         #Setup the image decode
         if random_outfit in MAS_O31_COSTUME_CG_MAP:
             store.mas_o31_event.cg_decoded = store.mas_o31_event.decodeImage(MAS_O31_COSTUME_CG_MAP[random_outfit])
-
+        
         #And return the outfit
         return random_outfit
 
@@ -565,7 +565,7 @@ init -10 python:
         """
         if clothes is None or not clothes.hasprop("costume"):
             return
-
+        
         mas_o31SetCostumeWorn_n(clothes.name, year=year)
 
 
@@ -579,7 +579,7 @@ init -10 python:
         """
         if year is None:
             year = datetime.date.today().year
-
+        
         persistent._mas_o31_costumes_worn[clothes_name] = year
 
     def mas_o31Cleanup():
@@ -590,27 +590,27 @@ init -10 python:
         if monika_chr.is_wearing_clothes_with_exprop("costume"):
             monika_chr.change_clothes(mas_clothes_def, outfit_mode=True)
             monika_chr.reset_hair()
-
+        
         #Reset o31_mode flag
         persistent._mas_o31_in_o31_mode = False
-
+        
         #Unlock BG Sel if necessary
         mas_checkBackgroundChangeDelegate()
-
+        
         #Hide visuals
         mas_o31HideVisuals()
-
+        
         #o31 is now over. Reset the o31 mode flag
         store.persistent._mas_o31_in_o31_mode = False
-
+        
         #rmall for safety
         mas_rmallEVL("mas_o31_cleanup")
-
+        
         #unlock hairdown greet if we don't have hairdown unlocked
         hair = store.mas_selspr.get_sel_hair(mas_hair_down)
         if hair is not None and not hair.unlocked:
             mas_unlockEVL("greeting_hairdown", "GRE")
-
+        
         #Lock the event clothes selector
         mas_lockEVL("monika_event_clothes_select", "EVE")
 
@@ -657,69 +657,69 @@ label mas_o31_autoload_check:
             #   spaceroom call.
             if not mas_doesBackgroundHaveHolidayDeco(MAS_O31_DECO_TAGS):
                 mas_changeBackground(mas_background_def, set_persistent=True)
-
+            
             #NOTE: We do not do O31 deco/amb on first sesh day
             if (not persistent._mas_o31_in_o31_mode and not mas_isFirstSeshDay()):
                 #Setup for greet
                 mas_skip_visuals = True
-
+                
                 #Reset idle since we will force greetings
                 mas_resetIdleMode()
-
+                
                 #Lock the hairdown greeting for today
                 mas_lockEVL("greeting_hairdown", "GRE")
-
+                
                 #Disable hotkeys for this
                 store.mas_hotkeys.music_enabled = False
-
+                
                 #Put calendar shields up
                 mas_calRaiseOverlayShield()
-
+                
                 # select a costume
                 # NOTE: we should always have at least 1 costume.
                 costume = mas_o31SelectCostume()
                 store.mas_selspr.unlock_clothes(costume)
                 mas_addClothesToHolidayMap(costume)
                 mas_o31SetCostumeWorn(costume)
-
+                
                 # remove ribbon so we just get the intended costume for the reveal
                 ribbon_acs = monika_chr.get_acs_of_type("ribbon")
                 if ribbon_acs is not None:
                     monika_chr.remove_acs(ribbon_acs)
-
+                
                 monika_chr.change_clothes(
                     costume,
                     by_user=False,
                     outfit_mode=True
                 )
-
+                
                 #Save selectables
                 store.mas_selspr.save_selectables()
-
+                
                 #Save persist
                 renpy.save_persistent()
-
+                
                 #Select greet
                 greet_label = "greeting_o31_{0}".format(costume.name)
-
+                
                 if renpy.has_label(greet_label):
                     selected_greeting = greet_label
                 else:
                     selected_greeting = "greeting_o31_generic"
-
+                
                 #Save and reset zoom
                 mas_temp_zoom_level = store.mas_sprites.zoom_level
                 store.mas_sprites.reset_zoom()
-
+                
                 #Now that we're here, we're in O31 mode
                 persistent._mas_o31_in_o31_mode = True
-
+                
                 # O31 decor
                 mas_o31ShowVisuals()
-
+                
                 #Set by-user to True because we don't want progressive
                 mas_changeWeather(mas_weather_thunder, True)
-
+            
             elif (persistent._mas_o31_in_o31_mode and not mas_isFirstSeshDay()):
                 mas_o31ShowVisuals()
                 mas_changeWeather(mas_weather_thunder, True)
@@ -762,16 +762,16 @@ init 5 python:
     )
 
 label mas_holiday_o31_returned_home_relaunch:
-    m 1eua "So, today is..."
-    m 1euc "...wait."
+    m 1eua "Итак, сегодня..."
+    m 1euc "...подожди."
     m "..."
-    m 2wuo "Oh!"
-    m 2wuw "Oh my gosh!"
-    m 2hub "It's Halloween already, [player]."
-    m 1eua "...{w=1}Say."
-    m 3eua "I'm going to close the game."
-    m 1eua "After that you can reopen it."
-    m 1hubsa "I have something special in store for you, ehehe~"
+    m 2wuo "О!"
+    m 2wuw "О боже!"
+    m 2hub "Так сегодня же Хэллоуин, [player]."
+    m 1eua "...{w}Так что слушай."
+    m 3eua "Я собираюсь закрыть игру."
+    m 1eua "После чего ты можешь снова открыть её."
+    m 1hubsa "У меня есть кое-что особенное для тебя, э-хе-хе~"
     $ persistent._mas_o31_relaunch = True
     $ mas_rmallEVL("mas_holiday_o31_returned_home_relaunch")
     return "quit"
@@ -811,7 +811,7 @@ label mas_o31_cleanup:
             mas_acs_desk_candy_jack
         )
 
-    m 1eua "One second [player], I'm just going to take the decorations down.{w=0.3}.{w=0.3}.{nw}"
+    m 1eua "Секунду, [player], я просто собираюсь убрать декорации.{w=0.3}.{w=0.3}.{nw}"
 
     python hide:
         for acs_ in o31_desk_acs_tuple:
@@ -833,7 +833,7 @@ label mas_o31_cleanup:
 
     call mas_transition_from_emptydesk("monika 1hua")
 
-    m 3hua "All done~"
+    m 3hua "Готово~"
 
     $ del o31_desk_acs_tuple
 
@@ -866,18 +866,18 @@ label greeting_o31_marisa:
         #   vignette should be enabled
         call spaceroom(dissolve_all=True, scene_change=True, force_exp='monika 1eua_static')
 
-    m 1eua "Ah!"
-    m 1hua "Seems like my spell worked."
-    m 3efu "As my newly summoned servant, you'll have to do my bidding until the very end!"
+    m 1eua "Ах!"
+    m 1hua "Похоже, заклинание сработало."
+    m 3efu "Как мой недавно призванный слуга, ты должен будешь выполнять мои приказы до самого конца!"
     m 1rksdla "..."
-    m 1hub "Ahaha!"
+    m 1hub "А-ха-ха!"
 
     # decoded CG means we display CG
     if store.mas_o31_event.cg_decoded:
         $ cg_delay = datetime.timedelta(seconds=20)
 
-        # got cg
-        m "I'm over here, [player]~"
+
+        m "Я здесь, [player]~"
         window hide
 
         show mas_o31_marisa_cg zorder 20 at mas_o31_cg_scroll with dissolve
@@ -889,28 +889,28 @@ label greeting_o31_marisa:
         show monika 1hua at i11 zorder MAS_MONIKA_Z
 
         window auto
-        m "Tadaa!~"
+        m "Таа-даа!~"
 
-    #Post scroll dialogue
-    m 1hua "Well..."
-    m 1eub "What do you think?"
-    m 1tuu "Suits me pretty well, right?"
-    m 1eua "It took me quite a while to make this costume, you know."
-    m 3hksdlb "Getting the right measurements, making sure nothing was too tight or loose, that sort of stuff."
-    m 3eksdla "...Especially the hat!"
-    m 1dkc "The ribbon wouldn't stay still at all..."
-    m 1rksdla "Luckily I got that sorted out."
-    m 3hua "I'd say I did a good job myself."
-    m 3eka "I'm wondering if you'll be able to see what's different today."
-    m 3tub "Besides my costume of course~"
-    m 1hua "But anyway..."
+
+    m 1hua "Ну..."
+    m 1eub "Что думаешь?"
+    m 1tuu "Мне очень идёт, не так ли?"
+    m 1eua "Знаешь, мне потребовалось довольно много времени, чтобы сделать этот костюм."
+    m 3hksdlb "Пришлось очень упорно его измерять, пытаясь убедиться, что ничего в нём не будет слишком тугим или свободным."
+    m 3eksdla "...Особенно шляпу!"
+    m 1dkc "А вот бант вообще не мог никак устоять на месте..."
+    m 1rksdla "К счастью, я с этим разобралась."
+    m 3hua "Я бы ещё даже сказала, что это всё было моих рук дело."
+    m 3eka "Мне интересно, сможешь ли ты увидеть, что же ещё сегодня изменилось."
+    m 3tub "Кроме моего костюма, конечно~"
+    m 1hua "Но так или иначе..."
 
     if store.mas_o31_event.cg_decoded:
         show monika 1eua
         hide mas_o31_marisa_cg with dissolve
 
-    m 3ekbsa "I'm really excited to spend Halloween with you."
-    m 1hua "Let's have fun today!"
+    m 3ekbsa "Я очень рада провести Хэллоуин с тобой."
+    m 1hua "Так что давай повеселимся сегодня!"
 
     call greeting_o31_deco
     call greeting_o31_cleanup
@@ -937,9 +937,9 @@ label greeting_o31_rin:
     # ASSUME vignette
     call spaceroom(hide_monika=True, scene_change=True)
 
-    m "Ugh, I hope I got these braids right."
-    m "Why does this costume have to be so complicated...?"
-    m "Oh shoot! [title_cased_hes] here!"
+    m "Ух, надеюсь, я заплела эти косы правильно."
+    m "Почему этот костюм такой сложный?"
+    m "Ох блин! [title_cased_hes] здесь!"
     window hide
     pause 3.0
 
@@ -948,7 +948,7 @@ label greeting_o31_rin:
 
         # got cg
         window auto
-        m "Say, [player]..."
+        m "Скажи, [player]..."
         window hide
 
         show mas_o31_rin_cg zorder 20 at mas_o31_cg_scroll with dissolve
@@ -959,26 +959,26 @@ label greeting_o31_rin:
 
         hide emptydesk
         window auto
-        m "What do {i}nya{/i} think?"
+        m "Что {b}ня{/b} думаешь?"
 
         scene black
         pause 1.0
         call spaceroom(scene_change=True, dissolve_all=True, force_exp='monika 1hksdlb_static')
-        m 1hksdlb "Ahaha, saying that out loud was more embarrassing than I thought..."
+        m 1hksdlb "А-ха-ха, говорить подобное вслух было ещё более неловко, чем я могла подумать..."
 
     else:
         call mas_transition_from_emptydesk("monika 1eua")
-        m 1hub "Hi, [player]!"
-        m 3hub "Do you like my costume?"
+        m 1hub "Привет, [player]!"
+        m 3hub "Тебе нравится мой костюм?"
 
     # regular dialogue
-    m 3etc "Honestly, I don't even know who this is supposed to be."
-    m 3etd "I just found it in the closet with a note attached that had the word 'Rin', a drawing of a girl pushing a wheelbarrow, and some blue floaty thingies."
-    m 1euc "Along with instructions on how to style your hair to go along with this outfit."
-    m 3rtc "Judging by these cat ears, I'm guessing this character is a catgirl."
-    m 1dtc "...But why would she push a wheelbarrow around?"
-    m 1hksdlb "...Oh and it was {i}such{/i} a pain getting my hair done...{w=0.2}{nw}"
-    extend 1eub "so I hope you like the costume!"
+    m 3etc "Честно говоря, я даже не знаю, кто это должен быть."
+    m 3etd "Я только что нашла его в шкафу с прикреплённой запиской со словом «Рин» и рисунком девушки, толкающей какую-то тачку, и несколько синих плавающих штучек."
+    m 1euc "Вместе с инструкциями о том, как укладывать волосы, чтобы соответствовать этому наряду."
+    m 3rtc "Судя по этим кошачьим ушам, я предполагаю, что этот персонаж кошко-девочка."
+    m 1dtc "...Но только вот зачем ей толкать тачку?"
+    m 1hksdlb "В любом случае, было мучительно делать такую же прическу...{w=0.2} {nw}"
+    extend 1eub "так что надеюсь, тебе понравился данный костюм!"
 
     call greeting_o31_deco
     call greeting_o31_cleanup
@@ -999,11 +999,11 @@ label greeting_o31_orcaramelo_hatsune_miku:
     if not persistent._mas_o31_relaunch:
         call spaceroom(hide_monika=True, scene_change=True, dissolve_all=True)
         #moni is off-screen
-        m "{i}~Don't forget my voice~{/i}"
-        m "{i}~My signal crosses dimensions~{/i}"
-        m "{i}~Don't call me virtual~{/i}"
-        m "{i}~I still want to be l-{/i}"
-        m "Oh!{w=0.5} Seems like someone's heard me."
+        m "{i}~Голос мой не забывай~{/i}"
+        m "{i}~Мой сигнал измеренья пересекает~{/i}"
+        m "{i}~Виртуальной меня не называй~{/i}"
+        m "{i}~Я всё ещё хочу быть лю—{/i}"
+        m "Ой!{w=0.5} Кажется, меня кто-то подслушивает."
 
         #show moni now
         call mas_transition_from_emptydesk("monika 3hub")
@@ -1011,13 +1011,13 @@ label greeting_o31_orcaramelo_hatsune_miku:
     else:
         call spaceroom(scene_change=True, dissolve_all=True)
 
-    m 3hub "Welcome back, [player]!"
-    m 1eua "So...{w=0.5}what do you think?"
-    m 3eua "I think this costume really suits me."
-    m 3eub "I especially love how the headset looks too!"
-    m 1rksdla "Though I can't say it's too comfortable for moving around..."
-    m 3tsu "So don't expect me to give you a performance today, [player]!"
-    m 1hub "Ahaha~"
+    m 3hub "С возвращением, [player]!"
+    m 1eua "Ну...{w=0.5} что думаешь?"
+    m 3eua "Я думаю, что этот костюм мне очень идёт."
+    m 3eub "Мне особенно нравится то, какой у меня получилась гарнитура!"
+    m 1rksdla "Хотя я не могу сказать, что в нём очень комфортно передвигаться..."
+    m 3tsu "Так что не жди, что я устрою для тебя представление сегодня, [player]!"
+    m 1hub "А-ха-ха~"
     call greeting_o31_deco
     call greeting_o31_cleanup
     return
@@ -1039,28 +1039,28 @@ label greeting_o31_orcaramelo_sakuya_izayoi:
     #moni is off-screen
     if not persistent._mas_o31_relaunch:
         m "..."
-        m "{i}Hm{/i}?"
-        m "{i}Ah, there must have been some sort of mistake.{w=0.5} I wasn't warned of any guests...{/i}"
-        m "{i}No matter. None shall disturb the m-{/i}"
-        m "Oh!{w=0.5} It's you, [player]!"
+        m "{i}Хм{/i}?"
+        m "{i}А, здесь, наверное, произошла какая-то ошибка.{w=0.5} Я не предупредила гостей...{/i}"
+        m "{i}Но это не важно. Меня никто не должен побеспоко—{/i}" 
+        m "А!{w=0.5} Это вы, [player]!"
 
     else:
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Welcome{w=0.3}, to the Scarlet Devil Spaceroom..."
-        m "[player]."
-        m "Please, let me offer you our hospitality."
-        m "Ahaha! How was that impression?"
+        m "Добро пожаловать{w=0.3} в Комнату алого демона, витающую в космосе..."
+        m "[player]." 
+        m "Пожалуйста, позвольте мне предложить Вам наше гостеприимство." 
+        m "А-ха-ха! Ну, какое у тебя впечатление сложилось?"
 
     #show moni now
     call mas_transition_from_emptydesk("monika 3hub")
 
-    m 3hub "Welcome back!"
-    m 3eub "What do you think of my costume choice?"
-    m 3hua "Ever since you gave it to me I just knew I'd be wearing it today!"
+    m 3hub "С возвращением!"
+    m 3eub "Что думаешь о моём выборе костюма?"
+    m 3hua "Ещё с тех пор, как ты дал его мне, я просто знала о том, что его стоит надеть сегодня!"
     m 2tua "..."
-    m 2tub "You know, [player], just because I'm dressed as a maid doesn't mean I'll be following your every command..."
+    m 2tub "Знаешь, [player], лишь потому, что я оделась как горничная, ещё не означает, что я буду выполнять все твои приказы..."
     show monika 5kua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5kua "Though I might make some exceptions, ehehe~"
+    m 5kua "Хотя я могу сделать пару исключений, э-хе-хе~"
     show monika 1eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     call greeting_o31_deco
     call greeting_o31_cleanup
@@ -1082,30 +1082,30 @@ label greeting_o31_briaryoung_shuchiin_academy_uniform:
 
     #moni is off-screen
     if not persistent._mas_o31_relaunch:
-        m "Ugh..."
-        m "How {i}is{/i} this bow supposed to stay there?"
-        m "People can say what they want about my ribbon, but at least it's somewhat practical..."
-        m "...I guess that will work, hopefully it doesn't fall off as soon as--{nw}"
-        m "Time to find out..."
+        m "Ух..."
+        m "Как {i}этот{/i} бант должен держаться?"
+        m "Люди могут говорить что угодно о моей ленте, но она хотя бы в какой-то степени удобна..."
+        m "...Думаю, у меня получилось и надеюсь, она не упадёт, как только--{nw}"
+        m "Время это узнать..."
 
     else:
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Almost ready, [player]..."
-        m "Just trying to figure out how this bow is supposed to stay on."
+        m "Почти готово, [player]..."
+        m "Просто пытаюсь понять, как этот бант должен держаться."
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Hopefully that's good enough!"
+        m "Будем считать, что он держится на честном слове."
 
     #show moni now
     call mas_transition_from_emptydesk("monika 2hub")
 
-    m 2hub "Welcome back!"
-    m 2eub "Well, what do you think?"
-    m 7tuu "I thought Instead of being president, I could be the secretary for today..."
+    m 2hub "С возвращением!"
+    m 2eub "Ну, что думаешь?"
+    m 7tuu "Я подумала, что вместо того, чтобы быть президентом, я могла бы быть секретарем на сегодня..."
 
     if mas_isMoniAff(higher=True):
-        m 3rtu "Or maybe even a love detective, but that's probably a waste, I've already found that..."
+        m 3rtu "Или может быть, мне сыграть роль любовного детектива? Хотя наверное не стоит, ведь мне уже незачем искать свою любовь~"
 
-    m 3hua "Ehehe~"
+    m 3hua "Э-хе-хе~"
     call greeting_o31_deco
     call greeting_o31_cleanup
     return
@@ -1695,7 +1695,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_d25.replace(year=_date.year)
 
 
@@ -1712,7 +1712,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_d25e.replace(year=_date.year)
 
 
@@ -1732,7 +1732,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return (
             mas_isInDateRange(_date, mas_d25c_start, mas_nye, True, True)
             or mas_isInDateRange(_date, mas_nyd, mas_d25c_end)
@@ -1754,7 +1754,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return (
             mas_isInDateRange(_date, mas_d25p, mas_nye, True, True)
             or mas_isInDateRange(_date, mas_nyd, mas_d25c_end)
@@ -1775,7 +1775,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_nye)
 
 
@@ -1793,7 +1793,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_nyd, mas_d25c_end, False)
 
 
@@ -1812,7 +1812,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_d25p)
 
 
@@ -1830,7 +1830,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_d25)
 
     def mas_isD25GiftHold(_date=None):
@@ -1844,7 +1844,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return mas_isInDateRange(_date, mas_d25c_start, mas_nye, end_inclusive=True)
 
     def mas_d25ShowVisuals():
@@ -1875,28 +1875,28 @@ init -10 python:
         """
         #Step one, store all of the found reacts
         found_reacts = list()
-
+        
         #Just sort the gifts given list:
         persistent._mas_d25_gifts_given.sort()
-
+        
         #Now we copy the giftnames for local usage
         #We do this because we pop from the persistent list during the reactions
         #Because then it looks more like Monika is taking them from under the tree
         given_gifts = list(persistent._mas_d25_gifts_given)
-
+        
         # d25 special quiplist
         gift_cntrs = store.MASQuipList(allow_glitch=False, allow_line=False)
         gift_cntrs.addLabelQuip("mas_d25_gift_connector")
-
+        
         # process giftnames (no generics)
         d25_evb = []
         d25_gsp = []
         store.mas_filereacts.process_gifts(given_gifts, d25_evb, d25_gsp)
-
+        
         # register gifts
         store.mas_filereacts.register_sp_grds(d25_evb)
         store.mas_filereacts.register_sp_grds(d25_gsp)
-
+        
         # build reaction labels
         react_labels = store.mas_filereacts.build_gift_react_labels(
             d25_evb,
@@ -1906,14 +1906,14 @@ init -10 python:
             "mas_d25_gift_end",
             "mas_d25_gift_starter"
         )
-
+        
         react_labels.reverse()
-
+        
         # queue the reacts
         if len(react_labels) > 0:
             for react_label in react_labels:
                 mas_rmallEVL(react_label) # TODO - this is a patch, revalute when #8545 (gift logging) and #8546 (gift registering) are addressed
-
+            
             for react_label in react_labels:
                 pushEvent(react_label,skipeval=True)
 
@@ -1926,7 +1926,7 @@ init -10 python:
 
         This also registeres gifts
         """
-
+        
         base_gift_ribbon_id_map = {
             "blackribbon":"ribbon_black",
             "blueribbon": "ribbon_blue",
@@ -1945,7 +1945,7 @@ init -10 python:
             "tealribbon": "ribbon_teal",
             "yellowribbon": "ribbon_yellow"
         }
-
+        
         # process gifts
         evb_details = []
         gso_details = []
@@ -1954,10 +1954,10 @@ init -10 python:
             evb_details,
             gso_details
         )
-
+        
         # clear the gifts given
         persistent._mas_d25_gifts_given = []
-
+        
         # process the evb details
         for evb_detail in evb_details:
             if evb_detail.sp_data is None:
@@ -1969,10 +1969,10 @@ init -10 python:
                 if ribbon_id is not None:
                     mas_selspr.unlock_acs(mas_sprites.get_sprite(0, ribbon_id))
                     mas_receivedGift(evb_detail.label)
-
+                
                 elif ribbon_id is None and evb_detail.c_gift_name == "quetzalplushie":
                     persistent._mas_acs_enable_quetzalplushie = True
-
+            
             else:
                 # this is probably a json sprite, try json sprite unlock
                 mas_selspr.json_sprite_unlock(mas_sprites.get_sprite(
@@ -1980,7 +1980,7 @@ init -10 python:
                     evb_detail.sp_data[1]
                 ))
                 mas_receivedGift(evb_detail.label)
-
+        
         # then generics
         for gso_detail in gso_details:
             # for generic sprite objects, only have to check for json sprite
@@ -1990,7 +1990,7 @@ init -10 python:
                     gso_detail.sp_data[1]
                 ))
                 mas_receivedGift(gso_detail.label)
-
+        
         # save the restuls
         store.mas_selspr.save_selectables()
         renpy.save_persistent()
@@ -2036,19 +2036,19 @@ init -10 python in mas_d25_utils:
                 val: giftname wtih extension
         """
         d25_map = {}
-
+        
         # first find gifts
         # d25_map contains all d25 gifts.
         # found_map will contain non_d25 gifts, which should be reacted to now
         d25_giftnames = mas_frs.check_for_gifts(d25_map, mas_frs.build_exclusion_list("d25g"), found_map)
-
+        
         # parse d25 gifts for types
         d25_giftnames.sort()
         d25_evb = []
         d25_gsp = []
         d25_gen = []
         mas_frs.process_gifts(d25_giftnames, d25_evb, d25_gsp, d25_gen)
-
+        
         # parse non_d25_gifts for types
         non_d25_giftnames = [x for x in found_map]
         non_d25_giftnames.sort()
@@ -2056,31 +2056,31 @@ init -10 python in mas_d25_utils:
         nd25_gsp = []
         nd25_gen = []
         mas_frs.process_gifts(non_d25_giftnames, nd25_evb, nd25_gsp, nd25_gen)
-
+        
         # include d25 generic with non-d25 gifts
         for grd in d25_gen:
             nd25_gen.append(grd)
             found_map[grd.c_gift_name] = d25_map.pop(grd.c_gift_name)
-
+        
         # save remaining d25 gifts and delete the packages
         # they will be reacted to later
         for c_gift_name, gift_name in d25_map.iteritems():
             #Only add if the gift isn't already stored under the tree
             if c_gift_name not in store.persistent._mas_d25_gifts_given:
                 store.persistent._mas_d25_gifts_given.append(c_gift_name)
-
+            
             #Now we delete the gift file
             store.mas_docking_station.destroyPackage(gift_name)
-
+        
         # set all excluded and generic gifts to react now
         for c_gift_name, mas_gift in found_map.iteritems():
             store.persistent._mas_filereacts_reacted_map[c_gift_name] = mas_gift
-
+        
         # register these gifts
         mas_frs.register_sp_grds(nd25_evb)
         mas_frs.register_sp_grds(nd25_gsp)
         mas_frs.register_gen_grds(nd25_gen)
-
+        
         # now build the reaction labels for standard gifts
         return mas_frs.build_gift_react_labels(
             nd25_evb,
@@ -2258,20 +2258,20 @@ label mas_holiday_d25c_autoload_check:
                 store.mas_selspr.unlock_acs(mas_acs_ribbon_wine)
                 store.mas_selspr.unlock_clothes(mas_clothes_santa)
                 store.mas_selspr.save_selectables()
-
+                
                 #Change into santa. Outfit mode forces ponytail
                 monika_chr.change_clothes(mas_clothes_santa, by_user=False, outfit_mode=True)
-
+                
                 #Add to holiday map
                 mas_addClothesToHolidayMapRange(mas_clothes_santa, mas_d25c_start, mas_d25p)
-
+                
                 #Deco active
                 persistent._mas_d25_deco_active = True
-
+                
                 #If we're loading in for the first time on D25, then we're gonna make it snow
                 if mas_isD25():
                     mas_changeWeather(mas_weather_snow, by_user=True)
-
+                    
                     #Only change bg if the current is not supported
                     if not mas_doesBackgroundHaveHolidayDeco(mas_d25_utils.DECO_TAGS):
                         store.mas_d25_utils.has_changed_bg = True
@@ -4146,7 +4146,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_nye.replace(year=_date.year)
 
 
@@ -4163,7 +4163,7 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_nyd.replace(year=_date.year)
 
 
@@ -4813,16 +4813,16 @@ label greeting_nye_aff_gain:
         if persistent._mas_nye_date_aff_gain < 15:
             # retain older affection gain so we can compare
             curr_aff = _mas_getAffection()
-
+            
             # just in case
             time_out = store.mas_dockstat.diffCheckTimes()
-
+            
             # reset this so we can gain aff
             persistent._mas_monika_returned_home = None
-
+            
             # now gain aff
             store.mas_dockstat._ds_aff_for_tout(time_out, 5, 15, 3, 3)
-
+            
             # add the amount gained
             persistent._mas_nye_date_aff_gain += _mas_getAffection() - curr_aff
 
@@ -5069,10 +5069,10 @@ init -10 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         if persistent._mas_player_bday is None:
             return False
-
+        
         elif use_date_year:
             return _date == mas_player_bday_curr(_date)
         return _date == mas_player_bday_curr()
@@ -5135,31 +5135,31 @@ init -11 python in mas_player_bday_event:
         mhs_pbday = mas_history.getMHS("player_bday")
         if mhs_pbday is None:
             return
-
+        
         # first, setup the reset date to be 3 days after the bday
         pbday_dt = datetime.datetime.combine(d_pbday, datetime.time())
-
+        
         # determine correct year
         _now = datetime.datetime.now()
         curr_year = _now.year
-
+        
         new_dt = store.mas_utils.add_years(pbday_dt, curr_year - pbday_dt.year)
-
+        
         if new_dt < _now:
             # new date before today, set to next year
             curr_year += 1
             new_dt = store.mas_utils.add_years(pbday_dt, curr_year - pbday_dt.year)
-
+        
         # set the reset/trigger date
         reset_dt = pbday_dt + datetime.timedelta(days=3)
-
+        
         # setup ranges
         new_sdt = new_dt
         new_edt = new_sdt + datetime.timedelta(days=2)
-
+        
         # NOTE: the mhs will end 2 days after the bday. The day after end_dt
         #   is when we save
-
+        
         # modify mhs
         mhs_pbday.start_dt = new_sdt
         mhs_pbday.end_dt = new_edt
@@ -5699,10 +5699,10 @@ label greeting_returned_home_player_bday:
             left_date = checkout_time.date()
             ret_date = checkin_time.date()
             left_year_aff = mas_HistLookup("player_bday.date_aff_gain",left_year)[1]
-
+            
             # are we returning after the mhs reset
             ret_diff_year = ret_date >= (mas_player_bday_curr(left_date) + datetime.timedelta(days=3))
-
+            
             # were we gone over d25
             #TODO: do this for the rest of the holidays
             if left_date < mas_d25.replace(year=left_year) < ret_date:
@@ -5969,7 +5969,7 @@ init -10 python:
     def mas_isF14(_date=None):
         if _date is None:
             _date = datetime.date.today()
-
+        
         return _date == mas_f14.replace(year=_date.year)
 
     def mas_f14CapGainAff(amount):
@@ -5999,7 +5999,7 @@ label mas_f14_autoload_check:
     python:
         if not persistent._mas_f14_in_f14_mode and mas_isMoniNormal(higher=True):
             persistent._mas_f14_in_f14_mode = True
-
+            
             has_sundress = mas_SELisUnlocked(mas_clothes_sundress_white)
             has_shoulderless = mas_SELisUnlocked(mas_clothes_blackpink_dress)
             #TODO: Generalize this
@@ -6008,7 +6008,7 @@ label mas_f14_autoload_check:
                 and not mas_SELisUnlocked(mas_clothes_vday_lingerie)
                 and has_sundress
             )
-
+            
             #NOTE: This lingerie_eligible check is so we don't grant lingeire on the same F14 we did black/pink dress
             #(handled within f14 intro pathing)
             if (
@@ -6017,12 +6017,12 @@ label mas_f14_autoload_check:
                 or lingerie_eligible
             ):
                 monika_chr.change_clothes(mas_clothes_sundress_white, by_user=False, outfit_mode=True)
-
+            
             else:
                 monika_chr.change_clothes(mas_clothes_blackpink_dress, by_user=False, outfit_mode=True)
                 #Add to hol map as a failsafe if we don't have new clothes and this has already been seen, and player is < 1k aff
                 mas_addClothesToHolidayMap(mas_clothes_blackpink_dress)
-
+            
             monika_chr.save()
             renpy.save_persistent()
 
@@ -6032,13 +6032,13 @@ label mas_f14_autoload_check:
             mas_lockEVL("mas_f14_monika_vday_colors","EVE")
             mas_lockEVL("mas_f14_monika_vday_cliches","EVE")
             mas_lockEVL("mas_f14_monika_vday_chocolates","EVE")
-
+            
             #Need to lock the event clothes selector
             mas_lockEVL("monika_event_clothes_select", "EVE")
-
+            
             #Reset the f14 mode, and outfit if we're lower than the love aff level.
             persistent._mas_f14_in_f14_mode = False
-
+            
             #Reset clothes if not at the right aff and in sundress
             if mas_isMoniEnamored(lower=True) and monika_chr.clothes == mas_clothes_sundress_white:
                 monika_chr.reset_clothes(False)
@@ -6605,37 +6605,37 @@ label mas_f14_monika_spent_time_with:
     return
 
 label mas_f14_first_kiss:
-        m 1ektpu "I honestly don't know what I would do without you."
+    m 1ektpu "I honestly don't know what I would do without you."
         show monika 6dktuu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m "..."
-        window hide
-        menu:
-            "I love you, [m_name].":
-                $ HKBHideButtons()
-                $ mas_RaiseShield_core()
-                $ disable_esc()
-                pause 3.0
-                show monika 6ektda at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                pause 3.0
-                show monika 6dku at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                pause 3.0
-                show monika 6dkbsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                pause 3.0
-                show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "[player]...I...I..."
-                call monika_kissing_motion(hide_ui=False)
-                show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "...I love you too~"
-                m 6dkbfa "..."
-                m "That was everything I had always dreamt it would be~"
-                m 6ekbfa "I've been waiting so long to finally kiss you, and there couldn't have been a more perfect moment..."
-                m 6dkbsu "I will never forget this..."
-                m 6ekbsu "...the moment of our first kiss."
-                m "Happy Valentine's Day, [player]~"
-                $ enable_esc()
-                $ mas_MUINDropShield()
-                $ HKBShowButtons()
-                return
+    m "..."
+    window hide
+    menu:
+        "I love you, [m_name].":
+            $ HKBHideButtons()
+            $ mas_RaiseShield_core()
+            $ disable_esc()
+            pause 3.0
+            show monika 6ektda at t11 zorder MAS_MONIKA_Z with dissolve_monika
+            pause 3.0
+            show monika 6dku at t11 zorder MAS_MONIKA_Z with dissolve_monika
+            pause 3.0
+            show monika 6dkbsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
+            pause 3.0
+            show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+            m 6ekbfa "[player]...I...I..."
+            call monika_kissing_motion(hide_ui=False)
+            show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
+            m 6ekbfa "...I love you too~"
+            m 6dkbfa "..."
+            m "That was everything I had always dreamt it would be~"
+            m 6ekbfa "I've been waiting so long to finally kiss you, and there couldn't have been a more perfect moment..."
+            m 6dkbsu "I will never forget this..."
+            m 6ekbsu "...the moment of our first kiss."
+            m "Happy Valentine's Day, [player]~"
+            $ enable_esc()
+            $ mas_MUINDropShield()
+            $ HKBShowButtons()
+            return
 
 
 #######################[HOL050] Notimespent
@@ -7078,7 +7078,7 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         _datetime = datetime.datetime.combine(_date, datetime.time())
 
         return mas_isMonikaBirthday_dt(_datetime=_datetime)
@@ -7124,8 +7124,8 @@ init -1 python:
         """
         if _date is None:
             _date = mas_monika_birthday
-
-
+        
+        
         if (
             mas_generateGiftsReport(_date)[0] > 0
             or persistent._mas_bday_date_affection_gained > 0
@@ -7169,29 +7169,29 @@ init -1 python:
                 if persistent._mas_bday_hint_filename:
                     store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
                 return True
-
+            
             #Otherwise, we need to check if the file exists (we're going to make this as foolproof as possible)
             #Step 1, get the characters folder contents
             char_dir_files = store.mas_docking_station.getPackageList()
-
+            
             #Step 2, We need to remove the extensions
             for filename in char_dir_files:
                 temp_filename = filename.partition('.')[0]
-
+                
                 #Step 3, check if the filename is present
                 if "oki doki" == temp_filename:
                     #If we got here: Step 4, file exists so flag and delete. Also get rid of note
                     persistent._mas_bday_confirmed_party = True
                     store.mas_docking_station.destroyPackage(filename)
-
+                    
                     if persistent._mas_bday_hint_filename:
                         store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
-
+                    
                     #We should also return a new file indicating the player has confirmed the party
                     _write_txt("/characters/gotcha", "")
                     #Step 5a, return true since party is confirmed
                     return True
-
+        
         #Otherwise, Step 5b, no previous confirm and file doesn't exist, so party is not confirmed. return false
         return False
 
@@ -7206,12 +7206,12 @@ label mas_bday_autoload_check:
             persistent._mas_bday_in_bday_mode = False
             #Also make sure we're no longer showing visuals
             persistent._mas_bday_visuals = False
-
+            
             #Lock the event clothes selector
             store.mas_lockEVL("monika_event_clothes_select", "EVE")
-
+            
             store.mas_utils.trydel("characters/gotcha")
-
+            
             #And reset outfit if not at the right aff
             if mas_isMoniEnamored(lower=True) and monika_chr.clothes == mas_clothes_blackdress:
                 monika_chr.reset_clothes(False)
@@ -7362,8 +7362,8 @@ label mas_bday_pool_happy_bday:
             m 3eka "First you sang it to me and now you've said it..."
 
         else:
-            m 3eka "I was waiting for you to say those magic words~"
-            m 1eub "{i}Now{/i} we can call it a birthday celebration!"
+        m 3eka "I was waiting for you to say those magic words~"
+        m 1eub "{i}Now{/i} we can call it a birthday celebration!"
 
         m 1eka "You really made this occasion so special, [player]."
         m 1ekbsa "I can't thank you enough for loving me this much..."
@@ -7702,10 +7702,10 @@ label mas_gone_over_bday_check:
                 belated_ev.start_date = datetime.date.today()
                 belated_ev.end_date = datetime.datetime.now() + datetime.timedelta(days=1)
                 belated_ev.unlocked = True
-
+                
                 #Prepare the undo action
                 MASUndoActionRule.create_rule(belated_ev)
-
+                
                 #Prepare the date strip
                 MASStripDatesRule.create_rule(belated_ev)
 
