@@ -10,22 +10,21 @@
 ##
 init python:
     menu_trans_time = 1
-    #The default splash message, originally shown in Act 1 and Act 4
-    splash_message_default = _("This game is an unofficial fan work, unaffiliated with Team Salvato.")
+
+    splash_message_default = _("Данная игра является неофициальной фанатской работой,\nкоторая никак не связана с Team Salvato.")
     splash_messages = [
-    _("Please support Doki Doki Literature Club & Team Salvato."),
-    _("You are my sunshine,\nMy only sunshine"),
-    _("I missed you."),
-    _("Play with me"),
-    _("It's just a game, mostly."),
-    _("This game is not suitable for children\nor those who are easily disturbed?"),
+    _("Пожалуйста, поддержите игру «Литературный клуб \"Тук-тук!\"» и Team Salvato."),
+    _("Ты мой солнечный свет,\nМой единственный свет"),
+    _("Я скучала по тебе."),
+    _("Поиграй со мной"),
+    _("Это всего лишь игра... по большей части."),
+    _("Эта игра не предназначена для детей,\nбеременных женщин и лиц с неустойчивой психикой?"),
     _("sdfasdklfgsdfgsgoinrfoenlvbd"),
     _("null"),
-    _("I have granted kids to hell"),
-    _("PM died for this."),
-    _("It was only partially your fault."),
-    _("This game is not suitable for children\nor those who are easily dismembered.")
-#    "Don't forget to backup Monika's character file."
+    _("Я отправил детей в ад"),
+    _("За это умер Проект М."),
+    _("Это была лишь отчасти твоя вина."),
+    _("Эта игра не предназначена для детей,\nбеременных женщин и неуравновешенных психов.")
     ]
 
 image splash_warning = ParameterizedText(style="splash_text", xalign=0.5, yalign=0.5)
@@ -144,6 +143,15 @@ image intro:
     "white" with Dissolve(0.5, alpha=True)
     0.5
 
+image intro_rg:
+    truecenter
+    "white"
+    0.5
+    Composite((1280, 720), (0, 0), "mod_assets/splash/wall.png", (0, 0), "mod_assets/splash/sign.png", (0, 0), "mod_assets/splash/mascot.png") with Dissolve(0.5, alpha=True)
+    2.5
+    "white" with Dissolve(0.5, alpha=True)
+    0.5
+
 image warning:
     truecenter
     "white"
@@ -183,12 +191,12 @@ label splashscreen:
         scene tos
         with Dissolve(1.0)
         pause 1.0
-        "[config.name] is a Doki Doki Literature Club fan mod that is not affiliated with Team Salvato."
-        "It is designed to be played only after the official game has been completed, and contains spoilers for the official game."
-        "Game files for Doki Doki Literature Club are required to play this mod and can be downloaded for free at: http://ddlc.moe"
+        "«[config.name]» является фанатской модификацией к игре «Литературный клуб \"Тук-тук!\"», которая никак не связана с Team Salvato."
+        "В неё рекомендуется играть только после прохождения оригинальной игры, также в модификации имеются спойлеры, связанные с последней."
+        "Для игры в эту модификацию необходимы файлы игры «Литературный клуб \"Тук-тук!\"», скачать их можно на сайте: {a=https://ddlc.moe}https://ddlc.moe{/a}"
         menu:
-            "By playing [config.name] you agree that you have completed Doki Doki Literature Club and accept any spoilers contained within."
-            "I agree.":
+            "Играя в «[config.name]», вы соглашаетесь с тем, что прошли полностью игру «Литературный клуб \"Тук-тук!\"» и готовы к любым спойлерам."
+            "Я согласен.":
                 pass
         scene tos2
         with Dissolve(1.5)
@@ -232,9 +240,13 @@ label splashscreen:
     $ config.main_menu_music = audio.t1
     $ renpy.music.play(config.main_menu_music)
     show intro with Dissolve(0.5, alpha=True)
-    pause 2.5
-    hide intro with Dissolve(0.5, alpha=True)
-    #You can use random splash messages, as well. By default, they are only shown during certain acts.
+    pause 1.5
+    hide intro
+    show intro_rg
+    with Dissolve(0.5, alpha=True)
+    pause 1.5
+    hide intro_rg with Dissolve(0.5, alpha=True)
+
     if renpy.random.randint(0, 3) == 0:
         $ splash_message = renpy.random.choice(splash_messages)
     show splash_warning "[splash_message]" with Dissolve(0.5, alpha=True)
@@ -263,9 +275,9 @@ label after_load:
     if anticheat != persistent.anticheat:
         stop music
         scene black
-        "The save file could not be loaded."
-        "Are you trying to cheat?"
-        #Handle however you want, default is to force reset all save data
+        "Сохранение не может быть загружено."
+        "Кого ты пытаешься обмануть?"
+
         $ renpy.utter_restart()
     return
 
