@@ -20,7 +20,7 @@ init -1 python in mas_db_merging:
         Runs a specific set of merges, particularly for the merge that
         happend after version 0.8.10.
         """
-
+        
         # compliments
         if store.persistent._mas_compliments_database is not None:
             merge_db(
@@ -99,7 +99,7 @@ init -2 python in mas_versions:
         #   new version: (old version 1, old version 2, ...)
         #
         # use dot notation to separate the parts of a version
-
+        
         add_steps({
             #"0.12.9": "0.12.8.6",
             "0.12.8.6": ("0.12.8.5", "0.12.8.4", "0.12.8.3"),
@@ -166,7 +166,7 @@ init -2 python in mas_versions:
             "0.3.1": "0.3.0",
             "0.3.0": "0.2.2",
         })
-
+        
         # NOTE: we are no longer going to use this:
         #
         # version structures:
@@ -181,7 +181,7 @@ init -2 python in mas_versions:
         # All conflicts should be handled in an individual script block in
         # updates.rpy. (SEE updates.rpy)
         updates = store.updates
-
+        
         # (0.8.4 - 0.8.10) -> 0.8.11
         updates.topics[_vdot2vstr("0.8.11")] = {
             "monika_snowman": None,
@@ -189,30 +189,30 @@ init -2 python in mas_versions:
             "monika_hypothermia": None,
             "monika_whatiwant": None
         }
-
+        
         # (0.8.1 - 0.8.3) -> 0.8.4
         updates.topics[_vdot2vstr("0.8.4")] = {
             "monika_bestgirl": "mas_compliment_bestgirl"
         }
-
+        
         # 0.8.0 -> 0.8.1
         updates.topics[_vdot2vstr("0.8.1")] = {
             "monika_write": "monika_writingtip3",
             "mas_random_ask": None,
             "monika_ravel": "mas_story_ravel"
         }
-
+        
         # 0.7.4 -> 0.8.0
         updates.topics[_vdot2vstr("0.8.0")] = {
             "monika_love2": None
         }
-
+        
         # (0.7.0 - 0.7.3) -> 0.7.4
         updates.topics[_vdot2vstr("0.7.4")] = {
             "monika_playerhappy": None,
             "monika_bad_day": None
         }
-
+        
         # (0.6.1 - 0.6.3) -> 0.7.0
         changedIDs = {
             "monika_deleted": None,
@@ -225,13 +225,13 @@ init -2 python in mas_versions:
             "monika_night": None
         }
         updates.topics[_vdot2vstr("0.7.0")] = changedIDs
-
+        
         # (0.5.1 - 0.6.0) -> 0.6.1
         changedIDs = {
             "monika_piano": None
         }
         updates.topics[_vdot2vstr("0.6.1")] = changedIDs
-
+        
         # (0.3.3 - 0.5.0) -> 0.5.1
         changedIDs = dict()
         changedIDs["monika_music"] = None
@@ -247,17 +247,17 @@ init -2 python in mas_versions:
         changedIDs["monika_water"] = None
         changedIDs["monika_computer"] = None
         updates.topics[_vdot2vstr("0.5.1")] = changedIDs
-
+        
         # 0.3.1 -> 0.3.2
         changedIDs = dict()
         changedIDs["monika_monika"] = None
         updates.topics[_vdot2vstr("0.3.2")] = changedIDs
-
+        
         # 0.3.0 -> 0.3.1
         changedIDs = dict()
         changedIDs["monika_ghosts"] = "monika_whispers"
         updates.topics[_vdot2vstr("0.3.1")] = changedIDs
-
+        
         # 0.2.2 -> 0.3.0
         # this is a long list...
         # no_topics_list is defined / checked in updates.rpy
@@ -324,12 +324,12 @@ init -2 python in mas_versions:
         changedIDs["ch30_59"] = "monika_route"
         changedIDs["monika_literatureclub"] = "monika_ddlc"
         changedIDs["monika_religion"] = None
-
+        
             # here is a list of new ids, for reference. These are automatically
             # handled via new topic generation.
             # monika_credits_song
             # monika_whatever (special topic launcher)
-
+        
             # here is a list of IDS present in v0.2.2, again for reference
             # monika_imouto
             # monika_oneesan
@@ -367,14 +367,14 @@ init -2 python in mas_versions:
             # monika_trolley
             # monika_girlfriend
             # monika_waifus
-
+        
             # CONFLICTING CHANGES ALERT
             # the following ids have been changed/removed and conflict with
             # changedIDs dict (these must be handled in updates.rpy)
             # monika_piano
             # monika_college was pointing to ch30_31 (monika_middleschool)
         updates.topics[_vdot2vstr("0.3.0")] = changedIDs
-
+        
         # ensuring no refs to old dicts
         changedIDs = None
 
