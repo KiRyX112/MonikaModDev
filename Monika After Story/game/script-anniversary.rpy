@@ -343,7 +343,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='anni_1week',
-            prompt="Первая неделя",
+            prompt="1-я неделя",
             action=EV_ACT_QUEUE,
             category=["юбилеи"],
             start_date=store.mas_anni.build_anni(weeks=1),
@@ -370,7 +370,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='anni_1month',
-            prompt="Первый месяц",
+            prompt="1-ый месяц",
             category=["юбилеи"],
             action=EV_ACT_QUEUE,
             start_date=store.mas_anni.build_anni(months=1),
