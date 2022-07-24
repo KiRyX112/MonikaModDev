@@ -95,11 +95,11 @@ init python:
         RETURNS:
             filestring pointing to the right path
         """
-
+        
         # Light handling
         if not mas_globals.dark_mode:
             return filestring
-
+        
         # Dark handling
         else:
             # Need to isolate this for just the extension and the path so we can form a new one
@@ -120,7 +120,7 @@ init python:
         """
         if base_name not in mas_ui.style_stash:
             mas_ui.style_stash[base_name] = getattr(style, base_name)
-
+        
         if morning_flag:
             stashed_style = mas_ui.style_stash[base_name]
             setattr(style, base_name, mas_ui.style_stash[base_name])
@@ -133,12 +133,12 @@ init python:
         Check if selected style has a dark alternative.
         """
         dark_style_name = style_name + mas_ui.dark_suffix
-
+        
         for other_tuple in renpy.style.styles:
             other_name = other_tuple[0]
             if other_name == dark_style_name:
                 return True
-
+        
         return False
 
     def mas_isDarkStyle(style_name):
@@ -164,7 +164,7 @@ init python:
         # Create aliases
         # FIXME: could be done on startup for some speedup
         new_aliases = {}
-
+        
         for style_tuple, style_ptr in renpy.style.styles.iteritems():
             style_name = style_tuple[0]
             if mas_isTextDarkStyle(style_name):
@@ -173,48 +173,48 @@ init python:
                 alias_name = style_name[:-suffix_len] + mas_ui.dark_suffix + "_text"
                 if not style.exists(alias_name):
                     new_aliases[alias_name] = style_ptr
-
+        
         for alias_name, alias_style_ptr in new_aliases.iteritems():
             setattr(style, alias_name, alias_style_ptr)
-
+        
         # Automagically switch every style which has a dark variant
         for style_tuple in renpy.style.styles.keys():
             style_name = style_tuple[0]
             if not mas_isDarkStyle(style_name) and mas_hasDarkStyle(style_name):
                 dark_style_name = style_name + mas_ui.dark_suffix
                 mas_swapStyle(style_name, dark_style_name, morning_flag)
-
+        
         if not morning_flag:
             # Handle the global swaps
             mas_globals.dark_mode = True
-
+            
             mas_globals.button_text_idle_color = mas_ui.dark_button_text_idle_color
             mas_globals.button_text_hover_color = mas_ui.dark_button_text_hover_color
             mas_globals.button_text_insensitive_color = mas_ui.dark_button_text_insensitive_color
-
+            
             # Textbox
             if mas_globals.change_textbox:
                 style.say_window = style.window_dark
-
+        
         else:
             # Handle the global swaps
             mas_globals.dark_mode = False
-
+            
             mas_globals.button_text_idle_color = mas_ui.light_button_text_idle_color
             mas_globals.button_text_hover_color = mas_ui.light_button_text_hover_color
             mas_globals.button_text_insensitive_color = mas_ui.light_button_text_insensitive_color
-
+            
             # Textbox
             if mas_globals.change_textbox:
                 style.say_window = style.window
-
+        
         # Timefile changes
         mas_ui.cm_bg = mas_getTimeFile(mas_ui.CNF_BG)
         mas_ui.sel_sb_frame = mas_getTimeFile(mas_ui.SEL_SB_FRAME)
-
+        
         # Reset the global flag
         mas_globals.change_textbox = True
-
+        
         style.rebuild()
 
 # START: Settings menu helpers
@@ -234,7 +234,7 @@ init python in mas_settings:
             _persistent._mas_auto_mode_enabled = False
             if store.mas_current_background.isFltNight():
                 store.mas_darkMode(True)
-
+        
         # But here we need to also switch the other button since this is mutually exclusive
         else:
             _persistent._mas_auto_mode_enabled = True
@@ -246,11 +246,11 @@ init python in mas_settings:
         """
         if _persistent._mas_dark_mode_enabled:
             _persistent._mas_dark_mode_enabled = False
-
+        
         else:
             _persistent._mas_dark_mode_enabled = True
             _persistent._mas_auto_mode_enabled = False
-
+        
         global dark_mode_clicked
         dark_mode_clicked = True
 
@@ -325,7 +325,7 @@ style generic_fancy_check_button_disabled is generic_fancy_check_button:
 
 style generic_fancy_check_button_text is gui_button_text:
     properties gui.button_text_properties("generic_fancy_check_button")
-    font "gui/font/Halogen.ttf"
+    font "gui/font/comic.ttf"
     color "#BFBFBF"
     hover_color "#000000"
     selected_color "#000000"
@@ -335,7 +335,7 @@ style generic_fancy_check_button_text is gui_button_text:
 
 style generic_fancy_check_button_text_dark is gui_button_text_dark:
     properties gui.button_text_properties("generic_fancy_check_button_dark")
-    font "gui/font/Halogen.ttf"
+    font "gui/font/comic.ttf"
     color "#BFBFBF"
     hover_color "#FFAA99"
     selected_color "#FFAA99"
@@ -345,7 +345,7 @@ style generic_fancy_check_button_text_dark is gui_button_text_dark:
 
 style generic_fancy_check_button_disabled_text is generic_fancy_check_button:
     properties gui.button_text_properties("generic_fancy_check_button")
-    font "gui/font/Halogen.ttf"
+    font "gui/font/comic.ttf"
     color "#8C8C8C"
     outlines []
     yoffset 3
@@ -371,32 +371,32 @@ image menu_nav:
         "mas_globals.dark_mode", "gui/overlay/main_menu_d.png")
     menu_nav_move
 
-init -1 python:
+# init -1 python:
 
-    # set default and interface font groups
-    # NOTE: this MUST be after -2
-    gui.default_font = FontGroup().add(
-        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 # kr
-    ).add(
-        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf # s-cn
-    ).add(
-        "mod_assets/font/mplus-2p-regular.ttf", 0x3000, 0x4dff  # jp + others
-    ).add(
-        "gui/font/Aller_Rg.ttf", 0x0000, 0xffff # latin-1
-    )
-    gui.interface_font = gui.default_font
-    gui.button_text_font = gui.default_font
-    gui.choice_button_text_font = gui.default_font
+
+
+#     gui.default_font = FontGroup().add(
+#         "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 
+#     ).add(
+#         "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf 
+#     ).add(
+#         "mod_assets/font/mplus-2p-regular.ttf", 0x3000, 0x4dff  
+#     ).add(
+#         "gui/font/comic.ttf", 0x0000, 0xffff 
+#     )
+#     gui.interface_font = gui.default_font
+#     gui.button_text_font = gui.default_font
+#     gui.choice_button_text_font = gui.default_font
 
 init -1 python in mas_ui:
     import store
 
-    music_menu_font = store.FontGroup().add( # use mplus as base
-        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 # kr
+    music_menu_font = store.FontGroup().add( 
+        "mod_assets/font/SourceHanSansK-Regular.otf", 0xac00, 0xd7a3 
     ).add(
-        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf # s-cn
+        "mod_assets/font/SourceHanSansSC-Regular.otf", 0x4e00, 0x9faf 
     ).add(
-        "mod_assets/font/mplus-2p-regular.ttf", 0x0000, 0xffff  # jp
+        "mod_assets/font/mplus-2p-regular.ttf", 0x0000, 0xffff  
     )
 
 # START: Helper methods that we use inside screens
@@ -476,38 +476,38 @@ init 25 python in mas_ui:
         ev_prompt = ev.prompt.lower()
         ev_label = ev.eventlabel.lower()
         ev_cat_full = " ".join(map(str, ev.category)) if ev.category else ""
-
+        
         # First, basic filters so we only deal with appropriate events
         if ev_prompt == ev_label:
             return False
-
+        
         if not ev.unlocked:
             return False
-
+        
         if ev.anyflags(store.EV_FLAG_HFNAS):
             return False
-
+        
         if not ev.checkAffection(store.mas_curr_affection):
             return False
-
+        
         if only_pool and not ev.pool:
             return False
-
+        
         if only_random and not ev.random:
             return False
-
+        
         if only_unseen and ev.shown_count != 0:
             return False
-
+        
         if only_seen and ev.shown_count == 0:
             return False
-
+        
         if not ev.checkConditional():
             return False
-
+        
         if not search_query:
             return True
-
+        
         # This is so we can interrup the loop early
         for search_kw in search_kws:
             if (
@@ -516,7 +516,7 @@ init 25 python in mas_ui:
                 or (ev_cat_full and search_kw in ev_cat_full)
             ):
                 return True
-
+        
         return False
 
     def _twopane_menu_sort_events(ev, search_query, search_kws):
@@ -534,43 +534,43 @@ init 25 python in mas_ui:
         ev_prompt = ev.prompt.lower()
         ev_label = ev.eventlabel.lower()
         ev_cat_full = " ".join(map(str, ev.category)) if ev.category else ""
-
+        
         weight = 0
         base_increment = 2
         base_modifier = len(search_kws) + 1
-
+        
         if search_query == ev_prompt or search_query == ev_label:
             weight += base_increment * base_modifier**8
-
+        
         elif search_query in ev_prompt:
             if ev_prompt.startswith(search_query):
                 weight += base_increment * base_modifier**7
-
+            
             else:
                 weight += base_increment * base_modifier**6
-
+        
         elif search_query in ev_label:
             if ev_label.startswith(search_query):
                 weight += base_increment * base_modifier**5
-
+            
             else:
                 weight += base_increment * base_modifier**4
-
+        
         else:
             for search_kw in search_kws:
                 if search_kw in ev_prompt:
                     weight += base_increment * base_modifier**3
-
+                
                 elif search_kw in ev_label:
                     weight += base_increment * base_modifier**2
-
+                
                 elif ev_cat_full:
                     if search_kw in ev.category:
                         weight += base_increment * base_modifier
-
+                    
                     elif search_kw in ev_cat_full:
                         weight += base_increment
-
+        
         return weight
 
     def _twopane_menu_search_events(search_query):
@@ -586,39 +586,39 @@ init 25 python in mas_ui:
         """
         if not search_query:
             return None
-
+        
         search_query = search_query.lower()
-
+        
         only_pool = False
         if "#pool" in search_query:
             search_query = search_query.replace("#pool", "")
             only_pool = True
-
+        
         only_random = False
         if "#random" in search_query:
             search_query = search_query.replace("#random", "")
             only_random = True
-
+        
         only_unseen = False
         if "#unseen" in search_query:
             search_query = search_query.replace("#unseen", "")
             only_unseen = True
-
+        
         only_seen = False
         if "#seen" in search_query:
             search_query = search_query.replace("#seen", "")
             only_seen = True
-
+        
         search_query = search_query.strip()
         search_kws = search_query.split()
-
+        
         flt_evs = [
             ev
             for ev in TWOPANE_MENU_SEARCH_DBS
             if _twopane_menu_filter_events(ev, search_query, search_kws, only_pool, only_random, only_unseen, only_seen)
         ]
         flt_evs.sort(key=lambda ev: _twopane_menu_sort_events(ev, search_query, search_kws), reverse=True)
-
+        
         return flt_evs[0:TWOPANE_MENU_MAX_FLT_ITEMS]
 
     def twopane_menu_adj_ranged_callback(adj):
@@ -634,10 +634,10 @@ init 25 python in mas_ui:
         if widget is not None:
             caret_pos = widget.caret_pos
             content_len = len(widget.content)
-
+            
             if content_len > 0:
                 caret_relative_pos = caret_pos / float(content_len)
-
+        
         # This ensures that the caret is always visible (close enough) to the user
         # when they enter text
         adj.change(adj.range * caret_relative_pos)
