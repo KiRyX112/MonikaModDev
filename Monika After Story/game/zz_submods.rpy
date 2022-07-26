@@ -62,10 +62,10 @@ init -991 python in mas_submod_utils:
         """
         #The fallback version string, used in case we don't have valid data
         FB_VERS_STR = "0.0.0"
-
+        
         #Regular expression representing a valid author and name
         AN_REGEXP = re.compile(ur'^[ a-zA-Z_\u00a0-\ufffd][ 0-9a-zA-Z_\u00a0-\ufffd]*$')
-
+        
         def __init__(
             self,
             author,
@@ -116,19 +116,19 @@ init -991 python in mas_submod_utils:
             #First make sure this name us unique
             if name in submod_map:
                 raise SubmodError("A submod with name '{0}' has been installed twice. Please, uninstall the duplicate.".format(name))
-
+            
             #Now we verify that the version number is something proper
             try:
                 map(int, version.split('.'))
             except:
                 raise SubmodError("Version number '{0}' is invalid.".format(version))
-
+            
             #Make sure author and name are proper label names
             if not Submod.AN_REGEXP.match(author):
                 raise SubmodError("Author '{0}' is invalid.".format(author))
             if not Submod.AN_REGEXP.match(name):
                 raise SubmodError("Name '{0}' is invalid.".format(name))
-
+            
             #With verification done, let's make the object
             self.author = author
             self.name = name
@@ -138,20 +138,20 @@ init -991 python in mas_submod_utils:
             self.settings_pane = settings_pane
             self.version_updates = version_updates
             self.coauthors = tuple(coauthors)
-
+            
             #Now we add these to our maps
             submod_map[name] = self
-
+            
             #NOTE: We check for things having updated later so all update scripts get called together
             if name not in persistent._mas_submod_version_data:
                 persistent._mas_submod_version_data[name] = version
-
+        
         def __repr__(self):
             """
             Representation of this object
             """
             return "<Submod: ({0} v{1} by {2})>".format(self.name, self.version, self.author)
-
+        
         def getVersionNumberList(self):
             """
             Gets the version number as a list of integers
@@ -160,7 +160,7 @@ init -991 python in mas_submod_utils:
                 List of integers representing the version number
             """
             return map(int, self.version.split('.'))
-
+        
         def hasUpdated(self):
             """
             Checks if this submod instance was updated (version number has incremented)
@@ -171,21 +171,21 @@ init -991 python in mas_submod_utils:
                     - False otherwise
             """
             old_vers = persistent._mas_submod_version_data.get(self.name)
-
+            
             #If we don't have an old vers, we're installing for the first time and aren't updating at all
             if not old_vers:
                 return False
-
+            
             try:
                 old_vers = map(int, old_vers.split('.'))
-
+            
             #Persist data was bad, we'll replace it with something safe and return False as we need not check more
             except:
                 persistent._mas_submod_version_data[self.name] = Submod.FB_VERS_STR
                 return False
-
+            
             return self.checkVersions(old_vers) > 0
-
+        
         def updateFrom(self, version):
             """
             Updates the submod, starting at the given start version
@@ -195,12 +195,12 @@ init -991 python in mas_submod_utils:
             """
             while version in self.version_updates:
                 updateTo = self.version_updates[version]
-
+                
                 # we should only call update labels that we have
                 if renpy.has_label(updateTo) and not renpy.seen_label(updateTo):
                     renpy.call_in_new_context(updateTo, updateTo)
                 version = self.version_updates[version]
-
+        
         def checkVersions(self, comparative_vers):
             """
             Generic version checker for submods
@@ -219,7 +219,7 @@ init -991 python in mas_submod_utils:
                 self.getVersionNumberList(),
                 comparative_vers
             )
-
+        
         @staticmethod
         def _checkUpdates():
             """
@@ -236,10 +236,10 @@ init -991 python in mas_submod_utils:
                             persistent._mas_submod_version_data.get(submod.name, Submod.FB_VERS_STR).replace('.', '_')
                         ).lower().replace(' ', '_')
                     )
-
+                
                 #Even if this hasn't updated, we should adjust its value to reflect the correct version
                 persistent._mas_submod_version_data[submod.name] = submod.version
-
+        
         @staticmethod
         def _checkDependencies():
             """
@@ -258,15 +258,15 @@ init -991 python in mas_submod_utils:
                 NOTE: Does not handle errors as to get here, formats must be correct regardless
                 """
                 return map(int, version.split('.'))
-
+            
             for submod in submod_map.itervalues():
                 for dependency, minmax_version_tuple in submod.dependencies.iteritems():
                     dependency_submod = Submod._getSubmod(dependency)
-
+                    
                     if dependency_submod is not None:
                         #Now we need to split our minmax
                         minimum_version, maximum_version = minmax_version_tuple
-
+                        
                         #First, check the minimum version. If we get -1, we're out of date
                         if (
                             minimum_version
@@ -277,7 +277,7 @@ init -991 python in mas_submod_utils:
                                     dependency_submod.name, minimum_version, submod.name, dependency_submod.version
                                 )
                             )
-
+                        
                         #If we have a maximum version, we should check if we're above it.
                         #If we get 1, this is incompatible and we should crash to avoid other ones
                         elif (
@@ -289,7 +289,7 @@ init -991 python in mas_submod_utils:
                                     dependency_submod.version, dependency_submod.name, submod.name, maximum_version
                                 )
                             )
-
+                    
                     #Submod wasn't installed at all
                     else:
                         raise SubmodError(
@@ -297,7 +297,7 @@ init -991 python in mas_submod_utils:
                                 dependency, submod.name
                             )
                         )
-
+        
         @staticmethod
         def _getSubmod(name):
             """
@@ -328,7 +328,7 @@ init -991 python in mas_submod_utils:
                 - False otherwise
         """
         submod = Submod._getSubmod(name)
-
+        
         if submod and version:
             return submod.checkVersions(version) >= 0
         return bool(submod)
@@ -381,16 +381,16 @@ init -980 python in mas_submod_utils:
             key - Key to retrieve and run functions from
         """
         global function_plugins
-
+        
         #If the key isn't provided, we assume it from the caller
         if not key:
             key = inspect.stack()[1][3]
-
+        
         func_dict = function_plugins.get(key)
-
+        
         if not func_dict:
             return
-
+        
         #Firstly, let's get our sorted list
         sorted_plugins = __prioritySort(key)
         for _action, data_tuple in sorted_plugins:
@@ -399,7 +399,7 @@ init -980 python in mas_submod_utils:
                     store.__run(_action, getArgs(key, _action))
                 except Exception as ex:
                     store.mas_utils.mas_log.error("function {0} failed because {1}".format(_action.__name__, ex))
-
+            
             else:
                 store.__run(_action, getArgs(key, _action))
 
@@ -432,28 +432,28 @@ init -980 python in mas_submod_utils:
                 - False otherwise
         """
         global function_plugins
-
+        
         #Verify that the function is callable
         if not callable(_function):
             store.mas_utils.mas_log.error("{0} is not callable".format(_function.__name__))
             return False
-
+        
         #Too many args
         elif len(args) > len(inspect.getargspec(_function).args):
             store.mas_utils.mas_log.error("Too many args provided for function {0}".format(_function.__name__))
             return False
-
+        
         #Check for overrides
         key = __getOverrideLabel(key)
-
+        
         #Create the key if we need to
         if key not in function_plugins:
             function_plugins[key] = dict()
-
+        
         #If we just created a key, then there won't be any existing values so we elif
         elif _function in function_plugins[key]:
             return False
-
+        
         function_plugins[key][_function] = (args, auto_error_handling, priority)
         return True
 
@@ -470,12 +470,12 @@ init -980 python in mas_submod_utils:
             If function is not present, None is returned
         """
         global function_plugins
-
+        
         func_dict = function_plugins.get(key)
-
+        
         if not func_dict:
             return
-
+        
         return func_dict.get(_function)[0]
 
     def setArgs(key, _function, args=[]):
@@ -493,22 +493,22 @@ init -980 python in mas_submod_utils:
                 - False if not
         """
         global function_plugins
-
+        
         func_dict = function_plugins.get(key)
-
+        
         #Key doesn't exist
         if not func_dict:
             return False
-
+        
         #Function not in dict
         elif _function not in func_dict:
             return False
-
+        
         #Too many args provided
         elif len(args) > len(inspect.getargspec(_function).args):
             store.mas_utils.mas_log.error("Too many args provided for function {0}".format(_function.__name__))
             return False
-
+        
         #Otherwise we can set
         old_values = func_dict[_function]
         func_dict[_function] = (args, old_values[1], old_values[2])
@@ -528,17 +528,17 @@ init -980 python in mas_submod_utils:
                 - False otherwise
         """
         global function_plugins
-
+        
         func_dict = function_plugins.get(key)
-
+        
         #Key doesn't exist
         if not func_dict:
             return False
-
+        
         #Function not in plugins dict
         elif _function not in func_dict:
             return False
-
+        
         #Otherwise we can pop
         function_plugins[key].pop(_function)
         return True
@@ -556,13 +556,13 @@ init -980 python in mas_submod_utils:
         NOTE: This assumes that the label exists in the function_plugins dict
         """
         global function_plugins
-
+        
         #First, we need to convert the functions into a list of tuples
         func_list = [
             (_function, data_tuple)
             for _function, data_tuple in function_plugins[_label].iteritems()
         ]
-
+        
         return sorted(func_list, key=PRIORITY_SORT_KEY)
 
     def __getOverrideLabel(_label):
@@ -599,7 +599,7 @@ init 999 python:
         store.mas_submod_utils.current_label = name
         #Run functions
         store.mas_submod_utils.getAndRunFunctions(name)
-
+        
         #Let's also check if the current label is an override label, if so, we'll then mark the base label as seen
         base_label = _OVERRIDE_LABEL_TO_BASE_LABEL_MAP.get(name)
         if base_label is not None:
