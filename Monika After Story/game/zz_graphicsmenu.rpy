@@ -336,9 +336,9 @@ screen mas_gmenu_confirm(sel_rend):
             yalign .5
             spacing 30
 
-            label _("Сменить рендерер на «" + sel_rend + "»?"):
+            label _("Сменить рендер на " + sel_rend + "?"):
                 style "confirm_prompt"
-            xalign 0.5
+                xalign 0.5
 
             hbox:
                 xalign 0.5
