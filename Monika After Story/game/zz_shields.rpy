@@ -63,14 +63,16 @@ init python:
             - Monika stops talking
         """
         store.mas_hotkeys.talk_enabled = True
-        store.mas_hotkeys.extra_enabled = True
-        store.mas_hotkeys.play_enabled = True
+        if not os_blk:
+            store.mas_hotkeys.extra_enabled = True
+            store.mas_hotkeys.play_enabled = True
         store.hkb_button.talk_enabled = True
-        store.hkb_button.extra_enabled = True
+        if not os_blk:
+            store.hkb_button.extra_enabled = True
         store.hkb_button.play_enabled = True
         store.mas_globals.dlg_workflow = False
         mas_calDropOverlayShield()
-
+        
         # special dialogue shield settings for derand and bookmark hotkeys
         store.mas_hotkeys.derandom_enabled = False
         store.mas_hotkeys.bookmark_enabled = False
@@ -102,7 +104,7 @@ init python:
         store.hkb_button.play_enabled = False
         store.mas_globals.dlg_workflow = True
         mas_calRaiseOverlayShield()
-
+        
         # special dialogue shield settings for derand and bookmark hotkeys
         store.mas_hotkeys.derandom_enabled = True
         store.mas_hotkeys.bookmark_enabled = True
@@ -122,7 +124,8 @@ init python:
             - The Music menu is closed
         """
         store.mas_hotkeys.talk_enabled = True
-        store.mas_hotkeys.extra_enabled = True
+        if not os_blk:
+            store.mas_hotkeys.extra_enabled = True
         store.mas_hotkeys.play_enabled = True
         mas_OVLDropShield()
 
@@ -245,9 +248,10 @@ init python:
         Intended Flow:
             - Whenever the music menu-based interactions need to be enabled
         """
-        store.mas_hotkeys.music_enabled = True
-        store.hkb_button.music_enabled = True
-        store.songs.enabled = True
+        if not os_blk:
+            store.mas_hotkeys.music_enabled = True
+            store.hkb_button.music_enabled = True
+            store.songs.enabled = True
 
 
     def mas_MUMURaiseShield():
@@ -333,8 +337,9 @@ init python:
             - when transitiong from core sheilds to idle shields
         """
         store.hkb_button.talk_enabled = True
-        store.hkb_button.extra_enabled = True
-        store.hkb_button.music_enabled = True
+        if not os_blk:
+            store.hkb_button.extra_enabled = True
+            store.hkb_button.music_enabled = True
         mas_calDropOverlayShield()
         enable_esc()
 
@@ -352,7 +357,8 @@ init python:
             - when transitioning from music menu to idle mode
         """
         store.hkb_button.talk_enabled = True
-        store.hkb_button.extra_enabled = True
-        store.hkb_button.music_enabled = True
-        store.songs.enabled = True
+        if not os_blk:
+            store.hkb_button.extra_enabled = True
+            store.hkb_button.music_enabled = True
+            store.songs.enabled = True
         mas_calDropOverlayShield()
