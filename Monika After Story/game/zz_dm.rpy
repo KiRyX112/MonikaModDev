@@ -34,13 +34,13 @@ init -999 python in _mas_dm_dm:
         """
         # length check
         ignore_len = _exp_len < 0
-
+        
         _data = list(_db[_key])
-
+        
         if ignore_len or len(_data) == _exp_len:
             for idx, idx_data in idx_d_list:
                 _data.insert(idx, idx_data)
-
+            
             _db[_key] = tuple(_data)
 
 
@@ -50,13 +50,13 @@ init -999 python in _mas_dm_dm:
         """
         # length check
         ignore_len = _exp_len <= 0
-
+        
         _data = list(_db[_key])
-
+        
         if ignore_len or len(_data) == _exp_len:
             for idx in idx_list:
                 _data.pop(idx)
-
+            
             _db[_key] = tuple(_data)
 
 
@@ -79,7 +79,7 @@ init -999 python in _mas_dm_dm:
         """
         if len(idxs_d) < 1:
             return
-
+        
         __add_idxs(_db, _key, _exp_len, sorted(idxs_d, reverse=True))
 
 
@@ -98,9 +98,9 @@ init -999 python in _mas_dm_dm:
         # sanity check
         if len(idxs_d) < 1:
             return
-
+        
         idxs_d_rev = sorted(idxs_d, reverse=True)
-
+        
         for item in _db:
             __add_idxs(_db, item, _exp_len, idxs_d_rev)
 
@@ -120,7 +120,7 @@ init -999 python in _mas_dm_dm:
         # sanity check
         if len(idxs) < 1:
             return
-
+        
         __rm_idxs(_db, _key, _exp_len, sorted(idxs, reverse=True))
 
 
@@ -137,9 +137,9 @@ init -999 python in _mas_dm_dm:
         """
         if len(idxs) < 1 or _db is None:
             return
-
+        
         idxs_rev = sorted(idxs, reverse=True)
-
+        
         for item in _db:
             __rm_idxs(_db, item, _exp_len, idxs_rev)
 
@@ -149,13 +149,13 @@ init -999 python in _mas_dm_dm:
     def __dm_1_to_2_helper(curr_len):
         ### needed vars
         rules_index = 14
-
+        
         ### perform logic
-
+        
         # removes rules proprety at index 14
         for _db in per_dbs:
             rm_idxs_db(_db, curr_len, rules_index)
-
+        
         # removes rules proerty in lock db at index 14
         rm_idxs_db(lock_db, curr_len, rules_index)
 
@@ -237,13 +237,13 @@ init -999 python in _mas_dm_dm:
         rules_index = 14
         rules_data = {}
         curr_len = 19 # number of properties ver 1 events have.
-
+        
         ### perform logic
-
+        
         # adds rules property in index 14
         for _db in per_dbs:
             add_idxs_db(_db, curr_len, (rules_index, rules_data))
-
+        
         # adds rules property to lock db index 14
         add_idxs_db(lock_db, curr_len, (rules_index, False))
 
@@ -282,25 +282,25 @@ init -999 python in _mas_dm_dm:
         ## NOTE: crash if this fails.
         mid_ver = int(mid_ver)
         min_ver = int(min_ver)
-
+        
         if mid_ver == 8:
             if 11 <= min_ver <= 14:
                 return -1
-
+            
             elif 9 <= min_ver <= 10:
                 return -2
-
+            
             elif 2 <= min_ver <= 8:
                 return -3
-
+            
             else:
                 # 080 or 081
                 return -4
-
+        
         elif mid_ver == 7 and 3 <= min_ver <= 4:
             # 073 or 074
             return -5
-
+        
         # otherwise, we do NOT do any ver migrations
         return dm_data_version
 
@@ -334,13 +334,13 @@ init -999 python in _mas_dm_dm:
             # if we are increasing the adj_ver, then we want to stop when
             #   adj_ver is more than or equal to piv_ver
             ver_not_passed = __morethan
-
+            
         # start
         dm_found = dm_map.get((piv_ver, adj_ver), None)
         while dm_found is None and ver_not_passed(piv_ver, adj_ver):
             adj_ver += direction
             dm_found = dm_map.get((piv_ver, adj_ver), None)
-
+        
         return (dm_found, adj_ver)
 
 
@@ -355,16 +355,16 @@ init -999 python in _mas_dm_dm:
             end_ver - ending version number
         """
         _dm_fun = dm_map.get((start_ver, end_ver), None)
-
+        
         if _dm_fun == -1:
             # this is first run.
             return
-
+        
         if _dm_fun is not None:
             # we have a direct migration
             _dm_fun()
             return
-
+        
         # otherwise, we need to loop
         # but first, to find direction
         # NOTE: direction is what value we should add to END version.
@@ -373,18 +373,18 @@ init -999 python in _mas_dm_dm:
             direction = -1
         else:
             direction = 1
-
+        
         curr_ver = start_ver
         while curr_ver != end_ver:
             _dm_fun, new_ver = _find_dm_fun(curr_ver, end_ver, direction)
-
+            
             if _dm_fun is None:
                 raise Exception(
                     "DATA MIGRATION FAILURE. {0} to {1}".format(
                         curr_ver, end_ver
                     )
                 )
-
+            
             # run the function and set the curr ver
             _dm_fun()
             curr_ver = new_ver
@@ -407,6 +407,6 @@ init -897 python:
             persistent._mas_dm_data_version,
             store._mas_dm_dm.dm_data_version
         )
-
+        
         # NOTE: this should be the last thing we do
         persistent._mas_dm_data_version = store._mas_dm_dm.dm_data_version
