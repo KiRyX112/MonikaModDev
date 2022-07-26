@@ -36,8 +36,8 @@ init -4 python:
             self.yPoint = yPoint
             self.mPoint = mPoint
             self.glitch = glitch
-
-
+        
+        
         def _merge(self, _poemword, mPoint):
             """
             Merges a PoemWord into this MASPoemWord
@@ -52,9 +52,9 @@ init -4 python:
             self.yPoint = _poemword.yPoint
             self.mPoint = mPoint
             self.glitch = _poemword.glitch
-
-
-        def _hangman(self, mon="I", say="Sayori", nat="Natsuki", yur="Yuri"):
+        
+        
+        def _hangman(self, mon="Мне", say="Сайори", nat="Нацуки", yur="Юри"):
             """
             Returns the approprite tuple of this word and the winner name.
 
@@ -68,35 +68,35 @@ init -4 python:
                 [1]: the winner as a string
             """
             the_winner = self.winner()
-
+            
             # monika wins ties
             if the_winner == self.mPoint:
                 girl = mon # monika
-
+            
             elif the_winner == self.sPoint:
                 girl = say # sayori
-
+            
             elif the_winner == self.nPoint:
                 girl = nat # natsuki
-
+            
             elif the_winner == self.yPoint:
                 girl = yur # yuri
-
+            
             else:
                 # monika is also the default
                 girl = mon # monika
-
+            
             return (self.word, girl)
-
-
+        
+        
         def winner(self):
             """
             Returns the point value of the winner
             """
             # figure out who likes this word the most
             return max(self.mPoint, self.sPoint, self.nPoint, self.yPoint)
-
-
+        
+        
         @staticmethod
         def _build(_poemword, mPoint):
             """
@@ -136,11 +136,11 @@ init -4 python:
             # If a wordfile is passed in, the file will be read
             self.wordlist = list()
             self.wordfile = wordfile
-
+            
             if wordfile:
                 self.readInFile(wordfile)
-
-
+        
+        
         def readInFile(self, wordfile):
             # copied from poemgame (with adjustments)
             #
@@ -161,11 +161,11 @@ init -4 python:
             #   wordfile - the filename/path of the file to read words
             with renpy.file(wordfile) as words:
                 for line in words:
-
+                    
                     line = line.strip()
-
+                    
                     if line == '' or line[0] == '#': continue
-
+                    
                     x = line.split(',')
                     self.wordlist.append(
                         MASPoemWord(
@@ -264,10 +264,10 @@ init -2 python in mas_poemgame_fun:
         #   point - the point value to return
         #
         # RETURNS: the point value if condition is True, 0 otherwise
-
+        
         if condition:
             return point
-
+        
         return 0
 
     def getWinner(word, sayori, natsuki, yuri, monika, mas=False):
@@ -287,17 +287,17 @@ init -2 python in mas_poemgame_fun:
         #
         # RETURNS: The girl with the highest score, as a constnat defined in
         #   mas_poemgame_consts
-
+        
         # build a list of point values
         girl_points = list()
-
+        
         # we want monika to be in there first, because she has tiebreaker
         # rules
         if mas:
             girl_points.append(
                 (mas_pgc.MONIKA, getPointValue(monika, word.mPoint))
             )
-
+        
         # add the rest of the girls
         girl_points.append(
             (mas_pgc.SAYORI, getPointValue(sayori, word.sPoint))
@@ -308,7 +308,7 @@ init -2 python in mas_poemgame_fun:
         girl_points.append(
             (mas_pgc.YURI, getPointValue(yuri, word.yPoint))
         )
-
+        
         # now get the largest from this list
         largest = 0
         largestValue = girl_points[largest][1]
@@ -316,7 +316,7 @@ init -2 python in mas_poemgame_fun:
             if girl_points[index][1] > largestValue:
                 largestValue = girl_points[index][1]
                 largest = index
-
+        
         # return our result
         return girl_points[largest][0]
 
@@ -948,7 +948,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
         if (glitch_words is not None
             and len(glitch_words) >= 3
             and glitch_words[0]):
-
+            
             # SPACE odds
             glitch_words_alspace = False
             if not glitch_words[1]: # None
@@ -959,7 +959,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                 )
             elif glitch_words[1] == 1: # 1 out of 1 odds means always
                 glitch_words_alspace = True
-
+            
             # other char odds
             glitch_words_alother = False
             if not glitch_words[2]: # None
@@ -979,22 +979,22 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
         if (glitch_wordscare is not None
             and len(glitch_wordscare) >= 2
             and glitch_wordscare[0]):
-
+            
             # sound wordscare glitch odds
             glitch_wordscare_alscare = False
             if not glitch_wordscare[1]: # None
                 glitch_wordscare = (glitch_wordscare[0], mas_pgc.ODDS_SCARE)
             elif glitch_wordscare[1] == 1: # 1 / 1 odds
                 glitch_wordscare_alscare = True
-
+            
             # baa checking
             if (glitch_baa is None or (
                 len(glitch_baa) >= 3
                 and glitch_baa[0])):
-
+                
                 # plays the baa sound which is a glitch sound
                 played_baa = False
-
+                
                 glitch_baa_albaa = False
                 if not glitch_baa[1]: # None
                     glitch_baa = (
@@ -1008,30 +1008,30 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                         glitch_baa[1],
                         False
                     )
-
+                
                 # baa odds check
                 if glitch_baa[1] == 1:
                     glitch_baa_albaa = True
-
+            
             else: # length < 2, or first item is False
                 glitch_baa = None
-
+            
             # glitch_wordscare_sound checking
             if (glitch_wordscare_sound is not None
                 and len(glitch_wordscare_sound) >= 2
                 and glitch_wordscare_sound[0]):
-
+                
                 glitch_wordscare_alsound = False
                 if not glitch_wordscare_sound[1]: # None
                     glitch_wordscare_sound = (
                         glitch_wordscare_sound[0],
                         mas_pgc.ODDS_GLTICH_SOUND
                     )
-
+                
                 # sound odds check
                 if glitch_wordscare_sound[1] == 1:
                     glitch_wordscare_alsound = True
-
+            
             else: # length < 2, or first item is False
                 glitch_wordscare_sound = None
 
@@ -1050,10 +1050,10 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                 and len(show_yuri_scary) >= 3
                 and show_yuri_scary[0]
             ):
-
+                
                 # seen yuri scary
                 seen_yuri_scary = False
-
+                
                 show_yuri_alscary = False
                 if not show_yuri_scary[1]: # None
                     show_yuri_scary = (
@@ -1067,11 +1067,11 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                         show_yuri_scary[1],
                         False
                     )
-
+                
                 # odds check
                 if show_yuri_scary[1] == 1:
                     show_yuri_alscary = True
-
+            
             else: # show yuri scary nope
                 show_yuri_scary = None
 
@@ -1084,7 +1084,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
         if (show_eyes
                 and len(show_eyes) >= 2
                 and show_eyes[0]):
-
+            
             if not show_eyes[1]: # None
                 show_eyes = (show_eyes[0], mas_pgc.ODDS_EYES)
 
@@ -1194,11 +1194,11 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
             else:
                 #pw_list = MASPoemWordList(mas_pgc.POEM_FILE)
                 #wordlist = list(pw_list.wordlist)
-
+                
                 # NOTE: THIS IS VERY IMPORTANT
                 # THIS BLOCK MUST PROCEED THE STICKER SETTING.
                 show_monika = False
-
+                
                 wordlist = deepcopy(full_wordlist)
 
         # the following handles the positioning and time between a sticker
@@ -1211,7 +1211,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
         done = False
         while not done:
             ystart = 160
-
+            
             # word counter setup
             if one_counter:
                 pstring = ""
@@ -1219,7 +1219,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                     pstring += "1"
             else:
                 pstring = str(progress)
-
+            
             # word counter display
             ui.text(
                 pstring + "/" + str(numWords),
@@ -1228,26 +1228,26 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                 ypos=80,
                 color='#000'
             )
-
+            
             # word display
             for j in range(2):  # columns
                 if j == 0: x = 440
                 else: x = 680
                 ui.vbox()
                 for i in range(5): # rows
-
+                    
                     # monika mode:
                     if in_monika_mode:
-
+                        
                         # are we displaying a word that causes glitch scare?
                         if (glitch_wordscare
                             and (
                                 glitch_wordscare_alscare or
                                 random.randint(1,glitch_wordscare[1]) == 1
                             )):
-
+                            
                             word = MASPoemWord(glitchtext(7), 0, 0, 0, 0, True)
-
+                        
                         # are we displaying a glitched Monika word
                         elif glitch_words:
                             word = MASPoemWord(
@@ -1256,34 +1256,34 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                                 ),
                                 0, 0, 0, 0, False
                             )
-
+                        
                         # regular Monika
                         else:
                             word = MASPoemWord("Monika", 0, 0, 0, 0, False)
-
+                    
                     # display or stock mode
                     else:
-
+                        
                         # pick a word yo
                         word = random.choice(wordlist)
                         wordlist.remove(word)
-
+                        
                         # wordscare mode
                         if (glitch_wordscare
                             and ( # again odds,
                                 glitch_wordscare_alscare or
                                 random.randint(1,glitch_wordscare[1]) == 1
                             )):
-
+                            
                             word.word = glitchtext(len(word.word))
                             word.glitch = True
-
+                        
                         # glitchy words (visual)
                         elif glitch_words:
                             word.word = glitchWord(
                                 word.word, glitch_words[1], glitch_words[2]
                             )
-
+                    
                     # display the word as a textbutton
                     ui.textbutton(
                         word.word,
@@ -1292,20 +1292,20 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                         xpos=x,
                         ypos=i * 56 + ystart
                     )
-
+                
                 # close this ui i guess
                 ui.close()
-
+            
             # wait for user to hit a word
             t = ui.interact()
-
+            
             # get the word if we need to
             if gather_words:
                 selected_words.append(deepcopy(t))
-
+            
             # wordscare glitch
             if glitch_wordscare:
-
+                
                 # poemgame_glitch mode check
                 if not poemgame_glitch:
                     # then check this word is a glitch word
@@ -1315,7 +1315,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                         renpy.scene()
                         renpy.show("white")
                         renpy.show("y_sticker glitch", at_list=[sticker_glitch])
-
+                
                 # we've been glitched!
                 elif poemgame_glitch:
                     if (glitch_baa
@@ -1324,10 +1324,10 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                             glitch_baa_albaa
                             or random.randint(1, glitch_baa[1]) == 1
                         )):
-
+                        
                         renpy.play("gui/sfx/baa.ogg")
                         played_baa = True
-
+                    
                     elif (glitch_wordscare_sound
                         and (
                             glitch_wordscare_alsound
@@ -1335,13 +1335,13 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                                 1, glitch_wordscare_sound[1]
                             ) == 1
                         )):
-
+                        
                         renpy.play(gui.activate_sound_glitch)
-
+            
             if not poemgame_glitch:
                 if sel_sound:
                     renpy.play(sel_sound)
-
+                
                 # check for mode
                 if in_monika_mode and hop_monika:
                     # monika mode only has monika
@@ -1355,7 +1355,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                         show_monika,
                         mas=poem_wordlist is not None
                     )
-
+                    
                     if show_monika and word_winner == mas_pgc.MONIKA:
                         renpy.show("m_sticker hop")
                     elif show_sayori and word_winner == mas_pgc.SAYORI:
@@ -1364,7 +1364,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                         renpy.show("n_sticker hop")
                     #elif show_yuri and word_winner == mas_pgc.YURI:
                     elif show_yuri:
-
+                        
                         if (show_yuri_scary and (
                                 (
                                     show_yuri_scary[2]
@@ -1377,11 +1377,11 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                                     ) == 1
                                 ))):
                             renpy.show(yuristicker + " hopg")
-
+                        
                         # either regular yuri or cut yuri
                         else:
                             renpy.show(yuristicker + " hop")
-
+            
             # now time to calculate points (if needed)
             if in_stock_mode:
                 if show_sayori:
@@ -1392,7 +1392,7 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                     points[mas_pgc.YURI] += t.yPoint
                 if show_monika:
                     points[mas_pgc.MONIKA] += t.mPoint
-
+            
             # progress check
             progress += 1
             if progress > numWords:
@@ -1401,10 +1401,10 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
         # if we only want the winner (and we in stock mode)
         results = None
         if in_stock_mode:
-
+            
             # only winner mode means that we only wnat he winner
             if only_winner:
-
+                
                 # figure out the winner
                 largest = ""
                 largestVal = 0
@@ -1412,19 +1412,19 @@ label mas_poem_minigame (flow,music_filename=audio.t4,show_monika=True,
                     if points > largestVal:
                         largest = girl
                         largestVal = points
-
+                
                 # do we want the words we selected
                 if gather_words:
                     results = (largest, largestVal, selected_words)
                 else:
                     results = (largest, largestVal)
-
+            
             else: # we want everyone ya know
-
+                
                 if gather_words:
                     results = points
                     results["words"] = selected_words
-
+                
                 else:
                     results = points
 
