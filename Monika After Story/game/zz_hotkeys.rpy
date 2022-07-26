@@ -251,7 +251,7 @@ init python:
             scope - use this dict as temp space
         """
         store.mas_hotkeys.game_menu_is_opening = True
-
+        
         scope["disb_ani"] = persistent._mas_disable_animations
         scope["sr_time"] = store.mas_suntime.sunrise
         scope["ss_time"] = store.mas_suntime.sunset
@@ -265,36 +265,36 @@ init python:
             scope - temp space used in `_mas_game_menu_start`
         """
         # call backs for the game menu
-
+        
         # if we are changing animation state, re-draw spaceroom masks
         if scope.get("disb_ani") != persistent._mas_disable_animations:
             mas_drawSpaceroomMasks(dissolve_masks=False)
-
+        
         # always clean current suntimes so they are not invalid
         store.mas_validate_suntimes()
-
+        
         # rebuild backgrounds if the suntime has changed
         if (
                 scope.get("sr_time") != store.mas_suntime.sunrise
                 or scope.get("ss_time") != store.mas_suntime.sunset
         ):
             store.mas_background.buildupdate()
-
+        
         # dismiss last text if ui changed
         if (
                 store.mas_settings.ui_changed
                 and store.mas_core._last_text is not None
         ):
-                store.mas_core._last_text.call_slow_done(0)
-
+            store.mas_core._last_text.call_slow_done(0)
+        
         elif store.mas_settings.dark_mode_clicked:
             renpy.restart_interaction()
-
+        
         # reset these vars so we don't run weird shit
         store.mas_settings.ui_changed = False
         store.mas_settings.dark_mode_clicked = False
         store.mas_core._last_text = None
-
+        
         # lastly notify that gamem menu is closing
         store.mas_hotkeys.game_menu_is_opening = False
 
@@ -306,9 +306,9 @@ init python:
         if not _windows_hidden:
             temp_space = {}
             _mas_game_menu_start(temp_space)
-
+            
             _invoke_game_menu()
-
+            
             _mas_game_menu_end(temp_space)
 
 
@@ -320,12 +320,12 @@ init python:
         if not _windows_hidden:
             temp_space = {}
             _mas_game_menu_start(temp_space)
-
+            
             renpy.call_in_new_context(
                 "_game_menu",
                 _game_menu_screen=screen_name
             )
-
+            
             _mas_game_menu_end(temp_space)
 
 
@@ -338,36 +338,36 @@ init python:
 
 
     def set_keymaps():
-        #
-        # Sets the keymaps
-        #
-        # ASSUMES:
-        #   config.keymap
-        #   config.underlay
-        #Add keys for new functions
-        config.keymap["open_dialogue"] = ["t","T"]
-        config.keymap["mas_extra_menu"] = ["e", "E"]
-        config.keymap["change_music"] = ["noshift_m","noshift_M"]
-        config.keymap["play_game"] = ["p","P"]
-        config.keymap["mute_music"] = ["shift_m","shift_M"]
+        
+        
+        
+        
+        
+        
+        
+        config.keymap["open_dialogue"] = ["п","П","g","G"]
+        config.keymap["mas_extra_menu"] = ["э", "Э", "'"]
+        config.keymap["change_music"] = ["noshift_м","noshift_М","noshift_v","noshift_V"]
+        config.keymap["play_game"] = ["и","И","b","B"]
+        config.keymap["mute_music"] = ["shift_м","shift_М","shift_v","shift_V"]
         config.keymap["inc_musicvol"] = [
             "shift_K_PLUS","K_EQUALS","K_KP_PLUS"
         ]
         config.keymap["dec_musicvol"] = [
             "K_MINUS","shift_K_UNDERSCORE","K_KP_MINUS"
         ]
-        config.keymap["derandom_topic"] = ["x","X"]
-        config.keymap["bookmark_topic"] = ["b","B"]
-
+        config.keymap["derandom_topic"] = ["х","Х"]
+        config.keymap["bookmark_topic"] = ["з","З","p","P"]
+        
         # get replace the game menu with our version (to block certain
         # workflows correctly)
         config.keymap["mas_game_menu"] = list(config.keymap["game_menu"])
         config.keymap["game_menu"] = []
-
+        
         # get and replcae the hide_windows with our version
         config.keymap["mas_hide_windows"] = list(config.keymap["hide_windows"])
         config.keymap["hide_windows"] = []
-
+        
         # Define what those actions call
         config.underlay.append(
             renpy.Keymap(open_dialogue=_mas_hk_show_dialogue_box)
