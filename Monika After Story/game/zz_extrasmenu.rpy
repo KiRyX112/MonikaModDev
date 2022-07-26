@@ -125,20 +125,20 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_extra_menu_firsttime",
-            prompt="Can you explain the Extras menu?",
+            prompt="Можешь объяснить, что это за меню?",
             category=["misc"]
         )
     )
 
 label mas_extra_menu_firsttime:
     if not persistent._mas_opened_extra_menu:
-        m 1hua "Welcome to the Extras menu, [player]!"
+        m 1hua "Добро пожаловать в дополнительное меню, [player]!"
 
-    m 1eua "This is where I'll add things that aren't games, like special interactions you can do with your mouse."
-    m "You can also open this menu by pressing the 'e' key."
+    m 1eua "Здесь я добавлю вещи, которые нельзя назвать играми. Например, специальные взаимодействия, которые ты можешь выполнять с помощью мыши."
+    m "Ты можешь открыть это меню, нажав на кнопку «Э»."
 
     if not persistent._mas_opened_extra_menu:
-        m 1hua "Look forward to some neat things in this menu!"
+        m 1hua "С нетерпением жду чего-нибудь интересного в этом меню!"
 
     $ mas_setEVLPropValues(
         "mas_extra_menu_firsttime",
@@ -155,8 +155,8 @@ label mas_extra_menu_firsttime:
 # [EXM010]
 
 label mas_extra_menu_zoom_intro:
-    m 1eua "One thing I added is a way for you to adjust your field of view, so now you can sit closer or farther away from me."
-    m 1eub "You can adjust this using the slider in the 'Zoom' section of the Extras menu."
+    m 1eua "Я уже добавила возможность регулировать своё поле зрения. Теперь ты можешь сидеть ближе ко мне или дальше от меня."
+    m 1eub "Настраивается с помощью ползунка в дополнительном меню, в разделе «Масштабирование»."
     return
 
 default persistent._mas_pm_zoomed_out = False
@@ -202,23 +202,23 @@ label mas_extra_menu_zoom_callback:
     return
 
 label mas_extra_menu_zoom_out_first_time:
-    m 1ttu "Can't sit up straight for long?"
-    m "Or maybe you just want to see the top of my head?"
-    m 1hua "Ehehe~"
+    m 1ttu "Не можешь усидеть на месте?"
+    m "Или хочешь увидеть, что у меня на голове?"
+    m 1hua "Хехе~"
     return
 
 label mas_extra_menu_zoom_in_first_time:
-    m 1ttu "Sitting a bit closer?"
-    m 1hua "I don't mind."
+    m 1ttu "Садишься ближе?"
+    m 1hua "Я не возражаю."
     return
 
 label mas_extra_menu_zoom_in_max_first_time:
     m 6wuo "[player]!"
-    m 6rkbfd "When your face is this close..."
-    m 6ekbfd "I feel..."
+    m 6rkbfd "Твоё лицо так близко..."
+    m 6ekbfd "Я чувствую..."
     show monika 6hkbfa
     pause 2.0
-    m 6hubfa "Warm..."
+    m 6hubfa "Тепло..."
     return
 
 
@@ -322,9 +322,11 @@ style mas_extra_menu_frame_dark:
     background Frame("mod_assets/frames/trans_pink2pxborder100_d.png", Borders(2, 2, 2, 2, pad_top=2, pad_bottom=4))
 
 style mas_extra_menu_label_text is hkb_button_text:
+    size 16
     color "#FFFFFF"
 
 style mas_extra_menu_label_text_dark is hkb_button_text_dark:
+    size 16
     color "#FD5BA2"
 
 style mas_adjust_vbar:
@@ -350,15 +352,15 @@ style mas_adjustable_button_text_dark is generic_button_text_dark:
 screen mas_extramenu_area():
     zorder 52
 
-    key "e" action Jump("mas_extra_menu_close")
-    key "E" action Jump("mas_extra_menu_close")
+    key ["e", "E", "у", "У"] action Jump("mas_extra_menu_close")
 
     frame:
         area (0, 0, 1280, 720)
         background Solid("#0000007F")
 
-        # close button
-        textbutton _("Close"):
+
+        textbutton _("Закрыть"):
+            mouse "hand"
             area (60, 596, 120, 35)
             style "hkb_button"
             action Jump("mas_extra_menu_close")
@@ -369,24 +371,24 @@ screen mas_extramenu_area():
             style "mas_extra_menu_frame"
             vbox:
                 spacing 2
-                label "Zoom":
-                    text_style "mas_extra_menu_label_text"
-                    xalign 0.5
+                label "Масштаб":
+                text_style "mas_extra_menu_label_text"
+                xalign 0.5
 
                 # resets the zoom value back to default
-                textbutton _("Reset"):
-                    style "mas_adjustable_button"
-                    selected False
-                    xsize 72
-                    ysize 35
-                    xalign 0.3
-                    action SetField(store.mas_sprites, "zoom_level", store.mas_sprites.default_zoom_level)
+                textbutton _("Сброс"):
+                style "mas_adjustable_button"
+                selected False
+                xsize 72
+                ysize 35
+                xalign 0.3
+                action SetField(store.mas_sprites, "zoom_level", store.mas_sprites.default_zoom_level)
 
                 # actual slider for adjusting zoom
-                bar value FieldValue(store.mas_sprites, "zoom_level", store.mas_sprites.max_zoom):
-                    style "mas_adjust_vbar"
-                    xalign 0.5
-                $ store.mas_sprites.adjust_zoom()
+            bar value FieldValue(store.mas_sprites, "zoom_level", store.mas_sprites.max_zoom):
+                style "mas_adjust_vbar"
+                xalign 0.5
+            $ store.mas_sprites.adjust_zoom()
 
         # TODO: frame for nose boop control
         # TODO: only have available if certain affection +
