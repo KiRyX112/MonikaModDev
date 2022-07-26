@@ -22,59 +22,59 @@ init -1 python:
         Custom graphics menu
         """
         import pygame
-
+        
         # CONSTANTS
         VIEW_WIDTH = 1280
         VIEW_HEIGHT = 720
-
+        
         BUTTON_SPACING = 20
         BUTTON_WIDTH = 400
         BUTTON_HEIGHT = 35
-
+        
         BUTTON_Y_START = 300 # 300 pixels down from the top.
         TEXT_L1_Y_START = 150 # description line
         TEXT_L2_Y_START = 185
         TEXT_CURR_L1_Y_START = 220 # current renderer line
         TEXT_CURR_L2_Y_START = 255
-
+        
         # RENDER MAP
         RENDER_MAP = {
-            "auto": "Automatic",
+            "auto": "Выбор системы",
             "gl": "OpenGL",
-            "angle": "Angle/DirectX",
-            "sw": "Software"
+            "angle": "Angle/DirectX"
+            # "sw": "Software"
         }
-        RENDER_UNK = "Unknown"
-
+        RENDER_UNK = "Неизвестно"
+        
         MOUSE_EVENTS = (
             pygame.MOUSEMOTION,
             pygame.MOUSEBUTTONUP,
             pygame.MOUSEBUTTONDOWN
         )
-
+        
         def __init__(self, curr_renderer):
             """
             Constructor
             """
             super(renpy.Displayable, self).__init__()
-
+            
             self.curr_renderer = curr_renderer
-
+            
             # background tile
             self.background = Solid(
                 "#000000B2",
                 xsize=self.VIEW_WIDTH,
                 ysize=self.VIEW_HEIGHT
             )
-
+            
             # calculate positions
             # top left x,y of button area
             button_x = int((self.VIEW_WIDTH - self.BUTTON_WIDTH) / 2)
             button_y = self.BUTTON_Y_START
-
+            
             # create teh buttons
             self.button_auto = MASButtonDisplayable.create_stb(
-                _("Automatically Choose"),
+                _("Выбор системы"),
                 True,
                 button_x,
                 button_y,
@@ -106,19 +106,19 @@ init -1 python:
                 activate_sound=gui.activate_sound,
                 return_value="angle"
             )
-            self.button_sw = MASButtonDisplayable.create_stb(
-                _("Software"),
-                True,
-                button_x,
-                button_y + (3 * (self.BUTTON_SPACING + self.BUTTON_HEIGHT)),
-                self.BUTTON_WIDTH,
-                self.BUTTON_HEIGHT,
-                hover_sound=gui.hover_sound,
-                activate_sound=gui.activate_sound,
-                return_value="sw"
-            )
+            # self.button_sw = MASButtonDisplayable.create_stb(
+            #     _("Software"),
+            #     True,
+            #     button_x,
+            #     button_y + (3 * (self.BUTTON_SPACING + self.BUTTON_HEIGHT)),
+            #     self.BUTTON_WIDTH,
+            #     self.BUTTON_HEIGHT,
+            #     hover_sound=gui.hover_sound,
+            #     activate_sound=gui.activate_sound,
+            #     return_value="sw"
+            # )
             self.button_ret = MASButtonDisplayable.create_stb(
-                _("Return"),
+                _("Назад"),
                 False,
                 button_x,
                 button_y + (4 * self.BUTTON_HEIGHT) + (5 * self.BUTTON_SPACING),
@@ -128,38 +128,38 @@ init -1 python:
                 activate_sound=gui.activate_sound,
                 return_value=self.curr_renderer
             )
-
+            
             # texts
             small_text_size = 18
             small_text_heading = 20
             self.text_instruct = Text(
-                _("Select a renderer to use:"),
+                _("Выберите предпочтительный рендерер:"),
                 font=gui.default_font,
                 size=gui.text_size,
                 color="#ffe6f4",
                 outlines=[]
             )
             self.text_restart = Text(
-                _("*Changing the renderer requires a restart to take effect"),
+                _("*Изменение рендерера вступит в силу после перезапуска игры"),
                 font=gui.default_font,
                 size=small_text_size,
                 color="#ffe6f4",
                 outlines=[]
             )
             self.text_current = Text(
-                _("Current Renderer:"),
+                _("Текущий рендерер:"),
                 font=gui.default_font,
                 size=small_text_heading,
                 color="#ffe6f4",
                 outlines=[]
             )
-
+            
             # current render display text
             _renderer = self.RENDER_MAP.get(
                 self.curr_renderer,
                 self.RENDER_UNK
             )
-
+            
             self.text_curr_display = Text(
                 _renderer,
                 font=gui.default_font,
@@ -167,34 +167,34 @@ init -1 python:
                 color="#ffe6f4",
                 outlines=[(1, "#ff99D2")]
             )
-
+            
             # grouped buttons
             self.all_buttons = [
                 self.button_auto,
                 self.button_gl,
                 self.button_dx,
-                self.button_sw,
+                # self.button_sw,
                 self.button_ret
             ]
-
+            
             if not renpy.windows:
                 # non windows does not have angle
                 self.all_buttons.remove(self.button_dx)
-
+            
             # disable a button
             if self.curr_renderer == "auto":
                 self.button_auto.disable()
-
+            
             elif self.curr_renderer == "angle":
                 self.button_dx.disable()
-
+            
             elif self.curr_renderer == "gl":
                 self.button_gl.disable()
-
-            elif self.curr_renderer == "sw":
-                self.button_sw.disable()
-
-
+            
+            # elif self.curr_renderer == "sw":
+            #     self.button_sw.disable()
+        
+        
         def _xcenter(self, v_width, width):
             """
             Returns the appropriate X location to center an object with the
@@ -208,8 +208,8 @@ init -1 python:
                 appropiate X coord to center
             """
             return int((v_width - width) / 2)
-
-
+        
+        
         def _button_select(self, ev, x, y, st):
             """
             Goes through the list of buttons and return the first non-None
@@ -222,17 +222,17 @@ init -1 python:
                 ret_val = button.event(ev, x, y, st)
                 if ret_val:
                     return ret_val
-
+            
             return None
-
-
+        
+        
         def render(self, width, height, st, at):
             """
             RENDER
             """
             # first, do some renders
             back = renpy.render(self.background, width, height, st, at)
-
+            
             # buttons
             r_buttons = [
                 (
@@ -241,7 +241,7 @@ init -1 python:
                 )
                 for x in self.all_buttons
             ]
-
+            
             # text
             r_txt_ins = renpy.render(self.text_instruct, width, height, st, at)
             r_txt_res = renpy.render(self.text_restart, width, height, st, at)
@@ -253,18 +253,18 @@ init -1 python:
                 st,
                 at
             )
-
+            
             # now do some calcs
             insw, insh = r_txt_ins.get_size()
             resw, resh = r_txt_res.get_size()
             curw, curh = r_txt_cur.get_size()
             curdw, curdh = r_txt_curd.get_size()
-
+            
             insx = self._xcenter(width, insw)
             resx = self._xcenter(width, resw)
             curx = self._xcenter(width, curw)
             curdx = self._xcenter(width, curdw)
-
+            
             # now we blit!
             r = renpy.Render(width, height)
             r.blit(back, (0, 0))
@@ -274,26 +274,26 @@ init -1 python:
             r.blit(r_txt_curd, (curdx, self.TEXT_CURR_L2_Y_START))
             for vis_b, xy in r_buttons:
                 r.blit(vis_b, xy)
-
+            
             return r
-
+        
         def event(self, ev, x, y, st):
             """
             EVENT
             """
             if ev.type in self.MOUSE_EVENTS:
                 # we only care about mousu
-
+                
                 sel_rend = self._button_select(ev, x, y, st)
-
+                
                 if sel_rend:
                     # nonNone value returned
-
+                    
                     if sel_rend == self.curr_renderer:
                         # this means the user selected back
-
+                        
                         return sel_rend
-
+                    
                     # otherwise, user selected a renderer, display the
                     # confirmation screen
                     store.mas_gmenu.sel_rend = self.RENDER_MAP.get(
@@ -303,11 +303,11 @@ init -1 python:
                     confirmed = renpy.call_in_new_context(
                         "mas_gmenu_confirm_context"
                     )
-
+                    
                     if confirmed:
                         # selection made and confirmed
                         return sel_rend
-
+            
             # otherwise continue
             renpy.redraw(self, 0)
             raise renpy.IgnoreEvent()
@@ -336,16 +336,16 @@ screen mas_gmenu_confirm(sel_rend):
             yalign .5
             spacing 30
 
-            label _("Switch renderer to " + sel_rend + "?"):
+            label _("Сменить рендерер на «" + sel_rend + "»?"):
                 style "confirm_prompt"
-                xalign 0.5
+            xalign 0.5
 
             hbox:
                 xalign 0.5
                 spacing 100
 
-                textbutton _("Yes") action Return(True)
-                textbutton _("No") action Return(False)
+                textbutton _("Да") action Return(True)
+                textbutton _("Нет") action Return(False)
 
 # gmenu flow start
 label mas_gmenu_start:
@@ -369,7 +369,7 @@ label mas_gmenu_start:
                 # env file
                 try:
                     os.remove(env_file)
-
+                
                 except:
                     # failure to remove file, open the file and write to it
                     with open(env_file, "w") as outfile:
