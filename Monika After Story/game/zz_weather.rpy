@@ -101,14 +101,14 @@ default persistent._mas_should_rain_today = None
 init python in mas_weather:
 
     def shouldRainToday():
-
+        
         #Is it a new day? If so, we should see if it should rain today
         if store.mas_pastOneDay(store.persistent._mas_date_last_checked_rain):
             store.persistent._mas_date_last_checked_rain = datetime.date.today()
-
+            
             #Now we roll
             chance = random.randint(1,100)
-
+            
             #ODDS:
             #   Spring:
             #       - 30% chance for it to not rain on a particular day
@@ -126,7 +126,7 @@ init python in mas_weather:
                 store.persistent._mas_should_rain_today = chance >= 40
             else:
                 store.persistent._mas_should_rain_today = False
-
+        
         return store.persistent._mas_should_rain_today
 
 
@@ -156,26 +156,26 @@ init python in mas_weather:
         """
         if rolled_chance is None:
             rolled_chance = random.randint(1,100)
-
+        
         if shouldRainToday():
             # try raining if we can
-
+            
             if rolled_chance <= rain_chance:
-
+                
                 # double check thunder
                 if rolled_chance <= thunder_chance:
                     return store.mas_weather_thunder
-
+                
                 # otherwise rain
                 return store.mas_weather_rain
-
+            
             # if we failed to rain here, then modify the rolled chance to be
             # appropriate to for the next chance
             rolled_chance -= rain_chance
-
+        
         if rolled_chance <= overcast_chance:
             return store.mas_weather_overcast
-
+        
         # otherwise, no cloudy weather
         return None
 
@@ -192,7 +192,7 @@ init -99 python in mas_weather:
 
     # weather constants
     # NOTE: just reference MOOD's numbers
-    WEAT_RETURN = "Nevermind"
+    WEAT_RETURN = "Не важно"
 
     #Stores the time at which weather should change
     weather_change_time = None
@@ -235,7 +235,7 @@ init -99 python in mas_weather:
         store.renpy.image(tag, disp)
         OLD_WEATHER_OBJ[old_weather_id] = tag
         old_weather_id += 1
-
+        
         return tag
 
 
@@ -259,22 +259,22 @@ init -20 python in mas_weather:
         RETURNS:
             - True or false on whether or not to call spaceroom
         """
-
+        
         #If the player forced weather or we're not in a background that supports weather, we do nothing
         if force_weather or store.mas_current_background.disable_progressive:
             return False
-
+        
         #Otherwise we do stuff
         global weather_change_time
         #Set a time for startup
         if not weather_change_time:
             # TODO: make this a function so init can set the weather_change _time and prevent double weather setting
             weather_change_time = datetime.datetime.now() + datetime.timedelta(0,random.randint(1800,5400))
-
+        
         elif weather_change_time < datetime.datetime.now():
             #Need to set a new check time
             weather_change_time = datetime.datetime.now() + datetime.timedelta(0,random.randint(1800,5400))
-
+            
             #Change weather
             new_weather = store.mas_shouldRain()
             if new_weather is not None and new_weather != store.mas_current_weather:
@@ -284,15 +284,15 @@ init -20 python in mas_weather:
                         new_weather
                 ):
                     store.mas_idle_mailbox.send_dissolve_all()
-
+                
                 #Now we change weather
                 store.mas_changeWeather(new_weather)
-
+                
                 #Play the rumble in the back to indicate thunder
                 if new_weather == store.mas_weather_thunder:
                     renpy.play("mod_assets/sounds/amb/thunder_1.wav",channel="backsound")
                 return True
-
+            
             elif store.mas_current_weather != store.mas_weather_def:
                 # determine if spaceroom idle should dissolve
                 if store.mas_current_background.isChangingRoom(
@@ -300,10 +300,10 @@ init -20 python in mas_weather:
                         store.mas_weather_def
                 ):
                     store.mas_idle_mailbox.send_dissolve_all()
-
+                
                 store.mas_changeWeather(store.mas_weather_def)
                 return True
-
+        
         return False
 
 
@@ -315,7 +315,7 @@ init -20 python in mas_weather:
         """
         if store.persistent._mas_weather_MWdata is None:
             return
-
+        
         for mw_id, mw_data in store.persistent._mas_weather_MWdata.iteritems():
             mw_obj = WEATHER_MAP.get(mw_id, None)
             if mw_obj is not None:
@@ -338,7 +338,7 @@ init -20 python in mas_weather:
         for mw_id, mw_obj in WEATHER_MAP.iteritems():
             if mw_obj.unlocked:
                 count += 1
-
+        
         return count
 
 
@@ -350,12 +350,12 @@ init -20 python in mas_weather:
         """
         Rain start programming point
         """
-
+        
         # dont need to change anything if we are switching from thunder
         if _old != store.mas_weather_thunder:
             # set global flag
             store.mas_is_raining = True
-
+            
             # play rain sound
             renpy.music.play(
                 store.audio.rain,
@@ -364,7 +364,7 @@ init -20 python in mas_weather:
                 fadein=1.0,
                 if_changed=True
             )
-
+        
         if store.persistent._mas_o31_in_o31_mode:
             store.mas_showDecoTag("mas_o31_vignette")
 
@@ -373,15 +373,15 @@ init -20 python in mas_weather:
         """
         RAIN stop programming point
         """
-
+        
         # dont change any flags if we are switching to thunder
         if _new != store.mas_weather_thunder:
             # set gklobal flag
             store.mas_is_raining = False
-
+            
             # stop rain sound
             renpy.music.stop(channel="background", fadeout=1.0)
-
+        
         if store.persistent._mas_o31_in_o31_mode:
             store.mas_hideDecoTag("mas_o31_vignette")
 
@@ -392,7 +392,7 @@ init -20 python in mas_weather:
         """
         # set global flag
         store.mas_is_snowing = True
-
+        
         #We want this topic seen for the first time with aurora visible outside her window
         #But we also don't want it to machine gun other topics too
         if (
@@ -419,7 +419,7 @@ init -20 python in mas_weather:
         # run rain programming points
         if _old != store.mas_weather_rain:
             _weather_rain_entry(_old)
-
+        
         # set global flag
         store.mas_globals.show_lightning = True
 
@@ -430,7 +430,7 @@ init -20 python in mas_weather:
         """
         # set global flag
         store.mas_globals.show_lightning = False
-
+        
         # run rain progframming points
         # NOTE: dont change anything if swithing to rain
         if _new != store.mas_weather_rain:
@@ -501,10 +501,10 @@ init -50 python:
         """
         if sp_night is None:
             sp_night = sp_day
-
+        
         sp_day_fb = sp_day + "_fb"
         sp_night_fb = sp_night + "_fb"
-
+        
         # create weather images
         dyn_tag = store.mas_weather._generate_old_image(
             MASFallbackFilterDisplayable(day=sp_day, night=sp_night)
@@ -512,7 +512,7 @@ init -50 python:
         stt_tag = store.mas_weather._generate_old_image(
             MASFallbackFilterDisplayable(day=sp_day_fb, night=sp_night_fb)
         )
-
+        
         return MASFilterableWeather(
             weather_id,
             prompt,
@@ -541,7 +541,7 @@ init -50 python:
             exit_pp - programming point to execute when leaving this weather
         """
         import store.mas_weather as mas_weather
-
+        
         def __init__(self,
                 weather_id,
                 prompt,
@@ -577,7 +577,7 @@ init -50 python:
             """
             if weather_id in self.mas_weather.WEATHER_MAP:
                 raise Exception("duplicate weather ID")
-
+            
             self.weather_id = weather_id
             self.prompt = prompt
             self.img_tag = img_tag
@@ -586,35 +586,35 @@ init -50 python:
             self.unlocked = unlocked
             self.entry_pp = entry_pp
             self.exit_pp = exit_pp
-
+            
             # add to weather map
             self.mas_weather.WEATHER_MAP[weather_id] = self
-
+        
         def __eq__(self, other):
             if isinstance(other, MASFilterableWeather):
                 return self.weather_id == other.weather_id
             return NotImplemented
-
+        
         def __ne__(self, other):
             result = self.__eq__(other)
             if result is NotImplemented:
                 return result
             return not result
-
+        
         def entry(self, old_weather):
             """
             Runs entry programming point
             """
             if self.entry_pp is not None:
                 self.entry_pp(old_weather)
-
+        
         def exit(self, new_weather):
             """
             Runs exit programming point
             """
             if self.exit_pp is not None:
                 self.exit_pp(new_weather)
-
+        
         def get_mask(self):
             """
             Returns the appropriate weathermask based on animation settings
@@ -623,9 +623,9 @@ init -50 python:
             """
             if persistent._mas_disable_animations or self.ani_img_tag is None:
                 return self.img_tag
-
+            
             return self.ani_img_tag
-
+        
         @staticmethod
         def getPrecipTypeFrom(weather=None):
             """
@@ -641,7 +641,7 @@ init -50 python:
             if weather is None:
                 return mas_current_weather.precip_type
             return weather.precip_type
-
+        
         def fromTuple(self, data_tuple):
             """
             Loads data from tuple
@@ -651,7 +651,7 @@ init -50 python:
                     [0]: unlocked property
             """
             self.unlocked = data_tuple[0]
-
+        
         @store.mas_utils.deprecated(use_instead="get_mask", should_raise=True)
         def sp_window(self, day):
             """DEPRECATED
@@ -659,14 +659,14 @@ init -50 python:
             This returns whatever get_mask returns.
             """
             return self.get_mask()
-
+        
         @store.mas_utils.deprecated(should_raise=True)
         def isbg_window(self, day, no_frame):
             """DEPRECATED
             Islands are now separate images. See script-islands-event.
             """
             return ""
-
+        
         def toTuple(self):
             """
             Converts this MASWeather object into a tuple
@@ -688,7 +688,7 @@ init -50 python:
         PROPERTIES:
             None
         """
-
+        
         def __init__(self, precip_map=None):
             """
             Constructor
@@ -705,27 +705,27 @@ init -50 python:
                 None,
                 precip_map
             )
-
+        
         def __iter__(self):
             """
             Returns MHM iterator
             """
             return iter(self.__mhm)
-
+        
         def add(self, key, value):
             """
             Adds value to map.
             See MASHighlightMap.add
             """
             self.__mhm.add(key, value)
-
+        
         def apply(self, mapping):
             """
             Applies a dict mapping to this map.
             See MASHlightMap.apply
             """
             self.__mhm.apply(mapping)
-
+        
         def get(self, key):
             """
             Gets value with the given key
@@ -737,9 +737,9 @@ init -50 python:
             value = self._raw_get(key)
             if value is None:
                 return self._raw_get(store.mas_weather.PRECIP_TYPE_DEF)
-
+            
             return value
-
+        
         def _mhm(self):
             """
             Returns the internal MASHighlightMap. Only use if you know what
@@ -748,7 +748,7 @@ init -50 python:
             RETURNS: MASHighlightMap object
             """
             return self.__mhm
-
+        
         def _raw_get(self, precip_type):
             """
             Gets value with given precip_type. this does Not do defaulting.
@@ -774,7 +774,7 @@ init -50 python:
                 getting when using fw_get.
                 Defaults to False and must be set after creation.
         """
-
+        
         def __init__(self, **filter_pairs):
             """
             Constructor
@@ -793,10 +793,10 @@ init -50 python:
                             type(wmap)
                         )
                     )
-
+            
             super(MASFilterWeatherMap, self).__init__(**filter_pairs)
             self.use_fb = False
-
+        
         def fw_get(self, flt, weather=None):
             """
             Gets value from map based on filter and current weather.
@@ -820,7 +820,7 @@ init -50 python:
                 flt,
                 MASFilterableWeather.getPrecipTypeFrom(weather)
             )
-
+        
         def get(self, flt):
             """
             Gets value from map based on filter.
@@ -831,7 +831,7 @@ init -50 python:
             RETURNS: value for the given filter
             """
             return self._raw_get(flt)
-
+        
         def has_def(self, flt):
             """
             Checks if the given flt has a MASWeatherMap that contains a
@@ -849,9 +849,9 @@ init -50 python:
                     wmap._raw_get(store.mas_weather.PRECIP_TYPE_DEF)
                     is not None
                 )
-
+            
             return False
-
+        
         def _raw_fw_get(self, flt, precip_type):
             """
             Gets the actual value from a filter and precip type. This may
@@ -873,9 +873,9 @@ init -50 python:
                 # if not use fallback get, then use the MASWeatherMap's
                 # default handling.
                 return wmap.get(precip_type)
-
+            
             # otherwise, use our special handling
-
+            
             # wmap could be None because of a not-defined filter. In that case
             # set value to None so we can traverse filters until we find a
             # valid wmap.
@@ -883,20 +883,20 @@ init -50 python:
                 value = wmap._raw_get(precip_type)
             else:
                 value = None
-
+            
             curr_flt = flt
             while value is None:
                 nxt_flt = store.mas_sprites._rslv_flt(curr_flt)
-
+                
                 # if the filters match, we foudn the last one.
                 if nxt_flt == curr_flt:
                     # in this case, use standard MASWeatherMap handling.
                     if wmap is None:
                         # without a wmap, we cant do anything except fail.
                         return None
-
+                    
                     return wmap.get(precip_type)
-
+                
                 # otherwise, get the wmap if possible and check value
                 wmap = self._raw_get(nxt_flt)
                 if wmap is not None:
@@ -905,12 +905,12 @@ init -50 python:
                     else:
                         # if not in fallback mode, use regular gets
                         value = wmap.get(precip_type)
-
+                
                 curr_flt = nxt_flt
-
+            
             # non-None value means we use this
             return value
-
+        
         def _raw_get(self, flt):
             """
             Gets value from map based on filter.
@@ -930,7 +930,7 @@ init -1 python:
     # default weather (day + night)
     mas_weather_def = MASFilterableWeather(
         "def",
-        "Clear",
+        "По умолчанию",
         "def_weather_fb",
         "def_weather",
         precip_type=store.mas_weather.PRECIP_TYPE_DEF,
@@ -940,7 +940,7 @@ init -1 python:
     # rain weather
     mas_weather_rain = MASFilterableWeather(
         "rain",
-        "Rain",
+        "Дождь",
         "rain_weather_fb",
         "rain_weather",
         precip_type=store.mas_weather.PRECIP_TYPE_RAIN,
@@ -952,7 +952,7 @@ init -1 python:
     # snow weather
     mas_weather_snow = MASFilterableWeather(
         "snow",
-        "Snow",
+        "Снег",
         "snow_weather_fb",
         "snow_weather",
         precip_type=store.mas_weather.PRECIP_TYPE_SNOW,
@@ -964,7 +964,7 @@ init -1 python:
     # thunder/lightning
     mas_weather_thunder = MASFilterableWeather(
         "thunder",
-        "Thunder/Lightning",
+        "Гроза",
         "rain_weather_fb",
         "rain_weather",
         precip_type=store.mas_weather.PRECIP_TYPE_RAIN,
@@ -976,7 +976,7 @@ init -1 python:
     #overcast
     mas_weather_overcast = MASFilterableWeather(
         "overcast",
-        "Overcast",
+        "Пасмурно",
         "overcast_weather_fb",
         "overcast_weather",
         precip_type=store.mas_weather.PRECIP_TYPE_OVERCAST,
@@ -1025,18 +1025,18 @@ init 799 python:
         """
         if new_bg is None:
             new_bg = store.mas_current_background
-
+        
         #If the current background doesn't support weather, we set to def weather instead
         #Since it has no sfx or anything
         if new_bg.disable_progressive and new_bg.hide_masks:
             new_weather = store.mas_weather_def
-
+        
         if by_user is not None:
             mas_weather.force_weather = bool(by_user)
-
+        
         if set_persistent:
             persistent._mas_current_weather = new_weather.weather_id
-
+        
         mas_current_weather.exit(new_weather)
         mas_setWeather(new_weather)
 
@@ -1061,13 +1061,13 @@ init 799 python:
                 set_to_weather = mas_shouldRain()
                 #In the case that the weather object no longer exists, we'll set current weather to auto
                 persistent._mas_current_weather = "auto"
-
+            
             #Otherwise, we'll set to the persistent weather
             else:
                 set_to_weather = mas_weather.WEATHER_MAP.get(persistent._mas_current_weather)
                 #And since we have persistent weather, we know weather is forced
                 store.mas_weather.force_weather = True
-
+            
             #Now set weather accordingly
             if set_to_weather is not None:
                 mas_changeWeather(set_to_weather)
@@ -1116,8 +1116,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_change_weather",
-            category=["weather"],
-            prompt="Can you change the weather?",
+            category=["погода"],
+            prompt="Могла бы ты изменить погоду?",
             pool=True,
             unlocked=True,
             rules={"no_unlock": None},
@@ -1128,7 +1128,7 @@ init 5 python:
 label monika_change_weather:
     show monika 1eua at t21
 
-    $ renpy.say(m, "What kind of weather would you like?", interact=False)
+    $ renpy.say(m, "Какую погоду ты хотел бы видеть?", interact=False)
 
     python:
         # build menu list
@@ -1153,7 +1153,7 @@ label monika_change_weather:
         weathers.extend(other_weathers)
 
         #Add the auto option
-        weathers.append(("Progressive", "auto", False, False))
+        weathers.append(("Автоматически", "auto", False, False))
 
         # now add final quit item
         final_item = (mas_weather.WEAT_RETURN, False, False, False, 20)
@@ -1170,22 +1170,22 @@ label monika_change_weather:
     elif sel_weather == "auto":
         show monika at t11
         if mas_weather.force_weather:
-            m 1hub "Sure!"
-            m 1dsc "Just give me a second.{w=0.5}.{w=0.5}.{nw}"
+            m 1hub "Конечно!"
+            m 1dsc "Дай мне одну секунду.{w=0.5}.{w=0.5}.{nw}"
 
             #Set to false and return since nothing more needs to be done
             $ mas_weather.force_weather = False
             $ persistent._mas_current_weather = "auto"
-            m 1eua "There we go!"
+            m 1eua "Вот!"
         else:
-            m 1hua "That's the current weather, silly."
-            m "Try again~"
+            m 1hua "Такая погода уже стоит, глупышка."
+            m "Попробуй ещё раз~"
             jump monika_change_weather
         return
 
     if sel_weather == mas_current_weather and mas_weather.force_weather:
-        m 1hua "That's the current weather, silly."
-        m "Try again~"
+        m 1hua "Такая погода уже стоит, глупышка."
+        m "Попробуй ещё раз~"
         jump monika_change_weather
 
     $ skip_outro = False
