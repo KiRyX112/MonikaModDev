@@ -1264,14 +1264,14 @@ label bye_going_somewhere_normalplus_flow_aff_check:
     #   nother date and will ask u to wait for her to get ready
 #        m 1hua "TODO: LETS GO ON DATE"
 
-else:
+    else:
         # TODO: normal/happy monika will always go with you and be excited you asked
         #   and will ask u to wait for her to get ready
         m 1sub "Правда?"
         m 1hua "Ура!"
         m 1ekbsa "Интересно, куда ты меня сегодня поведёшь..."
 
-    jump bye_going_somewhere_post_aff_check
+        jump bye_going_somewhere_post_aff_check
 
 label bye_going_somewhere_nothanks:
     m 2lksdlc "...Нет, спасибо."

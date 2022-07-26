@@ -4568,7 +4568,7 @@ label mas_after_bath_cleanup_change_outfit:
                 if mas_isMoniHappy(higher=True):
                     new_clothes = mas_clothes_blazerless
 
-    else:
+                else:
                     new_clothes = mas_clothes_def
 
                 monika_chr.change_clothes(
