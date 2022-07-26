@@ -33,7 +33,7 @@ init -1 python in songs:
     PLAYWITHME_VAR6 = "Play With Me (Variant 6)"
     YR_EUROBEAT = "Your Reality (Eurobeat ver.)"
     MONIKA_LULLABY = "Monika's Lullaby"
-    NO_SONG = "No Music"
+    NO_SONG = "Выкл. музыку"
 
     # SONG FILEPATHS
     FP_PIANO_COVER = "mod_assets/bgm/runereality.ogg"
@@ -67,7 +67,7 @@ init -1 python in songs:
         direct = 1
         if not up:
             direct = -1
-
+        
         # volume checks
         new_vol = _sanitizeVolume(getUserVolume(channel)+(direct*vol_bump))
         setUserVolume(new_vol, channel)
@@ -126,28 +126,28 @@ init -1 python in songs:
         # ASSUMES:
         #   music_choices (songs store)
         curr_filename = renpy.music.get_playing()
-
+        
         # check for brackets (so we can confine the check to filename only)
         if curr_filename:
             bracket_endex = curr_filename.find(">")
-
+            
             if bracket_endex >= 0:
                 curr_filename = curr_filename[bracket_endex:]
-
+            
             # go through music choices and find the match
             for name,song in music_choices:
-
+                
                 # bracket check
                 if song: # None check
                     bracket_endex = song.find(">")
-
+                    
                     if bracket_endex >= 0:
                         check_song = song[bracket_endex:]
                     else:
                         check_song = song
                 else:
                     check_song = song
-
+                
                 if curr_filename == check_song:
                     return name
         return None
@@ -159,7 +159,7 @@ init -1 python in songs:
         # IN:
         #   sayori - True if the player name is sayori, which means only
         #       allow Surprise in the player
-
+        
         global music_choices
         global music_pages
         music_choices = list()
@@ -170,31 +170,31 @@ init -1 python in songs:
         if not sayori:
             music_choices.append((JUST_MONIKA, FP_JUST_MONIKA))
             music_choices.append((YOURE_REAL, FP_YOURE_REAL))
-
+            
             # Shoutout to Rune0n for this wonderful piano cover!
             music_choices.append((PIANO_COVER, FP_PIANO_COVER))
-
+            
             # Shoutout to TheAloofPotato for this wonderful eurobeat version!
             music_choices.append((YR_EUROBEAT, FP_YR_EUROBEAT))
-
+            
             music_choices.append((STILL_LOVE, FP_STILL_LOVE))
             music_choices.append((MY_FEELS, FP_MY_FEELS))
             music_choices.append((MY_CONF, FP_MY_CONF))
             music_choices.append((OKAY_EV_MON, FP_OKAY_EV_MON))
             music_choices.append((PLAYWITHME_VAR6, FP_PLAYWITHME_VAR6))
-
+            
             # BIG SHOUTOUT to HalHarrison for this lovely track!
             music_choices.append((DDLC_MT_80, FP_DDLC_MT_80))
-
+        
             # NOTE: this is locked until we can set this up later.
 #            music_choices.append((MONIKA_LULLABY, FP_MONIKA_LULLABY))
-
+        
         # sayori only allows this
         music_choices.append((SAYO_NARA, FP_SAYO_NARA))
-
+        
         # grab custom music
         __scanCustomBGM(music_choices)
-
+        
         # separte the music choices into pages
         music_pages = __paginate(music_choices)
 
@@ -252,7 +252,7 @@ init -1 python in songs:
             music_page, leftovers = __genPage(leftovers)
             pages_dict[page] = music_page
             page += 1
-
+        
         return pages_dict
 
 
@@ -280,11 +280,11 @@ init -1 python in songs:
             music_list - list of music tuples to append to
         """
         # TODO: make song names / other tags configurable
-
+        
         # No custom directory? abort
         if not os.access(custom_music_dir, os.F_OK):
             return
-
+        
         # get the oggs
         found_files = os.listdir(custom_music_dir)
         found_oggs = [
@@ -295,31 +295,31 @@ init -1 python in songs:
                 and os.access(custom_music_dir + ogg_file, os.R_OK)
             )
         ]
-
+        
         if len(found_oggs) == 0:
             # no custom songs found, please move on
             return
-
+        
         # otherwise, we got some songs to add
         for ogg_file in found_oggs:
             # time to tag
             filepath = custom_music_dir + ogg_file
-
+            
             _audio_file, _ext = _getAudioFile(filepath)
-
+            
             if _audio_file is not None:
                 # we only care if we even have an audio file
                 disp_name = _getDispName(_audio_file, _ext, ogg_file)
-
+                
                 # loop prefix
                 loop_prefix = _getLoopData(_audio_file, _ext)
-
+                
                 # add to the menu
                 music_list.append((
                     cleanGUIText(disp_name),
                     loop_prefix + custom_music_reldir + ogg_file
                 ))
-
+                
                 # we added something!
                 store.persistent._mas_pm_added_custom_bgm = True
 
@@ -338,13 +338,13 @@ init -1 python in songs:
         """
         if filepath.endswith(EXT_MP3):
             return (_getMP3(filepath), EXT_MP3)
-
+        
         elif filepath.endswith(EXT_OGG):
             return (_getOgg(filepath), EXT_OGG)
-
+        
         elif filepath.endswith(EXT_OPUS):
             return (_getOpus(filepath), EXT_OPUS)
-
+        
         # otherwise, failure
         return (None, None)
 
@@ -364,21 +364,21 @@ init -1 python in songs:
             The name of this Song (probably)
         """
         disp_name = None
-
+        
         if _audio_file.tags is not None:
             if _ext == EXT_MP3:
                 disp_name = _getMP3Name(_audio_file)
-
+            
             elif _ext == EXT_OGG:
                 disp_name = _getOggName(_audio_file)
-
+            
             elif _ext == EXT_OPUS:
                 disp_name = _getOggName(_audio_file)
-
+        
         if not disp_name:
             # let's just use filename minus extension at this point
             return _filename[:-(len(_ext))]
-
+        
         return disp_name
 
 
@@ -396,17 +396,17 @@ init -1 python in songs:
         """
         if _audio_file.tags is None:
             return ""
-
+        
         if _ext == EXT_MP3:
             # NOTE: we do not support mp3 looping atm
             return ""
-
+        
         if _ext == EXT_OGG:
             return _getOggLoop(_audio_file, _ext)
-
+        
         elif _ext == EXT_OPUS:
             return _getOggLoop(_audio_file, _ext)
-
+        
         return ""
 
 
@@ -469,19 +469,19 @@ init -1 python in songs:
         """
         song_names = _audio_file.tags.get(MT_TITLE, [])
         song_artists = _audio_file.tags.get(MT_ARTIST, [])
-
+        
         if not song_names:
             # we need the song name at the very least to do this
             return None
-
+        
         # we will select the first item by default. No custommization here
         sel_name = song_names[0]
-
+        
         # if we have an artist, we'll pair the two and ship it as display name
         if song_artists:
             sel_art = song_artists[0]
             return sel_art + "  -  " + sel_name
-
+        
         # otherwise, just name is fine
         return sel_name
 
@@ -500,21 +500,21 @@ init -1 python in songs:
         # first, try MAS tags
         loopstart = _audio_file.tags.get(MT_LSTART, [])
         loopend = _audio_file.tags.get(MT_LEND, [])
-
+        
         if loopstart or loopend:
             return _getOggLoopMAS(loopstart, loopend, _audio_file)
-
+        
         # if not found, double check that we are ogg before continuing
         if _ext != EXT_OGG:
             return ""
-
+        
         # if ogg, we can try the RPGMaker sample tags
         loopstart = _audio_file.tags.get(MT_LSSTART, [])
         looplen = _audio_file.tags.get(MT_LSEND, [])
-
+        
         if loopstart:
             return _getOggLoopRPG(loopstart, looplen, _audio_file)
-
+        
         return ""
 
 
@@ -534,42 +534,42 @@ init -1 python in songs:
         try:
             if loopstart:
                 loopstart = float(loopstart[0])
-
+            
             else:
                 loopstart = None
-
+            
             if loopend:
                 loopend = float(loopend[0])
-
+            
             else:
                 loopend = None
-
+        
         except:
             # error in parsing loop tags? just assume invalid all the way
             return ""
-
+        
         # otherwise, we now have floats
         # validate these values
         if loopstart is not None and loopstart < 0:
             loopstart = 0
-
+        
         if loopend is not None and loopend > _audio_file.info.length:
             loopend = None
-
+        
         # NOTE: we shoudl for sure have at least one of these tags by now
         # now we can build the tag
         _tag_elems = [RPY_START]
-
+        
         if loopstart is not None:
             _tag_elems.append(RPY_FROM)
             _tag_elems.append(str(loopstart))
-
+        
         if loopend is not None:
             _tag_elems.append(RPY_TO)
             _tag_elems.append(str(loopend))
-
+        
         _tag_elems.append(RPY_END)
-
+        
         return " ".join(_tag_elems)
 
 
@@ -590,51 +590,51 @@ init -1 python in songs:
         # int these values
         try:
             loopstart = int(loopstart[0])
-
+            
             if looplen:
                 looplen = int(looplen[0])
-
+            
             else:
                 looplen = None
-
+        
         except:
             # error in parsing tags.
             return ""
-
+        
         # now we have ints
         # convert these into seconds
         _sample_rate = float(_audio_file.info.sample_rate)
         loopstart = loopstart / _sample_rate
-
+        
         if looplen is not None:
             looplen = looplen / _sample_rate
-
+        
         # validations
         if loopstart < 0:
             loopstart = 0
-
+        
         loopend = None
         if looplen is not None:
-
+            
             # calculate endpoint
             loopend = loopstart + looplen
-
+            
             if loopend > _audio_file.info.length:
                 loopend = None
-
+        
         # now we can bulid the tag
         _tag_elems = [
             RPY_START,
             RPY_FROM,
             str(loopstart)
         ]
-
+        
         if loopend is not None:
             _tag_elems.append(RPY_TO)
             _tag_elems.append(str(loopend))
-
+        
         _tag_elems.append(RPY_END)
-
+        
         return " ".join(_tag_elems)
 
 
@@ -667,7 +667,7 @@ init -1 python in songs:
         for ext in VALID_EXT:
             if filename.endswith(ext):
                 return True
-
+        
         return False
 
 
@@ -683,12 +683,12 @@ init -1 python in songs:
         """
         # bad text to be removed:
         bad_text = ("{", "}", "[", "]")
-
+        
         # NOTE: for bad text, we just replace with empty
         cleaned_text = unclean
         for bt_el in bad_text:
             cleaned_text = cleaned_text.replace(bt_el, "")
-
+        
         return cleaned_text
 
 
@@ -706,7 +706,7 @@ init -1 python in songs:
         for name,fpath in music_choices:
             if filepath == fpath:
                 return True
-
+        
         return False
 
 
@@ -784,10 +784,10 @@ init 10 python:
 
     if store.mas_egg_manager.sayori_enabled():
         # sayori specific
-
+        
         # init choices
         store.songs.initMusicChoices(True)
-
+        
         # setup start songs
         store.songs.current_track = store.songs.FP_SAYO_NARA
         store.songs.selected_track = store.songs.FP_SAYO_NARA
@@ -795,15 +795,15 @@ init 10 python:
 
     else:
         # non sayori stuff
-
+        
         # init choices
         store.songs.initMusicChoices(False)
-
+        
         # double check track existence
         if not store.songs.isInMusicList(persistent.current_track):
             # non existence song becomes No Music
             persistent.current_track = None
-
+        
         # setup start songs
         store.songs.current_track = persistent.current_track
         store.songs.selected_track = store.songs.current_track
@@ -938,7 +938,8 @@ screen music_menu(music_page, page_num=0, more_pages=False):
 
             # dynamic prevous text, so we can keep button size alignments
             if page_num > 0:
-                textbutton _("<<<< Prev"):
+                textbutton _("<<<< Назад"):
+                    mouse "hand"
                     style "music_menu_prev_button"
                     action Return(page_num - 1)
 
@@ -956,19 +957,23 @@ screen music_menu(music_page, page_num=0, more_pages=False):
 #                        sensitive False
 
             if more_pages:
-                textbutton _("Next >>>>"):
+                textbutton _("Далее >>>>"):
+                    mouse "hand"
                     style "music_menu_return_button"
                     action Return(page_num + 1)
 
         textbutton _(songs.NO_SONG):
+            mouse "hand"
             style "music_menu_return_button"
             action Return(songs.NO_SONG)
 
-        textbutton _("Return"):
+        textbutton _("Вернуться"):
+            mouse "hand"
             style "music_menu_return_button"
             action Return(return_value)
 
-    label "Music Menu"
+    label "Фонотека"
+
 
 # sets locks and calls hte appropriate screen
 label display_music_menu:
@@ -1069,7 +1074,7 @@ init python:
         if song is None:
             song = songs.FP_NO_SONG
             renpy.music.stop(channel="music", fadeout=fadeout)
-
+        
         else:
             renpy.music.play(
                 song,
@@ -1080,10 +1085,10 @@ init python:
                 fadeout=fadeout,
                 if_changed=if_changed
             )
-
+        
         songs.current_track = song
         songs.selected_track = song
-
+        
         if set_per:
             persistent.current_track = song
 
@@ -1101,29 +1106,29 @@ init python:
     def select_music():
         # check for open menu
         if songs.enabled and not songs.menu_open:
-
+            
             # disable unwanted interactions
             mas_RaiseShield_mumu()
-
+            
             # music menu label
             selected_track = renpy.call_in_new_context("display_music_menu")
             if selected_track == songs.NO_SONG:
                 selected_track = songs.FP_NO_SONG
-
+            
             # workaround to handle new context
             if selected_track != songs.current_track:
                 play_song(selected_track, set_per=True)
-
+            
             # unwanted interactions are no longer unwanted
             if store.mas_globals.dlg_workflow:
                 # the dialogue workflow means we should only enable
                 # music menu interactions
                 mas_MUINDropShield()
-
+            
             elif store.mas_globals.in_idle_mode:
                 # to idle
                 mas_mumuToIdleShield()
-
+            
             else:
                 # otherwise we can enable interactions normally
                 mas_DropShield_mumu()
