@@ -465,7 +465,6 @@ init -2 python in mas_sprites:
         # TODO: add selectors for these items so they dont have to be
         #   removed
         _moni_chr.remove_acs(store.mas_acs_hairties_bracelet_brown)
-        _moni_chr.remove_acs(store.mas_acs_musicnote_necklace_gold)
 
 
     def _clothes_velius94_dress_whitenavyblue_entry(_moni_chr, **kwargs):
