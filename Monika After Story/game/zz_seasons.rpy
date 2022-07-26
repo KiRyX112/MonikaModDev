@@ -28,9 +28,9 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         _date = _date.replace(datetime.date.today().year)
-
+        
         if persistent._mas_pm_live_south_hemisphere:
             return mas_fall_equinox <= _date < mas_winter_solstice
         else:
@@ -48,9 +48,9 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         _date = _date.replace(datetime.date.today().year)
-
+        
         if persistent._mas_pm_live_south_hemisphere:
             return mas_winter_solstice <= _date or _date < mas_spring_equinox
         else:
@@ -68,9 +68,9 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         _date = _date.replace(datetime.date.today().year)
-
+        
         if persistent._mas_pm_live_south_hemisphere:
             return mas_spring_equinox <= _date < mas_summer_solstice
         else:
@@ -88,9 +88,9 @@ init -1 python:
         """
         if _date is None:
             _date = datetime.date.today()
-
+        
         _date = _date.replace(datetime.date.today().year)
-
+        
         if persistent._mas_pm_live_south_hemisphere:
             return mas_summer_solstice <= _date < mas_fall_equinox
         else:
@@ -124,11 +124,11 @@ init 10 python in mas_seasons:
         store.mas_protectedShowEVL("monika_enjoyingspring", "EVE", _random=True)
         store.mas_protectedShowEVL("monika_outdoors", "EVE", _random=True)
         store.mas_protectedShowEVL("monika_backpacking", "EVE", _random=True)
-
+        
         #Since this is a player model topic, we only rerandom if we need to
         if store.persistent._mas_pm_would_like_mt_peak is None:
             store.mas_protectedShowEVL("monika_mountain", "EVE", _random=True)
-
+        
         # hide winter topics
         store.mas_hideEVL("monika_snow", "EVE", derandom=True)
         store.mas_hideEVL("monika_sledding", "EVE", derandom=True)
@@ -138,15 +138,15 @@ init 10 python in mas_seasons:
         store.mas_hideEVL("monika_winter_dangers", "EVE", derandom=True)
         store.mas_hideEVL("monika_snowmen", "EVE", derandom=True)
         store.mas_lockEVL("monika_snowballfight", "EVE")
-
+        
         # disable hot choc
         store.mas_consumable_hotchocolate.disable()
-
+        
         #Run spring function plugins
         store.mas_submod_utils.getAndRunFunctions(key=PLUGIN_PP_SPRING)
-
+        
         #NOTE: All things which shouldn't be allowed to be overridden go below the plugins
-
+        
         # unhibernate islands greet
         if not renpy.seen_label("greeting_ourreality"):
             store.mas_unlockEVL("greeting_ourreality", "GRE")
@@ -158,10 +158,10 @@ init 10 python in mas_seasons:
         """
         # disable spring topics
         store.mas_hideEVL("monika_enjoyingspring", "EVE", derandom=True)
-
+        
         #Enable summer topics
         store.mas_protectedShowEVL("monika_fireworks", "EVE", _random=True)
-
+        
         #Run summer function plugins
         store.mas_submod_utils.getAndRunFunctions(key=PLUGIN_PP_SUMMER)
 
@@ -171,7 +171,7 @@ init 10 python in mas_seasons:
         """
         #Disable Summer Topics
         store.mas_hideEVL("monika_fireworks", "EVE", derandom=True)
-
+        
         #Run fall function plugins
         store.mas_submod_utils.getAndRunFunctions(key=PLUGIN_PP_FALL)
 
@@ -189,23 +189,23 @@ init 10 python in mas_seasons:
         store.mas_protectedShowEVL("monika_winter", "EVE", _random=True)
         store.mas_protectedShowEVL("monika_winter_dangers", "EVE", _random=True)
         store.mas_unlockEVL("monika_snowballfight", "EVE")
-
+        
         #For if you get snow (or we don't know if you get snow or not)
         if store.persistent._mas_pm_gets_snow is not False:
             store.mas_protectedShowEVL("monika_snowmen", "EVE", _random=True)
-
+        
         # hide non-winter topics
         store.mas_hideEVL("monika_outdoors", "EVE", derandom=True)
         store.mas_hideEVL("monika_backpacking", "EVE", derandom=True)
         store.mas_hideEVL("monika_mountain", "EVE", derandom=True)
-
+        
         # enable hotchoc if given before
         if store.seen_event("mas_reaction_hotchocolate"):
             store.mas_consumable_hotchocolate.enable()
-
+        
         #Run winter function plugins
         store.mas_submod_utils.getAndRunFunctions(key=PLUGIN_PP_WINTER)
-
+        
         #NOTE: All things which shouldn't be allowed to be overridden go below the plugins
         # want to ensure first time we see the islands they are dead and covered in snow
         store.mas_lockEVL("greeting_ourreality", "GRE")
@@ -247,7 +247,7 @@ init 10 python in mas_seasons:
         for _id, logic in _season_logic_map.iteritems():
             if logic():
                 return _id
-
+        
         # we consier Fall to be default since that is when ddlc was released
         return 3
 
@@ -263,19 +263,19 @@ init 10 python in mas_seasons:
         RETURNS: current season ID
         """
         curr_season = _currentSeason()
-
+        
         if prev_season == curr_season:
             # if we are in the same season, just run the curr season point
             _season_pp_map[curr_season]()
             return curr_season
-
+        
         # otherwise, we need to step up
         while prev_season != curr_season:
             prev_season = _progression_map.get(prev_season, curr_season)
-
+            
             if prev_season in _season_pp_map:
                 _season_pp_map[prev_season]()
-
+        
         return curr_season
 
 
