@@ -37,8 +37,9 @@ init python:
         Enables the hotkey buttons
         """
         store.hkb_button.talk_enabled = True
-        store.hkb_button.extra_enabled = True
-        store.hkb_button.music_enabled = True
+        if not os_blk:
+            store.hkb_button.extra_enabled = True
+            store.hkb_button.music_enabled = True
         store.hkb_button.play_enabled = True
 
 
@@ -112,9 +113,11 @@ style hkb_button_dark is generic_button_dark:
     padding (5, 5, 5, 5)
 
 style hkb_button_text is generic_button_text_light:
+    size 18
     kerning 0.2
 
 style hkb_button_text_dark is generic_button_text_dark:
+    size 18
     kerning 0.2
 
 screen hkb_overlay():
@@ -130,24 +133,24 @@ screen hkb_overlay():
 #        yalign 0.95
 
         if store.hkb_button.talk_enabled:
-            textbutton _("Talk") action Function(show_dialogue_box)
+            textbutton _("Поговорить") mouse "hand" action Function(show_dialogue_box)
         else:
-            textbutton _("Talk")
+            textbutton _("Поговорить")
 
-        if store.hkb_button.extra_enabled:
-            textbutton _("Extra") action Function(mas_open_extra_menu)
+        if store.hkb_button.extra_enabled and not os_blk:
+            textbutton _("Экстра") mouse "hand" action Function(mas_open_extra_menu)
         else:
-            textbutton _("Extra")
+            textbutton _("Экстра")
 
-        if store.hkb_button.music_enabled:
-            textbutton _("Music") action Function(select_music)
+        if store.hkb_button.music_enabled and not os_blk:
+            textbutton _("Музыка") mouse "hand" action Function(select_music)
         else:
-            textbutton _("Music")
+            textbutton _("Музыка")
 
         if store.hkb_button.play_enabled:
-            textbutton _("Play") action Function(pick_game)
+            textbutton _("Играть") mouse "hand" action Function(pick_game)
         else:
-            textbutton _("Play")
+            textbutton _("Играть")
 
 
 screen movie_overlay():
@@ -160,14 +163,14 @@ screen movie_overlay():
         yalign 0.95
 
         if watchingMovie:
-            textbutton _("Pause") action Jump("mm_movie_pausefilm")
+            textbutton _("Пауза") action Jump("mm_movie_pausefilm")
         else:
-            textbutton _("Pause")
+            textbutton _("Пауза")
 
         if watchingMovie:
-            textbutton _("Time") action Jump("mm_movie_settime")
+            textbutton _("Время") action Jump("mm_movie_settime")
         else:
-            textbutton _("Time")
+            textbutton _("Время")
 
 init python:
     HKBShowButtons()
