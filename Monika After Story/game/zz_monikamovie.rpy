@@ -11,7 +11,7 @@ label mas_monikamovie:
         MOVIE_H = 640
         MOVIE_XALIGN = -0.05
         MOVIE_AREA = (MOVIE_X, MOVIE_Y, MOVIE_W, MOVIE_H)
-        MOVIE_RETURN = "I changed my mind"
+        MOVIE_RETURN = "Я передумал"
 
 
         gamedir = os.path.normpath(config.gamedir)
@@ -23,12 +23,12 @@ label mas_monikamovie:
             def __init__(self):
                 self.listOfMovies = []
                 self.checkMovies()
-
+            
             def checkMovies(self):
                 with open(os.path.join(gamedir, "movies-info.mms"),"r") as f: #duplicated code
                     lines = f.readlines()
                 listOfStrings = [x.strip() for x in lines]
-
+                
                 #Now we parse the info
                 for line in listOfStrings:
                     if "#" in line:
@@ -40,7 +40,7 @@ label mas_monikamovie:
                         data = partialSplittedSentence[1]
                     if "movie" in firstWord:
                         self.listOfMovies.append((data, data, False, False))
-
+            
             def searchMovies(self, movieName):
                 foundMovies = []
                 for xName in self.listOfMovies:
@@ -55,10 +55,10 @@ label mas_monikamovie:
                 self.closure = None
                 self.currentReactionIndex = 0 #So monika can react again if user goes backwards
                 self.retrieveMovie(movieName)
-
+            
             def reactionsAreFinished(self):
                 return self.currentReactionIndex >= len(self.reactionList)
-
+            
             def stringReactionToTuple(self, string):
                 emotion = None
                 when = ""
@@ -74,7 +74,7 @@ label mas_monikamovie:
                     when = listOfInfo [0]
                     what = listOfInfo [1]
                 return emotion,when,what
-
+            
             def formattedTimeToSeconds(self, string):
                 string = string.replace('[','')
                 string = string.replace(']','')
@@ -83,46 +83,46 @@ label mas_monikamovie:
                 minutes = int(infoList[1])
                 seconds = int(infoList[2])
                 return 3600*hours + 60*minutes + seconds
-
+            
             def obtainCurrentReactionTuple(self):
                 string = self.reactionList[self.currentReactionIndex]
                 emotion, when, what = self.stringReactionToTuple(string)
                 return emotion,when,what
-
+            
             def popReaction(self):
                 emotion, when, what = self.obtainCurrentReactionTuple()
                 self.currentReactionIndex += 1
                 return emotion,when,what
-
-
+            
+            
             def canReact(self, time):
                 if(self.reactionsAreFinished()):
                     return False
                 emotion, when, what = self.obtainCurrentReactionTuple()
-
+                
                 expectedToReact = self.formattedTimeToSeconds(when)
                 return time > expectedToReact
-
-
+            
+            
             def popDescription(self):
                 string = self.descriptionList.pop(0)
                 stringArray = string.split(" ", 1)
                 emotion = stringArray[0]
                 line = stringArray[1]
-
+                
                 return emotion, line
-
+            
             def hasDescription(self):
                 return len(self.descriptionList) > 0
-
+            
             def formatData(self, data):
                 return data.replace('"','')
-
+            
             def retrieveMovie(self, movieName):
                 with open(os.path.join(gamedir, "movies-info.mms"),"r") as f:
                     lines = f.readlines()
                 listOfStrings = [x.strip() for x in lines]
-
+                
                 #Now we parse the info
                 filmFound = False
                 for line in listOfStrings:
@@ -143,7 +143,7 @@ label mas_monikamovie:
                             self.reactionList.append(data)
                         if "closure" == firstWord:
                             self.closure = data
-
+            
             def resynchronizeIndex(self, timer):
                 self.currentReactionIndex = 0
                 while((not (self.reactionsAreFinished())) and self.canReact(timer.seconds)):
@@ -176,7 +176,7 @@ label mas_monikamovie:
             globals()['lastCountdownTime'] = st
             if watchingMovie:
                 timer.addSeconds(deltaTime)
-
+            
             #Render
             hours, minutes, secs = timer.formattedTime()
             d = Text("%02d:%02d:%02d" % (hours, minutes, secs))
@@ -200,11 +200,11 @@ label mas_monikamovie:
 
     $ listMovies = AvaiableMovies()
 
-    m 1eub "You want to see a movie?"
+    m 1eub "Хочешь посмотреть фильм?"
 
     label mm_choose_movie:
 
-        m "Which movie would you like to watch?"
+        m "Какое кино тебе нравится?"
 
         # move Monika to the left
         show monika at t21
@@ -233,18 +233,18 @@ label mas_monikamovie:
                 emotion, what =  movieInformation.popDescription()
                 updateEmotionMonika(emotion)
                 renpy.say(eval("m"), what)
-        m 3eub "Let's synchronize the start of the film."
-        m 1hub "Get ready to start the film, I'll do the countdown!"
+        m 3eub "Давайте синхронизируем начало фильма."
+        m 1hub "Приготовься начать фильм, я начну обратный отсчёт!"
 
         menu:
-            "Ready?"
-            "Yes.":
+            "Готов?"
+            "Да.":
                 label mm_movie_resume:
                     $ mas_RaiseShield_dlg()
-                    m 1eua "Three...{w=1}{nw}"
-                    m  "Two...{w=1}{nw}"
-                    m  "One...{w=1}{nw}"
-                    # Movie loop
+                    m 1eua "Три...{w=1}{nw}"
+                    m "Два...{w=1}{nw}"
+                    m "Один...{w=1}{nw}"
+
                     $ watchingMovie = True
                     label movie_loop:
                         pause 1.0
@@ -252,7 +252,7 @@ label mas_monikamovie:
                             if movieInformation.canReact(timer.seconds):
                                 emotion, when, what = movieInformation.popReaction()
                                 updateEmotionMonika(emotion)
-
+                                
                                 if not (what == "" or what is None):
                                     what += "{w=10}{nw}"
                                     renpy.say(eval("m"), what)
@@ -260,15 +260,15 @@ label mas_monikamovie:
                         if movieInformation.reactionsAreFinished():
                             hide countdown
                             $ MovieOverlayHideButtons()
-                            m 1eua "Just ended for me! Did you like it?"
+                            m 1eua "Судя по моим часам, фильм закончился! Тебе понравилось?"
                             jump mm_movie_closure
 
                         jump movie_loop
-
-            "No.":
-                hide countdown # Dupicated code, call function?
+            
+            "Нет.":
+                hide countdown
                 $ MovieOverlayHideButtons()
-                m 1eua "Oh, okay! I will just wait for you then~"
+                m 1eua "Ох, хорошо! Тогда я подожду тебя~"
                 jump mm_movie_loop_end
 
         label mm_movie_closure:
@@ -291,23 +291,23 @@ label mas_monikamovie:
 
     label mm_movie_pausefilm:
         $ watchingMovie = False
-        m 1eub "Oh, you just paused the movie, [player]."
+        m 1eub "Ох, ты остановил просмотр, [player]."
         menu:
-            "Do want to continue?"
-            "Yes.":
-                m 1hua "Okay, [player]."
+            "Хочешь продолжить?"
+            "Да.":
+                m 1hua "Хорошо, [player]."
                 jump mm_movie_resume
-            "No.":
-                m 1eua "Oh, alright then, [player]."
+            "Нет.":
+                m 1eua "Как скажешь, [player]."
                 jump mm_movie_loop_end
 
     label mm_movie_settime:
         $ watchingMovie = False
-        m 1eub "You want to synchronize the time?"
+        m 1eub "Хочешь синхронизировать время?"
         label mm_movie_repeattime:
-            m 1eub "Tell me in the format HH:MM:SS, [player]."
+            m 1eub "Назови время в формате «ЧЧ:ММ:СС», [player]."
             python:
-                player_dialogue = renpy.input('What time should I set the movie to? ',default='',pixel_width=720,length=50)
+                player_dialogue = renpy.input('На какое время я должен установить фильм? ',default='',pixel_width=720,length=50)
                 splittedTime = player_dialogue.split(":",2)
                 bad_format = len(splittedTime) != 3
                 if not bad_format:
@@ -318,17 +318,17 @@ label mas_monikamovie:
                     if not bad_format:
                         bad_format = int(minutes) >= 60 or int(seconds) >= 60
             if bad_format:
-                m 1lksdlc "Erm..."
-                m 1lksdlb "Sorry, I can't understand that, [player]."
-                m 1eka "Remember to set it in the format of HH:MM:SS."
-                m 3eua "That's 'Hours:Minutes:Seconds.'"
-                m "Here's an example for you, [player]."
+                m 1lksdlc "Эм..."
+                m 1lksdlb "Прости, я не поняла, [player]."
+                m 1eka "Запомни, он должен быть в формате «ЧЧ:ММ:СС»."
+                m 3eua "То есть, «Часы:Минуты:Секунды»"
+                m "К примеру, [player]."
                 m "01:05:32"
-                m 1eub "That's 1 hour, 5 minutes, and 32 seconds."
-                m 3hua "So try again!"
+                m 1eub "Это 1 час, 5 минут и 32 секунды."
+                m 3hua "Попробуй снова!"
                 jump mm_movie_repeattime
             else:
                 $ timer.setFormattedTime(splittedTime[0],splittedTime[1],splittedTime[2])
                 $ movieInformation.resynchronizeIndex(timer)
-        m 1eua "Done! Let's keep watching it!"
+        m 1eua "Сделано! Давайте продолжим смотреть его!"
         jump mm_movie_resume
