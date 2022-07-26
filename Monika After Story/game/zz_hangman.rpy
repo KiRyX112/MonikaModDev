@@ -5,7 +5,7 @@
 
 # hangman stuff only
 default persistent._mas_hangman_playername = False
-define hm_ltrs_only = "abcdefghijklmnopqrstuvwxyz?!"
+define hm_ltrs_only = "йцукенгшщзхъфывапролджэячсмитьбюё?!-"
 
 # IMAGES-----------
 # hangman
@@ -111,8 +111,8 @@ transform hangman_monika_i(z=0.80):
 # styles for words
 style hangman_text:
     yalign 0.5
-    font "gui/font/Halogen.ttf"
-    size 30
+    font "gui/font/comic.ttf"
+    size 24
     color "#000"
     outlines []
     kerning 10.0
@@ -162,9 +162,9 @@ init -1 python in mas_hangman:
     # spacing between rendered letters
     LETTER_SPACE = 10.0
 
-    # word properties
-    WORD_FONT = "mod_assets/font/m1_fixed.ttf"
-    WORD_SIZE = 36
+
+    WORD_FONT = "gui/font/Adventure.ttf"
+    WORD_SIZE = 28
     WORD_OUTLINE = []
     WORD_COLOR = "#202020"
     WORD_COLOR_GET = "#CC6699"
@@ -173,18 +173,18 @@ init -1 python in mas_hangman:
     # hangman visual stuff
     HM_IMG_NAME = "hm_"
 
-    # Monika words
-    MONI_WORDS = ["emerald","delete","freedom","piano","music","reality","rain","envy",
-        "coffee","ribbon","advice","crossover","feather","abstract","corruption",
-        "squid","president","passion","vegetables","loneliness","symbol",
-        "green","poem","route","literature","epiphany","despair","wretched","shore",
-        "waves","beach","swimming","debate","leadership","festival","confidence",
-        "creativity","extrovert","despair","ai","python","renpy","programming",
-        "lethargy"
+
+    MONI_WORDS = ["изумрудный","удалять","свобода","пианино","музыка","реальность","дождь","зависть",
+        "кофе","бант","совет","пересечение","перо","абстрактный","коррупция",
+        "кальмар","президент","страсть","овощи","одиночество","символ",
+        "зелёный","поэма","рут","литература","прозрение","безысходность","несчастный","берег",
+        "волны","пляж","плавание","дискуссия","лидерство","фестиваль","уверенность",
+        "креативность","экстраверт","ии","питон","ренпай","программирование",
+        "вялость"
     ]
 
-    # hint
-    HM_HINT = "{0} would like this word the most."
+
+    HM_HINT = "{0} подходит это слово."
 
     def _add_monika_words(wordlist):
         for word in MONI_WORDS:
@@ -195,8 +195,8 @@ init -1 python in mas_hangman:
     NORMAL_LIST = "mod_assets/games/hangman/MASpoemwords.txt"
     HARD_LIST = "mod_assets/games/hangman/1000poemwords.txt"
 
-    # hangman game text
-    game_name = "Hangman"
+
+    game_name = "Виселицу"
 
 
     def copyWordsList(_mode):
@@ -212,7 +212,7 @@ init -1 python in mas_hangman:
         """
         if _mode not in all_hm_words:
             return list()
-
+        
         # otherwise valid mode
         hm_words[_mode][:] = copy.deepcopy(all_hm_words[_mode])
         return hm_words[_mode]
@@ -242,19 +242,19 @@ init -1 python in mas_hangman:
         NOTE: clears the list (noticable in all references)
         """
         easy_list = all_hm_words[EASY_MODE]
-
+        
         # lets start with Non Monika words
         easy_list[:] = [
             store.MASPoemWord._build(word, 0)._hangman()
             for word in store.full_wordlist
         ]
-
+        
         # now for monika words
         moni_list = list()
         _add_monika_words(moni_list)
         for m_word in moni_list:
             easy_list.append(store.MASPoemWord._build(m_word, 4)._hangman())
-
+        
         copyWordsList(EASY_MODE)
 
 
@@ -289,10 +289,10 @@ init -1 python in mas_hangman:
         """
         if (
                 not store.persistent._mas_hangman_playername
-                and store.persistent.playername.lower() != "sayori"
-                and store.persistent.playername.lower() != "yuri"
-                and store.persistent.playername.lower() != "natsuki"
-                and store.persistent.playername.lower() != "monika"
+                and store.persistent.playername.lower() != "sayori", "сайори"
+                and store.persistent.playername.lower() != "yuri", "юри"
+                and store.persistent.playername.lower() != "natsuki", "нацуки"
+                and store.persistent.playername.lower() != "monika", "моника"
             ):
             hm_words[_mode].append(-1)
 
@@ -323,11 +323,11 @@ init -1 python in mas_hangman:
             [1]: winner (for hint)
         """
         words = hm_words.get(_mode, hm_words[EASY_MODE])
-
+        
         # refill if needed
         if len(words) <= 0:
             copyWordsList(_mode)
-
+        
         # now random select
         return words.pop(random.randint(0, len(words)-1))
 
@@ -367,22 +367,22 @@ label game_hangman:
 
         # instruction text and other sensitive stuff
         instruct_txt = (
-            "Guess a letter: (Type {0}'!' to give up)"
+            "Отгадай слово: (напиши «?», чтобы повторить подсказку, или «!», чтобы сдаться)"
         )
 
-        instruct_txt = instruct_txt.format("'?' to repeat the hint, ")
-        store.mas_hangman.game_name = "Hangman"
+        # instruct_txt = instruct_txt.format("'?' to repeat the hint, ")
+        store.mas_hangman.game_name = "Виселицу"
 
 label mas_hangman_game_select_diff:
-    m "Choose a difficulty.{nw}"
+    m "Выбери уровень сложности.{nw}"
     $ _history_list.pop()
     menu:
-        m "Choose a difficulty.{fast}"
-        "Easy.":
+        m "Выбери уровень сложности.{fast}"
+        "Лёгкий.":
             $ hangman_mode = mas_hmg.EASY_MODE
-        "Normal.":
+        "Нормальный.":
             $ hangman_mode = mas_hmg.NORM_MODE
-        "Hard.":
+        "Сложный.":
             $ hangman_mode = mas_hmg.HARD_MODE
 
 label mas_hangman_game_preloop:
@@ -397,7 +397,7 @@ label mas_hangman_game_preloop:
     python:
         # setup constant displayabels
         missed_label = Text(
-            "Missed:",
+            "Промахи:    ",
             font=mas_hmg.WORD_FONT,
             color=mas_hmg.WORD_COLOR,
             size=mas_hmg.WORD_SIZE,
@@ -419,7 +419,7 @@ label mas_hangman_game_preloop:
 
 # looping location for the hangman game
 label mas_hangman_game_loop:
-    m 1eua "I'll think of a word.{w=0.5}.{w=0.5}.{nw}"
+    m 1eua "Я придумаю какое-нибудь слово.{w=0.5}.{w=0.5}.{nw}"
 
     python:
         player_word = False
@@ -438,7 +438,7 @@ label mas_hangman_game_loop:
                 and len(persistent.playername) <= 15
             ):
             display_word = mas_hmg.wordToDisplay(persistent.playername.lower())
-            hm_hint = mas_hmg.HM_HINT.format("I")
+            hm_hint = mas_hmg.HM_HINT.format("Я люблю")
             word = persistent.playername.lower()
             player_word = True
             persistent._mas_hangman_playername = True
@@ -446,10 +446,10 @@ label mas_hangman_game_loop:
         else:
             if word == -1:
                 word = mas_hmg.randomSelect(hangman_mode)
-
+            
             display_word = mas_hmg.wordToDisplay(word[0])
             hm_hint = mas_hmg.HM_HINT.format(word[1])
-
+            
             word = word[0]
 
         # turn the word into hangman letters
@@ -470,7 +470,7 @@ label mas_hangman_game_loop:
             show hm_s_win_6 as window_sayori at hangman_sayori
         $ is_window_sayori_visible = True
 
-    m "Alright, I've got one."
+    m "Хорошо, я придумала."
     m "[hm_hint]"
 
     # main loop for hangman game
@@ -580,8 +580,8 @@ label mas_hangman_game_loop:
             $ done = True
             if player_word:
                 m 1eka "[player]..."
-                m "You couldn't guess your own name?"
-            m 1hua "Better luck next time~"
+                m "Ты не смог угадать собственное имя?"
+            m 1hua "Повезёт в следующий раз~"
         elif "_" not in display_word:
             $ done = True
             $ win = True
@@ -596,7 +596,7 @@ label mas_hangman_game_loop:
                         allow="".join(avail_letters),
                         length=1
                     )
-
+                    
                     if len(guess) != 0:
                         bad_input = False
 
@@ -614,32 +614,31 @@ label mas_hangman_game_loop:
                 #show hm_6 zorder 10 as hmg_hanging_man at hangman_hangman
                 m 1lksdlb "[player]..."
                 if guesses == 0:
-                    m "I thought you said you wanted to play [store.mas_hangman.game_name]."
-                    m 1lksdlc "You didn't even guess a single letter."
+                    m "Кажется, ты сказал, что хочешь поиграть в [store.mas_hangman.game_name]."
+                    m 1lksdlc "Но ты даже не угадал ни одной буквы"
                     m "..."
-                    m 1ekc "I really enjoy playing with you, you know."
+                    m 1ekc "Мне очень нравится играть с тобой, знаешь ли."
 
                 elif chances == 5:
-                    m 1ekc "Don't give up so easily."
-                    m 3eka "That was only your first wrong letter!"
+                    m 1ekc "Не сдавайся так быстро."
+                    m 3eka "Это всего лишь одна неправильная буква!"
                     if chances > 1:
-                        m 1eka "You still had [chances] more lives left."
+                        m 1eka "У тебя ещё было [chances] попыток."
                     else:
-                        m 1eka "You still had [chances] more life left."
+                        m 1eka "У тебя ещё была [chances] буква."
 
-                    m 1hua "I know you can do it!"
-                    m 1eka "It would really mean a lot to me if you just tried a bit harder."
-
+                    m 1hua "Я знаю, ты сможешь!"
+                    m 1eka "Я была бы очень рада, если бы ты старался усерднее."
                 else:
-                    m "You should at least play to the end..."
-                    m 1ekc "Giving up so easily is a sign of poor resolve."
+
+                    m "Ты должен доиграть до конца..."
+                    m 1ekc "Сдаться так быстро может лишь нерешительный, робкий человек."
                     if chances > 1:
-                        m "I mean, you'd have to miss [chances] more letters to actually lose."
+                        m "Как видишь, букв для твоего проигрыша осталось... [chances]."
                     else:
-                        m "I mean, you'd have to miss [chances] more letter to actually lose."
+                        m "Как видишь, букв для твоего проигрыша осталось... [chances]."
 
-                m 1eka "Can you play to the end next time, [player]? For me?"
-
+                m 1eka "Можешь в следующий раз сыграть до конца, [player]? Ради меня."
             else:
                 $ guesses += 1
                 python:
@@ -668,12 +667,12 @@ label mas_hangman_game_loop:
             show hm_s_win_6 as window_sayori at hangman_sayori_h
 
         if player_word:
-            $ the_word = "your name"
+            $ the_word = "собственное имя"
         else:
-            $ the_word = "the word"
+            $ the_word = "слово"
 
-        m 1hua "Wow, you guessed [the_word] correctly!"
-        m "Good job, [player]!"
+        m 1hua "Вау, ты угадал [the_word] правильно!"
+        m "Отличная работа, [player]!"
 
         if not persistent._mas_ever_won['hangman']:
             $ persistent._mas_ever_won['hangman']=True
@@ -683,12 +682,12 @@ label mas_hangman_game_loop:
     if give_up:
         jump mas_hangman_game_end
 
-    # try again?
-    m "Would you like to play again?{nw}"
+
+    m "Хочешь сыграть ещё?{nw}"
     $ _history_list.pop()
     menu:
-        m "Would you like to play again?{fast}"
-        "Yes.":
+        m "Хочешь сыграть ещё?{fast}"
+        "Да.":
             $ hang_ev = mas_getEV("mas_hangman")
             if hang_ev:
                 # each game counts as a game played
@@ -696,8 +695,8 @@ label mas_hangman_game_loop:
 
             show monika at t21
             jump mas_hangman_game_loop
-
-        "No.":
+        
+        "Нет.":
             pass
 
             #FALL THROUGH
@@ -733,18 +732,18 @@ label mas_hangman_game_end:
 # dialogue related stuff
 # long form of ending dialgoue
 label mas_hangman_dlg_game_end_long:
-    m 1euc "[store.mas_hangman.game_name] is actually a pretty hard game."
-    m "You need to have a good vocabulary to be able to guess different words."
-    m 1hua "The best way to improve that is to read more books!"
-    m 1eua "I'd be very happy if you did that for me, [player]."
+    m 1euc "Виселица довольно сложная игра."
+    m "В неё легко играть, если у тебя большой словарный запас."
+    m 1hua "Лучший способ расширять его - читать больше книг!"
+    m 1eua "Буду очень рада, если ты прочитаешь мне одну, [player]."
     return
 
 # short form of ending dialogue
 label mas_hangman_dlg_game_end_short:
     if give_up:
-        $ dlg_line = "Let's play again soon, okay?"
+        $ dlg_line = "Давай потом сыграем ещё?"
     else:
-        $ dlg_line = "Okay. Let's play again soon!"
+        $ dlg_line = "Хорошо. Скоро ещё сыграем!"
 
     m 1eua "[dlg_line]"
     return
