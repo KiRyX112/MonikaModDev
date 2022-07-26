@@ -131,16 +131,16 @@ init -860 python in mas_history:
                 we could not find year or key
         """
         archives = store.persistent._mas_history_archives
-
+        
         # get data from the year
         data_file = archives.get(year, None)
         if data_file is None:
             return (L_NO_YEAR, None)
-
+        
         # otherwise year found! Check for key
         if key not in data_file:
             return (L_NO_KEY, None)
-
+        
         # key is here, return data
         return (L_FOUND, data_file[key])
 
@@ -170,10 +170,10 @@ init -860 python in mas_history:
             year: tuple (SEE lookup)
         """
         found_data = dict()
-
+        
         for year in years_list:
             found_data[year] = lookup(key, year)
-
+        
         return found_data
 
 
@@ -183,16 +183,16 @@ init -860 python in mas_history:
         """
         if len(years_list) == 0:
             years_list = _valid_year_range()
-
+        
         found_data = lookup_otl(key, years_list)
         years_found = []
-
+        
         for year, data_tuple in found_data.iteritems():
             status, _data = data_tuple
-
+            
             if status == L_FOUND and _data == _verify:
                 years_found.append(year)
-
+        
         return (len(years_found) > 0, years_found)
 
 
@@ -251,7 +251,7 @@ init -860 python in mas_history:
             if mhs is not None:
                 mhs.fromTuple(mhs_data)
                 mhs_sorted_list.append(mhs)
-
+        
         mhs_sorted_list.sort(key=store.MASHistorySaver.getSortKey)
 
 
@@ -441,7 +441,7 @@ init -850 python:
             If not found, we return None
         """
         archive_value = mas_HistVerify_k([],_verify, *keys)
-
+        
         #If we actually have the value we're looking for, we get the first year
         if archive_value[0]:
             return archive_value[1][0]
@@ -509,10 +509,10 @@ init -850 python:
             end_dt - datetime that this MHS stops covering (exclusive)
         """
         import store.mas_history as mas_history
-
+        
         # also setup first session as a static variable
         first_sesh = -1
-
+        
         def __init__(self,
                 mhs_id,
                 trigger,
@@ -575,10 +575,10 @@ init -850 python:
                         "first_session",
                         None
                     )
-
+                
                 else:
                     MASHistorySaver.first_sesh = None
-
+            
             self.id = mhs_id
             self.start_dt = start_dt
             self.end_dt = end_dt
@@ -590,7 +590,7 @@ init -850 python:
             self.exit_pp = exit_pp
             self.trigger_pp = trigger_pp
             self._was_triggered = False
-
+        
         @staticmethod
         def getSortKey(_mhs):
             """
@@ -602,7 +602,7 @@ init -850 python:
             RETURNS the sort key, which is trigger datetime
             """
             return _mhs.trigger
-
+        
         @staticmethod
         def correctTriggerYear(_trigger):
             """
@@ -619,14 +619,14 @@ init -850 python:
             """
             _now = datetime.datetime.now()
             _temp_trigger = _trigger.replace(year=_now.year)
-
+            
             if _now > _temp_trigger:
                 # trigger has already past, set the trigger for next year
                 return _trigger.replace(year=_now.year + 1)
-
+            
             # trigger has NOT passed yet, set the trigger for this year
             return _temp_trigger
-
+        
         def fromTuple(self, data_tuple):
             """
             Loads data from the data tuple
@@ -640,9 +640,9 @@ init -850 python:
             # this should be ahead since setTrigger uses this now
             if len(data_tuple) > 1:
                 self.use_year_before = data_tuple[1]
-
+            
             self.setTrigger(data_tuple[0])
-
+        
         def isActive(self, check_dt):
             """
             Checks if the given dt is within range of this MHS's range time
@@ -658,20 +658,20 @@ init -850 python:
             """
             if self.isContinuous():
                 return True
-
+            
             if self.start_dt.year != self.end_dt.year:
                 return (
                     (self.start_dt.replace(year=check_dt.year) <= check_dt)
                     or (check_dt < self.end_dt.replace(year=check_dt.year))
                 )
-
+            
             # else check regular range
             return (
                 self.start_dt.replace(year=check_dt.year)
                 <= check_dt
                 < self.end_dt.replace(year=check_dt.year)
             )
-
+        
         def isActiveWithin(self, start_dt, end_dt):
             """
             Checks if this MHS would have been active within the given range
@@ -687,13 +687,13 @@ init -850 python:
             """
             if self.isContinuous():
                 return True
-
+            
             return (
                 self.isActive(start_dt)
                 or self.isActive(end_dt)
                 or (self.isFuture(start_dt) and self.isPassed(end_dt))
             )
-
+        
         def isContinuous(self):
             """
             Checks if this MHS is continuous.
@@ -702,7 +702,7 @@ init -850 python:
             RETURNS: True if continuos, False if npt
             """
             return self.start_dt is None or self.end_dt is None
-
+        
         def isFuture(self, check_dt):
             """
             Checks if the given dt is before the active range of this MHS
@@ -714,9 +714,9 @@ init -850 python:
             """
             if self.isContinuous():
                 return False
-
+            
             return check_dt < self.start_dt.replace(year=check_dt.year)
-
+        
         def isPassed(self, check_dt):
             """
             Checks if the given dt is past the active range of this MHS, aka
@@ -731,9 +731,9 @@ init -850 python:
             """
             if self.isContinuous():
                 return False
-
+            
             return self.end_dt.replace(year=check_dt.year) <= check_dt
-
+        
         def resetData(self):
             """
             Resets data in teh mapping. This is highly dangerous.
@@ -741,7 +741,7 @@ init -850 python:
             # go through mapping and reset data
             for p_key in self.mapping:
                 persistent.__dict__[p_key] = None
-
+        
         def setTrigger(self, _trigger):
             """
             Sets the trigger of this object. This function does cleansing of
@@ -751,14 +751,14 @@ init -850 python:
                 _trigger - trigger to change to
             """
             _now = datetime.datetime.now()
-
+            
             # grab first sesh
             # if we do not have a first sesh, then assume today is first
             # sessions
             first_sesh = MASHistorySaver.first_sesh
             if first_sesh is None:
                 first_sesh = _now
-
+            
             trigger_year_ahead = _trigger.year - _now.year > 1
             tt_happen_mhs_future = (
                 mas_TTDetected()
@@ -766,7 +766,7 @@ init -850 python:
                 and (self.isFuture(_now) or self.isActive(_now))
             )
             impossible_trigger = _trigger <= first_sesh
-
+            
             if (
                     tt_happen_mhs_future
                     or trigger_year_ahead
@@ -782,12 +782,12 @@ init -850 python:
                 #
                 # or if the trigger is before or same date as the first session
                 # then we should move it into the future
-
+                
                 # but we need to determine if the trigger has already happend
                 # in teh current year or will happen this year so we can
                 # both prevent overwrites and save data when we need to.
                 self.trigger = MASHistorySaver.correctTriggerYear(_trigger)
-
+                
                 # if we are dealing with a use_year_before, then actually
                 # we need to add another year because of the weird trigger
                 # mechanics.
@@ -797,11 +797,11 @@ init -850 python:
                         and not impossible_trigger
                 ):
                     self.trigger = self.trigger.replace(year=self.trigger.year + 1)
-
+            
             else:
                 # otherwise, no issues with the new trigger
                 self.trigger = _trigger
-
+        
         def save(self):
             """
             Runs the saving routine
@@ -812,38 +812,38 @@ init -850 python:
             """
             if self.entry_pp is not None:
                 self.entry_pp(self)
-
+            
             # now to actually save
             source = persistent.__dict__
             dest = self.mas_history
             save_year = self.trigger.year
-
+            
             if self.use_year_before:
                 save_year -= 1
-
+            
             # go through mapping and save data
             for p_key, data_key in self.mapping.iteritems():
-
+                
                 # retrieve and save
                 dest._store(source.get(p_key, None), data_key, save_year)
-
+                
                 # reset
                 if not self.dont_reset:
                     source[p_key] = None
-
+            
             # update trigger
             if self.trigger_pp is not None:
                 self.trigger = self.trigger_pp(self.trigger)
-
+            
             else:
                 self.trigger = MASHistorySaver.correctTriggerYear(self.trigger)
-
+            
             if self.exit_pp is not None:
                 self.exit_pp(self)
-
+            
             # mark that we ran
             self._was_triggered = True
-
+        
         def toTuple(self):
             """
             Converts this MASHistorySaver object into a tuple
@@ -854,7 +854,7 @@ init -850 python:
                     NOTE: needed for ease of migrations
             """
             return (self.trigger, self.use_year_before)
-
+        
         def was_triggered(self):
             """
             RETURNS: True if this MHS was triggered during this session
@@ -875,7 +875,7 @@ init -800 python in mas_history:
         # now we go through the mhs_db and run their save algs if their trigger
         # is past today.
         _now = datetime.datetime.now()
-
+        
 #        for mhs in mhs_db.itervalues():
         for mhs in mhs_sorted_list:
             # trigger rules:
@@ -902,23 +902,23 @@ init -800 python in mas_history:
         now_dt = datetime.datetime.now()
         now_ahead = now_dt.replace(year=now_dt.year + 1)
         lse = store.mas_getLastSeshEnd()
-
+        
         same_cal_year = now_dt.year == lse.year
         lse_within_year = lse < now_ahead
-
+        
         for mhs in mhs_sorted_list:
             if not mhs.isContinuous():
                 reset = False
-
+                
                 if same_cal_year:
                     reset = mhs.isActiveWithin(now_dt, lse)
-
+                
                 elif lse_within_year:
                     reset = mhs.isActive(lse) or mhs.isPassed(lse)
-
+                
                 else:
                     reset = True
-
+                
                 if reset:
                     mhs.resetData()
 
@@ -968,11 +968,11 @@ init -815 python in mas_history:
             store.persistent._mas_pm_longest_held_monika = elapsed
             store.persistent._mas_pm_total_held_monika = elapsed
             return
-
+        
         # otherwise, been set, so we must do comparisons
         if elapsed > store.persistent._mas_pm_longest_held_monika:
             store.persistent._mas_pm_longest_held_monika = elapsed
-
+        
         # also adjust total time
         store.persistent._mas_pm_total_held_monika += elapsed
 
@@ -1113,7 +1113,7 @@ init -810 python:
 
             # actions / events / comic con
             "_mas_pm_gone_to_comic_con": "pm.actions.gone_to_comic_con",
-
+            
             # actions / events / anime / con
             "_mas_pm_gone_to_anime_con": "pm.actions.gone_to_anime_con",
 
