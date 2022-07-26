@@ -372,23 +372,23 @@ screen mas_extramenu_area():
             vbox:
                 spacing 2
                 label "Масштаб":
-                text_style "mas_extra_menu_label_text"
-                xalign 0.5
+                    text_style "mas_extra_menu_label_text"
+                    xalign 0.5
 
                 # resets the zoom value back to default
                 textbutton _("Сброс"):
-                style "mas_adjustable_button"
-                selected False
-                xsize 72
-                ysize 35
-                xalign 0.3
-                action SetField(store.mas_sprites, "zoom_level", store.mas_sprites.default_zoom_level)
+                    style "mas_adjustable_button"
+                    selected False
+                    xsize 72
+                    ysize 35
+                    xalign 0.3
+                    action SetField(store.mas_sprites, "zoom_level", store.mas_sprites.default_zoom_level)
 
                 # actual slider for adjusting zoom
-            bar value FieldValue(store.mas_sprites, "zoom_level", store.mas_sprites.max_zoom):
-                style "mas_adjust_vbar"
-                xalign 0.5
-            $ store.mas_sprites.adjust_zoom()
+                bar value FieldValue(store.mas_sprites, "zoom_level", store.mas_sprites.max_zoom):
+                    style "mas_adjust_vbar"
+                    xalign 0.5
+                $ store.mas_sprites.adjust_zoom()
 
         # TODO: frame for nose boop control
         # TODO: only have available if certain affection +
