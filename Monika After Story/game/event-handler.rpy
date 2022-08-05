@@ -3129,7 +3129,6 @@ label call_next_event:
         # refetch just in case
         $ ev = mas_getEV(_ev_list_item.evl)
 
-        $ ev = evhand.event_database.get(event_label, None)
         if ev is not None:
 
             # if this is a random topic, make sure it's unlocked for prompts
