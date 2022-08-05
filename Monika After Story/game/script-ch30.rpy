@@ -290,9 +290,23 @@ image monika_body_glitch2:
     0.15
     "images/cg/monika/monika_glitch4.png"
 
-
-
 image room_glitch = "images/cg/monika/monika_bg_glitch.png"
+
+
+# Gender specific word replacement
+define MAS_PRONOUN_GENDER_MAP = {
+    "his": {"M": "his", "F": "her", "X": "their"},
+    "he": {"M": "he", "F": "she", "X": "they"},
+    "hes": {"M": "he's", "F": "she's", "X": "they're"},
+    "heis": {"M": "he is", "F": "she is", "X": "they are"},
+    "bf": {"M": "boyfriend", "F": "girlfriend", "X": "partner"},
+    "man": {"M": "man", "F": "woman", "X": "person"},
+    "boy": {"M": "boy", "F": "girl", "X": "person"},
+    "guy": {"M": "guy", "F": "girl", "X": "person"},
+    "him": {"M": "him", "F": "her", "X": "them"},
+    "himself": {"M": "himself", "F": "herself", "X": "themselves"},
+    "hero": {"M": "hero", "F": "heroine", "X": "hero"}
+}
 
 init python:
     import subprocess
@@ -312,16 +326,16 @@ init python:
             process_list = subprocess.check_output("wmic process get Description", shell=True).lower().replace("\r", "").replace(" ", "").split("\n")
         except:
             pass
-    if renpy.linux or renpy.macintosh:
-        import pwd
-        currentuser = pwd.getpwuid(os.getuid()).pw_gecos.replace(",","")
-    elif renpy.windows:
-        currentuser = os.environ["USERNAME"]
-    else:
-        currentuser = "Amanda Watson"
+        try:
+            for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+                user = os.environ.get(name)
+                if user:
+                    currentuser = user
+        except:
+            pass
 
     try:
-        open(user_dir + "/characters/monika.chr")
+        renpy.file("../characters/monika.chr")
         initial_monika_file_check = True
     except:
         #Monika will mention that you don't have a char file in ch30_main instead
@@ -379,15 +393,12 @@ init python:
 
         RETURNS: current user if found, or None if not found
         """
-        if renpy.linux or renpy.macintosh:
-            import pwd
-            currentuser = pwd.getpwuid(os.getuid()).pw_gecos.replace(",","")
-        elif renpy.windows:
-            currentuser = os.environ["USERNAME"]
-        else:
-            currentuser = "Amanda Watson"
+        for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+            user = os.environ.get(name)
+            if user:
+                return user
 
-        return currentuser
+        return None
 
 
     def mas_enable_quitbox():
@@ -466,9 +477,8 @@ init python:
         renpy.call_in_new_context("mas_start_calendar_read_only")
 
         if store.mas_globals.in_idle_mode:
-            
+            # IDLe only enables talk extra and music
             store.hkb_button.talk_enabled = True
-            if not os_blk:
             store.hkb_button.extra_enabled = True
             store.hkb_button.music_enabled = True
 
