@@ -295,17 +295,17 @@ image room_glitch = "images/cg/monika/monika_bg_glitch.png"
 
 # Gender specific word replacement
 define MAS_PRONOUN_GENDER_MAP = {
-    "his": {"M": "his", "F": "her", "X": "their"},
-    "he": {"M": "he", "F": "she", "X": "they"},
-    "hes": {"M": "he's", "F": "she's", "X": "they're"},
-    "heis": {"M": "he is", "F": "she is", "X": "they are"},
-    "bf": {"M": "boyfriend", "F": "girlfriend", "X": "partner"},
-    "man": {"M": "man", "F": "woman", "X": "person"},
-    "boy": {"M": "boy", "F": "girl", "X": "person"},
-    "guy": {"M": "guy", "F": "girl", "X": "person"},
-    "him": {"M": "him", "F": "her", "X": "them"},
-    "himself": {"M": "himself", "F": "herself", "X": "themselves"},
-    "hero": {"M": "hero", "F": "heroine", "X": "hero"}
+    "his": {"M": "his", "F": "her"},
+    "he": {"M": "he", "F": "she"},
+    "hes": {"M": "he's", "F": "she's"},
+    "heis": {"M": "he is", "F": "she is"},
+    "bf": {"M": "boyfriend", "F": "girlfriend"},
+    "man": {"M": "man", "F": "woman"},
+    "boy": {"M": "boy", "F": "girl"},
+    "guy": {"M": "guy", "F": "girl"},
+    "him": {"M": "him", "F": "her"},
+    "himself": {"M": "himself", "F": "herself"},
+    "hero": {"M": "hero", "F": "heroine"}
 }
 
 init python:
