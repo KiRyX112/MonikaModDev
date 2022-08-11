@@ -326,16 +326,16 @@ init python:
             process_list = subprocess.check_output("wmic process get Description", shell=True).lower().replace("\r", "").replace(" ", "").split("\n")
         except:
             pass
-        try:
-            for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
-                user = os.environ.get(name)
-                if user:
-                    currentuser = user
-        except:
-            pass
+    if renpy.linux or renpy.macintosh:
+        import pwd
+        currentuser = pwd.getpwuid(os.getuid()).pw_gecos.strip(",")
+    elif renpy.windows:
+        currentuser = os.environ["USERNAME"]
+    else:
+        currentuser = "Amanda Watson"
 
     try:
-        renpy.file("../characters/monika.chr")
+        open(user_dir + "/characters/monika.chr", "rb")
         initial_monika_file_check = True
     except:
         #Monika will mention that you don't have a char file in ch30_main instead
