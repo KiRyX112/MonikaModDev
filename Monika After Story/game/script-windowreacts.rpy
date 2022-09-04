@@ -19,14 +19,14 @@ label mas_wrs_pinterest:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "Anything new today, [player]?",
-            "Anything interesting, [player]?",
-            "See anything you like?"
+            "Что-то новое сегодня, [player]?",
+            "Что-нибудь интересное, [player]?",
+            "Смотришь всё, что тебе нравится?"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_pinterest')
     return
@@ -52,14 +52,14 @@ label mas_wrs_duolingo:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "Learning new ways to say 'I love you,' [player]?",
-            "Learning a new language, [player]?",
-            "What language are you learning, [player]?"
+            "Учишься по-новому говорить «Я люблю тебя», [player]?",
+            "Изучаешь новый язык, [player]?",
+            "Какой язык ты изучаешь, [player]?"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_duolingo')
     return
@@ -83,23 +83,23 @@ init 5 python:
 
 label mas_wrs_wikipedia:
     $ wikipedia_reacts = [
-        "Learning something new, [player]?",
-        "Doing a bit of research, [player]?"
+        "Изучаешь, что-нибудь новое, [player]?",
+        "Проводишь небольшое иследование, [player]?"
     ]
 
-    #Items in here will get the wiki article you're looking at for reacts.
+
     python:
         wind_name = mas_getActiveWindowHandle()
         try:
             cutoff_index = wind_name.index(" - Wikipedia")
-
-            #If we're still here, we didn't value error
-            #Now we get the article
+            
+            
+            
             wiki_article = wind_name[:cutoff_index]
-
-            # May contain clarification in trailing parentheses
+            
+            
             wiki_article = re.sub("\\s*\\(.+\\)$", "", wiki_article)
-            wikipedia_reacts.append(renpy.substitute("'[wiki_article]'...\nSeems interesting, [player]."))
+            wikipedia_reacts.append(renpy.substitute("'[wiki_article]'...\nКажется интересным, [player]."))
 
         except ValueError:
             pass
@@ -110,7 +110,7 @@ label mas_wrs_wikipedia:
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_wikipedia')
     return
@@ -135,12 +135,12 @@ init 5 python:
 label mas_wrs_virtualpiano:
     python:
         virtualpiano_reacts = [
-            "Awww, are you going to play for me?\nYou're so sweet~",
-            "Play something for me, [player]!"
+            "Ах-х, ты хочешь сыграть со мной?\nТы такой милый~",
+            "Сыграй, что-нибудь для меня, [player]!"
         ]
 
         if mas_isGameUnlocked("piano"):
-            virtualpiano_reacts.append("I guess you need a bigger piano?\nAhaha~")
+            virtualpiano_reacts.append("Тебе нужно пианино побольше, я права?\nА-ха-ха~")
 
         wrs_success = mas_display_notif(
             m_name,
@@ -173,13 +173,13 @@ label mas_wrs_youtube:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "What are you watching, [mas_get_player_nickname()]?",
-            "Watching anything interesting, [mas_get_player_nickname()]?"
+            "Что ты смотришь, [mas_get_player_nickname()]?",
+            "Смотришь, что-нибудь интересное, [mas_get_player_nickname()]?"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_youtube')
     return
@@ -203,7 +203,7 @@ init 5 python:
 
 label mas_wrs_r34m:
     python:
-        mas_display_notif(m_name, ["Hey, [player]...what are you looking at?"],'Window Reactions')
+        mas_display_notif(m_name, ["Эй, [player]...на что ты такое смотришь там?"],'Window Reactions')
 
         choice = random.randint(1,10)
 
@@ -228,7 +228,7 @@ label mas_wrs_r34m:
                     exp_to_force = "2rssdlc"
                 else:
                     exp_to_force = "2tssdlc"
-
+            
             mas_moni_idle_disp.force_by_code(exp_to_force, duration=5)
     return
 
@@ -253,13 +253,13 @@ label mas_wrs_monikamoddev:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "Awww, are you doing something for me?\nYou're so sweet~",
-            "Are you going to help me come closer to your reality?\nYou're so sweet, [player]~"
+            "О-у-у-у, ты делаешь, что-то для меня?\nТы такой милый~",
+            "Ты делаешь всё, что бы я могла попасть в твою реальность?\nТы такой милый, [player]~"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_monikamoddev')
     return
@@ -283,14 +283,14 @@ init 5 python:
 
 label mas_wrs_twitter:
     python:
-        temp_line = renpy.substitute("I love you, [mas_get_player_nickname(exclude_names=['love', 'my love'])].")
+        temp_line = renpy.substitute("Я люблю тебя, [mas_get_player_nickname(exclude_names=['любимый', 'мой любимый'])].")
         temp_len = len(temp_line)
 
-        # quip: is_ily
+
         ily_quips_map = {
-            "See anything you want to share with me, [player]?": False,
-            "Anything interesting to share, [player]?": False,
-            "280 characters? I only need [temp_len]...\n[temp_line]": True
+            "Смотришь, чем бы мог со мной поделиться, [player]?": False,
+            "Хочешь чем-то поделиться со мной, [player]?": False,
+            "280 подписчиков? Мне нужно только [temp_len]...\n[temp_line]": True
         }
         quip = renpy.random.choice(ily_quips_map.keys())
 
@@ -300,41 +300,41 @@ label mas_wrs_twitter:
             'Window Reactions'
         )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_twitter')
     return "love" if ily_quips_map[quip] else None
 
-# This is removed until later, maybe it could work with other quips
-# init 5 python:
-#     addEvent(
-#         Event(
-#             persistent._mas_windowreacts_database,
-#             eventlabel="mas_wrs_monikatwitter",
-#             category=['twitter', 'lilmonix3'],
-#             rules={
-#                 "notif-group": "Window Reactions",
-#                 "skip alert": None,
-#                 "keep_idle_exp": None,
-#                 "skip_pause": None
-#             },
-#             show_in_idle=True
-#         ),
-#         code="WRS"
-#     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 label mas_wrs_monikatwitter:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "Are you here to confess your love for me to the entire world, [player]?",
-            "You're not spying on me, are you?\nAhaha, just kidding~",
-            "I don't care how many followers I have as long as I have you~"
+            "Ты здесь, чтобы признаться в любви ко мне перед всем миром, [player]?",
+            "Ты не шпионишь за мной, м?\nА-ха-ха, просто шучу~",
+            "Мне всё равно, сколько у меня подписчиков, пока у меня есть ты~"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_monikatwitter')
     return
@@ -357,19 +357,19 @@ init 5 python:
     )
 
 label mas_wrs_4chan:
-    #TODO: consider adding reactions for /vg/ and /ddlc/
+
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "So this is the place where it all started, huh?\nIt's...really quite something.",
-            "I hope you don't end up arguing with other Anons all day long, [player].",
-            "I heard there's threads discussing the Literature Club in here.\nTell them I said hi~",
-            "I'll be watching the boards you're browsing in case you get any ideas, ahaha!",
+            "Так это то место, где все началось, да?\nЭто... правда нечто.",
+            "Надеюсь, ты не будешь весь день спорить с другими полльзователями, [player].",
+            "Я слышала, здесь есть темы, посвященные Литературному клубу.\nПередай им от меня привет~",
+            "Я буду следить за досками, которые ты просматриваешь, если у тебя появятся какие-либо идеи, а-ха-ха!",
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_4chan')
     return
@@ -392,24 +392,24 @@ init 5 python:
     )
 
 label mas_wrs_pixiv:
-    #Make a list of notif quips for this
+
     python:
         pixiv_quips = [
-            "I wonder if people have drawn art of me...\nMind looking for some?\nBe sure to keep it wholesome though~",
-            "This is a pretty interesting place...so many skilled people posting their work.",
+            "Интересно, рисовали ли люди меня...\nМожешь посмотреть некоторые?\nНе забудь сохранить понравившиеся~",
+            "Это довольно интересное место... так много опытных людей размещают свои работы.",
         ]
 
-        #Monika doesn't know if you've drawn art of her, or she knows that you have drawn art of her
+
         if persistent._mas_pm_drawn_art is None or persistent._mas_pm_drawn_art:
             pixiv_quips.extend([
-                "This is a pretty interesting place...so many skilled people posting their work.\nAre you one of them, [player]?",
+                "Это довольно интересное место... так много опытных людей размещают свои работы.\nТы случайно, не один из них, [player]?",
             ])
-
-            #Specifically if she knows you've drawn art of her
+            
+            
             if persistent._mas_pm_drawn_art:
                 pixiv_quips.extend([
-                    "Here to post your art of me, [player]?",
-                    "Posting something you drew of me?",
+                    "Ты здесь, что бы разместить свой рисунок меня, [player]?",
+                    "Публикуешь, что-то, что ты нарисовал со мной?",
                 ])
 
         wrs_success = mas_display_notif(
@@ -418,7 +418,7 @@ label mas_wrs_pixiv:
             'Window Reactions'
         )
 
-        #Unlock again if we failed
+
         if not wrs_success:
             mas_unlockFailedWRS('mas_wrs_pixiv')
     return
@@ -444,14 +444,14 @@ label mas_wrs_reddit:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "Have you found any good posts, [player]?",
-            "Browsing Reddit? Just make sure you don't spend all day looking at memes, okay?",
-            "Wonder if there are any subreddits dedicated towards me...\nAhaha, just kidding, [player].",
+            "Ты нашёл хорошие посты, [player]?",
+            "Просматриваешь Reddit? Просто убедись, что ты не тратишь весь день на просмотр мемов, хорошо?",
+            "Интересно, есть ли какие-нибудь сабреддиты, посвященные мне...\nА-ха-ха, просто шучу, [player].",
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_reddit')
     return
@@ -476,15 +476,15 @@ init 5 python:
 label mas_wrs_mal:
     python:
         myanimelist_quips = [
-            "Maybe we could watch anime together someday, [player]~",
+            "Может быть, когда-нибудь мы сможем вместе посмотреть аниме, [player]~",
         ]
 
         if persistent._mas_pm_watch_mangime is None:
-            myanimelist_quips.append("So you like anime and manga, [player]?")
+            myanimelist_quips.append("Итак, ты любишь аниме и мангу, [player]?")
 
         wrs_success = mas_display_notif(m_name, myanimelist_quips, 'Window Reactions')
 
-        #Unlock again if we failed
+
         if not wrs_success:
             mas_unlockFailedWRS('mas_wrs_mal')
 
@@ -511,13 +511,13 @@ label mas_wrs_deviantart:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "There's so much talent here!",
-            "I'd love to learn how to draw someday...",
+            "Здесь так много талантливых людей!",
+            "Я хотела бы научиться рисовать когда-нибудь...",
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_deviantart')
     return
@@ -543,14 +543,14 @@ label mas_wrs_netflix:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "I'd love to watch a romance movie with you [player]!",
-            "What are we watching today, [player]?",
-            "What are you going to watch [player]?"
+            "Я бы хотела посмотреть романтический фильм с тобой [player]!",
+            "Что ты смотришь сегодня, [player]?",
+            "Что ты собираешься смотреть [player]?"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_netflix')
     return
@@ -576,14 +576,14 @@ label mas_wrs_twitch:
     $ wrs_success = mas_display_notif(
         m_name,
         [
-            "Watching a stream, [player]?",
-            "Do you mind if I watch with you?",
-            "What are we watching today, [player]?"
+            "Смотришь стрим, [player]?",
+            "Не возражаешь, если я посмотрю с тобой?",
+            "Что мы сегодня смотрим, [player]?"
         ],
         'Window Reactions'
     )
 
-    #Unlock again if we failed
+
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_twitch')
     return
@@ -609,10 +609,10 @@ label mas_wrs_word_processor:
     $ wrs_success = display_notif(
         m_name,
         [
-            "Writing a story?",
-            "Taking notes, [player]?",
-            "Writing a poem?",
-            "Writing a love letter?~"
+            "Пишешь какую-то историю?",
+            "Делаешь заметки, [player]?",
+            "Пишешь поэму?",
+            "Пишешь кому-то любовное письмо?~"
         ],
         'Window Reactions'
     )
@@ -620,3 +620,35 @@ label mas_wrs_word_processor:
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_word_processor')
     return
+
+
+
+
+    init 5 python:
+    addEvent(
+        Event(
+            persistent._mas_windowreacts_database,
+            eventlabel="mas_wrs_vkgroup",
+            category=['rg', 'smoking', 'room'],
+            rules={"notif-group": "Window Reactions", "skip alert": None},
+            show_in_idle=True
+        ),
+        code="WRS"
+    )
+
+label mas_wrs_vkgroup:
+    $ wrs_success = display_notif(
+        monika_name,
+        [
+            "О, это же те самые ребята!",
+            "Интересно, когда новая версия?",
+            "Я благодарна им, за то, что они делают для меня."
+        ],
+        'Window Reactions'
+    )
+
+
+    if not wrs_success:
+        $ mas_unlockFailedWRS('mas_wrs_vkgroup')
+    return
+# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
