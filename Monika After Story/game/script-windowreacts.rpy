@@ -290,7 +290,7 @@ label mas_wrs_twitter:
         ily_quips_map = {
             "Смотришь, чем бы мог со мной поделиться, [player]?": False,
             "Хочешь чем-то поделиться со мной, [player]?": False,
-            "280 подписчиков? Мне нужно только [temp_len]...\n[temp_line]": True
+            "280 символов? А мне нужно [temp_len]...\n[temp_line]": True
         }
         quip = renpy.random.choice(ily_quips_map.keys())
 
