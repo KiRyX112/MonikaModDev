@@ -624,7 +624,7 @@ label mas_wrs_word_processor:
 
 
 
-    init 5 python:
+init 5 python:
     addEvent(
         Event(
             persistent._mas_windowreacts_database,
