@@ -1131,7 +1131,7 @@ init -1 python in mas_calendar:
         
         return zodiac_signs[index][-1]
 
-    def _formatDay(day):
+    def _formatDayFirstSession(day):
         """
         Properly formats the given day so it displays with the correct
         suffixes.
@@ -1142,11 +1142,22 @@ init -1 python in mas_calendar:
         RETURNS:
             nice display string for the day
         """
-        if day in NUM_MAP:
-            suffix = NUM_MAP[day]
+        suffix = "-го"
         
-        else:
-            suffix = NUM_MAP.get(day % 10, "th")
+        return str(day) + suffix
+
+    def _formatDayFirstSession2(day):
+        """
+        Properly formats the given day so it displays with the correct
+        suffixes.
+
+        IN:
+            day - day to get a nice display string
+
+        RETURNS:
+            nice display string for the day
+        """
+        suffix = "-ое"
         
         return str(day) + suffix
 
@@ -1168,10 +1179,19 @@ init -1 python in mas_calendar:
             nice display string for the years
         """
         if years <= 0:
-            return ""
+            return "этого года"
         
         if years == 1:
             return "в прошлом году"
+        
+        if years == 2:
+            return "2 года назад"
+        
+        if years == 3:
+            return "3 года назад"
+        
+        if years == 4:
+            return "4 года назад"
         
         return str(years) + " лет назад"
 
@@ -1201,7 +1221,7 @@ init -1 python in mas_calendar:
         If the year is last year and greater than a year of the current date,
         "last year on <month> <day>"
         If the year is within 2-10 years ago, then "x years ago on <month>
-    <day>" is used.
+        <day>" is used.
         Otherwise, the actual 4 digit year is used.
 
         If the days / months are the same, then "x years ago to this date"
@@ -1215,25 +1235,49 @@ init -1 python in mas_calendar:
             [0]: nicely formatted display date, suitable for conversation
             [1]: timedelta between today and the given _date
         """
-        # the month is always fine to take out
+        
         disp_month = _date.strftime("%B")
         
-        # display day is easy
-        disp_day = _formatDay(_date.day)
+        if disp_month == "January":
+            disp_month  = "января"
+        elif disp_month == "February":
+            disp_month  = "февраля"
+        elif disp_month == "March":
+            disp_month  = "марта"
+        elif disp_month == "April":
+            disp_month  = "апреля"
+        elif disp_month == "May":
+            disp_month  = "мая"
+        elif disp_month == "June":
+            disp_month  = "июня"
+        elif disp_month == "July":
+            disp_month  = "июля"
+        elif disp_month == "August":
+            disp_month  = "августа"
+        elif disp_month == "September":
+            disp_month  = "сентября"
+        elif disp_month == "October":
+            disp_month  = "октября"
+        elif disp_month == "November":
+            disp_month  = "ноября"
+        elif disp_month == "December":
+            disp_month  = "декабря"
         
-        # to find out year, we need now
+        disp_day = str(_date.day) + "-ого"
+        
+        
         _today = datetime.date.today()
         _day_diff = _today - _date
         _year_diff = _today.year - _date.year
         
-        # the list of strings to join
+        
         _cout = list()
         
         if _today.month == _date.month and _today.day == _date.day:
-            # same day, just a diff year (probably)
+            
             
             if _year_diff == 0:
-                # it's today!
+                
                 _cout = [
                     "сегодня"
                 ]
@@ -1267,7 +1311,7 @@ init -1 python in mas_calendar:
                 str(_date.year) + "-ого"
             ]
         
-        # now return the formatting string + diff
+        
         return (" ".join(_cout), _day_diff)
 
 
