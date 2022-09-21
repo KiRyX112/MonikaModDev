@@ -300,7 +300,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
             
             if select_date:
                 self.text_title = Text(
-                    "Select a Date",
+                    "Выбор даты",
                     font=gui.default_font,
                     size=33,
                     color=("#ffffff" if self.day_mode else "#000000"),
@@ -308,7 +308,7 @@ M̼̤̱͇̤ ͈̰̬͈̭ͅw̩̜͇͈ͅa̲̩̭̩ͅs̙ ̣͔͓͚̰h̠̯̫̼͉e̗̗̮r�
                 )
             else:
                 self.text_title = Text(
-                    "Calendar",
+                    "Календарь",
                     font=gui.default_font,
                     size=33,
                     color=("#ffffff" if self.day_mode else "#000000"),
@@ -1106,7 +1106,7 @@ init -1 python in mas_calendar:
 
 
     NUM_MAP = {
-        1: "-ого",
+        1: "-го",
         2: "-ое",
     }
 
@@ -1181,19 +1181,14 @@ init -1 python in mas_calendar:
         if years <= 0:
             return "этого года"
         
-        if years == 1:
+        elif years == 1:
             return "в прошлом году"
         
-        if years == 2:
-            return "2 года назад"
-        
-        if years == 3:
-            return "3 года назад"
-        
-        if years == 4:
-            return "4 года назад"
-        
-        return str(years) + " лет назад"
+        elif years > 1 and years < 5:
+            return str(years) + " года назад"
+
+        else:
+            return str(years) + " лет назад"
 
     @store.mas_utils.deprecated(use_instead="genFriendlyDispDate_d")
     def genFriendlyDispDate(_datetime):
@@ -1235,35 +1230,25 @@ init -1 python in mas_calendar:
             [0]: nicely formatted display date, suitable for conversation
             [1]: timedelta between today and the given _date
         """
+        disp_months = {
+            "January":"января",
+            "February":"февраля",
+            "March":"марта",
+            "April":"апреля",
+            "May":"мая",
+            "June":"июня",
+            "July":"июля",
+            "August":"августа"
+            "September":"сентября",
+            "October":"октября",
+            "November":"ноября",
+            "December":"декабря"
+        }
         
-        disp_month = _date.strftime("%B")
+        disp_month = disp_months[_date.strftime("%B")]
         
-        if disp_month == "January":
-            disp_month  = "января"
-        elif disp_month == "February":
-            disp_month  = "февраля"
-        elif disp_month == "March":
-            disp_month  = "марта"
-        elif disp_month == "April":
-            disp_month  = "апреля"
-        elif disp_month == "May":
-            disp_month  = "мая"
-        elif disp_month == "June":
-            disp_month  = "июня"
-        elif disp_month == "July":
-            disp_month  = "июля"
-        elif disp_month == "August":
-            disp_month  = "августа"
-        elif disp_month == "September":
-            disp_month  = "сентября"
-        elif disp_month == "October":
-            disp_month  = "октября"
-        elif disp_month == "November":
-            disp_month  = "ноября"
-        elif disp_month == "December":
-            disp_month  = "декабря"
         
-        disp_day = str(_date.day) + "-ого"
+        disp_day = str(_date.day) + "-го"
         
         
         _today = datetime.date.today()
@@ -1308,7 +1293,7 @@ init -1 python in mas_calendar:
             _cout = [
                 disp_month,
                 disp_day + ",",
-                str(_date.year) + "-ого"
+                str(_date.year) + "-го"
             ]
         
         
