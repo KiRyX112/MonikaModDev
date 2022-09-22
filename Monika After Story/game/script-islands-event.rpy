@@ -1106,8 +1106,8 @@ init -25 python in mas_island_event:
             # Hasn't visited the islands for a few days
             and store.mas_timePastSince(store.mas_getEVL_last_seen("mas_monika_islands"), datetime.timedelta(days=3))
         ):
-            store.pushEvent("mas_monika_islands_progress")
-        
+            store.MASEventList.push("mas_monika_islands_progress")
+
         # Now set new level
         persistent._mas_islands_progress = min(max(new_progress, curr_progress), MAX_PROGRESS_LOVE)
         # Run unlock callbacks
@@ -1288,7 +1288,7 @@ label mas_monika_islands_progress:
         
         "Конечно, [m_name].":
             $ persistent._mas_pm_cares_island_progress = True
-            $ mas_gainAffection(3, bypass=True)
+            $ mas_gainAffection(5, bypass=True)
             m 2hub "Ура-а!"
 
             call mas_islands(force_exp="monika 1hua")
@@ -1303,7 +1303,7 @@ label mas_monika_islands_progress:
         
         "Мне не интересно.":
             $ persistent._mas_pm_cares_island_progress = False
-            $ mas_loseAffection(25)
+            $ mas_loseAffectionFraction(min_amount=50, modifier=1.2)
             m 2ekc "Ох..."
             m 6rktpc "Я..."
             m 6fktpd "Я очень старалась..."
@@ -1749,7 +1749,7 @@ label mas_island_bookshelf2:
         m "Наверное, мне стоит принести их сюда, когда представится такая возможность."
         m "Я уверена, что мы сможем найти другие занятия, верно, [player]?"
     else:
-        m "Чтение на свежем воздухе - это хорошая смена обстановки, знал?"
+        m "Чтение на свежем воздухе - это хорошая смена обстановки, ты знал?"
         m "Я в любой день предпочту прохладный ветерок душноватой библиотеке."
         m "Может быть, мне стоит даже добавить столик под Сакуру."
         m "Было бы неплохо выпить чашечку кофе с какими-нибудь закусками во время чтения своей книги."
