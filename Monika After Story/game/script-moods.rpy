@@ -103,7 +103,7 @@ label mas_mood_start:
     # return value? then push
     if _return:
         $ mas_setEventPause(None)
-        $ pushEvent(_return, skipeval=True)
+        $ MASEventList.push(_return, skipeval=True)
         # and set the moods
         $ persistent._mas_mood_current = _return
 
@@ -127,15 +127,16 @@ label mas_mood_hungry:
     else:
         m 1hua "Отстойно, когда все сердятся будучи голодными."
 
-    m 3tku "Это было бы не весело, не правда ли, [player]?"
-    m 1eua "Если бы я была рядом с тобой, я бы сделала для нас обоих салат."
+    m 3tku "TЭто было бы не весело, не правда ли, [player]?"
+    m 1eua "Если бы я была рядом с тобой, я бы сделала для нас обоих какой-нибудь салат."
     m "Но так как я не там, выбери какую-нибудь здоровую еду."
     m 3eub "Говорят, что ты это то — что ты ешь, я думаю что это правда."
-    m "Регулярное употребление слишком большого количества нездоровой пищи может привести к различным заболеваниям."
+    m 3hub "Это, конечно, не означает, что нужно есть только овощи. {w=0.2}Все разного рода продукты необходимы для поддержания здорового питания."
+    m 3eka "Поэтому я хочу, чтобы ты убедился, что не обделяешь себя важными витаминами, хорошо?"
     m 1euc "Когда ты станешь старше — столкнёшься со множеством проблем со своим здоровьем."
-    m 2lksdla "Я не хочу, чтобы ты думал, что я ворчу на тебя."
+    m 2lksdla "Я не хочу, чтобы ты думал, что я ворчу на тебя, [player]."
     m 2eka "Я просто хочу убедиться, что ты будешь заботиться о себе, пока я не перейду в твою реальность."
-    m 4esa "В конце концов, чем ты здоровее, тем больше шансов, что ты проживёшь дольше."
+    m 4eub "В конце концов, чем ты здоровее, тем больше шансов, что ты проживёшь дольше."
     m 1hua "И это означает, что мы сможем провести больше времени вместе!~"
     return
 
@@ -601,7 +602,15 @@ label mas_mood_lazy:
     return
 
 init 5 python:
-    addEvent(Event(persistent._mas_mood_database,eventlabel="mas_mood_bored",prompt="...скучно.",category=[store.mas_moods.TYPE_NEUTRAL],unlocked=True),code="MOO")
+    addEvent(
+        Event(
+            persistent._mas_mood_database,eventlabel="mas_mood_bored",
+            prompt="...скучно.",
+            category=[store.mas_moods.TYPE_NEUTRAL],
+            unlocked=True
+        ),
+        code="MOO"
+    )
 
 label mas_mood_bored:
     if mas_isMoniAff(higher=True):
@@ -620,32 +629,35 @@ label mas_mood_bored:
                 m 1eka "Но если тебе и вправду скучно, то мы должны найти чем заняться..."
             
             "Да...":
-                $ mas_loseAffection()
+                $ mas_loseAffectionFraction(min_amount=15)
                 m 2ekc "Эх... {w=1}понятно."
                 m 2dkc "Я не понимала, что тебе скучно..."
                 m 2eka "Уверена, мы найдём, чем заняться..."
 
     elif mas_isMoniDis(higher=True):
-        $ mas_loseAffection()
+        $ mas_loseAffectionFraction(min_amount=15)
         m 2lksdlc "Прости, что я тебе наскучила, [player]."
 
     else:
-        $ mas_loseAffection()
+        $ mas_loseAffectionFraction(min_amount=15)
         m 6ckc "Знаешь, [player], если я делаю тебя таким несчастным всё время..."
         m "Может быть, тебе просто стоит найти себе другое занятие?"
         return "quit"
 
     python:
-        unlockedgames = [
-            game_ev.prompt.lower()
-            for game_ev in mas_games.game_db.itervalues()
+        # build mapping from game label to display name for game
+        unlocked_games = {
+            # use display name, or prompt as backup
+            ev_label: game_ev.rules.get("display_name", game_ev.prompt)
+
+            for ev_label, game_ev in mas_games.game_db.iteritems()
             if mas_isGameUnlocked(game_ev.prompt)
-        ]
+        }
 
-        gamepicked = renpy.random.choice(unlockedgames)
-        display_picked = gamepicked
+        picked_game_label = renpy.random.choice(list(unlocked_games.keys()))
+        picked_game_name = unlocked_games[picked_game_label]
 
-    if gamepicked == "piano":
+    if picked_game_label == "mas_piano":
         if mas_isMoniAff(higher=True):
             m 3eub "Ты можешь сыграть мне что-нибудь на пианино!"
 
@@ -657,13 +669,13 @@ label mas_mood_bored:
 
     else:
         if mas_isMoniAff(higher=True):
-            m 3eub "Мы могли бы сыграть в [display_picked]!"
+            m 3eub "Мы могли бы сыграть в [picked_game_name]!"
 
         elif mas_isMoniNormal(higher=True):
-            m 4eka "Может быть, мы могли бы сыграть в [display_picked]?"
+            m 4eka "Может быть, мы могли бы сыграть в [picked_game_name]?"
 
         else:
-            m 2rkc "Может, давай сыграем в [display_picked]..."
+            m 2rkc "Может, давай сыграем в [picked_game_name]..."
 
     $ chosen_nickname = mas_get_player_nickname()
     m "Ты будешь играть, [chosen_nickname]?{nw}"
@@ -671,14 +683,8 @@ label mas_mood_bored:
     menu:
         m "Ты будешь играть, [chosen_nickname]?{fast}"
         "Да.":
-            if gamepicked == "pong":
-                call game_pong
-            elif gamepicked == "chess":
-                call game_chess
-            elif gamepicked == "hangman":
-                call game_hangman
-            elif gamepicked == "piano":
-                call mas_piano_start
+            $ MASEventList.push(picked_game_label, skipeval=True)
+
         "Нет.":
             if mas_isMoniAff(higher=True):
                 m 1eka "Ладно..."
@@ -698,6 +704,8 @@ label mas_mood_bored:
             else:
                 m 2ekc "Ладно..."
                 m 2dkc "Дай мне знать, если действительно захочешь сыграть во что-нибудь со мной."
+
+    $ del unlocked_games, picked_game_label, picked_game_name
     return
 
 init 5 python:
@@ -906,7 +914,7 @@ label mas_mood_grateful:
 
         "Из-за тебя.":
             if not renpy.seen_label("mas_mood_grateful_gratefulforyou"):
-                $ mas_gainAffection(3,bypass=True)
+                $ mas_gainAffection(5, bypass=True)
             call mas_mood_grateful_gratefulforyou
 
         "Из-за кого-то.":
