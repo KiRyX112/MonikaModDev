@@ -479,7 +479,7 @@ label game_pong:
     if played_pong_this_session:
         if mas_pong_taking_break:
             m 1eua "Готов попробовать ещё раз?"
-            m 2tfb "Покажи, на что способен, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]!"
+            m 2tfb "Покажи, на что способен, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]!"
 
             #Reset this flag
             $ mas_pong_taking_break = False
@@ -625,7 +625,7 @@ label mas_pong_dlg_winner:
     elif monika_asks_to_go_easy and ball_paddle_bounces <= 9:
         m 1hub "Ура, я победила!"
         show monika 5ekbfa zorder MAS_MONIKA_Z at t11 with dissolve_monika
-        m 5ekbfa "Спасибо, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]. Я очень ценю это~"
+        m 5ekbfa "Спасибо, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]. Я очень ценю это~"
         $ monika_asks_to_go_easy = False
 
 
@@ -697,7 +697,7 @@ label mas_pong_dlg_winner:
 
 
                 if random.randint(1,3) == 1:
-                    m 1eka "Ну же, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]!"
+                    m 1eka "Ну же, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]!"
                     m 1hub "Ты сможешь, я верю в тебя!"
 
 
@@ -728,7 +728,7 @@ label mas_pong_dlg_winner:
     elif powerup_value_this_game == PONG_PONG_DIFFICULTY_POWERDOWNBIG:
         m 2rksdlb "Ахахаха..."
         m 2eksdla "Я очень надеялась, что ты выиграешь."
-        m 2hksdlb "Прости, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]!"
+        m 2hksdlb "Прости, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]!"
 
 
     elif loss_streak_counter >= 3 and loss_streak_counter % 5 == 3:
@@ -737,13 +737,13 @@ label mas_pong_dlg_winner:
 
 
     elif loss_streak_counter >= 5 and loss_streak_counter % 5 == 0:
-        m 1eua "Надеюсь, тебе было весело, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]."
+        m 1eua "Надеюсь, тебе было весело, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]."
         m 1eka "В конце концов, я бы не хотела, чтобы ты расстраивался из-за игры."
         m 1hua "Мы всегда можем взять небольшой перерыв и сыграть позже."
 
 
     elif win_streak_counter_before >= 3:
-        $ p_nickname = mas_get_player_nickname(regex_replace_with_nullstr='my ')
+        $ p_nickname = mas_get_player_nickname(regex_replace_with_nullstr='мой ')
         m 1hub "Ахахах!"
         m 2tfu "Прости, [p_nickname],{w=0.1} {nw}"
         extend 2tub "но твоя удача уже на исходе."
@@ -784,7 +784,7 @@ label mas_pong_dlg_winner:
 
     elif pong_angle_last_shot >= 0.9 or pong_angle_last_shot <= -0.9:
         if pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_TRICKSHOT:
-            m 2eksdld "Ах...{w=0.3}{nw}"
+            m 2eksdld "Ах...{w=0.3} {nw}"
             extend 2rksdlc "И вот опять..."
             m 1hksdlb "Прости меня, [player]!"
         else:
@@ -798,7 +798,7 @@ label mas_pong_dlg_winner:
 
         if pong_difficulty_before <= 5:
             if pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_EASY_GAME:
-                m 1eub "У тебя получится, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]!"
+                m 1eub "У тебя получится, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]!"
                 m 3hub "Я верю в тебя~"
             else:
                 m 2duu "Сосредоточься, [player]."
@@ -849,7 +849,7 @@ label mas_pong_dlg_winner:
 
 
             if pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_EXTREME_GAME:
-                m 2duu "Неплохо, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]."
+                m 2duu "Неплохо, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]."
                 m 4eua "Я выложилась на полную, поэтому не расстраивайся из-за проигрыша."
             else:
                 m 2hub "На этот раз победа за мной!"
@@ -980,7 +980,7 @@ label mas_pong_dlg_loser:
 
     #Monika loses five times in a row
     elif win_streak_counter == 5:
-        m 2wud "[mas_get_player_nickname(capitalize=True, regex_replace_with_nullstr='my ')]..."
+        m 2wud "[mas_get_player_nickname(capitalize=True, regex_replace_with_nullstr='мой ')]..."
         m 2tsu "Ты практиковался?"
         m 3hksdlb "Не знаю, что случилось, но у меня нет шансов против тебя!"
         m 1eka "Можешь быть полегче со мной, пожалуйста?{w=0.3} {nw}"
@@ -1070,7 +1070,7 @@ label mas_pong_dlg_loser:
                 m 1hub "Мне нравится играть в Понг с тобой!"
             else:
                 m 1tsu "Это так захватывает!"
-                m 1hub "Продолжай в том же духе, [mas_get_player_nickname(regex_replace_with_nullstr='my ')]!"
+                m 1hub "Продолжай в том же духе, [mas_get_player_nickname(regex_replace_with_nullstr='мой ')]!"
 
             $ pong_monika_last_response_id = PONG_MONIKA_RESPONSE_LOSE_EXTREME_GAME
     return
