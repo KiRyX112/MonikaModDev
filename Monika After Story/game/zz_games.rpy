@@ -131,7 +131,10 @@ init 5 python:
                 "persistent._mas_chess_timed_disable is not True "
                 "and mas_games.is_platform_good_for_chess() "
                 "and mas_timePastSince(persistent._mas_chess_timed_disable, datetime.timedelta(hours=1))"
-            )
+            ),
+            rules={
+                "display_name": "шахматы",
+            }
         ),
         code="GME",
         restartBlacklist=True
@@ -147,7 +150,7 @@ init 5 python:
         Event(
             persistent._mas_game_database,
             eventlabel="mas_hangman",
-            prompt="[mas_games.HANGMAN_NAME]"
+            prompt="Виселица"
         ),
         code="GME",
         restartBlacklist=True
@@ -162,7 +165,10 @@ init 5 python:
         Event(
             persistent._mas_game_database,
             eventlabel="mas_piano",
-            prompt="Пианино"
+            prompt="Пианино",
+            rules={
+                "display_name": "пианино",
+            }
         ),
         code="GME",
         restartBlacklist=True
@@ -193,9 +199,6 @@ label mas_pick_a_game:
     $ mas_RaiseShield_dlg()
 
     python:
-        #Adjust for this name
-        mas_games.HANGMAN_NAME = _("Виселица")
-
         #Decide the say dialogue
         play_menu_dlg = store.mas_affection.play_quip()[1]
 
@@ -259,7 +262,7 @@ label mas_pick_a_game:
             else:
                 m 3hub "[game_quip]"
 
-        $ pushEvent(selected_game, skipeval=True)
+        $ MASEventList.push(selected_game, skipeval=True)
 
     if not renpy.showing("monika idle"):
         show monika idle at t11
