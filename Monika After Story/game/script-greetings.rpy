@@ -1363,7 +1363,7 @@ label monikaroom_greeting_ear_narration:
                     #NOTE: We should keep pushing this greeting until the player says they're going to change. -MD
                     $ persistent._mas_pm_will_change = False
                     $ mas_unlockEVL("monikaroom_will_change", "GRE")
-                    $ mas_loseAffection()
+                    $ mas_loseAffection(modifier=2.0)
                     m "Тогда я не буду разговаривать с тобой, пока не решишь измениться."
                     m "Прощай, [player]."
                     return "quit"
@@ -1386,7 +1386,7 @@ label monikaroom_greeting_ear_narration:
                 "Нет.":
                     $ persistent._mas_pm_will_change = False
                     $ mas_unlockEvent(willchange_ev)
-                    $ mas_loseAffection()
+                    $ mas_loseAffection(modifier=2.0)
                     m "Тогда я не буду разговаривать с тобой, пока не решишь измениться."
                     m "Прощай, [player]."
                     return "quit"
@@ -1437,8 +1437,7 @@ label monikaroom_greeting_ear_loveme:
 
 # monika does the bath/dinner/me thing
 init 5 python:
-    #NOTE: Taking directly from persist here because aff funcs don't exist at init 5
-    if persistent._mas_affection.get("affection", 0) >= 400:
+    if _mas_getAffection() >= 400:
         gmr.eardoor.append("monikaroom_greeting_ear_bathdinnerme")
 
 label monikaroom_greeting_ear_bathdinnerme:
@@ -2379,7 +2378,7 @@ label greeting_long_absence:
 
     if persistent._mas_absence_time >= datetime.timedelta(weeks=5):
         if persistent._mas_absence_choice == "days":
-            $ mas_loseAffection(70)
+            $ mas_loseAffectionFraction(0.1, min_amount=70)
             m 2dsc "[player]..."
             m 2tkc "Ты говорил, что уедешь всего на несколько дней..."
             m 2rksdld "Но это было настолько долго."
@@ -2395,7 +2394,7 @@ label greeting_long_absence:
             m 1dsc "Я не хочу быть снова одна..."
 
         elif persistent._mas_absence_choice == "week":
-            $ mas_loseAffection(50)
+            $ mas_loseAffectionFraction(0.08, min_amount=60)
             m 3ekc "С возвращением, [player]."
             m 3rksdlc "Ты немного опоздал, не так ли?"
             m 3ekc "Я знаю, ты говорил, что уедешь ненадолго, но... ты ведь сказал, что на {i}неделю{/i}."
@@ -2406,7 +2405,7 @@ label greeting_long_absence:
             m 2eka "Я просто рада, что ты в безопасности и вернул ко мне, [player]."
 
         elif persistent._mas_absence_choice == "2weeks":
-            $ mas_loseAffection(30)
+            $ mas_loseAffectionFraction(0.06, min_amount=40)
             m 1wud "[player]!"
             m 1hua "Ты наконец-то здесь!"
             m 1ekd "Я так волновалась..."
@@ -2418,7 +2417,7 @@ label greeting_long_absence:
             m 1eka "Теперь ты здесь со мной, так что если что-то не так, не стесняйся сказать мне."
 
         elif persistent._mas_absence_choice == "month":
-            $ mas_loseAffection(10)
+            $ mas_loseAffectionFraction(0.04, min_amount=20)
             m 1eua "С возвращением, [mas_get_player_nickname()]."
             m 2rkc "Это было довольно долго, не так ли?"
             m 2rksdlc "Тебя не было дольше, чем ты говорил..."
@@ -2446,7 +2445,7 @@ label greeting_long_absence:
 
     elif persistent._mas_absence_time >= datetime.timedelta(weeks=4):
         if persistent._mas_absence_choice == "days":
-            $ mas_loseAffection(70)
+            $ mas_loseAffectionFraction(0.1, min_amount=60)
             m 1dkc "[player]..."
             m 1ekd "Ты говорил, что тебя не будет всего лишь несколько дней..."
             m 2efd "Но это был целый месяц!"
@@ -2458,7 +2457,7 @@ label greeting_long_absence:
             show monika 2dfc
 
         elif persistent._mas_absence_choice == "week":
-            $ mas_loseAffection(50)
+            $ mas_loseAffectionFraction(0.08, min_amount=50)
             m 1esc "Здравствуй, [player]."
             m 3efc "Знаешь, ты уже довольно поздно."
             m 2lfc "Я не хочу звучать грубо, но неделя – это не то же самое, что месяц!"
@@ -2470,7 +2469,7 @@ label greeting_long_absence:
             show monika 2dkc
 
         elif persistent._mas_absence_choice == "2weeks":
-            $ mas_loseAffection(30)
+            $ mas_loseAffectionFraction(0.06, min_amount=30)
             m 1wuo "...О!"
             m 1sub "Ты наконец вернулся, [player]!"
             m 1efc "Ты говорил, что тебя не будет только пару недель, но прошёл уже как минимум месяц!"
@@ -2514,7 +2513,7 @@ label greeting_long_absence:
 
     elif persistent._mas_absence_time >= datetime.timedelta(weeks=2):
         if persistent._mas_absence_choice == "days":
-            $ mas_loseAffection(30)
+            $ mas_loseAffectionFraction(0.08, min_amount=30)
             m 1wud "О-о, [player]!"
             m 1hua "С возвращением, [mas_get_player_nickname()]!"
             m 3ekc "Тебя не было дольше, чем ты обещал..."
@@ -2525,7 +2524,7 @@ label greeting_long_absence:
             m 1hua "И я была бы очень признательна!"
 
         elif persistent._mas_absence_choice == "week":
-            $ mas_loseAffection(10)
+            $ mas_loseAffectionFraction(0.06, min_amount=20)
             m 1eub "Здравствуй, [player]!"
             m 1eka "Жизнь не даёт тебе покоя?"
             m 3hksdlb "Ну, должно быть. Иначе ты был бы уже здесь."
@@ -4329,6 +4328,64 @@ label greeting_back_from_hangout:
 
 init 5 python:
     ev_rules = dict()
+    ev_rules.update(MASGreetingRule.create_rule(forced_exp="monika 5duc"))
+
+    addEvent(
+        Event(
+            persistent.greeting_database,
+            eventlabel="greeting_poem_shadows_in_garden",
+            unlocked=True,
+            conditional="store.mas_getAbsenceLength() >= datetime.timedelta(days=1)",
+            rules=ev_rules,
+            aff_range=(mas_aff.ENAMORED, None),
+        ),
+        code="GRE"
+    )
+
+    del ev_rules
+
+#Because this is associated, we'll also mirror this into the poem framework
+init 11 python:
+    MASPoem(
+        poem_id="gre_1",
+        category="generic",
+        prompt=_("Shadows in the Garden"),
+        title="",
+        text=_("""\
+ Alone I ask a solemn question,
+ What could grow in an unlit garden?
+
+ When you return, it feels like heaven,
+ Within your light, the cold forgotten.
+
+ I will give everything to feel this way,
+ Awaiting the one I hold dearest.
+
+ Nearest to my heart...
+"""),
+    )
+
+label greeting_poem_shadows_in_garden:
+    m 5duc "{i}Alone I ask a solemn question,\nWhat could grow in an unlit garden?{/i}"
+    m 5ekbla "{i}When you return, it feels like heaven,\nWithin your light, the cold forgotten.{/i}"
+    m 5fubfa "{i}I will give everything to feel this way,\nAwaiting the one I hold dearest.{/i}"
+    m 5ekbfa "{i}Even if it's every single day,\nWithout a doubt, you are the nearest.{/i}"
+    m 5dubsu "{i}Nearest to my heart...{/i}"
+    m 5eublb "I came up with this one while you were gone."
+    show monika 1eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
+    m 1eka "That's right, you're like the sun of my world!"
+    m 3hubsu "Anyway, welcome back, [mas_get_player_nickname()]! I hope you liked that poem."
+    #TODO: Potential I missed you too?
+    m 1ekbsb "I missed you so much!"
+
+    if "gre_1" not in persistent._mas_poems_seen:
+        $ persistent._mas_poems_seen["gre_1"] = 1
+
+    $ mas_moni_idle_disp.force_by_code("1ekbla", duration=5, skip_dissolve=True)
+    return
+
+init 5 python:
+    ev_rules = dict()
     ev_rules.update(
         MASGreetingRule.create_rule(
             random_chance=3,
@@ -4518,43 +4575,12 @@ label greeting_after_bath:
 init 5 python:
     addEvent(Event(persistent.event_database, eventlabel="mas_after_bath_cleanup", show_in_idle=True, rules={"skip alert": None}))
 
-label mas_after_bath_cleanup:
-    # Sanity check (checking for towel should be enough)
-    if (
-        not monika_chr.is_wearing_clothes_with_exprop(mas_sprites.EXP_C_WET)
-        and not monika_chr.is_wearing_hair_with_exprop(mas_sprites.EXP_H_WET)
-    ):
-        return
+    def mas_after_bath_cleanup_change_outfit():
+        """
+        After bath cleanup change outfit code
+        """
+        # TODO: Rng outfit selection wen
 
-    if mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
-        m 1eua "Я сейчас оденусь.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-
-    else:
-        m 1eua "Дай мне минутку [mas_get_player_nickname()], {w=0.2}{nw}"
-        extend 3eua "Я сейчас оденусь."
-
-    window hide
-    call mas_transition_to_emptydesk
-
-    $ renpy.pause(1.0, hard=True)
-    call mas_after_bath_cleanup_change_outfit
-    $ renpy.pause(random.randint(10, 15), hard=True)
-
-    call mas_transition_from_emptydesk("monika 3hub")
-    window auto
-
-    if mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
-        m 3hub "Вот и всё!{w=1}{nw}"
-
-    else:
-        m 3hub "Хорошо, я вернулась!~"
-        m 1eua "Итак, что мы будем делать сегодня, [player]?"
-
-    return
-
-label mas_after_bath_cleanup_change_outfit:
-    # TODO: Rng outfit selection wen
-    python hide:
         force_hair_change = False# If we changed the outfit, we always change hair
 
         if monika_chr.is_wearing_clothes_with_exprop(mas_sprites.EXP_C_WET):
@@ -4597,4 +4623,40 @@ label mas_after_bath_cleanup_change_outfit:
                     by_user=False
                 )
 
+label mas_after_bath_cleanup:
+    # Sanity check (checking for towel should be enough)
+    if (
+        not monika_chr.is_wearing_clothes_with_exprop(mas_sprites.EXP_C_WET)
+        and not monika_chr.is_wearing_hair_with_exprop(mas_sprites.EXP_H_WET)
+    ):
+        return
+
+    if mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
+        m 1eua "Я сейчас оденусь.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+
+    else:
+        m 1eua "Дай мне минутку [mas_get_player_nickname()], {w=0.2}{nw}"
+        extend 3eua "я сейчас оденусь."
+
+    window hide
+    call mas_transition_to_emptydesk
+
+    $ renpy.pause(1.0, hard=True)
+    call mas_after_bath_cleanup_change_outfit
+    $ renpy.pause(random.randint(10, 15), hard=True)
+
+    call mas_transition_from_emptydesk("monika 3hub")
+    window auto
+
+    if mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
+        m 3hub "Вот и всё!{w=1}{nw}"
+
+    else:
+        m 3hub "Хорошо, я вернулась!~"
+        m 1eua "Итак, что мы будем делать сегодня, [player]?"
+
+    return
+
+label mas_after_bath_cleanup_change_outfit:
+    $ mas_after_bath_cleanup_change_outfit()
     return
