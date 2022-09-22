@@ -4349,34 +4349,34 @@ init 11 python:
     MASPoem(
         poem_id="gre_1",
         category="generic",
-        prompt=_("Shadows in the Garden"),
+        prompt=_("Тени в саду"),
         title="",
         text=_("""\
- Alone I ask a solemn question,
- What could grow in an unlit garden?
+ В одиночестве я задаю волнующий вопрос,
+ Что может расти в тёмном саду?
 
- When you return, it feels like heaven,
- Within your light, the cold forgotten.
+ Когда ты возвращаешься, ты чувствуешь себя словно в раю,
+ В лучах твоего света забудется холод.
 
- I will give everything to feel this way,
- Awaiting the one I hold dearest.
+ Я отдам всё, чтобы почувствовать это,
+ Жду того, кто мне дороже всего.
 
- Nearest to my heart...
+ Ближе всего к моему сердцу...
 """),
     )
 
 label greeting_poem_shadows_in_garden:
-    m 5duc "{i}Alone I ask a solemn question,\nWhat could grow in an unlit garden?{/i}"
-    m 5ekbla "{i}When you return, it feels like heaven,\nWithin your light, the cold forgotten.{/i}"
-    m 5fubfa "{i}I will give everything to feel this way,\nAwaiting the one I hold dearest.{/i}"
-    m 5ekbfa "{i}Even if it's every single day,\nWithout a doubt, you are the nearest.{/i}"
-    m 5dubsu "{i}Nearest to my heart...{/i}"
-    m 5eublb "I came up with this one while you were gone."
+    m 5duc "{i}В одиночестве я задаю волнующий вопрос,\nЧто может расти в тёмном саду?{/i}"
+    m 5ekbla "{i}Когда ты возвращаешься, ты чувствуешь себя словно в раю,\nВ лучах твоего света забудется холод.{/i}"
+    m 5fubfa "{i}Я отдам всё, чтобы почувствовать это,\nЖду того, кто мне дороже всего{/i}"
+    m 5ekbfa "{i}Даже если это происходит каждый день,\nБез сомнения, ты - самый любимый человек.{/i}"
+    m 5dubsu "{i}Ближе всего к моему сердцу...{/i}"
+    m 5eublb "Я придумала его, пока тебя не было."
     show monika 1eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 1eka "That's right, you're like the sun of my world!"
-    m 3hubsu "Anyway, welcome back, [mas_get_player_nickname()]! I hope you liked that poem."
+    m 1eka "Точно, ты словно солнце, что освещает мой мир!"
+    m 3hubsu "В любом случае, с возвращением, [mas_get_player_nickname()]! Надеюсь, тебе понравилось это стихотворение."
     #TODO: Potential I missed you too?
-    m 1ekbsb "I missed you so much!"
+    m 1ekbsb "Я так по тебе скучала!"
 
     if "gre_1" not in persistent._mas_poems_seen:
         $ persistent._mas_poems_seen["gre_1"] = 1
