@@ -1127,4 +1127,4 @@ init python:
                 ev = mas_getEV(ev_label)
                 if ev is not None and MASStripDatesRule.evaluate_rule(ev):
                     ev.stripDates()
->>>>>>> master
+
