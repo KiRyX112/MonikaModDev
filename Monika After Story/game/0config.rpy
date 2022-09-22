@@ -2,8 +2,8 @@
 python early:
 
     renpy.config.name = "Моника: Эпилог"
-
-    renpy.config.version = "0.12.8"
+    ## The version of the game.
+    renpy.config.version = "0.12.11"
 
     # config.window_title = "Monika After Story   "
 
