@@ -208,10 +208,10 @@ label mas_wrs_r34m:
         choice = random.randint(1,10)
 
         if choice == 1 and mas_isMoniNormal(higher=True):
-            queueEvent('monika_nsfw')
+            MASEventList.queue('monika_nsfw')
 
         elif choice == 2 and mas_isMoniAff(higher=True):
-            queueEvent('monika_pleasure')
+            MASEventList.queue('monika_pleasure')
 
         else:
             if mas_isMoniEnamored(higher=True):
@@ -606,7 +606,7 @@ init 5 python:
     )
 
 label mas_wrs_word_processor:
-    $ wrs_success = display_notif(
+    $ wrs_success = mas_display_notif(
         m_name,
         [
             "Пишешь какую-то историю?",
@@ -620,7 +620,6 @@ label mas_wrs_word_processor:
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_word_processor')
     return
-
 
 
 
@@ -651,4 +650,43 @@ label mas_wrs_vkgroup:
     if not wrs_success:
         $ mas_unlockFailedWRS('mas_wrs_vkgroup')
     return
-# Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc
+
+init 5 python:
+    addEvent(
+        Event(
+            persistent._mas_windowreacts_database,
+            eventlabel="mas_wrs_crunchyroll",
+            category=[r"(?i)crunchyroll"],
+            rules={
+                "notif-group": "Window Reactions",
+                "skip alert": None,
+                "keep_idle_exp": None,
+                "skip_pause": None
+            },
+            show_in_idle=True
+        ),
+        code="WRS"
+    )
+
+label mas_wrs_crunchyroll:
+    python:
+        if persistent._mas_pm_watch_mangime is False:
+            crunchyroll_quips = [
+                "О! Так ты любишь аниме, [player]?",
+                "Приятно видеть, что ты расширяешь свой кругозор.",
+                "Хм, интересно, что привлекло твоё внимание?",
+            ]
+
+        else:
+            crunchyroll_quips = [
+                "Какое аниме мы смотрим сегодня, [player]?",
+                "Смотришь аниме, [player]?",
+                "Я не могу дождаться, чтобы посмотреть аниме с тобой!~",
+            ]
+
+        wrs_success = mas_display_notif(m_name, crunchyroll_quips, 'Window Reactions')
+
+    #Unlock again if we failed
+    if not wrs_success:
+        $ mas_unlockFailedWRS('mas_wrs_crunchyroll')
+    return
