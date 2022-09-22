@@ -138,7 +138,7 @@ label monika_ptod_tip000:
     # enable tip 1
     $ tip_label = "monika_ptod_tip001"
     $ mas_showEVL(tip_label, "EVE", unlock=True, _pool=True)
-    $ pushEvent(tip_label,skipeval=True)
+    $ MASEventList.push(tip_label,skipeval=True)
     return
 
 ###############################################################################
@@ -307,9 +307,9 @@ label monika_ptod_tip003:
         m 1eua "Здесь можно прописывать гораздо большее, чем просто математические уравнения с помощью этого инструмента, но я покажу тебе всё это, как только мы дойдём до этого."
 
         m 1hksdlb "К сожалению, поскольку это полностью функциональный интерпретатор Python'a, я не хотела бы рисковать тем, что ты можешь случайно удалить меня или сломать игру."
-        m "Не то, что бы ты{fast}{nw}"
+        m "{cps=*2}Не то, что бы ты...{/cps}{nw}"
         $ _history_list.pop()
-        m 1eksdlb "Я не могу позволить тебе пользоваться этим.{w=0.3} Извини..."
+        m 1eksdlb "Я не могу позволить тебе пользоваться этим.{w=0.2} Извини..."
         m "То можешь запустить уже свой интерпретатор в отдельном окне, для этого нужно лишь скачать сам Python."
 
         m 1eua "В любом случае, {i}теперь{/i} я буду использовать этот интерпретатор, чтобы помогать тебе с обучением."
@@ -436,7 +436,7 @@ label monika_ptod_tip005:
 
     m 1eua "Также можно объединить несколько выражений сравнения в цепочку, используя ключевые слова {b}and{/b} и {b}or{/b}. Они также известны как {b}логические операторы{/b}."
     m "Оператор {b}and{/b} связывает два сравнения, оценивая полное выражение как {b}True{/b}, если оба сравнения имеют значение {b}True{/b},{w=0.3} и {b}False{/b}, если хотя бы одно сравнение имеет значение {b}False{/b}."
-    m 3hua "Так что давай рассмотрим несколько примеров."
+    m 1hua "Так что давай рассмотрим несколько примеров."
 
     $ val_a = local_ctx["a"]
     $ val_b = local_ctx["b"]
@@ -890,7 +890,7 @@ label monika_ptod_tip010:
 # NOTE: base the solids off of hangman. That should help us out
 
 image cn_frame = "mod_assets/console/cn_frame.png"
-define mas_ptod.font = "mod_assets/font/mplus-1mn-medium.ttf"
+define mas_ptod.font = mas_ui.MONO_FONT
 
 # NOTE: Console text:
 # style console_text (for regular console text)
