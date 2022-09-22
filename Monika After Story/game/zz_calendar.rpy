@@ -1238,7 +1238,7 @@ init -1 python in mas_calendar:
             "May":"мая",
             "June":"июня",
             "July":"июля",
-            "August":"августа"
+            "August":"августа",
             "September":"сентября",
             "October":"октября",
             "November":"ноября",
