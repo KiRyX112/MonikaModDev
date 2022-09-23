@@ -1,1 +1,1 @@
-{"build_update": true, "packages": ["DDLC Mod File", "DDLCMod", "", "source", "Mod"], "add_from": true, "force_recompile": true, "renamed_all": true}
+{"display_name": "Monika After Story", "android_build": "Release", "renamed_all": true, "renamed_steam": true, "force_recompile": false, "build_update": true, "packages": ["mac", "pc"], "add_from": false}
