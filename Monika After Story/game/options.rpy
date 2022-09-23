@@ -124,20 +124,39 @@ init python:
     ## This is the archive of data for your mod
     #build.archive(build.name, "all")
 
+    build.archive("audio", "renpy")
+    build.archive("fonts", "renpy")
+    build.archive("images", "renpy")
+    build.archive("scripts", "renpy")
+
     #Add the pictures necessary for the scrollable menu
-    build.classify("game/gui/**",build.name)
+    # build.classify("game/gui/**",build.name)
 
     ## These files get put into your data file
-    build.classify("game/mod_assets/**",build.name)
+    # build.classify("game/mod_assets/**",build.name)
     #build.classify("game/**.rpy",build.name) #Optional line to include plaintext scripts
-    build.classify("game/*.rpyc",build.name) #Serialized scripts must be included
-    build.classify("game/dev/*.*",None) #But not the dev folder
-    build.classify("README.html",build.name) #Included help file for mod installation
-    build.classify("game/python-packages/**",build.name)#Additional python pacakges
-    build.classify("CustomIcon**.**",build.name)
+    # build.classify("game/*.rpyc",build.name) #Serialized scripts must be included
+    # build.classify("game/dev/*.*",None) #But not the dev folder
+    # build.classify("README.html",build.name) #Included help file for mod installation
+    # build.classify("game/python-packages/**",build.name)#Additional python pacakges
+    # build.classify("CustomIcon**.**",build.name)
 
+    build.classify("game/**.wav", "audio android")
+    build.classify("game/**.mp3", "audio android")
+    build.classify("game/**.ogg", "audio android")
+    build.classify("game/**.ttf", "fonts android")
+    build.classify("game/**.otf", "fonts android")
+    build.classify("game/**.jpg", "images android")
+    build.classify("game/**.png", "images android")
+    build.classify("game/**.mp4", "images android")
+    build.classify("game/**.mpg", "images android")
+    build.classify("game/**.rpyc", "scripts android")
+    build.classify("game/**.rpymc", "scripts android")
+    build.classify("game/**.txt", "scripts android")
+    build.classify("game/**.chr", "scripts android")
+    build.classify("game/**.json", "scripts android")
 
-    build.package(build.directory_name + "Mod",'zip',build.name,description='DDLC Compatible Mod')
+    # build.package(build.directory_name + "Mod",'zip',build.name,description='DDLC Compatible Mod')
 
     build.classify('**~', None)
     build.classify('**.bak', None)
@@ -145,6 +164,7 @@ init python:
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
     build.classify('**.rpy', None)
+    build.classify('**.rpym', None)
     build.classify('**.psd', None)
     build.classify('**.sublime-project', None)
     build.classify('**.sublime-workspace', None)
@@ -152,9 +172,10 @@ init python:
     build.classify('script-regex.txt', None)
     build.classify('/game/10', None)
     build.classify('/game/cache/*.*', None)
-    build.classify('**.rpa',None)
     build.classify("game/mod_assets/api_keys.json", None)
     build.classify("**.pem", None)
+    build.classify('**/.DS_Store', None)
+    build.classify('**/.vscode/**', None)
 
     ## Files matching documentation patterns are duplicated in a mac app build,
     ## so they appear in both the app and the zip file.
