@@ -375,7 +375,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_ptod_tip005",
-            category=["python tips"],
+            category=["советы по Python'у"],
             prompt="Сравнения и логические значения",
             pool=True,
             conditional="store.mas_ptod.has_day_past_tip(6)",
