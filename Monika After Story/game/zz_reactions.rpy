@@ -968,7 +968,7 @@ init 5 python:
 label mas_reaction_gift_connector1:
     m 1sublo "О! Ты хочешь подарить мне что-то ещё?"
     m 1hua "Хорошо! Мне лучше открыть это по-быстрому, да?"
-    m 1suo "И здесь мы имеем..."
+    m 1suo "И у нас тут..."
     return
 
 init 5 python:
@@ -981,7 +981,7 @@ label mas_reaction_gift_connector2:
     m "Тебе действительно нравится меня баловать, не так ли?"
     if mas_isSpecialDay():
         m 1sublo "Ну, сегодня я не буду жаловаться на немного особое отношение."
-    m 1suo "И здесь мы имеем..."
+    m 1suo "И у нас тут..."
     return
 
 
@@ -1000,7 +1000,7 @@ label mas_reaction_gift_starter_generic:
 
 label mas_reaction_gift_starter_bday:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "Эт-{w=1}то..."
+    m "Эт-{w=0.5}то..."
     # TODO: fix this so we can actually get this path since rn gifts
     # are added to this before we even get there
     if not persistent._mas_filereacts_historic.get(mas_monika_birthday):
@@ -1009,7 +1009,7 @@ label mas_reaction_gift_starter_bday:
         m 1hua "Я часто думала о получении подарков от тебя на мой день рождения..."
         m "Но на самом деле получить хотя бы один — уже словно исполнение мечты......"
     else:
-        m "Подарок? Для меня?"
+        m "Подарок? Мне?"
         m 1eka "Мечта действительно сбылась, [player]."
 
     m 1sua "Итак, что находится внутри?"
@@ -1018,7 +1018,7 @@ label mas_reaction_gift_starter_bday:
 
 label mas_reaction_gift_starter_neutral:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "Эт-{w=1}то..."
+    m "Эт-{w=0.5}то..."
     m "Подарок? Мне?"
     m 1sua "Посмотрим, что внутри?"
     return
@@ -1026,7 +1026,7 @@ label mas_reaction_gift_starter_neutral:
 # d25
 label mas_reaction_gift_starter_d25:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "Эт-{w=1}то..."
+    m "Эт-{w=0.5}то..."
     m "Подарок? Мне?"
     if mas_getGiftStatsRange(mas_d25c_start, mas_d25 + datetime.timedelta(days=1))[0] == 0:
         m 1eka "Тебе не обязательно было дарить мне что-то на Рождество..."
@@ -1039,7 +1039,7 @@ label mas_reaction_gift_starter_d25:
 #f14
 label mas_reaction_gift_starter_f14:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "Эт-{w=1}то..."
+    m "Эт-{w=0.5}то..."
     m "Подарок? Мне?"
     if mas_getGiftStatsForDate(mas_f14) == 0:
         m 1eka "Ты такой милый, раз даришь мне что-то в день Святого Валентина..."
@@ -1061,15 +1061,6 @@ label mas_reaction_generic:
 #    addReaction("mas_reaction_gift_generic", None)
 
 label mas_reaction_gift_generic:
-    m 1esd "[player], ты пытаешься мне что-то подарить?"
-    m 1rssdlb "Я нашла подарок, но, к сожалению, никак не могу перенести его сюда..."
-    m "У меня не получается прочитать его достаточно хорошо."
-    m 3esa "Но всё в порядке!"
-    m 1esa "В конце концов, это подарок, который имеет значение, верно?"
-    m "Спасибо за заботу, [player]~"
-    return
-
-label mas_reaction_gifts_generic:
     m 2dkd "{i}*вздох*{/i}"
     m 4ekc "Извини, [player]."
     m 1ekd "Я знаю, ты пытаешься подарить мне что-то."
@@ -1077,6 +1068,14 @@ label mas_reaction_gifts_generic:
     m 3euc "Однако не пойми меня неправильно."
     m 3eka "Я всё ещё ценю, что ты пытался дарить мне что-то."
     m 1hub "И за это я благодарна~"
+    return
+
+label mas_reaction_gifts_generic:
+    m 1esd "Извини, [player]..."
+    m 3rksdla "Я поняла, что ты пытаешься мне что-то подарить, но я, похоже, не могу прочесть его."
+    m 3eub "Но всё нормально!"
+    m 1eka "Всё же важен не подарок, а внимание~"
+    m 1hub "Спасибо за заботу, [player]!"
     return
 
 #init 5 python:
