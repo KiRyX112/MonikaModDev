@@ -966,9 +966,9 @@ init 5 python:
     )
 
 label mas_reaction_gift_connector1:
-    m 1sublo "Oh! There was something else you wanted to give me?"
-    m 1hua "Well! I better open it quickly, shouldn't I?"
-    m 1suo "And here we have..."
+    m 1sublo "О! Ты хочешь подарить мне что-то ещё?"
+    m 1hua "Хорошо! Мне лучше открыть это по-быстрому, да?"
+    m 1suo "И здесь мы имеем..."
     return
 
 init 5 python:
@@ -977,11 +977,11 @@ init 5 python:
     )
 
 label mas_reaction_gift_connector2:
-    m 1hua "Ah, jeez, [player]..."
-    m "You really enjoy spoiling me, don't you?"
+    m 1hua "Ах, боже, [player]..."
+    m "Тебе действительно нравится меня баловать, не так ли?"
     if mas_isSpecialDay():
-        m 1sublo "Well! I'm not going to complain about a little special treatment today."
-    m 1suo "And here we have..."
+        m 1sublo "Ну, сегодня я не буду жаловаться на немного особое отношение."
+    m 1suo "И здесь мы имеем..."
     return
 
 
@@ -1000,52 +1000,52 @@ label mas_reaction_gift_starter_generic:
 
 label mas_reaction_gift_starter_bday:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=0.5}This is..."
+    m "Эт-{w=1}то..."
     # TODO: fix this so we can actually get this path since rn gifts
     # are added to this before we even get there
     if not persistent._mas_filereacts_historic.get(mas_monika_birthday):
-        m "A gift? For me?"
-        m 1hka "I..."
-        m 1hua "I've often thought about getting presents from you on my birthday..."
-        m "But actually getting one is like a dream come true..."
+        m "Подарок? Мне?"
+        m 1hka "Я..."
+        m 1hua "Я часто думала о получении подарков от тебя на мой день рождения..."
+        m "Но на самом деле получить хотя бы один — уже словно исполнение мечты......"
     else:
-        m "A gift?{w=0.5} For me?"
-        m 1eka "This really is a dream come true, [player]."
+        m "Подарок? Для меня?"
+        m 1eka "Мечта действительно сбылась, [player]."
 
-    m 1sua "Now, what's inside?"
-    m 1suo "Oh, it's..."
+    m 1sua "Итак, что находится внутри?"
+    m 1suo "О, это..."
     return
 
 label mas_reaction_gift_starter_neutral:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=0.5}This is..."
-    m "A gift? For me?"
-    m 1sua "Now, let's see what's inside?"
+    m "Эт-{w=1}то..."
+    m "Подарок? Мне?"
+    m 1sua "Посмотрим, что внутри?"
     return
 
 # d25
 label mas_reaction_gift_starter_d25:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=1}This is..."
-    m "A present? For me?"
+    m "Эт-{w=1}то..."
+    m "Подарок? Мне?"
     if mas_getGiftStatsRange(mas_d25c_start, mas_d25 + datetime.timedelta(days=1))[0] == 0:
-        m 1eka "You really didn't have to get me anything for Christmas..."
-        m 3hua "But I'm so happy that you did!"
+        m 1eka "Тебе не обязательно было дарить мне что-то на Рождество..."
+        m 3hua "Но я рада твоему подарку!"
     else:
-        m 1eka "Thank you so much, [player]."
-    m 1sua "Now, let's see... What's inside?"
+        m 1eka "Спасибо тебе огромное, [player]."
+    m 1sua "Так, посмотрим... что же внутри?"
     return
 
 #f14
 label mas_reaction_gift_starter_f14:
     m 1sublo ".{w=0.7}.{w=0.7}.{w=1}"
-    m "T-{w=1}This is..."
-    m "A gift? For me?"
+    m "Эт-{w=1}то..."
+    m "Подарок? Мне?"
     if mas_getGiftStatsForDate(mas_f14) == 0:
-        m 1eka "You're so sweet, getting something for me on Valentine's Day..."
+        m 1eka "Ты такой милый, раз даришь мне что-то в день Святого Валентина..."
     else:
-        m 1eka "Thank you so much, [player]."
-    m 1sua "Now, let's see... What's inside?"
+        m 1eka "Спасибо тебе огромное, [player]."
+    m 1sua "Так, посмотрим... что же внутри?"
     return
 
 ### REACTIONS [RCT100]
@@ -1061,21 +1061,22 @@ label mas_reaction_generic:
 #    addReaction("mas_reaction_gift_generic", None)
 
 label mas_reaction_gift_generic:
-    m 2dkd "{i}*sigh*{/i}"
-    m 4ekc "I'm sorry, [player]."
-    m 1ekd "I know you're trying to give me something."
-    m 2rksdld "But for some reason I can't read the file."
-    m 3euc "Don't get me wrong, however."
-    m 3eka "I still appreciate that you tried giving something to me."
-    m 1hub "And for that, I'm thankful~"
+    m 1esd "[player], ты пытаешься мне что-то подарить?"
+    m 1rssdlb "Я нашла подарок, но, к сожалению, никак не могу перенести его сюда..."
+    m "У меня не получается прочитать его достаточно хорошо."
+    m 3esa "Но всё в порядке!"
+    m 1esa "В конце концов, это подарок, который имеет значение, верно?"
+    m "Спасибо за заботу, [player]~"
     return
 
 label mas_reaction_gifts_generic:
-    m 1esd "Sorry, [player]..."
-    m 3rksdla "I found what you're trying to give me, but I can't seem to read them well enough."
-    m 3eub "That's alright, though!"
-    m 1eka "It's the thought that counts after all~"
-    m 1hub "Thanks for being so thoughtful, [player]!"
+    m 2dkd "{i}*вздох*{/i}"
+    m 4ekc "Извини, [player]."
+    m 1ekd "Я знаю, ты пытаешься подарить мне что-то."
+    m 2rksdld "Но по какой-то причине я не могу прочитать файл."
+    m 3euc "Однако не пойми меня неправильно."
+    m 3eka "Я всё ещё ценю, что ты пытался дарить мне что-то."
+    m 1hub "И за это я благодарна~"
     return
 
 #init 5 python:
@@ -1115,38 +1116,36 @@ label mas_reaction_gift_generic_sprite_json:
         # otherwise, it has to be an ACS.
 
         $ mas_giftCapGainAff(1)
-        m "Aww, [player]!"
+        m "Оу, [player]!"
         if spr_obj is None or spr_obj.dlg_desc is None:
             # if we don't have all required description data, go generic
-            m 1hua "You're so sweet!"
-            m 1eua "Thanks for this gift!"
-            m 3ekbsa "You really love to spoil me, don't you."
-            m 1hubfa "Ehehe!"
+            m 1hua "Ты такой милый!"
+            m 1eua "Спасибо, что сделал подарок!"
+            m 1ekbsa "Тебе правда нравится баловать меня, да?"
+            m 1hubfa "Э-хе-хе!"
 
         else:
             python:
                 acs_quips = [
-                    _("I really appreciate it!"),
-                    _("[its] amazing!"),
-                    _("I just love [item_ref]!"),
-                    _("[its] wonderful!")
+                    _("я очень ценю это!"),
+                    _("это потрясающе!"),
+                    _("я просто обожаю это!"),
+                    _("это замечательно!")
                 ]
 
                 # we have a complete description, so use it here
                 if spr_obj.dlg_plur:
-                    sprite_str = "these " + renpy.substitute(spr_obj.dlg_desc)
-                    item_ref = "them"
-                    its = "they're"
+                    sprite_str = "эти " + renpy.substitute(spr_obj.dlg_desc)
+                    item_ref = "их"
 
                 else:
-                    sprite_str = "this " + renpy.substitute(spr_obj.dlg_desc)
-                    item_ref = "it"
-                    its = "it's"
+                    sprite_str = "этот " + renpy.substitute(spr_obj.dlg_desc)
+                    item_ref = "это"
 
                 acs_quip = renpy.substitute(renpy.random.choice(acs_quips))
 
-            m 1hua "Thanks for [sprite_str], [acs_quip]"
-            m 3hub "I can't wait to try [item_ref] on!"
+            m 1hua "Спасибо за [sprite_str], [acs_quip]"
+            m 3hub "Я не могу дождаться, чтобы попробовать [item_ref]!"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
@@ -1157,37 +1156,37 @@ label mas_reaction_gift_generic_sprite_json:
 label mas_reaction_gift_generic_clothes_json(sprite_object):
     $ mas_giftCapGainAff(3)
     if sprite_object.ex_props.get("costume") == "o31":
-        m 2suo "Oh! {w=0.3}A costume!"
-        m 2hub "That's so neat [player], thanks!"
-        m 7rka "I'd try it on for you, but I think it'd be better to wait for the right occasion..."
-        m 3hub "Ehehe, thanks again!"
+        m 2suo "О! {w=0.3}Новый наряд!"
+        m 2hub "Это так мило, спасибо!"
+        m 7rka "Я бы примерила, но думаю, что лучше подождать подходящего случая..."
+        m 3hub "Э-хе-хе, спасибо!"
 
     else:
         python:
             # expandable
             outfit_quips = [
-                _("I think it's really cute, [player]!"),
-                _("I think it's amazing, [player]!"),
-                _("I just love it, [player]!"),
-                _("I think it's wonderful, [player]!")
+                _("Думаю, что это очень мило, [player]!"),
+                _("Думаю, что это удивительно, [player]!"),
+                _("Мне это просто нравится, [player]!"),
+                _("Думаю, что это замечательно, [player]!")
             ]
             outfit_quip = renpy.random.choice(outfit_quips)
 
-        m 1sua "Oh! {w=0.5}A new outfit!"
-        m 1hub "Thank you, [player]!{w=0.5} I'm going to try it on right now!"
+        m 1sua "Оу! {w=0.5}Новая одежда!"
+        m 1hub "Спасибо, [player]!{w=0.5} Я примерю его прямо сейчас!"
 
         # try it on
         call mas_clothes_change(sprite_object)
 
-        m 2eka "Well...{w=0.5} What do you think?"
-        m 2eksdla "Do you like it?"
+        m 2eka "Ну...{w=0.5} А ты как думаешь?"
+        m 2eksdla "Тебе она нравится?"
         # TODO: outfit randomization should actually get a response here
         #   should influence monika outfit selection
 
         show monika 3hub
         $ renpy.say(m, outfit_quip)
 
-        m 1eua "Thanks again~"
+        m 1eua "Ещё раз спасибо~"
 
     return
 
@@ -1237,7 +1236,7 @@ label mas_reaction_gift_hairclip(hairclip_name,desc=None):
     $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
 
     if gifted_before:
-        m 1rksdlb "You already gave me this hairclip, silly!"
+        m 1rksdlb "Ты уже дарил мне эту заколку, дурашка!"
 
     else:
         #Grant affection
