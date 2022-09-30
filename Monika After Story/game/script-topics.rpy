@@ -4985,8 +4985,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_impression",
-            category=['club members'],
-            prompt="Can you do any impressions?",
+            category=['участники клуба'],
+            prompt="Можешь спародировать кого-нибудь из девочек?",
             pool=True,
             sensitive=True
         )
@@ -17685,7 +17685,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_quiet_time",
-            category=['us'],
+            category=['мы'],
             prompt="Ты не возражаешь, когда мы проводим время вместе в тишине?",
             pool=True,
             unlocked=False,
