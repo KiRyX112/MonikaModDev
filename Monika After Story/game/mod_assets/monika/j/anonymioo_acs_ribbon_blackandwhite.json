@@ -17,12 +17,12 @@
         "ribbon-multicolor": true
     },
     "select_info": {
-        "display_name": "Ribbon (Black and White)",
+        "display_name": "Чёрно-белая ленточка",
         "thumb": "anonymioo_ribbon_blackandwhite",
         "group": "ribbon",
         "select_dlg": [
-            "Yin and yang..."
+            "Инь и Янь..."
         ]
     },
-    "giftname": "blackandwhiteribbon"
+    "giftname": "чёрно-белая ленточка"
 }
