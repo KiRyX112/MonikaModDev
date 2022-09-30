@@ -15,11 +15,11 @@
     "dlg_desc": "choker",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Choker (Ruffles, Red)",
+        "display_name": "Чокер красный с оборками",
         "thumb": "briaryoung_choker_ruffles_red",
         "group": "choker"
     },
-    "giftname": "chokerrufflesred",
+    "giftname": "чокер красный с оборками",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true

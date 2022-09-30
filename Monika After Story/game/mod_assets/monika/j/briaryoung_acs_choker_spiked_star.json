@@ -15,11 +15,11 @@
     "dlg_desc": "choker",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Choker (Spiked, Star)",
+        "display_name": "Звёздный чокер с шипами",
         "thumb": "briaryoung_choker_spiked_star",
         "group": "choker"
     },
-    "giftname": "chokerspikedstar",
+    "giftname": "звёздный чокер с шипами",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true

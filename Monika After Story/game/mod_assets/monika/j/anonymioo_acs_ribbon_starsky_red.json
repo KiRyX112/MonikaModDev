@@ -14,12 +14,12 @@
     "dlg_desc": "night-sky-themed ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Starry Red Sky)",
+        "display_name": "Звёздная красно-небесная ленточка",
         "thumb": "anonymioo_ribbon_starsky_red",
         "group": "ribbon",
         "select_dlg": [
-            "A starry night..."
+            "Звёздная ночь..."
         ]
     },
-    "giftname": "starryredskyribbon"
+    "giftname": "звёздная красно-небесная ленточка"
 }

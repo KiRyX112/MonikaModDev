@@ -18,12 +18,12 @@
         "striped": true
     },
     "select_info": {
-        "display_name": "Ribbon (Blue and White Stripes)",
+        "display_name": "Ленточка с синими и белыми полосками",
         "thumb": "anonymioo_ribbon_striped_blueandwhite",
         "group": "ribbon",
         "select_dlg": [
-            "Fit for a day at the beach!"
+            "Подходит для целого дня на пляже!"
         ]
     },
-    "giftname": "blueandwhitestripedribbon"
+    "giftname": "ленточка с синими и белыми полосками"
 }

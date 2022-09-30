@@ -18,12 +18,12 @@
         "polkadots": true
     },
     "select_info": {
-        "display_name": "Ribbon (White Polka Dots on Red)",
+        "display_name": "Красная ленточка в белый горошек",
         "thumb": "anonymioo_ribbon_polkadots_whiteonred",
         "group": "ribbon",
         "select_dlg": [
-            "Cute as a button!"
+            "Симпатичная ленточка!"
         ]
     },
-    "giftname": "whiteonredpolkadotribbon"
+    "giftname": "красная ленточка в белый горошек"
 }

@@ -15,11 +15,11 @@
     "dlg_desc": "choker",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Choker (Daisy, White)",
+        "display_name": "Чокер в форме белой ромашки",
         "thumb": "briaryoung_choker_daisy_white",
         "group": "choker"
     },
-    "giftname": "chokerdaisywhite",
+    "giftname": "чокер в форме белой ромашки",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true

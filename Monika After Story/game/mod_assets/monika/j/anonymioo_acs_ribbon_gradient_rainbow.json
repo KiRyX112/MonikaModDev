@@ -19,12 +19,12 @@
         "rainbow": true
     },
     "select_info": {
-        "display_name": "Ribbon (Rainbow Gradient)",
+        "display_name": "Радужная ленточка",
         "thumb": "anonymioo_ribbon_gradient_rainbow",
         "group": "ribbon",
         "select_dlg": [
-            "Such lively colors!"
+            "Такие яркие цвета!"
         ]
     },
-    "giftname": "rainbowgradientribbon"
+    "giftname": "радужная ленточка"
 }

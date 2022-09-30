@@ -18,12 +18,12 @@
         "gradient": true
     },
     "select_info": {
-        "display_name": "Ribbon (Gradient)",
+        "display_name": "Градиентная ленточка",
         "thumb": "anonymioo_ribbon_gradient",
         "group": "ribbon",
         "select_dlg": [
-            "A classic with a twist!"
+            "Классика с изюминкой!"
         ]
     },
-    "giftname": "gradientribbon"
+    "giftname": "градиентная ленточка"
 }

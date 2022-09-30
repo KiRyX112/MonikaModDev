@@ -15,11 +15,11 @@
     "dlg_desc": "choker",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Choker (Chain, Silver)",
+        "display_name": "Серебрянная цепочка-чокер",
         "thumb": "briaryoung_choker_chain_silver",
         "group": "choker"
     },
-    "giftname": "chokerchainsilver",
+    "giftname": "серебрянная цепочка-чокер",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true

@@ -18,12 +18,12 @@
         "gradient": true
     },
     "select_info": {
-        "display_name": "Ribbon (Low-Poly Gradient)",
+        "display_name": "Слабо-градиентная ленточка",
         "thumb": "anonymioo_ribbon_gradient_lowpoly",
         "group": "ribbon",
         "select_dlg": [
-            "Quite abstract..."
+            "Весьма абстрактно..."
         ]
     },
-    "giftname": "lowpolygradientribbon"
+    "giftname": "слабо-градиентная ленточка"
 }

@@ -18,12 +18,12 @@
         "striped": true
     },
     "select_info": {
-        "display_name": "Ribbon (Pink and White Stripes)",
+        "display_name": "Ленточка с розовыми и белыми полосками",
         "thumb": "anonymioo_ribbon_striped_pinkandwhite",
         "group": "ribbon",
         "select_dlg": [
-            "Longing for a summer day..."
+            "Тоска по летнему дню..."
         ]
     },
-    "giftname": "pinkandwhitestripedribbon"
+    "giftname": "ленточка с розовыми и белыми полосками"
 }
