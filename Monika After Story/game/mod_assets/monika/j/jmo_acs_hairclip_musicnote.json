@@ -18,17 +18,17 @@
         "left-hair-strand-eye-level": true
     },
     "select_info": {
-        "display_name": "Hairclip (8th Note)",
+        "display_name": "Заколка с музыкальной нотой",
         "thumb": "jmo_hairclip_musicnote",
         "group": "left-hair-clip",
         "hover_dlg": [
-            "{i}Every day~{/i}"
+            "{i}Каждый день~{/i}"
         ],
         "select_dlg": [
-            "I love this hairpin.",
-            "This hairpin is adorable!",
-            "Cute!"
+            "Мне нравится эта заколка.",
+            "Эта заколка просто прелесть!",
+            "Милота!"
         ]
     },
-    "giftname": "musicnotehairclip"
+    "giftname": "заколка с музыкальной нотой"
 }

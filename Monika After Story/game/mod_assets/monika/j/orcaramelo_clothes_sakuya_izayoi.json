@@ -21,16 +21,16 @@
         "cosplay": true
     },
     "select_info": {
-        "display_name": "Sakuya Izayoi",
+        "display_name": "Сакуя Идзаёй",
         "thumb": "orcaramelo_sakuya_izayoi",
         "group": "clothes",
         "select_dlg": [
-            "Time always stops when I'm with you~",
-            "Allow me to offer you my hospitality.",
-            "Would you like a cup of tea, [player]?"
+            "Время всегда останавливается, когда я с тобой~",
+            "Позволь мне предложить тебе своё гостеприимство.",
+            "Не желаете выпить чашечку чая, [player]?"
         ]
     },
-    "giftname": "sakuyaizayoicosplay",
+    "giftname": "костюм Сакуи Идзаёи",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

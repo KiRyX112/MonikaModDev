@@ -16,11 +16,11 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "White and Navy Blue Dress",
+        "display_name": "Белое и тёмно-синее платье",
         "thumb": "velius94_dress_whitenavyblue",
         "group": "clothes"   
     },
-    "giftname": "whiteandnavybluedress",
+    "giftname": "белое и тёмно-синее платье",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

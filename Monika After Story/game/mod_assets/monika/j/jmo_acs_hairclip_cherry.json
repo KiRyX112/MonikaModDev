@@ -18,17 +18,17 @@
         "left-hair-strand-eye-level": true
     },
     "select_info": {
-        "display_name": "Hairclip (Cherry)",
+        "display_name": "Заколка с вишенкой",
         "thumb": "jmo_hairclip_cherry",
         "group": "left-hair-clip",
         "hover_dlg": [
-            "Have you heard of a cherry kiss, [player]?~"
+            "Ты слышал о вишневом поцелуе, [player]?~"
         ],
         "select_dlg": [
-            "I love this hairpin.",
-            "This hairpin is adorable!",
-            "Cute!"
+            "Мне нравится эта заколка.",
+            "Эта заколка просто прелесть!",
+            "Милота!"
         ]
     },
-    "giftname": "cherryhairclip"
+    "giftname": "заколка с вишенкой"
 }

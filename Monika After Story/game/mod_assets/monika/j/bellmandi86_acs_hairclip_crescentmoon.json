@@ -15,15 +15,15 @@
         "o31": true
     },
     "select_info": {
-        "display_name": "Hairclip (Crescent Moon)",
+        "display_name": "Заколка с полумесяцем",
         "thumb": "bellmandi86_hairclip_crescentmoon",
         "group": "left-hair-clip",
         "select_dlg": [
-            "Since I met you I've been over the moon!",
-            "I love you to the moon and back~",
-            "Night falls...",
-            "Fly me to the moon!"
+            "С тех пор, как я встретила тебя, я была на седьмом небе от счастья!",
+            "Я люблю тебя до самой луны и обратно!",
+            "Наступает ночь...",
+            "Отнеси меня на луну!"
         ]
     },
-    "giftname": "crescentmoonhairclip"
+    "giftname": "заколка с полумесяцем"
 }

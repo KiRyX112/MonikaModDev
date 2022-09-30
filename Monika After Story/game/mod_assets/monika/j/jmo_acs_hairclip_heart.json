@@ -18,17 +18,17 @@
         "left-hair-strand-eye-level": true
     },
     "select_info": {
-        "display_name": "Hairclip (Heart)",
+        "display_name": "Заколка с сердечком",
         "thumb": "jmo_hairclip_heart",
         "group": "left-hair-clip",
         "hover_dlg": [
-            "A little bit of love..."
+            "Немного любви..."
         ],
         "select_dlg": [
-            "I love this hairpin.",
-            "This hairpin is adorable!",
-            "Cute!"
+            "Мне нравится эта заколка.",
+            "Эта заколка просто прелесть!",
+            "Милота!"
         ]
     },
-    "giftname": "hearthairclip"
+    "giftname": "заколка с сердечком"
 }

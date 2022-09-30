@@ -14,13 +14,13 @@
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "Shirt (Pink)",
+        "display_name": "Сарафан (Розовый)",
         "thumb": "velius94_shirt_pink",
         "group": "clothes",
         "select_dlg": [
-            "Pretty in pink~"
+            "Красотка в розовом~"
         ]
     },
-    "giftname": "pinkshirt",
+    "giftname": "розовый сарафан",
     "pose_arms": {}
 }

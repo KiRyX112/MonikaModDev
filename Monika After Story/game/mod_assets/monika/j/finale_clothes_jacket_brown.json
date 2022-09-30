@@ -18,15 +18,15 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Jacket (Brown)",
+        "display_name": "Коричневое пальто",
         "thumb": "finale_jacket_brown",
         "group": "clothes",
         "select_dlg": [
-            "Nice and warm~",
-            "Are we going somewhere, [player]?"
+            "Хорошо и тепло~",
+            "Мы куда-то собираемся, [player]?"
         ]
     },
-    "giftname": "brownwinterjacket",
+    "giftname": "коричневое пальто",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

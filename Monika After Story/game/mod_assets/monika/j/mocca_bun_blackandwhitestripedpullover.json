@@ -24,16 +24,16 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Pullover (Black and White Stripe)",
+        "display_name": "Свитер (с чёрно-белыми линиями)",
         "thumb": "mocca_bun_blackandwhitestripedpullover",
         "group": "clothes",
         "select_dlg": [
-            "How do I look, [player]?",
-            "Pretty cute, right?",
-            "Great choice, [player]! This is so comfortable~"
+            "Как я выгляжу, [player]?",
+            "Довольно мило, правда?",
+            "Отличный выбор, [player]! Он такой комфортный~"
         ]
     },
-    "giftname": "blackandwhitestripedpullover",
+    "giftname": "свитер с чёрно-белыми линиями",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",
