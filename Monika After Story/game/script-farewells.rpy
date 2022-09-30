@@ -990,7 +990,7 @@ label bye_goodnight:
         menu:
             m "Идёшь спать?{fast}"
 
-            "Yeah.":
+            "Да.":
                 call bye_prompt_sleep_goodnight_kiss(chance=4)
                 # Quit if ran the flow
                 if _return is not None:
