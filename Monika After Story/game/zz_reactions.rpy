@@ -2866,3 +2866,99 @@ label mas_reaction_gift_noudeck_have_played:
         persistent._seen_ever["monika_introduce_nou_house_rules"] = True
         persistent._seen_ever["monika_explain_nou_rules"] = True
     return
+
+init 5 python:
+    addReaction("mas_reaction_gift_clothes_finale_hoodie_green", is_good=True)
+
+label mas_reaction_gift_clothes_finale_hoodie_green:
+    if persistent.saveblock:
+        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_hoodie_green")
+        $ store.mas_filereacts.delete_file(gift_ev.category)
+        return
+    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_hoodie_green")
+    call mas_clothes_change (finale_hoodie_green, unlock=True)
+
+    
+    m 3hua "Cпасибо за такой замечательный подарок~"
+    $ mas_receivedGift("mas_reaction_gift_clothes_finale_hoodie_green")
+    $ store.mas_filereacts.delete_file(gift_ev.category)
+    return
+
+# Идут чокеры.
+
+label mas_reaction_gift_acs_briaryoung_choker_chain_silver:
+    call mas_reaction_gift_choker("briaryoung_choker_chain_silver")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_daisy_white:
+    call mas_reaction_gift_choker("briaryoung_choker_daisy_white")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_emerald_green:
+    call mas_reaction_gift_choker("briaryoung_choker_emerald_green")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_glitter_bead_silver:
+    call mas_reaction_gift_choker("briaryoung_choker_glitter_bead_silver")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_ribbon_red:
+    call mas_reaction_gift_choker("briaryoung_choker_ribbon_red")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_ruffles_red:
+    call mas_reaction_gift_choker("briaryoung_choker_ruffles_red")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_silk_white:
+    call mas_reaction_gift_choker("briaryoung_choker_silk_white")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_spiked_star:
+    call mas_reaction_gift_choker("briaryoung_choker_spiked_star")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_spiral_black:
+    call mas_reaction_gift_choker("briaryoung_choker_spiral_black")
+    return
+
+label mas_reaction_gift_acs_briaryoung_choker_thread_ribbon:
+    call mas_reaction_gift_choker("briaryoung_choker_thread_ribbon")
+    return
+
+#Лейбл с диалогами
+label mas_reaction_gift_choker(choker_name,desc=None):
+    
+    $ sprite_data = mas_getSpriteObjInfo((store.mas_sprites.SP_ACS, choker_name))
+    $ sprite_type, sprite_name, giftname, gifted_before, choker_acs = sprite_data
+
+    $ mas_giftCapGainAff(1)
+
+    # check for incompatibility
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if gifted_before:
+        m 1rksdlb "Ты уже дарил мне этот чокер, дурашка!"
+
+    if len(store.mas_selspr.filter_acs(True, "choker")) > 0:
+        m 1hub "О!{w=1} Ещё один чокер!"
+
+    else:
+        m 1wuo "О!"
+        m 1sub "Ты подарил мне чокер?"
+
+    m 1hub "Спасибо за подарок! Я так люблю тебя, [player]!"
+
+    if choker_acs is None or is_wearing_baked_outfit:
+        m 1hua "Если хочешь, чтобы я надела его, просто попроси, ладно?"
+
+    else:
+        m 2dsa "Погоди секунду, сейчас надену его.{w=0.5}.{w=0.5}.{nw}"
+        $ monika_chr.wear_acs(choker_acs)
+        m 1hua "Готово."
+
+    $ mas_finishSpriteObjInfo(sprite_data)
+
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
