@@ -664,7 +664,7 @@ label monika_idle_workout_callback:
         else:
             m 1euc "Уже вернулся, [player]?"
             m 1eka "Я уверена, что ты сможешь продолжать еще долго, если постараешься."
-            m 3eka "Перерывы - это хорошо, но не стоит оставлять тренировку незаконченной."
+            m 3eka "Перерывы — это хорошо, но не стоит оставлять тренировку незаконченной."
             m 3ekb "Ты уверен, что не можешь продолжать?{nw}"
             $ _history_list.pop()
             menu:
@@ -963,7 +963,7 @@ label monika_idle_reading_callback:
         if mas_brbs.was_idle_for_at_least(datetime.timedelta(hours=2), "monika_idle_reading"):
             m 1wud "Ух ты, тебя долго не было...{w=0.3}{nw}"
             extend 3wub " это здорово, [player]!"
-            m 3eua "Чтение - прекрасная вещь, поэтому не бойся сильно увлекаться этим."
+            m 3eua "Чтение — прекрасная вещь, поэтому не бойся сильно увлекаться этим."
             m 3hksdlb "С другой стороны, не мне судить..."
             show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5ekbsa "Будь на то моя воля, мы бы читали вместе всю ночь напролет!"

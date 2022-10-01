@@ -727,12 +727,12 @@ label mas_player_name_enter_name_loop(input_prompt):
             elif mas_good_player_name_comp.search(tempname):
                 $ good_quip = renpy.substitute(renpy.random.choice(good_quips))
                 m 1sub "[good_quip]"
-                m 3esa "Хорошо! С этого момента, я буду называть тебя - [player]."
+                m 3esa "Хорошо! С этого момента, я буду называть тебя — [player]."
                 m 1hua "Э-хе-хе~"
 
             else:
                 m 1eub "Хорошо!"
-                m 3eub "С этого момента, я буду называть тебя - [player]."
+                m 3eub "С этого момента, я буду называть тебя — [player]."
 
         if not done:
             show monika 1eua
@@ -752,7 +752,7 @@ init 5 python:
 
 label mas_preferredname:
     m 1euc "Мне очень интересно узнать твоё имя."
-    m 1esa "«[player]» - на самом деле твоё имя?"
+    m 1esa "«[player]» — на самом деле твоё имя?"
 
     if renpy.windows and currentuser.lower() == player.lower():
         m 3esa "Я имею в виду, оно такое же, что и имя твоего компьютера..."
@@ -2345,7 +2345,7 @@ label mas_gift_giving_instructs:
 
 Вот и всё! Спустя короткое мгновение, Моника должна заметить, что ты ей кое-что подарил.
 
-Я просто хотела, чтобы ты знал, что Моника - очень удивительная девушка, и я правда хочу видеть её счастливой.
+Я просто хотела, чтобы ты знал, что Моника — очень удивительная девушка, и я правда хочу видеть её счастливой.
 
 Удачи тебе с Моникой!
 

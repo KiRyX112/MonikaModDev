@@ -228,7 +228,7 @@ label mas_apology_generic:
 
     #She knows that you've got something else to apologize for, and wants you to own up
     elif len(persistent._mas_apology_time_db) > 0:
-        m 2tfc "[player], если тебе есть за что извиняться - пожалуйста, говори."
+        m 2tfc "[player], если тебе есть за что извиняться — пожалуйста, говори."
         m 2rfc "Для меня это значило бы гораздо больше, если бы ты просто признался в том, что сделал."
 
     #She knows there's a reason for your apology but won't comment on it
