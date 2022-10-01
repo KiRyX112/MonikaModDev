@@ -1208,7 +1208,7 @@ label mas_reaction_gift_acs_bellmandi86_hairclip_crescentmoon:
     return
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_ghost:
-    call mas_reaction_gift_hairclip("bellmandi86_hairclip_ghost","spooky")
+    call mas_reaction_gift_hairclip("bellmandi86_hairclip_ghost","жутковато")
     return
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin:
@@ -1216,7 +1216,7 @@ label mas_reaction_gift_acs_bellmandi86_hairclip_pumpkin:
     return
 
 label mas_reaction_gift_acs_bellmandi86_hairclip_bat:
-    call mas_reaction_gift_hairclip("bellmandi86_hairclip_bat","spooky")
+    call mas_reaction_gift_hairclip("bellmandi86_hairclip_bat","жутковато")
     return
 
 # hairclip
@@ -2867,23 +2867,6 @@ label mas_reaction_gift_noudeck_have_played:
         persistent._seen_ever["monika_explain_nou_rules"] = True
     return
 
-init 5 python:
-    addReaction("mas_reaction_gift_clothes_finale_hoodie_green", is_good=True)
-
-label mas_reaction_gift_clothes_finale_hoodie_green:
-    if persistent.saveblock:
-        $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_hoodie_green")
-        $ store.mas_filereacts.delete_file(gift_ev.category)
-        return
-    $ gift_ev = mas_getEV("mas_reaction_gift_clothes_finale_hoodie_green")
-    call mas_clothes_change (finale_hoodie_green, unlock=True)
-
-    
-    m 3hua "Cпасибо за такой замечательный подарок~"
-    $ mas_receivedGift("mas_reaction_gift_clothes_finale_hoodie_green")
-    $ store.mas_filereacts.delete_file(gift_ev.category)
-    return
-
 # Идут чокеры.
 
 label mas_reaction_gift_acs_briaryoung_choker_chain_silver:
@@ -2955,6 +2938,92 @@ label mas_reaction_gift_choker(choker_name,desc=None):
     else:
         m 2dsa "Погоди секунду, сейчас надену его.{w=0.5}.{w=0.5}.{nw}"
         $ monika_chr.wear_acs(choker_acs)
+        m 1hua "Готово."
+
+    $ mas_finishSpriteObjInfo(sprite_data)
+
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
+
+# Мини-бантики
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_black:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_black")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_dark_pink:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_dark_pink")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_gray:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_gray")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_orange:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_orange")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_pale_green:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_pale_green")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_pink:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_pink")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_purple:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_purple")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_red:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_red")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_royal_blue:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_royal_blue")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_sky_blue:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_sky_blue")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_white:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_white")
+    return
+
+label mas_reaction_gift_acs_briaryoung_mini_ribbon_yellow:
+    call mas_reaction_gift_miniribbon("briaryoung_mini_ribbon_yellow")
+    return
+
+# Тут попиздим немного
+label mas_reaction_gift_miniribbon(miniribbon_name, desc=None):
+
+    $ sprite_data = mas_getSpriteObjInfo((store.mas_sprites.SP_ACS, miniribbon_name))
+    $ sprite_type, sprite_name, giftname, gifted_before, miniribbon_acs = sprite_data
+
+    $ mas_giftCapGainAff(1)
+
+    # check for incompatibility
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if gifted_before:
+        m 1rksdlb "Ты уже дарил мне эту ленточку, дурашка!"
+
+    if len(store.mas_selspr.filter_acs(True, "mini-ribbon")) > 0:
+        m 1hub "О!{w=1} Ещё один мини-ленточка!"
+
+    else:
+        m 1wuo "О!"
+        m 1sub "Ты подарил мини-ленточку?"
+
+    m 1hub "Я так рада, спасибо! Люблю тебя, [player]!"
+
+    if miniribbon_acs is None or is_wearing_baked_outfit:
+        m 1hua "Если хочешь, чтобы я надела его, просто попроси, ладно?"
+
+    else:
+        m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}.{nw}"
+        $ monika_chr.wear_acs(miniribbon_acs)
         m 1hua "Готово."
 
     $ mas_finishSpriteObjInfo(sprite_data)

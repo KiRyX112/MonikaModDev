@@ -14,12 +14,12 @@
     "dlg_desc": "white ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (White, mini)",
+        "display_name": "Белая мини-лента",
         "thumb": "briaryoung_mini_ribbon_white",
         "group": "ribbon",
         "select_dlg": [
-            "A new take on a classic!"
+            "Новый взгляд на классику!"
         ]
     },
-    "giftname": "miniwhiteribbon"
+    "giftname": "белая мини-лента"
 }

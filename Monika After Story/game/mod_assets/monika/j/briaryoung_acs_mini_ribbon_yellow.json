@@ -14,12 +14,12 @@
     "dlg_desc": "yellow ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Yellow, mini)",
+        "display_name": "Жёлтая мини-лента",
         "thumb": "briaryoung_mini_ribbon_yellow",
         "group": "ribbon",
         "select_dlg": [
-            "Like a sunny day!"
+            "Словно солнечный день!"
         ]
     },
-    "giftname": "miniyellowribbon"
+    "giftname": "жёлтая мини-лента"
 }

@@ -14,11 +14,11 @@
     "dlg_desc": "bow",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Front Bow (Black)",
+        "display_name": "Бантик Чики",
         "thumb": "briaryoung_front_bow_black",
         "group": "front-bow",
         "select_dlg": [
-            "I still haven't figured out how this bow stays on..."
+            "Так и не поняла, как этот бантик должен держаться."
         ]
     }
 }

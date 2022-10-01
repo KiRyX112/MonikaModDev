@@ -14,12 +14,12 @@
     "dlg_desc": "purple ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Purple, mini)",
+        "display_name": "Фиолетовая мини-лента",
         "thumb": "briaryoung_mini_ribbon_purple",
         "group": "ribbon",
         "select_dlg": [
-            "Purple is such an elegant color!"
+            "Фиолетовый цвет всегда казался мне классным!"
         ]
     },
-    "giftname": "minipurpleribbon"
+    "giftname": "фиолетовая мини-лента"
 }

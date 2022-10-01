@@ -14,12 +14,12 @@
     "dlg_desc": "sky blue ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Sky blue, mini)",
+        "display_name": "Мини-лента небесно-голубого цвета",
         "thumb": "briaryoung_mini_ribbon_sky_blue",
         "group": "ribbon",
         "select_dlg": [
-            "Just like the sky!"
+            "Прямо как небо!"
         ]
     },
-    "giftname": "miniskyblueribbon"
+    "giftname": "мини-лента небесно-голубого цвета"
 }

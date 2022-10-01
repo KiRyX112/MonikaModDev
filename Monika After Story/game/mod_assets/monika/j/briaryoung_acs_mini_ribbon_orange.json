@@ -14,12 +14,12 @@
     "dlg_desc": "orange ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Orange, mini)",
+        "display_name": "Оранжевая мини-лента",
         "thumb": "briaryoung_mini_ribbon_orange",
         "group": "ribbon",
         "select_dlg": [
-            "Reminds me of fall!"
+            "Напоминает мне осень!"
         ]
     },
-    "giftname": "miniorangeribbon"
+    "giftname": "оранжевая мини-лента"
 }
