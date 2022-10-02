@@ -2940,7 +2940,16 @@ label mas_reaction_gift_choker(choker_name,desc=None):
         $ monika_chr.wear_acs(choker_acs)
         m 1hua "Готово."
 
-    $ mas_finishSpriteObjInfo(sprite_data)
+    # need to make sure we set the selector prompt correctly
+        # only do this if not wearing baked, since the clip is automatically off in this case
+        # so need to make sure when we switch outfits, the prompt is still correct
+        if not is_wearing_baked_outfit:
+            if monika_chr.get_acs_of_type('choker'):
+                $ store.mas_selspr.set_prompt("choker", "change")
+            else:
+                $ store.mas_selspr.set_prompt("choker", "wear")
+
+    $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
 
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
@@ -3026,7 +3035,16 @@ label mas_reaction_gift_miniribbon(miniribbon_name, desc=None):
         $ monika_chr.wear_acs(miniribbon_acs)
         m 1hua "Готово."
 
-    $ mas_finishSpriteObjInfo(sprite_data)
+    # need to make sure we set the selector prompt correctly
+        # only do this if not wearing baked, since the clip is automatically off in this case
+        # so need to make sure when we switch outfits, the prompt is still correct
+        if not is_wearing_baked_outfit:
+            if monika_chr.get_acs_of_type('mini-ribbon'):
+                $ store.mas_selspr.set_prompt("mini-ribbon", "change")
+            else:
+                $ store.mas_selspr.set_prompt("mini-ribbon", "wear")
+
+    $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
 
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
