@@ -3077,3 +3077,31 @@ label mas_reaction_gift_clothes_briaryoung_bralette_red_ruffles:
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
     return
+
+# Бики с вырезом
+
+label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_black:
+    call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_black")
+    return
+
+label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_green:
+    call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_green")
+    return
+
+label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_pink:
+    call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_pink")
+    return
+
+label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_purple:
+    call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_purple")
+    return
+
+label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_yellow:
+    call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_yellow")
+    return
+
+label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_white:
+    call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_white")
+    return
+
+label mas_reaction_gift_bikinicut:
