@@ -15,15 +15,15 @@
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "Dress (Dark blue, sparkly)",
+        "display_name": "Сияющее тёмно-синее платье",
         "thumb": "briaryoung_dress_dark_blue_sparkle",
         "group": "clothes",
         "select_dlg": [
-            "Glittery as the night sky~",
-            "This is so pretty!"
+            "Сверкающее, словно ночное небо~",
+            "Очень красиво!"
         ]
     },
-    "giftname": "dressdarkbluesparkle",
+    "giftname": "сияющее тёмно-синее платье",
     "pose_arms": {}
 }
 
