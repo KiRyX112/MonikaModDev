@@ -2706,7 +2706,7 @@ label mas_reaction_gift_clothes_orcaramelo_sweater_shoulderless:
 
         mas_giftCapGainAff(3)
 
-    m 1sub m 1sub "О!{w=0.5} Свитер!"
+    m 1sub "О!{w=0.5} Свитер!"
     m 1hub "И он ещё выглядит таким мягким!"
     if mas_isWinter():
         m 2eka "Ты такой внимательный, [player], подарил мне такую вещь в холодный зимний день..."
@@ -2922,6 +2922,7 @@ label mas_reaction_gift_choker(choker_name,desc=None):
 
     if gifted_before:
         m 1rksdlb "Ты уже дарил мне этот чокер, дурашка!"
+        return
 
     if len(store.mas_selspr.filter_acs(True, "choker")) > 0:
         m 1hub "О!{w=1} Ещё один чокер!"
@@ -3017,6 +3018,7 @@ label mas_reaction_gift_miniribbon(miniribbon_name, desc=None):
 
     if gifted_before:
         m 1rksdlb "Ты уже дарил мне эту ленточку, дурашка!"
+        return
 
     if len(store.mas_selspr.filter_acs(True, "mini-ribbon")) > 0:
         m 1hub "О!{w=1} Ещё один мини-ленточка!"
@@ -3046,6 +3048,32 @@ label mas_reaction_gift_miniribbon(miniribbon_name, desc=None):
 
     $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
 
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
+
+label mas_reaction_gift_clothes_briaryoung_bralette_red_ruffles(bralette_name, desc=None):
+    python:
+        sprite_data = mas_getSpriteObjInfo(
+            (store.mas_sprites.SP_CLOTHES, "briaryoung_bralette_red_ruffles")
+        )
+        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+
+        mas_giftCapGainAff(3)
+
+    m 1sub "О!{w=0.5} Это что-то новенькое!"
+    m 2mkbla "Сказать честно, я немного взволнована..."
+    m 2rkblb "Думаю...{w=0.5} ради тебя я надену это."
+    m 2gubsa "Ну так что? Ты готов?"
+
+    # try it on
+    call mas_clothes_change(sprite_object)
+
+    m 2eubsa "...{w=1} Мне немного неловко. Э-хе-хе~"
+    m 1ekbsa "Спасибо, [player]. Оно очень даже хорошо сидит."
+    m 3hubsb "Теперь, когда я буду надевать его, я буду думать о тебе. А-ха-ха~"
+
+    $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
     return

@@ -14,15 +14,15 @@
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "Bralette (Red, Ruffles)",
+        "display_name": "Красный бюстгальтер «Бралетт»",
         "thumb": "briaryoung_bralette_red_ruffles",
         "group": "clothes",
         "select_dlg": [
-            "How do I look?",
-            "Stunning~",
-            "Like what you see?"
+            "Как я выгляжу?",
+            "Изумительно~",
+            "Нравится то, что ты видишь?"
         ]
     },
-    "giftname": "braletteredruffles",
+    "giftname": "красный бюстгальтер «бралетт»",
     "pose_arms": {}
 }

@@ -23,7 +23,7 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Button Up (Flowered)",
+        "display_name": "Рубашка на пуговицах (В цветочек)",
         "thumb": "briaryoung_button_up_flowered",
         "group": "clothes",
         "select_dlg": [
@@ -31,7 +31,7 @@
             "Great choice, [player]!"
         ]
     },
-    "giftname": "buttonupflowered",
+    "giftname": "рубашка на пуговицах (в цветочек)",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",
