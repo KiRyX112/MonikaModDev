@@ -1172,12 +1172,12 @@ label mas_reaction_gift_generic_clothes_json(sprite_object):
             outfit_quip = renpy.random.choice(outfit_quips)
 
         m 1sua "Оу! {w=0.5}Новая одежда!"
-        m 1hub "Спасибо, [player]!{w=0.5} Я примерю его прямо сейчас!"
+        m 1hub "Спасибо, [player]!{w=0.5} Я примерю её прямо сейчас!"
 
         # try it on
         call mas_clothes_change(sprite_object)
 
-        m 2eka "Ну...{w=0.5} А ты как думаешь?"
+        m 2eka "Ну...{w=0.5} что скажешь?"
         m 2eksdla "Тебе она нравится?"
         # TODO: outfit randomization should actually get a response here
         #   should influence monika outfit selection
@@ -3052,7 +3052,7 @@ label mas_reaction_gift_miniribbon(miniribbon_name, desc=None):
         $ store.mas_filereacts.delete_file(giftname)
     return
 
-label mas_reaction_gift_clothes_briaryoung_bralette_red_ruffles(bralette_name, desc=None):
+label mas_reaction_gift_clothes_briaryoung_bralette_red_ruffles:
     python:
         sprite_data = mas_getSpriteObjInfo(
             (store.mas_sprites.SP_CLOTHES, "briaryoung_bralette_red_ruffles")
@@ -3069,8 +3069,8 @@ label mas_reaction_gift_clothes_briaryoung_bralette_red_ruffles(bralette_name, d
     # try it on
     call mas_clothes_change(sprite_object)
 
-    m 2eubsa "...{w=1} Мне немного неловко. Э-хе-хе~"
-    m 1ekbsa "Спасибо, [player]. Оно очень даже хорошо сидит."
+    m 2eubsa "...{w=1}Мне немного неловко. Э-хе-хе~"
+    m 1ekbsa "Спасибо, [player]. Оно очень даже хорошо сидит на мне."
     m 3hubsb "Теперь, когда я буду надевать его, я буду думать о тебе. А-ха-ха~"
 
     $ mas_finishSpriteObjInfo(sprite_data)
