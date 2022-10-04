@@ -3021,7 +3021,7 @@ label mas_reaction_gift_miniribbon(miniribbon_name, desc=None):
         return
 
     if len(store.mas_selspr.filter_acs(True, "mini-ribbon")) > 0:
-        m 1hub "О!{w=1} Ещё один мини-ленточка!"
+        m 1hub "О!{w=1} Ещё одна мини-ленточка!"
 
     else:
         m 1wuo "О!"
@@ -3104,4 +3104,34 @@ label mas_reaction_gift_clothes_briaryoung_heart_cut_bikini_white:
     call mas_reaction_gift_bikinicut("briaryoung_heart_cut_bikini_white")
     return
 
-label mas_reaction_gift_bikinicut:
+label mas_reaction_gift_bikinicut(bikinicut_name, desc=None):
+
+    $ sprite_data = mas_getSpriteObjInfo((store.mas_sprites.SP_CLOTHES, bikinicut_name))
+    $ sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+
+    $ mas_giftCapGainAff(2)
+
+    # check for incompatibility
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if gifted_before:
+        m 1rksdlb "Ты уже дарил мне это, дурашка!"
+        return
+
+    if len(store.mas_selspr.filter_clothes(True, "bikini-cut")) > 0:
+        m 1hub "О!{w=1} Ты подарил мне новое бикини, только с другим цветом!"
+
+    else:
+        m 1wuo "О!"
+        m 1sub "Ты подарил мне бикини? Оно ещё и с вырезом!"
+
+    m 1hub "Я так рада, спасибо! Люблю тебя, [player]!"
+    m 2dsa "Погоди секунду, сейчас надену её.{w=0.5}.{w=0.5}.{nw}"
+    call mas_clothes_change(sprite_object)
+    m 1hua "Готово."
+
+    $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
+
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return

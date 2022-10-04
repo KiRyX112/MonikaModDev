@@ -9,19 +9,20 @@
         "default": true,
         "use_reg_for_l": true
     },
+    "clothes_type": "bikini-cut",
     "stay_on_start": true,
     "ex_props": {
         "compat-downtiedstrand": true,
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "Heart-Cut Bikini (White)",
+        "display_name": "Белое бикини с вырезом в виде сердца",
         "thumb": "briaryoung_heart_cut_bikini_white",
         "group": "clothes",
         "select_dlg": [
-            "I love this look!"
+            "Мне нравится, как оно выглядит!"
         ]
     },
-    "giftname": "heartcutbikiniwhite",
+    "giftname": "белое бикини с вырезом в виде сердца",
     "pose_arms": {}
 }
