@@ -15,20 +15,20 @@
         "bow"
     ],
     "stay_on_start": true,
-    "giftname": "blackbow",
+    "giftname": "чёрный бант",
     "ex_props": {
         "ribbon-like": true
     },
     "dlg_desc": "black bow",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Bow (Black)",
+        "display_name": "Чёрный бант",
         "thumb": "multimokia_bow_black",
         "group": "ribbon",
         "select_dlg": [
-            "Great choice, [player]!",
-            "Very formal!",
-            "Are we going somewhere special?"
+            "Отличный выбор, [player]!",
+            "Очень формально!",
+            "Мы отправляемся в какое-то особенное место?"
         ]
     }
 }

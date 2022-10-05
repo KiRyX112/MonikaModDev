@@ -15,16 +15,16 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Navy Blue)",
+        "display_name": "Лента (тёмно-синий)",
         "thumb": "lanvallime_ribbon_navy_blue",
         "group": "ribbon",
         "hover_dlg": [
             "Are you a fan of the water, [player]?"
         ],
         "select_dlg": [
-            "You always keep my heart afloat~"
+            "Ты всегда поддерживаешь моё сердце на плаву~"
         ]
     },
-    "giftname": "navyblueribbon"
+    "giftname": "лента (тёмно-синий)"
 }
 

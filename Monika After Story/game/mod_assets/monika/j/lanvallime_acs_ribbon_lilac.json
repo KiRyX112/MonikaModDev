@@ -15,15 +15,15 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Lilac)",
+        "display_name": "Лента (Сиреневый)",
         "thumb": "lanvallime_ribbon_lilac",
         "group": "ribbon",
         "hover_dlg": [
-            "This looks like it would smell nice..."
+            "Похоже, он будет приятно пахнуть..."
         ],
         "select_dlg": [
-            "Just like you!"
+            "Красивый цвет!"
         ]
     },
-    "giftname": "lilacribbon"
+    "giftname": "лента (сиреневый)"
 }

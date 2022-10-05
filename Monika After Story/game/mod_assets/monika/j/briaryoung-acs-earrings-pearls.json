@@ -14,15 +14,15 @@
         "earrings"
     ],
     "stay_on_start": true,
-    "giftname": "pearlearrings",
+    "giftname": "серьги с жемчугом",
     "dlg_desc": "pearl earrings",
     "dlg_plural": true,
     "select_info": {
-        "display_name": "Pearl earrings",
+        "display_name": "Серьги с жемчугом",
         "thumb": "briaryoung_earrings_pearls",
         "group": "earrings",
         "select_dlg": [
-            "Cute huh?"
+            "Мило, да?"
         ]
     }
 }

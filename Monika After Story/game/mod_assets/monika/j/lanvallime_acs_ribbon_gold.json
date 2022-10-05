@@ -15,15 +15,15 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Gold)",
+        "display_name": "Лента (Золото)",
         "thumb": "lanvallime_ribbon_gold",
         "group": "ribbon",
         "hover_dlg": [
-            "All that glitters..."
+            "Все, что сияет..."
         ],
         "select_dlg": [
-            "Is better when I'm with you!"
+            "Когда я с тобой, всё сияет!"
         ]
     },
-    "giftname": "goldribbon"
+    "giftname": "лента (золото)"
 }

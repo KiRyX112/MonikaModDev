@@ -323,7 +323,7 @@ label monika_showpoem:
             ("Счастливый конец", poem_m4, False, False)
         ]
 
-        ret_back = ("Не важно", False, False, False, 20)
+        ret_back = ("Не важно.", False, False, False, 20)
         #Extend the new poems
         poems_list.extend(mas_poems.getSeenPoemsMenu())
 

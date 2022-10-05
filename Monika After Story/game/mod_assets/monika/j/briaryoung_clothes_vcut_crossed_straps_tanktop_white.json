@@ -14,14 +14,14 @@
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "V-cut Crossed Straps Tanktop (White)",
+        "display_name": "Белая безрукавка с V-образным вырезом",
         "thumb": "briaryoung_vcut_crossed_straps_tanktop_white",
         "group": "clothes",
         "select_dlg": [
-            "How do I look?",
-            "Perfect for a summer day."
+            "Как я выгляжу?",
+            "Отлично подходит для летнего дня."
         ]
     },
-    "giftname": "vcutcrossedstrapstanktopwhite",
+    "giftname": "белая безрукавка с v-образным вырезом",
     "pose_arms": {}
 }

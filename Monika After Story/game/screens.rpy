@@ -571,7 +571,7 @@ image input_caret:
         linear 0.35 alpha 1
         repeat
 
-screen input(prompt, use_return_button=False, return_button_prompt="Не важно", return_button_value="cancel_input"):
+screen input(prompt, use_return_button=False, return_button_prompt="Не важно.", return_button_value="cancel_input"):
     style_prefix "input"
 
     window:
@@ -2983,8 +2983,8 @@ screen mas_check_scrollable_menu(
     items,
     display_area,
     scroll_align,
-    selected_button_prompt="Готово",
-    default_button_prompt="Не важно",
+    selected_button_prompt="Готово.",
+    default_button_prompt="Не важно.",
     return_all=False
 ):
     default buttons_data = {

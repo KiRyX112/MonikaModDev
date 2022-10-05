@@ -18,15 +18,15 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Shirt (Rest Here)",
+        "display_name": "Футболка (отдыхать здесь)",
         "thumb": "finale_shirt_resthere",
         "group": "clothes",
         "select_dlg": [
-            "Great choice, [player]! This is so comfortable~",
-            "I can't wait until you actually can rest your head here~"
+            "Прекрасный выбор, [player]! Она такая удобная~",
+            "Я не могу дождаться, когда ты сможешь отдохнуть прямо здесь!~"
         ]
     },
-    "giftname": "resthereshirt",
+    "giftname": "футболка (отдыхать здесь)",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

@@ -15,7 +15,7 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Sky Blue)",
+        "display_name": "Лента (Небесно-голубой)",
         "thumb": "lanvallime_ribbon_sky_blue",
         "group": "ribbon",
         "hover_dlg": [
@@ -23,8 +23,8 @@
             "Have you ever been cloud gazing?"
         ],
         "select_dlg": [
-            "You always make me feel like I'm in the clouds, [player]."
+            "Благодаря тебе, [player], я словно в облаках."
         ]
     },
-    "giftname": "skyblueribbon"
+    "giftname": "лента (небесно-голубой)"
 }

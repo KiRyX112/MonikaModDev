@@ -18,14 +18,14 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Hoodie (Green)",
+        "display_name": "Зелёное худи",
         "thumb": "finale_hoodie_green",
         "group": "clothes",
         "select_dlg": [
-            "Nothing's quite as comfortable as a hoodie!"
+            "Ничто так не удобно, как худи!"
         ]
     },
-    "giftname": "greenhoodie",
+    "giftname": "зелёное худи",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

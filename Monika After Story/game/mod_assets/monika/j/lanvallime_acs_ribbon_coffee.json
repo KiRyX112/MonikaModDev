@@ -15,15 +15,15 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Coffee)",
+        "display_name": "Лента (Кофе)",
         "thumb": "lanvallime_ribbon_coffee",
         "group": "ribbon",
         "hover_dlg": [
-            "There's something about this color I really like..."
+            "Что-то в этом цвете мне очень нравится..."
         ],
         "select_dlg": [
-            "Just like my coffee~"
+            "Цвет как у моего кофе!"
         ]
     },
-    "giftname": "coffeeribbon"
+    "giftname": "лента (кофе)"
 }

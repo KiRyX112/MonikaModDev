@@ -15,15 +15,15 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Orange)",
+        "display_name": "Лента (Оранжевый)",
         "thumb": "lanvallime_ribbon_orange",
         "group": "ribbon",
         "hover_dlg": [
             "A great fall color!"
         ],
         "select_dlg": [
-            "I can picture us snuggling together on a hayride~"
+            "Отличный осенний цвет!"
         ]
     },
-    "giftname": "orangeribbon"
+    "giftname": "лента (оранжевый)"
 }

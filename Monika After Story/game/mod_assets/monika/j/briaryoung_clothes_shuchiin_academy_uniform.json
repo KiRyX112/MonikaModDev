@@ -21,11 +21,11 @@
         "cosplay": true
     },
     "select_info": {
-        "display_name": "Shuchi'in Academy Uniform",
+        "display_name": "Форма академии Шучиин",
         "thumb": "briaryoung_shuchiin_academy_uniform",
         "group": "clothes",
         "select_dlg": [
-            "I detect love nearby~"
+            "Я обнаружила чувство любви!"
         ]
     },
     "pose_arms": {
@@ -66,5 +66,5 @@
             "layers": "5^10"
         }
     },
-    "giftname": "shuchiinacademyuniform"
+    "giftname": "форма академии шучиин"
 }

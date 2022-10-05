@@ -192,7 +192,7 @@ init -99 python in mas_weather:
 
     # weather constants
     # NOTE: just reference MOOD's numbers
-    WEAT_RETURN = "Не важно"
+    WEAT_RETURN = "Не важно."
 
     #Stores the time at which weather should change
     weather_change_time = None

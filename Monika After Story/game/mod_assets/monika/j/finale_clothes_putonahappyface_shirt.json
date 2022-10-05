@@ -23,15 +23,14 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Shirt (Put on a happy face)",
+        "display_name": "Футболка (Изобрази счастливое лицо)",
         "thumb": "finale_putonahappyface_shirt",
         "group": "clothes",
         "select_dlg": [
-            "Come on [player], where's your happy face?",
-            "What can I say? Musical puns are my forte~"
+            "Ну же, [player], где твоё счастливое лицо?"
         ]
     },
-    "giftname": "putonahappyfaceshirt",
+    "giftname": "футболка (изобрази счастливое лицо)",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

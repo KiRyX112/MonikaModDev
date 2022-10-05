@@ -23,15 +23,15 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Kimono (Pink)",
+        "display_name": "Розовое кимоно",
         "thumb": "mayjay_pink_kimono",
         "group": "clothes",
         "select_dlg": [
-            "What a beautiful kimono~",
-            "I can just imagine wearing this to a festival!"
+            "Какое красивое кимоно~",
+            "Теперь я представляю, как надену это на фестиваль!"
         ]
     },
-    "giftname": "pinkkimono",
+    "giftname": "розовое кимоно",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

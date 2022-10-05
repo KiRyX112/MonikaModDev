@@ -21,15 +21,14 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "T-Shirt (Jurassic World)",
+        "display_name": "Футболка (Мир Юрского периода)",
         "thumb": "briaryoung_tshirt_jurassic_world",
         "group": "clothes",
         "select_dlg": [
-            "Dinosaurs are so fascinating!",
-            "Well [player]? Do I look... prehistoric? Ahaha!"
+            "Динозавры так завораживают!"
         ]
     },
-    "giftname": "tshirtjurassicworld",
+    "giftname": "футболка (мир юрского периода)",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

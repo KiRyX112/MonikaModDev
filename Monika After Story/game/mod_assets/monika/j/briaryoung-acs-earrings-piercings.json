@@ -14,15 +14,15 @@
         "earrings"
     ],
     "stay_on_start": true,
-    "giftname": "blacksilverpiercings",
+    "giftname": "пирсинг (черно-серебристый)",
     "dlg_desc": "black silver piercings",
     "dlg_plural": true,
     "select_info": {
-        "display_name": "Piercings (Black-silver)",
+        "display_name": "Пирсинг (черно-серебристый)",
         "thumb": "briaryoung_blacksilver_piercings",
         "group": "earrings",
         "select_dlg": [
-            "Cute huh?"
+            "Мило, да?"
         ]
     }
 }

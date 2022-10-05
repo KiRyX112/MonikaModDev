@@ -18,15 +18,15 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Sweater Vest (Blue)",
+        "display_name": "Синий вязаный жилет",
         "thumb": "finale_sweatervest_blue",
         "group": "clothes",
         "select_dlg": [
-            "Both comfortable and practical!",
-            "Do you like this color on me?"
+            "Удобно и практично!",
+            "Тебе нравится этот цвет на мне?"
         ]
     },
-    "giftname": "bluesweatervest",
+    "giftname": "синий вязаный жилет",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

@@ -14,14 +14,14 @@
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "Tanktop (White)",
+        "display_name": "Белая майка",
         "thumb": "finale_tanktop",
         "group": "clothes",
         "select_dlg": [
-            "How do I look, [player]?",
-            "Perfect for a hot day."
+            "Как я выгляжу, [player]?",
+            "Прекрасно подходит для жаркого дня."
         ]
     },
-    "giftname": "tanktop",
+    "giftname": "белая майка",
     "pose_arms": {}
 }

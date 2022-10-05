@@ -14,13 +14,13 @@
         "compat-downtiedstrand": true
     },
     "select_info": {
-        "display_name": "Sleeveless Turtleneck (Black)",
+        "display_name": "Чёрная водолазка без рукавов",
         "thumb": "briaryoung_sleeveless_turtleneck_black",
         "group": "clothes",
         "select_dlg": [
-            "I love this look!"
+            "Как я классно в этом выгляжу!"
         ]
     },
-    "giftname": "sleevelessturtleneckblack",
+    "giftname": "чёрная водолазка без рукавов",
     "pose_arms": {}
 }

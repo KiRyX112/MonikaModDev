@@ -9,7 +9,7 @@
         "dark bracelet": true,
         "formal": true
     },
-    "giftname": "wineasymmetricalpullover",
+    "giftname": "пуловер (винный асимметричный)",
     "img_sit": "multimokia_wine_asymmetrical_pullover",
     "name": "multimokia_wine_asymmetrical_pullover",
     "pose_arms": {
@@ -63,12 +63,12 @@
         "use_reg_for_l": true
     },
     "select_info": {
-        "display_name": "Pullover (Wine Asymmetrical)",
+        "display_name": "Пуловер (Винный асимметричный)",
         "group": "clothes",
         "select_dlg": [
-            "How do I look, [player]?",
-            "Pretty cute, right?",
-            "Great choice, [player]! This is so comfortable~"
+            "Как я выгляжу, [player]?",
+            "Довольно мило, правда?",
+            "Отличный выбор, [player]! В нём очень удобно~"
         ],
         "thumb": "multimokia_wine_asymmetrical_pullover"
     },

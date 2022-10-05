@@ -33,7 +33,7 @@ init -1 python in mas_stories:
     TYPE_SCARY = "scary"
 
 
-    STORY_RETURN = "Не важно"
+    STORY_RETURN = "Не важно."
     story_database = dict()
 
     #Time between story unlocks of the same type (in hours). Changes over sessions, but also changes after the next story unlocks

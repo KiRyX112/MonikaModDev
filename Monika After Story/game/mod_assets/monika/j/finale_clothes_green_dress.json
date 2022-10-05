@@ -23,16 +23,16 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Dress (Green)",
+        "display_name": "Зелёное платье",
         "thumb": "finale_green_dress",
         "group": "clothes",
         "select_dlg": [
-            "How do I look, [player]?",
-            "Pretty cute, right?",
-            "Are we going somewhere special today?~"
+            "Как я выгляжу, [player]?",
+            "Довольно мило, правда?",
+            "Мы сегодня идём в какое-то особенное место?~"
         ]
     },
-    "giftname": "greendress",
+    "giftname": "зелёное платье",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

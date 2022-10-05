@@ -21,18 +21,17 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "T-Shirt (Jurassic Park)",
+        "display_name": "Футболка (Парк Юрского Периода)",
         "thumb": "briaryoung_tshirt_jurassic_park",
         "group": "clothes",
         "select_dlg": [
-            "Life finds a way...",
-            "Does this make me a clever girl?",
-            "Clever [boy]~",
-            "Welcome to Jurassic Park!",
-            "I promise I won't bite~"
+            "Жизнь находит свой путь...",
+            "Делает ли это меня умной девочкой?",
+            "Добро пожаловать в Парк Юрского периода!",
+            "Обещаю, я не укушу."
         ]
     },
-    "giftname": "tshirtjurassicpark",
+    "giftname": "футболка (парк юрского периода)",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

@@ -18,15 +18,15 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Turtleneck Sweater (Beige)",
+        "display_name": "Бежевый свитер с высоким воротом",
         "thumb": "finale_turtleneck_sweater_beige",
         "group": "clothes",
         "select_dlg": [
-            "So cozy~",
-            "Perfect for snuggling!"
+            "Так приятно~",
+            "Идеально подходит для обнимашек!"
         ]
     },
-    "giftname": "beigeturtlenecksweater",
+    "giftname": "бежевый свитер с высоким воротом",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",

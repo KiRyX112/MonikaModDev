@@ -1144,7 +1144,7 @@ label mas_reaction_gift_generic_sprite_json:
                 acs_quip = renpy.substitute(renpy.random.choice(acs_quips))
 
             m 1hua "Спасибо за [sprite_str], [acs_quip]"
-            m 3hub "Я не могу дождаться, чтобы попробовать [item_ref]!"
+            m 3hub "Я не могу дождаться, чтобы опробовать [item_ref]!"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
@@ -3132,6 +3132,124 @@ label mas_reaction_gift_bikinicut(bikinicut_name, desc=None):
 
     $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
 
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
+
+# Шучиин форма
+label mas_reaction_gift_clothes_briaryoung_shuchiin_academy_uniform:
+    python:
+        sprite_data = mas_getSpriteObjInfo(
+            (store.mas_sprites.SP_CLOTHES, "briaryoung_shuchiin_academy_uniform")
+        )
+        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+
+        mas_giftCapGainAff(3)
+
+    m 1sub "Эта форма!"
+    m 3hub "Она ведь из того аниме, [player]!"
+    m 3eua "Одну секунду, позволь мне надеть её.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+    call mas_clothes_change(sprite_object)
+
+    m 2eua "Ну, как я смотрюсь?"
+    m 7hua "Думаю, что она выглядит довольно мило на мне.{w=0.2} {nw}"
+    extend 3rubsa "Даже представить не могла, что ты найдешь нечто подобное~"
+    m 1hub "Спасибо тебе, [player]!"
+
+    $ mas_finishSpriteObjInfo(sprite_data)
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
+
+label mas_reaction_gift_acs_briaryoung_earrings_pearls:
+    python:
+        sprite_data = mas_getSpriteObjInfo(
+            (store.mas_sprites.SP_ACS, "briaryoung_earrings_pearls")
+        )
+        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+
+        mas_giftCapGainAff(6)
+
+    # check for incompatibility
+    $ is_wearing_baked_outfit = monika_chr.is_wearing_clothes_with_exprop("baked outfit")
+
+    if gifted_before:
+        m 1rksdlb "Ты уже дарил мне эти серьги, дурашка!"
+        return
+
+    if len(store.mas_selspr.filter_acs(True, "earrings")) > 0:
+        m 1hub "О!{w=1} Ты подарил мне новые серьги!"
+
+    else:
+        m 1wuo "О!"
+        m 1sub "Ты подарил мне серьги?"
+
+    m 1hub "Я так рада, спасибо! Люблю тебя, [player]!"
+    m 2dsa "Погоди секунду, сейчас надену их.{w=0.5}.{w=0.5}.{nw}"
+    $ monika_chr.wear_acs(sprite_object)
+    m 1hua "Готово."
+
+    # need to make sure we set the selector prompt correctly
+        # only do this if not wearing baked, since the clip is automatically off in this case
+        # so need to make sure when we switch outfits, the prompt is still correct
+    if not is_wearing_baked_outfit:
+        if monika_chr.get_acs_of_type('earrings'):
+            $ store.mas_selspr.set_prompt("earrings", "change")
+        else:
+            $ store.mas_selspr.set_prompt("earrings", "wear")
+
+    $ mas_finishSpriteObjInfo(sprite_data, unlock_sel=not is_wearing_baked_outfit)
+
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
+
+# Худи
+label mas_reaction_gift_clothes_finale_hoodie_green:
+    python:
+        sprite_data = mas_getSpriteObjInfo(
+            (store.mas_sprites.SP_CLOTHES, "finale_hoodie_green")
+        )
+        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+
+        mas_giftCapGainAff(4)
+
+    m 1sub "Худи!"
+    m 3hub "Ты подарил мне худи, спасибо, [player]!"
+    m 3eua "Одну секунду, позволь мне надеть её.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+    call mas_clothes_change(sprite_object)
+
+    m 2eua "Ну, как я смотрюсь?"
+    m 7hua "Думаю, что я выгляжу довольно мило.{w=0.2} {nw}"
+    extend 3rubsa "Это замечательный подарок~"
+    m 1hub "Спасибо тебе, [player]!"
+
+    $ mas_finishSpriteObjInfo(sprite_data)
+    if giftname is not None:
+        $ store.mas_filereacts.delete_file(giftname)
+    return
+
+# Кимоно
+label mas_reaction_gift_clothes_mayjay_pink_kimono:
+    python:
+        sprite_data = mas_getSpriteObjInfo(
+            (store.mas_sprites.SP_CLOTHES, "mayjay_pink_kimono")
+        )
+        sprite_type, sprite_name, giftname, gifted_before, sprite_object = sprite_data
+
+        mas_giftCapGainAff(3)
+
+    m 1sub "Кимоно!"
+    m 3hub "Боже, ты подарил мне кимоно, [player]!"
+    m 3eua "Одну секунду, позволь мне надеть это.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+    call mas_clothes_change(sprite_object)
+
+    m 2eua "Ну, как я смотрюсь?"
+    m 7hua "Думаю, что оно выглядит довольно мило на мне.{w=0.2} {nw}"
+    extend 3rubsa "Я как раз думала, что было бы неплохо иметь собственное кимоно~"
+    m 1hub "Спасибо тебе, [player]!"
+
+    $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
         $ store.mas_filereacts.delete_file(giftname)
     return

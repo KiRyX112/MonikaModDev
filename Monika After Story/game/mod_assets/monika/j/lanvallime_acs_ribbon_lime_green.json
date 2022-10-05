@@ -15,15 +15,15 @@
     ],
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Lime Green)",
+        "display_name": "Лента (Лаймовый)",
         "thumb": "lanvallime_ribbon_lime_green",
         "group": "ribbon",
         "hover_dlg": [
             "Reminds me of a bird I really like!"
         ],
         "select_dlg": [
-            "Great choice, you know how much I love green!"
+            "Отличный выбор, ты же знаешь, как я люблю подобные цвета!"
         ]
     },
-    "giftname": "limegreenribbon"
+    "giftname": "лента (лаймовый)"
 }

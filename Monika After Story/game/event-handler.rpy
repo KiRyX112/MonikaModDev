@@ -3318,20 +3318,20 @@ label prompt_menu:
         talk_menu = []
         if len(unseen_event_labels)>0 and not persistent._mas_unsee_unseen:
             
-            talk_menu.append((_("{b}Непрочитанное{/b}"), "unseen"))
+            talk_menu.append((_("{b}Непрочитанное.{/b}"), "unseen"))
         if mas_hasBookmarks():
-            talk_menu.append((_("Закладки"),"bookmarks"))
+            talk_menu.append((_("Закладки."),"bookmarks"))
         talk_menu.append((_("Эй, [m_name]..."), "prompt"))
         if len(repeatable_events)>0:
-            talk_menu.append((_("Повторить разговор"), "repeat"))
+            talk_menu.append((_("Повторить разговор."), "repeat"))
         if _mas_getAffection() > -50:
             if mas_passedILY(pass_time=datetime.timedelta(0,10)):
                 talk_menu.append((_("Я тебя тоже люблю!"),"love_too"))
             else:
                 talk_menu.append((_("Я люблю тебя!"), "love"))
         talk_menu.append((_("Мне сейчас..."), "moods"))
-        talk_menu.append((_("До свидания"), "goodbye"))
-        talk_menu.append((_("Не важно"),"nevermind"))
+        talk_menu.append((_("До свидания."), "goodbye"))
+        talk_menu.append((_("Не важно."),"nevermind"))
 
         renpy.say(m, store.mas_affection.talk_quip()[1], interact=False)
         madechoice = renpy.display_menu(talk_menu, screen="talk_choice")
@@ -3597,8 +3597,8 @@ label mas_bookmarks:
         bookmarks_items.sort()
 
         bk_menu_final_items = (
-            (_("I'd like to remove a bookmark"), "remove_bookmark", False, False, 20),
-            (_("Nevermind"), "nevermind", False, False, 0)
+            (_("Я хотел бы удалить закладку."), "remove_bookmark", False, False, 20),
+            (_("Не важно."), "nevermind", False, False, 0)
         )
 
     # FALL THROUGH
@@ -3694,7 +3694,7 @@ label mas_bookmarks_unbookmark(bookmarks_items):
 
         $ renpy.say(m, "Просто выбери закладку, если ты уверен, что хочешь её удалить.", interact=False)
 
-    call screen mas_check_scrollable_menu(bookmarks_items, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, selected_button_prompt="Remove selected")
+    call screen mas_check_scrollable_menu(bookmarks_items, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, selected_button_prompt="Удалить выбранное")
 
     $ bookmarks_to_remove = _return
     $ bookmarks_items = _convert_items(bookmarks_items, "GEN_ITEMS")
