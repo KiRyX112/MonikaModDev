@@ -3352,7 +3352,7 @@ screen mas_selector_sidebar(items, mailbox, confirm, cancel, restore, remover=No
                             first_spacing 0
                             null height 1
 
-                            textbutton _("Show All"):
+                            textbutton _("Показать всё"):
                                 style "hkb_button"
                                 xysize (300, 40)
                                 xalign 0.8

@@ -3216,7 +3216,7 @@ label mas_reaction_gift_clothes_finale_hoodie_green:
 
     m 1sub "Худи!"
     m 3hub "Ты подарил мне худи, спасибо, [player]!"
-    m 3eua "Одну секунду, позволь мне надеть её.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+    m 3eua "Одну секунду, позволь мне надеть это.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
     call mas_clothes_change(sprite_object)
 
     m 2eua "Ну, как я смотрюсь?"
