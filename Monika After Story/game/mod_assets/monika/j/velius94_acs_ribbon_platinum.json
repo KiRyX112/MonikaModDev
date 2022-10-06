@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Platinum, s-type)",
+        "display_name": "Платиновая небольшая ленточка",
         "thumb": "velius94_ribbon_platinum",
         "group": "ribbon",
         "select_dlg": [
-            "I'm quite fond of it, actually."
+            "На самом деле, мне цвет очень нравится."
         ]
     },
-    "giftname": "stypeplatinumribbon"
+    "giftname": "платиновая небольшая ленточка"
 }

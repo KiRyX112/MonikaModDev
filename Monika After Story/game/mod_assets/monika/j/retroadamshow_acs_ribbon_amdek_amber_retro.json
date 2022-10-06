@@ -11,15 +11,15 @@
     "rec_layer": 3,
     "acs_type": "ribbon",
     "stay_on_start": true,
-    "giftname": "amdekamberribbon",
+    "giftname": "ленточка (янтарный амдек)",
     "dlg_desc": "Amdek-style amber ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Amdek Amber)",
+        "display_name": "Ленточка (янтарный амдек)",
         "thumb": "retro_ribbon_amdek_amber",
         "group": "ribbon",
         "select_dlg": [
-            "How nostalgic!"
+            "Какая ностальгия!"
         ]
     }
 }

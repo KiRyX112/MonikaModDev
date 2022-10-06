@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Gray, s-type)",
+        "display_name": "Серая небольшая ленточка",
         "thumb": "velius94_ribbon_gray",
         "group": "ribbon",
         "select_dlg": [
-            "That's a really unique color, [player]."
+            "Это действительно уникальный цвет, [player]."
         ]
     },
-    "giftname": "stypegrayribbon"
+    "giftname": "серая небольшая ленточка"
 }

@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Sapphire, s-type)",
+        "display_name": "Сапфировая небольшая ленточка",
         "thumb": "velius94_ribbon_sapphire",
         "group": "ribbon",
         "select_dlg": [
-            "Nice choice, [player]!"
+            "Хороший выбор, [player]!"
         ]
     },
-    "giftname": "stypesapphireribbon"
+    "giftname": "сапфировая небольшая ленточка"
 }

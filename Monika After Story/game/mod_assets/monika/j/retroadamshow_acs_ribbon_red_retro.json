@@ -11,15 +11,15 @@
     "rec_layer": 3,
     "acs_type": "ribbon",
     "stay_on_start": true,
-    "giftname": "8redribbon",
+    "giftname": "ленточка (8-битная красная)",
     "dlg_desc": "8-bit red ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (8-bit Red)",
+        "display_name": "Ленточка (8-битная красная)",
         "thumb": "retro_ribbon_red",
         "group": "ribbon",
         "select_dlg": [
-            "How nostalgic!"
+            "Какая ностальгия!"
         ]
     }
 }

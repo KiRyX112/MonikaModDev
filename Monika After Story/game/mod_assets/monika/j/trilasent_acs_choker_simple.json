@@ -15,11 +15,11 @@
     "dlg_desc": "choker",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Choker (Simple)",
+        "display_name": "Обычный чокер",
         "thumb": "trilasent_choker_simple",
         "group": "choker"
     },
-    "giftname": "simplechoker",
+    "giftname": "обычный чокер",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true

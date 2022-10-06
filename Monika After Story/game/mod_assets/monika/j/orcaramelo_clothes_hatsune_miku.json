@@ -22,13 +22,12 @@
         "bare-shoulders": true
     },
     "select_info": {
-        "display_name": "Hatsune Miku",
+        "display_name": "Хацунэ Мику",
         "thumb": "orcaramelo_hatsune_miku",
         "group": "clothes",
         "select_dlg": [
-            "The first sound of the future!",
-            "Ready for the stage!",
-            "Only missing a leek..."
+            "Первая песня будущего!",
+            "Готова к выступлению!"
         ]
     },
     "pose_arms": {
@@ -69,5 +68,5 @@
             "layers": "5^10"
         }
     },
-    "giftname": "hatsunemikucosplay"
+    "giftname": "костюм хацунэ мику"
 }

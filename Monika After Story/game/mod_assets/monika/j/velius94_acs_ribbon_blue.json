@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Blue, s-type)",
+        "display_name": "Синяя небольшая ленточка",
         "thumb": "velius94_ribbon_blue",
         "group": "ribbon",
         "select_dlg": [
-            "Great choice, [player]!"
+            "Отличный выбор, [player]!"
         ]
     },
-    "giftname": "stypeblueribbon"
+    "giftname": "синяя небольшая ленточка"
 }

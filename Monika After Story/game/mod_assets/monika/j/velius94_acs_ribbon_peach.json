@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Peach, s-type)",
+        "display_name": "Персиковая небольшая ленточка",
         "thumb": "velius94_ribbon_peach",
         "group": "ribbon",
         "select_dlg": [
-            "Just like autumn leaves..."
+            "Как осенние листья..."
         ]
     },
-    "giftname": "stypepeachribbon"
+    "giftname": "персиковая небольшая ленточка"
 }

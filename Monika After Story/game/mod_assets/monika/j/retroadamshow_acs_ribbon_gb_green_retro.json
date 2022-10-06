@@ -11,15 +11,15 @@
     "rec_layer": 3,
     "acs_type": "ribbon",
     "stay_on_start": true,
-    "giftname": "gameboygreenribbon",
+    "giftname": "ленточка (зелёный Game Boy)",
     "dlg_desc": "Game Boy-style green ribbon",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ribbon (Game Boy Green) ",
+        "display_name": "Ленточка (зелёный Game Boy)",
         "thumb": "retro_ribbon_gb_green",
         "group": "ribbon",
         "select_dlg": [
-            "How nostalgic!"
+            "Какая ностальгия!"
         ]
     }
 }

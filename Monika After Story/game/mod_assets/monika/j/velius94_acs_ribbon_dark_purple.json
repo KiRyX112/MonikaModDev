@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Dark Purple, s-type)",
+        "display_name": "Тёмно-фиолетовая небольшая ленточка",
         "thumb": "velius94_ribbon_dark_purple",
         "group": "ribbon",
         "select_dlg": [
-            "Lavender is a nice change of pace."
+            "Довольно приятный цвет."
         ]
     },
-    "giftname": "stypedarkpurpleribbon"
+    "giftname": "тёмно-фиолетовая небольшая ленточка"
 }

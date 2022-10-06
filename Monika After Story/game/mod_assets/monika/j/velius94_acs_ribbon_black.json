@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Black, s-type)",
+        "display_name": "Чёрная небольшая ленточка",
         "thumb": "velius94_ribbon_black",
         "group": "ribbon",
         "select_dlg": [
-            "Are we going somewhere special, [player]?"
+            "Мы отправляемся в какое-то особенное место, [player]?"
         ]
     },
-    "giftname": "stypeblackribbon"
+    "giftname": "чёрная небольшая ленточка"
 }

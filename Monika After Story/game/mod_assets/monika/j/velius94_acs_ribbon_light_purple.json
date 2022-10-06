@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Light Purple, s-type)",
+        "display_name": "Светло-фиолетовая небольшая ленточка",
         "thumb": "velius94_ribbon_light_purple",
         "group": "ribbon",
         "select_dlg": [
-            "Really has a spring feel to it."
+            "Чувствуется весна в этом цвете."
         ]
     },
-    "giftname": "stypelightpurpleribbon"
+    "giftname": "светло-фиолетовая небольшая ленточка"
 }

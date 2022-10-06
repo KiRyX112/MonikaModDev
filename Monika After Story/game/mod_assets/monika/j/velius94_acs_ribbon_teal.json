@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Teal, s-type)",
+        "display_name": "Бирюзовая небольшая ленточка",
         "thumb": "velius94_ribbon_teal",
         "group": "ribbon",
         "select_dlg": [
-            "Just like a summer sky."
+            "Прямо как летнее небо."
         ]
     },
-    "giftname": "stypetealribbon"
+    "giftname": "бирюзовая небольшая ленточка"
 }

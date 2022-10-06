@@ -4730,7 +4730,7 @@ label monika_ghost:
     return
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_ribbon",category=['моника'],prompt="Банты",random=True))
+    addEvent(Event(persistent.event_database,eventlabel="monika_ribbon",category=['моника'],prompt="Ленточки",random=True))
 
 label monika_ribbon:
     # TODO: We need a better handling for this

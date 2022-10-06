@@ -15,14 +15,14 @@
     "dlg_desc": "choker",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Heart Choker",
+        "display_name": "Чокер с формой сердца",
         "thumb": "sirnimblybottoms_heart_choker",
         "group": "choker",
         "select_dlg": [
             "Aww the heart design is so cute~"
         ]
     },
-    "giftname": "heartchoker",
+    "giftname": "чокер с формой серда",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true

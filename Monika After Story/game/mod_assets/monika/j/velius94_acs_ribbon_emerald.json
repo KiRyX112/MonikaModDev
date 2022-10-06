@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Emerald, s-type)",
+        "display_name": "Изумрудная небольшая ленточка",
         "thumb": "velius94_ribbon_emerald",
         "group": "ribbon",
         "select_dlg": [
-            "It's just like my eyes!"
+            "Это же цвет моих глаз!"
         ]
     },
-    "giftname": "stypeemeraldribbon"
+    "giftname": "изумрудная небольшая ленточка"
 }

@@ -11,14 +11,14 @@
     "rec_layer": 3,
     "acs_type": "bunny-scrunchie",
     "stay_on_start": true,
-    "giftname": "bluebunnyscrunchie",
+    "giftname": "синяя ленточка в форме кроличьих ушек",
     "ex_props": {
         "ribbon-like": true
     },
     "dlg_desc": "blue bunny scrunchie",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Bunny Scrunchie (Blue)",
+        "display_name": "Синяя ленточка в форме кроличьих ушек",
         "thumb": "velius94_bunnyscrunchie_blue",
         "group": "ribbon" 
     }

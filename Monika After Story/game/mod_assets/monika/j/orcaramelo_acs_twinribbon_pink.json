@@ -14,13 +14,13 @@
     "dlg_desc": "pink twin ribbons",
     "dlg_plural": true,
     "select_info": {
-        "display_name": "Twin Ribbon (Pink)",
+        "display_name": "Двойная ленточка (Розовый)",
         "thumb": "orcaramelo_twinribbon_pink",
         "group": "ribbon",
         "select_dlg": [
-            "Pink looks pretty cute on me, right?",
-            "I love this color, [player]."
+            "Розовый цвет мне очень идет, правда?",
+            "Мне нравится этот цвет, [player]."
         ]
     },
-    "giftname": "pinktwinribbon"
+    "giftname": "двойная ленточка (розовый)"
 }

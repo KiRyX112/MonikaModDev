@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Ruby, s-type)",
+        "display_name": "Рубиновая небольшая ленточка",
         "thumb": "velius94_ribbon_ruby",
         "group": "ribbon",
         "select_dlg": [
-            "Doesn't it look pretty?"
+            "Разве это не красиво?"
         ]
     },
-    "giftname": "styperubyribbon"
+    "giftname": "рубиновая небольшая ленточка"
 }

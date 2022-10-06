@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Silver, s-type)",
+        "display_name": "Серебристая небольшая ленточка",
         "thumb": "velius94_ribbon_silver",
         "group": "ribbon",
         "select_dlg": [
-            "Nice choice, [player]."
+            "Хороший выбор, [player]."
         ]
     },
-    "giftname": "stypesilverribbon"
+    "giftname": "серебристая небольшая ленточка"
 }

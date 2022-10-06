@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Pink, s-type)",
+        "display_name": "Розовая небольшая ленточка",
         "thumb": "velius94_ribbon_pink",
         "group": "ribbon",
         "select_dlg": [
-            "Good choice!"
+            "Хороший выбор!"
         ]
     },
-    "giftname": "stypepinkribbon"
+    "giftname": "розовая небольшая ленточка"
 }

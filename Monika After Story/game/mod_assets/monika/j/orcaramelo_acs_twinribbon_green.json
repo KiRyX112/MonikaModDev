@@ -14,13 +14,13 @@
     "dlg_desc": "green twin ribbons",
     "dlg_plural": true,
     "select_info": {
-        "display_name": "Twin Ribbon (Green)",
+        "display_name": "Двойная ленточка (Зелёный)",
         "thumb": "orcaramelo_twinribbon_green",
         "group": "ribbon",
         "select_dlg": [
-            "Ehehe, my favorite color~",
-            "Nice choice, [player]~"
+            "Э-хе-хе, мой любимый цвет~",
+            "Хороший выбор, [player]~"
         ]
     },
-    "giftname": "greentwinribbon"
+    "giftname": "двойная ленточка (зелёный)"
 }

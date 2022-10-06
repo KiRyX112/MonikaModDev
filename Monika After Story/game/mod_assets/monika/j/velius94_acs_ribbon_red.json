@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Red, s-type)",
+        "display_name": "Красная небольшая ленточка",
         "thumb": "velius94_ribbon_red",
         "group": "ribbon",
         "select_dlg": [
-            "Just like roses~"
+            "Красивый цвет роз~"
         ]
     },
-    "giftname": "styperedribbon"
+    "giftname": "красная небольшая ленточка"
 }

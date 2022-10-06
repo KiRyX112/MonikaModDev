@@ -12,12 +12,12 @@
     "acs_type": "s-type-ribbon",
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Ribbon (Wine, s-type)",
+        "display_name": "Винная небольшая ленточка",
         "thumb": "velius94_ribbon_wine",
         "group": "ribbon",
         "select_dlg": [
-            "Formal! Are you taking me somewhere special, [player]?"
+            "Как формально! Хочешь отвести меня в какое-то особенное место, [player]?"
         ]
     },
-    "giftname": "stypewineribbon"
+    "giftname": "винная небольшая ленточка"
 }
