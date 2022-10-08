@@ -561,7 +561,7 @@ label v0_12_5(version="v0_12_5"):
         if seen_event("monika_affection_nickname"):
             mas_setEVLPropValues(
                 "monika_affection_nickname",
-                prompt="Can I call you a different nickname?"
+                prompt="Могу я называть тебя немного по-другому?"
             )
 
         if datetime.date.today() < datetime.date(2021, 12, 31) and persistent._mas_nye_spent_nye:
@@ -1164,23 +1164,23 @@ label v0_11_3(version="v0_11_3"):
 
         #Store all the files we need to rename
         filenames_to_rename = [
-            "imsorry",
-            "imsorry.txt",
-            "forgive me.txt",
-            "can you hear me.txt",
-            "please listen.txt",
-            "surprise.txt",
-            "ehehe.txt",
-            "secret.txt",
-            "for you.txt",
-            "My one and only love.txt"
+            "прости",
+            "прости.txt",
+            "прости меня.txt",
+            "ты меня слышишь.txt",
+            "пожалуйста послушай.txt",
+            "сюрприз.txt",
+            "э-хе-хе.txt",
+            "секрет.txt",
+            "для тебя.txt",
+            "Моя первая и единственная любовь.txt"
         ]
 
         for fn in filenames_to_rename:
             try:
                 os.rename(
-                    renpy.config.basedir + "/{0}".format(fn),
-                    renpy.config.basedir + "/characters/{0}".format(fn)
+                    user_dir + "/э-хе-хе.txt",
+                    user_dir + "/characters/э-хе-хе.txt"
                 )
             except:
                 pass
@@ -1188,11 +1188,11 @@ label v0_11_3(version="v0_11_3"):
         #We'll also get rid of hehehe.txt if it's still here
         try:
             os.rename(
-                renpy.config.basedir + "/hehehe.txt",
-                renpy.config.basedir + "/characters/ehehe.txt"
+                user_dir + "/э-хе-хе.txt",
+                user_dir + "/characters/э-хе-хе.txt"
             )
         except:
-            mas_utils.trydel(renpy.config.basedir + "/hehehe.txt")
+            mas_utils.trydel(user_dir + "/э-хе-хе.txt")
 
         # add to the default unlocked pool topics
         pool_unlock_list = [

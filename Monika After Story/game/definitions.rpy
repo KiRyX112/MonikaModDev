@@ -8062,9 +8062,9 @@ define hero = "hero"
 
 # Input characters filters
 define numbers_only = "0123456789"
-define lower_letters_only = " abcdefghijklmnopqrstuvwxyz"
-define letters_only = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-define name_characters_only = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'"
+define lower_letters_only = " абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+define letters_only = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+define name_characters_only = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-_'"
 
 #Default is NORMAL
 default persistent._mas_randchat_freq = mas_randchat.NORMAL

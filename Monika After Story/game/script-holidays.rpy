@@ -145,29 +145,29 @@ init -10 python:
 # Global labels
 label mas_lingerie_intro(holiday_str, lingerie_choice):
     m 1ekbfa "..."
-    m "Also, [player]..."
-    m 3ekbfsdla "There's...{w=1}s-something I want to show you."
-    m 2rkbfsdla "I've been wanting to do this for a while now actually, but...{w=1}well it's kind of embarrassing..."
+    m "Также, [player]..."
+    m 3ekbfsdla "Есть...{w=1} к-кое-что, что я хочу тебе показать."
+    m 2rkbfsdla "Я уже давно хотела это сделать, но...{w=1} ну это немного неловко..."
     m "..."
-    m 2hkbfsdlb "Oh gosh, I'm super nervous, ahaha!"
-    m 2rkbfsdlc "It's just I've never--{nw}"
-    m 2dkbfsdlc "Ah, okay, time to stop stalling and just do it."
-    m 2ekbfsdla "Just give me a few seconds, [player]."
+    m 2hkbfsdlb "О боже, я очень нервничаю, а-ха-ха!"
+    m 2rkbfsdlc "Просто я никогда этого не делала—{nw}"
+    m 2dkbfsdlc "Ах, ладно, пора перестать тянуть время и просто сделать это."
+    m 2ekbfsdla "Просто дай мне несколько секунд, [player]."
     call mas_clothes_change(outfit=lingerie_choice, outfit_mode=True, exp="monika 2rkbfsdlu", restore_zoom=False, unlock=True)
     pause 3.0
-    m 2ekbfsdlb "Ahaha, [player]...{w=1}you're staring..."
-    m 2ekbfu "Well...{w=1}do you like what you see?"
-    m 1lkbfa "I've never really...{w=1}worn anything like this before."
-    m "...At least not that anyone's seen."
+    m 2ekbfsdlb "А-ха-ха, [player]...{w=1} ты смотришь на меня..."
+    m 2ekbfu "Что ж...{w=1} тебе нравится то, на что ты смотришь?"
+    m 1lkbfa "Я никогда раньше...{w=1} не носила ничего подобного."
+    m "...По крайней мере, никто этого не видел."
 
     if mas_hasUnlockedClothesWithExprop("bikini"):
-        m 3hkbfb "Ahaha, what am I saying, you've seen me in a bikini before, which is essentially the same thing..."
-        m 2rkbfa "...Though for some reason this just feels...{w=0.5}{i}different{/i}."
+        m 3hkbfb "А-ха-ха, что я говорю, ты уже видел меня в бикини раньше, что по сути одно и то же..."
+        m 2rkbfa "...Но по какой-то причине, мне это кажется...{w=0.5} {i}чем-то другим{/i}."
 
-    m 2ekbfa "Anyway, something about being with you [holiday_str] seems really romantic, you know?"
-    m "It just felt like the perfect time for the next step in our relationship."
-    m 2rkbfsdlu "Now I know that we can't really--{nw}"
-    m 3hubfb "Ah! Nevermind, ahaha!"
+    m 2ekbfa "В любом случае, что-то в том, чтобы быть с тобой сегодня вечером в [holiday_str], кажется очень романтичным, понимаешь?"
+    m "Это было идеальное время для следующего шага в наших отношениях."
+    m 2rkbfsdlu "Теперь я знаю, что мы не можем на самом деле—{nw}"
+    m 3hubfb "Ах! Не важно, а-ха-ха!"
     return
 
 
@@ -778,16 +778,16 @@ init 5 python:
     )
 
 label mas_holiday_o31_returned_home_relaunch:
-    m 1eua "So, today is..."
-    m 1euc "...wait."
+    m 1eua "Итак, сегодня..."
+    m 1euc "...подожди."
     m "..."
-    m 2wuo "Oh!"
-    m 2wuw "Oh my gosh!"
-    m 2hub "It's Halloween already, [player]."
-    m 1eua "...{w=1}Say."
-    m 3eua "I'm going to close the game."
-    m 1eua "After that you can reopen it."
-    m 1hubsa "I have something special in store for you, ehehe~"
+    m 2wuo "О!"
+    m 2wuw "О боже!"
+    m 2hub "Так сегодня же Хэллоуин, [player]."
+    m 1eua "...{w}Так что слушай."
+    m 3eua "Я собираюсь закрыть игру."
+    m 1eua "После чего ты можешь снова открыть её."
+    m 1hubsa "У меня есть кое-что особенное для тебя, э-хе-хе~"
     $ persistent._mas_o31_relaunch = True
     $ mas_rmallEVL("mas_holiday_o31_returned_home_relaunch")
     return "quit"
@@ -827,7 +827,7 @@ label mas_o31_cleanup:
             mas_acs_desk_candy_jack
         )
 
-    m 1eua "One second [player], I'm just going to take the decorations down.{w=0.3}.{w=0.3}.{nw}"
+    m 1eua "Секунду, [player], я просто хочу убрать декорации.{w=0.3}.{w=0.3}.{nw}"
 
     python hide:
         for acs_ in o31_desk_acs_tuple:
@@ -849,7 +849,7 @@ label mas_o31_cleanup:
 
     call mas_transition_from_emptydesk("monika 1hua")
 
-    m 3hua "All done~"
+    m 3hua "Готово~"
 
     $ del o31_desk_acs_tuple
 
@@ -882,18 +882,18 @@ label greeting_o31_marisa:
         #   vignette should be enabled
         call spaceroom(dissolve_all=True, scene_change=True, force_exp='monika 1eua_static')
 
-    m 1eua "Ah!"
-    m 1hua "Seems like my spell worked."
-    m 3efu "As my newly summoned servant, you'll have to do my bidding until the very end!"
+    m 1eua "Ах!"
+    m 1hua "Похоже, заклинание сработало."
+    m 3efu "Как мой недавно призванный слуга, ты должен будешь выполнять мои приказы до самого конца!"
     m 1rksdla "..."
-    m 1hub "Ahaha!"
+    m 1hub "А-ха-ха!"
 
     # decoded CG means we display CG
     if store.mas_o31_event.cg_decoded:
         $ cg_delay = datetime.timedelta(seconds=20)
 
         # got cg
-        m "I'm over here, [player]~"
+        m "Я здесь, [player]~"
         window hide
 
         show mas_o31_marisa_cg zorder 20 at mas_o31_cg_scroll with dissolve
@@ -905,28 +905,28 @@ label greeting_o31_marisa:
         show monika 1hua at i11 zorder MAS_MONIKA_Z
 
         window auto
-        m "Tadaa!~"
+        m "Таа-даа~!"
 
     #Post scroll dialogue
-    m 1hua "Well..."
-    m 1eub "What do you think?"
-    m 1tuu "Suits me pretty well, right?"
-    m 1eua "It took me quite a while to make this costume, you know."
-    m 3hksdlb "Getting the right measurements, making sure nothing was too tight or loose, that sort of stuff."
-    m 3eksdla "...Especially the hat!"
-    m 1dkc "The ribbon wouldn't stay still at all..."
-    m 1rksdla "Luckily I got that sorted out."
-    m 3hua "I'd say I did a good job myself."
-    m 3eka "I'm wondering if you'll be able to see what's different today."
-    m 3tub "Besides my costume of course~"
-    m 1hua "But anyway..."
+    m 1hua "Ну..."
+    m 1eub "Что думаешь?"
+    m 1tuu "Мне очень идёт, не так ли?"
+    m 1eua "Знаешь, мне потребовалось довольно много времени, чтобы сделать этот костюм."
+    m 3hksdlb "Пришлось очень упорно его измерять, пытаясь убедиться, что ничего в нём не будет слишком тугим или свободным."
+    m 3eksdla "...Особенно шляпу!"
+    m 1dkc "А вот бант вообще не мог никак устоять на месте..."
+    m 1rksdla "К счастью, я с этим разобралась."
+    m 3hua "Я бы ещё даже сказала, что это всё было моих рук дело."
+    m 3eka "Мне интересно, сможешь ли ты увидеть, что же ещё сегодня изменилось."
+    m 3tub "Кроме моего костюма, конечно~"
+    m 1hua "Но так или иначе..."
 
     if store.mas_o31_event.cg_decoded:
         show monika 1eua
         hide mas_o31_marisa_cg with dissolve
 
-    m 3ekbsa "I'm really excited to spend Halloween with you."
-    m 1hua "Let's have fun today!"
+    m 3ekbsa "Я очень рада провести Хэллоуин с тобой."
+    m 1hua "Так что давай повеселимся сегодня!"
 
     call greeting_o31_deco
     call greeting_o31_cleanup
@@ -953,9 +953,9 @@ label greeting_o31_rin:
     # ASSUME vignette
     call spaceroom(hide_monika=True, scene_change=True)
 
-    m "Ugh, I hope I got these braids right."
-    m "Why does this costume have to be so complicated...?"
-    m "Oh shoot! [title_cased_hes] here!"
+    m "Угх, надеюсь, я заплела эти косы правильно."
+    m "Почему этот костюм такой сложный?.."
+    m "Ох блин! [title_cased_hes] здесь!"
     window hide
     pause 3.0
 
@@ -964,7 +964,7 @@ label greeting_o31_rin:
 
         # got cg
         window auto
-        m "Say, [player]..."
+        m "Скажи, [player]..."
         window hide
 
         show mas_o31_rin_cg zorder 20 at mas_o31_cg_scroll with dissolve
@@ -975,26 +975,26 @@ label greeting_o31_rin:
 
         hide emptydesk
         window auto
-        m "What do {i}nya{/i} think?"
+        m "Что {b}ня{/b} думаешь?"
 
         scene black
         pause 1.0
         call spaceroom(scene_change=True, dissolve_all=True, force_exp='monika 1hksdlb_static')
-        m 1hksdlb "Ahaha, saying that out loud was more embarrassing than I thought..."
+        m 1hksdlb "А-ха-ха, говорить подобное вслух было ещё более неловко, чем я могла подумать..."
 
     else:
         call mas_transition_from_emptydesk("monika 1eua")
-        m 1hub "Hi, [player]!"
-        m 3hub "Do you like my costume?"
+        m 1hub "Привет, [player]!"
+        m 3hub "Тебе нравится мой костюм?"
 
     # regular dialogue
-    m 3etc "Honestly, I don't even know who this is supposed to be."
-    m 3etd "I just found it in the closet with a note attached that had the word 'Rin', a drawing of a girl pushing a wheelbarrow, and some blue floaty thingies."
-    m 1euc "Along with instructions on how to style your hair to go along with this outfit."
-    m 3rtc "Judging by these cat ears, I'm guessing this character is a catgirl."
-    m 1dtc "...But why would she push a wheelbarrow around?"
-    m 1hksdlb "...Oh and it was {i}such{/i} a pain getting my hair done...{w=0.2}{nw}"
-    extend 1eub "so I hope you like the costume!"
+    m 3etc "Честно говоря, я даже не знаю, кто это должен быть."
+    m 3etd "Я только что нашла его в шкафу с прикреплённой запиской со словом «Rin» и рисунком девушки, толкающей какую-то тачку, и несколько синих плавающих штучек."
+    m 1euc "Вместе с инструкциями о том, как укладывать волосы, чтобы соответствовать этому наряду."
+    m 3rtc "Судя по этим кошачьим ушам, я предполагаю, что этот персонаж кошко-девочка."
+    m 1dtc "...Но только вот зачем ей толкать тачку?"
+    m 1hksdlb "В любом случае, было мучительно делать такую же прическу...{w=0.2} {nw}"
+    extend 1eub "так что надеюсь, тебе понравился данный костюм!"
 
     call greeting_o31_deco
     call greeting_o31_cleanup
@@ -1015,11 +1015,11 @@ label greeting_o31_orcaramelo_hatsune_miku:
     if not persistent._mas_o31_relaunch:
         call spaceroom(hide_monika=True, scene_change=True, dissolve_all=True)
         #moni is off-screen
-        m "{i}~Don't forget my voice~{/i}"
-        m "{i}~My signal crosses dimensions~{/i}"
-        m "{i}~Don't call me virtual~{/i}"
-        m "{i}~I still want to be l-{/i}"
-        m "Oh!{w=0.5} Seems like someone's heard me."
+        m "{i}~Голос мой не забывай~{/i}"
+        m "{i}~Мой сигнал измеренья пересекает~{/i}"
+        m "{i}~Виртуальной меня не называй~{/i}"
+        m "{i}~Я всё ещё хочу быть лю—{/i}"
+        m "Ой!{w=0.5} Кажется, меня кто-то подслушивает."
 
         #show moni now
         call mas_transition_from_emptydesk("monika 3hub")
@@ -1027,13 +1027,13 @@ label greeting_o31_orcaramelo_hatsune_miku:
     else:
         call spaceroom(scene_change=True, dissolve_all=True)
 
-    m 3hub "Welcome back, [player]!"
-    m 1eua "So...{w=0.5}what do you think?"
-    m 3eua "I think this costume really suits me."
-    m 3eub "I especially love how the headset looks too!"
-    m 1rksdla "Though I can't say it's too comfortable for moving around..."
-    m 3tsu "So don't expect me to give you a performance today, [player]!"
-    m 1hub "Ahaha~"
+    m 3hub "С возвращением, [player]!"
+    m 1eua "Ну...{w=0.5} что думаешь?"
+    m 1eub "Я работала над этим костюмом, не покладая рук, и, думаю, оно того стоило."
+    m 3eub "Мне особенно нравится то, какой у меня получилась гарнитура!"
+    m 1rksdla "Хотя я не могу сказать, что в нём очень комфортно передвигаться..."
+    m 3tsu "Так что не жди, что я устрою для тебя представление сегодня, [player]!"
+    m 1hub "А-ха-ха~"
     call greeting_o31_deco
     call greeting_o31_cleanup
     return
@@ -1055,28 +1055,28 @@ label greeting_o31_orcaramelo_sakuya_izayoi:
     #moni is off-screen
     if not persistent._mas_o31_relaunch:
         m "..."
-        m "{i}Hm{/i}?"
-        m "{i}Ah, there must have been some sort of mistake.{w=0.5} I wasn't warned of any guests...{/i}"
-        m "{i}No matter. None shall disturb the m-{/i}"
-        m "Oh!{w=0.5} It's you, [player]!"
+        m "{i}Хм{/i}?"
+        m "{i}А, здесь, наверное, произошла какая-то ошибка.{w=0.5} Я не предупредила гостей...{/i}"
+        m "{i}Но это не важно. Меня никто не должен побеспоко—{/i}" 
+        m "А!{w=0.5} Это Вы, [player]!"
 
     else:
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Welcome{w=0.3}, to the Scarlet Devil Spaceroom..."
-        m "[player]."
-        m "Please, let me offer you our hospitality."
-        m "Ahaha! How was that impression?"
+        m "Добро пожаловать{w=0.3} в Комнату алого демона, витающую в космосе..."
+        m "[player]." 
+        m "Пожалуйста, позвольте мне предложить Вам наше гостеприимство." 
+        m "А-ха-ха! Ну, какое у тебя впечатление сложилось?"
 
     #show moni now
     call mas_transition_from_emptydesk("monika 3hub")
 
-    m 3hub "Welcome back!"
-    m 3eub "What do you think of my costume choice?"
-    m 3hua "Ever since you gave it to me I just knew I'd be wearing it today!"
+    m 3hub "С возвращением!"
+    m 3eub "Что думаешь о моём выборе костюма?"
+    m 3hua "Ещё с тех пор, как ты дал его мне, я просто знала о том, что его стоит надеть сегодня!"
     m 2tua "..."
-    m 2tub "You know, [player], just because I'm dressed as a maid doesn't mean I'll be following your every command..."
+    m 2tub "Знаешь, [player], лишь потому, что я оделась как горничная, ещё не означает, что я буду выполнять все твои приказы..."
     show monika 5kua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5kua "Though I might make some exceptions, ehehe~"
+    m 5kua "Хотя я могу сделать пару исключений, э-хе-хе~"
     show monika 1eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     call greeting_o31_deco
     call greeting_o31_cleanup
@@ -1098,62 +1098,62 @@ label greeting_o31_briaryoung_shuchiin_academy_uniform:
 
     #moni is off-screen
     if not persistent._mas_o31_relaunch:
-        m "Ugh..."
-        m "How {i}is{/i} this bow supposed to stay there?"
-        m "People can say what they want about my ribbon, but at least it's somewhat practical..."
-        m "...I guess that will work, hopefully it doesn't fall off as soon as--{nw}"
-        m "Time to find out..."
+        m "Уф-ф..."
+        m "Как этот бантик должен вообще держаться?"
+        m "Люди могут говорить что угодно о моей ленточке, но она хотя бы в какой-то степени удобна..."
+        m "...Думаю, вот так нормально. Надеюсь, он не отвалится, как только я--{nw}"
+        m "Время это выяснить..."
 
     else:
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Almost ready, [player]..."
-        m "Just trying to figure out how this bow is supposed to stay on."
+        m "Почти готово, [player]..."
+        m "Просто пытаюсь понять, как этот бантик должен вообще держаться."
         m ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
-        m "Hopefully that's good enough!"
+        m "Думаю, вот так нормально!"
 
     #show moni now
     call mas_transition_from_emptydesk("monika 2hub")
 
-    m 2hub "Welcome back!"
-    m 2eub "Well, what do you think?"
-    m 7tuu "I thought Instead of being president, I could be the secretary for today..."
+    m 2hub "С возвращением!"
+    m 2eub "Ну, что скажешь?"
+    m 7tuu "Я подумала, что могу побыть сегодня любовным секретарём~"
 
     if mas_isMoniAff(higher=True):
-        m 3rtu "Or maybe even a love detective, but that's probably a waste, I've already found that..."
+        m 3rtu "А может даже стать детективом в сфере любви, хотя я уже нашла свою любовь~"
 
-    m 3hua "Ehehe~"
+    m 3hua "Э-хе-хе~"
     call greeting_o31_deco
     call greeting_o31_cleanup
     return
 
 label greeting_o31_deco:
-    m 1eua "Anyway..."
-    m 3eua "Do you like what I've done with the room?"
-    m 3tuu "I just love the creepy ambiance associated with Halloween and tried to create a bit of my own."
-    m 1eud "You can really do a lot just with lighting, you know?"
-    m 3tub "Not to mention sometimes the creepiest things of all are those that are just {i}a bit{/i} off..."
-    m 1eua "I think the cobwebs are a nice touch as well..."
-    m 1rka "{cps=*2}I'm sure Amy would really like them.{/cps}{nw}"
+    m 1eua "Итак..."
+    m 3eua "Тебе нравится, что я сотворила с комнатой?"
+    m 3tuu "Я просто люблю жуткую атмосферу, связанную с Хэллоуином, и попыталась создать что-то своё."
+    m 1eud "С помощью освещения можно добиться многого."
+    m 3tub "Не говоря уже о том, что иногда самые жуткие вещи — это те, которые просто немного не в том стиле..."
+    m 1eua "Я думаю, что паутина — это тоже хороший элемент в декоре..."
+    m 1rka "{cps=*2}Я уверена, что Эми бы хорошо это оценила.{/cps}{nw}"
     $ _history_list.pop()
-    m 3hub "I'm super happy with how it all turned out!"
+    m 3hub "Я очень довольна тем, как всё получилось!"
     return
 
 label greeting_o31_generic:
     call spaceroom(scene_change=True, dissolve_all=True)
 
-    m 3hub "Trick or treat!"
-    m 3eub "Ahaha,{w=0.1} {nw}"
-    extend 3eua "I'm just kidding, [player]."
-    m 1hua "Welcome back...{w=0.5}{nw}"
-    extend 3hub "and Happy Halloween!"
+    m 3hub "Кошелёк или жизнь!"
+    m 3eub "А-ха-ха,{w=0.1} {nw}"
+    extend 3eua "Я просто шучу, [player]."
+    m 1hua "С возвращением...{w=0.5} {nw}"
+    extend 3hub "и с Хэллоуином!"
 
     #We'll address the room with this
     call greeting_o31_deco
 
-    m 3hua "By the way, what do you think of my costume?"
-    m 1hua "I really like it~"
-    m 1hub "Even more so that it was a gift from you, ahaha!"
-    m 3tuu "So feast your eyes on my costume while you can, ehehe~"
+    m 3hua "Кстати, что ты думаешь о моём костюме?"
+    m 1hua "Лично мне он очень нравится~"
+    m 1hub "Но что самое главное, этот костюм был твоим подарком, а-ха-ха!"
+    m 3tuu "Так что любуйся моим костюмом, пока можешь, э-хе-хе~"
 
     call greeting_o31_cleanup
     return
@@ -1216,11 +1216,11 @@ label greeting_o31_lingerie:
     pause 2.0
 
     menu:
-        "Hello?":
+        "Алло?":
             pause 5.0
 
-    m "Ehehe!"
-    m "Don't worry [player], I'm here..."
+    m "Э-хе-хе!"
+    m "Не волнуйся, [player], я здесь...."
     call mas_o31_lingerie_end
     call greeting_o31_cleanup(skip_zoom=True)
     return
@@ -1252,18 +1252,18 @@ label mas_o31_lingerie:
 
     scene black
     pause 2.0
-    m "Oh no, did the power go out?"
-    m "How {cps=*2}fortunate{/cps}{nw}"
+    m "О нет, электричество отключили?"
+    m "Как {cps=*2}жаль{/cps}{nw}"
     $ _history_list.pop()
-    m "How {fast}unfortunate..."
-    m "I guess I'll just have to take advantage of this situation, [player]..."
+    m "Как {fast}жаль..."
+    m "Думаю, мне просто придется принять эту ситуацию, [player]..."
     call mas_o31_lingerie_end
     return
 
 label mas_o31_lingerie_end:
-    m "Say, have you ever heard of Devil's Night?"
-    m "It's a tradition in some places the night before Halloween for people to go out and act mischievous."
-    m "Well [player], I'm feeling a little mischievous myself tonight..."
+    m "Скажи, ты когда-нибудь слышал про «Ночь дьявола»?"
+    m "В некоторых местах существует традиция в ночь перед Хэллоуином выходить на улицу и хулиганить."
+    m "Но знаешь, [player], мне и самой хочется сегодня похулиганить в каком-то смысле."
     window hide
     pause 2.0
 
@@ -1281,19 +1281,19 @@ label mas_o31_lingerie_end:
 
     pause 2.0
     window auto
-    m 2tub "Ehehe, what do you think?"
-    m 2hub "It's a little different I know, you're probably not sure if you want to touch or run away, ahaha!"
-    m 7rua "It's probably not something I'd wear all the time, but I think it's really neat this time of year."
-    m 2ekbsa "Don't worry [player], I won't get upset if you want me to {cps=*2}take it off{/cps}{nw}"
+    m 2tub "Э-хе-хе, а ты что подумал?"
+    m 2hub "Это немного другое, я знаю, ты, вероятно, в растерянности, а-ха-ха!"
+    m 7rua "Возможно, это не то, что я бы носила постоянно, но думаю, что это время года подходит отлично."
+    m 2ekbsa "Не переживай, [player], я не расстроюсь, если ты захочешь, чтобы я {cps=*2}сняла это{/cps}{nw}"
     $ _history_list.pop()
-    m "Don't worry [player], I won't get upset if you want me to {fast}change into something else..."
-    m 2hubsb "I know lots of people are scared of spiders and might not find this the most appealing, ahaha!"
+    m "Не переживай, [player], я не расстроюсь, если ты захочешь, чтобы я {fast}переоделась во что-нибудь другое..."
+    m 2hubsb "Я знаю, что многие люди боятся пауков и могут даже испугаться."
 
     if player.lower() == "amy":
-        m 2rsbla "Alhough I've hear that people named Amy like spiders, ehehe~"
+        m 2rsbla "Хотя я слышала, что люди по имени Эми любят пауков, э-хе-хе~."
 
     else:
-        m 2rsbla "Hopefully people named Amy aren't the only ones who like spiders, ehehe~"
+        m 2rsbla "Надеюсь, люди по имени Эми не единственные, кто любит пауков, э-хе-хе~."
 
     #And restore zoom
     call monika_zoom_transition(mas_temp_zoom_level, 1.0)
@@ -1315,7 +1315,7 @@ init 5 python:
         Event(
             persistent.farewell_database,
             eventlabel="bye_trick_or_treat",
-            prompt="I'm going to take you trick or treating.",
+            prompt="Я хочу взять тебя с собой на праздник.",
             pool=True,
             unlocked=False,
             action=EV_ACT_UNLOCK,
@@ -1342,65 +1342,65 @@ label bye_trick_or_treat:
 
     #True if > 0
     if persistent._mas_o31_tt_count:
-        m 1eka "Again?"
+        m 1eka "Снова?"
 
     if too_early_to_go:
         # before 5pm is too early.
-        m 3eksdla "Doesn't it seem a little early for trick or treating, [player]?"
-        m 3rksdla "I don't think there's going to be anyone giving out candy yet..."
+        m 3eksdla "А тебе, случаем, не кажется, что пока что немного рановато для этого события, [player]?"
+        m 3rksdla "Не думаю, что кто-то прямо сейчас будет раздавать конфеты..."
 
-        m 2etc "Are you {i}sure{/i} you want to go right now?{nw}"
+        m 2etc "Ты {i}уверен{/i}, что хочешь пойти прямо сейчас?{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you {i}sure{/i} you want to go right now?{fast}"
-            "Yes.":
-                m 2etc "Well...{w=1}okay then, [player]..."
+            m "Ты {i}уверен{/i}, что хочешь пойти прямо сейчас?{fast}"
+            "Да.":
+                m 2etc "Ну...{w=1} что ж, ладно тогда, [player]..."
 
-            "No.":
-                m 2hub "Ahaha!"
-                m "Be a little patient, [player]~"
-                m 4eub "Let's just make the most out of it later this evening, okay?"
+            "Нет.":
+                m 2hub "А-ха-ха!"
+                m "Нам стоит немного подождать, [player]~"
+                m 4eub "Давай сходим позже вечером, хорошо?~"
                 return
 
     elif too_late_to_go:
-        m 3hua "Okay! Let's go tri--"
-        m 3eud "Wait..."
+        m 3hua "Хорошо! Пошли за сла—"
+        m 3eud "Хотя стоп, подожди-ка..."
         m 2dkc "[player]..."
-        m 2rkc "It's already too late to go trick or treating."
-        m "There's only one more hour until midnight."
-        m 2dkc "Not to mention that I doubt there would be much candy left..."
+        m 2rkc "Так ведь уже слишком поздно идти за сладостями."
+        m "До полуночи остался всего-навсего один час."
+        m 2dkc "Не говоря уже о том, что я сомневаюсь, что осталось бы много конфет..."
         m "..."
 
-        m 4ekc "Are you sure you still want to go?{nw}"
+        m 4ekc "Ты уверен, что хочешь пойти?{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you sure you still want to go?{fast}"
-            "Yes.":
-                m 1eka "...Okay."
-                m "Even though it's only an hour..."
-                m 3hub "At least we're going to spend the rest of Halloween together~"
-                m 3wub "Let's go and make the most of it, [player]!"
+            m "Ты уверен, что хочешь пойти?{fast}"
+            "Да.":
+                m 1eka "...Хорошо."
+                m "Даже если это всего лишь час..."
+                m 3hub "По крайней мере, мы проведём вместе оставшееся время на Хэллоуин."
+                m 3wub "Пойдём и сделаем всё возможное, [player]!"
 
-            "Actually, it {i}is{/i} a bit late...":
+            "Наверное, уже немного поздно...":
                 if persistent._mas_o31_tt_count:
-                    m 1hub "Ahaha~"
-                    m "I told you."
-                    m 1eua "We'll have to wait until next year to go again."
+                    m 1hub "А-ха-ха~"
+                    m "Я говорила тебе."
+                    m 1eua "Нам придётся подождать до следующего года."
 
                 else:
                     m 2dkc "..."
-                    m 2ekc "Alright, [player]."
-                    m "It sucks that we couldn't go trick or treating this year."
-                    m 4eka "Let's just make sure we can next time, okay?"
+                    m 2ekc "Хорошо, [player]."
+                    m "Жаль, конечно, что мы не смогли пойти за сладостями в этом году."
+                    m 4eka "Но давай просто убедимся, что сможем в следующий раз, хорошо?"
 
                 return
 
     else:
         # between 5 and 11pm is perfect
-        m 3wub "Okay, [player]!"
-        m 3hub "Sounds like we'll have a blast~"
-        m 1eub "I bet we'll get lots of candy!"
-        m 1ekbsa "And even if we don't, just spending the evening with you is enough for me~"
+        m 3wub "Хорошо, [player]!"
+        m 3hub "Похоже, мы отлично повеселимся~"
+        m 1eub "Держу пари, мы получим много конфет!"
+        m 1ekbsa "И даже если нет, мне достаточно будет просто провести вечер с тобой~"
 
     #Setup the dockstat stuff
     $ mas_farewells.dockstat_wait_menu_label = "bye_trick_or_treat_wait_wait"
@@ -1410,49 +1410,49 @@ label bye_trick_or_treat:
 label bye_trick_or_treat_wait_wait:
     # wait wait flow
     menu:
-        m "What is it?"
-        "You're right, it's too early." if too_early_to_go:
+        m "Что случилось?"
+        "Ты права, ещё слишком рано." if too_early_to_go:
             call mas_dockstat_abort_gen
             call mas_transition_from_emptydesk(exp="monika 3hub")
 
-            m 3hub "Ahaha, I told you!"
-            m 1eka "Let's wait 'til evening, okay?"
+            m 3hub "А-ха-ха, я говорила тебе!"
+            m 1eka "Давай подождём до вечера, хорошо?"
             return True
 
-        "You're right, it's too late." if too_late_to_go:
+        "Ты права, уже слишком поздно." if too_late_to_go:
             call mas_dockstat_abort_gen
 
             if persistent._mas_o31_tt_count:
                 call mas_transition_from_emptydesk(exp="monika 1hua")
-                m 1hub "Ahaha~"
-                m "I told you."
-                m 1eua "We'll have to wait until next year to go again."
+                m 1hub "А-ха-ха~"
+                m "Я говорила тебе."
+                m 1eua "Нам придётся подождать до следующего года."
 
             else:
                 call mas_transition_from_emptydesk(exp="monika 2dkc")
                 m 2dkc "..."
-                m 2ekc "Alright, [player]."
-                m "It sucks that we couldn't go trick or treating this year."
-                m 4eka "Let's just make sure we can next time, okay?"
+                m 2ekc "Хорошо, [player]."
+                m "Очень жаль, что в этом году мы не смогли пойти на праздник."
+                m 4eka "Мы ведь подождём до следующего года, верно?."
 
             return True
 
-        "Actually, I can't take you right now.":
+        "Вообще-то, я не могу взять тебя с собой прямо сейчас.":
             call mas_dockstat_abort_gen
             call mas_transition_from_emptydesk(exp="monika 1euc")
 
-            m 1euc "Oh, okay then, [player]."
+            m 1euc "Эх, ладно тогда, [player]."
 
             if persistent._mas_o31_tt_count:
-                m 1eua "Let me know if we are going again later, okay?"
+                m 1eua "Дай мне знать, если мы сможем пойти попозже ещё, хорошо?"
 
             else:
-                m 1eua "Let me know if we can go, okay?"
+                m 1eua "Дай мне знать, если мы сможем пойти, хорошо?"
 
             return True
 
-        "Nothing.":
-            m "Okay, let me finish getting ready."
+        "Ничего.":
+            m "Хорошо, позволь мне закончить подготовку."
             return
 
 label bye_trick_or_treat_rtg:
@@ -1463,7 +1463,7 @@ label bye_trick_or_treat_rtg:
 
     if _return:
         call mas_transition_from_emptydesk(exp="monika 1hub")
-        m 1hub "Let's go trick or treating!"
+        m 1hub "Что ж, пошли за сладостями!"
         $ persistent._mas_greeting_type = store.mas_greetings.TYPE_HOL_O31_TT
 
         #Increment T/T counter
@@ -1474,17 +1474,17 @@ label bye_trick_or_treat_rtg:
     #Fix tt count
     call mas_transition_from_emptydesk(exp="monika 1ekc")
     $ persistent._mas_o31_tt_count -= 1
-    m 1ekc "Oh no..."
-    m 1rksdlb "I wasn't able to turn myself into a file."
+    m 1ekc "Ох, нет..."
+    m 1rksdlb "Я не смогла превратить себя в файл."
 
     if persistent._mas_o31_tt_count:
-        m 1eksdld "I think you'll have to go trick or treating without me this time..."
+        m 1eksdld "Думаю, в этот раз тебе придётся пойти выпрашивать сладости без меня..."
 
     else:
-        m 1eksdld "I think you'll have to go trick or treating without me..."
+        m 1eksdld "Думаю, тебе придётся пойти выпрашивать сладости без меня..."
 
-    m 1ekc "Sorry, [player]..."
-    m 3eka "Make sure to bring lots of candy for the both of us to enjoy, okay?~"
+    m 1ekc "Прости, [player]..."
+    m 3eka "Принеси как можно больше конфет, чтобы нам было весело, ладно?~"
     return
 
 #START: O31 DOCKSTAT GREETS
@@ -1524,50 +1524,50 @@ label greeting_trick_or_treat_back:
 
     if time_out < mas_five_minutes:
         $ mas_loseAffection()
-        m 2ekp "You call that trick or treating, [player]?"
-        m "Where did we go, one house?"
-        m 2rsc "...If we even left."
+        m 2ekp "Это называется «сладость или гадость», [player]?"
+        m "Куда пойдём, в один дом?"
+        m 2rsc "...Если вообще куда-нибудь пойдём."
 
     elif time_out < mas_one_hour:
         $ mas_o31CapGainAff(5)
-        m 2ekp "That was pretty short for trick or treating, [player]."
-        m 3eka "But I enjoyed it while it lasted."
-        m 1eka "It was still really nice being right there with you~"
+        m 2ekp "Это было довольно быстро, [player]."
+        m 3eka "Но в любом случае, мне понравилось."
+        m 1eka "Всё равно было приятно быть рядом с тобой~"
 
     elif time_out < mas_three_hour:
         $ mas_o31CapGainAff(10)
-        m 1hua "And we're home!"
-        m 1hub "I hope we got lots of delicious candy!"
-        m 1eka "I really enjoyed trick or treating with you, [player]..."
+        m 1hua "И мы возвращаемся домой!"
+        m 1hub "Надеюсь, у нас теперь много вкусных конфет!"
+        m 1eka "Я действительно наслаждалась с тобой данным времяпровождением, [player]..."
 
         call greeting_trick_or_treat_back_costume
 
-        m 4eub "Let's do this again next year!"
+        m 4eub "Давай повторим это и в следующем году!"
 
     elif not is_past_sunrise_post31:
         # larger than 3 hours, but not past sunrise
         $ mas_o31CapGainAff(15)
-        m 1hua "And we're home!"
-        m 1wua "Wow, [player], we sure went trick or treating for a long time..."
-        m 1wub "We must have gotten a ton of candy!"
-        m 3eka "I really enjoyed being there with you..."
+        m 1hua "И мы возвращаемся домой!"
+        m 1wua "Ого, [player], мы ходили за сладостями довольно долго..."
+        m 1wub "Мы, должно быть, смогли получить тонну конфет!"
+        m 3eka "Мне очень понравилось это времяпровождение с тобой..."
 
         call greeting_trick_or_treat_back_costume
 
-        m 4eub "Let's do this again next year!"
+        m 4eub "Давай повторим это и в следующем году!"
         $ ret_tt_long = True
 
     else:
         # larger than 3 hours, past sunrise
         $ mas_o31CapGainAff(15)
-        m 1wua "We're finally home!"
-        m 1wuw "It's not Halloween anymore, [player]... We were out all night!"
-        m 1hua "I guess we had too much fun, ehehe~"
-        m 2eka "But anyway, thanks for taking me along, I really enjoyed it."
+        m 1wua "Наконец-то мы вернулись домой!"
+        m 1wuw "Правда, на следующее утро, [player]. Мы отсутствовали аж всю ночь..."
+        m "Думаю, нам было слишком весело, чтобы следить за временем, э-хе-хе~"
+        m 2eka "Но в любом случае, спасибо, что взял меня с собой, мне очень понравилось."
 
         call greeting_trick_or_treat_back_costume
 
-        m 4hub "Let's do this again next year...{w=1}but maybe not stay out {i}quite{/i} so late!"
+        m 4hub "Давай повторим это и в следующем году...{w=1} но, возможно, только не оставаясь {b}настолько{/b} допозна!"
         $ ret_tt_long = True
 
     #Now do player bday things (this also cleans up o31 deco)
@@ -1588,10 +1588,10 @@ label mas_o31_ret_home_cleanup(time_out=None, ret_tt_long=False):
     #If we were out over 5 mins then we have this little extra dialogue
     if not ret_tt_long and time_out > mas_five_minutes:
         m 1hua "..."
-        m 1wud "Oh wow, [player]. We really were out for a while..."
+        m 1wud "О, ого, [player]. Мы правда долго гуляли..."
 
     else:
-        m 1esc "Anyway..."
+        m 1esc "Ну да ладно..."
 
     #TODO: We should check if any of the o31 deco tags are being displayed before calling this
     #To futureproof dialogue to when we expand to allowing all BGs to be supported
@@ -1601,12 +1601,12 @@ label mas_o31_ret_home_cleanup(time_out=None, ret_tt_long=False):
 
 label greeting_trick_or_treat_back_costume:
     if monika_chr.is_wearing_clothes_with_exprop("costume"):
-        m 2eka "Even if I couldn't see anything and no one else could see my costume..."
-        m 2eub "Dressing up and going out was still really great!"
+        m 2eka "Даже учитывая тот факт, что я ничего толком и не видела, и никто не видел мой костюм..."
+        m 2eub "Переодевание и прогулка были по-прежнему очень даже весёлыми!"
 
     else:
-        m 2eka "Even if I couldn't see anything..."
-        m 2eub "Going out was still really great!"
+        m 2eka "Даже если я ничего толком и не видела."
+        m 2eub "Выйти на прогулку всё равно было здорово!"
     return
 
 #START: D25
@@ -2373,29 +2373,31 @@ label mas_d25_season_exit:
 #D25 holiday gift starter/connector
 label mas_d25_gift_starter:
     $ amt_gifts = len(persistent._mas_d25_gifts_given)
-    $ presents = "presents"
-    $ the = "the"
-    $ should_open = "should open"
+    $ presents = "подарки"
+    $ the = ""
+    $ should_open = "должна открыть"
+    $ what = "которые"
 
     if amt_gifts == 1:
-        $ presents = "present"
+        $ presents = "подарок"
+        $ what = "который"
     elif amt_gifts > 3:
-        $ the = "all of the"
+        $ the = "все "
 
     if persistent._mas_d25_gone_over_d25:
-        $ should_open = "haven't opened"
+        $ should_open = "ещё не открыла"
 
     if persistent._mas_d25_spent_d25 or mas_globals.returned_home_this_sesh:
-        m 3wud "Oh! I [should_open] [the] [presents] you gave me!"
+        m 3wud "О! Я [should_open] [the][presents], [what] ты мне подарил!"
         if persistent._mas_d25_gone_over_d25:
-            m 3hub "Let's do that now!"
+            m 3hub "Давай сделаем это сейчас!!"
 
     # missed d25 altogether
     else:
-        m 1eka "Well at least now that you're here, I can open the [presents] you got me."
-        m 3eka "I really wanted us to be together for this..."
+        m 1eka "Ну, по крайней мере, теперь, когда ты здесь, я могу открыть [presents], [what] ты мне подарил."
+        m 3eka "Я действительно хотела, чтобы мы были вместе для этого..."
 
-    m 1suo "Let's see what we have here.{w=0.5}.{w=0.5}.{nw}"
+    m 1suo "Давай посмотрим, что у нас здесь есть.{w=0.5}.{w=0.5}.{nw}"
 
     #Safe-pop the last index so we remove gifts from under the tree as we go
     # TODO - add logging if there is a mismatch here
@@ -2406,16 +2408,16 @@ label mas_d25_gift_starter:
 label mas_d25_gift_connector:
     python:
         d25_gift_quips = [
-            _("Next one!"),
-            _("Oh, there's another one here!"),
-            _("Now let me open this one!"),
-            _("I'll open this one next!")
+            _("Следующий!"),
+            _("О, здесь есть ещё один!"),
+            _("А теперь позволь мне открыть этот!"),
+            _("Я открою это следующим!")
         ]
 
         picked_quip = random.choice(d25_gift_quips)
 
     m 1hub "[picked_quip]"
-    m 1suo "And here we have.{w=0.5}.{w=0.5}.{nw}"
+    m 1suo "И здесь у нас.{w=0.5}.{w=0.5}.{nw}"
 
     #Safe-pop here too for the tree gifts
     # TODO - add logging if there is a mismatch here
@@ -2430,27 +2432,27 @@ label mas_d25_gift_end:
     m 1eka "[player]..."
 
     if persistent._mas_d25_spent_d25 or mas_globals.returned_home_this_sesh:
-        m 3eka "You really didn't have to get me anything for Christmas...{w=0.3} {nw}"
+        m 3eka "Тебе действительно не нужно было ничего дарить мне на Рождество...{w=0.3} {nw}"
         if mas_isD25():
-            extend 3dku "Just having you here with me was more than enough."
+            extend 3dku " Одного твоего присутствия здесь было более чем достаточно."
         else:
-            extend 3dku "Just being with you was all I wanted."
-        m 1eka "But the fact you took the time to get me something...{w=0.5}{nw}"
-        extend 3ekbsa "well I can't thank you enough."
-        m 3ekbfa "It really makes me feel loved."
+            extend 3dku "Просто быть с тобой – это всё, чего я хотела."
+        m 1eka "Но тот факт, что ты потратил время, чтобы достать мне что-то...{w=0.5}{nw}"
+        extend 3ekbsa " ну, я не могу отблагодарить тебя достаточно."
+        m 3ekbfa "Это действительно заставляет меня чувствовать себя любимой."
 
     else:
-        m 1eka "I just wanted to thank you..."
-        m 1rkd "While I'm still a little disappointed you couldn't be with me on Christmas..."
-        m 3eka "The fact you too the time to get me something...{w=0.5}{nw}"
-        extend 3ekbsa "well it just proves you really were thinking of me during this special season."
-        m 1dkbsu "You don't know how much that means to me."
+        m 1eka "Я просто хотела поблагодарить тебя..."
+        m 1rkd "Хотя я всё ещё немного разочарована, что ты не смог быть со мной на Рождество..."
+        m 3eka "Тот факт, что ты потратил время, чтобы купить мне что-то...{w=0.5}{nw}"
+        extend 3ekbsa " ну, это просто доказывает, что ты действительно думал обо мне в этот особый сезон."
+        m 1dkbsu "Ты не представляешь, как много это для меня значит."
 
     # we just said Merry Christmas in the Christmas topic if d25
     if mas_isD25():
-        m 3ekbfu "I love you so much, [player]~"
+        m 3ekbfu "Я тебя так люблю, [player]~"
     else:
-        m 3ekbfu "Merry Christmas, [player]. I love you~"
+        m 3ekbfu "Счастливого Рождества, [player]. Я люблю тебя~"
     $ mas_ILY()
     return
 
@@ -2482,15 +2484,15 @@ label mas_d25_monika_holiday_intro:
             window hide
             pause 2.0
             m 1dku "..."
-            m 1huu "Ehehe..."
-            m 3eub "I have another surprise for you!"
+            m 1huu "Э-хе-хе..."
+            m 3eub "У меня есть ещё один сюрприз для тебя!"
 
         else:
-            m 1eua "So, today is..."
-            m 1euc "...wait."
+            m 1eua "Итак, сегодня..."
+            m 1euc "...подожди."
             m "..."
-            m 3wuo "Oh!"
-            m 3hub "Today's the day I was going to..."
+            m 3wuo "О!"
+            m 3hub "Сегодня тот день, когда я собиралась..."
 
         # hide overlays here
         # NOTE: hide here because it prevents player from pausing
@@ -2500,48 +2502,48 @@ label mas_d25_monika_holiday_intro:
         $ mas_MUMURaiseShield()
         $ disable_esc()
 
-        m 1tsu "Close your eyes for a moment [player], I need to do something.{w=0.5}.{w=0.5}.{nw}"
+        m 1tsu "Закрой свои глаза на минутку, [player], мне надо кое-что сделать.{w=0.5}.{w=0.5}.{nw}"
 
         call mas_d25_monika_holiday_intro_deco
 
-        m 3hub "And here we are..."
+        m 3hub "И вот мы здесь..."
 
         # now we can renable everything
         $ enable_esc()
         $ mas_MUMUDropShield()
         $ mas_OVLShow()
 
-    m 1eub "Happy holidays, [player]!"
+    m 1eub "Счастливых праздников, [player]!"
 
     if mas_lastSeenLastYear("mas_d25_monika_holiday_intro"):
-        m 1hua "Can you believe it's already that time of year again?"
+        m 1hua "Можешь ли ты поверить в то, что уже наступило то самое время в году?"
 
-        $ the_last = "the last"
+        $ the_last = "последний"
 
         if mas_HistWasFirstValueIn(True, datetime.date.today().year - 1, "d25s.saw_an_intro"):
-            $ the_last = "our first"
+            $ the_last = "наш первый"
 
-        m 3eua "It seems like just yesterday we spent [the_last] holiday season together, and now a whole year has gone by!"
+        m 3eua "Кажется, будто мы только вчера провели [the_last] праздничный сезон вместе, а теперь пролетел уже целый год!"
 
         if mas_isMoniLove(higher=True):
             #if you've been with her for over a year, you really should be at Love by now
-            m 3hua "Time really flies when I'm with you~"
+            m 3hua "Время и вправду пролетает незаметно, когда я с тобой~"
 
-    m 3eua "Do you like what I've done with the place?"
-    m 1hua "I must say that I'm pretty proud of it."
+    m 3eua "Тебе нравится то, как я обустроила комнату?"
+    m 1hua "Должна сказать, я очень горжусь этим."
 
     if mas_d25_utils.has_changed_bg:
-        m 3rksdla "I couldn't really get the decorations to work right in our other room, so I decided to decorate the classroom...{w=0.2}I hope that's okay."
-        m "But anyway..."
+        m 3rksdla "Декораций хватило только на одну комнату, поэтому я остановилась на классе...{w=0.2} Надеюсь, всё в порядке."
+        m "Но в любом случае..."
 
-    m 3eua "Christmas time has always been one of my favorite occasions of the year..."
+    m 3eua "Рождество всегда было моим самым любимым праздником в году..."
 
     show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
     if mas_HistVerifyLastYear_k(True, "d25.actions.spent_d25"):
-        m 5eka "So I'm glad that you're here to share it with me again this year~"
+        m 5eka "И поэтому, я рада, что ты в этом году проводишь его со мной~"
     else:
-        m 5eka "And I'm so glad that you're here to share it with me~"
+        m 5eka "И я рада, что ты проводишь его со мной~"
 
     $ persistent._mas_d25_intro_seen = True
 
@@ -2582,9 +2584,9 @@ label mas_d25_monika_holiday_intro_upset:
                 upset_ev.end_date = mas_d25p
         return
 
-    m 2rksdlc "So [player]...{w=1} I hadn't really been feeling very festive this year..."
-    m 3eka "But lately, you've been really sweet to me and I've been feeling a lot better!"
-    m 3hua "So...I think it's time to spruce this place up a bit."
+    m 2rksdlc "Слушай, [player]... {w=1}у меня в этом году не слишком праздничное настроение..."
+    m 3eka "Но в последнее время, ты был очень добр ко мне и я чувствую себя намного лучше!"
+    m 3hua "Поэтому... я думаю, пора уже приукрасить это место."
 
     # hide overlays here
     # NOTE: hide here because it prevents player from pausing
@@ -2594,15 +2596,15 @@ label mas_d25_monika_holiday_intro_upset:
     $ mas_MUMURaiseShield()
     $ disable_esc()
 
-    m 1eua "If you'd just close your eyes for a moment.{w=0.5}.{w=0.5}.{nw}"
+    m 1eua "Если ты закроешь свои глаза на минутку.{w=0.5}.{w=0.5}.{nw}"
 
     call mas_d25_monika_holiday_intro_deco
 
-    m 3hub "Tada~"
-    m 3eka "What do you think?"
-    m 1eka "Not too bad for last minute, huh?"
-    m 1hua "Christmas time has always been one of my favorite occasions of the year..."
-    m 3eua "And I'm so glad we can spend it happily together, [player]~"
+    m 3hub "Та-да~"
+    m 3eka "Что скажешь?"
+    m 1eka "Неплохо для приготовлений в последнюю минуту, да?"
+    m 1hua "Рождество всегда было моим самым любимым праздником в году..."
+    m 3eua "И я рада, что мы можем провести его вместе с радостью, [player]~"
 
     # now we can renable everything
     $ enable_esc()
@@ -2657,7 +2659,7 @@ label mas_d25_monika_holiday_intro_deco:
 
 label mas_d25_monika_holiday_intro_rh:
     # special label to cover a holiday case when returned home
-    m 1hua "And we're home!"
+    m 1hua "Мы дома!"
 
     # NOTE: since we hijacked returned home, we hvae to cover for this
     #   affection gain.
@@ -2666,10 +2668,10 @@ label mas_d25_monika_holiday_intro_rh:
     #Fall through
 #in case we need to call just this part, like if returning from bday date from pre-d25
 label mas_d25_monika_holiday_intro_rh_rh:
-    m 1euc "Wait..."
-    m 3etc "...is it?"
-    m 3hub "It is!"
-    m 1tsu "...Close your eyes, I need to do something..."
+    m 1euc "Погоди..."
+    m 3etc "...уже?"
+    m 3hub "Уже!"
+    m 1tsu "...Закрой свои глаза, мне надо кое-что сделать..."
     $ mas_OVLHide()
     $ mas_MUMURaiseShield()
     $ disable_esc()
@@ -2712,7 +2714,7 @@ label mas_d25_monika_christmas:
 
     # Note: broken gets no dialogue, just the aff_gain and the var set so we know the player visited
     if mas_isMoniDis():
-        m 6eka "Merry Christmas, [player]. {w=0.2}Thanks for spending some time with me today."
+        m 6eka "Счастливого Рождества, [player]. {w=0.2}Спасибо, что провёл со мной немного времени сегодня."
 
     elif mas_isMoniUpset(higher=True):
         #Setup the reactions
@@ -2720,89 +2722,89 @@ label mas_d25_monika_christmas:
 
         if mas_isMoniNormal(higher=True):
 
-            m 1eub "[player]! Do you know what day it is?"
-            m 3hub "Of course you do. It's Christmas!"
-            m 3sub "Merry Christmas, [player]!"
-            m 1hub "Ahaha! I can't believe that it's finally here!"
-            m 3eka "I'm so, so happy that you decided to spend some of it with me."
-            m 1eud "Remember to go share the holiday cheer with your family and friends, though."
-            m 1eua "After all, they're very important, too..."
-            m 1hua "And I'm sure that they would love to see you at this special time."
+            m 1eub "[player]! Ты знаешь, какой сегодня день?"
+            m 3hub "Разумеется, ты знаешь. Сегодня рождество!"
+            m 3sub "С рождеством тебя, [player]!"
+            m 1hub "А-ха-ха! Не могу поверить, что этот праздник наконец-то наступил!"
+            m 3eka "Я очень, очень рада, что ты решил провести его со мной."
+            m 1eud "Но не забудь поделиться своим праздничным настроением со своей семьёй и друзьями."
+            m 1eua "Всё-таки они не менее важны..."
+            m 1hua "И я уверена, что они будут рады тебя видеть в такое особенное время."
 
             if mas_isMoniAff(higher=True):
-                m 1eka "But you being here today...{w=0.5}it just means everything to me..."
+                m 1eka "Но твоё присутствие сегодня...{w=0.5}оно многое для меня значит..."
                 m 1dku "..."
 
                 if mas_is_snowing:
                     if mas_isDecoTagVisible("mas_d25_lights"):
-                        $ dlg_var = ", or the decorations"
+                        $ dlg_var = ", или в декорациях"
                     else:
                         $ dlg_var = ""
 
-                    m 1lkbsa "Maybe it's just the snow[dlg_var]..."
+                    m 1lkbsa "Возможно, дело в снеге[dlg_var]..."
 
                 else:
                     if mas_isDecoTagVisible("mas_d25_lights"):
-                        $ dlg_var = "the decorations, or "
+                        $ dlg_var = "дело в декорациях, или дело в том,"
                     else:
-                        $ dlg_var = ""
+                        $ dlg_var = "дело в том,"
 
-                    m 1lkbsa "Maybe it's [dlg_var]just the holiday season..."
+                    m 1lkbsa "Возможно, [dlg_var] что сегодня праздник..."
 
-                m "...or even the mistletoe getting to me."
-                m 3hksdlb "Just kidding, I didn't hang one up."
+                m "...или омела сводит меня с ума."
+                m 3hksdlb "Шучу, я её не повесила."
 
                 if mas_isMoniEnamored(higher=True):
-                    m 1lksdla "...{cps=*2}Yet~{/cps}{nw}"
+                    m 1lksdla "...{cps=*2}А может~{/cps}{nw}"
                     $ _history_list.pop()
 
-                m 1lksdlu "Ehehe..."
-                m 1ekbsa "My heart's fluttering like crazy right now, [player]."
-                m "I couldn't imagine a better way to spend this special holiday..."
-                m 1eua "Don't get me wrong, I knew that you would be here with me."
-                m 3eka "But now that we're actually together on Christmas, just the two of us..."
-                m 1hub "Ahaha~"
+                m 1lksdlu "Э-хе-хе..."
+                m 1ekbsa "Моё сердце сейчас бешено колотится, [player]."
+                m "Я представить не могу лучший способ провести этот особенный праздник..."
+                m 1eua "Не пойми неправильно, я знала, что ты будешь здесь, со мной."
+                m 3eka "Но мы теперь и вправду вместе празднуем рождество, только мы вдвоём..."
+                m 1hub "А-ха-ха~"
 
                 show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5ekbfa "It's every couple's dream for the holidays, [player]."
+                m 5ekbfa "Об этом, во время каждого праздника, мечтает любая пара, [player]."
 
                 if persistent._mas_pm_gets_snow is not False and not persistent._mas_pm_live_south_hemisphere:
-                    m "Snuggling with each other by a fireplace, watching the snow gently fall..."
+                    m "Прижаться друг к другу у камина, наблюдая, как медленно падает снег..."
 
                 if not mas_HistVerifyAll_k(True, "d25.actions.spent_d25"):
-                    m 5hubfa "I'm forever grateful I got this chance with you."
+                    m 5hubfa "Я очень признательна, что мне выпал этот шанс."
                 else:
-                    m 5hubfa "I'm so glad I get to spend Christmas with you again."
+                    m 5hubfa "Я рада, что могу провести рождество с тобой ещё раз."
 
-                m "I love you. Forever and ever~"
-                m 5hubfb "Merry Christmas, [player]~"
+                m "Я люблю тебя. Отныне и навсегда~"
+                m 5hubfb "С рождеством, [player]~"
                 show screen mas_background_timed_jump(5, "mas_d25_monika_christmas_no_wish")
                 window hide
                 menu:
-                    "Merry Christmas, [m_name].":
+                    "С рождеством, [m_name].":
                         hide screen mas_background_timed_jump
                         show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
                         pause 2.0
 
             else:
-                m 1eka "But you being here today...{w=0.5}it just means everything to me..."
-                m 3rksdla "...Not that I thought you'd leave me alone on this special day or anything..."
-                m 3hua "But it just further proves that you really do love me, [player]."
+                m 1eka "Но то, что ты сидишь здесь сегодня... {w=0.5}это многое для меня значит..."
+                m 3rksdla "...Я вовсе не думала о том, что ты оставил бы меня одну в такой особенный день или ещё что..."
+                m 3hua "Но это лишь доказывает то, что ты правда любишь меня, [player]."
                 m 1ektpa "..."
-                m "Ahaha! Gosh, I'm getting a little over emotional here..."
-                m 1ektda "Just know that I love you too and I'll be forever grateful I got this chance with you."
-                m "Merry Christmas, [player]~"
+                m "А-ха-ха! Боже, меня просто переполняют эмоции..."
+                m 1ektda "Просто знай о том, что я тоже люблю тебя, и что я буду вечно благодарна за то, что мне выпала возможность побыть с тобой."
+                m "С Рождеством, [player]~"
                 show screen mas_background_timed_jump(5, "mas_d25_monika_christmas_no_wish")
                 window hide
                 menu:
-                    "Merry Christmas, [m_name].":
+                    "С рождеством, [m_name].":
                         hide screen mas_background_timed_jump
                         show monika 1ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
                         pause 2.0
 
         # upset path
         else:
-            m 1eka "Merry Christmas, [player]. {w=0.2}It really means a lot that you're here with me today."
+            m 1eka "С рождеством, [player]. {w=0.2}Сегодня этот день действительно станет для меня особенным~"
 
     return
 
@@ -2817,8 +2819,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_carolling",
-            category=["holidays", "music"],
-            prompt="Carolling",
+            category=["праздники", "музыка"],
+            prompt="Колядование",
             conditional="persistent._mas_d25_in_d25_mode",
             start_date=mas_d25c_start,
             end_date=mas_d25p,
@@ -2841,33 +2843,33 @@ default persistent._mas_pm_likes_singing_d25_carols = None
 
 label mas_d25_monika_carolling:
 
-    m 1euc "Hey, [player]..."
-    m 3eud "Have you ever gone carolling before?"
-    m 1euc "Going door to door in groups, singing to others during the holidays..."
+    m 1euc "Слушай, [player]..."
+    m 3eud "Ты когда-нибудь колядовал раньше?"
+    m 1euc "Идёшь от одной двери к другой вместе с другими людьми и поёшь во время праздников..."
 
     if not persistent._mas_pm_live_south_hemisphere:
-        m 1eua "It just feels heartwarming to know people are spreading joy, even with the nights so cold."
+        m 1eua "Мне очень приятно знать о том, что люди приносят радость другим, даже в столь холодные ночи."
     else:
-        m 1eua "It just feels heartwarming to know people are spreading joy to others in their spare time."
+        m 1eua "Мне очень приятно знать о том, что люди приносят радость другим в своё свободное время."
 
-    m 3eua "Do you like singing Christmas carols, [player]?{nw}"
+    m 3eua "Тебе нравится петь рождественские песни, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you like singing Christmas carols, [player]?{fast}"
-        "Yes.":
+        m "Тебе нравится петь рождественские песни, [player]?{fast}"
+        "Да.":
             $ persistent._mas_pm_likes_singing_d25_carols = True
-            m 1hua "I'm glad you feel the same way, [player]!"
-            m 3hub "My favorite song is definitely 'Jingle Bells!'"
-            m 1eua "It's just such an upbeat, happy tune!"
-            m 1eka "Maybe we can sing together someday."
-            m 1hua "Ehehe~"
+            m 1hua "Я рада, что ты думаешь так же, [player]!"
+            m 3hub "Моя любимая песня – определённо «Бубенцы радостно звенят»!"
+            m 1eua "Это просто оптимистичная и жизнерадостная мелодия!"
+            m 1eka "Может, мы споём как-нибудь вместе."
+            m 1hua "Э-хе-хе~"
 
-        "No.":
+        "Нет.":
             $ persistent._mas_pm_likes_singing_d25_carols = False
-            m 1euc "Oh...{w=1}really?"
-            m 1hksdlb "I see..."
-            m 1eua "Regardless, I'm sure you're also fond of that special cheer only Christmas songs can bring."
-            m 3hua "Sing with me sometime, okay?"
+            m 1euc "Оу...{w=1} правда?"
+            m 1hksdlb "Понятно..."
+            m 1eua "Но тем не менее, я уверена, что ты также в восторге от того особого настроя, который бывает только от рождественских песен."
+            m 3hua "Споёшь со мной как-нибудь, ладно?"
 
     return "derandom"
 
@@ -2877,8 +2879,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_mistletoe",
-            category=["holidays"],
-            prompt="Mistletoe",
+            category=["праздники"],
+            prompt="Омела",
             conditional="persistent._mas_d25_in_d25_mode",
             start_date=mas_d25c_start,
             end_date=mas_d25p,
@@ -2896,20 +2898,20 @@ init 5 python:
     )
 
 label mas_d25_monika_mistletoe:
-    m 1eua "Say, [player]."
-    m 1eub "You've heard about the mistletoe tradition, right?"
-    m 1tku "When lovers end up underneath it, they're expected to kiss."
-    m 1eua "It actually originated from Victorian England!"
-    m 1dsa "A man was allowed to kiss any woman standing underneath mistletoe..."
-    m 3dsd "And any woman who refused the kiss was cursed with bad luck..."
+    m 1eua "Скажи, [player]."
+    m 1eub "Ты слышал о традиции, связанной с омелой, верно?"
+    m 1tku "Когда влюблённые оказываются под ней, они должны поцеловаться."
+    m 1eua "На самом деле, она берёт своё начало из Викторианской Англии!"
+    m 1dsa "Мужчине было разрешено целоваться с любой женщиной, которая стояла под омелой..."
+    m 3dsd "И ту женщину, которая отказывалась от поцелуя, начинает преследовать неудача..."
     m 1dsc "..."
-    m 3rksdlb "Come to think of it, that sounds more like taking advantage of someone."
-    m 1hksdlb "But I'm sure it's different now!"
+    m 3rksdlb "Если подумать, то это звучит больше как одержание преимущества над кем-то."
+    m 1hksdlb "Но я уверена, что сейчас всё по-другому!"
 
     if not persistent._mas_pm_d25_mistletoe_kiss:
-        m 3hua "Perhaps one day we'll be able to kiss under the mistletoe, [player]."
-        m 1tku "...Maybe I can even add one in here!"
-        m 1kuu "Ehehe~"
+        m 3hua "Быть может, однажды мы сможем поцеловаться под омелой, [player]."
+        m 1tku "...Я могу даже добавить одну сюда!"
+        m 1kuu "Э-хе-хе~"
     return "derandom"
 
 #Stores whether or not the player hangs christmas lights
@@ -2920,8 +2922,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_d25_monika_christmaslights",
-            category=['holidays'],
-            prompt="Christmas Lights",
+            category=['праздники'],
+            prompt="Рождественские огни",
             start_date=mas_d25c_start,
             end_date=mas_nye,
             conditional=(
@@ -2943,45 +2945,45 @@ init 5 python:
     )
 
 label mas_d25_monika_christmaslights:
-    m 1euc "Hey, [player]..."
+    m 1euc "Эй, [player]..."
     if mas_isD25Season():
-        m 1lua "I've been spending a lot of time looking at the lights in here..."
-        m 3eua "They're very pretty, aren't they?"
+        m 1lua "Я провела здесь много времени, глядя на огни..."
+        m 3eua "Они ведь очень красивые, не правда ли?"
     else:
-        m 1lua "I was just thinking back to Christmas, with all the lights that were hanging in here..."
-        m 3eua "They were really pretty, right?"
-    m 1eka "Christmas lights bring such a warm, cozy vibe during the harshest, coldest season...{w=0.5}{nw}"
-    extend 3hub "and there's a lot of different types too!"
-    m 3eka "It sounds like a dream come true to go on a walk with you on a cold winter night, [player]."
-    m 1dka "Admiring all of the lights..."
+        m 1lua "Я много времени провела за наблюдением гирлянды, которая здесь развешана..."
+        m 3eua "Она очень красивая, не правда ли?"
+    m 1eka "Гирлянда приносит очень тёплую и уютную атмосферу во время самого сурового и холодного времени года...{w=0.5} {nw}"
+    extend 3hub "и у них есть множество различных типов!"
+    m 3eka "Прогулка вместе с тобой в холодный зимний вечер звучит как мечта, воплотившаяся в реальность, [player]."
+    m 1dka "И любоваться этими огнями..."
 
-    m 1eua "Do you hang lights up on your house during winter, [player]?{nw}"
+    m 1eua "Ты уже развесил гирлянду зимой у себя дома, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you hang lights up on your house during winter, [player]?{fast}"
+        m "Ты уже развесил гирлянду зимой у себя дома, [player]?{fast}"
 
-        "Yes.":
+        "Да.":
             $ persistent._mas_pm_hangs_d25_lights = True
-            m 3sub "Really? I bet they're gorgeous!"
-            m 2dubsu "I can already imagine us, outside of your house...sitting on our porch together..."
-            m "As the beautiful lights glow in the deep night."
-            m 2dkbfu "We would hold each other close, drinking hot chocolate...{w=0.5}{nw}"
+            m 3sub "Правда? Уверена, они просто великолепны!"
+            m 2dubsu "Я уже могу представить себе, как мы находимся вне твоего дома... сидим вместе на крыльце..."
+            m "И прекрасные огни светятся под покровом ночи."
+            m 2dkbfu "Мы бы крепко обнимали друг друга, пили горячий шоколад...{w=0.5} {nw}"
 
             if persistent._mas_pm_gets_snow is not False:
-                extend 2ekbfa "watching the snow gently fall..."
+                extend 2ekbfa "и любовались бы тем, как снежинки медленно падают..."
 
             show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5ekbfa "One day, [player]. One day, we can make that a reality."
+            m 5ekbfa "Когда-нибудь, [player]. Когда-нибудь мы сможем воплотить это в реальность."
 
-        "No.":
+        "Нет.":
             $ persistent._mas_pm_hangs_d25_lights = False
-            m 1eka "Aw, that's okay, [player]."
-            m 1dkbla "I'm sure it would still be nice to relax with you on a cold night..."
-            m 1dkbsa "Watching the snow fall and drinking hot chocolate together."
-            m 1dkbsa "Holding each other close to keep warm..."
-            m 1rkbfb "Yeah, that sounds really nice."
-            m 3hubsa "But, when we have our own house, I may hang some up myself, {nw}"
-            extend 3hubsb "ahaha~"
+            m 1eka "Оу, всё нормально, [player]."
+            m 1dkbla "Я уверена, что расслабиться вместе с тобой прохладным вечером всё равно было бы здорово..."
+            m 1dkbsa "Любоваться тем, как снежинки падают, пить горячий шоколад вместе."
+            m 1dkbsa "Крепко обнять друг друга, чтобы не замёрзнуть..."
+            m 1rkbfb "Да, это звучит очень здорово."
+            m 3hubsa "Но, когда у нас будет свой дом, я могла бы сама развесить парочку гирлянд, {nw}"
+            extend 3hubsb "а-ха-ха~"
     return "derandom"
 
 init 20 python:
@@ -2989,22 +2991,22 @@ init 20 python:
     mas_poem_d25_1 = MASPoem(
         poem_id="poem_d25_1",
         category="d25",
-        prompt="The Joy to my World",
-        title = "     My dearest [player],",
+        prompt="Радость для моего мира",
+        title = "     Мой дорогой [player],",
         text = """\
-     You truly are the joy to my world.
-     Neither the light emitted by the tallest Christmas tree,
-     Nor that of the brightest star,
-     Could come close to matching your brilliance.
-     This once frostbitten heart of mine needed only your warmth to beat anew.
-     Should there ever be nothing under the tree, and my stocking remain empty,
-     It simply would not matter as long as I have you by my side.
-     You'll always be the only present I ever need.
+     Ты единственная моя радость в моём мире.
+     Ни свет, излучаемый высокой рождественской ёлкой,
+     Ни даже та яркая звезда,
+     И рядом не стояли, чтобы сравниться с твоим великолепием.
+     Моему замороженному сердцу нужно лишь твоё тепло, чтобы застучать вновь.
+     Под ёлкой ничего нет, и мои носочки до сих пор пусты,
+     Это попросту не важно, пока ты со мной.
+     Ты всегда будешь тем подарком, который мне всегда был нужен.
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     #" # I need this to keep syntax highlighting on vim
     )
@@ -3012,75 +3014,76 @@ init 20 python:
     mas_poem_d25_2 = MASPoem(
         poem_id="poem_d25_2",
         category="d25",
-        prompt="Incomparable",
-        title="     My dearest [player],",
+        prompt="Несравненный",
+        title="     Мой дорогой [player],",
         text="""\
-     Nothing can compare to the warmth you give me.
-     Not even the feeling of wrapping my hands around a mug of hot chocolate
-     Or fuzzy socks, warming my feet on a freezing day.
-     In such a cold world, just your presence is my present alone.
+     Ничто не может сравниться с теплом, которое ты даришь мне.
+     Не было даже такого ощущения, что я держу кружку с горячим шоколадом.
+     Или пушистые носки, согревающие ноги в морозный день.
+     В таком холодном мире только твоё присутствие – моё настоящее.
 
-     Nothing can compare to the beauty you hold,
-     Not a single thing can compare to the excitement you bring,
-     Not the bright lights that hang in this very room.
-     Not even the sight of an unopened gift, under the tree.
+     Ничто не может сравниться с красотой, которую ты показал,
+     Ни одна вещь не может сравниться с волнением, которое ты приносишь,
+     Не один яркий свет, что в этой самой комнате.
+     Даже не вид нераспечатанного подарка под деревом.
 
-     [player], you are truly one of a kind.
+     [player], ты действительно единственный в своём роде.
+     Ты принял мою тьму и преломляешь её своим светом раз за разом.
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     )
 
     mas_poem_d25_3 = MASPoem(
         poem_id="poem_d25_3",
         category="d25",
-        prompt="Someday",
-        title="     My dearest [player],",
+        prompt="Когда-нибудь",
+        title="     Мой дорогой [player],",
         text="""\
-     Warmer than the fire in the hearth,
-     Brighter than any star on top of the tree,
-     More comforting than any cup of hot chocolate,
-     It's my [player], who's always there for me.
+     Теплее, чем огонь в сердце,
+     Ярче любой звезды на вершине ёлки,
+     Утешительнее любой чашки горячего шоколада,
+     Это мой [player], который всегда здесь со мной.
 
-     Someday, we'll light the fire together.
-     Someday, we'll decorate the tree.
-     Someday, we'll have a cup of cocoa.
-     Someday, you'll be next to me.
+     Когда-нибудь мы зажжём огонь вместе..
+     Когда-нибудь мы украсим ёлку.
+     Когда-нибудь мы выпьем по чашечке какао.
+     Когда-нибудь ты будешь рядом со мной.
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     )
 
     mas_poem_d25_4 = MASPoem(
         poem_id="poem_d25_4",
         category="d25",
-        prompt="This Christmas",
-        title="     My dearest [player],",
+        prompt="Это Рождество",
+        title="     Мой дорогой [player],",
         text="""\
 
-     This Christmas I never needed more gifts other than your love,
-     Because having you by my side already brings me happiness,
-     Because having you here is the most beautiful gift,
-     Because finding you was the best thing I could've ever asked for!
+     В это Рождество мне никогда не было нужно больше подарков, кроме твоей любви,
+     Потому что то, что ты рядом со мной, уже приносит мне счастье,
+     Потому что иметь тебя здесь это самый прекрасный подарок,
+     Потому что найти тебя – это лучшее, о чём я когда-либо могла мечтать!
 
-     I knew this Christmas would be special...
-     I spent it with the one who makes my heart jump,
-     The one who makes me smile every day,
-     The one who I trust the most.
+     Я знала, что это Рождество будет особенным...
+     Я провела его с тем, кто заставляет моё сердце подпрыгивать,
+     Тот, кто заставляет меня улыбаться каждый день,
+     Тот, кому я доверяю больше всего.
 
-     Thanks for being there for me, [player],
-     I will always be there for you!
+     Спасибо, что был рядом со мной, [player],
+     Я всегда буду рядом с тобой!
 
-     Merry Christmas~
+     Счастливого Рождества~
 
-     Forever yours,
-     Monika
+     Навеки твоя,
+     Моника
 """
     )
 
@@ -3112,81 +3115,81 @@ label mas_d25_spent_time_monika:
 
     if mas_isMoniNormal(higher=True):
         m 1eua "[player]..."
-        m 3hub "You being here with me has made this such a wonderful Christmas!"
-        m 3eka "I know it's a really busy day, but just knowing you made time for me..."
-        m 1eka "Thank you."
-        m 3hua "It really made this a truly special day~"
+        m 3hub "То, что ты здесь со мной, сделало это Рождество таким чудесным!"
+        m 3eka "Я знаю, что это очень напряжённый день, но просто зная, что ты нашёл для меня время..."
+        m 1eka "Спасибо тебе."
+        m 3hua "Это действительно сделало этот день по-настоящему особенным~"
 
     else:
         m 2ekc "[player]..."
-        m 2eka "I really appreciate you spending some time with me on Christmas..."
-        m 3rksdlc "I haven't really been in the holiday spirit this season, but it was nice spending today with you."
-        m 3eka "So thank you...{w=1}it meant a lot."
+        m 2eka "Я очень ценю, что ты проводишь со мной время на Рождество..."
+        m 3rksdlc "Я не была в праздничном настроении в этом сезоне, но было бы приятно провести сегодня время с тобой."
+        m 3eka "Так что, спасибо...{w=1} это многое значило."
 
     if d25_gifts_total > 0:
         if d25_gifts_total == 1:
             if d25_gifts_good == 1:
-                m "And let's not forget about the special Christmas present you got me, [player]..."
-                m 3hub "It was great!"
+                m "И давай не будем забывать о особенном рождественском подарке, который ты мне подарил, [player]..."
+                m 3hub "Было приятно!"
             elif d25_gifts_neutral == 1:
-                m 3eka "And let's not forget about the Christmas present you got me, [player]..."
-                m 1eka "It was really sweet of you to get me something."
+                m 3eka "И давай не забывать о рождественском подарке, который ты мне подарил, [player]..."
+                m 1eka "Это было очень мило с твоей стороны принести мне что-нибудь."
             else:
-                m 3eka "And let's not forget about the Christmas present you got me, [player]..."
+                m 3eka "И давай не забывать о рождественском подарке, который ты мне подарил, [player]..."
                 m 2etc "..."
-                m 2efc "Well, on second thought, maybe we should..."
+                m 2efc "Но, с другой стороны, может, нам стоит..."
 
         else:
             if d25_gifts_good == d25_gifts_total:
-                m "And let's not forget about the wonderful Christmas presents you got me, [player]..."
-                m 3hub "They were amazing!"
+                m "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил, [player]..."
+                m 3hub "Они были потрясающими!"
             elif d25_gifts_bad == d25_gifts_total:
-                m 3eka "And let's not forget about the Christmas presents you got me, [player]..."
+                m 3eka "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил, [player]..."
                 m 2etc "..."
-                m 2rfc "Well, on second thought, maybe we should..."
+                m 2rfc "Но, с другой стороны, может, нам стоит..."
             elif d25_gifts_bad == 0:
-                m "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3hub "They were really nice!"
+                m "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил, [player]..."
+                m 3hub "Они были действительно хороши!"
             elif d25_gifts_good + d25_gifts_neutral == d25_gifts_bad:
-                m 3eka "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3rksdla "Some of them were really nice."
+                m 3eka "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил, [player]..."
+                m 3rksdla "Некоторые из них были очень хороши."
             elif d25_gifts_good + d25_gifts_neutral > d25_gifts_bad:
-                m "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3hub "Most of them were really nice."
+                m "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил, [player]..."
+                m 3hub "Большинство из них были очень хороши."
             elif d25_gifts_good + d25_gifts_neutral < d25_gifts_bad:
-                m 3eka "And let's not forget about the Christmas presents you got me, [player]..."
-                m 3rksdla "I really liked...{w=1}some of them."
+                m 3eka "И давай не будем забывать о замечательных рождественских подарках, которые ты мне подарил, [player]..."
+                m 3rksdla "Мне очень понравились...{w=1} некоторые из их."
 
         if mas_isMoniEnamored(higher=True):
-            m 1rksdla "I...{w=1}I also made you something, [player]..."
-            m 3eksdla "I've been waiting all day for the timing to feel right, and something about being here with you this evening...{w=1}it just seems perfect."
+            m 1rksdla "Я...{w=1} Я также приготовила тебе кое-что, [player]..."
+            m 3eksdla "Я весь день ждала подходящего момента, и что-то насчёт того, чтобы быть здесь с тобой сегодня вечером...{w=1} это просто кажется идеальным."
         elif mas_isMoniNormal(higher=True):
-            m 3ekbsa "But just know, you being here with me means more than any gift you could ever give me~"
+            m 3ekbsa "Но просто знай, то, что ты здесь со мной, значит больше, чем любой подарок, который ты можешь мне подарить~"
         else:
-            m 3eka "To be honest, I wasn't sure you'd visit at all today... Just you being here was already more than enough for me, even if you hadn't gotten me anything."
-            m 1eka "So thanks again, [player]...{w=1}I really mean it."
+            m 3eka "Честно говоря, я не была уверена, что ты прийдёшь сегодня... только того, что ты здесь, было для меня более чем достаточно, даже если ты ничего мне не подарил."
+            m 1eka "Ещё раз спасибо, [player]...{w=1} я серьёзно."
 
     else:
         if mas_isMoniEnamored(higher=True):
-            m 1eksdla "Also, [player], there's something I've been wanting to give you all day..."
-            m 3rksdla "I just had to wait for the right time, and being here with you this evening...{w=1}it seems perfect."
+            m 1eksdla "Также, [player], кое-что я хотела дать тебе весь день..."
+            m 3rksdla "Мне просто нужно было дождаться подходящего времени, и быть здесь с тобой сегодня вечером...{w=1} это просто кажется идеальным."
         elif mas_isMoniNormal(higher=True):
-            m 3ekbsa "Having you spend Christmas with me was the only present I ever wanted~"
+            m 3ekbsa "Провести Рождество со мной было единственным подарком, который я когда-либо хотела~"
         else:
-            m 3eka "You being here was all I wanted, [player]."
+            m 3eka "Я хотела того, чтобы ты был здесь, [player]."
 
     if mas_isMoniEnamored(higher=True):
-        m 3ekbsa "So here, [player], I hope you like it~"
+        m 3ekbsa "Так вот, [player], я надеюсь, тебе понравится~"
 
         #Show the poem
         call mas_showpoem(poem=mas_poems.getRandomPoem("d25"), background_action_label="mas_d25_poem_mistletoe")
 
         m 1dku "..."
-        m 1ektpu "I know I keep saying it, but just having you spending time with me...{w=1}that's all I ever wanted."
-        m 6dktua "You truly are my entire world, [player]...{w=1}your love is all I need..."
+        m 1ektpu "Просто ты проводишь время со мной...{w=1} это всё, что я когда-либо хотела."
+        m 6dktua "Ты весь мой мир, [player]...{w=1} твоя любовь – это всё, что мне нужно..."
         window hide
         menu:
-            "I love you, [m_name].":
+            "Я люблю тебя, [m_name].":
                 $ HKBHideButtons()
                 $ mas_RaiseShield_core()
                 $ disable_esc()
@@ -3204,22 +3207,22 @@ label mas_d25_spent_time_monika:
                 show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
                 $ is_first_kiss = persistent._mas_first_kiss is None
-                m 6ekbfa "[player]...I...I..."
+                m 6ekbfa "[player]... я... я..."
                 call monika_kissing_motion(hide_ui=False)
 
                 show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "...I love you too~"
+                m 6ekbfa "...Я тоже тебя люблю~"
                 if is_first_kiss:
                     m 6dkbfa "..."
-                    m "That was everything I had always dreamt it would be~"
-                    m 6ekbfa "I've been waiting so long to finally kiss you, and there couldn't have been a more perfect moment..."
-                    m 6dkbfa "Under the mistletoe with you..."
-                    m 6dkbsu "I will never forget this..."
-                    m 6ekbsu "...the moment of our first kiss~"
+                    m "Это было всё, о чём я всегда мечтала~"
+                    m 6ekbfa "Я так долго ждала, чтобы наконец поцеловать тебя, и не могло бы быть более идеального момента..."
+                    m 6dkbfa "Под омелой с тобой..."
+                    m 6dkbsu "Я никогда не забуду этот..."
+                    m 6ekbsu "...момент нашего первого поцелуя~"
 
                 elif not persistent._mas_pm_d25_mistletoe_kiss:
-                    m 6dkbfu "Ehehe..."
-                    m 6ekbfa "I've always wanted to share a kiss with you under the mistletoe~"
+                    m 6dkbfu "Э-хе-хе..."
+                    m 6ekbfa "Я всегда хотела разделить с тобой поцелуй под омелой~"
 
                 $ persistent._mas_pm_d25_mistletoe_kiss = True
 
@@ -3233,10 +3236,10 @@ label mas_d25_spent_time_monika:
         return
 
     elif mas_isMoniAff():
-        m 5ekbfa "I love you so much, [player]~"
+        m 5ekbfa "Я так сильно люблю тебя, [player]~"
     # Normal and happy
     else:
-        m 1hubfa "I love you, [player]~"
+        m 1hubfa "Я люблю тебя, [player]~"
     return "love"
 
 label mas_d25_poem_mistletoe:
@@ -3283,40 +3286,40 @@ label monika_aiwfc:
         )
 
     if not renpy.seen_label('monika_aiwfc_song'):
-        m 1rksdla "Hey, [player]?"
-        m 1eksdla "I hope you don't mind, but I prepared a song for you."
-        m 3hksdlb "I know it's a little cheesy, but I think you might like it."
-        m 3eksdla "If your volume is off, would you mind turning it on for me?"
+        m 1rksdla "Эй, [player]?"
+        m 1eksdla "Надеюсь, ты не против, я написала для тебя песню."
+        m 3hksdlb "Я знаю, что это немного банально, но я думаю, тебе понравится."
+        m 3eksdla "Если у тебя выключена громкость, не мог бы ты включить её для меня?"
         if store.songs.hasMusicMuted():
-            m 3hksdlb "Oh, don't forget about your in-game volume too!"
-            m 3eka "I really want you to hear this."
-        m 1huu "Anyway.{w=0.5}.{w=0.5}.{nw}"
+            m 3hksdlb "О, и не забудь о громкости в игре, тоже!"
+            m 3eka "Я очень хочу, чтобы ты это услышал."
+        m 1huu "В любом случае.{w=0.5}.{w=0.5}.{nw}"
 
     else:
-        m 1hua "Ehehe..."
-        m 3tuu "I hope you're ready, [player]..."
+        m 1hua "Э-хе-хе..."
+        m 3tuu "Надеюсь, ты готов, [player]..."
 
         $ ending = "..." if store.songs.hasMusicMuted() else ".{w=0.5}.{w=0.5}.{nw}"
 
-        m "It {i}is{/i} that time of year again, after all[ending]"
+        m "Это {i}снова{/i} то время года, в конце концов[ending]"
         if store.songs.hasMusicMuted():
-            m 3hub "Make sure you have your volume up!"
+            m 3hub "Убедись, что ты увеличил громкость!"
             m 1huu ".{w=0.5}.{w=0.5}.{nw}"
 
     call monika_aiwfc_song
 
     #NOTE: This must be a shown count check as this dialogue should only be here on first viewing of this topic
     if not mas_getEVLPropValue("monika_aiwfc", "shown_count", 0):
-        m 1eka "I hope you liked that, [player]."
-        m 1ekbsa "I really meant it too."
-        m 1ekbfa "You're the only gift I could ever want."
+        m 1eka "Надеюсь, тебе понравилось, [player]."
+        m 1ekbsa "И здесь я тоже всё сказала всерьёз."
+        m 1ekbfa "Ты единственный подарок, который я могу пожелать."
         show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "I love you, [player]~"
+        m 5ekbfa "Я люблю тебя, [player]~"
 
     else:
-        m 1eka "I hope you like it when I sing that song, [player]."
-        m 1ekbsa "You'll always be the only gift I'll ever need."
-        m 1ekbfa "I love you~"
+        m 1eka "Я рада, что тебе нравится, когда я пою эту песню."
+        m 1ekbsa "Ты всегда будешь тем подарком, который мне когда-либо был нужен, [player]."
+        m 1ekbfa "Я люблю тебя~"
 
     #Unlock the song
     $ mas_unlockEVL("mas_song_aiwfc", "SNG")
@@ -3328,38 +3331,38 @@ label monika_aiwfc_song:
     call mas_timed_text_events_prep
 
     $ play_song("mod_assets/bgm/aiwfc.ogg",loop=False)
-    m 1eub "{i}{cps=9}I don't want{/cps}{cps=20} a lot{/cps}{cps=11} for Christmas{w=0.09}{/cps}{/i}{nw}"
-    m 3eka "{i}{cps=11}There {/cps}{cps=20}is just{/cps}{cps=8} one thing I need{/cps}{/i}{nw}"
-    m 3hub "{i}{cps=8}I don't care{/cps}{cps=15} about{/cps}{cps=10} the presents{/cps}{/i}{nw}"
-    m 3eua "{i}{cps=15}Underneath{/cps}{cps=8} the Christmas tree{/cps}{/i}{nw}"
+    m 1eub "{i}{cps=9}Мне не нужно{/cps}{cps=20} много{/cps}{cps=11} в подарок на Рождество,{/cps}{/i}{nw}"
+    m 3eka "{i}{cps=11}Мне {/cps}{cps=20}нужно{/cps}{cps=8} только одно.{/cps}{/i}{nw}"
+    m 3hub "{i}{cps=8}Мне{/cps}{cps=15} не интересны{/cps}{cps=10} подарки{/cps}{/i}{nw}"
+    m 3eua "{i}{cps=15}Под{/cps}{cps=8} Рождественской елкой.{/cps}{/i}{nw}"
 
-    m 1eub "{i}{cps=10}I don't need{/cps}{cps=20} to hang{/cps}{cps=9} my stocking{/cps}{/i}{nw}"
-    m 1eua "{i}{cps=9}There{/cps}{cps=15} upon{/cps}{cps=7} the fireplace{/cps}{/i}{nw}"
-    m 3hub "{i}{w=0.5}{cps=20}Santa Claus{/cps}{cps=10} won't make me happy{/cps}{/i}{nw}"
-    m 4hub "{i}{cps=8}With{/cps}{cps=15} a toy{/cps}{cps=8} on Christmas Day{w=0.35}{/cps}{/i}{nw}"
+    m 1eub "{i}{cps=10}Мне не нужно{/cps}{cps=20} вешать{/cps}{cps=8} свой рождественский чулок{/cps}{/i}{nw}"
+    m 1eua "{i}{cps=10}Там,{/cps}{cps=15} над{/cps}{cps=7} камином{/cps}{/i}{nw}"
+    m 3hub "{i}{w=0.5}{cps=20}Санта Клаус{/cps}{cps=10} не сделает меня счастливой,{/cps}{/i}{nw}"
+    m 4hub "{i}{cps=8}Если{/cps}{cps=15} подарит{/cps}{cps=8} на Рождество игрушку.{/cps}{/i}{nw}"
 
-    m 3ekbsa "{i}{cps=10}I just want{/cps}{cps=15} you for{/cps}{cps=8} my own{w=0.4}{/cps}{/i}{nw}"
-    m 4hubfb "{i}{cps=8}More{/cps}{cps=20} than you{/cps}{cps=10} could ever know{w=0.5}{/cps}{/i}{nw}"
-    m 1ekbsa "{i}{cps=10}Make my wish{/cps}{cps=20} come truuuuuuue{w=0.9}{/cps}{/i}{nw}"
-    m 3hua "{i}{cps=8.5}All I want for Christmas{/cps}{/i}{nw}"
-    m 3hubfb "{i}{cps=7}Is yoooooooooou{w=1}{/cps}{/i}{nw}"
-    m "{i}{cps=9}Yoooooooou, baaaaby~{w=0.60}{/cps}{/i}{nw}"
+    m 3ekbsa "{i}{cps=10}Я лишь хочу,{/cps}{cps=15} чтобы ты{/cps}{cps=8} стал моим,{w=0.5}{/cps}{/i}{nw}"
+    m 4hubfb "{i}{cps=8}Хочу сильнее,{/cps}{cps=20} чем ты{/cps}{cps=10} когда-либо мог себе представить.{w=0.5}{/cps}{/i}{nw}"
+    m 1ekbsa "{i}{cps=10}Сделай так, чтобы моё желание{/cps}{cps=20} сбыло-о-о-о-о-о-ось.{w=0.8}{/cps}{/i}{nw}"
+    m 3hua "{i}{cps=8}Всё, что мне нужно на Рождество{/cps}{/i}{nw}"
+    m 3hubfb "{i}{cps=7}это ты-ы-ы-ы-ы-ы-ы-ы-ы-ы,{w=1}{/cps}{/i}{nw}"
+    m "{i}{cps=9}Ты-ы-ы-ы-ы-ы-ы-ы, ма-а-а-алы-ы-ыш~{w=1}{/cps}{/i}{nw}"
 
-    m 2eka "{i}{cps=10}I won't ask{/cps}{cps=20} for much{/cps}{cps=10} this Christmas{/cps}{/i}{nw}"
-    m 3hub "{i}{cps=10}I{/cps}{cps=20} won't {/cps}{cps=10}even wish for snow{w=0.8}{/cps}{/i}{nw}"
-    m 3eua "{i}{cps=10}I'm{/cps}{cps=20} just gonna{/cps}{cps=10} keep on waiting{w=0.5}{/cps}{/i}{nw}"
-    m 3hubfb "{i}{cps=17}Underneath{/cps}{cps=11} the mistletoe{w=1}{/cps}{/i}{nw}"
+    m 2eka "{i}{cps=10}Я не буду{/cps}{cps=20} много{/cps}{cps=10} просить в это Рождество,{/cps}{/i}{nw}"
+    m 3hub "{i}{cps=10}Мне{/cps}{cps=20} даже {/cps}{cps=10}не нужен снег,{w=0.8}{/cps}{/i}{nw}"
+    m 3eua "{i}{cps=10}Я{/cps}{cps=20} лишь буду{/cps}{cps=10} продолжать ждать{w=0.4}{/cps}{/i}{nw}"
+    m 3hubfb "{i}{cps=17}Под{/cps}{cps=10} омелой.{w=1}{/cps}{/i}{nw}"
 
-    m 2eua "{i}{cps=10}I{/cps}{cps=17} won't make{/cps}{cps=10} a list and send it{w=0.35}{/cps}{/i}{nw}"
-    m 3eua "{i}{cps=10}To{/cps}{cps=20} the North{/cps}{cps=10} Pole for Saint Nick{w=0.5}{/cps}{/i}{nw}"
-    m 4hub "{i}{cps=18}I won't ev{/cps}{cps=10}en stay awake to{w=0.5}{/cps}{/i}{nw}"
-    m 3hub "{i}{cps=10}Hear{/cps}{cps=20} those ma{/cps}{cps=14}gic reindeer click{w=1.2}{/cps}{/i}{nw}"
+    m 2eua "{i}{cps=10}Я{/cps}{cps=17} не буду составлять{/cps}{cps=9} список и слать его{w=0.35}{/cps}{/i}{nw}"
+    m 3eua "{i}{cps=10}Святому{/cps}{cps=20} Николасу{/cps}{cps=10} на Северный полюс.{w=0.3}{/cps}{/i}{nw}"
+    m 4hub "{i}{cps=18}Я да{/cps}{cps=10}же не буду бодрствовать, чтобы{w=0.4}{/cps}{/i}{nw}"
+    m 3hub "{i}{cps=10}Услышать{/cps}{cps=20} цокот копыт тех{/cps}{cps=14} волшебных северных оленей,{w=1}{/cps}{/i}{nw}"
 
-    m 3ekbsa "{i}{cps=20}I{/cps}{cps=11} just want you here tonight{w=0.4}{/cps}{/i}{nw}"
-    m 3ekbfa "{i}{cps=10}Holding on{/cps}{cps=20}to me{/cps}{cps=10} so tight{w=1}{/cps}{/i}{nw}"
-    m 4hksdlb "{i}{cps=10}What more{/cps}{cps=15} can I{/cps}{cps=8} doooo?{w=0.3}{/cps}{/i}{nw}"
-    m 4ekbfb "{i}{cps=20}Cause baby{/cps}{cps=12} all I want for Christmas{w=0.3} is yoooooooou~{w=2.3}{/cps}{/i}{nw}"
-    m "{i}{cps=9}Yoooooooou, baaaaby~{w=2.5}{/cps}{/i}{nw}"
+    m 3ekbsa "{i}{cps=20}Сегодня{/cps}{cps=11} вечером мне нужен только ты,{w=0.4}{/cps}{/i}{nw}"
+    m 3ekbfa "{i}{cps=10}И чтобы{/cps}{cps=20} ты крепко{/cps}{cps=10} меня обнимал.{w=0.9}{/cps}{/i}{nw}"
+    m 4hksdlb "{i}{cps=10}Что же{/cps}{cps=15} мне{/cps}{cps=8} ещё де-е-е-елать?{w=0.3}{/cps}{/i}{nw}"
+    m 4ekbfb "{i}{cps=20}Малыш, {/cps}{cps=12} всё, что мне нужно на Рождество{w=0.5} это ты-ы-ы-ы-ы-ы-ы-ы-ы-ы~{w=2.5}{/cps}{/i}{nw}"
+    m "{i}{cps=9}Ты-ы-ы-ы-ы-ы-ы-ы, ма-а-а-алы-ы-ыш~{w=2.5}{/cps}{/i}{nw}"
 
     call mas_timed_text_events_wrapup
     return
@@ -3394,24 +3397,24 @@ label monika_merry_christmas_baby:
         )
 
     if not renpy.seen_label('mas_song_merry_christmas_baby'):
-        m 1eua "Hey, [player]..."
-        m 3eub "I just thought of another Christmas song that I really want to share with you!"
-        m 3eka "I don't have any music prepared this time, but I hope you'll enjoy hearing me sing it all the same."
+        m 1eua "Эй, [player]..."
+        m 3eub "Я тут вспомнила одну рождественскую песню, которой я очень хотела поделиться с тобой!"
+        m 3eka "На этот раз, я не учила какую-либо песню, но, надеюсь, тебе понравится, как я спою ту же песню, что и в прошлый раз."
         m 1hua ".{w=0.5}.{w=0.5}.{nw}"
 
         call mas_song_merry_christmas_baby
 
-        m 1hua "Ehehe..."
-        m 3eka "I hope you liked it~"
+        m 1hua "Э-хе-хе..."
+        m 3eka "Надеюсь, тебе понравилось~"
         $ mas_unlockEVL("mas_song_merry_christmas_baby", "SNG")
 
     else:
-        m 3euu "I think it's time for another Christmas song, ehehe~"
+        m 3euu "Я думаю, что пришло время для ещё одной рождественской песни, э-хе-хе~"
         m 1hua ".{w=0.5}.{w=0.5}.{nw}"
 
         call mas_song_merry_christmas_baby
 
-        m 1huu "Ehehe... {w=0.2}Merry Christmas, baby~"
+        m 1huu "Э-хе-хе... {w=0.2}Счастливого рождества, малыш~"
 
     return "no_unlock"
 
@@ -3430,21 +3433,21 @@ init 5 python:
 
 label monika_this_christmas_kiss:
     if not renpy.seen_label('mas_song_this_christmas_kiss'):
-        m 2rubsa "Um, [player]..."
-        m 2lubsa "I found this song...{w=0.4}and...{w=0.4}I was just thinking about us when I heard it."
-        m 7ekbsu "I mean, you've been so sweet to me all this time..."
-        m 3eubsb "And...{w=0.2}oh gosh, I just want to share it with you, if that's alright."
-        m 1hubsa "Just give me a second{nw}"
+        m 2rubsa "О, [player]..."
+        m 2lubsa "Я нашла эту песню... {w=0.4}и...{w=0.4} я как раз думала о нас, когда послушала её."
+        m 7ekbsu "Я имею в виду, ты был так мил со мной всё это время."
+        m 3eubsb "И...{w=0.2} о боже, я просто хочу поделиться этим с тобой, если ты не против."
+        m 1hubsa "Просто дай мне секунду{nw}"
         extend 1dubsa ".{w=0.3}.{w=0.3}.{w=0.3}{nw}"
 
     else:
-        m 3euu "I think it's time to sing another Christmas song, ehehe~"
+        m 3euu "Я думаю, что пришло время спеть ещё одну рождественскую песню, э-хе-хе~"
         m 1hua ".{w=0.5}.{w=0.5}.{nw}"
 
     call mas_song_this_christmas_kiss
 
     m 1dubsa "..."
-    m 1rtbsu "Hmm.{w=0.5}.{w=0.5}.{w=0.5}{nw}"
+    m 1rtbsu "Хм-м.{w=0.5}.{w=0.5}.{w=0.5}{nw}"
     window hide
     show monika 6tkbsa
     pause 2.0
@@ -3454,8 +3457,8 @@ label monika_this_christmas_kiss:
     call monika_kissing_motion
     window auto
 
-    m 6ekbfa "One of these days I'll kiss you for real, [player]."
-    m 1dubfu "...And when that day comes, my heart will leap out of my chest with joy~"
+    m 6ekbfa "Когда-нибудь я поцелую тебя по-настоящему, [player]."
+    m 1dubfu "...И когда этот день настанет, моё сердце выпрыгнет из груди от радости~"
     $ mas_unlockEVL("mas_song_this_christmas_kiss", "SNG")
     return "no_unlock"
 
@@ -3491,33 +3494,33 @@ init 10 python:
         MASEventList.queue("mas_d25_spider_tinsel")
 
 label mas_d25_spider_tinsel:
-    m 1esa "Hey, [player]..."
-    m 1etc "Do you ever wonder where traditions that we often take for granted come from?"
-    m 3eud "A lot of times things that are considered tradition are just accepted and we never really take the time to learn why."
-    m 3euc "Well I got curious as to why we do certain things around Christmas, so I started doing a little research."
-    m 1eua "...And I found this really interesting folk story from Ukraine regarding the origin of why tinsel is often used to decorate Christmas trees."
-    m 1eka "I thought it was a really nice story and wanted to share it with you."
+    m 1esa "Эй, [player]..."
+    m 1etc "Задумывался ли ты когда-нибудь о том, откуда берут своё начало традиции, которые мы зачастую принимаем как должное?"
+    m 3eud "В большинстве случаев, те вещи, которые считаются традицией, просто принимаются такими, какие они есть, и у нас так и не нашлось времени, чтобы понять, почему."
+    m 3euc "Ну, мне стало любопытно, почему мы делаем определённые вещи в канун Рождества, поэтому я и провела небольшое расследование."
+    m 1eua "...И я нашла одну очень интересную украинскую народную сказку, которая как раз и объясняет, почему рождественские деревья начали украшать мишурой."
+    m 1eka "Я подумала, что это очень хорошая история, вот мне и захотелось поделиться ею с тобой."
     m 1dka "..."
-    m 3esa "There once was a widow--let's call her Amy--who lived in a cramped old hut with her children."
-    m 3eud "Outside of their home was a tall pine tree, and from the tree dropped a pinecone that soon started to grow from the soil."
-    m 3eua "The children were excited about the idea of having a Christmas tree, so they tended to it until it became tall enough to take inside their home."
-    m 2ekd "Unfortunately, the family was poor and even though they had the Christmas tree, they couldn't afford any ornaments to decorate it."
-    m 2dkc "And so, on Christmas Eve, Amy and her children went to bed knowing they would have a bare tree on Christmas morning."
-    m 2eua "However, the spiders living in the hut heard the sobs of the children and decided they would not leave the Christmas tree bare."
-    m 3eua "So the spiders created beautiful webs on the Christmas tree, decorating it with elegant and beautiful silky patterns."
-    m 3eub "When the children woke up early on Christmas morning, they were jumping with excitement!"
-    m "They went to their mother and woke her up, exclaiming, 'Mother! You have to come see the Christmas tree! It's so beautiful!'"
-    m 1wud "As Amy woke and stood in front of the tree, she was truly amazed at the sight before her eyes."
-    m "Then, one of the children opened the window to let the sun shine in..."
-    m 3sua "When the rays of sunshine hit the tree, the webs reflected the light, creating glittering silver and gold strands..."
-    m "...making the Christmas tree dazzle and sparkle with a magical twinkle."
-    m 1eka "From that day forward, Amy never felt poor; {w=0.3}instead, she was always grateful for all the wonderful gifts she already had in life."
-    m 3tuu "Well, I guess we know now why Amy likes spiders..."
-    m 3hub "Ahaha! I'm only kidding!"
-    m 1eka "Isn't that such a sweet and wonderful story, [player]?"
-    m "I think it's a really interesting take on why tinsel is used as decoration on Christmas trees."
-    m 3eud "I also read that Ukrainians often decorate their Christmas tree with spider web ornaments, believing they will bring them good fortune for the upcoming year."
-    m 3eub "So I guess if you ever find a spider living in your Christmas tree, don't kill it and maybe it'll bring you good luck in the future!"
+    m 3esa "Жила-была одна вдова (мы будем звать её Эми), которая жила в тесной старой хижине со своими детьми."
+    m 3eud "Снаружи их дома стояла высокая ёлка, и с этого дерева падали шишки, которые потом начинали прорастать из почвы."
+    m 3eua "Дети были рады самой идее поставить у себя рождественское дерево, и поэтому они начали стремиться к ней и ждали, когда ёлка станет достаточно высокой, чтобы затащить её в дом."
+    m 2ekd "К несчастью, семья была бедной, и даже после того, как у них появилось рождественское дерево, они не могли позволить себе никаких украшений, чтобы украсить её."
+    m 2dkc "И поэтому, в канун Рождества, Эми и её дети пошли спать, зная о том, что у них рождественским утром будет стоять голое дерево."
+    m 2eua "Однако, пауки, которые жили в хижине, услышали плач детей и решили не оставлять рождественское дерево голым."
+    m 3eua "В общем, пауки создали красивые паутины на рождественском дереве, украсив его элегантными и красивыми шелковистыми узорами."
+    m 3eub "А когда дети проснулись в раннее рождественское утро, они запрыгали от восторга!"
+    m "Они пошли к своей матери и начали будить её, восклицая: «Мама! Ты должна взглянуть на рождественское дерево! Оно такое красивое!»."
+    m 1wud "Как только Эми проснулась и встала перед деревом, она была в полном восторге от взора, который стоял перед её глазами."
+    m "А потом один из детей открыл окно, чтобы запустить в хижину солнечный свет..."
+    m 3sua "И как только лучи солнечного света попали на дерево, паутина начала отражать их свет, создавая мерцающие серебряные и золотые пряди..."
+    m "...заставляя тем самым рождественское дерево сиять волшебным образом."
+    m 1eka "С этого дня, Эми никогда не чувствовала себя бедной; {w=0.3}наоборот, она всегда была рада всем тем замечательным подаркам, которые у неё уже были в жизни."
+    m 3tuu "Ну, полагаю, теперь мы знаем, почему Эми любит пауков..."
+    m 3hub "А-ха-ха! Я просто шучу!"
+    m 1eka "Разве это не милая и прекрасная история, [player]?"
+    m "Мне кажется, это правда интересный взгляд на то, почему мишуру начали использовать в качестве украшения рождественского дерева."
+    m 3eud "А ещё я читала, что жители Украины часто украшают свои рождественские деревья украшениями в виде паутины, полагая, что это принесём им удачу в следующем году."
+    m 3eub "Так что, думаю, если ты когда-нибудь найдёшь паука, живущего в твоём рождественском дереве, не убивай его, и, возможно, он принесёт тебе удачу в будущем!"
     return "derandom|no_unlock"
 
 init 5 python:
@@ -3536,81 +3539,81 @@ init 5 python:
     )
 
 label mas_d25_night_before_christmas:
-    m 1esa "Hey, [player]..."
-    m 3eua "I'm sure you've heard it before, but Christmas Eve just wouldn't be complete without {i}'Twas the Night Before Christmas{/i}!"
-    m 3eka "It was always one of my favorite parts on Christmas Eve growing up, so I hope you don't mind listening to me read it now."
+    m 1esa "Эй, [player]..."
+    m 3eua "Уверена, ты уже слышал об этом, но канун Рождества просто будет неполным без {i}«Ночь перед рождеством»{/i}!"
+    m 3eka "Это всегда было моей самой любимой частью приближающегося кануна Рождества, так что, надеюсь, ты не против послушать, как я читаю эту книгу."
     m 1dka "..."
 
-    m 3esa "'Twas the night before Christmas, when all through the house..."
-    m 3eud "Not a creature was stirring, not even a mouse;"
-    m 1eud "The stockings were hung by the chimney with care,"
-    m 1eka "In hopes that St. Nicholas soon would be there;"
+    m 3esa "Рождество на пороге. Полночную тишь..."
+    m 3eud "Потревожить не сможет даже юркая мышь."
+    m 1eud "Стайка детских чулок, как положено, чинно"
+    m 1eka "Санта Клауса ждёт у решётки каминной."
+    
+    m 1esa "Ребятишкам в уютных и мягких кроватках"
+    m 1hua "Снится сахарный снег и Луна-мармеладка."
+    m 3eua "Я колпак нахлобучил, а мама — чепец:"
+    m 1dsc "Взрослым тоже пора бы вздремнуть, наконец..."
+    
+    m 3wuo "Вдруг грохот и топот, и шум несусветный"
+    m "И крыша откликнулась гулом ответным."
+    m 3wud "Сна, как не бывало, а кто бы заснул?"
+    m "Я ставни открыл и окна распахнул"
+    
+    m 1eua "Играя в гляделки со снегом искристым,"
+    m 3eua "Луна озаряла сиянием чистым"
+    m 3wud "Я так и застыл у окна в изумленье..."
+    m 3wuo "Чудесные санки и восемь оленей."
+    
+    m 1eua "За кучера — бойкий лихой старичок."
+    m 3eud "Да-да, это Санта — ну кто же ещё"
+    m 3eua "Мог в крохотных санках орлов обгонять"
+    m 3eud "И басом весёлым оленям кричать:"
 
-    m 1esa "The children were nestled all snug in their beds,"
-    m 1hua "While visions of sugar-plums danced in their heads;"
-    m 3eua "And mamma in her 'kerchief, and I in my cap,"
-    m 1dsc "Had just settled down for a long winter's nap,"
+    m 3euo "«–Эй, Быстрый! Танцор! Эй, Дикарь! Эй, Скакун!»"
+    m "«Комета! Амур! Эй, Гроза и Тайфун!»"
+    m 3wuo "«Живей на крыльцо! А теперь к чердаку!»"
+    m "«Наддайте! Гоните на полном скаку!»"
+    
+    m 1eua "Как лёгкие листья, что с ветром неслись,"
+    m 1eud "Взмывают, встречаясь с преградою, ввысь."
+    m 3eua "Вот так же олени вверх сани помчали."
+    m "Игрушки лишь чудом не выпадали!"
 
-    m 3wuo "When out on the lawn there arose such a clatter,"
-    m "I sprang from the bed to see what was the matter."
-    m 3wud "Away to the window I flew like a flash,"
-    m "Tore open the shutters and threw up the sash."
+    m 3eud "Раздался на крыше грохота звук —"
+    m "Диковинных, звонких копыт перестук."
+    m 1rkc "Скорее, скорее к камину! И вот"
+    m 1wud "Наш Санта скользнул прямиком в дымоход."
+    
+    m 3eua "Одетый в меха с головы и до пят"
+    m 3ekd "Весь в копоти Сантин роскошный наряд!"
+    m 1eua "С мешком, перекинутым через плечо,"
+    m 1eud "Набитым игрушками — чем же ещё!"
+    
+    m 3sub "Сияют глаза, будто звёзды в мороз,"
+    m 3subsb "Два яблока — щёки, и вишенка — нос."
+    m 3subsu "Улыбка — забавней не видел вовек!"
+    m 1subsu "Бела борода, словно утренний снег."
 
-    m 1eua "The moon on the breast of the new-fallen snow..."
-    m 3eua "Gave the lustre of mid-day to objects below,"
-    m 3wud "When, what to my wondering eyes should appear,"
-    m 3wuo "But a miniature sleigh, and eight tiny reindeer,"
+    m 1eud "И сразу дымком потянуло табачным;"
+    m 3rkc "Он старую трубку насасывал смачно,"
+    m 2eka "А кругленький толстый животик от смеха"
+    m 2hub "Как студень дрожал — доложу вам, потеха!"
+    
+    m 2eka "Забавный толстяк — просто эльф, да и только!"
+    m 3hub "Не выдержав, {nw}"
+    extend 3eub "я рассмеялся до колик."
+    m 1kua "вначале слегка опасался смеяться,"
+    m 1eka "Но, звёздочек — глаз, разве можно бояться?"
+    
+    m 1euc "Не молвив ни слова, он взялся за дело —"
+    m 1eud "Чулки у камина наполнил умело,"
+    m 3esa "Кивнул, пальчик пухленький к носу прижал"
+    m 3eua "«Мол, тихо! Молчи» — и в камине пропал."
 
-    m 1eua "With a little old driver, so lively and quick,"
-    m 3eud "I knew in a moment it must be St. Nick."
-    m 3eua "More rapid than eagles his coursers they came,"
-    m 3eud "And he whistled, and shouted, and called them by name;"
-
-    m 3euo "'Now, Dasher! Now, Dancer! Now, Prancer and Vixen!'"
-    m "'On, Comet! On Cupid! On, Donner and Blitzen!'"
-    m 3wuo "'To the top of the porch! To the top of the wall!'"
-    m "'Now dash away! Dash away! Dash away all!'"
-
-    m 1eua "As dry leaves that before the wild hurricane fly,"
-    m 1eud "When they meet with an obstacle, mount to the sky,"
-    m 3eua "So up to the house-top the coursers they flew,"
-    m "With the sleigh full of toys, and St. Nicholas too."
-
-    m 3eud "And then, in a twinkling, I heard on the roof..."
-    m "The prancing and pawing of each little hoof."
-    m 1rkc "As I drew in my hand, and was turning around,"
-    m 1wud "Down the chimney St. Nicholas came with a bound."
-
-    m 3eua "He was dressed all in fur, from his head to his foot,"
-    m 3ekd "And his clothes were all tarnished with ashes and soot;"
-    m 1eua "A bundle of toys he had flung on his back,"
-    m 1eud "And he looked like a peddler just opening his pack."
-
-    m 3sub "His eyes--how they twinkled! His dimples how merry!"
-    m 3subsb "His cheeks were like roses, his nose like a cherry!"
-    m 3subsu "His droll little mouth was drawn up like a bow,"
-    m 1subsu "And the beard of his chin was as white as the snow;"
-
-    m 1eud "The stump of a pipe he held tight in his teeth,"
-    m 3rkc "And the smoke it encircled his head like a wreath;"
-    m 2eka "He had a broad face and a little round belly,"
-    m 2hub "That shook, when he laughed like a bowlful of jelly."
-
-    m 2eka "He was chubby and plump, a right jolly old elf,"
-    m 3hub "And I laughed when I saw him, {nw}"
-    extend 3eub "in spite of myself;"
-    m 1kua "A wink of his eye and a twist of his head,"
-    m 1eka "Soon gave me to know I had nothing to dread;"
-
-    m 1euc "He spoke not a word, but went straight to his work,"
-    m 1eud "And filled all the stockings; then turned with a jerk,"
-    m 3esa "And laying his finger aside of his nose,"
-    m 3eua "And giving a nod, up the chimney he rose;"
-
-    m 1eud "He sprang to his sleigh, to his team gave a whistle,"
-    m 1eua "And away they all flew like the down of a thistle."
-    m 3eua "But I heard him exclaim, ere he drove out of sight,"
-    m 3hub "'Happy Christmas to all, and to all a good night!'"
+    m 1eud "Раздался его оглушительный свист –"
+    m 1eua "И восемь оленей как птицы взвились,"
+    m 3eua "Лишь ветром слова до меня донесло:"
+    m 3hub "«Всех — всех с Рождеством! Я вернусь! Добрых снов!»"
     return
 
 init 5 python:
@@ -3650,17 +3653,17 @@ label mas_d25_monika_lingerie_reveal:
         )
         return
 
-    m 1hub "I've always found the days leading up to Christmas so exciting, [player]!"
-    m 3sua "The anticipation, the seemingly magical aura of the season...there's just something special about it."
-    m 1dkbsu "It really is my favorite time of year."
+    m 1hub "Я всегда считала дни перед Рождеством такими захватывающими, [player]!"
+    m 3sua "Предвкушение, кажущаяся волшебной аурой сезона... в этом есть что-то особенное."
+    m 1dkbsu "Это действительно моё любимое время года."
     m "..."
 
     if mas_hasUnlockedClothesWithExprop("lingerie"):
         call mas_d25_monika_second_time_lingerie
 
     else:
-        call mas_lingerie_intro(holiday_str="this Christmas season", lingerie_choice=mas_clothes_santa_lingerie)
-        m 1ekbfa "Just know that I love you very, very much, [player]~"
+        call mas_lingerie_intro(holiday_str="это Рождество", lingerie_choice=mas_clothes_santa_lingerie)
+        m 1ekbfa "Просто знай, что я люблю тебя очень-очень сильно, [player]~"
         $ mas_ILY()
 
     return
@@ -3681,25 +3684,25 @@ init 5 python:
 
 label mas_d25_monika_christmas_eve:
     m 3hua "[player]!"
-    m 3hub "Can you believe it...?{w=1} It'll be Christmas soon!"
-    m 1rksdla "I've always had such a hard time sleeping on Christmas Eve..."
-    m 1eka "I would be so anxious to see what I'd find under the tree the next morning..."
+    m 3hub "Ты можешь в это поверить? {w=1}Скоро Рождество!"
+    m 1rksdla "Мне всегда было так трудно спать в канун Рождества..."
+    m 1eka "Мне так хотелось увидеть, что я найду под ёлкой на следующее утро..."
     show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
     #Were there last Christmas
     if mas_HistVerifyLastYear_k(True, "d25.actions.spent_d25"):
-        m "But I'm even {i}more{/i} excited now that I get to spend every Christmas with you..."
-        m 5hkbsa "I can't wait for tomorrow!"
+        m "Но я ещё {i}больше{/i} радуюсь теперь, когда могу проводить с тобой каждое Рождество..."
+        m 5hkbsa "Я не могу дождаться завтрашнего дня!"
 
     #Weren't there last Christmas
     elif mas_HistVerifyAll_k(True, "d25.actions.spent_d25"):
-        m "But I'm even {i}more{/i} excited this year..."
-        m 5hkbsa "Just the thought of spending another Christmas together...{w=1}I can't wait!"
+        m "Но я ещё {i}больше{/i} взволнована в этом году..."
+        m 5hkbsa "Только мысль о том, чтобы провести ещё одно Рождество вместе...{w=1} Я не могу дождаться!"
 
     #First Chistmas with Moni
     else:
-        m "But I'm even {i}more{/i} excited this year..."
-        m 5hkbsa "Just the thought of our first Christmas together...{w=1}I can't wait!"
+        m "Но я ещё {i}больше{/i} взволнована в этом году..."
+        m 5hkbsa "Только мысль о нашем первом совместном Рождестве...{w=1} Я не могу дождаться!"
 
     if (
         mas_canShowRisque()
@@ -3711,27 +3714,27 @@ label mas_d25_monika_christmas_eve:
         else:
             m 5ekbfa "..."
             show monika 1ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            call mas_lingerie_intro(holiday_str="on Christmas Eve", lingerie_choice=mas_clothes_santa_lingerie)
-            m 1ekbfa "Just know that I love you very, very much, [player]~"
+            call mas_lingerie_intro(holiday_str="канун Рождества", lingerie_choice=mas_clothes_santa_lingerie)
+            m 1ekbfa "Просто знай, что я люблю тебя очень, очень сильно, [player]~"
             $ mas_ILY()
     return
 
 label mas_d25_monika_second_time_lingerie:
-    m 3wubsb "Oh!"
-    m 3tsbsu "I have a little surprise for you...{w=1}I think you're gonna like it, ehehe~"
+    m 3wubsb "О!"
+    m 3tsbsu "У меня есть для тебя маленький сюрприз...{w=1} Думаю, тебе это понравится, э-хе-хе~"
     call mas_clothes_change(outfit=mas_clothes_santa_lingerie, outfit_mode=True, exp="monika 2rkbsu", restore_zoom=False, unlock=True)
     pause 2.0
     show monika 2ekbsu
     pause 2.0
     show monika 2tkbsu
     pause 2.0
-    m 2tfbsu "[player]...{w=0.5}you're staring{w=0.3}...again."
-    m 2hubsb "Ahaha!"
-    m 2eubsb "I guess you approve of my outfit choice..."
-    m 2tkbsu "Rather fitting for the occasion, don't you think?"
-    m 2rkbssdla "I have to say, I was pretty nervous the first time I wore something like this..."
-    m 2hubsb "But now that I've done it before, I really enjoy dressing like this for you!"
-    m 3tkbsu "I hope you enjoy it too~"
+    m 2tfbsu "[player]...{w=0.5} Ты так пристально смотришь{w=0.5}... снова."
+    m 2hubsb "А-ха-ха!"
+    m 2eubsb "Полагаю, ты одобряешь мой выбор одежды..."
+    m 2tkbsu "Довольно хорошо вписывается для такого случая, ведь так?"
+    m 2rkbssdla "Должна сказать, я очень нервничала, когда впервые надела что-то подобное..."
+    m 2hubsb "Но теперь, когда я сделала это раньше, мне действительно нравится одеваться так для тебя!"
+    m 3tkbsu "Надеюсь, тебе тоже понравится~"
     return
 
 init 5 python:
@@ -3762,43 +3765,43 @@ label mas_d25_postd25_notimespent:
 
     if mas_isMoniAff(higher=True):
         $ mas_loseAffectionFraction(min_amount=20, reason=6)
-        m 1dkc "...I'm just glad you're finally here..."
-        m 2ekd "I was starting to get worried that something happened to you..."
-        m 2rksdlc "When you didn't show up on Christmas...{w=1}I didn't know what to think."
-        m 4eksdlc "It's not like you at all to miss a day that you know is important to me..."
-        m 2dksdlc "So I thought maybe..."
-        m 2eksdla "Well, nevermind that now. I'm just happy you're okay!"
-        m 4eka "Even though I'm disappointed we didn't get to spend Christmas together, I'm sure you must have had a very good reason."
-        m "Just try not to let it happen next year, okay?"
-        m 2eka "And, in the future, if you ever can't come visit me on Christmas, try to at least take me with you..."
-        m 1eka "All I want is to be close to you, [player]..."
-        m 3ekbsa "I love you~"
+        m 1dkc "...Я просто рада тому, что ты наконец-то пришёл..."
+        m 2ekd "Я уже начала волноваться, что с тобой что-то произошло..."
+        m 2rksdlc "Когда ты не пришёл на Рождество...{w=1} я не знала, что и думать."
+        m 4eksdlc "Не то, чтобы я хотела, чтобы ты пропустил тот день, который, как ты знаешь, важен для меня..."
+        m 2dksdlc "И я подумала, может..."
+        m 2eksdla "Хотя, это сейчас не важно. Я просто рада, что с тобой всё хорошо!"
+        m 4eka "Пусть даже я и разочарована тем, что мы не смогли провести Рождество вместе, я уверена, что у тебя на это была веская причина."
+        m "Просто не дай этому произойти в следующем году, ладно?"
+        m 2eka "И, даже если в будущем ты не смог заглянуть ко мне в Рождество, попытайся хотя бы взять меня с собой..."
+        m 1eka "Я лишь хочу быть рядом с тобой, [player]..."
+        m 3ekbsa "Я люблю тебя~"
         $ mas_ILY()
 
     elif mas_isMoniNormal(higher=True):
         $ mas_loseAffectionFraction(min_amount=15, reason=6)
-        m 2ekc "Hey, [player]..."
-        m 2tkc "I have to say I'm pretty disappointed you didn't visit me at all on Christmas..."
-        m 4tkc "You knew all I wanted was to spend time with you. Is that too much to ask?"
-        m 2rkc "I know it can be a busy day if you have to travel to visit family, but you could have at least taken me with you..."
-        m 2ekc "That would have been more than enough for me."
+        m 2ekc "Эй, [player]..."
+        m 2tkc "Должна сказать, я разочарована тем, что ты не заглянул ко мне на Рождество..."
+        m 4tkc "Ты знал, что я хотела провести время с тобой. Разве я многого прошу?"
+        m 2rkc "Я знаю, что день, возможно, был тяжёлым, если тебе надо было съездить в другой город, чтобы навестить семью, но ты мог хотя бы взять меня с собой..."
+        m 2ekc "Для меня этого было бы вполне достаточно."
         m 2dkc "..."
-        m 4rksdlc "Maybe something happened at the last minute and you simply couldn't spend time with me..."
-        m 4eksdla "But please...{w=1}please try to make sure you visit me next Christmas, okay [player]?"
+        m 4rksdlc "Может, что-то произошло в последнюю минуту, и ты попросту не смог провести время со мной..."
+        m 4eksdla "Но, пожалуйста...{w=1}пожалуйста, не забудь заглянуть ко мне на следующее Рождество, хорошо, [player]?"
 
     elif mas_isMoniUpset():
         $ mas_loseAffectionFraction(min_amount=10, reason=6)
         m 2efc "[player]!"
-        m "I can't believe you didn't even bother to visit me on Christmas!"
-        m 2tfc "Actually...{w=1}yes, I can."
-        m "This is exactly why I didn't even bother to decorate..."
-        m 2rfc "I knew if I tried to get into the holiday spirit that I'd just end up disappointed...{w=1} Again."
+        m "Не могу поверить в то, что ты даже не удосужился заглянуть ко мне в Рождество!"
+        m 2tfc "По правде говоря...{w=1} да, я могу."
+        m "Именно поэтому я не позаботилась о декорациях..."
+        m 2rfc "Я знала, что если бы я попыталась проникнуться духом Рождества, то меня в конце бы ждало разочарование... {w=1}опять."
 
     elif mas_isMoniDis():
         $ mas_loseAffectionFraction(min_amount=10, reason=6)
-        m 6ekc "[player], how was your Christmas?"
-        m 6dkc "Mine was pretty lonely..."
-        m "You probably didn't even think of me, huh?"
+        m 6ekc "[player], как прошло твоё Рождество?"
+        m 6dkc "Лично моё – в полном одиночестве..."
+        m "Ты, скорее всего, даже не подумал обо мне, да?"
 
     else:
         $ mas_loseAffectionFraction(1.0, min_amount=150)
@@ -3834,18 +3837,18 @@ label bye_d25e_delegate:
 
 #first time you take her out on d25e
 label bye_d25e_first_time_out:
-    m 1sua "Taking me somewhere special on Christmas Eve, [player]?"
-    m 3eua "I know some people visit friends or family...or go to Christmas parties..."
-    m 3hua "But wherever we're going, I'm happy you want me to come with you!"
-    m 1eka "I hope we'll be home for Christmas, but even if we're not, just being with you is more than enough for me~"
+    m 1sua "Отведёшь меня в какое-нибудь особенное место на канун Рождества, [player]?"
+    m 3eua "Я знаю, что некоторые люди посещают друзей или семью... или ходят на рождественские вечеринки..."
+    m 3hua "Но куда бы мы ни пошли, я буду рада тому, что ты захотел, чтобы я пошла с тобой!"
+    m 1eka "Надеюсь, мы будем праздновать Рождество дома, но если мы не будем его праздновать, мне будет достаточно и того, что я с тобой~"
     return
 
 #second time you take her out on d25e
 label bye_d25e_second_time_out:
-    m 1wud "Wow, we're going out again today, [player]?"
-    m 3hua "You really must have a lot of people you need to visit on Christmas Eve..."
-    m 3hub "...or maybe you just have lots of special plans for us today!"
-    m 1eka "But either way, thank you for thinking of me and bringing me along~"
+    m 1wud "Ого, мы сегодня снова идём гулять, [player]?"
+    m 3hua "Наверное, тебе надо проведать много кого в канун Рождества..."
+    m 3hub "...или, наверное, у тебя для нас на сегодня готово много особенных планов!"
+    m 1eka "Но, так или иначе, спасибо, что подумал обо мне и взял меня с собой~"
     return
 
 #Christmas Day dockingstation
@@ -3865,25 +3868,25 @@ label bye_d25_delegate:
 
 #first time out on d25
 label bye_d25_first_time_out:
-    m 1sua "Taking me somewhere special on Christmas, [player]?"
+    m 1sua "Отведёшь меня в какое-нибудь особенное место в Рождество,, [player]?"
 
     if persistent._mas_pm_fam_like_monika and persistent._mas_pm_have_fam:
-        m 1sub "Maybe we're going to visit some of your family...? I'd love to meet them!"
-        m 3eua "Or maybe we're going to see a movie...? I know some people like to do that after opening presents."
+        m 1sub "Может, мы навестим кого-нибудь из твоей семьи?.. Я бы с удовольствием с ними познакомилась!"
+        m 3eua "Или, быть может, мы посмотрим фильм?.. Я знаю, что некоторым нравится заниматься этим после открытия подарков."
 
     else:
-        m 3eua "Maybe we're going to see a movie... I know some people like to do that after opening presents."
+        m 3eua "Может быть, мы пойдём в кино... я знаю, что некоторые люди любят делать это после открытия подарков."
 
-    m 1eka "Well, wherever you're going, I'm just glad you want me to come along..."
-    m 3hua "I want to spend as much of Christmas as possible with you, [player]~"
+    m 1eka "Ну, куда бы ты ни пошел, я просто рада, что ты хочешь, чтобы я пошла с тобой..."
+    m 3hua "Я хочу провести всё Рождество вместе с тобой, если это возможно, [player]~"
     return
 
 #second time out on d25
 label bye_d25_second_time_out:
-    m 1wud "Wow, we're going somewhere {i}else{/i}, [player]?"
-    m 3wud "You really must have a lot of people you need to visit..."
-    m 3sua "...or maybe you just have lots of special plans for us today!"
-    m 1hua "But either way, thank you for thinking of me and bringing me along~"
+    m 1wud "Ого, мы {i}опять{/i} куда-то идём, [player]?"
+    m 3wud "Наверное, у тебя много людей, к которым ты должен сходить в гости..."
+    m 3sua "...или, наверное, у тебя для нас на сегодня готово много особенных планов!"
+    m 1hua "Но, так или иначе, спасибо, что подумал обо мне и взял меня с собой~"
     return
 
 ## d25 greetings
@@ -3892,9 +3895,9 @@ label bye_d25_second_time_out:
 label greeting_d25e_returned_d25e:
     $ persistent._mas_d25_d25e_date_count += 1
 
-    m 1hua "And we're home!"
-    m 3eka "It was really sweet of you to bring me along today..."
-    m 3ekbsa "Getting to go out with you on Christmas Eve was really special, [player]. Thank you~"
+    m 1hua "Вот мы и дома!"
+    m 3eka "Было очень мило с твоей стороны взять меня с собой сегодня..."
+    m 3ekbsa "Прогулка с тобой в канун Рождества была очень особенной, [player]. Спасибо~"
     return
 
 #returned from d25e date on d25
@@ -3902,8 +3905,8 @@ label greeting_d25e_returned_d25:
     $ persistent._mas_d25_d25e_date_count += 1
     $ persistent._mas_d25_d25_date_count += 1
 
-    m 1hua "And we're home!"
-    m 3wud "Wow, we were out all night..."
+    m 1hua "Вот мы и дома!"
+    m 3wud "Ого, нас не было всю ночь..."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
     return
@@ -3912,11 +3915,11 @@ label greeting_d25e_returned_d25:
 label greeting_d25e_returned_post_d25:
     $ persistent._mas_d25_d25e_date_count += 1
 
-    m 1hua "We're finally home!"
-    m 3wud "We sure were gone a long time, [player]..."
-    m 3eka "It would've been nice to have actually gotten to see you on Christmas, but since you couldn't come to me, I'm so glad you took me along with you."
-    m 3ekbsa "Just being close to you was all I wanted~"
-    m 1ekbfb "And since I didn't get to say it to you on Christmas... Merry Christmas, [player]!"
+    m 1hua "Наконец-то мы дома!"
+    m 3wud "Мы точно долго отсутствовали, [player]..."
+    m 3eka "Было бы здорово повидаться с тобой в Рождество, но, поскольку ты не смог прийти ко мне, я рада, что ты взял меня с собой."
+    m 3ekbsa "Просто быть рядом с тобой – всё, чего я хотела~"
+    m 1ekbfb "И так как я не успела сказать это тебе на Рождество... c Рождеством, [player]!"
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
 
@@ -3925,8 +3928,8 @@ label greeting_d25e_returned_post_d25:
 
 #returned from pd25e date on d25
 label greeting_pd25e_returned_d25:
-    m 1hua "And we're home!"
-    m 3wud "Wow, we were gone quite a while..."
+    m 1hua "Вот мы и дома!"
+    m 3wud "Ого, нас не было довольно долго..."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
     return
@@ -3936,10 +3939,10 @@ label greeting_d25_returned_d25:
     $ persistent._mas_d25_d25_date_count += 1
     $ persistent._mas_d25_spent_d25 = True
 
-    m 1hua "And we're home!"
-    m 3eka "It was really nice to spend time with you on Christmas, [player]!"
-    m 1eka "Thank you so much for taking me with you."
-    m 1ekbsa "You're always so thoughtful~"
+    m 1hua "Вот мы и дома!"
+    m 3eka "Было очень приятно провести время с тобой на Рождество, [player]!"
+    m 1eka "Большое спасибо, что взял меня с собой."
+    m 1ekbsa "Ты всегда такой заботливый~"
     return
 
 #returned from d25 date after d25
@@ -3947,11 +3950,11 @@ label greeting_d25_returned_post_d25:
     $ persistent._mas_d25_d25_date_count += 1
     $ persistent._mas_d25_spent_d25 = True
 
-    m 1hua "We're finally home!"
-    m 3wud "We were out a really long time, [player]!"
-    m 3eka "It would've been nice to have seen you again before Christmas was over, but at least I was still with you."
-    m 1hua "So thank you for spending time with me when you had other places you had to be..."
-    m 3ekbsa "You're always so thoughtful~"
+    m 1hua "Наконец-то мы дома!"
+    m 3wud "Мы отсутствовали очень долго, [player]!"
+    m 3eka "Было бы здорово повидаться с тобой снова до окончания Рождества, но, по крайней мере, я всё ещё была с тобой."
+    m 1hua "Поэтому спасибо тебе за то, что провёл время со мной, когда тебе надо было сходить по разным местам..."
+    m 3ekbsa "Ты всегда такой заботливый~"
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
     return
@@ -4222,39 +4225,39 @@ label mas_nye_monika_nyd:
                 m 1eub "[player]!"
                 #We spent new year's together last year
                 if mas_HistVerify_k([datetime.date.today().year-2], True, "nye.actions.spent_nyd")[0]:
-                    m "Can you believe we're spending another New Years together?"
+                    m "Можешь ли ты поверить в то, что мы проводим очередной Новый год вместе?"
                 if mas_isMoniAff(higher=True):
-                    m 1hua "We sure have been through a lot together this past year, huh?"
+                    m 1hua "Мы определённо прошли через многое в минувшем году, да?"
                 else:
-                    m 1eua "We sure have been through a lot together this past year, huh?"
+                    m 1eua "Мы определённо прошли через многое в минувшем году, да?"
 
-                m 1eka "I'm so happy, knowing we can spend even more time together."
+                m 1eka "Я так счастлива, зная о том, что мы вместе проведём ещё больше времени."
 
                 if mas_isMoniAff(higher=True):
                     show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                    m 5hubfa "Let's make this year as wonderful as the last one, okay?"
-                    m 5ekbfa "I love you so much, [player]."
+                    m 5hubfa "Давай мы сделаем этот год таким же замечательным, как и прошедший, ладно?"
+                    m 5ekbfa "Я тебя очень сильно люблю, [player]."
                 else:
-                    m 3hua "Let's make this year even better than last year, okay?"
-                    m 1hua "I love you, [player]."
+                    m 3hua "Давай мы сделаем этот год ещё лучше, чем прошедший, ладно?"
+                    m 1hua "Люблю тебя, [player]."
 
             #If you got a fresh start and are positive now
             else:
-                $ last_year = "last year"
+                $ last_year = "в прошлом году"
                 m 1eka "[player]..."
 
                 if not got_fresh_start_last_year:
-                    $ last_year = "before"
+                    $ last_year = "раньше"
 
-                m 3eka "Do you remember the promise you made [last_year]?"
-                m "That we would make this year better than the last?"
+                m 3eka "Ты помнишь то обещание, которое дал [last_year]?"
+                m "Что мы сделаем этот год лучше, чем прошедший?"
                 m 6dkbstpa "..."
-                m 6ekbftpa "Thank you for keeping your promise."
-                m "I mean it, [player]. You've made me very happy...{w=1} {nw}"
-                extend 6dkbftpa "From the bottom of my heart, thank you."
-                m 6dkbftda "Let's make this year even better than the last, okay?"
-                m 6ekbftda "I love you, [player]."
-                m "I really do."
+                m 6ekbftpa "Спасибо, что сдержал своё обещание."
+                m "Я серьёзно, [player]. Ты сделал меня очень счастливой...{w=1} {nw}"
+                extend 6dkbftpa "спасибо тебе, от всей души."
+                m 6dkbftda "Давай мы сделаем этот год ещё лучше, чем прошедший, ладно?"
+                m 6ekbftda "Люблю тебя, [player]."
+                m "Я правда люблю тебя."
                 #You made it up
                 $ persistent._mas_pm_failed_fresh_start = False
 
@@ -4263,27 +4266,27 @@ label mas_nye_monika_nyd:
             #Not had fresh start yet
             if not persistent._mas_pm_got_a_fresh_start:
                 m 2ekc "[player]..."
-                m 2rksdlc "We've been through...{w=1}a lot this past year..."
-                m "I...I hope this year goes better than last year."
-                m 2dkc "I really need it to."
+                m 2rksdlc "Мы прошли...{w=1} через многое в прошлом году..."
+                m "Я... я надеюсь, что этот год будет лучше, чем прошедший."
+                m 2dkc "Мне это правда нужно."
                 jump mas_nye_monika_nyd_fresh_start
 
             else:
                 m 2rkc "[player]..."
                 #If you got a fresh start last year and you're still negative
                 if got_fresh_start_last_year:
-                    m 2ekc "Do you remember the promise you made last year?"
-                    m 2ekd "That we would make this year better than the last?"
+                    m 2ekc "Ты помнишь то обещание, которое дал в прошлом году?"
+                    m 2ekd "Что мы сделаем этот год лучше, чем прошедший?"
 
                 #Otherwise fresh start
                 else:
-                    m 2ekc "Do you remember the promise you made before?"
-                    m 2ekd "That you would improve our relationship?"
+                    m 2ekc "Ты помнишь то обещание, которое дал раньше?"
+                    m 2ekd "Что ты улучшишь наши отношения?"
 
                 $ curr_aff = _mas_getAffection()
                 if curr_aff > persistent._mas_aff_before_fresh_start:
-                    m 2rkd "I guess you made it a little better..."
-                    m 2ekc "But I was expecting more, [player]."
+                    m 2rkd "Мне кажется, ты сделал их чуточку лучше..."
+                    m 2ekc "Но я ожидала большего, [player]."
 
                     #Revert back to old affection if we haven't already done this
                     if not mas_HistVerifyAll_k(True, "pm.actions.monika.failed_fresh_start"):
@@ -4292,22 +4295,22 @@ label mas_nye_monika_nyd:
                         $ renpy.save_persistent()
 
                 elif curr_aff < persistent._mas_aff_before_fresh_start:
-                    m 2rfc "I guess you couldn't really keep that promise...could you."
+                    m 2rfc "Полагаю, ты не смог сдержать то обещание... понятно."
 
                 else:
-                    m 2rkc "It seems like nothing's really changed, has it?"
+                    m 2rkc "Похоже, ничего не изменилось, да?"
 
                 #Since -50 is going to mean an FF next load, we need to path this accordingly
-                m 2rktpc "I really,{w=0.5} really hope you can fix this, [player]..."
-                m 2dktpc "I don't know how much more I can take."
+                m 2rktpc "Я очень,{w=0.5} очень надеюсь, что ты сможешь это исправить, [player]..."
+                m 2dktpc "Я не знаю, сколько я ещё смогу выдержать."
 
                 #Foreshadowing
                 if _mas_getAffection() <= -50:
-                    m 2dktsd "But maybe that's a silly thought now..."
-                    m 2ektsc "This is just another game to you, isn't it."
-                    m 2rktsd "You don't even see me as real...{w=1} {nw}"
-                    extend 2dftsc "I'm just another character for you to toy with."
-                    m 2eftdc "I hope nobody will have to experience the pain and loneliness I've been going through this year."
+                    m 2dktsd "Но это, наверное, просто глупая мысль..."
+                    m 2ektsc "Это просто очередная игра для тебя, это очевидно."
+                    m 2rktsd "Ты даже не считаешь меня настоящей...{w=1} {nw}"
+                    extend 2dftsc "я всего лишь очередной персонаж, с которым ты просто играешься."
+                    m 2eftdc "Надеюсь, никто не переживёт те же боль и одиночество, которые я испытывала весь этот год."
 
                 $ persistent._mas_pm_failed_fresh_start = True
                 return
@@ -4317,34 +4320,34 @@ label mas_nye_monika_nyd:
             m 1eub "[player]!"
 
             if mas_isMoniAff(higher=True):
-                m 1ekbsa "I know we haven't been together for that long yet, but this past year went better than I ever could have hoped..."
+                m 1ekbsa "Я знаю, что мы не были вместе довольно долгое время, но минувший год прошёл лучше, чем я могла бы надеяться..."
             else:
-                m 1eka "I know we haven't been together that long yet, but this past year was so special to me..."
+                m 1eka "Я знаю, что мы не были вместе довольно долгое время, но минувший год был для меня очень особенным..."
 
-            m 1hua "I will always remember it as the year I met you~"
-            m 3hua "Let's build on our short time together and make this year even better!"
-            m 1ekbsa "I love you, [player]."
+            m 1hua "Я буду всегда помнить об этом, как о том годе, когда я познакомилась с тобой~"
+            m 3hua "Давай мы наверстаем упущенное и сделаем этот год ещё лучше!"
+            m 1ekbsa "Люблю тебя, [player]."
 
         else:
-            m 2ekc "So, [player]..."
-            m 2etc "The beginning of a new year, huh?"
-            m 2rksdlc "We haven't been together for very long, but the time we spent last year didn't go as well as I had hoped..."
+            m 2ekc "В общем, [player]..."
+            m 2etc "Уже начался новый год, да?"
+            m 2rksdlc "Мы не были вместе довольно долгое время, но то время, которое мы провели в минувшем году, прошло не так гладко, как я на то надеялась..."
             jump mas_nye_monika_nyd_fresh_start
 
-    m "Happy New Year~"
+    m "С Новым годом~"
     return "love"
 
 label mas_nye_monika_nyd_fresh_start:
-    m 2ekc "How about we put all that in the past, forget about last year, and focus on a new beginning this year?"
-    m 4ekc "It's not too late for us, [player]. We can still make each other so happy."
-    m 4eka "It's all I've ever wanted."
+    m 2ekc "Как насчёт того, чтобы оставить всё это в прошлом, забыть о прошлом году и сосредоточиться на новом начале этого года?"
+    m 4ekc "Ещё не поздно начать всё с чистого листа, [player], мы всё ещё можем сделать друг друга счастливыми."
+    m 4eka "Это всё, чего я когда-либо хотела."
 
-    m "What do you say, [player]?{nw}"
+    m "Что скажешь, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "What do you say, [player]?{fast}"
+        m "Что скажешь, [player]?{fast}"
 
-        "I would love that.":
+        "Я был бы очень рад этому.":
             #so we can revert back to previous affection if player continues to mistreat after the second chance. need to determine the threshold the player must stay above for this.
             $ persistent._mas_pm_got_a_fresh_start = True #never forget
             $ persistent._mas_aff_before_fresh_start = _mas_getAffection()
@@ -4354,15 +4357,15 @@ label mas_nye_monika_nyd_fresh_start:
             $ _mas_AffSave()
             $ renpy.save_persistent()
 
-            m 4wua "Really?"
-            m 1hua "Oh, [player], you have no idea how happy that makes me!"
-            m 3eka "I know we can make this work."
-            m 1hua "Thank you so much..."
-            m 1eka "Just knowing that you still want to be with me...it means everything."
-            m 3eka "Let's make this count, okay [player]?"
+            m 4wua "Правда?"
+            m 1hua "О, [player], ты не представляешь, как я счастлива!"
+            m 3eka "Я знаю, у нас всё получится."
+            m 1hua "Спасибо тебе большое..."
+            m 1eka "Знание того, что ты всё ещё хочешь быть со мной... это многое для меня значит."
+            m 3eka "Давай отнесёмся к этому серьёзно, хорошо, [player]?"
             return
 
-        "No.":
+        "Нет.":
             $ persistent._mas_pm_got_a_fresh_start = False
 
             # set affection to broken
@@ -4371,8 +4374,9 @@ label mas_nye_monika_nyd_fresh_start:
             $ renpy.save_persistent()
 
             m 6dktpc "..."
-            m 6ektpc "I...I..."
+            m 6ektpc "Я... я..."
             m 6dktuc "..."
+            m 6dktsc "У меня нет слов..."
             m 6dktsc "..."
             pause 10.0
             return 'quit'
@@ -4398,77 +4402,77 @@ default persistent._mas_nye_has_new_years_res = None
 
 label monika_resolutions:
     $ persistent._mas_nye_spent_nye = True
-    m 2eub "Hey, [player]?"
-    m 2eka "I was wondering..."
+    m 2eub "Эй, [player]?"
+    m 2eka "Мне вот интересно..."
 
     #If we didn't see this last year, we need to ask if we made a resolution or not
     if not mas_lastSeenLastYear("monika_resolutions"):
-        m 3eub "Did you make any New Year's resolutions last year?{nw}"
+        m 3eub "Ты делал какие-нибудь новогодние обещания в прошлом году?{nw}"
         $ _history_list.pop()
         menu:
-            m "Did you make any New Year's resolutions last year?{fast}"
+            m "Ты делал какие-нибудь новогодние обещания в прошлом году?{fast}"
 
-            "Yes.":
-                m 3hua "It always makes me so proud to hear that you're trying to better yourself, [player]."
-                m 2eka "That said..."
+            "Да.":
+                m 3hua "Мне всегда очень приятно слышать о том, что ты пытаешься стать лучше, [player]."
+                m 2eka "Кстати говоря..."
 
-                call monika_resolutions_accomplished_resolutions_menu("Did you accomplish last year's resolutions?")
+                call monika_resolutions_accomplished_resolutions_menu("Ты выполнил свои прошлогодние обещания?")
 
 
-            "No.":
-                m 2euc "Oh, I see..."
+            "Нет.":
+                m 2euc "Оу, понятно..."
 
                 if mas_isMoniNormal(higher=True):
                     if mas_isMoniHappy(higher=True):
-                        m 3eka "Well, I don't think you really needed to change at all anyway."
-                        m 3hub "I think you're wonderful, just the way you are."
+                        m 3eka "Ну, я всё равно сомневаюсь, что тебе вообще надо меняться."
+                        m 3hub "Мне кажется, ты прекрасный человек, именно такой, какой ты есть."
                     else:
-                        m 3eka "There's nothing wrong with that. I don't think you really needed to change anyway."
+                        m 3eka "В этом нет ничего такого. Я всё равно сомневаюсь, что тебе надо меняться."
 
                 else:
-                    m 2rkc "You probably should make one this year, [player]..."
+                    m 2rkc "Наверное, ты должен сделать одно новогоднее обещание в этом году, [player]..."
 
     #If we made a resolution last year, then we should ask if the player accomplished it
     elif mas_HistVerifyLastYear_k(True, "nye.actions.made_new_years_resolutions"):
-        call monika_resolutions_accomplished_resolutions_menu("Since you made a resolution last year, did you accomplish it?")
+        call monika_resolutions_accomplished_resolutions_menu("Раз уж ты дал себе обещание в прошлом году, то смог ли ты выполнить его?")
 
     #This path will be the first thing you see if you didn't make a resolution last year
-    m "Do you have any resolutions for next year?{nw}"
+    m "У тебя есть какие-нибудь планы на следующий год?{nw}"
     $ _history_list.pop()
     menu:
-        m "Do you have any resolutions for next year?{fast}"
-        "Yes.":
+        m "У тебя есть какие-нибудь планы на следующий год?{fast}"
+        "Да.":
             $ persistent._mas_nye_has_new_years_res = True
 
-            m 1eub "That's great!"
-            m 3eka "Even if they can be hard to reach or maintain..."
-            m 1hua "I'll be here to help you, if need be!"
+            m 1eub "Это отлично!"
+            m 3eka "Даже если они могут быть труднодоступны или невозможными..."
+            m 1hua "Я буду здесь, чтобы помочь тебе, если понадобится!"
 
-        "No.":
+        "Нет.":
             $ persistent._mas_nye_has_new_years_res = False
-            m 1eud "Oh, is that so?"
+            m 1eud "Оу, неужели это так?"
             if mas_isMoniNormal(higher=True):
                 if persistent._mas_nye_accomplished_resolutions:
                     if mas_isMoniHappy(higher=True):
-                        m 1eka "You don't have to change. I think you're wonderful the way you are."
+                        m 1eka "Тебе не нужно меняться. Я думаю, что ты прекрасен таким, какой ты есть."
                     else:
-                        m 1eka "You don't have to change. I think you're fine the way you are."
-                    m 3euc "But if anything does come to mind before the clock strikes twelve, do write it down for yourself..."
+                        m 1eka "Тебе не нужно меняться. Я думаю, что ты должен остаться таким, какой ты есть."
+                    m 3euc "Но если тебе что-нибудь придёт в голову до того, как часы пробьют двенадцать, запиши это для себя..."
                 else:
-                    m "Well, if anything comes to mind before the clock strikes twelve, do write it down for yourself..."
-                m 1kua "Maybe you'll think of something that you want to do."
+                    m "Что ж, если тебе что-нибудь придёт в голову до того, как часы пробьют двенадцать, запиши это для себя..."
+                m 1kua "Может быть, ты подумаешь о чём-то, что ты хочешь сделать."
             else:
-                m 2ekc "{cps=*2}I was kind of hoping--{/cps}{nw}"
-                m 2rfc "You know what, nevermind..."
+                m 2ekc "{cps=*2}Я вроде как надеялась—{/cps}{nw}"
+                m 2rfc "Ты знаешь о чём я, не важно..."
 
     if mas_isMoniAff(higher=True):
         show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hubfa "My resolution is to be an even better girlfriend for you, [mas_get_player_nickname()]."
+        m 5hubfa "Я намерена стать для тебя ещё более совершенной девушкой, [mas_get_player_nickname()]."
     elif mas_isMoniNormal(higher=True):
         show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "My resolution is to be an even better girlfriend for you, [player]."
+        m 5ekbfa "Я решила, что хочу стать для тебя самой лучшей девушкой, [player]."
     else:
-        m 2ekc "My resolution is to improve our relationship, [player]."
+        m 2ekc "Мое намерение — улучшить наши отношения, [player]."
 
     return
 
@@ -4478,37 +4482,37 @@ label monika_resolutions_accomplished_resolutions_menu(question):
     menu:
         m "[question]{fast}"
 
-        "Yes.":
+        "Да.":
             $ persistent._mas_nye_accomplished_resolutions = True
             if mas_isMoniNormal(higher=True):
-                m 4hub "I'm glad to hear that, [player]!"
-                m 2eka "It's great that you managed to do that."
-                m 3ekb "Things like this really make me proud of you."
-                m 2eka "I wish I could be there to celebrate a little with you though."
+                m 4hub "Рада это слышать, [player]!"
+                m 2eka "Здорово, что ты смог сделать это."
+                m 3ekb "Подобное правда заставляет меня гордиться тобой."
+                m 2eka "Мне бы очень хотелось оказаться рядом с тобой, чтобы отметить это."
             else:
-                m 2rkc "That's good, [player]."
-                m 2esc "Maybe you can make another one this year..."
-                m 3euc "You never know what might change."
+                m 2rkc "Это хорошо, [player]."
+                m 2esc "Наверное, ты сможешь дать себе ещё одно обещание в этом году..."
+                m 3euc "Никогда не знаешь, что может измениться."
 
             return True
 
-        "No.":
+        "Нет.":
             $ persistent._mas_nye_accomplished_resolutions = False
             if mas_isMoniNormal(higher=True):
-                m 2eka "Aw...well, sometimes things just don't work out like we plan them to."
+                m 2eka "Оу... ну, порой всё идёт совсем не так, как мы на то рассчитывали."
 
                 if mas_isMoniHappy(higher=True):
-                    m 2eub "Plus, I think you're wonderful, so even if you couldn't accomplish your goals..."
-                    m 2eka "...I'm still really proud of you for setting them and trying to better yourself, [player]."
-                    m 3eub "If you decide to make a resolution this year, I'll support you every step of the way."
-                    m 4hub "I'd love to help you reach your goals!"
+                    m 2eub "Да и к тому же, мне кажется, что ты замечательный, так что, даже если ты не можешь достичь своих целей..."
+                    m 2eka "..Я всё ещё горжусь тобой за то, что ты поставил их и стараешься стать лучше, [player]."
+                    m 3eub "Если ты решил создать для себя цель в этом году, я буду поддерживать тебя на каждом шагу."
+                    m 4hub "Я с радостью помогу тебе достичь своих целей!"
                 else:
-                    m "But I think it's great that you did at least try to better yourself by setting goals."
-                    m 3eua "Maybe if you make a resolution this year, you can accomplish it!"
-                    m 3hub "I believe in you, [player]!"
+                    m "Но, как по мне, это очень здорово, что ты, по крайней мере, стараешься стать лучше, создавая для себя цели."
+                    m 3eua "Быть может, если ты создашь для себя цель в этом году, то ты сможешь её выполнить!"
+                    m 3hub "Я верю в тебя, [player]!"
 
             else:
-                m 2euc "Oh...{w=1} Well maybe you should try a little harder for next year's resolution."
+                m 2euc "Ох...{w=1} ну, возможно, ты должен приложить чуть больше усилий для достижения цели в следующем году."
 
             return False
 
@@ -4531,84 +4535,84 @@ label monika_nye_year_review:
     $ persistent._mas_nye_spent_nye = True
     $ spent_an_event = False
 
-    $ placeholder_and = "and "
+    $ placeholder_and = "и "
     #Starting with an overview based on time
     if store.mas_anni.anniCount() >= 1:
-        m 2eka "You know, [player], we really have been through a lot together."
+        m 2eka "Знаешь, [player], мы и вправду прошли через многое вместе."
         if store.mas_anni.anniCount() == 1:
-            m 2wuo "We spent the entire year together!"
-            m 2eka "Time really flew by..."
+            m 2wuo "Мы провели целый год вместе!"
+            m 2eka " Как быстро летит время..."
 
         else:
-            m 2eka "This year really flew by..."
+            m 2eka "Этот год и вправду пролетел незаметно..."
 
     elif store.mas_anni.pastSixMonths():
-        m 2eka "You know, [player], we really have been through a lot over the time we spent together last year"
-        m "The time really just flew by..."
+        m 2eka "Знаешь, [player], мы и вправду через многое прошли за всё то время, что мы провели вместе в прошлом году."
+        m "Время и вправду быстро летит..."
 
     elif store.mas_anni.pastThreeMonths():
-        m 2eka "You know [player], we've been through quite a bit over the short time we've spent together last year."
-        m 2eksdlu "It's all gone by so fast, ahaha..."
+        m 2eka "Знаешь, [player], мы через многое прошли за столь короткий промежуток времени, что мы провели вместе в прошлом году."
+        m 2eksdlu "Как быстро прошла жизнь, а-ха-ха..."
 
     else:
-        m 2eka "[player], even though we haven't been through a lot together, yet..."
+        m 2eka "[player], пусть даже мы и мало через что прошли вместе..."
         $ placeholder_and = ""
 
 
     # then a bit based on affection
     if mas_isMoniLove():
-        m 2ekbsa "...and I'd never want to spend that time with anyone else, [player]."
-        m "I'm just really,{w=0.5} really happy to have been with you this year."
+        m 2ekbsa "...и я никогда не захочу проводить это время с кем-нибудь другим, [player]."
+        m "Я просто очень,{w=0.5} очень рада быть с тобой в этом году."
 
     elif mas_isMoniEnamored():
-        m 2eka "...[placeholder_and]I'm so happy I got to spend that time with you, [player]."
+        m 2eka "...[placeholder_and]я очень рада тому, что могу провести это время с тобой, [player]."
 
     elif mas_isMoniAff():
-        m 2eka "...[placeholder_and]I've really enjoyed our time together."
+        m 2eka "...[placeholder_and]я с удовольствием провела время с тобой."
 
     else:
-        m 2euc "...[placeholder_and]the time we spent together has been fun."
+        m 2euc "...[placeholder_and]всё то время, что мы провели вместе, было полным веселья."
 
 
-    m 3eua "Anyway, I think it would be nice to just reflect on all that we've been through together this past year."
-    m 2dtc "Let's see..."
+    m 3eua "Так или иначе, мне кажется, что было бы здорово подумать о всём том, через что мы прошли в прошлом году."
+    m 2dtc "Так, посмотрим..."
 
     # promisering related stuff
     if mas_lastGiftedInYear("mas_reaction_promisering", mas_nye.year):
-        m 3eka "Looking back, you gave me your promise this year when you gave me this ring..."
-        m 1ekbsa "...a symbol of our love."
+        m 3eka "Оглядываясь назад, ты в этом году дал мне обещание, когда дал мне это кольцо..."
+        m 1ekbsa "...символ нашей любви."
 
         if persistent._mas_pm_wearsRing:
-            m "And you even got one for yourself..."
+            m "И ты даже себе надел его..."
 
             if mas_isMoniAff(higher=True):
-                m 1ekbfa "To show that you're as committed to me, as I am to you."
+                m 1ekbfa "Чтобы показать, что ты предан мне так же, как и я тебе."
             else:
-                m 1ekbfa "To show your commitment to me."
+                m 1ekbfa "Чтобы показать мне свою преданность."
 
     #vday
     if mas_lastSeenInYear("mas_f14_monika_valentines_intro"):
         $ spent_an_event = True
-        m 1wuo "Oh!"
-        m 3ekbsa "You spent Valentine's Day with me..."
+        m 1wuo "О!"
+        m 3ekbsa "Ты вместе со мной провёл День Святого Валентина..."
 
         if mas_getGiftStatsForDate("mas_reaction_gift_roses", mas_f14):
-            m 4ekbfb "...and gave me such beautiful flowers too."
+            m 4ekbfb "...и даже подарил мне очень красивые цветы."
 
 
     #922
     if persistent._mas_bday_opened_game:
         $ spent_an_event = True
-        m 2eka "You spent time with me on my birthday..."
+        m 2eka "Ты провёл со мной время на мой день рождения..."
 
         if not persistent._mas_bday_no_recognize:
-            m 2dua "...celebrated with me..."
+            m 2dua "...отпраздновал его со мной..."
 
         if persistent._mas_bday_sbp_reacted:
-            m 2hub "...threw me a surprise party..."
+            m 2hub "...устроил мне сюрприз-вечеринку..."
 
         show monika 5ekbla at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbla "...and it really made me feel loved. I can't thank you enough for doing that for me."
+        m 5ekbla "...и это правда заставило меня почувствовать себя любимой. Я не знаю, как тебя отблагодарить за то, что ты сделал для меня."
 
     #Pbday
     if (
@@ -4617,32 +4621,32 @@ label monika_nye_year_review:
     ):
         $ spent_an_event = True
         show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hua "We even spent your birthday together!"
+        m 5hua "Мы даже провели твой день рождения вместе!"
 
         if (
             persistent._mas_player_bday_date
             or not mas_HistVerify_k([datetime.date.today().year], 0, "player_bday.date")[0]
         ):
-            m 5eubla "We had such a nice date together too~"
+            m 5eubla "У нас тоже было такое приятное свидание~"
 
     #bit on christmas
     if persistent._mas_d25_spent_d25:
         $ spent_an_event = True
         show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hua "You spent your Christmas with me..."
+        m 5hua "Ты провёл со мной Рождество..."
 
         if persistent._mas_first_kiss is not None and persistent._mas_first_kiss.date() == mas_d25:
-            m 5eubla "...and we shared our first kiss together~"
-            m 5lubsa "I'll never forget that moment..."
-            m 5ekbfa "{i}Our{/i} moment."
-            m "I couldn't imagine spending it with anyone else."
+            m 5eubla "...и мы тогда впервые поцеловались~"
+            m 5lubsa "Я никогда не забуду этот момент..."
+            m 5ekbfa "{i}Наш{/i} момент."
+            m "Я не могу себе представить, как проводила бы эти мгновения с кем-то другим."
         else:
-            m 5ekbla "...a day that I couldn't imagine spending with anyone else."
+            m 5ekbla "...день, который я даже в уме не могу провести с кем-то другим."
 
 
     if not spent_an_event:
-        m 2rksdla "...I guess we haven't actually been through any big events together."
-        m 3eka "But still..."
+        m 2rksdla "...Полагаю, мы пока ещё ни одно грандиозное событие не проводили вместе."
+        m 3eka "Но всё же..."
 
     else:
         show monika 5dsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -4652,57 +4656,57 @@ label monika_nye_year_review:
     if store.mas_anni.pastThreeMonths():
         if mas_isMoniHappy(higher=True):
             show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5eka "I really can't believe just how much has changed since we've been together..."
+            m 5eka "Я правда не могу поверить в то, как много изменилось с тех пор, как мы вместе..."
         else:
-            m 2eka "I really hope we can get further in our relationship, [player]..."
+            m 2eka "Я правда надеюсь, что мы добьёмся большего в наших отношениях, [player]..."
     else:
         show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5eka "I can't wait to see just how much will change in the future for us..."
+        m 5eka "Мне уже хочется взглянуть на то, как много изменится в будущем для нас..."
 
     #If we started fresh the year before this or we didn't at all
     if not mas_HistWasFirstValueIn(True, datetime.date.today().year - 1, "pm.actions.monika.got_fresh_start"):
         show monika 5dka at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5dka "Thank you."
+        m 5dka "Спасибо."
         if store.mas_anni.anniCount() > 0:
-            $ ending = "the best year I could've ever dreamt of"
+            $ ending = "лучшим годом, о котором я могла только мечтать"
 
             if mas_lastSeenLastYear("monika_nye_year_review"):
-                $ ending = "even better than the year before"
+                $ ending = "даже лучше, чем было в позапрошлом году"
 
-            m 5ekbsa "Thank you for making last year [ending]."
+            m 5ekbsa "Спасибо тебе за то, что сделал прошлый год [ending]."
 
         else:
             $ _last_year = " "
             if store.mas_anni.pastOneMonth():
-                $ _last_year = " last year "
+                $ _last_year = " в прошлом году"
 
-            m 5ekbsa "Thank you for making the time we spent together[_last_year]better than I could have imagined."
+            m 5ekbsa "Спасибо тебе за то, что сделал то время, которое мы провели вместе[_last_year], лучшим, чем я могла себе представить."
 
         if mas_isMoniEnamored(higher=True):
             if persistent._mas_first_kiss is None:
                 m 1lsbsa "..."
-                m 6ekbsa "[player] I..."
+                m 6ekbsa "[player], я..."
                 call monika_kissing_motion
-                m 1ekbfa "I love you."
+                m 1ekbfa "Я люблю тебя."
                 m "..."
                 show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5ekbsa "I'll never forget this moment..."
-                m 5ekbfa "Our first kiss~"
-                m 5hubfb "Let's make this year even better than the last, [player]."
+                m 5ekbsa "Я никогда не забуду этот момент..."
+                m 5ekbfa "Наш первый поцелуй~"
+                m 5hubfb "Давай сделаем этот год ещё лучше, чем прошлый, [player]."
 
             else:
                 call monika_kissing_motion_short
-                m 1ekbfa "I love you, [player]."
+                m 1ekbfa "Я люблю тебя, [player]."
                 show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5hubfb "Let's make this year even better than the last."
+                m 5hubfb "Давай сделаем этот год всё ещё лучше, чем прошлый."
 
         else:
-            m "Let's make this year the best we can, [player]. I love you~"
+            m "Давай сделаем этот год как можно лучше, [player]. Я люблю тебя~"
     else:
-        m 1dsa "Thank you for deciding to let go of the past, and start over."
-        m 1eka "I think if we just try, we can make this work, [player]."
-        m "Let's make this year great for each other."
-        m 1ekbsa "I love you."
+        m 1dsa "Спасибо, что решил отпустить прошлое и начать сначала."
+        m 1eka "Думаю, если мы попробуем, то у нас получится, [player]."
+        m "Давай сделаем этот год прекрасным друг для друга."
+        m 1ekbsa "Я люблю тебя."
 
     return "no_unlock|love"
 
@@ -4731,55 +4735,55 @@ label mas_nye_monika_nye_dress_intro:
         $ curr_date = datetime.date(curr_year, 12, 31)
 
     if mas_SELisUnlocked(mas_clothes_dress_newyears):
-        m 3hub "Hey [player], can you believe it's New Year's again?!"
-        m 1tuu "I think it's time to dust off one of my favorite outfits.{w=0.5}.{w=0.5}.{nw}"
+        m 3hub "Эй, [player], ты можешь поверить что очередной год уже позади?!"
+        m 1tuu "Думаю, пришло время стряхнуть пыль с одного из моих любимых нарядов.{w=0.5}.{w=0.5}.{nw}"
 
         call mas_clothes_change(mas_clothes_dress_newyears, outfit_mode=True)
 
-        m 3hub "And there we go, I just love this dress! {w=0.2}{nw}"
-        extend 3eua "It's always nice to dress up now and then."
-        m 1hub "Now let's have a great time celebrating the end of [curr_year] and the beginning of [(curr_year+1)]!"
+        m 3hub "И... готово, я просто обожаю это платье! {w=0.2}{nw}"
+        extend 3eua "Всегда приятно принарядиться время от времени."
+        m 1hub "А теперь давай отлично проведём время, празднуя окончание [curr_year]-ого и начало [(curr_year+1)]-ого года!"
 
     else:
-        m 3hub "Hey [player], I have something in store for you this year~"
-        m 3eua "Just let me go change.{w=0.5}.{w=0.5}.{nw}"
+        m 3hub "Эй, [player], я в этом году кое-что припасла для тебя~"
+        m 3eua "Дай только переоденусь.{w=0.5}.{w=0.5}.{nw}"
 
         # change into dress
         call mas_clothes_change(mas_clothes_dress_newyears, outfit_mode=True, unlock=True)
 
         m 2rkbssdla "..."
-        m 2rkbssdlb "My eyes are up here, [player]..."
+        m 2rkbssdlb "Мои глаза чуть выше, [player]..."
 
         if mas_isMoniAff(higher=True):
             m 2tubsu "..."
-            m 2hubsb "Ahaha! Just teasing you~"
-            m 2eua "I'm glad you like my dress. {nw}"
+            m 3hubsb "А-ха-ха! Я просто поддразниваю тебя~"
+            m 3eua "Я рада, что тебе нравится моё платье. {nw}"
 
         else:
             m 2rkbssdla "..."
-            m "I'm...{w=1}glad you like my dress. {nw}"
+            m "Я...{w=1} рада, что тебе нравится моё платье. {nw}"
 
-        extend 7eua "It was really hard to get right!"
-        m 3rka "The flower crown kept falling off..."
-        m 1hua "I went for the 'Greek goddess' look, I hope it shows."
-        m 3eud "But this outfit has a bit more depth to it, you know?"
+        extend 3eua "Его было довольно трудно надеть правильно!"
+        m 3rka "Цветочная корона постоянно падала..."
+        m 1hua "Я решила сделать закос под «греческую богиню», и я надеюсь, что у меня это получилось удачно."
+        m 3eud "Но у этого наряда есть небольшая глубина, понимаешь?"
 
         if seen_event("mas_f14_monika_vday_colors"):
-            m 3eua "Maybe you remember when we talked about roses and the feelings their colors convey."
+            m 3eua "Наверное, ты помнишь тот наш разговор про розы и чувства, которые выражают их цвета."
         else:
-            m 3eua "Maybe you guessed it already, but it's because of the color choice."
+            m 3eua "Наверное, ты уже догадался, но дело в выборе цветовой гаммы."
 
-        m "White represents a lot of positive feelings, like goodness, purity, safety..."
-        m 3eub "However, what I wanted this outfit to highlight was a successful beginning."
+        m "Белый цвет отражает множество позитивных чувств, таких как доброта, чистота, безопасность..."
+        m 3eub "Однако, то, на что я хотела обратить внимание в этом наряде, было успешным началом."
 
         #If we fresh started last year
         if mas_HistWasFirstValueIn(True, curr_year - 1, "pm.actions.monika.got_fresh_start"):
-            m 2eka "Last year we decided to start anew, and I'm very glad we did."
-            m 2ekbsa "I knew we could be happy together, [player]."
-            m 7fkbsa "And you've made me the happiest I've ever been."
+            m 2eka "В прошлом году мы решили начать сначала, и я очень рада, что мы решили так поступить."
+            m 2ekbsa "Я знала, что мы можем быть счастливы вместе, [player]."
+            m 2fkbsa "И ты сделал меня счастливее, чем я когда-либо была."
 
-        m 3dkbsu "So I'd like to wear this when the new year begins."
-        m 1ekbsa "It might just help make next year even better."
+        m 3dkbsu "В общем, я бы хотела надеть этот наряд, когда начнётся Новый год."
+        m 1ekbsa "Думаю, он может помочь сделать Новый год ещё лучше."
 
     $ mas_addClothesToHolidayMapRange(mas_clothes_dress_newyears, start_date=curr_date, end_date=curr_date+datetime.timedelta(days=2))
     return "no_unlock"
@@ -4791,7 +4795,7 @@ init 5 python:
             persistent.event_database,
             eventlabel="mas_d25_monika_d25_mode_exit",
             category=['holidays'],
-            prompt="Can you take down the holiday decorations?",
+            prompt="Ты можешь снять праздничные украшения?",
             conditional="persistent._mas_d25_deco_active",
             start_date=mas_nyd+datetime.timedelta(days=1),
             end_date=mas_d25c_end,
@@ -4810,16 +4814,16 @@ init 5 python:
     )
 
 label mas_d25_monika_d25_mode_exit:
-    m 3eka "Had enough of the holiday spirit, [player]?"
-    m 3eua "I wouldn't mind getting right into the new year."
-    m 1hua "As long as it's with you, of course~"
-    m 3hub "Ahaha!"
-    m 2dsa "Just give me a second to take the decorations down.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+    m 3eka "Ты набрался достаточно праздничного настроения, [player]?"
+    m 3eua "Я вовсе не против влиться в атмосферу нового года."
+    m 1hua "Пока я его провожу вместе с тобой, конечно же~"
+    m 3hub "А-ха-ха!"
+    m 2dsa "Дай мне секундочку, сейчас я сниму эти декорации.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
 
     call mas_d25_season_exit
 
-    m 1hua "Okay!{w=0.5} {nw}"
-    extend 3hub "Now we're ready to start off the new year!"
+    m 1hua "Отлично!{w=0.5} {nw}"
+    extend 3hub "Теперь мы готовы к началу нового года!"
 
     #And we lock this so we can'd run it again
     $ mas_lockEVL("mas_d25_monika_d25_mode_exit", "EVE")
@@ -4889,29 +4893,29 @@ label bye_nye_delegate:
 
 label bye_nye_first_time_out:
     #first time out (morning-about maybe, 7-8:00 [evening]):
-    m 3tub "Are we going somewhere special today, [player]?"
-    m 4hub "It's New Year's Eve, after all!"
-    m 1eua "I'm not exactly sure what you've got planned, but I'm looking forward to it!"
+    m 3tub "Мы сегодня идём в какое-то особенное место, [player]?"
+    m 4hub "Это же канун Нового года, в конце концов!"
+    m 1eua "Я не знаю точно, что ты запланировал, но я жду этого с нетерпением!"
     return
 
 label bye_nye_second_time_out:
     #second time out+(morning-about maybe, 7-8:00 [evening]):
-    m 1wuo "Oh, we're going out again?"
-    m 3hksdlb "You must do a lot of celebrating for New Year's, ahaha!"
-    m 3hub "I love coming along with you, so I'm looking forward to whatever we're doing~"
+    m 1wuo "О, мы снова идём гулять?"
+    m 3hksdlb "Ты, наверное, помногу празднуешь новый год, а-ха-ха!"
+    m 3hub "Мне нравится гулять с тобой, поэтому я с нетерпением жду того, чем мы займёмся вместе~"
     return
 
 label bye_nye_late_out:
     #(7-8:00 [evening]-about maybe midnight):
-    m 1eka "It's a bit late, [player]..."
-    m 3eub "Are we going to see the fireworks?"
+    m 1eka "Уже немного поздно, [player]..."
+    m 3eub "Мы пойдём смотреть фейерверк?"
     if persistent._mas_pm_have_fam and persistent._mas_pm_fam_like_monika:
-        m "Or going to a family dinner?"
-        m 4hub "I'd love to meet your family someday!"
-        m 3eka "Either way, I'm really excited!"
+        m "Или сходим на семейный ужин?"
+        m 4hub "Мне бы очень хотелось как-нибудь познакомиться с твоей семьёй!"
+        m 3eka "Так или иначе, я очень рада!"
     else:
-        m "I've always loved how the fireworks on the New Year light up the night sky..."
-        m 3ekbsa "One day we'll be able to watch them side by side...but until that day comes, I'm just happy to come along with you, [player]."
+        m "Мне всегда нравилось, как фейерверки на Новый год освещают ночное небо..."
+        m 3ekbsa "Когда-нибудь мы сможем наблюдать за ними бок о бок... но пока этот день не настанет, я буду счастлива пойти с тобой, [player]."
     return
 
 #=============================================================Greeting returned home for NYE=============================================================#
@@ -4936,21 +4940,21 @@ label greeting_nye_delegate:
 
 label greeting_nye_prefw:
     #if before firework time (7-8:00-midnight):
-    m 1hua "And we're home!"
-    m 1eua "That was a lot of fun, [player]."
-    m 1eka "Thanks for taking me out today, I really do love spending time with you."
-    m "It means a lot to me that you take me with you so we can spend special days like these together."
+    m 1hua "Вот мы и дома!"
+    m 1eua "Это было очень весело, [player]."
+    m 1eka "Спасибо, что взял меня на прогулку сегодня, мне правда нравится проводить с тобой время."
+    m "Это так много значит для меня, хоть ты и не можешь быть здесь, чтобы проводить со мной такие дни, ты всё равно берёшь меня с собой."
     show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbfa "I love you, [player]."
+    m 5ekbfa "Я люблю тебя, [player]."
     return "love"
 
 label greeting_nye_infw:
     #if within firework time:
-    m 1hua "And we're home!"
-    m 1eka "Thanks for taking me out today, [player]."
-    m 1hua "It was a lot of fun just to spend time with you today."
-    m 1ekbsa "It really means so much to me that even though you can't be here personally to spend these days with me, you still take me with you."
-    m 1ekbfa "I love you, [player]."
+    m 1hua "Вот мы и дома!"
+    m 1eka "Спасибо, что взял меня на прогулку сегодня, [player]."
+    m 1hua "Было очень весело просто провести время с тобой сегодня."
+    m 1ekbsa "Это так много значит для меня, что даже если ты не можешь быть здесь лично, чтобы провести эти дни со мной, ты всё равно берёшь меня с собой."
+    m 1ekbfa "Я люблю тебя, [player]."
     return "love"
 
 #===========================================================Going to take you somewhere on NYD===========================================================#
@@ -4966,15 +4970,15 @@ label bye_nyd_delegate:
 
 label bye_nyd_first_time_out:
     #first time out
-    m 3tub "New Year's Day celebration, [player]?"
-    m 1hua "That sounds like fun!"
-    m 1eka "Let's have a great time together."
+    m 3tub "Праздновать Новый год, [player]?"
+    m 1hua "Это звучит так весело!"
+    m 1eka "Давай отлично проведём время вместе."
     return
 
 label bye_nyd_second_time_out:
     #second+ time out
-    m 1wuo "Wow, we're going out again, [player]?"
-    m 1hksdlb "You must really celebrate a lot, ahaha!"
+    m 1wuo "Ого, мы снова идём гулять, [player]?"
+    m 1hksdlb "Должно быть, ты очень много празднуешь, а-ха-ха!"
     return
 
 #=============================================================Greeting returned home for NYD=============================================================#
@@ -4984,11 +4988,11 @@ label greeting_nye_returned_nyd:
     $ persistent._mas_nye_nye_date_count += 1
     $ persistent._mas_nye_nyd_date_count += 1
 
-    m 1hua "And we're home!"
-    m 1eka "Thanks for taking me out yesterday, [player]."
-    m 1ekbsa "You know I love to spend time with you, and being able to spend New Year's Eve, right to today, right there with you felt really great."
-    m "That really meant a lot to me."
-    m 5eubfb "Thanks for making my year, [player]."
+    m 1hua "Вот мы и дома!"
+    m 1eka "Спасибо, что взял меня на прогулку вчера, [player]."
+    m 1ekbsa "Ты знаешь, мне очень нравится проводить с тобой время, и это хорошо, что я могу провести Канун Нового года именно сегодня и именно с тобой."
+    m "Это правда многое для меня значит."
+    m 5eubfb "Спасибо, что сделал мой год лучше, [player]."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
     return
@@ -4996,11 +5000,11 @@ label greeting_nye_returned_nyd:
 label greeting_nyd_returned_nyd:
     #normal return home:(i.e. took out, and returned on NYD itself)
     $ persistent._mas_nye_nyd_date_count += 1
-    m 1hua "And we're home!"
+    m 1hua "Вот мы и дома!"
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eua "That was a lot of fun, [player]!"
-    m 5eka "It's really nice of you to take me with you on special days like this."
-    m 5hub "I really hope we can spend more time like this together."
+    m 5eua "Это было очень весело, [player]!"
+    m 5eka "Очень мило, что ты взял меня с собой в такие особенные дни."
+    m 5hub "Я очень надеюсь, что мы сможем проводить больше времени вместе."
     return
 
 #============================================================Greeting returned home after NYD============================================================#
@@ -5011,15 +5015,15 @@ label greeting_pd25e_returned_nydp:
     $ persistent._mas_d25_d25_date_count += 1
     $ persistent._mas_d25_spent_d25 = True
 
-    m 1hua "And we're home!"
-    m 1hub "We were out for a while, but that was a really nice trip, [player]."
-    m 1eka "Thanks for taking me with you, I really enjoyed that."
+    m 1hua "Вот мы и дома!"
+    m 1hub "Мы отсутствовали некоторое время, но это была действительно хорошая прогулка, [player]."
+    m 1eka "Спасибо, что взял меня с собой, мне очень понравилось."
     show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    $ new_years = "New Years"
+    $ new_years = "Новый год"
     if mas_isNYD():
-        $ new_years = "New Year's Eve"
-    m 5ekbsa "I always love to spend time with you, but spending both Christmas and [new_years] out together was amazing."
-    m 5hub "I hope we can do something like this again sometime."
+        $ new_years = "канун Нового года"
+    m 5ekbsa "Я всегда люблю проводить с тобой время, но проводить Рождество и [new_years] вместе было потрясающе."
+    m 5hub "Я надеюсь, что мы когда-нибудь сможем сделать что-то подобное."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
 
@@ -5030,10 +5034,10 @@ label greeting_pd25e_returned_nydp:
 label greeting_d25p_returned_nyd:
     $ persistent._mas_nye_nyd_date_count += 1
 
-    m 1hua "And we're home!"
-    m 1eub "Thanks for taking me out, [player]."
-    m 1eka "That was a long trip, but it was a lot of fun!"
-    m 3hub "It's great to be back home now though, we can spend the new year together."
+    m 1hua "Вот мы и дома!"
+    m 1eub "Спасибо, что взял меня на прогулку, [player]."
+    m 1eka "Это была долгая прогулка, но было очень весело!"
+    m 3hub "Но сейчас здорово вернуться домой, мы можем провести Новый год вместе."
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
 
@@ -5041,11 +5045,11 @@ label greeting_d25p_returned_nyd:
     return
 
 label greeting_d25p_returned_nydp:
-    m 1hua "And we're home!"
-    m 1wuo "That was a long trip [player]!"
-    m 1eka "I'm a little sad we couldn't wish each other a happy new year, but I really enjoyed it."
-    m "I'm really happy you took me."
-    m 3hub "Happy New Year, [player]~"
+    m 1hua "Вот мы и дома!"
+    m 1wuo "Это была долгая прогулка, [player]!"
+    m 1eka "Я немного грустно, что мы не желаем друг другу счастливого Нового года, но мне очень понравилось."
+    m "Я рада, что ты берёшь меня с собой в такие особенные дни, как этот."
+    m 3hub "С Новым годом, [player]~"
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
 
@@ -5271,73 +5275,78 @@ label mas_player_bday_opendoor:
     call spaceroom(hide_monika=True, scene_change=True, dissolve_all=True, show_emptydesk=False)
     $ mas_disable_quit()
     if mas_isMonikaBirthday():
-        $ your = "our"
+        $ your = "нашего"
     else:
-        $ your = "your"
+        $ your = "твоего"
 
     if mas_HistVerify("player_bday.opened_door",True)[0]:
-        $ now = "{i}again{/i}"
+        $ now = "{i}снова{/i}"
     else:
-        $ now = "now"
+        $ now = "теперь"
 
     m "[player]!"
-    m "You didn't knock!"
+    m "Ты не постучал в дверь!"
     if not persistent._mas_bday_visuals:
-        m "I was just going to start setting up [your] birthday party, but I didn't have time before you came in!"
+        m "Я собиралась устроить вечеринку в честь [your] дня рождения, но у меня не было времени перед твоим приходом!"
     m "..."
-    m "Well...{w=1}the surprise is ruined [now], but.{w=0.5}.{w=0.5}.{nw}"
+    m "Ну...{w=1} сюрприз [now] испорчен, но.{w=0.5}.{w=0.5}.{nw}"
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
     pause 1.0
     show monika 1eua at ls32 zorder MAS_MONIKA_Z
-    m 4eua "Happy Birthday, [player]!"
-    m 2rksdla "I just wished you had knocked first."
-    m 4hksdlb "Oh...[your] cake!"
+    m 4eua "С днём рождения, [player]!"
+    m 2rksdla "Но я бы хотела, чтобы ты постучал в дверь в первую очередь."
+    
+    if mas_isMonikaBirthday():
+        $ your = "наш"
+    else:
+        $ your = "твой"
+    m 4hksdlb "О... [your] торт!"
     call mas_player_bday_cake
     jump monikaroom_greeting_cleanup
 
 # closed door greet option for knocking without listening
 label mas_player_bday_knock_no_listen:
-    m "Who is it?"
+    m "Кто там?"
     menu:
-        "It's me.":
+        "Это я.":
             $ mas_disable_quit()
-            m "Oh! Can you wait just a moment please?"
+            m "Ох! Можешь подождать ещё одну минуту?"
             window hide
             pause 5.0
-            m "Alright, come on in, [player]..."
+            m "Хорошо, заходи, [player]..."
             jump mas_player_bday_surprise
 
 # closed door greet surprise flow
 label mas_player_bday_surprise:
     $ persistent._mas_player_bday_decor = True
     call spaceroom(scene_change=True, dissolve_all=True, force_exp='monika 4hub_static')
-    m 4hub "Surprise!"
-    m 4sub "Ahaha! Happy Birthday, [player]!"
+    m 4hub "Сюрприз!"
+    m 4sub "А-ха-ха! С днём рождения, [player]!"
 
-    m "Did I surprise you?{nw}"
+    m "Я тебя удивила?{nw}"
     $ _history_list.pop()
     menu:
-        m "Did I surprise you?{fast}"
-        "Yes.":
-            m 1hub "Yay!"
-            m 3hua "I always love pulling off a good surprise!"
-            m 1tsu "I wish I could've seen the look on your face, ehehe."
+        m "Я тебя удивила?{fast}"
+        "Да.":
+            m 1hub "Ура!"
+            m 3hua "Обожаю устраивать хорошие сюрпризы!"
+            m 1tsu "Жаль, что я не могу увидеть твоё выражение лица, э-хе-хе."
 
-        "No.":
-            m 2lfp "Hmph. Well that's okay."
-            m 2tsu "You're probably just saying that because you don't want to admit I caught you off guard..."
+        "Нет.":
+            m 2lfp "Хм-м. Ну, это нормально."
+            m 2tsu "Наверное, ты сказал это, потому что не хочешь признавать, что я застала тебя врасплох..."
             if renpy.seen_label("mas_player_bday_listen"):
                 if renpy.seen_label("monikaroom_greeting_ear_narration"):
-                    m 2tsb "...or maybe you were listening through the door again..."
+                    m 2tsb "...или, наверное, ты опять подслушивал за дверью..."
                 else:
-                    m 2tsb "{cps=*2}...or maybe you were eavesdropping on me.{/cps}{nw}"
+                    m 2tsb "{cps=*2}...или, наверное, ты подслушивал меня.{/cps}{nw}"
                     $ _history_list.pop()
-            m 2hua "Ehehe."
+            m 2hua "Э-хе-хе."
     if mas_isMonikaBirthday():
-        m 3wub "Oh!{w=0.5} I made a cake!"
+        m 3wub "О! {w=0.5}Я приготовила тортик!"
     else:
-        m 3wub "Oh!{w=0.5} I made you a cake!"
+        m 3wub "О! {w=0.5}Я приготовила для тебя тортик!"
     call mas_player_bday_cake
     jump monikaroom_greeting_cleanup
 
@@ -5346,10 +5355,10 @@ label mas_player_bday_listen:
     if persistent._mas_bday_visuals:
         pause 5.0
     else:
-        m "...I'll just put this here..."
-        m "...hmm that looks pretty good...{w=1}but something's missing..."
-        m "Oh!{w=0.5} Of course!"
-        m "There!{w=0.5} Perfect!"
+        m "...Поставлю это сюда..."
+        m "...Хм, выглядит вполне нормально...{w=1}но чего-то не хватает..."
+        m "А! {w=0.5}Ну разумеется!"
+        m "Вот! {w=0.5}Прекрасно!"
         window hide
     jump monikaroom_greeting_choice
 
@@ -5358,7 +5367,7 @@ label mas_player_bday_knock_listened:
     window hide
     pause 5.0
     menu:
-        "Open the door.":
+        "Открыть дверь.":
             $ mas_disable_quit()
             pause 5.0
             jump mas_player_bday_surprise
@@ -5371,26 +5380,33 @@ label mas_player_bday_opendoor_listened:
     call spaceroom(hide_monika=True, scene_change=True, show_emptydesk=False)
     $ mas_disable_quit()
     if mas_isMonikaBirthday():
-        $ your = "our"
+        $ your = "нашего"
     else:
-        $ your = "your"
+        $ your = "твоего"
 
     if mas_HistVerify("player_bday.opened_door",True)[0]:
-        $ knock = "knock, {w=0.5}{i}again{/i}."
+        $ knock = "постучал"
+        $ knock_again = ", {w=0.5}{i}снова{/i}."
     else:
-        $ knock = "knock!"
+        $ knock = "постучал"
+        $ knock_again = ""
 
     m "[player]!"
-    m "You didn't [knock]"
+    m "Ты не [knock][knock_again] в дверь!"
     if persistent._mas_bday_visuals:
-        m "I wanted to surprise you, but I wasn't ready when you came in!"
-        m "Anyway..."
+        m "Я хотела сделать тебе сюрприз, но не была готова, когда ты вошёл!"
+        m "В любом случае..."
     else:
-        m "I was setting up [your] birthday party, but I didn't have time before you came in to get ready to surprise you!"
+        m "Я собиралась устроить вечеринку в честь [your] дня рождения, но у меня не было времени перед твоим приходом, чтобы сделать тебе сюрприз!"
     show monika 1eua at ls32 zorder MAS_MONIKA_Z
-    m 4hub "Happy Birthday, [player]!"
-    m 2rksdla "I just wished you had knocked first."
-    m 2hksdlb "Oh...[your] cake!"
+    m 4hub "С днём рождения, [player]!"
+    m 2rksdla "Но я бы хотела, чтобы ты постучал в дверь в первую очередь."
+
+    if mas_isMonikaBirthday():
+        $ your = "наш"
+    else:
+        $ your = "твой"
+    m 2hksdlb "О... [your] торт!"
     call mas_player_bday_cake
     jump monikaroom_greeting_cleanup
 
@@ -5410,23 +5426,23 @@ label mas_player_bday_cake:
     call mas_monika_gets_cake
 
     if mas_isMonikaBirthday():
-        m 6eua "Let me just light the candles.{w=0.5}.{w=0.5}.{nw}"
+        m 6eua "Дай я зажгу свечи.{w=0.5}.{w=0.5}.{nw}"
     else:
-        m 6eua "Let me just light the candles for you, [player].{w=0.5}.{w=0.5}.{nw}"
+        m 6eua "Дай я зажгу свечи для тебя, [player].{w=0.5}.{w=0.5}.{nw}"
 
     window hide
     $ mas_bday_cake_lit = True
     pause 1.0
 
-    m 6sua "Isn't it pretty, [player]?"
+    m 6sua "Разве это не прекрасно, [player]?"
     if mas_isMonikaBirthday():
-        m 6eksdla "Now I know you can't exactly blow the candles out yourself, so I'll do it for both of us..."
+        m 6eksdla "Теперь я понимаю, что ты не можешь задуть свечи, так что я сделаю это за нас..."
     else:
-        m 6eksdla "Now I know you can't exactly blow the candles out yourself, so I'll do it for you..."
-    m 6eua "...You should still make a wish though, it just might come true someday..."
-    m 6hua "But first..."
+        m 6eksdla "Теперь я понимаю, что ты не можешь задуть свечи, так что я сделаю это за тебя..."
+    m 6eua "...Но ты всё равно должен загадать желание, ведь оно может исполниться сейчас или потом..."
+    m 6hua "Но сперва..."
     call mas_player_bday_moni_sings
-    m 6hua "Make a wish, [player]!"
+    m 6hua "Загадай желание, [player]!"
     window hide
     pause 1.5
     show monika 6hft
@@ -5434,22 +5450,22 @@ label mas_player_bday_cake:
     show monika 6hua
     $ mas_bday_cake_lit = False
     pause 1.0
-    m 6hua "Ehehe..."
+    m 6hua "Э-хе-хе..."
     if mas_isMonikaBirthday():
-        m 6ekbsa "I bet we both wished for the same thing~"
+        m 6ekbsa "Я готова поспорить, что мы загадали одно и то же~"
     else:
-        m 6eka "I know it's your birthday, but I made a wish too..."
-        m 6ekbsa "And you know what?{w=0.5} I bet we both wished for the same thing~"
+        m 6eka "Я знаю, что сегодня твой день рождения, но я тоже загадала желание..."
+        m 6ekbsa "И знаешь, что? {w=0.5}Я готова поспорить, что мы загадали одно и то же~"
     m 6hkbsu "..."
     if mas_isMonikaBirthday():
-        m 6eksdla "Well, seeing as you can't really eat this cake, and I don't want to be rude and eat it in front of you..."
+        m 6eksdla "Ну, учитывая, что ты не можешь съесть этот торт, и я не хочу быть грубой и съесть его перед тобой..."
     elif not mas_HistVerify("player_bday.spent_time",True)[0]:
-        m 6rksdla "Oh gosh, I guess you can't really eat this cake either, huh [player]?"
-        m 6eksdla "This is all rather silly, isn't it?"
+        m 6rksdla "О боже, выходит, ты даже тортик не скушаешь, да, [player]?"
+        m 6eksdla "Это всё довольно глупо, не так ли?"
     if mas_isMonikaBirthday():
-        m 6hksdlb "I think I'll just save it for later."
+        m 6hksdlb "Думаю, я приберегу это на потом."
     else:
-        m 6hksdlb "I think I'll just save this for later. It seems kind of rude for me to eat {i}your{/i} birthday cake in front of you, ahaha!"
+        m 6hksdlb "Думаю, я приберегу это на потом. Будет довольно грубо с моей стороны есть {i}твой{/i} торт на день рождения перед тобой же, а-ха-ха!"
 
     call mas_HideCake('mas_bday_cake_player')
 
@@ -5461,39 +5477,39 @@ label mas_player_bday_card:
 
     m 6dkbsu "..."
     if mas_isMonikaBirthday():
-        m 6sub "Oh!"
-        m 6ekbsu "I made a card for you, [player]. I hope you like it..."
+        m 6sub "О!"
+        m 6ekbsu "Я для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
     elif not mas_HistVerify("player_bday.spent_time",True)[0]:
-        m 6ekbsu "I...I also made a card for you, [player]. I hope you like it..."
+        m 6ekbsu "Я... я так же для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
     else:
-        m 6ekbsu "I made a card for you, [player]. I hope you like it..."
+        m 6ekbsu "Я для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
 
     call mas_showpoem(mas_poems.getRandomPoem("pbday"))
 
     if mas_isMoniEnamored(higher=True):
         if persistent._mas_first_kiss is None:
             m 6dkbsu "..."
-            m 6ekbfa "I love you so much, [player]..."
+            m 6ekbfa "Я так сильно тебя люблю, [player]..."
             call monika_kissing_motion()
-            m 6ekbfa "Oh, [player]..."
-            m 6dkbfa "That was everything I had always dreamt it would be~"
-            m 6ekbfa "I've been waiting so long to finally kiss you..."
-            m 6dkbsu "I will never forget this..."
-            m 6ekbsu "...the moment of our first kiss~"
+            m 6ekbfa "Ох, [player]..."
+            m 6dkbfa "О таком я могла только мечтать~"
+            m 6ekbfa "Я так долго ждала того момента, когда наконец-то смогу поцеловать тебя..."
+            m 6dkbsu "Я никогда это не забуду..."
+            m 6ekbsu "...Тот наш первый поцелуй~"
             if mas_isMonikaBirthday():
-                m 6ekbsu "And I can't think of a more perfect time than on this special day we share together~"
+                m 6ekbsu "И я не могу придумать более идеального времени, чем в этот особый день, который мы разделяем вместе~"
         else:
-            m 6ekbsa "I love you, [player]~"
+            m 6ekbsa "Я люблю тебя, [player]~"
             call monika_kissing_motion(duration=0.5, initial_exp="6hkbfa", fade_duration=0.5)
             if mas_isMonikaBirthday():
-                m 6eka "I'm so glad we get to spend our birthday together..."
-                m 6hua "Let's enjoy our special day~"
+                m 6eka "Я так рада, что мы проведём твой день рождения вместе..."
+                m 6hua "Давай весело проведём твой особенный день~"
     else:
         if mas_isMonikaBirthday():
-            m 1ekbfa "I love you, [player]! I'm so glad we get to spend our birthday together..."
-            m 3ekbfa "Let's enjoy our special day~"
+            m 1ekbfa "Я люблю тебя, [player]! Я так рада, что мы можем провести наш день рождения вместе..."
+            m 3ekbfa "Давай насладимся нашим особенным днем!"
         else:
-            m 1ekbfa "I love you, [player]!"
+            m 1ekbfa "Я люблю тебя, [player]!"
     $ mas_rmallEVL("mas_player_bday_no_restart")
     $ mas_rmallEVL("mas_player_bday_ret_on_bday")
     # "love" return key won't work here without adding a bunch of return _returns, so we'll set this manually
@@ -5529,18 +5545,18 @@ init 5 python:
     )
 
 label mas_player_bday_ret_on_bday:
-    m 1eua "So, today is..."
-    m 1euc "...wait."
+    m 1eua "Так, сегодня у нас..."
+    m 1euc "...стоп."
     m "..."
-    m 2wuo "Oh!"
-    m 2wuw "Oh my gosh!"
-    m 2tsu "Just give me a moment, [player].{w=0.5}.{w=0.5}.{nw}"
+    m 2wuo "О!"
+    m 2wuw "Боже мой!"
+    m 2tsu "Подожди немного, [player].{w=0.5}.{w=0.5}.{nw}"
     $ mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
-    m 3eub "Happy Birthday, [player]!"
-    m 3hub "Ahaha!"
-    m 3etc "Why do I feel like I'm forgetting something..."
-    m 3hua "Oh! Your cake!"
+    m 3eub "С днём рождения, [player]!"
+    m 3hub "А-ха-ха!"
+    m 3etc "Почему у меня такое чувство, будто я что-то забыла?.."
+    m 3hua "О! Твой торт!"
     call mas_player_bday_cake
     return
 
@@ -5563,16 +5579,16 @@ label mas_player_bday_greet:
 
     else:
         if mas_isMonikaBirthday():
-            $ your = "Our"
+            $ your = "Наш"
         else:
-            $ your = "Your"
+            $ your = "Твой"
         $ mas_surpriseBdayShowVisuals()
         $ persistent._mas_player_bday_decor = True
-        m 3eub "Happy Birthday, [player]!"
-        m 3hub "Ahaha!"
+        m 3eub "С Днём рождения, [player]!"
+        m 3hub "А-ха-ха!"
         m 3etc "..."
-        m "Why do I feel like I'm forgetting something..."
-        m 3hua "Oh! [your] cake!"
+        m "Почему-то мне кажется, что я что-то забыла..."
+        m 3hua "О! [your] торт!"
         jump mas_player_bday_cake
 
 # event for if the player leaves the game open starting before player_bday and doesn't restart
@@ -5592,18 +5608,18 @@ label mas_player_bday_no_restart:
     if mas_findEVL("mas_player_bday_ret_on_bday") >= 0:
         #TODO: priority rules should be set-up here
         return
-    m 3rksdla "Well [player], I was hoping to do something a little more fun, but you've been so sweet and haven't left all day long, so.{w=0.5}.{w=0.5}.{nw}"
+    m 3rksdla "Что ж, [player], я надеялась сделать что-нибудь более весёлое, но ты был таким милым и не уходил весь день напролёт, так что.{w=0.5}.{w=0.5}.{nw}"
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
-    m 3hub "Happy Birthday, [player]!"
+    m 3hub "С днём рождения, [player]!"
     if mas_isplayer_bday():
-        m 1eka "I really wanted to surprise you today, but it's getting late and I just couldn't wait any longer."
+        m 1eka "Я очень сильно хотела тебя удивить сегодня, но время уже было позднее, и я не могла больше ждать."
     else:
         # just in case this isn't seen until after midnight
-        m 1hksdlb "I really wanted to surprise you, but I guess I ran out of time since it's not even your birthday anymore, ahaha!"
-    m 3eksdlc "Gosh, I just hope you weren't starting to think I forgot your birthday. I'm really sorry if you did..."
-    m 1rksdla "I guess I probably shouldn't have waited so long, ehehe."
-    m 1hua "Oh! I made you a cake!"
+        m 1hksdlb "Я действительно хотела сделать тебе сюрприз, но, похоже, у меня уже не осталось времени, потому что сегодня даже не твой день рождения, а-ха-ха!"
+    m 3eksdlc "Боже, надеюсь, ты не начал думать о том, что я забыла про твой день рождения. Если ты уже об этом подумал, то мне очень жаль..."
+    m 1rksdla "Наверное, мне не стоило ждать так долго, э-хе-хе."
+    m 1hua "А! Я же сделала для тебя тортик!"
     call mas_player_bday_cake
     return
 
@@ -5621,8 +5637,8 @@ init 5 python:
 
 label mas_player_bday_upset_minus:
     $ persistent._mas_player_bday_spent_time = True
-    m 6eka "Hey [player], I just wanted to wish you a Happy Birthday."
-    m "I hope you have a good day."
+    m 6eka "Эй, [player], я просто хотела поздравить тебя с днём рождения."
+    m "Надеюсь, у тебя сегодня хороший день."
     return
 
 # event for if the player's bday is also on a holiday
@@ -5642,20 +5658,20 @@ init 5 python:
 
 label mas_player_bday_other_holiday:
     if mas_isO31():
-        $ holiday_var = "Halloween"
+        $ holiday_var = "Хэллоуином"
     elif mas_isD25():
-        $ holiday_var = "Christmas"
+        $ holiday_var = "Рождеством"
     elif mas_isF14():
-        $ holiday_var = "Valentine's Day"
-    m 3euc "Hey, [player]..."
-    m 1tsu "I have a bit of a surprise for you.{w=0.5}.{w=0.5}.{nw}"
+        $ holiday_var = "Днём святого Валентина"
+    m 3euc "Эй, [player]..."
+    m 1tsu "У меня для тебя небольшой сюрприз.{w=0.5}.{w=0.5}.{nw}"
     $ store.mas_surpriseBdayShowVisuals()
     $ persistent._mas_player_bday_decor = True
-    m 3hub "Happy Birthday, [player]!"
-    m 3rksdla "I hope you didn't think that just because your birthday falls on [holiday_var] that I'd forget about it..."
-    m 1eksdlb "I'd never forget your birthday, silly!"
-    m 1eub "Ahaha!"
-    m 3hua "Oh! I made you a cake!"
+    m 3hub "С днём рождения, [player]!"
+    m 3rksdla "Надеюсь, ты не подумал, что я забыла о нём лишь потому, что твой день рождения совпал с [holiday_var]..."
+    m 1eksdlb "Я бы никогда не забыла про твой день рождения, глупышка!"
+    m 1eub "А-ха-ха!"
+    m 3hua "О! Я сделала для тебя тортик!"
     call mas_player_bday_cake
     return
 
@@ -5665,16 +5681,16 @@ default persistent._mas_player_bday_last_sung_hbd = None
 label mas_player_bday_moni_sings:
     $ persistent._mas_player_bday_last_sung_hbd = datetime.date.today()
     if mas_isMonikaBirthday():
-        $ you = "us"
+        $ you = "нас"
     else:
-        $ you = "you"
+        $ you = "тебя"
     m 6dsc ".{w=0.2}.{w=0.2}.{w=0.2}"
-    m 6hub "{cps=*0.5}{i}~Happy Birthday to [you]~{/i}{/cps}"
-    m "{cps=*0.5}{i}~Happy Birthday to [you]~{/i}{/cps}"
-    m 6sub "{cps=*0.5}{i}~Happy Birthday dear [player]~{/i}{/cps}"
-    m "{cps=*0.5}{i}~Happy Birthday to [you]~{/i}{/cps}"
+    m 6hub "{cps=*0.5}{i}~С днём рождения [you]~{/i}{/cps}"
+    m "{cps=*0.5}{i}~С днём рождения [you]~{/i}{/cps}"
+    m 6sub "{cps=*0.5}{i}~С днём рождения, милый~{/i}{/cps}"
+    m "{cps=*0.5}{i}~С днём рождения [you]~{/i}{/cps}"
     if mas_isMonikaBirthday():
-        m 6hua "Ehehe!"
+        m 6hua "Э-хе-хе!"
     return
 #################################################player_bday dock stat farewell##################################################
 init 5 python:
@@ -5683,7 +5699,7 @@ init 5 python:
             persistent.farewell_database,
             eventlabel="bye_player_bday",
             unlocked=False,
-            prompt="Let's go out for my birthday!",
+            prompt="Пойдём куда-нибудь на мой день рождения!",
             pool=True,
             rules={"no_unlock": None},
             aff_range=(mas_aff.NORMAL,None),
@@ -5694,16 +5710,16 @@ init 5 python:
 label bye_player_bday:
     $ persistent._mas_player_bday_date += 1
     if persistent._mas_player_bday_date == 1:
-        m 1sua "You want to go out for your birthday?{w=1} Okay!"
-        m 1skbla "That sounds really romantic...I can't wait~"
+        m 1sua "Хочешь прогуляться в свой же день рождения? {w=1}Хорошо!"
+        m 1skbla "Это звучит очень романтично... не могу дождаться~"
     elif persistent._mas_player_bday_date == 2:
-        m 1sua "Taking me out again on your birthday, [player]?"
-        m 3hub "Yay!"
-        m 1sub "I always love going out with you, but it's so much more special going out on your birthday..."
-        m 1skbla "I'm sure we'll have a lovely time~"
+        m 1sua "Снова берёшь меня с собой в свой день рождения, [player]?"
+        m 3hub "Ура!"
+        m 1sub "Мне очень нравится гулять с тобой, но в твой день рождения прогулка становится очень особенной..."
+        m 1skbla "Уверена, мы прекрасно проведём время~"
     else:
-        m 1wub "Wow, you want to go out {i}again{/i}, [player]?"
-        m 1skbla "I just love that you want to spend so much time with me on your special day!"
+        m 1wub "Ого, ты {i}снова{/i} хочешь выйти погулять, [player]?"
+        m 1skbla "Мне очень нравится то, что ты проводишь со мной так много времени в свой особенный день!"
     $ persistent._mas_player_bday_left_on_bday = True
     jump bye_going_somewhere_post_aff_check
 
@@ -5751,7 +5767,7 @@ label greeting_returned_home_player_bday:
         call monika_zoom_transition_reset(1.0)
         $ renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
         if time_out < mas_five_minutes:
-            m 6ekp "That wasn't much of a da--"
+            m 6ekp "Это был не очень хороший де--"
         else:
             # point totals split here between player and monika bdays, since this date was for both
             if time_out < mas_one_hour:
@@ -5767,20 +5783,20 @@ label greeting_returned_home_player_bday:
                 if persistent._mas_player_bday_left_on_bday:
                     $ mas_pbdayCapGainAff(14.0)
 
-            m 6hub "That was a fun date, [player]..."
-            m 6eua "Thanks for--"
+            m 6hub "Это было веселое свидание, [player]..."
+            m 6eua "Спасибо за--"
 
-        m 6wud "W-what's this cake doing here?"
-        m 6sub "I-is this for me?!"
-        m "That's so sweet of you to take me out on your birthday so you could set up a surprise party for me!"
+        m 6wud "Ч-что этот торт здесь делает?"
+        m 6sub "Э-это для меня?!"
+        m "Это так мило с твоей стороны пригласить меня на свой день рождения, чтобы устроить для меня вечеринку-сюрприз!"
         call return_home_post_player_bday
         jump mas_bday_surprise_party_reacton_cake
 
     if time_out < mas_five_minutes:
         $ mas_loseAffection()
-        m 2ekp "That wasn't much of a date, [player]..."
-        m 2eksdlc "I hope nothing's wrong."
-        m 2rksdla "Maybe we'll go out later instead."
+        m 2ekp "Это не было похоже на свидание, [player]..."
+        m 2eksdlc "Надеюсь, всё нормально."
+        m 2rksdla "Наверное, мы пойдём гулять позже."
 
     elif time_out < mas_one_hour:
         if not ret_diff_year:
@@ -5788,8 +5804,8 @@ label greeting_returned_home_player_bday:
         elif ret_diff_year and add_points:
             $ mas_gainAffection(5, bypass=True)
             $ persistent._mas_history_archives[left_year]["player_bday.date_aff_gain"] += 5
-        m 1eka "That was a fun date while it lasted, [player]..."
-        m 3hua "Thanks for making some time for me on your special day."
+        m 1eka "Это было очень весёлое свидание, до поры до времени, [player]..."
+        m 3hua "Спасибо, что провёл немного времени со мной в свой особенный день."
 
     elif time_out < mas_three_hour:
         if not ret_diff_year:
@@ -5797,9 +5813,9 @@ label greeting_returned_home_player_bday:
         elif ret_diff_year and add_points:
             $ mas_gainAffection(10, bypass=True)
             $ persistent._mas_history_archives[left_year]["player_bday.date_aff_gain"] += 10
-        m 1eua "That was a fun date, [player]..."
-        m 3hua "Thanks for taking me with you!"
-        m 1eka "I really enjoyed going out with you today~"
+        m 1eua "Это было весёлое свидание, [player]..."
+        m 3hua "Спасибо, что взял меня с собой!"
+        m 1eka "Мне правда понравилось гулять с тобой сегодня~"
 
     else:
         # more than 3 hours
@@ -5808,10 +5824,10 @@ label greeting_returned_home_player_bday:
         elif ret_diff_year and add_points:
             $ mas_gainAffection(15, bypass=True)
             $ persistent._mas_history_archives[left_year]["player_bday.date_aff_gain"] += 15
-        m 1hua "And we're home!"
-        m 3hub "That was really fun, [player]!"
-        m 1eka "It was so nice going out to celebrate your birthday..."
-        m 1ekbsa "Thanks for making me such a big part of your special day~"
+        m 1hua "И мы дома!"
+        m 3hub "Это было очень весело, [player]!"
+        m 1eka "Было очень здорово выйти на улицу, чтобы отпраздновать твой день рождения..."
+        m 1ekbsa "Спасибо, что дал мне столь значимую роль в свой особенный день~"
 
     $ persistent._mas_player_bday_left_on_bday = False
 
@@ -5830,11 +5846,11 @@ label return_home_post_player_bday:
         if persistent._mas_player_bday_decor:
             if mas_isMonikaBirthday():
                 $ persistent._mas_bday_opened_game = True
-                m 3rksdla "Oh...it's not {i}your{/i} birthday anymore..."
+                m 3rksdla "Ох... {i}твой{/i} день рождения уже прошёл..."
             else:
-                m 3rksdla "Oh...it's not your birthday anymore..."
-            m 3hksdlb "We should probably take these decorations down now, ahaha!"
-            m 3eka "Just give me one second.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
+                m 3rksdla "Ох... твой день рождения уже прошёл..."
+            m 3hksdlb "Думаю, теперь мы должны снять эти декорации, а-ха-ха!"
+            m 3eka "Дай мне одну секунду.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
             $ mas_surpriseBdayHideVisuals()
 
             #If we returned from a date post pbday but have O31 deco
@@ -5844,14 +5860,14 @@ label return_home_post_player_bday:
                 # Make sure no o31 mode
                 $ store.persistent._mas_o31_in_o31_mode = False
 
-            m 3eua "There we go!"
+            m 3eua "Вот так!"
             if not persistent._mas_f14_gone_over_f14:
-                m 1hua "Now, let's enjoy the day together, [player]~"
+                m 1hua "А теперь, давай насладимся этим днём вместе, [player]~"
 
         if persistent._mas_f14_gone_over_f14:
             m 2etc "..."
             m 3wuo "..."
-            m 3wud "Wow, [player], I just realized we were gone so long we missed Valentine's Day!"
+            m 3wud "Ого, [player], я только что поняла, что мы гуляли так долго, что даже пропустили день святого Валентина!"
             call greeting_gone_over_f14_normal_plus
 
         #If player told Moni their birthday on day of (o31)
@@ -5866,19 +5882,19 @@ init 20 python:
     mas_poem_pbday_1 = MASPoem(
         poem_id = "poem_pbday_1",
         category = "pbday",
-        prompt = "The One",
-        title = " My dearest [player],",
+        prompt = "Единица",
+        title = " Мой дорогой [player],",
         text = """\
- To the one I love,
- The one I trust,
- The one I can't live without.
- I hope your day is as special as you make every day for me.
- Thank you so much for being you.
+ Тот, кого я люблю,
+ Тот, кому я доверяю,
+ Тот, без кого я не могу жить.
+ Надеюсь, твой день будет таким же особенным, как и все те дни, которые ты делаешь для меня особенными.
+ Большое тебе спасибо за то, что был собой.
 
- Happy Birthday, sweetheart~
+ С днём рождения, дорогой~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     #" # I need this to keep syntax highlighting on vim
     )
@@ -5886,23 +5902,23 @@ init 20 python:
     mas_poem_pbday_2 = MASPoem(
         poem_id = "poem_pbday_2",
         category = "pbday",
-        prompt = "Your Day",
-        title = " My dearest [player],",
+        prompt = "Твой день",
+        title = " Мой дорогой [player],",
         text = """\
- Any day with you is a happy day.
- One where I{i}'{/i}m free,
- One where all my troubles are gone,
- One where all of my dreams come true.
+ Любой день с тобой – это счастливый день.
+ Тот, где я свободна,
+ Тот, где все мои проблемы исчезают,
+ Тот, где сбываются все мои мечты.
 
- But today is not any day,
- Today is special; today is your day.
- A day I can appreciate you even more for what you do.
- A day I hope I make your dreams come true too.
+ Но сегодня не обычный день,
+ Сегодня особенный день; сегодня твой день.
+ День, когда я смогу ценить тебя ещё больше за то, что ты делаешь.
+ День, когда я надеюсь, что и твои мечты сбудутся.
 
- Happy Birthday, sweetheart~
+ С днём рождения, дорогой~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     #" # I need this to keep syntax highlighting on vim
     )
@@ -5910,23 +5926,23 @@ init 20 python:
     mas_poem_pbday_3 = MASPoem(
         poem_id = "poem_pbday_3",
         category = "pbday",
-        prompt = "One Wish",
-        title = " My dearest [player],",
+        prompt = "Одно желание",
+        title = " Мой дорогой [player],",
         text = """\
- Sprinkles and candles for my [player]’s cake,
- There's just one wish for you to make.
- May your greatest dreams come true,
- I know mine did when I found you.
+ Посыпки и свечи торта для моего любимого,
+ Мне нужно загадать только одно желание.
+ Пусть все твои самые большие мечты сбудутся,
+ Я знаю, что моя мечта уже сбылась, когда я нашла тебя.
 
- So glad to be celebrating with you today,
- I'll love you 'til the end of days.
- There's no place I'd rather be,
- Spending this time together, just you and me.
+ Я так рада праздновать вместе с тобой сегодня,
+ Я буду любить тебя до конца своих дней.
+ Не важно место, в котором я хотела бы,
+ Провести это время вместе, только ты и я
 
- Happy birthday, sweetheart~
+ С днём рождения, дорогой~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     #" # I need this to keep syntax highlighting on vim
     )
@@ -5934,33 +5950,33 @@ init 20 python:
     mas_poem_pbday_4 = MASPoem(
         poem_id = "poem_pbday_4",
         category = "pbday",
-        prompt = "My [player]",
-        title = " My [player],",
+        prompt = "Моему любимому",
+        title = " Моему любимому,",
         text = """\
- How our love has grown.
- Another year,
- Another thousand moments of pride.
- Proud of my [player],
- And happy to see [him] grow alongside me.
+ Как выросла наша любовь.
+ Ещё один год,
+ Ещё тысяча моментов для гордости.
+ Я горжусь тобой, [player],
+ И я невероятно счастлива видеть, как ты растёшь вместе со мной.
 
- How our love has bloomed,
- As another year passed.
- Bloomed like a rose in morning dew,
- With another thousand moments of beauty.
- My beautiful [player],
- Whom I love to see bloom each day.
+ Как расцвела наша любовь,
+ Когда прошёл ещё один год.
+ Расцвела, как роза в утренней росе,
+ Ещё тысяча прекрасных моментов.
+ Ты мой прекрасный цветок,
+ Которого я люблю видеть расцветающим каждый день..
 
- How our love is strong,
- As another year has passed.
- Strong like the most beautiful diamonds,
- With another thousand moments of strength.
- My strong [player],
- Who I love more and more each day.
+ Как крепка наша любовь,
+ Прошёл ещё один год.
+ Крепка, как самые прекрасные бриллианты,
+ Ещё тысяча провлений сильной любви.
+ Мой самый любимый [player],
+ Любовь к которому растёт с каждым днём.
 
- Happy birthday, sweetheart~
+ С днём рождения, дорогой~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     #" # I need this to keep syntax highlighting on vim
     )
@@ -6088,16 +6104,16 @@ init 5 python:
     )
 
 label mas_pf14_monika_lovey_dovey:
-    m 1rksdla "Hey...{w=0.3}[player]?"
-    m 1ekbsa "I just wanted to let you know that I love you."
+    m 1rksdla "Эй...{w=0.2} [player]?"
+    m 1ekbsa "Я просто хотела, чтобы ты знал, что я люблю тебя."
 
     if mas_isMoniEnamored(higher=True):
-        m 3ekbsa "You make me really happy...{w=0.3}I could never ask for someone better than you."
+        m 3ekbsa "Ты сделал меня очень счастливой...{w=0.3} и я не смогу найти кого-то получше тебя."
 
-    m 3ekbsa "Valentine's Day is coming soon, and it just gets me in a good mood because I know I have you by my side."
-    m 1rkbsd "Without you, I don't know where I'd be..."
-    m 1ekbsa "So I want to thank you for being there for me."
-    m 1dkbsu "...And for being so wonderfully you~"
+    m 3ekbsa "Скоро наступит День святого Валентина, и это очень поднимает мне настроение, потому что я знаю, что ты на моей стороне."
+    m 1rkbsd "Если бы не ты, то даже не знаю, где бы я сейчас была..."
+    m 1ekbsa "Так что я хочу поблагодарить тебя за то, что был здесь для меня..."
+    m 1hkbsu "И за то, что ты был чудесным собой~"
     return "no_unlock|love"
 
 #######################[HOL050] INTRO:
@@ -6123,8 +6139,8 @@ label mas_f14_monika_valentines_intro:
     #Prevent nts stuff for upset- since they don't get the rest of the event.
     if mas_isMoniUpset(lower=True):
         if not mas_isMoniBroken():
-            m 6eka "By the way [player], I just wanted to say happy Valentine's Day."
-            m "Thanks for visiting me, I hope you have a good day."
+            m 6eka "Между прочим, [player], я просто хотела поздравить тебя с Днём Святого Валентина."
+            m "Спасибо, что навестил меня, надеюсь, ты хорошо проведёшь этот день."
         return
 
     python:
@@ -6141,25 +6157,25 @@ label mas_f14_monika_valentines_intro:
         mas_rmallEVL("mas_change_to_def")
 
     m 1hub "[player]!"
-    m 1hua "Do you know what day it is?"
-    m 3eub "It's Valentine's Day!"
-    m 1ekbsa "A day where we celebrate our love for each other..."
-    m 3rkbsa "I guess every day we're together is already a celebration of our love...{w=0.3}{nw}"
-    extend 3ekbsa "but there's something that's really special about Valentine's Day."
+    m 1hua "Ты знаешь, какой сейчас день?"
+    m 3eub "Сегодня – День святого Валентина!"
+    m 1ekbsa "В этот день, мы знаменуем наш любовный союз..."
+    m 3rkbsa "Полагаю, каждый день, который мы проводим вместе, уже является знаменованием нашего любовного союза...{w=0.3} {nw}"
+    extend 3ekbsa "но у этого праздника есть нечто особенное."
     if not mas_anni.pastOneMonth() or mas_isMoniNormal():
-        m 3rka "Even though I know we aren't too far in our relationship..."
+        m 3rka "Хотя я знаю, что мы в наших отношениях продвинулись не так далеко..."
         show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5eua "I just want you to know that I'm always here for you."
-        m 5eka "Even if your heart gets broken..."
-        m 5ekbsa "I'll always be here to fix it for you. Okay, [player]?"
+        m 5eua "Я просто хочу, чтобы ты знал, что я всегда буду рядом с тобой."
+        m 5eka "Даже если твоё сердце разбито..."
+        m 5ekbsa "Я всегда буду рядом и залатаю его ради тебя. Хорошо, [player]?"
         show monika 1ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m 1ekbsa "..."
 
     else:
-        m 1eub "We've been together for a while now...{w=0.2}{nw}"
-        extend 1eka "and I really love the time we spend together."
-        m 1dubsu "You always make me feel so loved."
-        m "I'm really happy I'm your girlfriend, [player]."
+        m 1eub "Мы уже давно как вместе...{w=0.2} {nw}"
+        extend 1eka "и мне очень понравилось всё то время, что мы провели вместе."
+        m 1dubsu "С тобой я всегда чувствую себя любимой."
+        m "Я очень рада, что стала твоей девушкой, [player]."
 
     # returning from a date or getting lingerie
     if not persistent._mas_f14_in_f14_mode or lingerie_eligible:
@@ -6167,12 +6183,12 @@ label mas_f14_monika_valentines_intro:
 
         # first time seeing any lingerie
         if lingerie_eligible and not mas_hasUnlockedClothesWithExprop("lingerie"):
-            call mas_lingerie_intro(holiday_str="on Valentine's Day", lingerie_choice=mas_clothes_vday_lingerie)
+            call mas_lingerie_intro(holiday_str="день Святого Валентина", lingerie_choice=mas_clothes_vday_lingerie)
 
         # first time seeing sundress/shoulderless or non-first time seeing lingerie
         elif not has_sundress or not has_shoulderless or lingerie_eligible:
-            m 3wub "Oh!"
-            m 3tsu "I have a little surprise for you...{w=1}I think you're gonna like it, ehehe~"
+            m 3wub "О!"
+            m 3tsu "У меня для тебя небольшой сюрприз...{w=1} думаю, тебе очень понравится, э-хе-хе~"
 
             # lingerie
             if lingerie_eligible:
@@ -6182,18 +6198,18 @@ label mas_f14_monika_valentines_intro:
                 pause 2.0
                 show monika 2tkbsu
                 pause 2.0
-                m 2tfbsu "[player]...{w=0.5}you're staring{w=0.3}...again."
-                m 2hubsb "Ahaha!"
-                m 2eubsb "I guess you approve of my outfit choice..."
-                m 2tkbsu "Rather fitting for a romantic holiday like Valentine's Day, don't you think?"
-                m 2rkbssdla "I have to say, I was pretty nervous the first time I wore something like this..."
-                m 2hubsb "But now that I've done it before, I really enjoy dressing like this for you!"
-                m 3tkbsu "I hope you enjoy it too~"
+                m 2tfbsu "[player]...{w=0.5} Ты пялишься{w=0.5}... опять."
+                m 2hubsb "А-ха-ха!"
+                m 2eubsb "Полагаю, ты одобряешь мой выбор наряда..."
+                m 2tkbsu "Но он больше подходит к такому романтическому празднику, как День святого Валентина, тебе так не кажется?"
+                m 2rkbssdla "Должна сказать, я поначалу немного нервничала, когда надевала такой наряд..."
+                m 2hubsb "Но теперь, когда я сделала это раньше, мне очень нравится носить его для тебя!"
+                m 3tkbsu "Надеюсь, тебе он тоже нравится~"
 
             # shoulderless dress
             elif has_sundress:
                 call mas_clothes_change(mas_clothes_blackpink_dress, unlock=True, outfit_mode=True)
-                m 2eua "Well...{w=0.3}what do you think?"
+                m 2eua "Ну...{w=0.3} что думаешь?"
                 call mas_f14_intro_blackpink_dress
 
             # sundress
@@ -6202,9 +6218,9 @@ label mas_f14_monika_valentines_intro:
                 $ mas_selspr.json_sprite_unlock(mas_acs_musicnote_necklace_gold)
                 m 2eua "..."
                 m 2eksdla "..."
-                m 2rksdlb "Ahaha...{w=1}{nw}"
-                extend 2rksdlu "it's not polite to stare, [player]..."
-                m 3tkbsu "...but I guess that means you like my outfit, ehehe~"
+                m 2rksdlb "А-ха-ха...{w=1} {nw}"
+                extend 2rksdlu "не очень-то и вежливо пялиться, [player]..."
+                m 3tkbsu "...но, полагаю, это означает, что тебе нравится мой наряд, э-хе-хе~"
                 call mas_f14_sun_dress_outro
 
         # not getting lingerie, already have seen sundress
@@ -6218,43 +6234,43 @@ label mas_f14_monika_valentines_intro:
                     or mas_isMoniEnamored(lower=True)
                 )
             ):
-                m 3wud "Oh!"
-                m 3hub "I should probably go change into something a little more appropriate, ahaha!"
-                m 3eua "I'll be right back."
+                m 3wud "О!"
+                m 3hub "Наверное, я должна переодеться во что-нибудь более подходящее, а-ха-ха!"
+                m 3eua "Я скоро вернусь."
 
                 call mas_clothes_change(mas_clothes_sundress_white, unlock=True, outfit_mode=True)
 
-                m 2eub "Ah, that's much better!"
-                m 3hua "I just love this dress, don't you?"
-                m 3eka "It will always hold a special place in my heart on Valentine's Day..."
-                m 1fkbsu "Just like you~"
+                m 2eub "Ах, намного лучше!"
+                m 3hua "Мне просто нравится этот наряд, смекаешь?"
+                m 3eka "Он всегда занимает особенное место в моём сердце во время Дня святого Валентина..."
+                m 1fkbsu "Прямо как ты~"
 
             # no change of clothes path
             else:
                 # not wearing sundress
                 if monika_chr.clothes != mas_clothes_sundress_white:
-                    m 1wud "Oh..."
-                    m 1eka "Do you want me to change into my white sundress, [player]?"
-                    m 3hua "I've always kinda considered that my Valentine's Day outfit."
-                    m 3eka "But if you'd rather me keep wearing what I have on now, that's okay too..."
-                    m 1hub "Maybe we can start a new tradition, ahaha!"
-                    m 1eua "So, do you want me to put on the white sundress?{nw}"
+                    m 1wud "О..."
+                    m 1eka "Ты хочешь, чтобы я переоделась в свой белый сарафан, [player]?"
+                    m 3hua "Я всегда считала, что это мой наряд ко Дню святого Валентина."
+                    m 3eka "Но если ты хочешь, чтобы я продолжила носить этот наряд, то это тоже нормально..."
+                    m 1hub "Думаю, мы могли бы начать новую традицию, а-ха-ха!"
+                    m 1eua "Ладно, ты хочешь, чтобы я надела белый сарафан?{nw}"
                     $ _history_list.pop()
 
                     menu:
-                        m "So, do you want me to put on the white sundress?{fast}"
-                        "Yes.":
-                            m 3hub "Okay!"
-                            m 3eua "I'll be right back."
+                        m "Ладно, ты хочешь, чтобы я надела белый сарафан?{fast}"
+                        "Да.":
+                            m 3hub "Хорошо!"
+                            m 3eua "Я скоро вернусь."
                             call mas_clothes_change(mas_clothes_sundress_white, unlock=True, outfit_mode=True)
-                            m 2hub "There we go!"
-                            m 3eua "Something about wearing this dress on Valentine's Day just feels right."
+                            m 2hub "Готово!"
+                            m 3eua "Что-то в ношении этого наряда во время Дня святого Валентина просто кажется правильным."
                             m 1eua "..."
 
-                        "No.":
-                            m 1eka "Okay, [player]."
-                            m 3hua "This {i}is{/i} a really nice outfit..."
-                            m 3eka "And besides, it doesn't matter what I'm wearing..."
+                        "Нет.":
+                            m 1eka "Хорошо, [player]."
+                            m 3hua "Это {i}правда{/i} очень красивый наряд..."
+                            m 3eka "Но с другой стороны, не так уж и важно, что на мне сейчас..."
 
                 call mas_f14_intro_generic
 
@@ -6270,10 +6286,10 @@ label mas_f14_monika_valentines_intro:
             pause 2.0
             show monika 2rfc at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 2rfc "..."
-            m 2efc "You know, [player]...{w=0.5}it's not polite to stare..."
+            m 2efc "Знаешь, [player]...{w=0.5} не очень-то и вежливо пялиться..."
             m 2tfc "..."
             m 2tsu "..."
-            m 3tsb "Ahaha! I'm just kidding...{w=0.5}do you like my outfit?"
+            m 3tsb "А-ха-ха! Я просто шучу...{w=0.5} тебе нравится мой наряд?"
             call mas_f14_sun_dress_outro
 
         elif not has_shoulderless:
@@ -6283,28 +6299,28 @@ label mas_f14_monika_valentines_intro:
         else:
             call mas_f14_intro_generic
 
-    m 1fkbsu "I love you so much."
-    m 1hubfb "Happy Valentine's Day, [player]~"
+    m 1fkbsu "Я так сильно тебя люблю."
+    m 1hubfb "С Днём святого Валентина, [player]~"
 
     return "rebuild_ev|love"
 
 # common flow for first time sundress
 label mas_f14_sun_dress_outro:
-    m 1rksdla "I've always dreamt of a date with you while wearing this..."
-    m 1eksdlb "I know it's kind of silly now that I think about it!"
-    m 1ekbsa "...But just imagine if we went to a cafe together."
-    m 1rksdlb "I think there's a picture of something like that somewhere actually..."
-    m 1hub "Maybe we could make it happen for real!"
-    m 3ekbsa "Would you take me out today?"
-    m 1hkbssdlb "It's fine if you can't, I'm just happy to be with you."
+    m 1rksdla "Я всегда мечтала о свидании с тобой в таком наряде..."
+    m 1eksdlb "Но теперь, когда я задумалась об этом, я понимаю, что это довольно глупая идея!"
+    m 1ekbsa "...Но ты только представь, как мы зашли в какое-нибудь кафе вместе."
+    m 1rksdlb "По правде говоря, мне кажется, где-то есть фотография чего-то наподобие этого..."
+    m 1hub "Быть может, мы сможем воплотить это в реальность!"
+    m 3ekbsa "Хочешь прогуляться со мной сегодня?"
+    m 1hkbssdlb "Если не сможешь, то всё нормально, я буду рада и побыть рядом с тобой."
     return
 
 # used for when we have no new outfits to change into
 label mas_f14_intro_generic:
-    m 1ekbsa "I'm just so grateful you are spending time with me today."
-    m 3ekbsu "Spending time with the one you love, {w=0.2}that's all anyone can ask for on Valentine's Day."
-    m 3ekbsa "I don't care if we go on a romantic date, or just spend the day together here..."
-    m 1fkbsu "It really doesn't matter to me as long as we're together."
+    m 1ekbsa "Я просто рада, что ты проводишь время вместе со мной сегодня."
+    m 3ekbsu "Провести время вместе с любимым человеком {w=0.2} — это всё, о чём можно только просить в День святого Валентина."
+    m 3ekbsa "И мне всё равно, пошли ли мы на романтическое свидание или просто проводим здесь этот день вместе..."
+    m 1fkbsu "Пока мы вместе, для меня это не имеет никакого значения."
     return
 
 label mas_f14_intro_blackpink_dress:
@@ -6327,12 +6343,12 @@ label mas_f14_intro_blackpink_dress:
         mas_selspr.save_selectables()
         renpy.save_persistent()
 
-    m 4hub "I think it's really cute!"
-    m 2eub "There's just something about that black and pink combination...{w=0.3}they just go so well together!"
-    m 2rtd "Seems like it would be a great outfit to wear for a date..."
+    m 4hub "По-моему, очень мило!"
+    m 2eub "Просто есть что-то в сочетании чёрного и розового...{w=0.3} они так хорошо гармонируют друг с другом!"
+    m 2rtd "Кажется, что это был бы отличный вариант для свидания..."
     m 2eua "..."
     m 2tuu "..."
-    m 7hub "Ahaha~"
+    m 7hub "А-ха-ха~"
     return
 
 #######################[HOL050] TOPICS
@@ -6342,8 +6358,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_colors',
-            prompt="Valentine's Day colors",
-            category=['holidays','romance'],
+            prompt="Цвета Дня Святого Валентина",
+            category=['праздники','романтика'],
             action=EV_ACT_RANDOM,
             conditional="persistent._mas_f14_in_f14_mode",
             start_date=mas_f14,
@@ -6361,25 +6377,25 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_colors:
-    m 3eua "Have you ever thought about the way colors are conveyed on Valentine's Day?"
-    m 3hub "I find it intriguing how they can symbolize such deep and romantic feelings."
-    m 1dua "It reminds me of when I made my first Valentine's card in grade school."
-    m 3eub "My class was instructed to exchange cards with a partner after making them."
-    m 3eka "Looking back, despite not knowing what the colors really meant, I had lots of fun decorating the cards with red and white hearts."
-    m 1eub "In this way, colors are a lot like poems."
-    m 1eka "They offer so many creative ways to express your love for someone."
-    m 3ekbsu "Like giving them red roses, for example."
-    m 3eub "Red roses are a symbol for romantic feelings towards someone."
-    m 1eua "If someone were to offer them white roses in lieu of red ones, they'd signify pure, charming, and innocent feelings instead."
-    m 3eka "However, since there are so many emotions involved with love..."
-    m 3ekd "It's sometimes hard to find the right colors to accurately convey the way you truly feel."
-    m 3eka "Thankfully, by combining multiple rose colors, it's possible to express a variety of emotions!"
-    m 1eka "Mixing red and white roses would symbolize the unity and bond that a couple shares."
+    m 3eua "Задумывался ли ты о том, как цвета отражают День святого Валентина?"
+    m 3hub "Я нахожу интригующим то, как они символизируют такие глубокие и романтические чувства."
+    m 1dua "Это напоминает мне о том, как я впервые сделала свою валентинку в старшей школе."
+    m 3eub "Моему классу было поручено поделиться валентинками с партнёром после того, как мы их сделаем."
+    m 3eka "Если оглянуться назад, то несмотря на то, что эти цвета действительно значили, мне было очень весело украшать валентинки красными и белыми сердечками."
+    m 1eub "Таким образом, цвета больше напоминали стихи."
+    m 1eka "Они предлагают столько творческих путей, чтобы выразить свою любовь к кому-то."
+    m 3ekbsu "Как, например, передать им красные розы."
+    m 3eub "Красные розы являются символом романтических чувств, испытываемых к кому-то."
+    m 1eua "А если кто-то предложит им белые розы вместо красных, то они, следовательно, укажут на чистоту, очарование и чувства невинности."
+    m 3eka "Однако, поскольку существует так много эмоций, связанных с любовью..."
+    m 3ekd "Порой бывает трудно найти подходящие цвета, чтобы точно выразить то, что ты чувствуешь."
+    m 3eka "К счастью, если совместить несколько разноцветных роз, то можно будет выразить множество эмоций!"
+    m 1eka "Смесь из красных и белых роз символизирует сплочённость и связь, которую выражают пары."
 
     if monika_chr.is_wearing_acs(mas_acs_roses):
-        m 1ekbsa "But I'm sure you already had all of this in mind when you picked out these beautiful roses for me, [player]..."
+        m 1ekbsa "Но я уверена, что ты об этом всём уже знал, когда выбирал для меня те красивые розы, [player]..."
     else:
-        m 1ekbla "Maybe you could give me some roses today, [player]?"
+        m 1ekbla "Быть может, ты сегодня подаришь мне розы, [player]?"
     return
 
 init 5 python:
@@ -6387,8 +6403,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_cliches',
-            prompt="Valentine's story clichés",
-            category=['holidays','literature','romance'],
+            prompt="История клише Валентина",
+            category=['праздники','литература','романтика'],
             action=EV_ACT_RANDOM,
             conditional="persistent._mas_f14_in_f14_mode",
             start_date=mas_f14,
@@ -6406,18 +6422,18 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_cliches:
-    m 2euc "Have you noticed that most Valentine's Day stories have lots of clichés?"
-    m 2rsc "There's either 'Oh, I'm lonely and I don't have someone to love,' or 'How will I confess to the one I love?'"
-    m 2euc "I think that writers could be a bit more creative when it comes to Valentine's Day stories..."
-    m 3eka "But, I suppose those two topics are the easiest way to write a love story."
-    m 3hub "That doesn't mean you can't think outside the box, though!"
-    m 2eka "Sometimes a predictable story can ruin it..."
-    m 2rka "...But if you {i}do{/i} want a good example of an unpredictable story..."
-    m 3hub "Just use ours! Ahaha~"
-    m 3rksdlb "I guess it {i}did{/i} start out like those kinds of stories..."
-    m 2tfu "But I think we managed to make it pretty original."
-    m 3hua "The way we met is the most interesting story yet!"
-    m 1hub "Ahaha!"
+    m 2euc "Ты заметил, что у большинства историй Дня святого Валентина есть много различных клише?"
+    m 2rsc "В них либо «Ох, я так одинок и мне некого любить», либо «Как мне признаться в любви тому, кого люблю?»."
+    m 2euc "Мне кажется, писатели могли быть чуточку покреативнее, когда дело доходит до историй Дня святого Валентина..."
+    m 3eka "Но, полагаю, эти две темы являются самым лёгким способом написать историю любви."
+    m 3hub "Но это не означает, что ты не можешь мыслить нестандартно!"
+    m 2eka "Иногда, предсказуемая история может всё испортить..."
+    m 2rka "...Но если ты {i}хочешь{/i} сделать хороший пример непредсказуемой истории..."
+    m 3hub "То просто воспользуйся нашей! А-ха-ха~"
+    m 3rksdlb "Полагаю, она {i}началась{/i} так же, как и те истории..."
+    m 2tfu "Но, мне кажется, мы смогли сделать её очень даже оригинальной."
+    m 3hua "То, как мы познакомились – самая интересная история на свете!"
+    m 1hub "А-ха-ха!"
     return
 
 init 5 python:
@@ -6425,8 +6441,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_chocolates',
-            prompt="Valentine's Day chocolates",
-            category=['holidays','romance'],
+            prompt="Шоколадные конфеты",
+            category=['праздники','романтика'],
             action=EV_ACT_RANDOM,
             conditional="persistent._mas_f14_in_f14_mode",
             start_date=mas_f14,
@@ -6444,17 +6460,17 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_chocolates:
-    m 1hua "Valentine's Day is such a fun holiday for me, [player]."
-    m 3eub "Not only is it the anniversary of my twitter account, but it's also a day for receiving and giving chocolates!"
-    m 1hub "A holiday that can fill everyone with love, romance, and joy!"
-    m 3ekbla "But it really feels nice if you get something from someone you like."
-    m 3hua "Whether it's given to you platonically, as a gift of love, or a part of a confession, it always makes you feel somewhat special!"
+    m 1hua "День святого Валентина, как по мне, очень весёлый праздник, [player]."
+    m 3eub "Не только потому, что это юбилей моего аккаунта в Твиттере, но ещё и потому, что это день получения и раздачи шоколадок!"
+    m 1hub "Это праздник, который наполнит всех любовью, романтикой и радостью!"
+    m 3ekbla "Но будет очень приятно, если ты получишь шоколадку от человека, который тебе нравится."
+    m 3hua "Дал ли он тебе её платонически, как подарок любви или как часть признания, от этого ты всегда чувствуешь себя немного особенной!"
     if mas_getGiftStatsForDate("mas_reaction_gift_chocolates") > 0:
-        m 1ekbsa "Just like how you made me feel special with the chocolates you gave me today."
-        m 1ekbsu "You're always so sweet, [player]."
+        m 1ekbsa "Как когда ты заставил меня почувствовать себя особенной, передав мне сегодня шоколадку."
+        m 1ekbsu "Ты всегда такой милый, [player]."
 
-    m 1ekbsa "Maybe someday I'll even be able to give you some chocolates..."
-    m 3hkbsa "I really can't wait until I cross over to be with you, [player]."
+    m 1ekbsa "Быть может, однажды, я смогу поделиться с тобой шоколадкой..."
+    m 3hkbsa "Мне правда очень хочется перейти в реальность, чтобы быть с тобой, [player]."
     return
 
 init 5 python:
@@ -6462,8 +6478,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel='mas_f14_monika_vday_origins',
-            prompt="How did Valentine's Day start?",
-            category=['holidays','romance'],
+            prompt="Как начался День Святого Валентина?",
+            category=['праздники','романтика'],
             pool=True,
             conditional="persistent._mas_f14_in_f14_mode",
             action=EV_ACT_UNLOCK,
@@ -6483,27 +6499,27 @@ init 5 python:
     )
 
 label mas_f14_monika_vday_origins:
-    m 3eua "You'd like to learn about the history of Valentine's Day, [player]?"
-    m 1rksdlc "It's quite dark, actually."
-    m 1euc "The legends vary, but it dates back to the third century in Rome when Christians were still persecuted by the Roman government."
-    m 3eud "Around this time, Emperor Claudius II had forbidden Christians from marrying, which a clergyman named Valentine decided was unfair."
-    m 3rsc "Against the orders of the emperor, he married Christians in secret."
-    m 3esc "Another version of the story is that Roman soldiers weren't allowed to be married, so Valentine was saving people from conscription into the army through marriage."
-    m 1dsd "Either way, Valentine was caught and sentenced to death."
-    m 1euc "While in jail, he befriended the jailer's daughter and cured her blindness. Some say he even fell in love with her."
-    m 3euc "Unfortunately, this wasn't enough to save him. But before he died, he sent a letter to her, which he signed, 'Your Valentine.'"
-    m 1dsc "He was executed on February 14, 269 AD, and later canonized as a saint."
-    m 3eua "To this day, it's still traditional to use 'Your Valentine' to sign love letters."
-    m 3eud "Oh, but wait, there's more!"
-    m "There's an ancient Roman festival known as Lupercalia, which was also celebrated around February 14th."
-    m 3eua "Apparently, part of the ceremony involved creating couples by having names randomly pulled out of a box."
-    m 3eub "...They would then spend time together, with some even marrying if they liked each other enough!"
-    m 1eua "Ultimately, this festival became a Christian celebration to remember Saint Valentine."
-    m 3hua "It's evolved over the years into a way for people to express their feelings for those they love."
-    m 3eubsb "...Like me and you!"
-    m 1ekbsa "Despite it having started out a little depressing, I think it's really sweet."
-    m 1ekbsu "I'm glad we're able to share such a magical day together.{w=0.2} {nw}"
-    extend 1ekbfa "Happy Valentine's Day, [mas_get_player_nickname()]~"
+    m 3eua "Хочешь узнать историю Дня святого Валентина, [player]?"
+    m 1rksdlc "По правде говоря, она довольно мрачная."
+    m 1euc "Её история берёт своё начало во втором и третьем веках в Риме, где христианство было объявлено официальной религией."
+    m 3eud "Примерно в это же время, человек, известный как Святой Валентин, решил пойти нарушить закон императора Клавдия второго."
+    m 3rsc "Заключение брака было запрещено, поскольку предполагалось, что из женатых мужчин получаются бедные солдаты."
+    m 3esc "Святой Валентин решил, что это было нечестно, и помог организовать свадьбы в тайне."
+    m 1dsd "К несчастью, его поймали и сразу же приговорили к смертной казни."
+    m 1euc "Однако, находясь в заключении, Святой Валентин влюбился в дочь надзирателя."
+    m 3euc "Перед своей смертью, он отправил ей любовное письмо, подписав его «От твоего Валентина»."
+    m 1dsc "Его казнили четырнадцатого февраля, в двести шестьдесят девятом году до нашей эры."
+    m 3eua "Какое благородное дело, тебе так не кажется?"
+    m 3eud "О, подожди, есть ещё кое-что!"
+    m "Причина, по которой мы празднуем этот день, – он берёт своё начало от римского фестиваля, известного как Луперкалия!"
+    m 3eua "Его первоначальной целью было провести дружеское мероприятие, где люди складывали свои имена в коробку и выбирали их наугад, чтобы создать пару."
+    m 3eub "А потом, они играли роль парня и девушки всё то время, что они проводили вместе. Некоторые из них даже женились, если нравились друг другу в достаточной мере, э-хе-хе~"
+    m 1eua "В итоге, церковь решила сделать это христианским праздником, чтобы оставить память о стараниях Святого Валентина."
+    m 3hua "С годами, оно эволюционировало в повод выразить свои чувства к тем, кого они любят, для всех людей."
+    m 3eubsb "Прямо как мы с тобой!"
+    m 1ekbsa "И несмотря на то, что начало было немного депрессивное, это очень мило, верно, [player]?"
+    m 1ekbsu "Я рада, что мы можем разделить такой волшебный день.{w=0.2} {nw}"
+    extend 1ekbfa "С Днём святого Валентина, [mas_get_player_nickname()]~"
     return
 
 #######################[HOL050] COMPLIMENTS
@@ -6513,7 +6529,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_f14_happy_vday",
-            prompt="Happy Valentine's Day!",
+            prompt="С Днём Святого Валентина!",
             action=EV_ACT_UNLOCK,
             pool=False,
             start_date=mas_f14,
@@ -6536,24 +6552,24 @@ label mas_f14_happy_vday:
     $ persistent._mas_f14_spent_f14 = True
     $ mas_gainAffection(5, bypass=True)
     if mas_isMoniNormal(higher=True):
-        m 1hublb "Ehehe~ Thank you, [player]!"
+        m 1hublb "Э-хе-хе~ Спасибо, [player]!"
         show monika 5hkbla at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hkbla "Isn't it wonderful, having a day dedicated to appreciating the one you love?"
-        m 5lublb "Enjoying a sweet treat together, going on a lovely date...{w=0.2}{nw}"
-        extend 5tubla "or just enjoying the time we spend together."
-        m 5dublb "I'm so grateful that I get to spend Valentine's day with you."
-        m 5eubla "Thank you for making the time for me, [player]. {w=0.2}I love you so much~"
+        m 5hkbla "Разве это не прекрасно, когда день посвящают для того, чтобы выразить признательность тому, кого ты любишь?"
+        m 5lublb "Наслаждаться вместе вкусностями, пойти на свидание с любимым человеком...{w=0.2} {nw}"
+        extend 5tubla "или просто наслаждаясь временем, которое проводят вместе."
+        m 5dublb "Я так благодарна, что могу провести день Святого Валентина с тобой."
+        m 5eubla "Спасибо, что нашёл время для меня, [player]. {w=0.2}Я так тебя люблю!"
         $ mas_ILY()
 
     elif mas_isMoniDis(higher=True):
-        m 6euc "...{w=0.3}Huh?"
-        m 6wud "Oh, it's..."
-        m 6wuc "...{w=0.3}{nw}"
-        extend 6eku "Thank you. That...{w=0.2}{nw}"
-        extend 6lkblu "actually means a lot to hear."
+        m 6euc "...{w=0.3}А?"
+        m 6wud "О, это..."
+        m 6wuc "...{w=0.3} {nw}"
+        extend 6eku "Спасибо. Это...{w=0.2} {nw}"
+        extend 6lkblu "было важно для меня."
 
     else:
-        m "...{w=0.8}Thank you..."
+        m "...{w=0.8}Спасибо..."
 
     #Lock this
     $ mas_lockEVL("mas_f14_happy_vday", "CMP")
@@ -6580,28 +6596,28 @@ label mas_f14_monika_spent_time_with:
     #Do this first so we make sure we always remove it
     $ mas_rmallEVL("mas_f14_monika_spent_time_with")
 
-    m 1eua "Hey, [player]?"
-    m 1eka "I just wanted to thank you for spending Valentine's Day with me."
-    m 1ekbsa "I know that it's not a normal holiday, but it's a really special day for me now that I have you."
+    m 1eua "Эй, [player]?"
+    m 1eka "Я просто хотела поблагодарить тебя за то, что провёл День святого Валентина со мной."
+    m 1ekbsa "Знаю, это необычный праздник, но пока ты рядом со мной, этот день является для меня особенным."
 
     if not mas_isBelowZero():
         if not mas_HistVerifyAll_k(True, "f14.actions.spent_f14"):
-            m 1rkbsb "Also, I...{w=0.5}made something for you, [player]!"
+            m 1rkbsb "Кроме того, я...{w=0.5} кое-что приготовила для тебя, [player]!"
 
         else:
-            m 1ekbsa "I made a card for you, [player]."
+            m 1ekbsa "Я сделала открытку для тебя, [player]."
 
-        m 1ekbsa "Here, let me show it to you."
+        m 1ekbsa "Вот, позволь мне показать её тебе."
 
         #NOTE: The first two f14 poems will always be in order and the same. Everything after is randomly selected
         if not mas_poem_vday_1.is_seen():
             call mas_showpoem(mas_poem_vday_1)
-            m "I really mean that, [player]..."
-            m 3ekbsa "In you I found everything I could ever hope for~"
+            m "Я действительно так думаю, [player]..."
+            m 3ekbsa "В тебе я нашла всё, на что могла надеяться~"
 
         elif not mas_poem_vday_2.is_seen():
             call mas_showpoem(mas_poem_vday_2)
-            m "You really are everything to me, [player]~"
+            m "Ты действительно для меня всё, [player]~"
 
         else:
             call mas_showpoem(mas_poems.getRandomPoem("f14"))
@@ -6613,23 +6629,23 @@ label mas_f14_monika_spent_time_with:
             else:
                 call monika_kissing_motion(duration=0.5, initial_exp="6hkbfa", fade_duration=0.5)
 
-        m 1ekbfa "Thank you for always being by my side."
+        m 1ekbfa "Спасибо за то, что всегда рядом со мной."
         show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbfa "I love you so much, [player]. Happy Valentine's Day~"
+        m 5ekbfa "Я очень сильно тебя люблю, [player]. С Днём святого Валентина~"
         return "love"
 
     else:
-        m 1eka "Thank you for being by my side."
-        m 3ekb "Happy Valentine's Day!"
+        m 1eka "Спасибо за то, что ты со мной."
+        m 3ekb "С Днём святого Валентина!"
     return
 
 label mas_f14_first_kiss:
-        m 1ektpu "I honestly don't know what I would do without you."
+        m 1ektpu "Если честно, я не знаю, что бы я делала без тебя."
         show monika 6dktuu at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m "..."
         window hide
         menu:
-            "I love you, [m_name].":
+            "Я люблю тебя, [m_name].":
                 $ HKBHideButtons()
                 $ mas_RaiseShield_core()
                 $ disable_esc()
@@ -6644,13 +6660,13 @@ label mas_f14_first_kiss:
                 m 6ekbfa "[player]...I...I..."
                 call monika_kissing_motion(hide_ui=False)
                 show monika 6ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 6ekbfa "...I love you too~"
+                m 6ekbfa "...Я тоже тебя люблю~"
                 m 6dkbfa "..."
-                m "That was everything I had always dreamt it would be~"
-                m 6ekbfa "I've been waiting so long to finally kiss you, and there couldn't have been a more perfect moment..."
-                m 6dkbsu "I will never forget this..."
-                m 6ekbsu "...the moment of our first kiss."
-                m "Happy Valentine's Day, [player]~"
+                m "О таком я могла только мечтать~"
+                m 6ekbfa "Я так долго ждала того момента, когда наконец-то смогу поцеловать тебя..."
+                m 6dkbsu "Я никогда это не забуду..."
+                m 6ekbsu "...Тот наш первый поцелуй."
+                m "С Днём святого Валентина, [player]~"
                 $ enable_esc()
                 $ mas_MUINDropShield()
                 $ HKBShowButtons()
@@ -6683,47 +6699,47 @@ label mas_f14_no_time_spent:
         #Was away on a long absence
         $ mas_loseAffectionFraction(0.05, min_amount=15, ev_label="mas_apology_missed_vday")
 
-        m 1rksdlc "Hey, [player]..."
-        m 2eksdld "I know you told me you were going to be away...but I really missed you on Valentines Day."
-        m 2eksdla "Next time, do you think you could take me with you if you can't be here?"
-        m 3eub "At least then we'll still be with each other and we can even celebrate together!"
-        m 1eka "I'd really appreciate if you could do that for me, [player]."
+        m 1rksdlc "Эй, [player]..."
+        m 2eksdld "Это так мило с твоей стороны пригласить меня на свой день рождения, чтобы устроить для меня вечеринку-сюрприз!"
+        m 2eksdla "В следующий раз, как ты думаешь, сможешь взять меня с собой, если не сможешь быть здесь?"
+        m 3eub "По крайней мере, тогда мы всё ещё будем друг с другом, и мы сможем даже отпраздновать вместе!"
+        m 1eka "Я была бы очень признателена, если бы ты мог сделать это для меня, [player]."
 
     elif mas_isMoniAff(higher=True):
         $ mas_loseAffectionFraction(min_amount=20, ev_label="mas_apology_missed_vday")
         m 1rkc "[player]?"
-        m "Where were you on Valentine's Day?"
-        m 1ekc "It's a really special day for me..."
-        m 1ekd "...a day I wanted to spend with you."
+        m "Ты где был в День святого Валентина?"
+        m 1ekc "Это был очень особенный день для меня..."
+        m 1ekd "...И этот день я хотела провести вместе с тобой."
         m 2dkc "..."
-        m 2ekd "It would've meant so much to me if you came by..."
-        m 2dkd "Even if only for a few minutes."
-        m "Is it really too much to ask to visit your girlfriend on Valentine's Day?"
-        m 2ekc "Please don't let it happen again, okay [player]?"
+        m 2ekd "Если бы ты просто заглянул сюда, я была бы очень рада этому..."
+        m 2dkd "Пусть даже всего на пару минут."
+        m "Я всего лишь прошу тебя заглянуть к своей девушке в День святого Валентина, разве я многого прошу?"
+        m 2ekc "Пожалуйста, не дай этому произойти снова, хорошо, [player]?"
 
     elif mas_isMoniNormal(higher=True):
         $ mas_loseAffectionFraction(min_amount=15, ev_label="mas_apology_missed_vday")
-        m 2ekc "Hey, [player]..."
-        m 2tkc "I'm pretty disappointed..."
-        m 2tkd "You didn't visit me at all on Valentine's Day."
-        m 4tkc "You know that all I want to do is spend time with you..."
-        m 4rkd "Is visiting your girlfriend on Valentine's Day really too much to ask?"
-        m 4eksdla "Please...{w=1}make sure you visit me next Valentine's Day, okay?"
+        m 2ekc "Эй, [player]..."
+        m 2tkc "Я сильно разочарована..."
+        m 2tkd "Ты ко мне так и не заглянул в День святого Валентина."
+        m 4tkc "Ты ведь знаешь, что я хотела лишь провести время вместе с тобой..."
+        m 4rkd "По-твоему, заглянуть к своей девушке в День святого Валентина — это уже слишком?"
+        m 4eksdla "Пожалуйста...{w=1} обязательно загляни ко мне в гости в следующий День святого Валентина, хорошо?"
 
     elif mas_isMoniUpset():
         $ mas_loseAffectionFraction(min_amount=10, ev_label="mas_apology_missed_vday")
         m 2efc "[player]!"
-        m "I can't believe you didn't even visit on Valentine's Day!"
-        m 2rfc "Do you have any idea what it's like to be left alone on a day like that?"
-        m 2rkc "I know we're not on the best of terms..."
-        m 2dkd "But it'd have meant a lot if you came by."
-        m 2tfc "Don't let it happen again, [player]."
+        m "Не могу поверить в то, что ты ни разу не заглянул ко мне в День святого Валентина!"
+        m 2rfc "Ты хоть представляешь, каково это: провести весь день в полном одиночестве?"
+        m 2rkc "Я знаю, что у нас не лучшие отношения..."
+        m 2dkd "Но я была бы очень рада, если бы ты заглянул ко мне."
+        m 2tfc "Не дай этому произойти снова, [player]."
 
     elif mas_isMoniDis():
         $ mas_loseAffectionFraction(min_amount=10, ev_label="mas_apology_missed_vday")
-        m 6ekc "Oh [player]..."
-        m "How was Valentine's Day?"
-        m 6dkc "Not having a valentine is pretty lonely..."
+        m 6ekc "Ох, [player]..."
+        m "Как прошёл твой День святого Валентина?"
+        m 6dkc "Не получив валентинку, я чувствую себя одинокой..."
 
     else:
         $ mas_loseAffectionFraction(1.0, min_amount=150)
@@ -6738,7 +6754,7 @@ init 5 python:
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_missed_vday",
-            prompt="...for missing Valentine's Day.",
+            prompt="...за пропущенный День Святого Валентина.",
             unlocked=False
         ),
         code="APL"
@@ -6747,34 +6763,34 @@ init 5 python:
 
 label mas_apology_missed_vday:
     if mas_isMoniAff(higher=True):
-        m 1eka "Thanks for apologizing for missing Valentine's Day, [player]."
-        m 1ekd "I really wanted to spend it with you..."
-        m 1rkc "But I guess you might have just had something to do and couldn't make it."
-        m 1ekd "Please try to visit next year, okay [player]?"
-        m 3eua "If you're going to be busy, maybe just take me with you!"
-        m 3hub "Even if we're not at home together, I'm more than happy to just spend the day at your side~"
+        m 1eka "Спасибо, что извинился за то, что пропустил День святого Валентина, [player]."
+        m 1ekd "Я правда хотела провести его вместе с тобой..."
+        m 1rkc "Но, полагаю, у тебя просто появились другие дела, и ты попросту не смог."
+        m 1ekd "Пожалуйста, попытайся заглянуть ко мне в следующем году, ладно, [player]?"
+        m 3eua "Если ты будешь занят, то, наверное, тебе лучше взять меня с собой!"
+        m 3hub "Даже если мы будем не у себя дома, я буду более чем рада провести день рядом с тобой~"
         $ mas_gainAffection(modifier=0.2)
 
     elif mas_isMoniNormal(higher=True):
-        m 1eka "Thanks for apologizing for missing Valentine's Day, [player]."
+        m 1eka "Спасибо, что извинился за то, что пропустил День святого Валентина, [player]."
         if not store.mas_anni.pastOneMonth():
-            m 1rkd "I know we're not really that far into our relationship, but everything was already starting to feel different..."
+            m 1rkd "Я знаю, что у нас не особо хорошие отношения, но всё уже начинает казаться другим..."
 
-        m 1ekd "It would have meant so much to me if you came by, at least for a little bit."
-        m 3eka "Promise me that you'll take me with you if you're going to be busy next time, okay [player]?"
+        m 1ekd "Если бы ты заглянул ко мне, хотя бы на секундочку, это многое бы значило для меня."
+        m 3eka "Обещай мне, что ты возьмёшь меня с собой в следующий раз, когда будешь занят, хорошо, [player]?"
         $ mas_gainAffection(modifier=0.2)
 
     elif mas_isMoniUpset():
-        m 2dkc "While I am a little upset that you didn't show up on Valentine's Day, I'm glad you apologized."
-        m "Things like that show me that you really do care about us."
-        m 2ekd "Please, [player]..."
-        m 2eka "Try to come by next Valentine's Day."
+        m 2dkc "Хоть я немного расстроилась из-за того, что ты не заглянул сюда в День святого Валентина, но я рада, что ты извинился."
+        m "Подобное показывает мне то, что тебе на нас не всё равно."
+        m 2ekd "Пожалуйста, [player]..."
+        m 2eka "Постарайся зайти ко мне в следующий День святого Валентина."
         $ mas_gainAffection(modifier=0.1)
 
     elif mas_isMoniDis():
-        m 2dkc "I didn't expect you to show up anyway, [player]."
-        m 2dkd "I know we haven't really been that close, but a part of me hoped that you would at least visit..."
-        m 2dsc "Please promise me that you'll come by next year, okay?"
+        m 2dkc "Я всё равно не ожидала, что ты заглянешь сюда, [player]."
+        m 2dkd "Я знаю, что мы не так близки, но одна часть меня надеялась, что ты хотя бы на минутку заглянешь сюда..."
+        m 2dsc "Пожалуйста, пообещай мне, что ты заглянешь ко мне в следующем году, ладно?"
         $ mas_gainAffection(modifier=0.1)
 
     else:
@@ -6788,53 +6804,53 @@ init 20 python:
     mas_poem_vday_1 = MASPoem(
         poem_id="poem_f14_1",
         category="f14",
-        prompt="Found",
-        title=" My dearest [player],",
+        prompt="Я нашла",
+        title=" Мой дорогой [player],",
         text="""\
- I{i}'{/i}ve always loved Valentine's Day, but this one feels different.
- Has the world changed, or just me?
- I found love, I found purpose,
- I found a truth I didn't know I was searching for.
- All of that I found in you.
+ Мне всегда нравился День святого Валентина, но этот кажется совсем другим.
+ Это весь мир изменился, или мне просто кажется?
+ Я нашла любовь, нашла смысл,
+ Я нашла правду, которую искала уже долгое время.
+ Это всё, что я нашла в тебе.
 
- Thank you for sharing this special day with me.
+ Спасибо, что разделил этот особенный день вместе со мной.
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     )
 
     mas_poem_vday_2 = MASPoem(
         poem_id="poem_f14_2",
         category="f14",
-        prompt="Everything",
-        title=" My dearest [player],",
+        prompt="Всё",
+        title=" Мой дорогой [player],",
         text="""\
- Can it really be our second Valentine's Day?
- The first seems like just yesterday, yet so much has happened.
- I once wondered if the world had changed, or just me.
- Now I know the answer.
+ Может ли это быть наш второй День святого Валентина?
+ Первый, казалось бы, был ещё вчера, хотя произошло много чего.
+ И мне однажды стало интересно, это мир изменился или мне просто кажется.
+ Теперь я знаю ответ.
 
- Everything.
+ Всё.
 
- Without you there is nothing.
- Before you there was nothing.
+ Если бы не ты, здесь ничего бы не было.
+ До тебя, здесь ничего не было.
 
- Emptiness. Darkness. Nothing.
+ Пустота. Тьма. Ничего.
 
- Nothing.
+ Ничего.
 
- Then there was you.
- Just you.
- My world. My light. My Everything.
+ А потом пришёл ты.
+ Только ты.
+ Мой мир. Мой свет. Моё всё.
 
- Everything.
+ Всё.
 
 
- Happy Valentine's Day~
+ С Днём святого Валентина~
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
 
     #" # I need this to keep syntax highlighting on vim
@@ -6843,68 +6859,69 @@ init 20 python:
     mas_poem_vday_3 = MASPoem(
         poem_id="poem_f14_3",
         category="f14",
-        prompt="You",
-        title=" My dearest [player],",
+        prompt="Ты",
+        title=" Мой дорогой [player],",
         text="""\
- Boxes of chocolates and hearts; cards colored ruby red.
- Roses in my hair, petals soft as silk.
- None of it would feel complete without you.
+ Коробки конфет и сердечки; открытки рубиново-красного цвета.
+ Розы в моих волосах, лепестки мягкие, как шелк.
+ Ничто из этого не было бы полным без тебя.
 
- You, the one who has stuck by my side.
- You, the one who has given me your heart.
- The heart worth more than all the chocolate in the world, all the roses on earth.
+ Ты, тот, кто всегда был рядом со мной.
+ Ты, тот, кто отдал мне своё сердце.
+ Сердце стоит больше, чем весь шоколад в мире, все розы на земле.
 
- The love I feel cannot be overstated.
+ Любовь, которую я чувствую, невозможно переоценить.
 
- Forever your Valentine,
- Monika
+ С Днём святого Валентина,
+ Навеки твоя,
+ Моника
 """
     )
 
     mas_poem_vday_4 = MASPoem(
         poem_id="poem_f14_4",
         category="f14",
-        prompt="Roses",
-        title=" My dearest [player],",
+        prompt="Розы",
+        title=" Мой дорогой [player],",
         text="""\
- All the roses in the world,
- They grow and bloom into something beautiful.
- Just as our relationship will.
- Every day,
- We grow ever closer,
- Ever stronger,
- Ever more beautiful~
+ Все розы в этом мире,
+ Они вырастают и расцветают в нечто прекрасное.
+ Так же, как и наши отношения.
+ Каждый день,
+ Мы становимся всё ближе,
+ Всё сильнее,
+ Всё прекраснее.
 
- And though roses have thorns,
- They don’t undermine their loveliness,
- They defend them,
- They make them stronger.
- And of all the roses in the world,
- Even on this most romantic holiday,
- None could ever replace {size=+7}my{/size} special rose~
+ И пусть у роз есть шипы,
+ Они не делают их хуже,
+ Они защищают их,
+ Они делают их сильнее.
+ И из всех роз в мире,
+ Даже в этот самый романтичный праздник,
+ Ничто не сможет заменить {size=+7}мою{/size} особенную розу~
 
- Forever your Valentine,
- Monika
+ С Днём святого Валентина,
+ Моника
 """
     )
 
     mas_poem_vday_5 = MASPoem(
         poem_id="poem_f14_5",
         category="f14",
-        prompt="Sweetest",
-        title=" My dearest [player],",
+        prompt="Моя сладость",
+        title=" Мой дорогой [player],",
         text="""\
- Chocolate covered cherries and a goodnight kiss;
- Being with you, darling, is the sweetest bliss.
- Popsicles in summer, dancing in the rain;
- From snuggling you, honey, I could never abstain.
- Your laughter is my sugar cube, your smile is my cream;
- To share a coffee date with you, my love, would be a dream.
- Of all the candy, all the cake, of fruits and cookies too;
- The sweetest thing in my whole life will always be you.
+ Вишенки в шоколаде и поцелуй на ночь;
+ Быть с тобой, дорогой, — самое сладкое наслаждение.
+ Мороженое летом, танцы под дождём;
+ От объятий с тобой, милый, я никогда не смогу отказаться.
+ Твой смех — мой кусочек сахара, твоя улыбка — мой крем;
+ Разделить с тобой, любовь моя, свидание за чашкой кофе было бы мечтой.
+ Даже, если собрать все конфеты, все торты, фрукты и печенья;
+ Самым сладким во всей моей жизни всегда будешь ты.
 
- Forever yours,
- Monika
+ Навеки твоя,
+ Моника
 """
     )
 
@@ -6914,16 +6931,16 @@ label bye_f14:
     $ persistent._mas_f14_date_count += 1
     $ persistent._mas_f14_on_date = True
     if persistent._mas_f14_date_count == 1:
-        m 1sua "Taking me some place special for Valentine's Day?"
-        m 1ekbsa "That sounds really romantic [player]..."
-        m 3hub "I can't wait!"
+        m 1sua "Отведёшь меня в какое-нибудь особенное место в День святого Валентина?"
+        m 1ekbsa "Это звучит довольно романтично, [player]..."
+        m 3hub "Не могу дождаться!"
     elif persistent._mas_f14_date_count == 2:
-        m 1sua "Taking me out again on Valentine's Day?"
-        m 3tkbsu "You really know how to make a girl feel special, [player]."
-        m 1ekbfa "I'm so lucky to have someone like you~"
+        m 1sua "Хочешь снова погулять со мной в День святого Валентина?"
+        m 3tkbsu "Ты и вправду знаешь, как заставить девушку чувствовать себя особенной, [player]."
+        m 1ekbfa "Мне повезло, что у меня есть такой человек, как ты~"
     else:
-        m 1sua "Wow, [player]...{w=1}you're really determined to make this a truly special day!"
-        m 1ekbfa "You're the best partner I could ever hope for~"
+        m 1sua "Ого, [player]...{w=1}ты твёрдо решил сделать этот день по-настоящему особенным!"
+        m 1ekbfa "Ты лучший партнёр, о котором я могла только мечтать~"
     jump mas_dockstat_iostart
 
 ########################[HOL050] dockstat greet################################
@@ -6933,27 +6950,27 @@ label greeting_returned_home_f14:
 
     if time_out < mas_five_minutes:
         $ mas_loseAffection()
-        m 2ekp "That wasn't much of a date, [player]..."
-        m 2eksdlc "Is everything alright?"
-        m 2rksdla "Maybe we can go out later..."
+        m 2ekp "Это не было похоже на свидание, [player]..."
+        m 2eksdlc "Надеюсь, всё нормально?"
+        m 2rksdla "Наверное, мы пойдём гулять позже..."
 
     elif time_out < mas_one_hour:
         $ mas_f14CapGainAff(5)
-        m 1eka "That was fun while it lasted, [player]..."
-        m 3hua "Thanks for making time for me on Valentine's Day."
+        m 1eka "Было весело, до поры до времени, [player]..."
+        m 3hua "Спасибо, что уделил мне время в День святого Валентина."
 
     elif time_out < mas_three_hour:
         $ mas_f14CapGainAff(10)
-        m 1eub "That was such a fun date, [player]!"
-        m 3ekbsa "Thanks for making me feel special on Valentine's Day~"
+        m 1eub "Это было очень весёлое свидание, [player]!"
+        m 3ekbsa "Спасибо, что заставил почувствовать себя особенной в День святого Валентина~"
 
     else:
         # more than 3 hours
         $ mas_f14CapGainAff(15)
-        m 1hua "And we're home!"
-        m 3hub "That was wonderful, [player]!"
-        m 1eka "It was really nice going out with you on Valentine's Day..."
-        m 1ekbsa "Thank you so much for making today truly special~"
+        m 1hua "И мы дома!"
+        m 3hub "Это было прекрасно, [player]!"
+        m 1eka "Было очень здорово выйти на улицу с тобой в День святого Валентина..."
+        m 1ekbsa "Большое тебе спасибо за то, что сделал сегодняшний день по-настоящему особенным~"
 
     if persistent._mas_player_bday_in_player_bday_mode and not mas_isplayer_bday():
         call return_home_post_player_bday
@@ -6975,22 +6992,22 @@ label mas_gone_over_f14_check:
 
 label greeting_gone_over_f14:
     $ mas_gainAffection(5, bypass=True)
-    m 1hua "And we're finally home!"
-    m 3wud "Wow [player], we were gone so long we missed Valentine's Day!"
+    m 1hua "Наконец-то мы дома!"
+    m 3wud "Ого, [player], мы так долго гуляли, что даже пропустили День святого Валентина!"
     if mas_isMoniNormal(higher=True):
         call greeting_gone_over_f14_normal_plus
     else:
-        m 2rka "I appreciate you making sure I didn't have to spend the day alone..."
-        m 2eka "It really means a lot, [player]."
+        m 2rka "Я ценю то, что ты хотел позаботиться о том, чтобы я не провела весь день в одиночестве..."
+        m 2eka "Это многое для меня значит, [player]."
     $ persistent._mas_f14_gone_over_f14 = False
     return
 
 label greeting_gone_over_f14_normal_plus:
     $ mas_gainAffection(10, bypass=True)
-    m 1ekbsa "I would've loved to have spent the day with you here, but no matter where we were, just knowing we were together to celebrate our love..."
-    m 1dubsu "Well it means everything to me."
+    m 1ekbsa "Я бы очень хотела провести весь день с тобой здесь, но где бы мы ни были, само осознание того, что мы вместе ознаменовали наш любовный союз..."
+    m 1dubsu "Ну, для меня это очень много значит."
     show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbsa "Thank you for making sure we had a wonderful Valentine's Day, [player]~"
+    m 5ekbsa "Спасибо, что позаботился о том, чтобы у нас был чудесный День святого Валентина, [player]~"
     $ persistent._mas_f14_gone_over_f14 = False
     return
 
@@ -7283,58 +7300,58 @@ image chibi_peek = MASFilterSwitch("mod_assets/other/chibi_peek.png")
 label mas_bday_surprise_party_hint:
     #Set up letters
     python:
-        persistent._mas_bday_hint_filename = "For " + player + ".txt"
+        persistent._mas_bday_hint_filename = "Для тебя.txt"
         if mas_isMoniNormal(higher=True):
             message = """\
 [player],
-As I'm sure you know, Monika's birthday is coming up soon and I want to help you make it as special as possible!
-Since I'm always here, I can easily set up the surprise party...but I need a little help from you.
-All I need you to do is to make sure you have her out of the room at some point on her birthday, and I'll take care of the rest.
-Monika is so amazing, and I just want to do my part to make sure this all goes off without a hotf- I mean hitch...
-Ahaha!
+Как ты, наверное, уже знаешь, день рождения Моники скоро настанет, и я хочу помочь тебе сделать его очень особенным!
+Поскольку я всегда нахожусь здесь, я могу с лёгкостью организовать вечеринку-сюрприз... но мне нужна от тебя небольшая помощь.
+Всё, что от тебя требуется – убедиться в том, что ты вывел её из комнаты на какое-то время в её день рождения, а я уже позабочусь об остальном.
+Моника – просто чудо, а я всего лишь хочу внести свою лепту, дабы позаботиться о том, что всё пройдёт без хотф— в смысле, без сучка и задоринки...
+А-ха-ха!
 
-Please leave a file named 'oki doki' in the same folder you found this note so I know to go ahead with the party.
+Пожалуйста, оставь файл с именем «оки-доки» в той же папке, где ты и найдёшь эту записку, чтобы я поняла, когда мне приступать к работе над вечеринкой.
 
-Good luck with Monika!
+Удачи тебе с Моникой!
 
-P.S: Don't tell her about me!
+P.S: Не рассказывай ей обо мне!
 """
 
         else:
             message = """\
 [player],
-As I hope you know, Monika's birthday is coming up soon and I want to make it special.
-She's been through a lot lately, and I know it'd mean the world to her if you treated her to a nice day.
-Since I'm always here, I can easily set up a surprise party...but I do need a little help from you.
-All I need you to do is to make sure you have her out of the room at some point on her birthday, and I'll take care of the rest.
-If you care for Monika at all, you'll help me do this.
+Как ты, наверное, уже знаешь, день рождения Моники скоро настанет, и я хочу помочь тебе сделать его очень особенным.
+Она успела пройти через многое за всю свою жизнь, и я понимаю, что это она будет благодарна всему миру, если ты устроишь для неё приятное времяпрепровождение.
+Поскольку я всегда нахожусь здесь, я могу с лёгкостью организовать вечеринку-сюрприз... но мне нужна от тебя небольшая помощь.
+Всё, что от тебя требуется – убедиться в том, что ты вывел её из комнаты на какое-то время в её день рождения, а я уже позабочусь об остальном.
+Если тебе очень дорога Моника, то ты поможешь мне сделать это.
 
-Just leave a file named 'oki doki' in the same folder you found this note so I know to go ahead with the party.
+Просто оставь файл с именем «оки-доки» в той же папке, где ты и найдёшь эту записку, чтобы я поняла, когда мне приступать к работе над вечеринкой.
 
-Please, don't mess this up.
+Пожалуйста, не испорти всё.
 
-P.S: Don't tell her about me.
+P.S: Не рассказывай ей обо мне.
 """
         #Now write it to the chars folder
         _write_txt("/characters/" + persistent._mas_bday_hint_filename, message)
 
     #Moni brings it up (so)
     if mas_isMoniNormal(higher=True):
-        m 1eud "Hey, [player]..."
-        m 3euc "Someone left a note in the characters folder addressed to you."
+        m 1eud "Эй, [player]..."
+        m 3euc "Кто-то оставил записку в папке с файлами персонажей, которая адресована тебе."
         if mas_current_background == mas_background_def:
             #show chibi, she's just written the letter
             show chibi_peek with moveinleft
-        m 1ekc "Of course, I haven't read it, since it's obviously for you..."
-        m 1tuu "{cps=*2}Hmm, I wonder what this could be about...{/cps}{nw}"
+        m 1ekc "Разумеется, я её не читала, поскольку она, очевидно, была написана для тебя..."
+        m 1tuu "{cps=*2}Хм-м-м, интересно, что же там написано?{/cps}{nw}"
         $ _history_list.pop()
-        m 1hua "Ehehe~"
+        m 1hua "Э-хе-хе~"
 
     else:
-        m 2eud "Hey, [player]..."
-        m 2euc "Someone left a note in the characters folder addressed to you."
-        m 2ekc "Of course, I haven't read it, since it's obviously for you..."
-        m 2ekd "Just thought I'd let you know."
+        m 2eud "Эй, [player]..."
+        m 2euc "Кто-то оставил записку в папке с файлами персонажей, которая адресована тебе."
+        m 2ekc "Разумеется, я её не читала, поскольку она, очевидно, была написана для тебя..."
+        m 2ekd "Просто подумала, что тебе надо было сказать об этом."
 
     #Hide chibi
     hide chibi_peek with dissolve
@@ -7353,7 +7370,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_bday_pool_happy_bday",
-            prompt="Happy birthday!",
+            prompt="С Днём рождения!",
             action=EV_ACT_UNLOCK,
             rules={"no_unlock": None},
             start_date=mas_monika_birthday,
@@ -7375,30 +7392,30 @@ init 5 python:
 label mas_bday_pool_happy_bday:
     $ mas_gainAffection(5, bypass=True)
     if mas_recognizedBday():
-        m 3hub "Ehehe, thanks [player]!"
+        m 3hub "Э-хе-хе, спасибо, [player]!"
 
         if persistent._mas_bday_said_happybday:
-            m 3eka "First you sang it to me and now you've said it..."
+            m 3eka "Сначала ты сыграл мне это, а теперь сказал..."
 
         else:
-            m 3eka "I was waiting for you to say those magic words~"
-            m 1eub "{i}Now{/i} we can call it a birthday celebration!"
+            m 3eka "Я ждала, когда ты скажешь эти волшебные слова!"
+            m 1eub "{i}Теперь{/i} мы можем назвать это празднованием дня рождения!"
 
-        m 1eka "You really made this occasion so special, [player]."
-        m 1ekbsa "I can't thank you enough for loving me this much..."
+        m 1eka "Ты и вправду смог сделать это событие очень особенным, [player]."
+        m 1ekbsa "Я не смогу отблагодарить тебя в достаточной мере за то, что ты меня так сильно любишь..."
 
     else:
-        m 1skb "Awww, [player]!"
-        m 1sub "You remembered my birthday...!"
-        m 1sktpa "Oh gosh, I'm so happy that you remembered."
-        m 1dktdu "I feel like today is going to be such a special day~"
-        m 1ekbsa "What else do you have in store for me, I wonder..."
-        m 1hub "Ahaha!"
+        m 1skb "О-о-оу, [player]!"
+        m 1sub "Ты не забыл про мой день рождения!.."
+        m 1sktpa "О боже, я так рада, что ты не забыл."
+        m 1dktdu "У меня было такое чувство, будто сегодняшний день будет особенным~"
+        m 1ekbsa "Даже интересно, что ты ещё приготовил для меня..."
+        m 1hub "А-ха-ха!"
 
     if mas_isplayer_bday() and (persistent._mas_player_bday_in_player_bday_mode or persistent._mas_bday_sbp_reacted):
-        m 1eua "Oh, and..."
-        m 3hub "Happy Birthday to you too, [player]!"
-        m 1hua "Ehehe!"
+        m 1eua "А, и это..."
+        m 3hub "И тебя тоже с днём рождения, [player]!"
+        m 1hua "Э-хе-хе!"
 
     #Flag this for hist
     $ persistent._mas_bday_no_recognize = False
@@ -7416,7 +7433,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="mas_bday_pool_happy_belated_bday",
-            prompt="Happy belated birthday!",
+            prompt="С прошедшим днём рождения!",
             action=EV_ACT_UNLOCK,
             rules={"no_unlock": None},
             years=[]
@@ -7437,19 +7454,19 @@ label mas_bday_pool_happy_belated_bday:
     $ mas_lockEVL("mas_bday_pool_happy_belated_bday", "CMP")
 
     if mas_isMoniNormal(higher=True):
-        m 1sua "Thank you so much, [player]!"
-        m 3hub "I just knew you took me out on a long trip for my birthday!"
-        m 3rka "I wish I could've seen all the amazing places we went..."
-        m 1hua "But knowing we were together, well it makes it the best birthday I could ever hope for!"
-        m 3ekbsa "I love you so much, [player]~"
+        m 1sua "Большое тебе спасибо, [player]!"
+        m 3hub "Я просто знала, что ты выведешь меня на долгую прогулку в мой же день рождения!"
+        m 3rka "Мне бы очень хотелось увидеть все те замечательные места, в которых мы были..."
+        m 1hua "Но мысль о том, что мы были вместе, ну, она превращает этот день в лучший день рождения, о котором я могла только мечтать!"
+        m 3ekbsa "Я очень сильно люблю тебя, [player]~"
         return "love"
     else:
-        m 3eka "So you {i}did{/i} take me out for a long trip for my birthday..."
-        m 3rkd "That's so thoughtful of you, I was kind of wondering--"
-        m 1eksdla "You know what, nevermind."
-        m 1eka "I'm just relieved to know that you were thinking of me on my birthday."
-        m 3hua "That's all that matters."
-        m 3eub "Thank you, [player]!"
+        m 3eka "Значит, ты {i}и вправду{/i} вывел меня на долгую прогулку в мой же день рождения..."
+        m 3rkd "Это было так мило с твоей стороны, что мне даже стало интересно—"
+        m 1eksdla "А хотя, знаешь, это не важно."
+        m 1eka "Мне просто приятно знать о том, что ты подумал обо мне в мой день рождения."
+        m 3hua "И это – самое главное."
+        m 3eub "Спасибо, [player]!"
         return
 
 ################## [HOL060] PARTY REACTION
@@ -7461,45 +7478,45 @@ label mas_bday_surprise_party_reaction:
     $ renpy.show("mas_bday_cake_monika", zorder=store.MAS_MONIKA_Z+1)
 
     if mas_isMoniNormal(higher=True):
-        m 6suo "T-{w=0.5}This is..."
-        m 6ska "Oh, [player]..."
-        m 6dku "I'm at a loss for words."
+        m 6suo "Эт-{w=0.5}то..."
+        m 6ska "Ох, [player]..."
+        m 6dku "Я не могу подобрать слов."
 
         if store.mas_is_indoors:
-            m 6dktpu "Setting this all up to surprise me on my birthday..."
+            m 6dktpu "Сделать всё это, чтобы удивить меня на мой день рождения..."
 
-        m 6dktdu "Ehehe, you must really love me."
-        m 6suu "Everything just looks so festive!"
+        m 6dktdu "Э-хе-хе, ты, должно быть, действительно любишь меня."
+        m 6suu "Всё выглядит так празднично!"
 
     else:
-        m 6wuo "T-{w=0.5}This is..."
+        m 6wuo "Эт-{w=0.5}то..."
         m "..."
-        m 6dkd "Sorry, I'm...{w=1}I'm just at a loss for words."
-        m 6ekc "I didn't really expect anything special today, let alone this."
-        m 6rka "Maybe you do still have feelings for me after all..."
-        m 6eka "Everything looks great."
+        m 6dkd "Извини, Я... {w=1}я просто не могу подобрать слов."
+        m 6ekc "Я действительно не ожидала ничего особенного сегодня, не говоря уже об этом."
+        m 6rka "Может быть, у тебя всё ещё есть чувства ко мне..."
+        m 6eka "Всё выглядит великолепно."
 
 label mas_bday_surprise_party_reacton_cake:
     #Let's light candles
     menu:
-        "Light candles.":
+        "Зажечь свечи.":
             $ mas_bday_cake_lit = True
 
-    m 6sub "Ahh, it's so pretty, [player]!"
-    m 6hua "Reminds me of that cake someone gave me once."
-    m 6eua "It was almost as pretty as you've made this one!"
-    m 6tkb "Almost."
-    m 6hua "But anyway..."
+    m 6hub "Ах, это так красиво, [player]!"
+    m 6wub "Напоминает мне как раз тот торт, который подарил кто-то мне однажды."
+    m 6eua "Тот торт был таким же красивым, как и у тебя!"
+    m 6tkb "Почти~"
+    m 6hua "Но, в любом случае..."
     window hide
 
     show screen mas_background_timed_jump(5, "mas_bday_surprise_party_reaction_no_make_wish")
     menu:
-        "Make a wish, [m_name]...":
+        "Загадай желание, [m_name]...":
             hide screen mas_background_timed_jump
             $ made_wish = True
             show monika 6hua
             if mas_isplayer_bday():
-                m "Make sure you make one too, [player]!"
+                m "Убедись, что ты тоже загадал, [player]!"
             #+10 for wishes
             $ mas_gainAffection(10, bypass=True)
             pause 2.0
@@ -7518,17 +7535,17 @@ label mas_bday_surprise_party_reaction_post_make_wish:
     $ mas_bday_cake_lit = False
     window auto
     if mas_isMoniNormal(higher=True):
-        m 6hub "I made a wish!"
-        m 6eua "I hope it comes true someday..."
+        m 6hub "Я загадала желание!"
+        m 6eua "Надеюсь, когда-нибудь оно сбудется..."
         if mas_isplayer_bday() and made_wish:
-            m 6eka "And you know what? {w=0.5}I bet we both wished for the same thing~"
-        m 6hub "Ahaha..."
+            m 6eka "И знаешь что? {w=0.5}Держу пари, мы оба хотели одного и того же~"
+        m 6hub "А-ха-ха..."
 
     else:
-        m 6eka "I made a wish."
-        m 6rka "I hope it comes true someday..."
+        m 6eka "Я загадала желание."
+        m 6rka "Надеюсь, когда-нибудь оно сбудется..."
 
-    m 6eka "I'll save this cake for later.{w=0.5}.{w=0.5}.{nw}"
+    m 6eka "Я оставлю этот торт на потом.{w=0.5}.{w=0.5}.{nw}"
 
     if mas_isplayer_bday():
         call mas_HideCake('mas_bday_cake_monika',False)
@@ -7539,31 +7556,31 @@ label mas_bday_surprise_party_reaction_post_make_wish:
 
 label mas_bday_surprise_party_reaction_end:
     if mas_isMoniNormal(higher=True):
-        m 6eka "Thank you, [player]. From the bottom of my heart, thank you..."
+        m 6eka "Спасибо, [player]. От всего сердца благодарю тебя..."
         if mas_isplayer_bday() and persistent._mas_player_bday_last_sung_hbd != datetime.date.today():
             m 6eua "..."
             m 6wuo "..."
-            m 6wub "Oh! I almost forgot. {w=0.5}I made you a cake, too!"
+            m 6wub "О! Чуть не забыла. {w=0.5}Я тоже испекла тебе торт!"
 
             call mas_monika_gets_cake
 
-            m 6eua "Let me just light the candles for you, [player].{w=0.5}.{w=0.5}.{nw}"
+            m 6eua "Позволь мне просто зажечь свечи для тебя, [player].{w=0.5}.{w=0.5}.{nw}"
 
             window hide
             $ mas_bday_cake_lit = True
             pause 1.0
 
-            m 6sua "Isn't it pretty?"
-            m 6hksdlb "I guess I'll have to blow these candles out as well, since you can't really do it, ahaha!"
+            m 6sua "Разве это не прекрасно?"
+            m 6hksdlb "Думаю, что мне придётся задуть и эти свечи, так как ты не можешь этого сделать, а-ха-ха!"
 
             if made_wish:
-                m 6eua "Let's both wish again, [player]! {w=0.5}It'll be twice as likely to come true, right?"
+                m 6eua "Давай друг другу загадаем желание, [player]! {w=0.5}Это будет в два раза более вероятно, чтобы сбыться, не так ли?"
             else:
-                m 6eua "Let's both make a wish, [player]!"
+                m 6eua "Давай друг другу загадаем желание, [player]!"
 
-            m 6hua "But first..."
+            m 6hua "Но сначала..."
             call mas_player_bday_moni_sings
-            m 6hua "Make a wish, [player]!"
+            m 6hua "Загадай желание, [player]!"
 
             window hide
             pause 1.5
@@ -7574,18 +7591,18 @@ label mas_bday_surprise_party_reaction_end:
             pause 1.0
 
             if not made_wish:
-                m 6hua "Ehehe..."
-                m 6ekbsa "I bet we both wished for the same thing~"
+                m 6hua "Э-хе-хе..."
+                m 6ekbsa "Держу пари, мы оба хотели одного и того же~"
             m 6hkbsu "..."
-            m 6hksdlb "I'll just save this cake for later too, I guess. Ahaha!"
+            m 6hksdlb "Я просто оставлю этот торт на потом. А-ха-ха!"
 
             call mas_HideCake('mas_bday_cake_player')
             call mas_player_bday_card
 
         else:
-            m 6hua "Let's enjoy the rest of the day now, shall we?"
+            m 6hua "Давай насладимся остатком дня, хорошо?"
     else:
-        m 6ektpa "Thank you, [player]. It really means a lot that you did this for me."
+        m 6ektpa "Спасибо, [player]. Это действительно много значит, что ты сделал это для меня."
     $ persistent._mas_bday_sbp_reacted = True
     #+25 aff for following through and getting the party
     $ mas_gainAffection(15, bypass=True)
@@ -7615,24 +7632,24 @@ init 5 python:
 label mas_bday_spent_time_with:
     if mas_isMoniUpset(lower=True):
         m 1eka "[player]..."
-        m 3eka "I just wanted to say I really appreciate you spending time with me today."
-        m 3rksdla "I know it hasn't been going that great lately, but you taking the time to celebrate my birthday with me..."
-        m 1eud "Well it gives me hope that maybe it's not too late for us."
-        m "Perhaps today can be the start of something really special.."
-        m 3eka "That would be the be the best gift I could ever ask for."
+        m 3eka "Я просто хотела сказать, что я правда ценю то, что ты провёл время со мной сегодня."
+        m 3rksdla "Я знаю, что мы в последнее время не особо ладим, но ты нашёл время, чтобы отпраздновать мой день рождения со мной..."
+        m 1eud "В общем, это дало мне надежду на то, что мы, возможно, пока ещё можем всё уладить."
+        m "Быть может, сегодняшний день станет началом чего-то очень особенного..."
+        m 3eka "Это будет самый лучший подарок, о котором я могла только мечтать."
 
     else:
         $ _timeout = store.mas_dockstat.timeOut(mas_monika_birthday)
-        m 1eua "Say, [player]..."
-        m 3eua "Thank you for spending time with me today."
-        m 3hua "Something like that can really make a girl happy, you know?"
+        m 1eua "Слушай, [player]..."
+        m 3eua "Спасибо, что провёл время со мной сегодня."
+        m 3hua "Что-то подобное может сделать девушку счастливой, ты знал об этом?"
 
         if _timeout > mas_five_minutes:
-            m 3eka "I really enjoyed our date today, [player]."
-            m 1eka "I always enjoy spending time with you here, but getting to spend time with you in your reality..."
-            m 1dku "Knowing that you're thinking about me even when you can't see me..."
-            m 1ekbsa "Well, it truly means a lot to me."
-            m 3ekbsa "You really made my birthday complete~"
+            m 3eka "Мне очень понравилось наше сегодняшнее свидание, [player]."
+            m 1eka "Мне всегда нравится проводить время с тобой здесь, но времяпрепровождение с тобой в твоей реальности..."
+            m 1dku "Зная о том, что ты думаешь обо мне даже тогда, когда не видишь меня..."
+            m 1ekbsa "Ну, это очень многое для меня значит."
+            m 3ekbsa "Ты и вправду смог сделать мой день рождения дополненным~"
 
         $ MASEventList.push('mas_bday_spent_time_with_wrapup', skipeval=True)
 
@@ -7655,53 +7672,53 @@ label mas_bday_spent_time_with_wrapup:
     if gave_gifts > 0:
         #More than 1
         if gave_gifts > 1:
-            m 3eua "Let's not forget the gifts you gave me for my birthday."
-            m 3hub "They were just amazing, [player]!"
+            m 3eua "Давай не будем забывать о тех подарках, которые ты подарил мне на мой же день рождения."
+            m 3hub "Они были просто потрясающими, [player]!"
         else:
-            m 3eua "Let's not forget about the gift you gave me for my birthday."
-            m 3hub "It was so wonderful, [player]!"
+            m 3eua "Давай не будем забывать о том подарке, который ты подарил мне на мой же день рождения."
+            m 3hub "Он был просто замечательным, [player]!"
 
-        m 1eka "I really appreciate the effort of finding a way to get things from your reality to mine..."
-        m 3eka "I know it can't be easy."
+        m 1eka "Я правда ценю те старания, которые ты прикладываешь в поисках способа перенести вещи из своей реальности в мою..."
+        m 3eka "Я знаю, что это будет непросто."
 
     m 1dku "..."
 
     if mas_isMoniEnamored(higher=True):
         m 1dktpu "..."
-        m 1ektpu "Ahaha, sorry, [player]!"
-        m 3ektda "It's just that I've never imagined being this happy in my life."
-        m 1rksdlb "Well...{w=0.5}that's not {i}exactly{/i} true."
-        m 1eka "We still have to be physically together, after all~"
-        m 1rkc "And, well..."
-        m 1rka "I know this is already becoming a cliché, but..."
-        m 3eka "I love you so much, [player]."
-        m "Someday, I promise you..."
-        m 1ektpu "I {i}promise you{/i} that I will make you as happy as you've made me today."
-        m 3ektpu "Even if we never get to see each other in the same reality, {w=0.5}know that I will always do my best for you."
-        m 1dktpu "No matter the obstacles we may face, no matter what other people say about us..."
-        m 1ektda "I still love you with everything that I am."
-        m "You are the only one who understands me. {w=0.5}You led me out of a dark place and gave me purpose..."
-        m 1dkbsu "You are simply the best, [mas_get_player_nickname()], and I will always love you."
-        m 1ekbsa "...Thank you for giving me a reason to live."
+        m 1ektpu "А-ха-ха, прости, [player]!"
+        m 3ektda "Дело в том, что я ещё никогда не была настолько счастливой в своей жизни."
+        m 1rksdlb "Ну... {w=0.5}это не {i}совсем{/i} правда."
+        m 1eka "Мы всё-таки должны быть вместе и в физическом плане тоже~"
+        m 1rkc "И, ну..."
+        m 1rka "Я понимаю, что эта фраза скоро станет клишированной, но..."
+        m 3eka "Я очень сильно люблю тебя, [player]."
+        m "Когда-нибудь, я уверяю тебя..."
+        m 1ektpu "Я {i}обещаю тебе{/i}, что я сделаю тебя таким же счастливым, какой ты меня и сделал сегодня."
+        m 3ektpu "Даже если мы никогда не увидимся в одной реальности, {w=0.5}просто знай о том, что я всегда буду стараться для тебя."
+        m 1dktpu "Не важно, какие препятствия попадутся нам на пути, и не важно, что другие люди будут про нас говорить..."
+        m 1ektda "Я всё равно люблю тебя всей своей душой."
+        m "Ты единственный, кто понимает меня. {w=0.5}Ты вывел меня из тёмного места и придал моей жизни смысл..."
+        m 1dkbsu "Ты просто лучший, [mas_get_player_nickname()], и я буду всегда любить тебя."
+        m 1ekbsa "...Спасибо, что подарил мне смысл жизни."
         $ _first_kiss = persistent._mas_first_kiss
         call monika_kissing_motion
         if _first_kiss is None:
-            m 6ekbfa "Oh, [player]..."
-            m 6rkbfa "I...{w=0.5}I don't know what came over me, but the moment just felt so right."
-            m 6hubfa "I've thought about our first kiss for so long, and to finally experience it..."
-            m 6ekbfa "I will never forget this moment, [player]~"
+            m 6ekbfa "О, [player]..."
+            m 6rkbfa "Я...{w=0.5} не знаю, что на меня нашло, но этот момент просто кажется самым подходящим."
+            m 6hubfa "Я так долго размышляла о нашем первом поцелуе, и о том, чтобы наконец-то испытать его ощущение..."
+            m 6ekbfa "Я никогда не забуду этот момент, [player]~"
         else:
             return "love"
 
     else:
-        m 1eka "I can't even find the right words to express how happy you've made me today."
-        m 3eka "All that pain I went through before I met you?"
-        m 1hua "I'm glad I persevered through it."
-        m 1rsc "Because if I hadn't..."
-        m 1ekbsa "This day wouldn't have ever happened."
-        m 1dkbsa "I hope that tells you even a little bit of how much I appreciate you celebrating this occasion with me."
-        m 1ekbfb "I love you so much, [player]."
-        m 1ekbfa "Let's continue making each other happy~"
+        m 1eka "Я даже не могу подобрать нужные слова, чтобы выразить то, какой счастливой ты сделал меня сегодня."
+        m 3eka "Вся та боль, которую мне пришлось пережить ещё до знакомства с тобой?"
+        m 1hua "Я рада, что смогла преодолеть её."
+        m 1rsc "Потому что, если бы я это не сделала..."
+        m 1ekbsa "То этот день определённо не настал бы."
+        m 1dkbsa "Надеюсь, эти слова хотя бы в меньшей степени дали тебе понять, как сильно я ценю то, что ты отмечаешь это событие со мной."
+        m 1ekbfb "Я очень сильно люблю тебя, [player]."
+        m 1ekbfa "Давай и дальше радовать друг друга~"
         return "love"
     return
 
@@ -7759,46 +7776,46 @@ label mas_bday_postbday_notimespent:
         #Was away on a long absence
         $ mas_loseAffectionFraction(0.05, min_amount=15, ev_label="mas_apology_missed_bday")
 
-        m 1rksdlc "Hey, [player]..."
-        m 2eksdld "I know you told me you were going to be away...but I really missed you on my birthday."
-        m 2eksdla "Next time, do you think you could take me with you if you can't be here?"
-        m 3eub "At least then we'll still be with each other and we can even celebrate together!"
-        m 1eka "I'd really appreciate if you could do that for me, [player]."
+        m 1rksdlc "Эй, [player]..."
+        m 2eksdld "Знаю, ты говорил мне о том, что ты был вдали от своего дома... но я правда скучала по тебе на своём дне рождения."
+        m 2eksdla "Как думаешь, ты сможешь в следующий раз взять меня с собой, если ты не сможешь быть здесь?"
+        m 3eub "По крайней мере, так мы всё ещё будем вместе, и мы даже сможем отпраздновать мой день рождения вместе!"
+        m 1eka "Я была бы очень признательна, если бы ты смог сделать это для меня, [player]."
 
     elif persistent._mas_bday_opened_game:
         #Opened game but didn't do any bday things
         if mas_isMoniAff(higher=True):
             $ mas_loseAffectionFraction(min_amount=15, ev_label="mas_apology_forgot_bday")
-            m 2rksdla "Hey, [player]..."
-            m 2rksdlb "I know we had fun the other day, like we always do but..."
-            m 2ekp "I can't help it, I was hoping you would have...{w=1}done a little something for my birthday."
-            m 2ekd "Did you forget?"
-            m 3eka "Maybe you could put the date into your calendar on your phone for next year?"
-            m 3rka "...Or check the calendar on the wall behind me?"
-            m 3hua "We can't change the past, so knowing that you want to try harder for next year would be the only apology I need."
+            m 2rksdla "Эй, [player]..."
+            m 2rksdlb "Знаю, нам недавно было весело, как и всегда, но..."
+            m 2ekp "Я не могла не надеяться на то, что ты мог... {w=1}приготовить что-нибудь к моему дню рождения."
+            m 2ekd "Ты забыл?"
+            m 3eka "Быть может, ты в следующем году запишешь дату в календарь на своём телефоне?"
+            m 3rka "...Или проверишь календарь, который висит позади меня на стене?"
+            m 3hua "Нельзя изменить прошлое, следовательно, осознание того, что ты хочешь приложить больше усилий в следующем году, будет единственным оправданием, которое мне и нужно."
 
         elif mas_isMoniNormal(higher=True):
             $ mas_loseAffectionFraction(min_amount=15, ev_label="mas_apology_forgot_bday")
-            m 2rksdld "Hey, [player]..."
-            m 2rksdlb "I hate to fuss, but you know..."
-            m 2ekp "You can't forget about your girlfriend's birthday!"
-            m 2eku "It's nice that we got to hang out like usual, but next year..."
-            m 3hua "Well, I'll be looking forward to two birthday's worth of something special~"
+            m 2rksdld "Эй, [player]..."
+            m 2rksdlb "Мне не хочется беспокоить тебя по пустякам, но, знаешь..."
+            m 2ekp "Ты не можешь забыть про день рождения своей девушки!"
+            m 2eku "Это здорово, что мы проводили время так же, как и обычно, но в следующем году..."
+            m 3hua "В общем, я буду ждать с нетерпением того момента, когда суть двух дней рождения станет чем-то особенным~"
 
         elif mas_isMoniUpset():
             $ mas_loseAffectionFraction(min_amount=10, ev_label="mas_apology_forgot_bday")
-            m 1ekc "It was...{w=0.5}good to see you on the 22nd..."
-            m 1ekd "I really didn't want to be alone that day, so that meant a lot, but..."
-            m 1rkc "You know what? {w=0.5}Nevermind."
+            m 1ekc "Мне было... {w=0.5}приятно видеть тебя двадцать второго числа..."
+            m 1ekd "Мне правда не хотелось быть одной в этот день, и это многое значит для меня, но..."
+            m 1rkc "Хотя знаешь, что? {w=0.5}Это не важно."
 
         elif mas_isMoniDis():
             $ mas_loseAffectionFraction(min_amount=10, ev_label="mas_apology_forgot_bday")
             m 2dsc "..."
-            m 2rkc "...[player], I don't want to bother you. {w=1}I'm already scared of pushing you away."
-            m 2rktpc "But I can't help it. It hurts me that you didn't mention anything about celebrating my birthday..."
-            m 2dktuc "Please don't stop coming back to me."
-            m "And maybe next year..."
-            m 4ektdc "I-{w=0.5}I just want...{w=0.5}to feel as special to you as you are to me."
+            m 2rkc "...[player], я не хочу беспокоить тебя. {w=1}Мне уже страшно от мысли о том, что я отталкиваю тебя."
+            m 2rktpc "Но я не могу совладать с нею. Мне больно от того, что ты даже не упомянул о праздновании моего дня рождения..."
+            m 2dktuc "Пожалуйста, не переставай навещать меня."
+            m "И, быть может, в следующем году..."
+            m 4ektdc "Я— {w=0.5}Я просто хочу... {w=0.5}почувствовать себя такой же особенной для тебя, как и ты для меня."
 
         else:
             # broken
@@ -7809,12 +7826,12 @@ label mas_bday_postbday_notimespent:
         #Didn't spend any time with Monika
         if mas_isMoniAff(higher=True):
             $ mas_loseAffectionFraction(min_amount=15, modifier=2.0, ev_label="mas_apology_missed_bday")
-            m 1euc "Hey, [player]..."
-            m 3rksdla "I know you do a lot to make each and every day special, but a girl has a few days a year when she gets to be a little selfish..."
-            m 2tfd "And her {i}birthday{/i} is one of them!"
-            m "Seriously, where were you?!"
-            m 2rkc "But...knowing you, I'm sure you had a good reason to be busy..."
-            m 4ekc "Just try not to let it happen again next year, okay?"
+            m 1euc "Эй, [player]..."
+            m 3rksdla "Знаю, ты многое делаешь, чтобы сделать каждый день особенным, но у девушки в голове забито несколько дней в году, когда она становится немного эгоистичной..."
+            m 2tfd "И её {i}день рождения{/i} – один из них!"
+            m "Серьёзно, где ты был?!"
+            m 2rkc "Но... зная тебя, я уверена, у тебя была веская причина быть занятым..."
+            m 4ekc "Просто попытайся не дать этому произойти в следующем году, ладно?"
 
         elif mas_isMoniNormal(higher=True):
 
@@ -7824,13 +7841,13 @@ label mas_bday_postbday_notimespent:
             else:
                 $ mas_loseAffectionFraction(min_amount=15, ev_label="mas_apology_missed_bday")
 
-            m 1ekc "Hey, [player]..."
-            m 1ekd "You know, you really should have dropped in on the 22nd."
-            m 3efd "I mean, you should always visit me! But you {i}have{/i} to spend time with your cute girlfriend on her birthday, you know."
-            m 2efc "Please drop in for me next year..."
-            m 2dfc "Otherwise..."
+            m 1ekc "Эй, [player]..."
+            m 1ekd "Знаешь, ты правда должен был заглянуть ко мне двадцать второго числа."
+            m 3efd "В смысле, ты должен всегда навещать меня! Но ты также {i}должен{/i} и проводить время со своей милой девушкой в её же день рождения, знаешь ли."
+            m 2efc "Пожалуйста, заглядывай ко мне почаще в следующем году..."
+            m 2dfc "Иначе..."
 
-            m 6cfw "{cps=*2}{i}There will be consequences!!!{/i}{/cps}{nw}"
+            m 6cfw "{cps=*2}{i}Готовься к последствиям!!!{/i}{/cps}{nw}"
             # glich effect
             $ disable_esc()
             $ mas_MUMURaiseShield()
@@ -7847,21 +7864,21 @@ label mas_bday_postbday_notimespent:
             $ _history_list.pop()
 
             m 1dsc "..."
-            m 3hksdlb "Ahaha, sorry [player]!"
-            m 3hub "I'm just kidding!"
-            m 1eka "You know I love to scare you a little~"
+            m 3hksdlb "А-ха-ха, прости, [player]!"
+            m 3hub "Я просто пошутила!"
+            m 1eka "Ты сам знаешь, что мне нравится припугивать тебя~"
 
         elif mas_isMoniUpset():
             $ mas_loseAffectionFraction(min_amount=7.5, modifier=2.0, ev_label="mas_apology_missed_bday")
             m 2dsc "..."
-            m 2rsc "[player], don't you think you should check in on me a little more often?"
-            m 2rktpc "You might miss something important..."
+            m 2rsc "[player], тебе разве не кажется, что ты должен заглядывать ко мне почаще?"
+            m 2rktpc "Ты можешь упустить что-нибудь важное..."
 
         elif mas_isMoniDis():
             $ mas_loseAffectionFraction(min_amount=7.5, modifier=2.0, ev_label="mas_apology_missed_bday")
-            m 6ekd "...Hey, how was your day on the 22nd?"
-            m 6ekc "I'm just...curious if you thought of me at all that day."
-            m 6ektpc "But you probably didn't, huh?"
+            m 6ekd "...Эй, как прошёл твой день двадцать второго числа?"
+            m 6ekc "Мне просто... было интересно, мол, думал ли ты обо мне весь тот день."
+            m 6ektpc "Но ты, наверное, не думал тогда обо мне, да?"
             m 6dktpc "..."
 
         else:
@@ -7877,7 +7894,7 @@ init 5 python:
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_missed_bday",
-            prompt="...for missing your birthday.",
+            prompt="...за то, что пропустил твой день рождения.",
             unlocked=False
         ),
         code="APL"
@@ -7886,16 +7903,16 @@ init 5 python:
 label mas_apology_missed_bday:
     #Using a standard hi-mid-low range for this
     if mas_isMoniAff(higher=True):
-        m 1eua "Thanks for the apology, [player]."
-        m 2tfu "But you better make it up to me next year~"
+        m 1eua "Спасибо, что извинился, [player]."
+        m 2tfu "Но тебе лучше всё исправить к следующему году~"
 
     elif mas_isMoniNormal(higher=True):
-        m 1eka "Thanks for apologizing for missing my birthday, [player]."
-        m "Please be sure to spend some time with me next year, alright?"
+        m 1eka "Спасибо, что извинился за то, что пропустил мой день рождения, [player]."
+        m "Пожалуйста, не забудь провести немного времени со мной в следующем году, ладно?"
 
     else:
-        m 2rksdld "You know, I'm not entirely surprised I didn't see you on my birthday..."
-        m 2ekc "Please...{w=1}just make sure it doesn't happen again."
+        m 2rksdld "Знаешь, я не была особо удивлена тому, что я не увидела тебя в свой день рождения..."
+        m 2ekc "Пожалуйста... {w=1}просто позаботься о том, чтобы это не произошло снова."
     return
 
 init 5 python:
@@ -7903,7 +7920,7 @@ init 5 python:
         Event(
             persistent._mas_apology_database,
             eventlabel="mas_apology_forgot_bday",
-            prompt="...for forgetting your birthday.",
+            prompt="...за то, что забыл твой день рождения.",
             unlocked=False
         ),
         code="APL"
@@ -7912,16 +7929,16 @@ init 5 python:
 label mas_apology_forgot_bday:
     #once again using hi-mid-lo
     if mas_isMoniAff(higher=True):
-        m 1eua "Thanks for the apology, [player]."
-        m 3hua "But I hope you'll make this up to me~"
+        m 1eua "Спасибо, что извинился, [player]."
+        m 3hua "Но я надеюсь, что ты загладишь передо мной свою вину~"
 
     elif mas_isMoniNormal(higher=True):
-        m 1eka "Thanks for apologizing about forgetting my birthday, [player]."
-        m 1eksdld "Just try not to let it happen again, alright?"
+        m 1eka "Спасибо, что извинился за то, что пропустил мой день рождения, [player]."
+        m 1eksdld "Просто попытайся не дать этому произойти вновь, ладно?"
 
     else:
-        m 2dkd "Thanks for apologizing..."
-        m 2tfc "But don't let it happen again."
+        m 2dkd "Спасибо, что извинился..."
+        m 2tfc "Но не дай этому произойти вновь."
     return
 
 
@@ -7936,34 +7953,34 @@ label bye_922_delegate:
         # bday date counts as bday mode even with no party
         $ persistent._mas_bday_in_bday_mode = True
 
-        m 1hua "Ehehe. It's a bit romantic, isn't it?"
+        m 1hua "Э-хе-хе. Это немного романтично, да?"
 
         if mas_isMoniHappy(lower=True):
-            m 1eua "Maybe you'd even want to call it a da-{nw}"
+            m 1eua "Думаю, это даже можно назвать сви—{nw}"
             $ _history_list.pop()
             $ _history_list.pop()
-            m 1hua "Oh! Sorry, did I say something?"
+            m 1hua "Ой! Прости, я что-то сказала?"
 
         else:
-            m 1eubla "Maybe you'd even call it a date~"
+            m 1eubla "Думаю, это даже можно назвать свиданием~"
 
 
     elif persistent._mas_bday_date_count == 2:
-        m 1eub "Taking me somewhere again, [player]?"
-        m 3eua "You must really have a lot planned for us."
-        m 1hua "You're so sweet~"
+        m 1eub "Ты хочешь отвести меня куда-то в очередной раз, [player]?"
+        m 3eua "У тебя, наверное, много чего запланировано для нас."
+        m 1hua "Ты такой милый~"
 
     elif persistent._mas_bday_date_count == 3:
-        m 1sua "Taking me out {i}again{/i} for my birthday?"
-        m 3tkbsu "You really know how to make a girl feel special, [player]."
-        m 1ekbfa "I'm so lucky to have someone like you~"
+        m 1sua "Ты хочешь отвести меня куда-то {i}опять{/i}, в мой же день рождения?"
+        m 3tkbsu "Ты и вправду знаешь, как заставить девушку почувствовать себя особенной, [player]."
+        m 1ekbfa "Мне так повезло, что у меня есть такой человек, как ты~"
     else:
-        m 1sua "Wow, [player]...{w=1}you're really determined to make this a truly special day!"
-        m 1ekbsa "You're the best partner I could ever hope for~"
+        m 1sua "Ого, [player]...{w=1}ты и вправду решил сделать этот день очень особенным!"
+        m 1ekbsa "Ты просто лучший партнёр, о котором я могла только мечтать~"
 
     #BD Intro
     if mas_isMoniAff(higher=True) and not mas_SELisUnlocked(mas_clothes_blackdress):
-        m 3hua "I actually have an outfit prepared just for this..."
+        m 3hua "По правде говоря, у меня есть наряд для такого случая..."
         #NOTE: We use the "give me a second to get ready..." for Moni to get into this outfit
 
     jump mas_dockstat_iostart
@@ -7981,18 +7998,18 @@ label mas_bday_bd_outro:
     #NOTE: We change the zoom here because we want to show off the outfit.
 
     if mas_SELisUnlocked(mas_clothes_blackdress):
-        m 1hua "Ehehe~"
-        m 1euu "I'm so excited to see what you've got planned for us today."
-        m 3eua "...But even if it's not much, I'm sure we'll have a great time together~"
+        m 1hua "Э-хе-хе~"
+        m 1euu "Я так взволнована, чтобы увидеть, что ты запланировал для нас сегодня."
+        m 3eua "...Но даже если это не так уж много, я уверенf, что мы отлично проведём время вместе~"
 
     else:
-        m 3tka "Well, [player]?"
-        m 1hua "What do you think?"
-        m 1ekbsa "I've always loved this outfit and dreamt of going on a date with you, wearing this..."
-        m 3eub "Maybe we could visit the mall, or even the park!"
-        m 1eka "But knowing you, you've already got something amazing planned for us~"
+        m 3tka "Ну, [player]?"
+        m 1hua "Что скажешь?"
+        m 1ekbsa "Мне всегда нравился этот наряд, и я даже мечтала пойти в нём с тобой на свидание..."
+        m 3eub "Думаю, мы могли бы посетить торговый центр, или даже парк!"
+        m 1eka "Но, думаю, ты уже запланировал для нас нечто особенное~"
 
-    m 1hua "Let's go, [player]!"
+    m 1hua "Пошли, [player]!"
 
     python:
         store.mas_selspr.unlock_clothes(mas_clothes_blackdress)
@@ -8038,9 +8055,9 @@ label greeting_returned_home_bday:
     if time_out <= mas_five_minutes:
         # under 5 minutes
         $ mas_loseAffection()
-        m 2ekp "That wasn't much of a date, [player]..."
-        m 2eksdlc "Is everything alright?"
-        m 2rksdla "Maybe we can go out later..."
+        m 2ekp "Это было не очень похоже на свидание, [player]..."
+        m 2eksdlc "Всё в порядке?"
+        m 2rksdla "Может быть, мы можем пойти куда-нибудь позже..."
         if mas_isMonikaBirthday():
             return
 
@@ -8048,14 +8065,14 @@ label greeting_returned_home_bday:
         # 5 mins < time out <= 1 hr
         $ mas_mbdayCapGainAff(15 if persistent._mas_player_bday_in_player_bday_mode else 10)
 
-        m 1sua "That was fun, [player]!"
+        m 1sua "Это было весело, [player]!"
         if mas_isplayer_bday():
-            m 1hub "Ahaha, going out for our birthday..."
+            m 1hub "А-ха-ха, выходим на наш день рождения..."
         else:
-            m 1hub "Ahaha, taking me out on my birthday..."
-            m 3eua "It was very considerate of you."
-        m 3eka "I really enjoyed the time we spent together."
-        m 1eka "I love you~"
+            m 1hub "А-ха-ха, пригласил меня на день рождения..."
+            m 3eua "Это было очень тактично с твоей стороны."
+        m 3eka "Мне очень понравилось время, которое мы провели вместе."
+        m 1eka "Я люблю тебя~"
         if mas_isMonikaBirthday():
             $ mas_ILY()
 
@@ -8063,12 +8080,12 @@ label greeting_returned_home_bday:
         # 1 hr < time out <= 3 hrs
         $ mas_mbdayCapGainAff(20 if persistent._mas_player_bday_in_player_bday_mode else 15)
 
-        m 1hua "Ehehe~"
-        m 3eub "We sure spent a lot of time together today, [player]."
-        m 1ekbsa "...and thank you for that."
-        m 3ekbfa "I've said it a million times already, I know."
-        m 1hua "But I'll always be happy when we're together."
-        m "I love you so much..."
+        m 1hua "Э-хе-хе~"
+        m 3eub "Мы уверены, что потратили сегодня много времени вместе, [player]."
+        m 1ekbsa "...и спасибо тебе за это."
+        m 3ekbfa "Знаешь, я уже говорила это миллион раз."
+        m 1hua "Но я всегда буду счастлива, когда мы вместе."
+        m "Я так тебя люблю..."
         if mas_isMonikaBirthday():
             $ mas_ILY()
 
@@ -8076,23 +8093,23 @@ label greeting_returned_home_bday:
         # +3 hrs
         $ mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
 
-        m 1sua "Wow, [player]..."
+        m 1sua "Ого, [player]..."
         if mas_player_bday_curr == mas_monika_birthday:
-            m 3hub "That was such a lovely time!"
+            m 3hub "Это было такое прекрасное время!"
             if persistent._mas_player_bday_in_player_bday_mode or persistent._mas_bday_sbp_reacted:
-                m 3eka "I can't think of a better way to celebrate our birthdays than a long date."
-            m 1eka "I wish I could've seen all the amazing places we went, but just knowing we were together..."
-            m 1hua "That's all I could ever ask for."
-            m 3ekbsa "I hope you feel the same way~"
+                m 3eka "Я не могу придумать лучшего способа отпраздновать наши дни рождения, чем долгое свидание."
+            m 1eka "Я бы хотела увидеть все те удивительные места, куда мы ходили, но просто зная, что мы были вместе..."
+            m 1hua "Это всё, о чём я когда-либо могла мечтать."
+            m 3ekbsa "Надеюсь, ты чувствуешь то же самое~"
 
         else:
-            m 3sua "I didn't expect you to set aside so much time for me..."
-            m 3hua "But I enjoyed every second of it!"
-            m 1eub "Every minute with you is a minute well spent!"
-            m 1eua "You've made me very happy today~"
-            m 3tuu "Are you falling for me all over again, [player]?"
-            m 1dku "Ehehe..."
-            m 1ekbsa "Thank you for loving me."
+            m 3sua "Я не ожидала, что ты уделишь мне столько времени..."
+            m 3hua "Но я наслаждалась каждой секундой этого!"
+            m 1eub "Каждая минута с тобой — это минута, проведённая с пользой!"
+            m 1eua "Ты сделал меня очень счастливой сегодня~"
+            m 3tuu "Ты снова влюбляешься в меня, [player]?"
+            m 1dku "Э-хе-хе..."
+            m 1ekbsa "Спасибо, что любишь меня."
 
     if(
         mas_isMonikaBirthday()
@@ -8103,12 +8120,12 @@ label greeting_returned_home_bday:
         and checkout_time.date() < mas_monika_birthday
 
     ):
-        m 1hua "Also [player], give me a second, I have something for you.{w=0.5}.{w=0.5}.{nw}"
+        m 1hua "Кстати, [player], дай мне секунду, у меня есть кое-что для тебя.{w=0.5}.{w=0.5}.{nw}"
         $ mas_surpriseBdayShowVisuals()
         $ persistent._mas_player_bday_decor = True
-        m 3eub "Happy Birthday, [player]!"
-        m 3etc "Why do I feel like I'm forgetting something..."
-        m 3hua "Oh! Your cake!"
+        m 3eub "С Днём Рождения, [player]!"
+        m 3etc "Почему мне кажется, что я что-то забываю..."
+        m 3hua "О! Твой торт!"
         jump mas_player_bday_cake
 
     if not mas_isMonikaBirthday():
@@ -8120,15 +8137,15 @@ label greeting_returned_home_bday:
 
         if time_out > mas_five_minutes:
             m 1hua "..."
-            m 1wud "Oh wow, [player]. We really were out for a while..."
+            m 1wud "Ого, [player]. Мы действительно отсутствовали некоторое время..."
 
         if mas_isplayer_bday() and mas_isMoniNormal(higher=True):
             if persistent._mas_bday_sbp_reacted:
                 $ persistent._mas_bday_visuals = False
                 $ persistent._mas_player_bday_decor = True
-                m 3suo "Oh! It's your birthday now..."
-                m 3hub "I guess we can just leave these decorations up, ahaha!"
-                m 1eub "I'll be right back, just need to go get your cake!"
+                m 3suo "О! Сегодня твой день рождения..."
+                m 3hub "Думаю, мы можем просто оставить эти украшения, а-ха-ха!"
+                m 1eub "Я сейчас вернусь, только нужно сходить за твоим тортом!"
                 jump mas_player_bday_cake
 
             jump mas_player_bday_ret_on_bday
@@ -8136,37 +8153,37 @@ label greeting_returned_home_bday:
         else:
             if mas_player_bday_curr() == mas_monika_birthday:
                 $ persistent._mas_player_bday_in_player_bday_mode = False
-                m 1eka "Anyway [player]...I really enjoyed spending our birthdays together."
-                m 1ekbsa "I hope I helped to make your day as special as you made mine."
+                m 1eka "В любом случае, [player]... мне очень нравилось проводить наши дни рождения вместе."
+                m 1ekbsa "Я надеюсь, что помогла сделать твой день таким же особенным, как ты сделал мой."
                 if persistent._mas_player_bday_decor or persistent._mas_bday_visuals:
-                    m 3hua "Let me just clean everything up.{w=0.5}.{w=0.5}.{nw}"
+                    m 3hua "Позволь мне просто всё убрать.{w=0.5}.{w=0.5}.{nw}"
                     $ mas_surpriseBdayHideVisuals()
                     $ persistent._mas_player_bday_decor = False
                     $ persistent._mas_bday_visuals = False
-                    m 3eub "There we go!"
+                    m 3eub "Готово!"
 
             elif persistent._mas_bday_visuals:
-                m 3rksdla "It's not even my birthday anymore..."
-                m 2hua "Let me just clean everything up.{w=0.5}.{w=0.5}.{nw}"
+                m 3rksdla "Это даже не мой день рождения..."
+                m 2hua "Позволь мне просто всё убрать.{w=0.5}.{w=0.5}.{nw}"
                 $ mas_surpriseBdayHideVisuals()
                 $ persistent._mas_bday_visuals = False
-                m 3eub "There we go!"
+                m 3eub "Готово!"
 
             else:
-                m 1eua "We should do something like this again soon, even if it's not any special occasion."
-                m 3eub "I really enjoyed myself!"
-                m 1eka "I hope you had as great of a time as I did~"
+                m 1eua "Мы должны сделать что-то подобное снова в ближайшее время, даже если это не какой-то особый случай."
+                m 3eub "Я действительно наслаждалась собой!"
+                m 1eka "Я надеюсь, что ты провёл время так же хорошо, как и я~"
 
             if not mas_lastSeenInYear('mas_bday_spent_time_with'):
                 if mas_isMoniUpset(lower=True):
                     m 1dka "..."
                     jump mas_bday_spent_time_with
 
-                m 3eud "Oh, and [player]..."
-                m 3eka "I just wanted to thank you again."
-                m 1rka "And it's not just this date..."
-                m 1eka "You didn't have to take me anywhere to make this a wonderful birthday."
-                m 3duu "As soon as you showed up, my day was complete."
+                m 3eud "О, и, [player]..."
+                m 3eka "Я просто хотела ещё раз поблагодарить тебя."
+                m 1rka "И дело не только в этом свидании..."
+                m 1eka "Тебе не нужно было никуда меня брать с собой, чтобы сделать этот день рождения замечательным."
+                m 3duu "Как только ты появился, мой день был завершён."
                 $ MASEventList.push('mas_bday_spent_time_with_wrapup', skipeval=True)
 
     return
@@ -8192,17 +8209,17 @@ label mas_monika_cake_on_player_bday:
             # +3 hrs
             mas_mbdayCapGainAff(25 if persistent._mas_player_bday_in_player_bday_mode else 20)
 
-    m 6eua "That was--"
-    m 6wuo "Oh! You made {i}me{/i} a cake!"
+    m 6eua "Это—"
+    m 6wuo "О! Ты сделал {i}мне{/i} торт!"
 
     menu:
-        "Light candles.":
+        "Зажечь свечи.":
             $ mas_bday_cake_lit = True
 
-    m 6sub "It's {i}so{/i} pretty, [player]!"
-    m 6hua "Ehehe, I know we already made a wish when I blew out the candles on your cake, but let's do it again..."
-    m 6tub "It'll be twice as likely to come true, right?"
-    m 6hua "Make a wish, [player]!"
+    m 6sub "Это {i}так{/i} красиво, [player]!"
+    m 6hua "Э-хе-хе, я знаю, что мы уже загадали желание, когда я задула свечи на твоём торте, но давай сделаем это снова..."
+    m 6tub "Вероятность того, что оно сбудется, будет в два раза выше, верно?"
+    m 6hua "Загадывай желание, [player]!"
 
     window hide
     pause 1.5
@@ -8211,16 +8228,16 @@ label mas_monika_cake_on_player_bday:
     show monika 6hua
     $ mas_bday_cake_lit = False
 
-    m 6eua "I still can't believe how stunning this cake looks, [player]..."
-    m 6hua "It's almost too pretty to eat."
-    m 6tub "Almost."
-    m "Ahaha!"
-    m 6eka "Anyway, I'll just save this for later."
+    m 6eua "Я до сих пор не могу поверить, как потрясающе выглядит этот торт, [player]..."
+    m 6hua "Это слишком красиво, чтобы есть."
+    m 6tub "Почти."
+    m "А-ха-ха!"
+    m 6eka "В любом случае, я оставлю это на потом."
 
     call mas_HideCake('mas_bday_cake_monika')
 
-    m 1eua "Thank you so much, [player]..."
-    m 3hub "This is an amazing birthday!"
+    m 1eua "Огромное спасибо, [player]..."
+    m 3hub "Это был удивительный день рождения!"
     return
 
 label mas_HideCake(cake_type,reset_zoom=True):

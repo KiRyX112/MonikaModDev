@@ -2858,7 +2858,7 @@ label monika_affection_nickname:
                     lowername = inputname.lower()
 
 
-                if lowername == "Забудь.":
+                if lowername == "nevermind":
                     m 1euc "Ох... понятно."
                     m 1tkc "Хорошо... какая досада."
                     m 3eka "Но всё в порядке. Мне и «[m_name]» нравится."
