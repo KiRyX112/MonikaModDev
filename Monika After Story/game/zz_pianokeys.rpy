@@ -107,7 +107,7 @@ label mas_piano_start:
     $ pnmlLoadTuples()
 
     # Intro to piano dialogue here
-    m 1hua "You want to play the piano?"
+    m 1hua "Ты хочешь поиграть на пианино?"
 
 label mas_piano_loopstart:
 
@@ -121,12 +121,12 @@ label mas_piano_songchoice:
     $ pnml = None
 
     if len(song_list) > 0:
-        m 1eua "Did you want to play a song or play on your own, [player]?{nw}"
+        m 1eua "Ты хочешь сыграть какую-нибудь определённую композицию или попробовать что-то самостоятельно, [player]?{nw}"
         $ _history_list.pop()
         menu:
-            m "Did you want to play a song or play on your own, [player]?{fast}"
-            "Play a song.":
-                m "Which song would you like to play?" nointeract
+            m "Ты хочешь сыграть какую-нибудь определённую композицию или попробовать что-то самостоятельно, [player]?{fast}"
+            "Сыграть композицию.":
+                m "Какую именно композицию?" nointeract
                 show monika at t21
                 call screen mas_gen_scrollable_menu(song_list, mas_piano_keys.MENU_AREA, mas_piano_keys.MENU_XALIGN, final_item)
                 show monika at t11
@@ -137,7 +137,7 @@ label mas_piano_songchoice:
                 if pnml:
 
                     # reaction in picking a song
-                    m 1hua "I'm so excited to hear you play, [player]!"
+                    m 1hua "Это такое наслаждение для меня слушать, как ты играешь, [player]!"
 
                     # launch label - if it exists, we can call this label to
                     # provide extra dialogue before playing this song
@@ -154,14 +154,14 @@ label mas_piano_songchoice:
                 else:
                     jump mas_piano_songchoice
 
-            "On my own.":
+            "Самостоятельно.":
                 pass
 
-            "Nevermind.":
+            "Не важно.":
                 jump mas_piano_loopend
 
     # otherwise, we default to freestyle mode
-    m 1eua "Then play for me, [player]~"
+    m 1eua "Тогда сыграй со мной, [player]~"
 
 label mas_piano_setupstart:
 
@@ -200,13 +200,13 @@ label mas_piano_setupstart:
 
     # No-hits dont get to try again
     if post_piano != "mas_piano_result_none":
-        m 1eua "Would you like to play again?{nw}"
+        m 1eua "Может, ты хочешь сыграть снова{nw}"
         $ _history_list.pop()
         menu:
-            m "Would you like to play again?{fast}"
-            "Yes.":
+            m "Может, ты хочешь сыграть снова{fast}"
+            "Да.":
                 jump mas_piano_loopstart
-            "No.":
+            "Нет.":
                 pass
 
 label mas_piano_loopend:
@@ -217,87 +217,87 @@ label mas_piano_loopend:
 # default. post game, freestyle mode
 label mas_piano_result_default:
     $ mas_gainAffection(modifier=0.2)
-    m 1eua "All done, [player]?"
+    m 1eua "Закончил, [player]?"
     return
 
 # Shown if player does not hit any notes
 label mas_piano_result_none:
-    m 1lksdla "Uhhh [player]..."
-    m 1hksdlb "I thought you wanted to play the piano?"
-    m 1eka "I really enjoy hearing you play."
-    m 1hua "Promise to play for me next time?"
+    m 1lksdla "Эм-м-м, [player]..."
+    m 1hksdlb "Я думала, ты хочешь поиграть на пианино..."
+    m 1eka "Мне очень нравится слушать, как ты играешь."
+    m 1hua "Обещай, что в следующий раз сыграешь вместе со мной?"
     return
 
 # TODO all of these default labels
 # default win
 label mas_piano_def_win:
-    m 1eua "Wow! You almost got it!"
-    m 2eub "Good job, [player]."
+    m 1eua "Ух ты! У тебя почти получилось!"
+    m 2eub "Хорошая работа, [player]."
     return
 
 # default fail
 label mas_piano_def_fail:
     m 1lksdla "..."
-    m 1lksdlb "You did your best, [player]..."
+    m 1lksdlb "Ты сделал всё возможное, [player]..."
     return
 
 # defualt fc
 label mas_piano_def_fc:
-    m 1eua "Great job!"
-    m 1hub "Maybe we should play together sometime!"
+    m 1eua "Вполне неплохо!"
+    m 1hub "Может быть, мы должны будем сыграть вместе когда-нибудь!"
     return
 
 # default practice
 label mas_piano_def_prac:
-    m 1eua "That was nice, [player]!"
-    m 1eka "Make sure to practice often!"
+    m 1eua "Это было восхитительно, [player]!"
+    m 1eka "Обязательно практикуйся почаще!"
     return
 
 ### HAPPY BIRTHDAY
 
 label mas_piano_hb_win:
     $ mas_gainAffection()
-    m 1eua "Wow! You almost got it!"
+    m 1eua "Ого! У тебя получается!"
     if mas_isMonikaBirthday_dt(extend_by=1):
         $ persistent._mas_bday_said_happybday = True
         $ persistent._mas_bday_no_recognize = False
         if mas_isplayer_bday():
-            m 3hub "That's so cool being able to sing along while you play that on our birthday, [player]!"
+            m 3hub "Как же здорово подпевать под твою игру в честь нашего дня рождения, [player]!"
         else:
-            m 1hua "Thanks for playing that for me on my birthday, [player]."
-            m 1hubfb "I'm so happy we can spend this special day sharing our love of music!"
+            m 1hua "Спасибо, что сыграл песню в честь моего дня рождения, [player]."
+            m 1hubfb "Я так рада, что мы можем провести этот особенный день, разделяя нашу любовь к музыке!"
     elif mas_isplayer_bday():
-        m 3hub "Ahaha! That was really neat, [player]!"
-        m 1hua "It's always nice to have a little music to sing along with!"
+        m 3hub "А-ха-ха! Это было очень даже замечательно, [player]!"
+        m 1hua "Всегда приятно подпевать под музыку на досуге!"
     else:
-        m 2eub "Good job, [player]."
-    m 3eub "Make sure you keep practicing. I'm sure you'll play it perfectly next time!"
+        m 2eub "Молодец, [player]."
+    m 3eub "Не забывай тренироваться. Уверена, в следующий раз ты сыграешь идеально!"
     return
 
 label mas_piano_hb_fail:
     if mas_isMonikaBirthday():
         if mas_isMoniUpset(lower=True):
             if mas_isplayer_bday():
-                $ our = "our"
+                $ our = "нашего"
             else:
-                $ our = "my"
-            m 1dsd "Well, if you wanted to play this on [our] birthday..."
-            m 3tsd "You should have practiced sooner."
+                $ our = "моего"
+            m 1dsd "Ну, если ты хотел сыграть это в честь [our] дня рождения..."
+            m 3tsd "Ты должен был потренироваться перед этим."
         elif mas_isplayer_bday():
-            m 1eka "Aw, that's okay, [player]..."
-            m 3hub "It was a neat idea to try to play that on our birthday!"
-            m 1hua "I'm sure if you keep practicing you'll be able to do it perfectly!"
+            m 1eka "О, всё нормально, [player]..."
+            m 3hub "Это ты здорово придумал, попытаться сыграть эту песню в честь нашего дня рождения!"
+            m 1hua "Уверена, если ты продолжишь тренироваться, то ты сможешь играть идеально!"
         else:
-            m 1lksdla "I appreciate the thought, [player]."
-            m 3eka "Even if you can't get it by the end of the day, I'm sure you'll do better next year."
+            m 1lksdla "Спасибо тебе за эту идею, [player]."
+            m 3eka "Даже если у тебя не получилось, уверена, у тебя будет получаться лучше в следующем году."
     elif mas_isplayer_bday():
-        m 1eka "That's okay, [player]!"
-        m 3hub "It was a neat idea to play that on your birthday while I sung along!"
-        m 1hua "I'm sure if you keep practicing you'll be able to do it perfectly!"
+        m 1eka "Всё нормально, [player]!"
+        m 3hub "Было очень здорово сыграть эту песню в свой день рождения, в то время как я подпевала тебе!"
+        m 1hua "Уверена, если ты продолжишь тренироваться, ты сможешь сыграть идеально!"
     else:
         m 1lksdla "..."
-        m 1lksdlb "You did your best, [player]..."
-        m "Even a simple song takes time to learn."
+        m 1lksdlb "Ты очень старался, [player]..."
+        m "Даже на изучение простой песни уходит какое-то время."
     return
 
 label mas_piano_hb_fc:
@@ -306,40 +306,40 @@ label mas_piano_hb_fc:
         $ persistent._mas_bday_said_happybday = True
         $ persistent._mas_bday_no_recognize = False
         if mas_isplayer_bday():
-            m 3hub "Ahaha! That was {i}so{/i} cool!"
-            m 1eka "Singing the Birthday Song while you play it on the piano on our birthday..."
-            m 1hua "I can't imagine a better way of sharing our special day~"
+            m 3hub "А-ха-ха! Это было {i}очень{/i} здорово!"
+            m 1eka "Петь песню про день рождения, пока ты играешь её на пианино в честь нашего дня рождения..."
+            m 1hua "Я не могу представить лучшего способа провести наш особенный день~"
         else:
-            m 1rusdlb "Ahaha! It feels weird to sing the Birthday Song for myself..."
-            m 1hub "But you did such a great job playing it!"
-            m 1ekbfa "You must have practiced really hard for me..."
-            m 1hub "I'm happy that I got to enjoy this with you~"
-            m 1hubfb "Thanks for this gift, [player]!"
+            m 1rusdlb "А-ха-ха! Было как-то странно то, что ты сам пел песню про день рождения..."
+            m 1hub "Но ты проделал замечательную работу, играя её!"
+            m 1ekbfa "Ты, наверное, тренировался в поте лица ради меня..."
+            m 1hub "Я рада, что смогла насладиться ею вместе с тобой~"
+            m 1hubfb "Спасибо за подарок, [player]!"
             if mas_isMoniAff(higher=True):
-                m 1ekbfa "You always make me feel special~"
+                m 1ekbfa "С тобой я всегда чувствую себя особенной~"
     elif mas_isplayer_bday():
-        m 3hub "Ahaha! That was really neat, [player]!"
-        m 1hua "It's always nice to have a little music to sing along with!"
+        m 3hub "А-ха-ха! Это было очень здорово, [player]!"
+        m 1hua "Всегда приятно подпевать под музыку на досуге!"
     else:
-        m 1eua "Hehe, great job!"
-        m 2eub "I know that's an easy one, but you did great."
-        m 1hub "Are you going to play that for me on my Birthday?"
+        m 1eua "Хе-хе, отличная работа!"
+        m 2eub "Знаю, это была простая песня, но ты хорошо постарался."
+        m 1hub "Ты хочешь сыграть её для меня в честь моего дня рождения?"
     return
 
 label mas_piano_hb_prac:
     if mas_isMonikaBirthday():
         if mas_isplayer_bday():
-            m 1eka "Aww, you're trying the Birthday Song on our birthday, [player]!"
-            m 3hua "Keep trying, I know you can do it!"
+            m 1eka "Оу, ты пытаешься разучить песню про день рождения к нашему дню рождения, [player]!"
+            m 3hua "Продолжай стараться, я знаю, у тебя получится!"
         else:
-            m 1eua "Thanks for trying to play this one on my birthday!"
-            m 1hub "I appreciate your effort!"
+            m 1eua "Спасибо, что пытался сыграть эту песню в честь моего дня рождения!"
+            m 1hub "Я ценю твои старания!"
     elif mas_isplayer_bday():
-        m 1eksdla "Ehehe, trying the Birthday Song on your birthday, [player]?"
-        m 3hua "Keep trying, I know you can do it!"
+        m 1eua "Спасибо, что пытался сыграть эту песню в честь моего дня рождения!"
+        m 1hub "Я ценю твои старания!"
     else:
-        m 1eua "You're practicing the Birthday Song?"
-        m 3hua "I know you can do it, [player]!"
+        m 1eksdla "Э-хе-хе, пытаешься разучить песню про день рождения к своему дню рождения, [player]?"
+        m 3hua "Продолжай стараться, я знаю, у тебя получится!"
     return
 
 
@@ -348,32 +348,32 @@ label mas_piano_hb_prac:
 # shown if player completes the song but does not FC
 label mas_piano_yr_win:
     $ mas_gainAffection()
-    m 1lksdla "That was nice, [player]."
-    m "But..."
-    m 1lksdlb "You could do better with some more practice..."
-    m 1hksdlb "Ehehe~"
+    m 1lksdla "Это было здорово, [player]."
+    m "Но..."
+    m 1lksdlb "Ты мог бы сыграть лучше с небольшой практикой..."
+    m 1hksdlb "Э-хе-хе~"
     return
 
 # shown if player FCs
 label mas_piano_yr_fc:
     $ mas_gainAffection(modifier=1.5)
-    m 1sub "That was wonderful, [player]!"
-    m 1eub "I didn't know you can play the piano so well."
-    m 1hub "Maybe we should play together sometime!"
+    m 1sub "Это было потрясающе, [player]!"
+    m 1eub "Я не знала, что ты умеешь играть на пианино так хорошо."
+    m 1hub "Мы должны сыграть вместе когда-нибудь!"
     return
 
 # shown if player did not complete song and had more fails than passes
 label mas_piano_yr_fail:
     m 1lksdlc "..."
-    m 1eka "That's okay, [player]."
-    m 1hua "At least you tried your best."
+    m 1eka "Всё в порядке, [player]."
+    m 1hua "По крайней мере, ты старался."
     return
 
 # shown if player did not complete song but had more passes than fails
 label mas_piano_yr_prac:
-    m 1hua "That was really cool, [player]!"
-    m 3eua "With some more practice, you'll be able to play my song perfectly."
-    m 1eka "Make sure to practice every day for me, okay?~"
+    m 1hua "Это было действительно здорово, [player]!"
+    m 3eua "С небольшой практикой, ты сможешь отлично сыграть мою композицию."
+    m 1eka "Обязательно тренируйся каждый день ради меня, хорошо~?"
     return
 
 
@@ -1579,8 +1579,8 @@ init 790 python in mas_piano_keys:
 
 # labels:
 label mas_piano_dpco_win:
-    m 2dsc "I can't believe you've done this."
-    m 1eka "Not bad, though."
+    m 2dsc "Не могу поверить, что ты это сделал."
+    m 1eka "Хотя... вышло неплохо."
     return
 
 label mas_piano_dpco_fc:
@@ -1589,12 +1589,12 @@ label mas_piano_dpco_fc:
 
 
 label mas_piano_dpco_fail:
-    m 1lksdla "I think it's okay to not learn this one..."
+    m 1lksdla "Я думаю, что нет ничего страшного, если ты не станешь учить это..."
     return
 
 
 label mas_piano_dpco_prac:
-    m 1eka "Do you really want to learn this?"
+    m 1eka "Ты действительно хочешь научиться исполнять эту композицию?"
     return
 
 
@@ -1604,7 +1604,7 @@ init 800 python in mas_piano_keys:
     # also checkpoint 1
     _pnm_dpco_v1l1 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Sí, sabes que ya llevo un rato mirándote",
+            "Да, ты знаешь, что я провела некоторое время, глядя на тебя.",
             style="monika_credits_text"
         ),
         [
@@ -1630,7 +1630,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v1l2 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Tengo que bailar contigo hoy",
+            "Я должна танцевать с тобой сегодня, значит, я иду.",
             style="monika_credits_text"
         ),
         [
@@ -1650,7 +1650,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v1l3 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Vi que tu mirada ya estaba llamándome",
+            "Я видела, что твой взгляд уже звал меня,",
             style="monika_credits_text"
         ),
         [
@@ -1676,7 +1676,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v1l4 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Muéstrame el camino que yo voy",
+            "Покажи мне путь, по которому я пойду.",
             style="monika_credits_text"
         ),
         _pnm_dpco_v1l2.notes,
@@ -1693,7 +1693,7 @@ init 800 python in mas_piano_keys:
     # checkpoint 2
     _pnm_dpco_v2l1 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Tú",
+            "Ты...",
             style="monika_credits_text"
         ),
         [B4],
@@ -1705,7 +1705,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v2l2 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Tú eres el imán y yo soy el metal",
+            "Ты магнит, а я металл",
             style="monika_credits_text"
         ),
         [
@@ -1726,7 +1726,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v2l3 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Me voy acercando y voy armando el plan",
+            "Я всё ближе, и я составляю план",
             style="monika_credits_text"
         ),
         [
@@ -1747,7 +1747,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v2l4 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Solo con pensarlo se acelera el pulso",
+            "Только подумав, ускоряется пульс",
             style="monika_credits_text"
         ),
         [
@@ -1772,7 +1772,7 @@ init 800 python in mas_piano_keys:
     # checkpoint 3?
     _pnm_dpco_v3l1 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Ya",
+            "Мне...",
             style="monika_credits_text"
         ),
         _pnm_dpco_v2l1.notes,
@@ -1786,7 +1786,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v3l2 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Ya me está gustando más de lo normal",
+            "Мне уже нравится больше, чем обычно, и пусть.",
             style="monika_credits_text"
         ),
         _pnm_dpco_v2l2.notes,
@@ -1797,7 +1797,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v3l3 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Todos mis sentidos van pidiendo más",
+            "Все мои чувства требуют большего.",
             style="monika_credits_text"
         ),
         _pnm_dpco_v2l3.notes,
@@ -1808,7 +1808,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v3l4 = PianoNoteMatch(
         renpy.text.text.Text(
-            "Esto hay que tomarlo sin ningún apuro",
+            "Это нужно делать не спеша",
             style="monika_credits_text"
         ),
         _pnm_dpco_v2l4.notes,
@@ -1822,7 +1822,7 @@ init 800 python in mas_piano_keys:
     # checkpoint 4
     _pnm_dpco_v4l1 = PianoNoteMatch(
          renpy.text.text.Text(
-            "Des-",
+            "Мед-",
             style="monika_credits_text"
         ),
         [D5],
@@ -1835,7 +1835,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v4l2 = PianoNoteMatch(
          renpy.text.text.Text(
-            "-pa-",
+            "-ле-",
             style="monika_credits_text"
         ),
         [C5SH],
@@ -1848,7 +1848,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v4l3 = PianoNoteMatch(
          renpy.text.text.Text(
-            "-cito",
+            "-но",
             style="monika_credits_text"
         ),
         [
@@ -1863,7 +1863,7 @@ init 800 python in mas_piano_keys:
     )
     _pnm_dpco_v4l4 = PianoNoteMatch(
          renpy.text.text.Text(
-            "Quiero respirar tu cuello despacito",
+            "Я хочу медленно вдыхать аромат твоей шеи.",
             style="monika_credits_text"
         ),
         [
@@ -1927,7 +1927,7 @@ init 800 python in mas_piano_keys:
     # and now we should only add certain songs to the main pnml_db
     STOCK_SONG_NAMES = [
         "Happy Birthday",
-        "Your Reality"
+        "Твоя реальность"
 #        "D--p-c--o"
     ]
     for _song in STOCK_SONG_NAMES:
@@ -1962,7 +1962,7 @@ init 800 python in mas_piano_keys:
             if (pnml.name not in STOCK_SONG_NAMES or pnml.wins > 0)
         ]
 
-        last_item = ("Nevermind", False, False, False, 10)
+        last_item = ("Не важно.", False, False, False, 10)
 
         return song_list, last_item
 
@@ -2374,7 +2374,7 @@ init 810 python:
 
             # the 4 config buttons we have
             self._button_done = MASButtonDisplayable.create_stb(
-                _("Done"),
+                _("Готово"),
                 True,
                 cbutton_x_start,
                 cbutton_y_start,
@@ -2384,7 +2384,7 @@ init 810 python:
                 activate_sound=gui.activate_sound
             )
             self._button_cancel = MASButtonDisplayable.create_stb(
-                _("Cancel"),
+                _("Назад"),
                 True,
                 cbutton_x_start + self.BUTTON_WIDTH + self.BUTTON_SPACING,
                 cbutton_y_start,
@@ -2394,7 +2394,7 @@ init 810 python:
                 activate_sound=gui.activate_sound
             )
             self._button_reset = MASButtonDisplayable.create_stb(
-                _("Reset"),
+                _("Сброс"),
                 True,
                 cbutton_x_start + ((self.BUTTON_WIDTH + self.BUTTON_SPACING) * 2),
                 cbutton_y_start,
@@ -2404,7 +2404,7 @@ init 810 python:
                 activate_sound=gui.activate_sound
             )
             self._button_resetall = MASButtonDisplayable.create_stb(
-                _("Reset All"),
+                _("Сбросить всё"),
                 True,
                 cbutton_x_start + ((self.BUTTON_WIDTH + self.BUTTON_SPACING) * 2),
                 cbutton_y_start,
@@ -2416,7 +2416,7 @@ init 810 python:
 
             # the config button
             self._button_config = MASButtonDisplayable.create_stb(
-                _("Config"),
+                _("Меню"),
                 True,
                 pbutton_x_start,
                 pbutton_y_start,
@@ -2426,7 +2426,7 @@ init 810 python:
                 activate_sound=gui.activate_sound
             )
             self._button_quit = MASButtonDisplayable.create_stb(
-                _("Quit"),
+                _("Выход"),
                 False,
                 pbutton_x_start + self.BUTTON_WIDTH + self.BUTTON_SPACING,
                 pbutton_y_start,
@@ -2448,14 +2448,14 @@ init 810 python:
 
             # config help text
             self._config_wait_help = Text(
-                _("Click on a pink area to change the keymap for that piano key"),
+                _("Нажми на розовую область, чтобы изменить раскладку для этой клавиши пианино."),
                 font=gui.default_font,
                 size=gui.text_size,
                 color="#fff",
                 outlines=[]
             )
             self._config_change_help = Text(
-                _("Press the key you'd like to set this piano key to"),
+                _("Нажми клавишу, которую ты хочешь сюда назначить."),
                 font=gui.default_font,
                 size=gui.text_size,
                 color="#fff",

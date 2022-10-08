@@ -1455,7 +1455,7 @@ screen preferences():
                     label _("Графика")
 
                     # this is a normal button
-                    textbutton _("Сменить рендерер"):
+                    textbutton _("Смена рендера"):
                             style "check_button"
                             action Function(renpy.call_in_new_context, "mas_gmenu_start")
 

@@ -1199,8 +1199,8 @@ label monika_change_weather:
             $ skip_outro = True
 
         elif persistent._mas_pm_likes_rain is False:
-            m 1eka "I thought you didn't like rain."
-            m 2etc "Maybe you changed your mind?"
+            m 1eka "Я думала, ты не любишь дождь."
+            m 2etc "Может, ты передумал?"
             m 1dsc "..."
             $ skip_leadin = True
 
@@ -1208,13 +1208,13 @@ label monika_change_weather:
 
     if not skip_leadin:
         show monika at t11
-        m 1eua "Alright!"
-        m 1dsc "Just give me a second.{w=0.5}.{w=0.5}.{nw}"
+        m 1eua "Хорошо!"
+        m 1dsc "Дай мне одну секунду.{w=0.5}.{w=0.5}.{nw}"
 
     # finally change the weather
     call mas_change_weather(sel_weather, by_user=True, set_persistent=True)
 
     if not skip_outro:
-        m 1eua "There we go!"
+        m 1eua "Готово!"
 
     return
