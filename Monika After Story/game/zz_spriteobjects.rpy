@@ -677,11 +677,11 @@ init -1 python:
     store.mas_sprites.init_hair(mas_hair_def)
     store.mas_selspr.init_selectable_hair(
         mas_hair_def,
-        "Ponytail",
+        "Хвостик",
         "def",
         "hair",
         select_dlg=[
-            "Do you like my ponytail, [player]?"
+            "Тебе нравится мой хвостик, [player]?"
         ]
     )
     store.mas_selspr.unlock_hair(mas_hair_def)
@@ -707,11 +707,11 @@ init -1 python:
     store.mas_sprites.init_hair(mas_hair_down)
     store.mas_selspr.init_selectable_hair(
         mas_hair_down,
-        "Down",
+        "Распущенные волосы",
         "down",
         "hair",
         select_dlg=[
-            "Feels nice to let my hair down..."
+            "Как же приятно иногда распустить волосы..."
         ]
     )
 
@@ -735,12 +735,12 @@ init -1 python:
     store.mas_sprites.init_hair(mas_hair_downtiedstrand)
     store.mas_selspr.init_selectable_hair(
         mas_hair_downtiedstrand,
-        "Down (Tied strand)",
+        "Распущенные волосы с хвостиком",
         "downtiedstrand",
         "hair",
         select_dlg=[
-            "Feels nice to let my hair down...",
-            "Looks cute, don't you think?"
+            "Как же приятно распустить свои волосы...",
+            "Выглядит мило, тебе не кажется?"
         ]
     )
 
@@ -765,11 +765,11 @@ init -1 python:
     store.mas_sprites.init_hair(mas_hair_braided)
     store.mas_selspr.init_selectable_hair(
         mas_hair_braided,
-        "Braided",
+        "Заплетённая причёска",
         "braided",
         "hair",
         select_dlg=[
-            "Looks cute, don't you think?"
+            "Выглядит мило, тебе не кажется?"
         ]
     )
 
@@ -1083,7 +1083,7 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_thermos_mug)
     store.mas_selspr.init_selectable_acs(
         mas_acs_thermos_mug,
-        "Thermos (Just Monika)",
+        "Термокружка «Только Моника»",
         "thermos_justmonika",
         "thermos-mug"
     )
@@ -1114,14 +1114,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ear_rose)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ear_rose,
-        "Rose",
+        "Роза",
         "hairflower_rose",
         "left-hair-flower",
         hover_dlg=[
             "TALE AS OLD AS TIME",
         ],
         select_dlg=[
-            "TRUE AS IT CAN BE",
+            "Меня ведь красит роза, [player]?",
         ]
     )
 
@@ -1222,7 +1222,7 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_musicnote_necklace_gold)
     store.mas_selspr.init_selectable_acs(
         acs=mas_acs_musicnote_necklace_gold,
-        display_name="Golden Music Note",
+        display_name="Золотая музыкальная нота",
         thumb="musicnote_necklace_gold",
         group="necklace",
     )
@@ -1253,7 +1253,7 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_diamond_necklace_pink)
     store.mas_selspr.init_selectable_acs(
         acs=mas_acs_diamond_necklace_pink,
-        display_name="Pink Diamond",
+        display_name="Розовый бриллиант",
         thumb="diamond_necklace_pink",
         group="necklace",
     )
@@ -1302,14 +1302,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_marisa_witchhat)
     store.mas_selspr.init_selectable_acs(
         mas_acs_marisa_witchhat,
-        "Witch Hat", # TODO: add (Marisa) if we ever add another witch hat
+        "Шляпа ведьмы", # TODO: add (Marisa) if we ever add another witch hat
         "marisa_witchhat",
         "hat",
         select_dlg=[
-            "Ze~",
-            "Tea time, tea time. Even if we have coffee, it's tea time. Ehehe~",
-            "Eye of newt, toe of frog...",
-            "Now where did I leave that broom..."
+            "Хе~",
+            "Время чая, время чая. Даже если у нас есть кофе, это время чая. Э-хе-хе~",
+            "Глаз Тритона, палец лягушки...",
+            "И где же я оставила эту метлу?.."
         ]
     )
 
@@ -1387,12 +1387,12 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_grayhearts_hairclip)
     store.mas_selspr.init_selectable_acs(
         mas_acs_grayhearts_hairclip,
-        "Hairclip (Gray hearts)",
+        "Заколка с серыми сердечками",
         "grayhearts_hairclip",
         "left-hair-clip",
         select_dlg=[
-            "My heart beats for you, [player]~",
-            "Full of love, just like you~"
+            "Моё сердце бьется только ради тебя, [player]~",
+            "Полна любви, как и ты~"
         ]
     )
 
@@ -1415,11 +1415,11 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_pinkdiamonds_hairclip)
     store.mas_selspr.init_selectable_acs(
         mas_acs_pinkdiamonds_hairclip,
-        "Hairclip (Pink diamonds)",
+        "Заколка с розовыми бриллиантами",
         "pinkdiamonds_hairclip",
         "left-hair-clip",
         select_dlg=[
-            "Cute!"
+            "Милота!"
         ]
     )
 
@@ -1442,11 +1442,11 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_holly_hairclip)
     store.mas_selspr.init_selectable_acs(
         mas_acs_holly_hairclip,
-        "Hairclip (Holly)",
+        "Заколка с остролистом",
         "holly_hairclip",
         "left-hair-clip",
         select_dlg=[
-            "Ready to deck the halls, [player]?"
+            "Готов украшать залы, [player]?"
         ]
     )
 
@@ -1612,7 +1612,7 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_black)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_black,
-        "Ribbon (Black)",
+        "Чёрная ленточка",
         "ribbon_black",
         "ribbon",
         hover_dlg=[
@@ -1645,14 +1645,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_black_gray)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_black_gray,
-        "Ribbon (Black/gray)",
+        "Тёмно-серая ленточка",
         "ribbon_black_gray",
         "ribbon",
         hover_dlg=[
-            "Very versatile."
+            "Очень универсальна."
         ],
         select_dlg=[
-            "This goes with so many different outfits!"
+            "Она сочетается с таким количеством различных нарядов!"
         ]
     )
 
@@ -1678,11 +1678,11 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_black_pink)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_black_pink,
-        "Ribbon (Black/pink)",
+        "Тёмно-розовая ленточка",
         "ribbon_black_pink",
         "ribbon",
         select_dlg=[
-            "So cute!"
+            "Так мило!"
         ]
     )
 
@@ -1728,14 +1728,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_blue)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_blue,
-        "Ribbon (Blue)",
+        "Синяя ленточка",
         "ribbon_blue",
         "ribbon",
         hover_dlg=[
-            "Like the ocean..."
+            "Как океан..."
         ],
         select_dlg=[
-            "Great choice, [player]!"
+            "Отличный выбор, [player]!"
         ]
     )
 
@@ -1761,14 +1761,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_darkpurple)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_darkpurple,
-        "Ribbon (Dark Purple)",
+        "Тёмно-фиолетовая ленточка",
         "ribbon_dark_purple",
         "ribbon",
         hover_dlg=[
-            "I love that color!"
+            "Мне нравится этот цвет!"
         ],
         select_dlg=[
-            "Lavender is a nice change of pace."
+            "Этот цвет всегда казался мне элегантным!"
         ]
     )
 
@@ -1794,14 +1794,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_emerald)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_emerald,
-        "Ribbon (Emerald)",
+        "Изумрудная ленточка",
         "ribbon_emerald",
         "ribbon",
         hover_dlg=[
-            "I've always loved this color...",
+            "Мне всегда нравился этот цвет...",
         ],
         select_dlg=[
-            "It's just like my eyes!"
+            "Цвет, как у моих глаз!"
         ]
     )
 
@@ -1826,14 +1826,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_def)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_def,
-        "Ribbon (White)",
+        "Белая ленточка",
         "ribbon_def",
         "ribbon",
         hover_dlg=[
-            "Do you miss my old ribbon, [player]?"
+            "Ты скучаешь по моей старой ленточке, [player]?"
         ],
         select_dlg=[
-            "Back to the classics!"
+            "Возвращаемся к классике!"
         ]
     )
 
@@ -1859,14 +1859,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_gray)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_gray,
-        "Ribbon (Gray)",
+        "Серая ленточка",
         "ribbon_gray",
         "ribbon",
         hover_dlg=[
-            "Like a warm, rainy day..."
+            "Как в теплый, дождливый день..."
         ],
         select_dlg=[
-            "That's a really unique color, [player]."
+            "Это действительно уникальный цвет, [player]."
         ]
     )
 
@@ -1892,14 +1892,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_green)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_green,
-        "Ribbon (Green)",
+        "Зелёная ленточка",
         "ribbon_green",
         "ribbon",
         hover_dlg=[
-            "That's a lovely color!"
+            "Это прекрасный цвет!"
         ],
         select_dlg=[
-            "Green, just like my eyes!"
+            "Зелёный, как мои глаза!"
         ]
     )
 
@@ -1925,14 +1925,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_lightpurple)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_lightpurple,
-        "Ribbon (Light Purple)",
+        "Светло-фиолетовая ленточка",
         "ribbon_light_purple",
         "ribbon",
         hover_dlg=[
-            "This purple looks pretty nice, right [player]?"
+            "Этот фиолетовый выглядит довольно красиво, правда, [player]?"
         ],
         select_dlg=[
-            "Really has a spring feel to it."
+            "В ней и вправду чувствуется весна."
         ]
     )
 
@@ -1958,14 +1958,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_peach)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_peach,
-        "Ribbon (Peach)",
+        "Персиковая ленточка",
         "ribbon_peach",
         "ribbon",
         hover_dlg=[
-            "That's beautiful!"
+            "Какая красота!"
         ],
         select_dlg=[
-            "Just like autumn leaves..."
+            "Похоже на осенние листья..."
         ]
     )
 
@@ -1991,14 +1991,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_pink)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_pink,
-        "Ribbon (Pink)",
+        "Розовая ленточка",
         "ribbon_pink",
         "ribbon",
         hover_dlg=[
-            "Looks cute, right?"
+            "Выглядит мило, правда?"
         ],
         select_dlg=[
-            "Good choice!"
+            "Хороший выбор!"
         ]
     )
 
@@ -2021,14 +2021,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_platinum)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_platinum,
-        "Ribbon (Platinum)",
+        "Платиновая ленточка",
         "ribbon_platinum",
         "ribbon",
         hover_dlg=[
-            "That's an interesting color, [player].",
+            "Это интересный цвет, [player].",
         ],
         select_dlg=[
-            "I'm quite fond of it, actually."
+            "Мне очень нравится этот цвет, если честно."
         ]
     )
 
@@ -2051,14 +2051,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_red)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_red,
-        "Ribbon (Red)",
+        "Красная ленточка",
         "ribbon_red",
         "ribbon",
         hover_dlg=[
-            "Red is a beautiful color!"
+            "Красный - красивый цвет!"
         ],
         select_dlg=[
-            "Just like roses~"
+            "Похоже на розы~"
         ]
     )
 
@@ -2081,14 +2081,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_ruby)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_ruby,
-        "Ribbon (Ruby)",
+        "Рубиновая ленточка",
         "ribbon_ruby",
         "ribbon",
         hover_dlg=[
-            "That's a beautiful shade of red."
+            "Это красивый оттенок красного."
         ],
         select_dlg=[
-            "Doesn't it look pretty?"
+            "Разве она не выглядит мило?"
         ]
     )
 
@@ -2111,14 +2111,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_sapphire)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_sapphire,
-        "Ribbon (Sapphire)",
+        "Сапфировая ленточка",
         "ribbon_sapphire",
         "ribbon",
         hover_dlg=[
-            "Like a clear summer sky..."
+            "Прямо как ясное летнее небо..."
         ],
         select_dlg=[
-            "Nice choice, [player]!"
+            "Отличный выбор, [player]!"
         ]
     )
 
@@ -2141,15 +2141,15 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_silver)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_silver,
-        "Ribbon (Silver)",
+        "Серебряная ленточка",
         "ribbon_silver",
         "ribbon",
         hover_dlg=[
-            "I like the look of this one.",
-            "I've always loved silver."
+            "Мне нравится, как она выглядит.",
+            "Мне всегда нравился серебряный цвет."
         ],
         select_dlg=[
-            "Nice choice, [player]."
+            "Отличный выбор, [player]."
         ]
     )
 
@@ -2172,14 +2172,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_teal)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_teal,
-        "Ribbon (Teal)",
+        "Бирюзовая ленточка",
         "ribbon_teal",
         "ribbon",
         hover_dlg=[
-            "Looks really summer-y, right?"
+            "Выглядит очень по-летнему, верно?"
         ],
         select_dlg=[
-            "Just like a summer sky."
+            "Прямо как летнее небо."
         ]
     )
 
@@ -2202,14 +2202,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_wine)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_wine,
-        "Ribbon (Wine)",
+        "Винная ленточка",
         "ribbon_wine",
         "ribbon",
         hover_dlg=[
-            "That's a great color!"
+            "Это замечательный цвет!"
         ],
         select_dlg=[
-            "Formal! Are you taking me somewhere special, [player]?"
+            "Так формально! Мы с тобой отправляемся в какое-то особенное место, [player]?"
         ]
     )
 
@@ -2232,14 +2232,14 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_ribbon_yellow)
     store.mas_selspr.init_selectable_acs(
         mas_acs_ribbon_yellow,
-        "Ribbon (Yellow)",
+        "Жёлтая ленточка",
         "ribbon_yellow",
         "ribbon",
         hover_dlg=[
-            "This color reminds me of a nice summer day!"
+            "Этот цвет напоминает мне о хорошем летнем дне!"
         ],
         select_dlg=[
-            "Great choice, [player]!"
+            "Хороший выбор, [player]!"
         ]
     )
 
@@ -2328,12 +2328,12 @@ init -1 python:
     store.mas_sprites.init_acs(mas_acs_earrings_diamond_pink)
     store.mas_selspr.init_selectable_acs(
         mas_acs_earrings_diamond_pink,
-        "Earrings (Pink Diamond)",
+        "Серьги с розовым бриллиантом",
         "earrings_diamond_pink",
         "earrings",
         select_dlg=[
-            "Pretty in pink!",
-            "I'm shining like a diamond~"
+            "Красотка в розовом!",
+            "Я сияю как бриллиант!"
         ]
     )
 
@@ -2404,7 +2404,7 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_def)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_def,
-        "School Uniform",
+        "Школьная форма",
         "schooluniform",
         "clothes",
         visible_when_locked=True,
@@ -2435,7 +2435,7 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_blackdress)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_blackdress,
-        "Black Dress",
+        "Чёрное платье",
         "blackdress",
         "clothes",
         visible_when_locked=False,
@@ -2471,12 +2471,12 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_blackpink_dress)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_blackpink_dress,
-        "Black and Pink Dress",
+        "Тёмно-розовое платье",
         "blackpinkdress",
         "clothes",
         visible_when_locked=False,
         select_dlg=[
-            "Are we going somewhere special, [player]?"
+            "Мы отправляемся в какое-то особенное место, [player]?"
         ]
     )
 
@@ -2510,7 +2510,7 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_blazerless)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_blazerless,
-        "School Uniform (Blazerless)",
+        "кольная форма без пиджака",
         "schooluniform_blazerless",
         "clothes",
         visible_when_locked=True,
@@ -2565,7 +2565,7 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_marisa)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_marisa,
-        "Witch Costume",
+        "Костюм ведьмы",
         "marisa",
         "clothes",
         visible_when_locked=False,
@@ -2601,16 +2601,16 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_rin)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_rin,
-        "Neko Costume",
+        "Костюм кошки",
         "rin",
         "clothes",
         visible_when_locked=False,
         hover_dlg=[
-            "~nya?",
-            "n-nya..."
+            "~ня?",
+            "ня-я..."
         ],
         select_dlg=[
-            "Nya!"
+            "Ня-я!"
         ]
     )
 
@@ -2653,15 +2653,15 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_spider_lingerie)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_spider_lingerie,
-        "Lingerie (Spider)",
+        "Нижнее бельё (Паук)",
         "spider_lingerie",
         "clothes",
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Caught you in my web~",
-            "Don't be scared~",
-            "Don't worry, I don't bite..."
+            "Поймала тебя в свою паутину.",
+            "Не бойся~",
+            "Не волнуйся, я не кусаюсь..."
         ]
     )
 
@@ -2690,7 +2690,7 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_santa)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_santa,
-        "Santa Costume",
+        "Костюм Санты",
         "santa",
         "clothes",
         visible_when_locked=False,
@@ -2726,18 +2726,18 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_santa_lingerie)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_santa_lingerie,
-        "Lingerie (Santa)",
+        "Нижнее бельё (Санта)",
         "santa_lingerie",
         "clothes",
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Would you like to open your present?~",
-            "What kind of {i}presents{/i} do you want?",
-            "Open your present, ehehe~",
-            "All I want for Christmas is you~",
-            "Santa baby~",
-            "What {i}else{/i} do you want to unwrap?~"
+            "Хочешь открыть свой подарок?~",
+            "Какие {i}подарки{/i} ты хочешь?",
+            "Открой свой подарок, э-хе-хе~",
+            "Всё, что я хочу на Рождество - это ты~",
+            "Санта, детка~",
+            "Что {i}ещё{/i} ты хочешь развернуть?~"
         ]
     )
 
@@ -2768,15 +2768,15 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_dress_newyears)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_dress_newyears,
-        "Dress (New Years)",
+        "Новогоднее платье",
         "new_years_dress",
         "clothes",
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Are we going somewhere special, [player]?",
-            "Very formal!",
-            "Any special occasion, [player]?"
+            "Мы идём в какое-то особенное место, [player]?",
+            "Очень официально!",
+            "По особому случаю, [player]?"
         ],
     )
 
@@ -2806,14 +2806,14 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_sundress_white)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_sundress_white,
-        "Sundress (White)",
+        "Белый сарафан",
         "sundress_white",
         "clothes",
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Are we going anywhere special today, [player]?",
-            "I've always loved this outfit...",
+            "Мы сегодня идём в какое-то особенное место, [player]?",
+            "Мне всегда нравилась эта одежда...",
         ],
     )
 
@@ -2838,14 +2838,14 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_vday_lingerie)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_vday_lingerie,
-        "Lingerie (Pink Lace)",
+        "Нижнее бельё с розовой тесьмой",
         "vday_lingerie",
         "clothes",
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Ehehe~",
-            "Do you like what you see, [player]?"
+            "Э-хе-хе~",
+            "Тебе нравится, [player]?"
         ]
     )
 
