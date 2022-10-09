@@ -6591,7 +6591,7 @@ label monika_sayhappybirthday:
             $ gender_name_start = True
         "Именинницу.":
             $ gender_name_start = False
-    if gender_name_start == True:
+    if gender_name_start:
         $ gender_name = 'его'
     else:
         $ gender_name = 'её'
@@ -6624,7 +6624,7 @@ label monika_sayhappybirthday:
         "Да.":
             
             m "Тогда..."
-            if gender_name_start == True:
+            if gender_name_start:
                 $ gender_name = 'ему'
             else:
                 $ gender_name = 'ей'
@@ -6663,13 +6663,13 @@ label monika_sayhappybirthday:
         "Да.":
             $ is_here = True
         "Нет.":
-            if gender_name_start == True:
+            if gender_name_start:
                 $ gender_name = 'его'
             else:
                 $ gender_name = 'её'
             
             m 1tkc "Что? И как тогда я смогу поздравить, если человека здесь нет?{nw}"
-            if gender_name_start == True:
+            if gender_name_start:
                 $ gender_name = 'ним'
             else:
                 $ gender_name = 'ней'
@@ -6697,7 +6697,7 @@ label monika_sayhappybirthday:
             elif is_watching:
                 
                 m 1eua "Скажи когда [persistent.bday_name] начнёт меня слушать.{nw}"
-                if gender_name_start == True:
+                if gender_name_start:
                     $ gender_name = 'Он'
                 else:
                     $ gender_name = 'Она'
@@ -8786,7 +8786,7 @@ label monika_smoking:
                 m 3ekd "Я правда надеюсь, что ты задумаешься над тем, чтобы бросить эту привычку снова, [player]."
                 m 3eka "Ты ведь сделаешь это, верно? {w=0.2}Ради меня?"
 
-            elif persistent._mas_pm_do_smoke is False:
+            elif not persistent._mas_pm_do_smoke:
                 call monika_smoking_just_started
 
             else:
@@ -8822,7 +8822,7 @@ label monika_smoking:
                 mas_lockEVL("monika_smoking_quit","EVE")
 
         "Я пытаюсь бросить курить.":
-            if persistent._mas_pm_do_smoke is False and not persistent._mas_pm_do_smoke_quit_succeeded_before:
+            if not persistent._mas_pm_do_smoke and not persistent._mas_pm_do_smoke_quit_succeeded_before:
                 call monika_smoking_just_started(trying_quit=True)
 
             else:
@@ -12340,8 +12340,8 @@ label monika_player_appearance:
                     ("У меня ореховые глаза.", "['hazel', 'ореховыми']", False, False),
                     ("У меня серые глаза.", "['gray', 'серыми']", False, False),
                     ("У меня чёрные глаза.", "['black', 'чёрными']", False, False),
-                    ("У меня глаза другого цвета.", "other", False, False),
-                    ("У меня гетерохромия.", "heterochromia", False, False),
+                    ("У меня глаза другого цвета.", "['other', 'other']", False, False),
+                    ("У меня гетерохромия.", "['heterochromia', 'heterochromia']", False, False),
                 ]
 
                 renpy.say(m, "Какого цвета твои глаза?", interact=False)
@@ -12383,7 +12383,7 @@ label monika_player_appearance:
                     while height <= 0:
                         height = store.mas_utils.tryparseint(
                             renpy.input(
-                                'Какой у тебя рост в сантиметрах?',
+                                "Какой у тебя рост в сантиметрах?",
                                 allow=numbers_only,
                                 length=3
                             ).strip(),
@@ -12397,27 +12397,20 @@ label monika_player_appearance:
                     while height_feet <= 0:
                         height_feet = store.mas_utils.tryparseint(
                             renpy.input(
-                                'Какой у тебя рост в футах?',
+                                "Какой у тебя рост в футах?",
                                 allow=numbers_only,
                                 length=1
                             ).strip(),
                             0
                         )
                     
-                    if height_feet == "1":
-                        feet = "фут"
-                    
-                    elif height_feet == "2" or height_feet == "3" or height_feet == "4":
-                        feet = "фута"
-                    
-                    else:
-                        feet = "футов"
+                    feet = "фут" + ("а" if height_feet > 1 and height_feet < 5 else "ов" if height_feet > 5 else "")
                     
                     height_inch = -1
                     while height_inch < 0 or height_inch > 11:
                         height_inch = store.mas_utils.tryparseint(
                             renpy.input(
-                                '[height_feet] [feet], но сколько дюймов?',
+                                "[height_feet] [feet], но сколько дюймов?",
                                 allow=numbers_only,
                                 length=2
                             ).strip(),
@@ -12528,12 +12521,12 @@ label monika_player_appearance:
 
                     m 1euc "О, это очень интересно, [player]!"
 
-                    m "Позволь спросить, ты бреешь налысо или ты потерял свои волосы?{nw}"
+                    m "Позволь спросить, ты бреешься налысо или ты потерял свои волосы?{nw}"
                     $ _history_list.pop()
                     menu:
-                        m "Позволь спросить, ты бреешь налысо или ты потерял свои волосы?{fast}"
+                        m "Позволь спросить, ты бреешься налысо или ты потерял свои волосы?{fast}"
 
-                        "Я брею свою голову.":
+                        "Я брею голову.":
                             $ persistent._mas_pm_shaves_hair = True
                             $ persistent._mas_pm_no_hair_no_talk = False
 
@@ -12865,7 +12858,7 @@ label monika_player_appearance_monika_height:
 
 init 5 python:
     addEvent(
-         Event(
+        Event(
             persistent.event_database,
             eventlabel="monika_players_control",
             category=["игры", "ddlc"],
@@ -12985,17 +12978,26 @@ label monika_dating_startdate:
             datetime.datetime(2017, 10, 25)
         )
 
+        sesh_months = {
+            "January":"января",
+            "February":"февраля",
+            "March":"марта",
+            "April":"апреля",
+            "May":"мая",
+            "June":"июня",
+            "July":"июля",
+            "August":"августа",
+            "September":"сентября",
+            "October":"октября",
+            "November":"ноября",
+            "December":"декабря"
+        }
+
         # but this to get the display plus diff
         first_sesh, _diff = mas_cal.genFriendlyDispDate(first_sesh_raw)
         mas_first_sesh_name_is_day = mas_cal._formatDayFirstSession(first_sesh_raw.day)
         mas_first_sesh_name_is_year = first_sesh_raw.year
-        mas_first_sesh_name_is_month = (
-            first_sesh_raw.strftime("%B").replace("January", "января")
-            .replace("February", "февраля").replace("March", "марта").replace("April", "апреля")
-            .replace("May", "мая").replace("June", "июня").replace("July", "июля")
-            .replace("August", "августа").replace("September", "сентября").replace("October", "октября")
-            .replace("November", "ноября").replace("December", "декабря")
-            )
+        mas_first_sesh_name_is_month = sesh_months[first_sesh_raw.strftime("%B")]
 
     if _diff.days == 0:
         # its today?!
@@ -13337,7 +13339,7 @@ label monika_whydoyouloveme:
 
     elif mas_isMoniDis():
         m 1efc "Я—{w=0.3}{nw}"
-        extend 1rkc "я не совсем уверена..."
+        extend 1rkc " я не совсем уверена..."
 
     elif mas_isMoniUpset():
         m 1dsc "Хм-м..."
@@ -13369,7 +13371,7 @@ label monika_whydoyouloveme:
         m 1ekbsb "Когда-нибудь я заставлю тебя почувствовать себя любимым так же, как и ты меня~"
         m 1dkbsa "Когда-нибудь...{w=0.5} я смогу быть рядом с тобой~"
 
-        if persistent._mas_pm_love_yourself is False:
+        if not persistent._mas_pm_love_yourself:
             m 2eka "И, [player]..."
             m 2ekc "Я помню, как ты говорил мне о том, что ты не любишь себя..."
             m 7eka "Но лично мне кажется, что ты любишь себя, хотя бы самую малость."
@@ -13941,7 +13943,7 @@ label monika_sledding:
     m 1eua "Эй, [player], знаешь, что было бы весело сделать вместе?"
     m 3hub "Покататься на санях!"
 
-    if persistent._mas_pm_gets_snow is False:
+    if not persistent._mas_pm_gets_snow:
         #explicitly using False here so we don't grab None people who haven't
         # answered the question yet
         m 1eka "Там, где ты живёшь, может не быть снега..."
@@ -14069,7 +14071,7 @@ label monika_winter_dangers:
     if mas_isD25Season():
         m 3eka "Блестящий, белый снег, яркие и красочные огни~"
     m 3hub "Я от этого просто в восторге."
-    if persistent._mas_pm_gets_snow is False:
+    if not persistent._mas_pm_gets_snow:
         #explicitly using False here so we don't grab None people who haven't
         # answered the question yet
         m 1eka "Я знаю, что там, где ты живёшь, снега не бывает, но я уверена, ты сможешь оценить его привлекательность..."
@@ -15992,7 +15994,7 @@ label monika_architecture:
 
     m 1eka "[player]...{w=0.2} увидеть весь мир с тобой – одна из моих самых больших мечтаний."
 
-    if persistent._mas_pm_likes_travelling is False:
+    if not persistent._mas_pm_likes_travelling:
         m 3rka "Знаю, ты не очень любишь путешествовать, но я бы с удовольствием посмотрела на то место, в котором ты живёшь."
         m 3eka "Пока ты ещё на моей стороне, для меня этого более чем достаточно."
         m 1ekbsa "Я люблю тебя, [player]. {w=0.3}Всегда помни это."
@@ -16210,7 +16212,7 @@ label monika_wabi_sabi:
     m 7ekc "Быть может, они просто стали такими людьми, что даже сами собой не гордятся."
     m 2dkd "Это может быть тяжко, волноваться из-за своих внешности и характера..."
 
-    if persistent._mas_pm_love_yourself is False:
+    if not persistent._mas_pm_love_yourself:
         m 1ekc "Знаю, ты говорил о том, что не любишь себя, [player],{w=0.3} {nw}"
         extend 3eka "но ты должен знать, что я всегда буду любить тебя, какие у тебя не были бы недостатки."
 
@@ -17367,7 +17369,7 @@ init 5 python:
             prompt="Откуда тебе знать, что именно я с тобой говорю?",
             pool=True
         )
-   )
+    )
 
 label monika_know_its_you:
     if mas_isMoniEnamored(higher=True):
