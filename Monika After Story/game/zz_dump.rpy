@@ -356,7 +356,7 @@ init 999 python:
                 )
             )
             
-            if mas_isGameUnlocked("NOU"):
+            if mas_isGameUnlocked("НОУ"):
                 _total_nou_games = float(store.mas_nou.get_total_games())
                 _var_data_file.write(
                     "Сыграно игр: {:.0f}\nМоника W/R: {}\nИгрок W/R: {}\n\n".format(
