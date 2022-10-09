@@ -1944,22 +1944,22 @@ init -10 python:
         """
 
         base_gift_ribbon_id_map = {
-            "blackribbon":"ribbon_black",
-            "blueribbon": "ribbon_blue",
-            "darkpurpleribbon": "ribbon_dark_purple",
-            "emeraldribbon": "ribbon_emerald",
-            "grayribbon": "ribbon_gray",
-            "greenribbon": "ribbon_green",
-            "lightpurpleribbon": "ribbon_light_purple",
-            "peachribbon": "ribbon_peach",
-            "pinkribbon": "ribbon_pink",
-            "platinumribbon": "ribbon_platinum",
-            "redribbon": "ribbon_red",
-            "rubyribbon": "ribbon_ruby",
-            "sapphireribbon": "ribbon_sapphire",
-            "silverribbon": "ribbon_silver",
-            "tealribbon": "ribbon_teal",
-            "yellowribbon": "ribbon_yellow"
+            "чёрная ленточка":"ribbon_black",
+            "синяя ленточка": "ribbon_blue",
+            "тёмно-фиолетовая ленточка": "ribbon_dark_purple",
+            "изумрудная ленточка": "ribbon_emerald",
+            "серая ленточка": "ribbon_gray",
+            "зелёная ленточка": "ribbon_green",
+            "светло-фиолетовая ленточка": "ribbon_light_purple",
+            "персиковая ленточка": "ribbon_peach",
+            "розовая ленточка": "ribbon_pink",
+            "платиновая ленточка": "ribbon_platinum",
+            "красная ленточка": "ribbon_red",
+            "рубиновая ленточка": "ribbon_ruby",
+            "сапфировая ленточка": "ribbon_sapphire",
+            "серебряная ленточка": "ribbon_silver",
+            "бирюзовая ленточка": "ribbon_teal",
+            "жёлтая ленточка": "ribbon_yellow"
         }
 
         # process gifts

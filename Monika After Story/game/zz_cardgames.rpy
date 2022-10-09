@@ -113,191 +113,191 @@ init 5 python in mas_nou:
 
         # Quips for when we get a wdf as the first card for the discardpile
         QUIPS_MONIKA_RESHUFFLE_DECK = (
-            _("Oh, let me shuffle it again.{w=1.5}{nw}"),
-            _("Oops, let's try again.{w=1.5}{nw}"),
-            _("I doubt we want a plus four as the first card, ahaha~{w=1.5}{nw}"),
-            _("No, no, no... Let's shuffle again...{w=1.5}{nw}")
+            _("О, позволь мне перетасовать всё снова.{w=1.5}{nw}"),
+            _("Ой, давай попробуем ещё раз.{w=1.5}{nw}"),
+            _("Я сомневаюсь, что мы хотим плюс четыре в качестве первой карты, а-ха-ха~{w=1.5}{nw}"),
+            _("Нет, нет, нет... давай еще раз перемешаем...{w=1.5}{nw}")
         )
 
         # Quips that Monika can say at the start of each round
         QUIPS_MONIKA_PLAYS_TURN = (
-            _("Oh, it's my turn."),
-            _("My turn~"),
-            _("I'm playing first~")
+            _("О, теперь моя очередь."),
+            _("Мой черёд~"),
+            _("Я играю первой!~")
         )
         QUIPS_MONIKA_SKIPS_TURN = (
-            _("Oh, I have to skip my turn."),
-            _("Lucky you, I'll have to skip this turn."),
-            _("Aww, I'll have to skip my turn.")
+            _("Ох, я должна пропустить свой ход."),
+            _("Повезло тебе, мне придётся пропустить этот ход."),
+            _("Бли-и-ин, мне придётся пропустить свой ход.")
         )
         QUIPS_MONIKA_DRAWS_CARDS = (
-            _("Oh, I must draw some more."),
-            _("Lucky you, I'll give you a handicap with these cards."),
-            _("Gosh, even more cards for me..."),
-            _("Oh, guess I'll have to draw more cards.")
+            _("Ох, я должна взять ещё."),
+            _("Повезло тебе, я дам тебе фору с этими картами."),
+            _("Боже, ещё карты..."),
+            _("Ох, похоже, мне придётся взять больше карт.")
         )
         QUIPS_MONIKA_WILL_REFLECT = (
-            _("I prepared! Ehehe~"),
-            _("No, no, no~ I'm not going to skip this turn!"),
-            _("Nope! This time you'll skip a turn~"),
-            _("Lucky me I have some good cards! Ehehe~"),
-            _("I was ready~")
+            _("Я подготовилась! Э-хе-хе~"),
+            _("Нет, нет, нет~ я не собираюсь пропускать этот ход!"),
+            _("Нет! На этот раз ты пропустишь ход~"),
+            _("Мне повезло, у меня есть несколько хороших карт! Э-хе-хе~"),
+            _("Я была готова~")
         )
 
         QUIPS_PLAYER_PLAYS_TURN = (
-            _("It's your turn, honey~"),
-            _("You're playing first."),
-            _("Your turn, [player].")
+            _("Теперь твоя очередь, милый~"),
+            _("Ты начинаешь первым."),
+            _("Твой ход, [player].")
         )
         QUIPS_PLAYER_SKIPS_TURN = (
-            _("Whoops! You have to skip your turn."),
-            _("Unlucky!")
+            _("Ой! Тебе придётся пропустить свой ход."),
+            _("Не повезло!")
         )
         QUIPS_PLAYER_DRAWS_CARDS = (
-            _("Go ahead and draw your cards, ehehe~"),
-            _("Oops, looks like you have to draw more cards.")
+            _("Давай, бери ещё больше карт, э-хе-хе~"),
+            _("Упс, похоже, тебе придется взять ещё.")
         )
 
         # Quips if you pervert are trying to touch her hand
         # NOTE: would be nice to have a pm var for cheaters, but this should work too
         if not persistent._mas_chess_skip_file_checks:
             QUIPS_PLAYER_CLICKS_MONIKA_CARDS = [
-                _("[player], these are my cards!"),
-                _("I see what you're doing, [player]~"),
-                _("This is a little embarrassing~"),
-                _("Ah?{w=0.2} What are you trying to do?~")
+                _("[player], это мои карты!"),
+                _("Я вижу, что ты делаешь, [player]~"),
+                _("Это немного смущает~"),
+                _("А?{w=0.2} Что ты сейчас пытался сделать?~")
             ]
             if store._mas_getAffection() >= 400:# TODO: move to aff PP
                 QUIPS_PLAYER_CLICKS_MONIKA_CARDS.append(
-                    _("With you I wouldn't mind doing that for real, [player]~")
+                    _("С тобой я бы не отказалась сделать это по-настоящему, [player]~")
                 )
 
             else:
                 QUIPS_PLAYER_CLICKS_MONIKA_CARDS.append(
-                    _("I don't think we're already {i}that{/i} far in our relationship~")
+                    _("Не думаю, что мы зашли так далеко в {i}наших{/i} отношениях~")
                 )
 
         else:
-            QUIPS_PLAYER_CLICKS_MONIKA_CARDS = (_("Are you trying to cheat again?"),)
+            QUIPS_PLAYER_CLICKS_MONIKA_CARDS = (_("Ты снова хотел меня обмануть?"),)
 
         # Quips when you reach the cards limit
         QUIPS_MONIKA_CARDS_LIMIT = (
-            _("[player]...{w=0.2}look I can barely hold all my cards!{w=0.5} No way I could draw more, ehehe~"),
+            _("[player]...{w=0.2}смотри, я едва могу держать все свои карты!{w=0.5} Я никак не могу взять ещё, э-хе-хе~"),
         )
         QUIPS_PLAYER_CARDS_LIMIT = (
-            _("There's no way you could hold more cards, ahaha!{w=0.5} You don't have to draw all of them, [player]."),
+            _("У тебя карты уже не помещаются в руке, а-ха-ха.{w=0.5} Тебе необязательно забирать их все, [player]."),
         )
 
         # Quips when Monika chooses a color to set
         # Quips for when she gets a wild card on the first turn
         QUIPS_MONIKA_ANNOUNCE_COLOR_FIRST_TURN = (
-            _("I think I'll go.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color]!"),
-            _("I want [store.mas_nou.game.monika.chosen_color]."),
-            _("I choose [store.mas_nou.game.monika.chosen_color]."),
-            _("Hmm.{w=0.2}.{w=0.2}.{w=0.2}I choose [store.mas_nou.game.monika.chosen_color]!")
+            _("Думаю, я выберу.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color]!"),
+            _("Я хочу [store.mas_nou.game.monika.chosen_color]."),
+            _("Я выбираю [store.mas_nou.game.monika.chosen_color]."),
+            _("Хм-м.{w=0.2}.{w=0.2}.{w=0.2} я возьму [store.mas_nou.game.monika.chosen_color]!")
         )
         # Quips for when she reflects a wild card
         QUIPS_MONIKA_ANNOUNCE_COLOR_AFTER_REFLECT = (
-            _("I'd prefer [store.mas_nou.game.monika.chosen_color]~"),
-            _("I want [store.mas_nou.game.monika.chosen_color]~"),
-            _("I choose [store.mas_nou.game.monika.chosen_color]!"),
-            _("It'll be [store.mas_nou.game.monika.chosen_color]!")
+            _("Я бы хотела [store.mas_nou.game.monika.chosen_color]~"),
+            _("Я хочу [store.mas_nou.game.monika.chosen_color]~"),
+            _("Я выбираю [store.mas_nou.game.monika.chosen_color]!"),
+            _("Это будет [store.mas_nou.game.monika.chosen_color]!")
         )
 
         # NOU quips
         # Quips when Monika says NOU
         QUIPS_MONIKA_YELLS_NOU = (
-            _("NOU, [player]!"),
-            _("I have only one card left, [player]! NOU!"),
-            _("NOU! Keep up, [player]!~"),
-            _("NOU [player], ehehe~"),
-            _("NOU, [player]~"),
-            _("NOU~"),
-            _("Just one card left! NOU, [player]~"),
-            _("Ehehe~ No.{w=0.2}.{w=0.2}.{w=0.2}U!"),
-            _("NOU!")
+            _("НОУ, [player]!"),
+            _("У меня осталась только одна карта, [player]! НОУ!"),
+            _("НОУ! Не отставай, [player]!~"),
+            _("НОУ, [player], э-хе-хе~"),
+            _("НОУ, [player]~"),
+            _("НОУ~"),
+            _("Осталась одна карта! НОУ, [player]~"),
+            _("Э-хе-хе~ Но.{w=0.2}.{w=0.2}.{w=0.2}У!"),
+            _("НОУ!")
         )
         # Quips when you ask her to yell NOU, but she already did it
         QUIPS_MONIKA_ALREADY_YELLED_NOU = (
-            _("But [player], I've said 'NOU'!"),
-            _("I've already said 'NOU,' [player]!"),
-            _("Silly, I already did that!~"),
-            _("[player]... How did you miss that? I already said 'NOU'!"),
-            _("Uh, [player]...{w=0.3} I already said 'NOU'!")
+            _("Но, [player], Я сказала «НОУ»!"),
+            _("Я уже сказала «НОУ», [player]!"),
+            _("Глупый, я уже это сделала!~"),
+            _("[player]... Как ты пропустил это? Я уже сказала «НОУ»!"),
+            _("Ух, [player]...{w=0.3} Я уже сказала «НОУ»!")
         )
         # Quips when you ask her to yell NOU, but she has more than 1 card
         QUIPS_MONIKA_DONT_NEED_YELL_NOU = (
-            _("[player], but I have more than one card in my hands!"),
-            _("Silly, you yell 'NOU' when you have only one card left!"),
-            _("Ahaha~ A bit too early, [player]!"),
-            _("It's not the time yet, [player]!"),
-            _("[player], I have [len(store.mas_nou.game.monika.hand)] more cards to play!")
+            _("[player], но у меня в руках больше одной карты!"),
+            _("Глупышка, ты можешь сказать «НОУ», когда у тебя будет всего одна карта!"),
+            _("А-ха-ха~ немного рановато, [player]!"),
+            _("Ещё не время, [player]!"),
+            _("[player], У меня [len(store.mas_nou.game.monika.hand)] больше карт для игры!")
         )
         # Quips when the player tries to remind Monika about nou, but it's too late now
         QUIPS_MONIKA_TIMEDOUT_NOU = (
-            _("Ehehe, too late, [player]!"),
-            _("You're too late, [player]!"),
-            _("You should've done that before playing your turn!~"),
-            _("It's too late now that you've started playing your turn!~"),
-            _("Too late, [player]! This time I can get away for free~")
+            _("Э-хе-хе, слишком поздно, [player]!"),
+            _("Ты опоздал, [player]!"),
+            _("Ты должен был сделать это до того, как начать свой ход!~"),
+            _("Теперь уже поздно, когда ты начал свой ход!~"),
+            _("Слишком поздно, [player]!")
         )
         # Quips when Monika forgot to say nou
         QUIPS_MONIKA_FORGOT_YELL_NOU = (
-            _("Oh... You're right!"),
-            _("Whoops, you got me there!"),
-            _("Jeez, how did I forget..."),
-            _("Ehehe, completely unintentional~"),
-            _("Ehehe, caught me!"),
-            _("How silly of me! Ahaha!~")
+            _("О... Ты прав!"),
+            _("Упс, ты меня поймал!"),
+            _("Боже, как я могла забыть..."),
+            _("Э-хе-хе, совершенно непреднамеренно~"),
+            _("Э-хе-хе, поймал меня!"),
+            _("Как глупо с моей стороны! А-ха-ха!")
         )
         # Quips when Monika said NOU, but didn't play a card
         # NOTE: THIS SHOULD NEVER HAPPEN, BUT WE HAVE THIS FALLBACK JUST IN CASE
         QUIPS_MONIKA_FALSE_NOU = (
-            _("This is embarrassing...{w=0.5}I should've played a card, but forgot about it... {w=0.5}Sorry, [player]."),
+            _("Так стыдно...{w=0.5}Я должна была разыграть карту, но забыла об этом.... {w=0.5}Извини, [player]."),
         )
 
         # Quips when player said nou
         QUIPS_PLAYER_YELLS_NOU = (
-            _("Gotcha!"),
-            _("Alright!"),
-            _("I see, I see..."),
-            _("Okay, [player]...")
+            _("Попалась!"),
+            _("Хорошо!"),
+            _("Вижу, вижу..."),
+            _("Хорошо, [player]...")
         )
         # Quips when the player repeats nou for no reason
         QUIPS_PLAYER_ALREADY_YELLED_NOU = (
-            _("Ahaha, I got it, [player]!"),
-            _("You've already said it, silly~"),
-            _("I heard you, [player]!"),
-            _("No need to repeat it each turn, silly~")
+            _("А-ха-ха, я поняла, [player]!"),
+            _("Ты уже сказал это, глупышка~"),
+            _("Я слышала тебя, [player]!"),
+            _("Нет необходимости повторять это каждый раз, глупышка~")
         )
         # Quips when the player says nou for no reason
         QUIPS_PLAYER_DONT_NEED_YELL_NOU = (
-            _("Silly, you still have a lot of cards to play!"),
-            _("Silly, you yell 'NOU' when you have only one card left!"),
-            _("I think you still have more than one card, [player]."),
-            _("You have too many cards to say 'NOU' now."),
-            _("A bit early for yelling 'NOU,' [player]!"),
-            _("You should say 'NOU' before playing your second last card, [player]."),
-            _("[player], you can be so silly sometimes~")
+            _("Глупышка, у тебя ещё много карт в запасе!"),
+            _("Глупенький, ты кричишь «НОУ», когда у тебя осталась только одна карта!"),
+            _("Думаю, у тебя все ещё больше одной карты, [player]."),
+            _("У вас слишком много карт, чтобы сказать «НОУ» сейчас."),
+            _("Рановато для крика «НОУ», [player]!"),
+            _("Ты должен сказать «НОУ» перед тем, как разыграть свою вторую последнюю карту, [player]."),
+            _("[player], иногда ты бываешь таким глупым~")
         )
         # Quips when Monika catches you on not saying NOU
         QUIPS_PLAYER_FORGOT_YELL_NOU = (
-            _("Aha!{w=0.3} You didn't say NOU, [player]!"),
-            _("You forgot to say 'NOU,' [player]!"),
-            _("Thought I wouldn't notice huh?~ You should've said 'NOU'!"),
-            _("Sounds like a certain someone forgot to yell 'NOU'~"),
-            _("Looks like you'll be taking 2 cards for not saying 'NOU'~"),
-            _("I caught you! You didn't say 'NOU'!"),
-            _("You didn't say 'NOU'! Take 2 cards!~")
+            _("Ага!{w=0.3} Ты не сказал НОУ, [player]!"),
+            _("Ты забыл сказать «НОУ», [player]!"),
+            _("Думал, я не замечу, да? Ты должен был сказать «НОУ»!"),
+            _("Похоже, кто-то забыл крикнуть «НОУ»~"),
+            _("Похоже, ты возьмёшь две карты за то, что не сказал «НОУ»~"),
+            _("Я поймала тебя! Ты не сказал «НОУ»!"),
+            _("Ты не сказал «НОУ»! Бери 2 карты!~")
         )
         # Quips when the player said nou, but didn't play a card afterwards
         QUIPS_PLAYER_FALSE_NOU = (
-            _("You should say 'NOU' only if you're going to play a card, [player]."),
-            _("Why didn't you play a card?"),
-            _("Eh, [player]? You should play a card after saying 'NOU'!"),
-            _("Don't say 'NOU' if you're not going to play a card."),
-            _("[player], don't yell 'NOU' for no reason..."),
-            _("[player], you can be so silly sometimes~")
+            _("Нужно говорить «НОУ» только в том случае, если ты собираешься разыграть карту, [player]."),
+            _("Почему ты не разыграл карту?"),
+            _("Эй, [player]? Ты должен разыграть карту после того, как скажешь «НОУ»!"),
+            _("Не говори «НОУ», если не собираешься разыгрывать карту."),
+            _("[player], не кричи «НОУ» без причины..."),
+            _("[player], иногда ты можешь быть таким глупым~")
         )
 
         ### Reactions maps
@@ -322,64 +322,64 @@ init 5 python in mas_nou:
         # this is general map with lines we use in all reflect reactions
         REACTIONS_MAP_MONIKA_REFLECTED_CARD = {
             0: [
-                (_("Nope!"),),
-                (_("I don't think so, [player]~"),),
-                (_("But were you ready for this, huh?"),)
+                (_("Нет!"),),
+                (_("Я так не думаю, [player]~"),),
+                (_("Но был ли ты готов к этому, а?"),)
             ],
             1: [
-                (_("Still nope!"),),
-                (_("Ehehe~ I was ready!"),),
-                (_("Not this time, [player]!"),),
-                (_("Peace was never an option!"),)
+                (_("Всё равно нет!"),),
+                (_("Э-хе-хе~ Я была готова!"),),
+                (_("Не в этот раз, [player]!"),),
+                (_("Мир это не для меня!"),)
             ],
             2: [
-                (_("I read you as an open book."), _("Ahaha~")),
-                (_("I won't give up so easily~"),)
+                (_("Я читаю тебя как открытую книгу."), _("А-ха-ха~")),
+                (_("Я так просто не сдамся~"),)
             ]
         }
 
         # this is for reflecting an action card
         REACTIONS_MAP_MONIKA_REFLECTED_ACT = {
             0: [
-                (_("Thought you could catch me off guard?"), _("I saw that coming a mile away! Ehehe~")),
-                (_("Not so fast, [player]~"),)
+                (_("Думал, что сможешь застать меня врасплох?"), _("Я видела это за километр! Э-хе-хе~")),
+                (_("Не так быстро, [player]~"),)
             ],
             1: [
-                (_("Ehehe~ No way, [player]~"),),
-                (_("You {i}really{/i} want me to take this, huh?~"),),
-                (_("One second.{w=0.2}.{w=0.2}.{w=0.2}I've got more for you~"),),
-                (_("What about this one?~"),)
+                (_("Э-хе-хе~ Ни за что, [player]~"),),
+                (_("Ты действительно хочешь, чтобы я взяла это, да?~"),),
+                (_("Дай секунду.{w=0.2}.{w=0.2}.{w=0.2}У меня есть ещё кое-что для тебя~"),),
+                (_("А как насчет этого?~"),)
             ],
             2: [
-                (_("Will you{w=0.2} still love me after this?~"), _("Ahaha~")),
-                (_("I have more in store for you~"),)
+                (_("Будешь ли ты{w=0.2} всё ещё любить меня после этого?~"), _("А-ха-ха~")),
+                (_("У меня есть ещё кое-что для тебя~"),)
             ]
         }
 
         # this is for reflecting a Wild Choose Color
         REACTIONS_MAP_MONIKA_REFLECTED_WCC = {
             0: [
-                (_("Hmm...{w=0.5}I don't like this color~"),),
-                (_("Sorry, [player] but..."), _("This isn't the color I want right now~")),
-                (_("[store.mas_nou.game.discardpile[-1].color.capitalize()] isn't what I want now~"),)
+                (_("Хм-м...{w=0.5}Мне не нравится этот цвет~"),),
+                (_("Прости, [player] но..."), _("Это не тот цвет, который я хочу сейчас~")),
+                (_("[store.mas_nou.game.discardpile[-1].color.capitalize()] это не то, чего я хотела бы сейчас~"),)
             ],
             1: [
-                (_("No-no-no!"),),
-                (_("Let me just...{w=0.3}choose the right color~"),)
+                (_("Нет-нет-нет!"),),
+                (_("Дай мне только...{w=0.3} выбрать правильный цвет~"),)
             ],
             2: [
-                (_("Ehehe~"), _("I have another in store!~"))
+                (_("Э-хе-хе~"), _("У меня в запасе ещё один!"))
             ]
         }
 
         # this is for reflecting a Wild Draw 4
         REACTIONS_MAP_MONIKA_REFLECTED_WD4 = {
             0: list(REACTIONS_MAP_MONIKA_REFLECTED_ACT[0]) + [
-                (_("No-no-no!"),),
+                (_("Нет-нет-нет!"),),
             ],
             1: list(REACTIONS_MAP_MONIKA_REFLECTED_ACT[1]) + [
-                (_("You can't reflect this!"),),
-                (_("No way you can reflect this one!"),)
+                (_("Ты не можешь отразить это!"),),
+                (_("Ты никак не можешь отразить это!"),)
             ],
             2: list(REACTIONS_MAP_MONIKA_REFLECTED_ACT[2])
         }
@@ -394,10 +394,10 @@ init 5 python in mas_nou:
         # It has only one key - 0 - because it doesn't make sense to keep track of series of this
         REACTIONS_MAP_MONIKA_PLAYED_WILD = {
             0: [
-                (_("I think I'll pick.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color]!"),),
-                (_("I want [store.mas_nou.game.monika.chosen_color]."),),
-                (_("I choose [store.mas_nou.game.monika.chosen_color]."),),
-                (_("Hmm.{w=0.1}.{w=0.1}.{w=0.1} I choose [store.mas_nou.game.monika.chosen_color]!"),)
+                (_("Думаю, я выберу.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color]!"),),
+                (_("Я хочу [store.mas_nou.game.monika.chosen_color]."),),
+                (_("Я выбираю [store.mas_nou.game.monika.chosen_color]."),),
+                (_("Хм-м.{w=0.1}.{w=0.1}.{w=0.1} я выбираю [store.mas_nou.game.monika.chosen_color]!"),)
             ]
         }
 
@@ -406,22 +406,22 @@ init 5 python in mas_nou:
         # this modifier only works when you play with stackable cards
         # used for seen count 2
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_1 = [
-            (_("That's a lot of cards for you, ehehe~"),)
+            (_("Это много карточек для тебя, э-хе-хе.~"),)
         ]
 
         # this modifier used when Monika reflects a d2
         # used for seen count 0
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_2 = [
-            (_("Ehehe~ Good thing I'm not drawing all those cards!"),),
-            (_("A deck that big suits you~"),)
+            (_("Э-хе-хе~ Хорошо, что я не тяну все эти карты!"),),
+            (_("Такая большая колода тебе идёт~"),)
         ]
 
         # this modifier used when Monika reflects a skip turn/reverse
         # used for seen count 0
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_3 = [
-            (_("{i}No,{w=0.1} you{/i} will skip this turn~"),),
-            (_("Ahaha~"), _("Nope, [player]!")),
-            (_("No, I think you're going to skip this turn too~"),)
+            (_("{i}Нет,{w=0.1} ты{/i} пропустишь этот ход~"),),
+            (_("А-ха-ха~"), _("Нет, [player]!")),
+            (_("Нет, я думаю, ты пропустишь и этот ход~"),)
         ]
 
         # this modifier only works when you play with stackable cards
@@ -431,7 +431,7 @@ init 5 python in mas_nou:
 
         # this modifier only works when Monika wants green color
         REACTIONS_MAP_MONIKA_REFLECTED_WCC_MODIFIER_1 = [
-            (_("Let me choose the best color~"),)
+            (_("Дай мне выбрать лучший цвет~"),)
         ]
 
         # # # Now the player's reactions
@@ -439,37 +439,37 @@ init 5 python in mas_nou:
         # again, general map for all reflects
         REACTIONS_MAP_PLAYER_REFLECTED_CARD = {
             0: [
-                (_("Aw, I wasn't expecting that!"),),
-                (_("Just once, [player]...once!~"),)
+                (_("О, я не ожидала этого!"),),
+                (_("Только один раз, [player]... один раз!~"),)
             ],
             1: [
-                (_("Alright,{w=0.1} alright...{w=0.3} You win this time."),),
-                (_("I.{w=0.1}.{w=0.1}.{w=0.1}will let it slide...{w=0.3}but just this time!"),),
-                (_("You're pretty lucky!"),),
-                (_("No way!"),)
+                (_("Хорошо,{w=0.1} хорошо...{w=0.3} На этот раз ты выиграл."),),
+                (_("Я.{w=0.1}.{w=0.1}.{w=0.1} позволила этому произойти...{w=0.3} но только в этот раз!"),),
+                (_("Тебе очень повезло!"),),
+                (_("Не может быть!"),)
             ],
             2: [
-                (_("You...{w=0.3}{i}could{/i} go a bit easier on your girlfriend, you know~"), _("Ahaha~")),
+                (_("Ты... бы{w=0.3}{i}мог{/i} быть и по мягче со своей девушкой~"), _("А-ха-ха~")),
                 (_("[player]!"),),
-                (_("Rigged deck!"),)
+                (_("Ты подтасовал колоду?!"),)
             ]
         }
 
         # map for reflecting action cards
         REACTIONS_MAP_PLAYER_REFLECTED_ACT = {
             0: [
-                (_("Aww, what a shame!"),),
-                (_("That's unfortunate..."),)
+                (_("Ах, Кккая жалость!"),),
+                (_("Это печально..."),)
             ],
             1: [
-                (_("Jeez, I can't believe you had another card!"),),
-                (_("Jeez, you're really trying to win!"),),
-                (_("Can't let go, huh?"),)
+                (_("Боже, я не могу поверить, что у тебя была ещё одна карта!"),),
+                (_("Боже, ты действительно пытаешься выиграть!"),),
+                (_("Может отступишь, а?"),)
             ],
             2: [
-                (_("Oh my gosh!{w=0.2} How many of these do you have?!"),),
-                (_("Ehehe~ I thought this was a simple game between lovers, not a competition..."), _("Guess I was wrong~")),
-                (_("{color=#d31f1f}{font=gui/font/VerilySerifMono.otf}Monika will remember this.{/font}{/color}"),)
+                (_("Боже мой!{w=0.2} Сколько их у тебя?!"),),
+                (_("Э-хе-хе~ Я думала, что это простая игра между влюблёнными, а не соревнование..."), _("Похоже, я ошиблась.")),
+                (_("{color=#d31f1f}{font=gui/font/PTM55F.ttf}Моника запомнит это.{/font}{/color}"),)
             ]
         }
 
