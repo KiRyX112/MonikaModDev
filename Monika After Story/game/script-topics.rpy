@@ -12289,7 +12289,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_player_appearance",
-            category=['you'],
+            category=['ты'],
             prompt="Твоя внешность",
             conditional="seen_event('mas_gender')",
             action=EV_ACT_RANDOM
