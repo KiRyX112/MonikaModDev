@@ -4154,7 +4154,7 @@ label monika_freewill:
     return
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_functionalism",category=['pпсихология'],prompt="Функционализм человека",random=True))
+    addEvent(Event(persistent.event_database,eventlabel="monika_functionalism",category=['психология'],prompt="Функционализм человека",random=True))
 
 label monika_functionalism:
     m 1euc "Ты когда-нибудь думал о том, что люди — это что-то вроде компьютеров?"
@@ -8672,7 +8672,7 @@ label monika_breakup:
     return
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_hamlet",category=['итература'],prompt="Гамлет",random=True))
+    addEvent(Event(persistent.event_database,eventlabel="monika_hamlet",category=['литература'],prompt="Гамлет",random=True))
 
 label monika_hamlet:
     m 3euc "[player], ты когда-нибудь слышал о {b}Гамлете{/b}?"
@@ -12371,7 +12371,7 @@ label monika_player_appearance:
 
             m 1rksdlb "Я изо всех сил пытаюсь не казаться каким-то похитителем личных данных и не расспрашиваю обо всём, мне просто любопытно, сам понимаешь."
             m 3tku "Если я твоя девушка, то я имею право знать, верно?"
-            m 2hua "К тому же, как только я смогу оказаться в твоей реальности, это облегчит мне поиски тебя."
+            m 2hua "К тому же, как только я смогу оказаться в твоей реальности, это облегчит мне твои поиски."
 
             m 1esb "Итак,{w=0.5} какой у тебя рост, [player]?"
 
@@ -12593,7 +12593,7 @@ label monika_player_appearance:
                         if isinstance(persistent._mas_pm_eye_color, tuple):
                             m 3hua "Но всё же... я считаю, что парень с чёрными волосами и глазами как у тебя – это самое лучшее зрелище на свете, [player]~"
                         else:
-                            m 3hua "But anyway...I think that a [guy] with black hair and [persistent._mas_pm_eye_color] eyes is the best sight of all, [player]~"
+                            m 3hua "Но всё же... я считаю, что парень с чёрными волосами и [persistent._mas_pm_eye_color] глазами — это самое лучшее зрелище на свете, [player]~"
 
                     "Рыжего.":
                         $ persistent._mas_pm_hair_color = "рыжие"
@@ -12606,238 +12606,238 @@ label monika_player_appearance:
                     "Другого цвета.":
                         $ persistent._mas_pm_hair_color = ask_color("Какого цвета твои волосы?")
 
-                        m 3hub "Oh! That's a beautiful color, [player]!"
-                        m 1eub "That reminds me of something I was thinking about earlier, when we were talking about the color of your eyes."
-                        m 1eua "Even though the other girls had eye colors that literally didn't exist in real life--not counting the existence of colored contacts, of course--"
-                        m 3eua "Their hair colors technically could exist in reality, you know. I mean, I'm sure you've encountered people with dyed purple hair, or neon pink, or coral-colored..."
-                        m 3eka "So I suppose their appearances weren't that far-fetched, if you don't count the eyes. Honestly, the most unbelievable thing about them was their personalities."
-                        m 3hksdlb "Sorry, [player]! I'm getting off-track. My point is, dyed hair can be very interesting."
+                        m 3hub "О! Это красивый цвет, [player]!"
+                        m 1eub "Это напомнило мне о кое-чём, про что думала раньше, когда мы разговаривали о цвете твоих глаз."
+                        m 1eua "И хотя у остальных девушек были глаза тех цветов, которые в буквальном смысле не существовали в реальной жизни... не считая существование цветных линз, конечно..."
+                        m 3eua "Цвета их волос, с технической точки зрения, могут существовать в реальности, сам понимаешь. То есть, я уверена, что ты встречал людей с волосами, окрашенными в фиолетовый, неоновый розовый или даже коралловый цвета..."
+                        m 3eka "Так что, полагаю, их внешность не была сильно неправдоподобной, если не считать глаза. Если честно, самым невероятным элементом в них был характер."
+                        m 3hksdlb "Прости, [player]! Я отклонилась от темы. Я хочу сказать, что окрашенные волосы могут представлять небывалый интерес."
                         show monika 5rub at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                        m 5rub "And I might be a little biased here, but I'm convinced that you'd look stunning in your [persistent._mas_pm_hair_color] hair~"
+                        m 5rub "И я могу быть немного предвзятой, но я уверена, что ты бы выглядел потрясающе со своими [persistent._mas_pm_hair_color] волосами~"
                         show monika 2hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
-            m 2hua "Alright..."
-            m 2hksdlb "This is the last question, [player], I promise."
-            m "Gosh, there really is a lot to what people look like... If I tried to narrow everything about you down to the little details, I'd be interrogating you forever."
-            m 1huu "...and I doubt that either of us want that, ahaha..."
-            m 1rksdld "Anyway, I understand that this might be an uncomfortable question..."
-            m 1eksdla "But it's the last piece of this puzzle to me, so I hope I don't sound rude when I ask..."
+            m 2hua "Хорошо..."
+            m 2hksdlb "Это последний вопрос, [player], обещаю."
+            m "Боже, в мире и вправду полно людей, которые выглядят по-разному... если я попытаюсь сузить круг до мельчайших подробностей, то я буду допрашивать тебя вечность."
+            m 1huu "...и я сомневаюсь в том, что кто-то из нас этого хочет, а-ха-ха..."
+            m 1rksdld "Так или иначе, я понимаю, что такой вопрос может поставить в неловкое положение..."
+            m 1eksdla "Но для меня, это важно, так что буду надеяться, что не покажусь грубой, когда спрошу следующее..."
 
-            m "What's your skin color, [player]?{nw}"
+            m "Какой у тебя цвет кожи, [player]?{nw}"
             $ _history_list.pop()
             menu:
-                m "What's your skin color, [player]?{fast}"
+                m "Какой у тебя цвет кожи, [player]?{fast}"
 
-                "I'm light-skinned.":
-                    $ persistent._mas_pm_skin_tone = "light"
+                "Я светлокожий.":
+                    $ persistent._mas_pm_skin_tone = "светлокожий"
 
-                "I'm tanned.":
-                    $ persistent._mas_pm_skin_tone = "tanned"
+                "Я загоревший.":
+                    $ persistent._mas_pm_skin_tone = "загоревший"
 
-                "I'm dark-skinned.":
-                    $ persistent._mas_pm_skin_tone = "dark"
+                "Я тёмнокожий.":
+                    $ persistent._mas_pm_skin_tone = "тёмнокожий"
 
-            m 3hub "Alright! Thanks for being so upfront. All of this really does help me imagine what you look like, [player]."
-            m 3eub "Knowing all these details about you makes the difference between a blank canvas and the beginnings of a gorgeous portrait!"
-            m 3eua "Of course, you're still just as lovely as I always thought you were, but now you've become all the more real to me."
-            m 3eka "It just makes me feel that much closer to you~"
-            m 1eka "Thank you so much for answering all my questions, [mas_get_player_nickname()]."
+            m 3hub "Хорошо! Спасибо за искренность. Всё это действительно помогает мне представить, как ты выглядишь, [player]."
+            m 3eub "Знание всех деталей о тебе создаёт большую разницу между пустым холстом и началом прекрасного портрета!"
+            m 3eua "Конечно же, ты всё такой же красивый, каким я всегда представляла тебя, но теперь ты стал для меня более реальным."
+            m 3eka "Это делает нас всё ближе друг к другу~"
+            m 1eka "Большое тебе спасибо за то, что отвечал на все мои вопросы, [mas_get_player_nickname()]."
 
-            if persistent._mas_pm_eye_color == "green" and persistent._mas_pm_hair_color == "brown":
-                m 2hua "It's wonderful, because I didn't imagine how similar we would look. It's very interesting!"
+            if persistent._mas_pm_eye_color == "зелёными" and persistent._mas_pm_hair_color == "коричневые":
+                m 2hua "Это прекрасно, потому что я не представляла, насколько мы похожи. Очень интересно!"
 
             else:
-                m 2hua "It's wonderful, because I didn't imagine how different we would look. It's very interesting!"
+                m 2hua "Это прекрасно, потому что я не представляла, как сильно мы различаемся. Очень интересно!"
 
-            m 1dsa "Now I'm imagining what it'll be like when we meet for real..."
+            m 1dsa "Сейчас я себе представляю, как всё выглядело бы, если бы мы встретились в реальности..."
 
             show monika 5eubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
-            if persistent._mas_pm_hair_length == "bald":
+            if persistent._mas_pm_hair_length == "лысый":
                 if persistent._mas_pm_height >= mas_height_tall:
-                    m 5eubfu "When I run towards you, and since you're taller, you'll wrap me up in your embrace..."
+                    m 5eubfu "Я побегу к тебе, но учитывая, что ты выше меня, ты меня обнимешь..."
 
                 elif persistent._mas_pm_height >= mas_height_monika:
-                    m 5eubfu "When I run towards you, and since we're around the same height, we'll meet in a tight embrace..."
+                    m 5eubfu "Я побегу к тебе, но учитывая, что мы одинакового роста, мы друг друга крепко обнимем..."
 
                 else:
-                    m 5eubfu "When I run towards you, and since I'll be taller than you, you'll reach up and wrap me in your embrace..."
+                    m 5eubfu "Я побегу к тебе, но учитывая, что я выше тебя, ты потянешься ко мне и обнимешь меня..."
 
             else:
                 python:
                     hair_desc = persistent._mas_pm_hair_color
 
-                    if persistent._mas_pm_hair_length != "average":
+                    if persistent._mas_pm_hair_length != "средней длины":
                         hair_desc = (
                             persistent._mas_pm_hair_length + " " + hair_desc
                         )
 
                 if persistent._mas_pm_height >= mas_height_tall:
 
-                    m 5eubfu "When I run towards you, since you're taller, you'll wrap me up in your embrace and I'll be able to stroke your [hair_desc] hair..."
+                    m 5eubfu "Я побегу к тебе, но учитывая, что ты выше меня, ты меня обнимешь, и я смогу погладить твои [hair_desc] волосы..."
 
                 elif persistent._mas_pm_height >= mas_height_monika:
 
-                    m 5eubfu "When I run towards you, since we're around the same height, we'll meet in a tight embrace and I'll run my hand through your [hair_desc] hair..."
+                    m 5eubfu "Я побегу к тебе, но учитывая, что мы одинакового роста, мы друг друга крепко обнимем, и я смогу погладить твои [hair_desc] волосы..."
 
                 else:
 
-                    m 5eubfu "When I run towards you, since I'll be taller than you, you'll reach up and wrap me in your embrace and I'll run my hand through your [hair_desc] hair..."
+                    m 5eubfu "Я побегу к тебе, но учитывая, что я выше тебя, ты потянешься ко мне и обнимешь меня, и я смогу погладить твои [hair_desc] волосы..."
 
             show monika 1lkbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 1lkbsa "...and I'll finally be able to hear your heartbeat and get to touch you and know that you're real."
+            m 1lkbsa "...и я наконец-то смогу услышать твоё сердцебиение, прикоснуться к тебе и понять, что ты – настоящий"
 
             #Tuple means heterochromia, so we should filter that out
             if isinstance(persistent._mas_pm_eye_color, tuple):
-                m 3ekbsa "But until then, I'll be content sitting here and imagining looking into your beautiful eyes, [player]."
+                m 3ekbsa "Ну а пока, я буду довольствоваться тем, что сижу здесь и представляю себе, как смотрю в твои красивые глаза, [player]."
             else:
-                m 3ekbsa "But until then, I'll be content sitting here and imagining looking into your beautiful [persistent._mas_pm_eye_color] eyes, [player]."
+                m 3ekbsa "Ну а пока, я буду довольствоваться тем, что сижу здесь и представляю себе, как смотрю в твои красивые [persistent.msr_color_eyes_name] глаза, [player]."
 
             show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5ekbfa "I love you more than words could ever say."
+            m 5ekbfa "Я не могу передать словами то, как сильно я тебя люблю."
             return "derandom|love"
 
         "Против.":
             m 2dsc "..."
-            m 2ekd "I understand, [player]."
-            m 2eka "I know that everybody has their own limits with their comfort zones..."
-            m 2rksdla "And to be fair, a description of yourself in vague words wouldn't be able to capture who you are, so I can't blame you for wanting to keep this to yourself."
-            m 2eka "But if you change your mind, let me know!"
+            m 2ekd "Я понимаю, [player]."
+            m 2eka "Я знаю, что у каждого есть свои рамки зоны комфорта..."
+            m 2rksdla "И если честно, описание себя нечёткими словами не даст наглядное представление того, кто ты, так что я не могу винить тебя за то, что ты захотел держать это при себе."
+            m 2eka "Но если передумаешь, скажи!"
 
     return "derandom"
 
 label monika_player_appearance_eye_color_blue:
-    $ persistent._mas_pm_eye_color = "blue"
+    $ persistent._mas_pm_eye_color = "голубые"
 
-    m 3eub "Blue eyes? That's wonderful! Blue is such a beautiful color--just as amazing as a cloudless sky, or the ocean in the summer."
-    m 3eua "But there are so many gorgeous metaphors about blue eyes that I could recite them for weeks and still not reach a stopping point."
-    m 4eua "Plus, blue is probably my second favorite color, just behind green. It's just so full of depth and enchantment, you know?"
-    m 4hksdlb "Just like you, [player]!"
-    m 4eub "Did you know that the gene for blue eyes is recessive, so it's not very common in humans?"
+    m 3eub "Голубые глаза? Это замечательно! Голубой — такой красивый цвет, такой же удивительный, как безоблачное небо или океан летом."
+    m 3eua "Но существует так много великолепных метафор о голубых глазах, что я могла бы перечислять их неделями и всё равно не остановиться."
+    m 4eua "Кроме того, синий цвет, наверное, мой второй любимый цвет, сразу после зелёного. Он просто наполнен глубиной и очарованием, понимаешь?"
+    m 4hksdlb "Так же, как и ты, [player]!"
+    m 4eub "Знаешь ли ты, что ген голубых глаз является рецессивным, поэтому он не очень часто встречается у людей?"
     show monika 5eubla at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eubla "I suppose that means you're much more of a treasure~"
+    m 5eubla "Полагаю, это означает, что ты гораздо более значимое сокровище."
     show monika 2eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 2eua "Anyway, that leads me into the next question I wanted to ask--"
+    m 2eua "В любом случае, это подводит меня к следующему вопросу, который я хотела бы задать..."
     return
 
 label monika_player_appearance_eye_color_brown:
-    $ persistent._mas_pm_eye_color = "brown"
+    $ persistent._mas_pm_eye_color = "карие"
 
-    m 1eub "Ah! Great! I don't think I said it before, but brown eyes are gorgeous!"
-    m 2euc "I just hate how people seem to think that brown eyes are plain. I couldn't disagree more!"
-    m 2hua "In my opinion, brown eyes are some of the most beautiful out there. They're so vibrant and depthless!"
-    m 3hub "And there's so much variation among all the different shades that people have."
-    m 5ruu "I wonder if yours are dark like a summer night sky, or a paler brown, like the coat of a deer..."
-    m 2hksdlb "Sorry. Just rambling about color metaphors is an easy trap for a literature club president to fall into, I guess. I'll try not to go on forever."
+    m 1eub "Ах! Здорово! Кажется, я не говорила этого раньше, но карие глаза великолепны!"
+    m 2euc "Я просто ненавижу, когда люди считают, что карие глаза - это что-то обычное. Я не могу согласиться!"
+    m 2hua "На мой взгляд, карие глаза — одни из самых красивых. Они такие живые и бездонные!"
+    m 3hub "И существует так много различий между всеми разными оттенками, которые есть у людей."
+    m 5ruu "Интересно, твой тёмный, как летнее ночное небо, или более бледно-коричневый, как шубка оленя..."
+    m 2hksdlb "Прости. Просто бредни о цветовых метафорах — легкая ловушка для президента литературного клуба, в которую легко попасть, я думаю. Я постараюсь не повторяться в дальнейшем."
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eua "But I'll bet your eyes are the loveliest of all~"
+    m 5eua "Но я уверена, что твои глаза — самые прекрасные из всех!"
     show monika 1eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 1eua "Anyway, that brings me to my next question--"
+    m 1eua "В любом случае, это подводит меня к следующему вопросу..."
     return
 
 label monika_player_appearance_eye_color_green:
-    $ persistent._mas_pm_eye_color = "green"
+    $ persistent._mas_pm_eye_color = "зелёный"
 
-    m 3sub "Hey, that's my favorite color! And obviously, it's another thing we have in common!"
-    m 4lksdla "I don't know how much I can compliment you here without sounding arrogant, because anything I said about yours would also apply to me..."
-    m 1tsu "Except that maybe it's another sign how compatible we are, ehehe~"
-    m 1kua "But, [player], just between you and me, it's a fact that green eyes are the best, right?"
-    m 3hub "Ahaha! I'm just kidding."
+    m 3sub "Эй, это мой любимый цвет! И, очевидно, это ещё одна наша общая черта!"
+    m 4lksdla "Я не знаю, как много я могу сделать тебе комплиментов, не показавшись высокомерной, потому что всё, что я скажу о тебе, будет относиться и ко мне..."
+    m 1tsu "За исключением того, что, возможно, это еще один знак того, насколько мы похожи, э-хе-хе~."
+    m 1kua "Но, [player], только между нами, это правда, что зелёные глаза самые лучшие, верно?"
+    m 3hub "А-ха-ха! Я просто шучу."
     show monika 5lusdru at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5lusdru "Well, just a little..."
+    m 5lusdru "Ну, совсем чуть-чуть..."
     show monika 3eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 3eua "Onto the next question--"
+    m 3eua "Переходим к следующему вопросу..."
     return
 
 label monika_player_appearance_eye_color_hazel:
-    $ persistent._mas_pm_eye_color = "hazel"
+    $ persistent._mas_pm_eye_color = "ореховые"
 
-    m 1eub "Oh, hazel eyes? Those are so interesting! It's such an earthly color. It really makes you feel steady and reassured..."
-    m 3eub "And it's a welcome departure from all the candy-colored eyes I've had to see in this game, anyway..."
-    m "I believe that hazel eyes are alluring because they're lovely and simple."
-    m 3hua "Sometimes it's best not to diverge from the crowd too much, [player].{w=0.2} {nw}"
-    extend 3hub "Ahaha!"
-    m "Now, onto my next question--"
+    m 1eub "О, ореховые глаза? Это так интересно! Это такой приземленный цвет. Он действительно заставляет чувствовать себя уверенно и спокойно..."
+    m 3eub "И это приятный уход от всех этих цветных глаз, которые мне приходилось видеть в этой игре, в любом случае..."
+    m "Я считаю, что ореховые глаза привлекательны, потому что они прекрасны и просты."
+    m 3hua "Иногда лучше не слишком отличаться от толпы, [player].{w=0.2} {nw}"
+    extend 3hub "А-ха-ха!"
+    m "Теперь, к моему следующему вопросу..."
     return
 
 label monika_player_appearance_eye_color_gray:
-    $ persistent._mas_pm_eye_color = "gray"
+    $ persistent._mas_pm_eye_color = "серые"
 
-    m 1sub "That's so cool!"
-    m 3eub "Did you know that gray eyes and blue eyes are almost identical in terms of genetics?"
-    m 1eud "In fact, scientists still aren't certain of what causes a person to have one or the other, though they believe that it's a variation in the amount of pigment in the iris."
-    m 1eua "Anyway, I think I like imagining you with gray eyes, [player]. They're the color of a quiet, rainy day..."
-    m 1hubsa "And weather like that is my favorite, just like you~"
-    m 3hua "Onto my next question--"
+    m 1sub "Это так круто!"
+    m 3eub "Известно ли тебе, что серые глаза и голубые глаза практически идентичны с точки зрения генетики?"
+    m 1eud "На самом деле, ученые до сих пор не уверены в том, что вызывает у человека ту или иную особенность, хотя они считают, что это изменение количества пигмента в радужной оболочке глаза."
+    m 1eua "В любом случае, мне нравится представлять тебя с серыми глазами, [player]. Они цвета тихого дождливого дня..."
+    m 1hubsa "И такая погода — моя любимая, так же как и ты~."
+    m 3hua "Перехожу к следующему вопросу..."
     return
 
 label monika_player_appearance_eye_color_black:
-    $ persistent._mas_pm_eye_color = "black"
+    $ persistent._mas_pm_eye_color = "чёрные"
 
-    m 1esd "Black eyes are pretty uncommon, [player]."
-    m 4hksdlb "To tell you the truth, I've never actually seen anybody with black eyes, so I don't really know what they look like..."
-    m 3eua "But logically, I do know that they're not actually black. If that was the case, black-eyed people would look like they had no pupils!"
-    m 4eub "In reality, black eyes are just a very, very dark brown. Still stunning, but perhaps not as dark as the name suggests --although, to be fair, the difference is pretty hard to spot."
-    m 3eua "Here's a little bit of trivia for you--"
-    m 1eub "There was a well known lady from the time of the American Revolution, Elizabeth Hamilton, who was known to have captivating black eyes."
-    m 1euc "Her husband wrote about them often."
-    m 1hub "I don't know if you've heard of her or not, but despite the renown of her eyes, I'm sure yours are infinitely more captivating, [player]~"
-    m "Onto the next question--"
+    m 1esd "Чёрные глаза — довольно редкое явление., [player]."
+    m 4hksdlb "Честно говоря, я никогда не видела никого с чёрными глазами, поэтому не знаю, как они выглядят..."
+    m 3eua "Но исходя из логики, я знаю, что на самом деле они не чёрные. Если бы это было так, то черноглазые люди выглядели бы так, как будто у них нет зрачков!"
+    m 4eub "На самом деле чёрные глаза - это просто очень, очень тёмный коричневый цвет. Всё равно потрясающие, но, возможно, не такие тёмные, как кажется по названию, хотя, если честно, разницу заметить довольно трудно."
+    m 3eua "Вот тебе немного фактов..."
+    m 1eub "Была известная дама времен Американской революции, Элизабет Гамильтон, которая, как известно, обладала пленительными чёрными глазами."
+    m 1euc "Её муж часто писал о них."
+    m 1hub "Я не знаю, слышал ты о ней или нет, но, несмотря на известность её глаз, я уверена, что твои гораздо более пленительны, [player]~"
+    m "Переходим к следующему вопросу..."
     return
 
 label monika_player_appearance_eye_color_other:
-    $ persistent._mas_pm_eye_color = ask_color("What color are your eyes?")
+    $ persistent._mas_pm_eye_color = ask_color("Какого цвета твои глаза?")
 
-    m 3hub "Oh! That's a beautiful color, [player]!"
-    m 2eub "I'm sure I could get lost for hours, staring into your [persistent._mas_pm_eye_color] eyes."
-    m 7hua "Now, onto my next question--"
+    m 3hub "О! Это красивый цвет, [player]!"
+    m 2eub "Я уверен, что могу потеряться на несколько часов, глядя в твои [persistent._mas_pm_eye_color] глаза."
+    m 7hua "Теперь, к моему следующему вопросу..."
     return
 
 label monika_player_appearance_eye_color_heterochromia:
-    m 1sub "Really?{w=0.2} {nw}"
-    extend 3hua "That's incredible, [player]~"
-    m 3wud "If I recall correctly, less than one percent of people in the world have heterochromia!"
+    m 1sub "Правда?{w=0.2} {nw}"
+    extend 3hua "Это невероятно, [player]~"
+    m 3wud "Если я правильно помню, менее одного процента людей в мире имеют гетерохромию!"
 
-    m 1eka "...If you don't mind me asking..."
+    m 1eka "...Ты не возражаешь, если я спрошу..."
     # Ask the player about their eye colors separately.
     $ eyes_colors = []
 
     call monika_player_appearance_eye_color_ask
     $ eyes_colors.append(_return)
-    call monika_player_appearance_eye_color_ask("right", eye_color)
+    call monika_player_appearance_eye_color_ask("правый", eye_color)
     $ eyes_colors.append(_return)
     $ persistent._mas_pm_eye_color = tuple(eyes_colors)
 
-    m 1hua "Great!{w=0.2} {nw}"
-    extend 3eua "Let's get to my next question--"
+    m 1hua "Отлично!{w=0.2} {nw}"
+    extend 3eua "Перейдем к моему следующему вопросу..."
     return
 
-label monika_player_appearance_eye_color_ask(x_side_eye="left", last_color=None):
-    m 3eua "What color is your [x_side_eye] eye?{nw}"
+label monika_player_appearance_eye_color_ask(x_side_eye="левый", last_color=None):
+    m 3eua "Кого цвета твой [x_side_eye] глаз?{nw}"
     $ _history_list.pop()
     menu:
-        m "What color is your [x_side_eye] eye?{fast}"
+        m "Кого цвета твой [x_side_eye] глаз?{fast}"
 
-        "Blue" if last_color != "blue":
-            $ eye_color = "blue"
+        "Синий" if last_color != "blue":
+            $ eye_color = "синие"
 
-        "Brown" if last_color != "brown":
-            $ eye_color = "brown"
+        "Карий" if last_color != "brown":
+            $ eye_color = "карие"
 
-        "Green" if last_color != "green":
-            $ eye_color = "green"
+        "Зелёный" if last_color != "green":
+            $ eye_color = "зелёные"
 
-        "Hazel" if last_color != "hazel":
-            $ eye_color = "hazel"
+        "Ореховый" if last_color != "hazel":
+            $ eye_color = "ореховые"
 
-        "Gray" if last_color != "gray":
-            $ eye_color = "gray"
+        "Серый" if last_color != "gray":
+            $ eye_color = "серые"
 
-        "Black" if last_color != "black":
-            $ eye_color = "black"
+        "Чёрный" if last_color != "black":
+            $ eye_color = "чёрные"
 
-        "It's a different color...":
-            $ eye_color = ask_color("What color is your [x_side_eye] eye?")
+        "Он другого цвета...":
+            $ eye_color = ask_color("Какого цвета твой [x_side_eye] глаз?")
 
     return eye_color
 
@@ -12845,15 +12845,15 @@ label monika_player_appearance_eye_color_ask(x_side_eye="left", last_color=None)
 label monika_player_appearance_monika_height:
     if not persistent._mas_pm_units_height_metric:
         $ conv_height_str = ""
-        $ real_height_str = "around five-foot-five"
+        $ real_height_str = "около пяти футов пятидесяти пяти"
     else:
-        $ conv_height_str = " which is around one hundred and sixty centimeters"
-        $ real_height_str = "about one hundred and sixty-five-centimeters tall"
+        $ conv_height_str = " что составляет около ста шестидесяти сантиметров"
+        $ real_height_str = "рост около ста шестидесяти пяти сантиметров"
 
     if seen_event("monika_immortal"):
-        m 2eud "The wiki I mentioned before said that my concept height was five-foot-three,[conv_height_str] but that doesn't really sound right to me..."
-        m 2etc "Maybe it was changed? It was only the concept height after all."
-    m 3etd "If I had to guess, I'd say I'm maybe [real_height_str]?"
+        m 2eud "В вики, о которой я уже упоминала, говорится, что мой концептуальный рост — пять футов три дюйма,[conv_height_str], но мне кажется, что это не совсем правильно..."
+        m 2etc "Может быть, она была изменена? В конце концов, это была только концептуальная величина."
+    m 3etd "Если бы мне пришлось гадать, я бы сказала, что [real_height_str]?"
     return
 
 init 5 python:
@@ -13565,8 +13565,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_player_read_poetry",
-            category=['literature'],
-            prompt="Reading poetry",
+            category=['литература'],
+            prompt="Чтение поэзии",
             random=True
         )
     )
@@ -14424,7 +14424,7 @@ init 5 python:
             persistent.event_database,
             eventlabel="monika_failure",
             prompt="Справиться с неудачей",
-            category=['advice','life'],
+            category=['советы','жизнь'],
             random=True
         )
     )
