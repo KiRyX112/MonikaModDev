@@ -2,7 +2,7 @@
 init -990 python:
     store.mas_submod_utils.Submod(
         author="tw4449",
-        name="Комната видом на сад",
+        name="Комната с видом на сад",
         description="Этот сабмод добавляет минималистичный набор мебели в обычную комнату для тебя и Моники.",
         version="1.0.3"
     )
@@ -211,7 +211,7 @@ init 30 python:
     submod_background_garden_view = MASFilterableBackground(
         # ID
         "submod_background_garden_view",
-        "Комната видом на сад.",
+        "Комната с видом на сад.",
 
         # mapping of filters to MASWeatherMaps
         image_map=tw_room_utils.ROOM_IMG_MAPS[tw_room_utils.IND_SEASON_MAP[store.mas_seasons._currentSeason()]],
