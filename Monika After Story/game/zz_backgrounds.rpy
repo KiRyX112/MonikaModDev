@@ -2650,7 +2650,7 @@ init -10 python:
 init -20 python in mas_background:
     import store
     BACKGROUND_MAP = {}
-    BACKGROUND_RETURN = "Nevermind"
+    BACKGROUND_RETURN = "Не важно."
     dbg_log = False
     dbg_log_st = False
     DBG_MSG_C = "\nCurrent: {0} | {1}"
@@ -3085,7 +3085,7 @@ init -1 python:
     mas_background_def = MASFilterableBackground(
         
         store.mas_background.MBG_DEF,
-        "Spaceroom",
+        "Обычная классная комната",
 
         
         MASFilterWeatherMap(
