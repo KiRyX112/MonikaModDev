@@ -3189,7 +3189,7 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_change_background",
-            category=["location"],
+            category=["местонахождение"],
             prompt="Мы можем отправиться куда-нибудь ещё?",
             pool=True,
             unlocked=False,
