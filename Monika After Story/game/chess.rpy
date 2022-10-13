@@ -1485,7 +1485,7 @@ label mas_chess_dlg_quicksave_lost:
         pause 1.0
         m 1eka "Но не волнуйся, я всё исправлю....{w=0.3}{nw}"
         extend 3hua "Начав новую игру!"
-        m 3hub "Ахахаха~"
+        m 3hub "А-ха-ха-ха~"
 
     elif qs_gone_count == 3:
         m 1lksdlc "Я такая неуклюжая, [player]...{w=0.3} Прости."

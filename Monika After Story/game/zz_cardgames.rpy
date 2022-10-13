@@ -4938,7 +4938,7 @@ label mas_nou_reaction_monika_wins_round:
                 else:
                     m 3eua "Ты почти выиграл."
 
-                m 3hub "Эхехе~ хорошо сыграно!"
+                m 3hub "Э-хе-хе~ хорошо сыграно!"
 
             else:
                 m 3hub "Хорошо сыграли!"

@@ -1905,7 +1905,7 @@ label mas_song_save_the_last_dance_for_me:
     call mas_song_save_the_last_dance_for_me_lyrics
     m 6dublu "..."
     m 7eua "Эта песня очень важна для меня, [player]."
-    m 3rubsu "Каждый раз, когда я её слышу, мое сердце жаждет, чтобы мы наконец потанцевали вместе..."
+    m 3rubsu "Каждый раз, когда я её слышу, моё сердце жаждет, чтобы мы наконец потанцевали вместе..."
 
     if not mas_getEVL_shown_count("mas_song_save_the_last_dance_for_me"):
         m 1eua "На самом деле у этой песни есть интересная история, не хочешь послушать её сейчас?{nw}"
