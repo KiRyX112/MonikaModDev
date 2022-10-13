@@ -67,7 +67,7 @@ transform hangman_missed_label:
     xanchor 0 yanchor 0 xpos 680 ypos 105
 
 transform hangman_missed_chars:
-    xanchor 0 yanchor 0 xpos 780 ypos 105
+    xanchor 0 yanchor 0 xpos 795 ypos 105
 
 transform hangman_display_word:
     xcenter 975 yanchor 0 ypos 475
@@ -367,7 +367,7 @@ label game_hangman:
 
         # instruction text and other sensitive stuff
         instruct_txt = (
-            "Отгадай слово: (напиши «?», чтобы повторить подсказку, или «!», чтобы сдаться)"
+            "Отгадай слово: («?» - повтор подсказки, «!» - сдаться».)"
         )
 
         # instruct_txt = instruct_txt.format("'?' to repeat the hint, ")
@@ -397,7 +397,7 @@ label mas_hangman_game_preloop:
     python:
         # setup constant displayabels
         missed_label = Text(
-            "Промахи:    ",
+            "Промахи:",
             font=mas_hmg.WORD_FONT,
             color=mas_hmg.WORD_COLOR,
             size=mas_hmg.WORD_SIZE,
