@@ -385,6 +385,7 @@ init -3 python in mas_piano_keys:
     import store
     import pygame # we need this for keymaps
     import os
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
     log = store.mas_logging.init_log(
         "pnm",
         append=False,
@@ -408,10 +409,10 @@ init -3 python in mas_piano_keys:
 
     # directory setup
     pnml_basedir = os.path.normcase(
-        renpy.config.basedir + "/piano_songs/"
+        user_dir + "/piano_songs/"
     )
     stock_pnml_basedir = os.path.normcase(
-        renpy.config.basedir + "/game/mod_assets/games/piano/songs/"
+        user_dir + "/game/mod_assets/games/piano/songs/"
     )
     no_pnml_basedir = False
     try:

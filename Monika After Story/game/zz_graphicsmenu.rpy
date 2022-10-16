@@ -336,7 +336,7 @@ screen mas_gmenu_confirm(sel_rend):
             yalign .5
             spacing 30
 
-            label _("Сменить рендер на " + sel_rend + "?"):
+            label _("Сменить рендерер на " + sel_rend + "?"):
                 style "confirm_prompt"
                 xalign 0.5
 
@@ -360,7 +360,7 @@ label mas_gmenu_start:
     if sel_render != curr_render:
         # a different renderer was selected, time to adjust the environment
         python:
-            env_file = config.basedir + "/environment.txt"
+            env_file = user_dir + "/environment.txt"
             env_file = env_file.replace("\\", "/")
             env_var = 'RENPY_RENDERER="{0}"'
 

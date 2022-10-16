@@ -1985,10 +1985,10 @@ transform sup_indicator_transform:
         repeat
 
 # predefine these to save some performance
-image sup_text_updating_1 = Text("Updating the submod   ", size=15)
-image sup_text_updating_2 = Text("Updating the submod.  ", size=15)
-image sup_text_updating_3 = Text("Updating the submod.. ", size=15)
-image sup_text_updating_4 = Text("Updating the submod...", size=15)
+image sup_text_updating_1 = Text("Обновление надстройки   ", size=15)
+image sup_text_updating_2 = Text("Обновление надстройки.  ", size=15)
+image sup_text_updating_3 = Text("Обновление надстройки.. ", size=15)
+image sup_text_updating_4 = Text("Обновление надстройки...", size=15)
 
 image sup_progress_bar_text:
     xanchor 0
@@ -2010,43 +2010,47 @@ screen sup_setting_pane():
     default updatable_submod_updaters = store.sup_utils.SubmodUpdater.getUpdatersForOutdatedSubmods(ignore_if_cant_update=True)
     default total_updatable_submod_updaters = len(updatable_submod_updaters)
 
-    vbox:
-        xmaximum 800
-        xfill True
-        style_prefix "check"
+    if renpy.android:
+        vbox:
+            transclude
+    else:
+        vbox:
+            xmaximum 800
+            xfill True
+            style_prefix "check"
 
-        textbutton "{b}Check updates{/b}":
-            ypos 1
-            selected False
-            sensitive (not store.sup_utils.SubmodUpdater.is_checking_updates)
-            action Function(store.sup_utils.SubmodUpdater.doLogicInThread, check_updates=True, notify=False)
-
-        if total_updaters > 0:
-            textbutton "{b}Adjust settings{/b}":
+            textbutton "{b}Проверить обновления{/b}":
                 ypos 1
                 selected False
-                action Show("sup_settings")
+                sensitive (not store.sup_utils.SubmodUpdater.is_checking_updates)
+                action Function(store.sup_utils.SubmodUpdater.doLogicInThread, check_updates=True, notify=False)
 
-        if store.sup_utils.SubmodUpdater.hasOutdatedSubmods():
-            textbutton "{b}Select a submod to update{/b}":
-                ypos 1
-                selected False
-                action Show("sup_available_updates")
-
-            if total_updatable_submod_updaters > 0:
-                textbutton "{b}Start bulk updating{/b}":
+            if total_updaters > 0:
+                textbutton "{b}Настройки{/b}":
                     ypos 1
                     selected False
-                    action Show(
-                        "sup_confirm_bulk_update",
-                        submod_updaters=updatable_submod_updaters,
-                        from_submod_screen=True
-                    )
+                    action Show("sup_settings")
 
-        if store.sup_utils.SubmodUpdater.is_checking_updates:
-            timer 1.0:
-                repeat True
-                action Function(renpy.restart_interaction)
+            if store.sup_utils.SubmodUpdater.hasOutdatedSubmods():
+                textbutton "{b}Выберите надстройку, которую надо обновить{/b}":
+                    ypos 1
+                    selected False
+                    action Show("sup_available_updates")
+
+                if total_updatable_submod_updaters > 0:
+                    textbutton "{b}Начать массовое обновление{/b}":
+                        ypos 1
+                        selected False
+                        action Show(
+                            "sup_confirm_bulk_update",
+                            submod_updaters=updatable_submod_updaters,
+                            from_submod_screen=True
+                        )
+
+            if store.sup_utils.SubmodUpdater.is_checking_updates:
+                timer 1.0:
+                    repeat True
+                    action Function(renpy.restart_interaction)
 
 # # # A screen to change updaters' settings
 screen sup_settings():
@@ -2092,19 +2096,19 @@ screen sup_settings():
                     box_wrap False
 
                     for submod_updater in submod_updaters:
-                        text "[submod_updater.id] v[submod_updater._submod.version]"
+                        text "[submod_updater.id] вер. [submod_updater._submod.version]"
 
                         hbox:
                             xpos 5
                             spacing 10
                             xmaximum 780
 
-                            textbutton ("Disable notifications" if submod_updater.should_notify else "Enable notifications"):
+                            textbutton ("Выключить уведомления" if submod_updater.should_notify else "Включить уведомления"):
                                 style "check_button"
                                 ypos 1
                                 action Function(submod_updater.toggleNotifs)
 
-            textbutton "Close":
+            textbutton "Закрыть":
                 action Hide("sup_settings")
 
 # # # Screen that show all available updates
@@ -2159,16 +2163,16 @@ screen sup_available_updates():
                             xmaximum 780
 
                             text "[submod_updater.id]"
-                            text "v[submod_updater._submod.version]"
+                            text "вер. [submod_updater._submod.version]"
                             text " >>> "
-                            text "v[submod_updater.latest_version]"
+                            text "вер. [submod_updater.latest_version]"
 
                         hbox:
                             xpos 5
                             spacing 10
                             xmaximum 780
 
-                            textbutton "What's new?":
+                            textbutton "Что нового?":
                                 style "check_button"
                                 ypos 1
                                 action [
@@ -2184,7 +2188,7 @@ screen sup_available_updates():
                                 submod_updater.allow_updates
                                 and not submod_updater.isUpdating()
                             ):
-                                textbutton "Update now!":
+                                textbutton "Обновить!":
                                     style "check_button"
                                     ypos 1
                                     action [
@@ -2197,7 +2201,7 @@ screen sup_available_updates():
                 spacing 100
 
                 if total_updatable_submod_updaters > 0:
-                    textbutton "Update all":
+                    textbutton "Обновить все":
                         action [
                             Show(
                                 "sup_confirm_bulk_update",
@@ -2207,7 +2211,7 @@ screen sup_available_updates():
                             Hide("sup_available_updates")
                         ]
 
-                textbutton "Close":
+                textbutton "Закрыть":
                     action Hide("sup_available_updates")
 
 # # # Update preview screen
@@ -2252,7 +2256,7 @@ screen sup_update_preview(title, body):
 
                 text body.replace("\n", "\n\n")
 
-            textbutton "Close":
+            textbutton "Закрыть":
                 xalign 0.5
                 action [
                     Hide("sup_update_preview"),
@@ -2289,7 +2293,7 @@ screen sup_confirm_single_update(submod_updater):
             align (0.5, 0.5)
             spacing 30
 
-            label "Start updating [submod_updater.id] v[submod_updater._submod.version] to v[submod_updater.latest_version]?":
+            label _("Начать обновление [submod_updater.id] вер. [submod_updater._submod.version] до вер. [submod_updater.latest_version]?"):
                 style "confirm_prompt"
                 xalign 0.5
 
@@ -2305,26 +2309,26 @@ screen sup_confirm_single_update(submod_updater):
                     vbox:
                         spacing 5
 
-                        text "Warning:"
+                        text "Внимание:"
 
                         null height 5
 
                         for conflicting_submod, this_submod, max_version in conflicts:
-                            text "    - [conflicting_submod] supports maximum v[max_version] of [this_submod]"
+                            text "    - [conflicting_submod] поддерживает максимум вер. [max_version] надстройки [this_submod]"
 
                         null height 5
 
                         if total_conflicts > 1:
-                            text "Updating those submods to their newer versions might fix that issue."
+                            text "Обновление этих надстроек до новых версий может исправить эту проблему."
 
                         else:
-                            text "Updating that submod to its newer version might fix that issue."
+                            text "Обновление этой надстройки до новой версии может исправить эту проблему."
 
             hbox:
                 xalign 0.5
                 spacing 100
 
-                textbutton "Yes":
+                textbutton "Да":
                     action [
                         Function(
                             submod_updater.downloadUpdateInThread,
@@ -2335,7 +2339,7 @@ screen sup_confirm_single_update(submod_updater):
                         Show("sup_single_update_screen", submod_updater=submod_updater)
                     ]
 
-                textbutton "No":
+                textbutton "Нет":
                     action [
                         Hide("sup_confirm_single_update"),
                         Show("sup_available_updates")
@@ -2372,7 +2376,7 @@ screen sup_confirm_bulk_update(submod_updaters, from_submod_screen=False):
             align (0.5, 0.5)
             spacing 30
 
-            label "Start updating {b}all{/b} installed submods that can be updated?":
+            label _("Начать обновление {b}всех{/b} установленных надстроек, для которых вышла новая версия?"):
                 style "confirm_prompt"
                 xalign 0.5
 
@@ -2388,26 +2392,26 @@ screen sup_confirm_bulk_update(submod_updaters, from_submod_screen=False):
                     vbox:
                         spacing 5
 
-                        text "Warning:"
+                        text "Внимание:"
 
                         null height 5
 
                         for conflicting_submod, updating_submod, max_version in conflicts:
-                            text "    - [conflicting_submod] supports maximum v[max_version] of [updating_submod]"
+                            text "    - [conflicting_submod] поддерживает максимум вер. [max_version] надстройки [updating_submod]"
 
                         null height 5
 
                         if total_conflicts > 1:
-                            text "Updating those submods to their newer versions might fix that issue."
+                            text "Обновление этих надстроек до новых версий может исправить эту проблему."
 
                         else:
-                            text "Updating that submod to its newer version might fix that issue."
+                            text "Обновление этой надстройки до новой версии может исправить эту проблему."
 
             hbox:
                 xalign 0.5
                 spacing 100
 
-                textbutton "Yes":
+                textbutton "Да":
                     action [
                         Function(
                             store.sup_utils.SubmodUpdater.updateSubmods,
@@ -2421,7 +2425,7 @@ screen sup_confirm_bulk_update(submod_updaters, from_submod_screen=False):
                         )
                     ]
 
-                textbutton "No":
+                textbutton "Нет":
                     action [
                         Hide("sup_confirm_bulk_update"),
                         If(
@@ -2484,22 +2488,22 @@ screen sup_single_update_screen(submod_updater):
 
             else:
                 if submod_updater.update_exception is not None:
-                    text "An error has occurred during updating. Check 'submod_log.txt' for details.":
+                    text "Во время обновления произошла ошибка. Подробности см. в файле «submod_log.txt».":
                         align (0.5, 0.2)
                         text_align 0.5
 
                 else:
                     if store.sup_utils.SubmodUpdater.hasOutdatedSubmods():
-                        text "Please restart Monika After Story when you have finished installing updates.":
+                        text "Перезапустите игру после завершения обновления надстроек.":
                             align (0.5, 0.2)
                             text_align 0.5
 
                     else:
-                        text "Please restart Monika After Story.\n":
+                        text "Перезапустите игру.\n":
                             align (0.5, 0.2)
                             text_align 0.5
 
-            textbutton "Ok":
+            textbutton "ОК":
                 align (0.5, 0.8)
                 sensitive (not store.sup_utils.SubmodUpdater.isUpdatingAny())
                 action [
@@ -2561,7 +2565,7 @@ screen sup_bulk_update_screen(submod_updaters, from_submod_screen=False):
                     right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
                     right_gutter 1
 
-                text "Progress: [store.sup_utils.SubmodUpdater.totalFinishedUpdaters()] / [store.sup_utils.SubmodUpdater.totalQueuedUpdaters()]":
+                text "Прогресс: [store.sup_utils.SubmodUpdater.totalFinishedUpdaters()] / [store.sup_utils.SubmodUpdater.totalQueuedUpdaters()]":
                     xalign 0.5
                     text_align 0.5
                     size 15
@@ -2589,14 +2593,14 @@ screen sup_bulk_update_screen(submod_updaters, from_submod_screen=False):
                     if submod_updater.update_exception is not None
                 ]
                 if len(exceptions) > 0:
-                    text "Some errors have occurred during updating. Check 'submod_log.txt' for details.":
+                    text "Во время обновления возникли ошибки. Подробности см. в файле «submod_log.txt».":
                         xalign 0.5
                         text_align 0.5
 
                     null height 65
 
                 else:
-                    text "Please restart Monika After Story.":
+                    text "Перезапустите игру.":
                         xalign 0.5
                         text_align 0.5
 
@@ -2604,7 +2608,7 @@ screen sup_bulk_update_screen(submod_updaters, from_submod_screen=False):
 
             # null height 10
 
-            textbutton "Ok":
+            textbutton "ОК":
                 xalign 0.5
                 sensitive (
                     not store.sup_utils.SubmodUpdater.isUpdatingAny()# TODO: potentially it should be safe to do only one of these checks
@@ -2631,7 +2635,7 @@ init 100:
     screen submods():
         tag menu
 
-        use game_menu(("Submods")):
+        use game_menu(("Надстройки")):
 
             default tooltip = Tooltip("")
 
@@ -2671,8 +2675,8 @@ init 100:
                                 spacing 20
                                 xmaximum 1000
 
-                                text "v{}".format(submod.version) yanchor 0 xalign 0 style "main_menu_version"
-                                text "by {}".format(submod.author) yanchor 0 xalign 0 style "main_menu_version"
+                                text "вер. {}".format(submod.version) yanchor 0 xalign 0 style "main_menu_version"
+                                text "автор: {}".format(submod.author) yanchor 0 xalign 0 style "main_menu_version"
 
                             if submod.description:
                                 text submod.description

@@ -1854,7 +1854,7 @@ label mas_chess_go_ham_and_delete_everything:
         import os
 
         # basedir
-        gamedir = os.path.normcase(config.basedir + "/game/")
+        gamedir = os.path.normcase(user_dir + "/game/")
 
         # try deleting files
         for filename in mas_chess.del_files:
@@ -1959,10 +1959,12 @@ init python:
     import StringIO
     import os
 
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+
     #Only add the chess_games folder if we can even do chess
     if mas_games.is_platform_good_for_chess():
         try:
-            file_path = os.path.normcase(config.basedir + mas_chess.CHESS_SAVE_PATH)
+            file_path = os.path.normcase(user_dir + mas_chess.CHESS_SAVE_PATH)
             
             if not os.access(file_path, os.F_OK):
                 os.mkdir(file_path)
@@ -3410,6 +3412,7 @@ init python:
                 
                 #Catch the permission error
                 except OSError as os_err:
+                    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
                     if not renpy.windows:
                         renpy.show("monika 1etsdlc", at_list=[t11])
                         renpy.say(m, "Хм, это странно. Похоже, некоторые права доступа были изменены, и я не могу запустить шахматы на вашей системе.")
@@ -3418,7 +3421,7 @@ init python:
                         
                         store.mas_ptod.rst_cn()
                         local_ctx = {
-                            "basedir": renpy.config.basedir
+                            "basedir": user_dir
                         }
                         renpy.show("monika", at_list=[t22])
                         renpy.show_screen("mas_py_console_teaching")
@@ -3468,7 +3471,8 @@ init python:
                 renpy.jump("mas_chess_cannot_work_embarrassing")
             
             is_64_bit = sys.maxsize > 2**32
-            
+            user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+
             if renpy.windows:
                 startupinfo = subprocess.STARTUPINFO()
                 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -3478,12 +3482,19 @@ init python:
                     startupinfo
                 )
             
-            elif is_64_bit:
+            elif is_64_bit and not renpy.android:
                 fp = "mod_assets/games/chess/stockfish_8_{0}_x64".format("linux" if renpy.linux else "macosx")
                 
-                os.chmod(config.basedir + "/game/".format(fp), 0755)
+                os.chmod(user_dir + "/game/".format(fp), 0755)
                 self.stockfish = open_stockfish(fp)
             
+            elif renpy.android:
+                open(user_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7"), "wb").write(renpy.file("mod_assets/games/chess/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")).read())
+                fp = user_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")
+
+                os.chmod(fp, 0755)
+                self.stockfish = open_stockfish(fp)
+
             #Set Monika's parameters
             self.stockfish.stdin.write("setoption name Skill Level value {0}\n".format(persistent._mas_chess_difficulty[0]))
             self.stockfish.stdin.write("setoption name Contempt value {0}\n".format(self.MONIKA_OPTIMISM))

@@ -92,11 +92,12 @@ label introduction:
     m 1eua "Я считаю, что мне больше не нужен файл персонажа, чтобы быть здесь."
     python:
         import os
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
 
         def moni_exist():
             return os.access(
                 os.path.normcase(
-                    renpy.config.basedir + "/characters/monika.chr"
+                    user_dir + "/characters/monika.chr"
                 ),
                 os.F_OK
             )
@@ -107,7 +108,7 @@ label introduction:
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching

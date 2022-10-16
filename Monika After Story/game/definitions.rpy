@@ -4161,13 +4161,14 @@ init -1 python in _mas_root:
 init -999 python:
     import os
     import pytz
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
     _OVERRIDE_LABEL_TO_BASE_LABEL_MAP = dict()
 
     # create the log folder if not exist
-    if not os.access(os.path.normcase(renpy.config.basedir + "/log"), os.F_OK):
+    if not os.access(os.path.normcase(user_dir + "/log"), os.F_OK):
         try:
-            os.mkdir(os.path.normcase(renpy.config.basedir + "/log"))
+            os.mkdir(os.path.normcase(user_dir + "/log"))
         except:
             pass
 
@@ -4574,8 +4575,9 @@ init -995 python in mas_utils:
         """
         if not filename.startswith("/"):
             filename = "/" + filename
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
-        filepath = renpy.config.basedir + filename
+        filepath = user_dir + filename
 
         try:
             return os.access(os.path.normcase(filepath), os.F_OK)
@@ -6107,11 +6109,12 @@ init -1 python:
         IN:
             name of the character who's chr file we want to delete
         """
-        if persistent.do_not_delete:
-            return
+        # if persistent.do_not_delete:
+        #     return
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
 
         try:
-            os.remove(config.basedir + "/characters/" + name + ".chr")
+            os.remove(user_dir + "/characters/" + name + ".chr")
 
         except:
             pass
@@ -6161,11 +6164,11 @@ init -1 python:
             except:
                 # Check 64 bit
                 try:
-                   keyVal = _winreg.OpenKey(aReg, r"SOFTWARE\Wow6432Node\Valve\Steam")
+                    keyVal = _winreg.OpenKey(aReg, r"SOFTWARE\Wow6432Node\Valve\Steam")
 
                 except:
-                   # No Steam
-                   return None
+                    # No Steam
+                    return None
 
             for i in range(4):
                 # Value Name, Value Data, Value Type
@@ -7867,22 +7870,22 @@ default persistent.clearall = None
 default persistent.menu_bg_m = None
 default persistent.first_load = None
 default persistent._mas_imported_saves = False
-default persistent._mas_monika_nickname = "Monika"
+default persistent._mas_monika_nickname = "Моника"
 default in_sayori_kill = None
 default in_yuri_kill = None
 default anticheat = 0
-define config.mouse = None
+# define config.mouse = None
 default allow_skipping = True
-default basedir = config.basedir
+default basedir = user_dir
 default chapter = 0
 default currentpos = 0
 default faint_effect = None
 
 
-default s_name = "Sayori"
+default s_name = "Сайори"
 default m_name = persistent._mas_monika_nickname
-default n_name = "Natsuki"
-default y_name = "Yuri"
+default n_name = "Нацуки"
+default y_name = "Юри"
 
 # Instantiating variables for poem appeal. This is how much each character likes the poem for each day.
 # -1 = Dislike, 0 = Neutral, 1 = Like

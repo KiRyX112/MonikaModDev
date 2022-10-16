@@ -802,16 +802,17 @@ label mas_backups_could_not_copy:
 
     python:
         import os
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
         store.mas_utils.trywrite(
-            os.path.normcase(renpy.config.basedir + "/characters/recovery.txt"),
+            os.path.normcase(user_dir + "/characters/recovery.txt"),
             "".join([
-                "1. Navigate to '",
+                "1. Открой директорию «",
                 renpy.config.savedir,
-                "'.\n",
-                "2. Delete the file called 'persistent'.\n",
-                "3. Make a copy of the file called '",
+                "».\n",
+                "2. Удали файл с названием «persistent».\n",
+                "3. Создай копию файла с названием «",
                 mas_backup_copy_filename,
-                "' and name it 'persistent'."
+                "» и переименуй его в «persistent»."
             ])
         )
 

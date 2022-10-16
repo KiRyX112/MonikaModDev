@@ -1153,7 +1153,9 @@ init 5 python:
         
         MID_TEXT += "\n"
         
-        with open(renpy.config.basedir + "/characters/список.txt", "w") as shopping_list:
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+
+        with open(user_dir + "/characters/список.txt", "w") as shopping_list:
             shopping_list.write(
                 renpy.substitute(START_TEXT + MID_TEXT + END_TEXT)
             )

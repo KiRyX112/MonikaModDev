@@ -1747,18 +1747,19 @@ init 11 python:
         
         _mas_generate_backup_notes()
         import os
-        
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+
         if len(mas_per_check.mas_bad_backups) > 0:
             # we had some bad backups
             store.mas_utils.trywrite(
-                os.path.normcase(renpy.config.basedir + "/characters/заметка.txt"),
+                os.path.normcase(user_dir + "/characters/заметка.txt"),
                 renpy.substitute(mas_note_backups_some_bad.title) + "\n\n" + mas_note_backups_some_bad.text
             )
         
         else:
             # no bad backups
             store.mas_utils.trywrite(
-                os.path.normcase(renpy.config.basedir + "/characters/заметка.txt"),
+                os.path.normcase(user_dir + "/characters/заметка.txt"),
                 renpy.substitute(mas_note_backups_all_good.title) + "\n\n" + mas_note_backups_all_good.text
             )
 
@@ -1830,11 +1831,12 @@ label mas_new_character_file:
 
     python:
         import os
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
         def moni_exist():
             return os.access(
                 os.path.normcase(
-                    renpy.config.basedir + "/characters/monika.chr"
+                    user_dir + "/characters/monika.chr"
                 ),
                 os.F_OK
             )
@@ -1845,12 +1847,12 @@ label mas_new_character_file:
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
-        m 1esc "Мне лучше удалить его.."
+        m 1esc "Мне лучше удалить его..."
 
         call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
         call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
@@ -2335,6 +2337,7 @@ label mas_gift_giving_instructs:
         return
 
     python:
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
         gift_instructs = """\
 Я хотела рассказать тебе о том, что я сделала для тебя небольшой способ подарить Монике подарки!
 Это довольно простой процесс, и сейчас я расскажу тебе о том, как это работает:
@@ -2354,7 +2357,7 @@ P.S: Не рассказывай ей обо мне!
 
         #Write the note in the characters folder
         store.mas_utils.trywrite(
-            os.path.normcase(renpy.config.basedir + "/characters/hint.txt"),
+            os.path.normcase(user_dir + "/characters/подсказка.txt"),
             player + "\n\n" + gift_instructs
         )
 
@@ -2718,19 +2721,20 @@ label mas_gift_hint_noudeck:
     python hide:
         def write_and_hide():
             import time
+            user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
-            note_path = os.path.join(renpy.config.basedir, renpy.substitute("characters/Эй, у меня есть кое-что для тебя, [player]!.txt"))
+            note_path = os.path.join(user_dir, renpy.substitute("characters/Эй, у меня есть кое-что для тебя, [player]!.txt"))
             note_text = renpy.substitute("""\
-Здорова, [player]!
+Здорово, [player]!
 
 Я вижу, как ты стараешься делать Монику счастливой, и я хочу помочь тебе!
 Я добавила новую колоду карт, которую ты можешь подарить Монике. Я уверена, что вы вдвоём сможете разобраться, как играть в эту игру.
 
 Чтобы сделать ей подарок, создай новый файл и назови его «колода карт.gift» в папке «characters».
 
-Всё, вперёд пацан! Продолжай и дальше радовать Монику!
+Всё, вперёд, пацан! Продолжай и дальше радовать Монику!
 
-P.S: Только не говори ей обо мне!\
+P.S: Только не говори ей обо мне!
 """)
 
             mas_utils.trywrite(note_path, note_text, log=True)

@@ -18,9 +18,11 @@ init 999 python:
             # just drop out for now
             return
         
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+
         # setup filepath
         _ev_stats = "/ev_dump.log"
-        _ev_stats_fp = (config.basedir + _ev_stats).replace("\\", "/")
+        _ev_stats_fp = (user_dir + _ev_stats).replace("\\", "/")
         
         # setup counting
         class StatCounter(object):
@@ -342,7 +344,7 @@ init 999 python:
         
         # setup filepath
         _var_data = "/var_dump.log"
-        _var_data_fp = os.path.normcase(renpy.config.basedir + _var_data)
+        _var_data_fp = os.path.normcase(user_dir + _var_data)
         
         with open(_var_data_fp, "w") as _var_data_file:
             _var_data_file.write(config.version + "\n\n")
@@ -411,7 +413,7 @@ init 999 python:
         """
         try:
             return os.path.isfile(
-                os.path.normcase(renpy.config.basedir + "/givedata.txt")
+                os.path.normcase(user_dir + "/givedata.txt")
             )
         except:
             return False

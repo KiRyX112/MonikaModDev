@@ -222,9 +222,10 @@ python early in mas_logging:
             extra_props["pfx_newline"] = newline_def
             super(MASNewlineLogAdapter, self).__init__(logger, extra_props)
 
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
     #We always log to renpy.config.basedir/log
-    LOG_PATH = os.path.join(renpy.config.basedir, "log")
+    LOG_PATH = os.path.join(user_dir, "log")
 
     LOG_MAXSIZE_B = 5242880 #5 mb
 
