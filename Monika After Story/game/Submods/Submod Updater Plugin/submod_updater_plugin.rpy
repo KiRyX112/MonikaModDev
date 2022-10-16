@@ -1968,14 +1968,17 @@ init python in sup_utils:
     mas_submod_utils.registerFunction("ch30_day", SubmodUpdater.doLogicInThread, auto_error_handling=False)
 
 # # # Icons for different update states
-image sup_indicator_update_downloading = store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.INDICATOR_UPDATE_DOWNLOADING
+image sup_indicator_update_downloading = "Submods/Submod Updater Plugin/indicator_update_downloading.png"
+# image sup_indicator_update_downloading = store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.INDICATOR_UPDATE_DOWNLOADING
 
-image sup_indicator_update_available = store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.INDICATOR_UPDATE_AVAILABLE
+image sup_indicator_update_downloading = "Submods/Submod Updater Plugin/indicator_update_available.png"
+# image sup_indicator_update_available = store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.INDICATOR_UPDATE_AVAILABLE
 
 # basically a placeholder
 image sup_indicator_no_update = Null(height=20)
 
-image sup_indicator_beta_warning = store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.INDICATOR_BETA_WARNING
+image sup_indicator_beta_warning = "Submods/Submod Updater Plugin/indicator_beta_warning.png"
+# image sup_indicator_beta_warning = store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.INDICATOR_BETA_WARNING
 
 transform sup_indicator_transform:
     block:
@@ -2477,8 +2480,10 @@ screen sup_single_update_screen(submod_updater):
                         xysize (400, 25)
                         value store.sup_utils.SubmodUpdater.single_progress_bar
                         thumb None
-                        left_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.LEFT_BAR, 2, 2)
-                        right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
+                        left_bar Frame("Submods/Submod Updater Plugin/left_bar.png", 2, 2)
+                        right_bar Frame("Submods/Submod Updater Plugin/right_bar.png", 2, 2)
+                        # left_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.LEFT_BAR, 2, 2)
+                        # right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
                         right_gutter 1
 
                     add "sup_progress_bar_text":
@@ -2561,8 +2566,10 @@ screen sup_bulk_update_screen(submod_updaters, from_submod_screen=False):
                     xysize (400, 25)
                     value store.sup_utils.SubmodUpdater.bulk_progress_bar
                     thumb None
-                    left_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.LEFT_BAR, 2, 2)
-                    right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
+                    left_bar Frame("Submods/Submod Updater Plugin/left_bar.png", 2, 2)
+                    right_bar Frame("Submods/Submod Updater Plugin/right_bar.png", 2, 2)
+                    # left_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.LEFT_BAR, 2, 2)
+                    # right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
                     right_gutter 1
 
                 text "Прогресс: [store.sup_utils.SubmodUpdater.totalFinishedUpdaters()] / [store.sup_utils.SubmodUpdater.totalQueuedUpdaters()]":
@@ -2577,8 +2584,10 @@ screen sup_bulk_update_screen(submod_updaters, from_submod_screen=False):
                     xysize (400, 25)
                     value store.sup_utils.SubmodUpdater.single_progress_bar
                     thumb None
-                    left_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.LEFT_BAR, 2, 2)
-                    right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
+                    left_bar Frame("Submods/Submod Updater Plugin/left_bar.png", 2, 2)
+                    right_bar Frame("Submods/Submod Updater Plugin/right_bar.png", 2, 2)
+                    # left_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.LEFT_BAR, 2, 2)
+                    # right_bar Frame(store.sup_utils.SubmodUpdater.getDirectoryFor("Submod Updater Plugin", False) + store.sup_utils.SubmodUpdater.RIGHT_BAR, 2, 2)
                     right_gutter 1
 
                 add "sup_progress_bar_text":
