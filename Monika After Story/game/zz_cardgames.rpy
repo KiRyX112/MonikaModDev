@@ -662,8 +662,10 @@ init 5 python in mas_nou:
             'Loads' sound assets from the disk
             This should be called on init, but after class creation
             """
-            nou_ma_dir = os.path.join(ASSETS, "sfx")
-            nou_sfx = os.listdir(os.path.join(config.gamedir, nou_ma_dir))
+            # nou_ma_dir = os.path.join(ASSETS, "sfx")
+            # nou_sfx = os.listdir(os.path.join(config.gamedir, nou_ma_dir))
+            nou_ma_dir = "mod_assets/games/nou"
+            nou_sfx = [ x for x in renpy.list_files() if x.startswith("mod_assets/games/nou/sfx") and x.endswith(".mp3") ]
 
             cls._reset_sfx()
 
@@ -675,17 +677,17 @@ init 5 python in mas_nou:
                 "shove": cls.SFX_PLAY
             }
 
-            for f in nou_sfx:
-                if not f.endswith(cls.SFX_EXT):
+            for u in nou_sfx:
+                if not u.endswith(cls.SFX_EXT):
                     continue
 
-                name, undscr, rest = f.partition("_")
+                name, undscr, rest = u.partition("_")
                 sfx_list = name_to_sfx_list_map.get(name, None)
                 if sfx_list is None:
                     continue
 
-                f = os.path.join(nou_ma_dir, f).replace("\\", "/")
-                sfx_list.append(f)
+                # u = os.path.join(nou_ma_dir, u).replace("\\", "/")
+                sfx_list.append(u)
 
         @staticmethod
         def _play_sfx(sfx_files, channel="sound"):
