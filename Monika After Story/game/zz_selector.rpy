@@ -53,8 +53,8 @@ init -100 python in mas_selspr:
         "earrings": {
             "_ev": "monika_earrings_select",
             "_min-items": 1,
-            "change": "Могла бы ты сменить серги?",
-            "wear": "Могла бы ты надеть серги?",
+            "change": "Могла бы ты сменить серьги?",
+            "wear": "Могла бы ты надеть серьги?",
         },
         "hair": {
             "_not_group": True,
@@ -3957,7 +3957,7 @@ label mas_selector_generic_sidebar_select_acs(acs_type, use_acs=None, set_compat
             elif acs_type == "hat":
                 idle_dlg = "Какой головной убор ты хочешь, чтобы я надела?"
             elif acs_type == "earrings":
-                idle_dlg = "Какие серги ты хочешь, чтобы я надела?"
+                idle_dlg = "Какие серьги ты хочешь, чтобы я надела?"
             elif acs_type == "mini-ribbon":
                 idle_dlg = "Какую мини-ленточку ты хочешь, чтобы я надела?"
             else:
