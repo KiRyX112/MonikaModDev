@@ -1991,7 +1991,7 @@ init 5 python in mas_nou:
                         else:
                             if card.type == "action":
                                 if card.label == "Draw Two":
-                                    card_for_reflect = "+2{/i} или {i}+4"
+                                    card_for_reflect = "+2{/i} или {i}+4" # {/i}
 
                                 else:
                                     card_for_reflect = card.label
@@ -1999,7 +1999,7 @@ init 5 python in mas_nou:
                                 color_for_reflect = ""
 
                             else:
-                                card_for_reflect = "+2{/i} или {i}+4"
+                                card_for_reflect = "+2{/i} или {i}+4" # {/i}
                                 color_for_reflect = card.color
 
                         dlg_line_list.append(
@@ -5335,7 +5335,7 @@ init -10 python in mas_cardgames:
 
     # The path to the desk assets, place your background there to automatically load it into the map
     # NOTE: THE FILE NAME MUST CONSIST OF THE BACKGROUND ID
-    GAME_DIR_PATH = renpy.config.gamedir.replace("\\", "/") + "/"
+    # GAME_DIR_PATH = renpy.config.gamedir.replace("\\", "/") + "/"
     # NOTE: Linux doesn't like leading slashes
     DESK_SPRITES_PATH = "mod_assets/games/nou/desks/"
     # The map between backgrounds and desk sprites
@@ -5351,9 +5351,11 @@ init -10 python in mas_cardgames:
         """
         sprites_map = dict()
         # Get the sprites we have
-        for file in store.MASDockingStation(GAME_DIR_PATH + DESK_SPRITES_PATH).getPackageList():
+        # for file in store.MASDockingStation(GAME_DIR_PATH + DESK_SPRITES_PATH).getPackageList():
+        for file in [ x for x in renpy.list_files() if x.startswith(DESK_SPRITES_PATH) and x.endswith(".png") ]:
             # Remove the extension
-            key = file.rpartition(".")[0]
+            # key = file.rpartition(".")[0]
+            key = file.split("/")[-1].rstrip(".png")
             if key:
                 sprites_map[key] = file
 
@@ -5361,8 +5363,9 @@ init -10 python in mas_cardgames:
         fb = sprites_map.get(store.mas_background.MBG_DEF)
         for bg_id in store.mas_background.BACKGROUND_MAP.iterkeys():
             if bg_id not in DESK_SPRITES_MAP:
-                filename = sprites_map.get(bg_id, fb)
-                DESK_SPRITES_MAP[bg_id] = MASFilterSwitch(DESK_SPRITES_PATH + filename)
+                # filename = sprites_map.get(bg_id, fb)
+                DESK_SPRITES_MAP[bg_id] = "mod_assets/games/nou/desks/spaceroom.png"
+                # DESK_SPRITES_MAP[bg_id] = MASFilterSwitch(DESK_SPRITES_PATH + filename)
 
     class DeskSpriteSwitch(renpy.display.core.Displayable):
         """
