@@ -3,10 +3,10 @@
 init -990 python:
     store.mas_submod_utils.Submod(
         author="Booplicate",
-        name="Submod Updater Plugin",
+        name="Утилита обновления надстроек",
         description=(
-            "A util submod that adds an in-game updater for other submods. "
-            "Check {a=https://github.com/Booplicate/MAS-Submods-SubmodUpdaterPlugin}{i}{u}here{/u}{/i}{/a} if you want your submod to use this."
+            "Надстройка, которая добавляет внутриигровое средство обновления других настроек. "
+            "Щёлкните {a=https://github.com/Booplicate/MAS-Submods-SubmodUpdaterPlugin}{i}{u}здесь{/u}{/i}{/a}, если хотите, чтобы ваша надстройка использовала её."
         ),
         version="1.7",
         settings_pane="sup_setting_pane"

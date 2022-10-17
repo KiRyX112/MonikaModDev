@@ -20,6 +20,7 @@ init 500 python in mas_nou:
 init 5 python in mas_nou:
     import random
     import os
+    import store
 
     from store import (
         m,

@@ -250,7 +250,7 @@ style default_monika is normal:
     slow_cps 30
 
 style edited is default:
-    font "gui/font/VerilySerifMono.otf"
+    font "gui/font/PTM55F.ttf"
     kerning 8
     outlines [(10, "#000", 0, 0)]
     pos (gui.text_xpos, gui.text_ypos)
@@ -261,7 +261,7 @@ style edited is default:
     layout "greedy"
 
 style edited_dark is default:
-    font "gui/font/VerilySerifMono.otf"
+    font "gui/font/PTM55F.ttf"
     kerning 8
     outlines [] # FIXME: why there's no outlines?
     pos (gui.text_xpos, gui.text_ypos)
@@ -304,6 +304,7 @@ style poemgame_text:
     outlines []
     hover_xoffset -3
     hover_outlines [(3, "#fef", 0, 0), (2, "#fcf", 0, 0), (1, "#faf", 0, 0)]
+    mouse "hand"
 
 style poemgame_text_dark:
     yalign 0.5
@@ -313,6 +314,7 @@ style poemgame_text_dark:
     outlines []
     hover_xoffset -3
     hover_outlines [(3, "#fef", 0, 0), (2, "#fcf", 0, 0), (1, "#faf", 0, 0)]
+    mouse "hand"
 
 style gui_text:
     font gui.interface_font
@@ -634,10 +636,12 @@ style choice_vbox is vbox:
 style choice_button is generic_button_light:
     xysize (420, None)
     padding (100, 5, 100, 5)
+    mouse "hand"
 
 style choice_button_dark is generic_button_dark:
     xysize (420, None)
     padding (100, 5, 100, 5)
+    mouse "hand"
 
 style choice_button_text is generic_button_text_light:
     text_align 0.5
@@ -666,9 +670,11 @@ screen rigged_choice(items):
 style talk_choice_vbox is choice_vbox:
     xcenter 960
 
-style talk_choice_button is choice_button
+style talk_choice_button is choice_button:
+    mouse "hand"
 
-style talk_choice_button_dark is choice_button_dark
+style talk_choice_button_dark is choice_button_dark:
+    mouse "hand"
 
 style talk_choice_button_text is choice_button_text
 
@@ -713,7 +719,7 @@ screen quick_menu():
 #            textbutton _("History") action ShowMenu('history')
             textbutton _("История") action Function(_mas_quick_menu_cb, "history")
 
-            textbutton _("Пропустить") action Skip() alternate Skip(fast=True, confirm=True)
+            textbutton _("Пропуск") action Skip() alternate Skip(fast=True, confirm=True)
             textbutton _("Авто") action Preference("auto-forward", "toggle")
 
 #            textbutton _("Save") action ShowMenu('save')
@@ -739,10 +745,12 @@ default quick_menu = True
 style quick_button:
     properties gui.button_properties("quick_button")
     activate_sound gui.activate_sound
+    mouse "hand"
 
 style quick_button_dark:
     properties gui.button_properties("quick_button_dark")
     activate_sound gui.activate_sound
+    mouse "hand"
 
 style quick_button_text:
     properties gui.button_text_properties("quick_button")
@@ -942,18 +950,17 @@ screen navigation():
             #If we're on the main menu, we don't want to confirm quit as Monika isn't back yet
             textbutton _("Выход") action Quit(confirm=(None if main_menu else _confirm_quit))
 
-        if not main_menu:
-            textbutton _("Вернуться") action Return()
-
 style navigation_button is gui_button:
     properties gui.button_properties("navigation_button")
     hover_sound gui.hover_sound
     activate_sound gui.activate_sound
+    mouse "hand"
 
 style navigation_button_dark is gui_button:
     properties gui.button_properties("navigation_button_dark")
     hover_sound gui.hover_sound
     activate_sound gui.activate_sound
+    mouse "hand"
 
 style navigation_button_text is gui_button_text:
     properties gui.button_text_properties("navigation_button")
@@ -1147,6 +1154,8 @@ screen game_menu(title, scroll=None):
 
     use navigation
 
+    textbutton _("Назад") style "return_button" action Return()
+
     # if not main_menu and not persistent.menu_bg_m and renpy.random.randint(0, 49) == 0:
     #     on "show" action Show("game_menu_m")
 
@@ -1294,7 +1303,7 @@ init python:
 
 screen file_slots(title):
 
-    default page_name_value = FilePageNameInputValue()
+    default page_name_value = FilePageNameInputValue(pattern="Страница {}")
 
     use game_menu(title):
 
@@ -1337,7 +1346,7 @@ screen file_slots(title):
 
                         add FileScreenshot(slot) xalign 0.5
 
-                        text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("пустой слот")):
+                        text FileTime(slot, format=_("{#file_time}%d %b %Y в %H:%M"), empty=_("пустой слот")):
                             style "slot_time_text"
 
                         text FileSaveName(slot):
@@ -1391,6 +1400,7 @@ style page_label_text_dark is gui_label_text:
 
 style page_button is gui_button:
     properties gui.button_properties("page_button")
+    mouse "hand"
 
 style page_button_text is gui_button_text:
     properties gui.button_text_properties("page_button")
@@ -1398,9 +1408,11 @@ style page_button_text is gui_button_text:
 
 style slot_button is gui_button:
     properties gui.button_properties("slot_button")
+    mouse "hand"
 
 style slot_button_dark is gui_button:
     properties gui.button_properties("slot_button")
+    mouse "hand"
 
 style slot_button_text is gui_button_text:
     properties gui.button_text_properties("slot_button")
@@ -1427,10 +1439,8 @@ screen preferences():
 
     tag menu
 
-    if renpy.mobile:
-        $ cols = 2
-    else:
-        $ cols = 4
+    python:
+        cols = 4 if not renpy.mobile else 2
 
     default tooltip = Tooltip("")
 
@@ -1446,16 +1456,17 @@ screen preferences():
 
                     vbox:
                         style_prefix "generic_fancy_check"
-                        label _("Режим Экрана")
+                        label _("Режим экрана")
                         textbutton _("Оконный") action Preference("display", "window")
                         textbutton _("Полноэкранный") action Preference("display", "fullscreen")
 
                 vbox:
                     style_prefix "generic_fancy_check"
                     label _("Графика")
-
+                    xmaximum 1000
+                    if not renpy.android:
                     # this is a normal button
-                    textbutton _("Смена рендера"):
+                        textbutton _("Сменить рендерер"):
                             style "check_button"
                             action Function(renpy.call_in_new_context, "mas_gmenu_start")
 
@@ -1505,7 +1516,7 @@ screen preferences():
 #                        action ToggleField(persistent, "_mas_sensitive_mode", True, False)
 #                        hovered tooltip.Action(layout.MAS_TT_SENS_MODE)
 
-                    if store.mas_windowreacts.can_do_windowreacts:
+                    if renpy.variant("pc") and store.mas_windowreacts.can_do_windowreacts:
                         textbutton _("Реакции на окна"):
                             action ToggleField(persistent, "_mas_windowreacts_windowreacts_enabled", True, False)
                             hovered tooltip.Action(layout.MAS_TT_ACTV_WND)
@@ -1584,19 +1595,19 @@ screen preferences():
                 vbox:
 
                     hbox:
-                        label _("Рассвет в:  ")
+                        label _("Рассвет в:  ") # "
 
                         # display time
-                        label _("[[ " + sr_display + " ]")
+                        label _("[[ " + sr_display + " ]") # "
 
                     bar value FieldValue(mas_suntime, "sunrise", range=mas_max_suntime, style="slider")
 
 
                     hbox:
-                        label _("Закат в:  ")
+                        label _("Закат в:  ") # "
 
                         # display time
-                        label _("[[ " + ss_display + " ]")
+                        label _("[[ " + ss_display + " ]") # "
 
                     bar value FieldValue(mas_suntime, "sunset", range=mas_max_suntime, style="slider")
 
@@ -1604,10 +1615,10 @@ screen preferences():
                 vbox:
 
                     hbox:
-                        label _("Случайная болтовня:  ")
+                        label _("Случайная болтовня:  ") # "
 
                         # display str
-                        label _("[[ " + rc_display + " ]")
+                        label _("[[ " + rc_display + " ]") # "
 
                     bar value FieldValue(
                         persistent,
@@ -1718,11 +1729,13 @@ style radio_button is gui_button:
     properties gui.button_properties("radio_button")
     foreground "gui/button/check_[prefix_]foreground.png"
     padding (28, 4, 4, 4)
+    mouse "hand"
 
 style radio_button_dark is gui_button_dark:
     properties gui.button_properties("radio_button_dark")
     foreground "gui/button/check_[prefix_]foreground_d.png"
     padding (28, 4, 4, 4)
+    mouse "hand"
 
 style radio_button_text is gui_button_text:
     properties gui.button_text_properties("radio_button")
@@ -1753,11 +1766,13 @@ style check_button is gui_button:
     properties gui.button_properties("check_button")
     foreground "gui/button/check_[prefix_]foreground.png"
     padding (28, 4, 4, 4)
+    mouse "hand"
 
 style check_button_dark is gui_button_dark:
     properties gui.button_properties("check_button_dark")
     foreground "gui/button/check_[prefix_]foreground_d.png"
     padding (28, 4, 4, 4)
+    mouse "hand"
 
 style check_button_text is gui_button_text:
     properties gui.button_text_properties("check_button")
@@ -1792,9 +1807,11 @@ style slider_label_text_dark is pref_label_text
 
 style slider_slider is gui_slider:
     xsize 350
+    mouse "drag"
 
 style slider_slider_dark is gui_slider_dark:
     xsize 350
+    mouse "drag"
 
 style slider_button is gui_button:
     properties gui.button_properties("slider_button")
@@ -2172,7 +2189,7 @@ screen name_input(message, ok_action):
     key "K_RETURN" action [Play("sound", gui.activate_sound), ok_action]
 
     frame:
-        vbox:
+        has vbox:
             xalign .5
             yalign .5
             spacing 30
@@ -2199,7 +2216,7 @@ screen dialog(message, ok_action):
     add mas_getTimeFile("gui/overlay/confirm.png")
 
     frame:
-        vbox:
+        has vbox:
             xalign .5
             yalign .5
             spacing 30
@@ -2224,7 +2241,7 @@ screen quit_dialog(message, ok_action):
     add mas_getTimeFile("gui/overlay/confirm.png")
 
     frame:
-        vbox:
+        has vbox:
             xalign .5
             yalign .5
             spacing 30
@@ -2239,12 +2256,12 @@ screen quit_dialog(message, ok_action):
 
             textbutton _("ВЫХОД") action ok_action
 
-image confirm_glitch:
-    "gui/overlay/confirm_glitch.png"
-    pause 0.02
-    "gui/overlay/confirm_glitch2.png"
-    pause 0.02
-    repeat
+# image confirm_glitch:
+#     "gui/overlay/confirm_glitch.png"
+#     pause 0.02
+#     "gui/overlay/confirm_glitch2.png"
+#     pause 0.02
+#     repeat
 
 screen confirm(message, yes_action, no_action):
     ## Ensure other screens do not get input while this screen is displayed.
@@ -2256,18 +2273,18 @@ screen confirm(message, yes_action, no_action):
     add mas_getTimeFile("gui/overlay/confirm.png")
 
     frame:
-        vbox:
+        has vbox:
             xalign .5
             yalign .5
             spacing 30
 
-            if in_sayori_kill and message == layout.QUIT:
-                add "confirm_glitch" xalign 0.5
+        # if in_sayori_kill and message == layout.QUIT:
+        #     add "confirm_glitch" xalign 0.5
 
-            else:
-                label _(message):
-                    style "confirm_prompt"
-                    xalign 0.5
+        # else:
+        label _(message):
+            style "confirm_prompt"
+            xalign 0.5
 
         hbox:
             xalign 0.5
@@ -2311,6 +2328,7 @@ init -1 style confirm_button is gui_medium_button:
     properties gui.button_properties("confirm_button")
     hover_sound gui.hover_sound
     activate_sound gui.activate_sound
+    mouse "hand"
 
 init -1 style confirm_button_text is navigation_button_text:
     properties gui.button_text_properties("confirm_button")
