@@ -470,11 +470,9 @@ init -21 python in mas_sprites_json:
     py_list = __builtin__.list
     py_dict = __builtin__.dict
 
-    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
-
-    sprite_station = store.MASDockingStation(
-        user_dir + "/game/mod_assets/monika/j/"
-    )
+    # sprite_station = store.MASDockingStation(
+    #     renpy.config.basedir + "/game/mod_assets/monika/j/"
+    # )
     # docking station for custom sprites.
 
     # verification dicts
@@ -484,7 +482,7 @@ init -21 python in mas_sprites_json:
     # keys that are missing will give warnings
 
     hm_val_delayed_veri = {}
-    # vals tha tar emissing will give warnings. If a value is missing, it is
+    # vals that are missing will give warnings. If a value is missing, it is
     #   replaced with teh default hairstyle (def)
 
 
@@ -2251,7 +2249,8 @@ init 189 python in mas_sprites_json:
         log.info(READING_FILE.format(filepath), pfx_newline=True)
 
         # can we read file
-        with open(filepath, "r") as jsonfile:
+        # with open(filepath, "r") as jsonfile:
+        with renpy.file(filepath) as jsonfile:
             jobj = json.load(jsonfile)
 
         # is file json
@@ -2588,14 +2587,16 @@ init 189 python in mas_sprites_json:
             post_proc_data - data to be used in post processing code
                 (should be a dict)
         """
-        json_files = sprite_station.getPackageList(".json")
+        # json_files = sprite_station.getPackageList(".json")
+        json_files = [ x for x in renpy.list_files() if x.startswith("mod_assets/monika/j/") and x.endswith(".json") ]
 
         if len(json_files) < 1:
             return
 
         # otherwise we have stuff
         for j_obj in json_files:
-            j_path = sprite_station.station + j_obj
+            # j_path = sprite_station.station + j_obj
+            j_path = j_obj
             try:
                 addSpriteObject(j_path, post_proc_data)
             except Exception as e:
