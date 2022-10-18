@@ -150,11 +150,16 @@ init python:
     build.classify("game/**.png", "images android")
     build.classify("game/**.mp4", "images android")
     build.classify("game/**.mpg", "images android")
+    build.classify("game/**.webm", "images android")
     build.classify("game/**.rpyc", "scripts android")
     build.classify("game/**.rpymc", "scripts android")
     build.classify("game/**.txt", "scripts android")
     build.classify("game/**.chr", "scripts android")
     build.classify("game/**.json", "scripts android")
+    build.classify("game/**/stockfish_15_android**", "android")
+    build.classify("game/**/stockfish_8_linux**", "linux")
+    build.classify("game/**/stockfish_8_windows**", "windows")
+    build.classify("game/**/stockfish_8_macosx**", "mac")
 
     # build.package(build.directory_name + "Mod",'zip',build.name,description='DDLC Compatible Mod')
 
