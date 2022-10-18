@@ -759,7 +759,7 @@ style quick_button_text:
 style quick_button_text_dark:
     properties gui.button_text_properties("quick_button_dark")
     xysize (205, None)
-    font gui.default_font
+    font gui.interface_font
     size 14
     idle_color "#FFAA99"
     selected_color "#FFEEEB"
