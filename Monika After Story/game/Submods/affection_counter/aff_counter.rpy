@@ -47,10 +47,10 @@ style indicator_text is default:
 
 style indicator_count_frame:
     background Frame("Submods/affection_counter/aff_points_overlay.png")
-    xysize(88, 34)
+    xysize(104, 34)
 style indicator_desc_frame:
     background Frame("Submods/affection_counter/aff_text_overlay.png")
-    xysize(210, 34)
+    xysize(232, 34)
 
 image aff_heart_icon_normal = "Submods/affection_counter/aff_heart_icon.png"
 image aff_rose_icon_normal = "Submods/affection_counter/aff_rose_icon.png"
