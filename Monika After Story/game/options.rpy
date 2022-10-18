@@ -119,7 +119,7 @@ init python:
     ## Classify files as None to exclude them from the built distributions.
 
     ##This tells Renpy to build an updater file
-    build.include_update = True
+    build.include_update = False
 
     ## This is the archive of data for your mod
     #build.archive(build.name, "all")

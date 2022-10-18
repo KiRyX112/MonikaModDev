@@ -237,7 +237,7 @@ init -1 python in mas_hangman:
         """
         Builds the easy word list
 
-        Sets hm_words and all_hm_words appropritaley
+        Sets hm_words and all_hm_words appropriately
 
         NOTE: clears the list (noticable in all references)
         """
@@ -262,7 +262,7 @@ init -1 python in mas_hangman:
         """
         Builds the normal word list
 
-        Sets hm_words and all_hm_words appropraitely
+        Sets hm_words and all_hm_words appropriately
 
         NOTE: clears the list (noticable in all references)
         """
@@ -273,9 +273,9 @@ init -1 python in mas_hangman:
         """
         Builds the hard word list
 
-        Sets hm_words and all_hm_words appropraitely
+        Sets hm_words and all_hm_words appropriately
 
-        NOTE: cleras the list (noticable in all references)
+        NOTE: clears the list (noticable in all references)
         """
         _buildWordList(HARD_LIST, HARD_MODE)
 
@@ -289,10 +289,9 @@ init -1 python in mas_hangman:
         """
         if (
                 not store.persistent._mas_hangman_playername
-                and store.persistent.playername.lower() != "sayori", "сайори"
-                and store.persistent.playername.lower() != "yuri", "юри"
-                and store.persistent.playername.lower() != "natsuki", "нацуки"
-                and store.persistent.playername.lower() != "monika", "моника"
+                and store.persistent.playername.lower() not in [
+                    "sayori", "сайори", "yuri", "юри", "natsuki", "нацуки", "monika", "моника"
+                ]
             ):
             hm_words[_mode].append(-1)
 
@@ -367,7 +366,7 @@ label game_hangman:
 
         # instruction text and other sensitive stuff
         instruct_txt = (
-            "Отгадай слово: («?» - повтор подсказки, «!» - сдаться».)"
+            "Отгадай слово: («?» – повтор подсказки, «!» – сдаться».)"
         )
 
         # instruct_txt = instruct_txt.format("'?' to repeat the hint, ")
