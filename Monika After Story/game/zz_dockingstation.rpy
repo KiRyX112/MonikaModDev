@@ -1485,9 +1485,7 @@ init 200 python in mas_dockstat:
         ### monikachr
         moni_chr = None
         try:
-            moni_chr = open(os.path.normcase(
-                user_dir + "/game/mod_assets/monika/mbase"
-            ), "rb")
+            moni_chr = renpy.file("mod_assets/monika/mbase")
             
             # NOTE: moin_chr is going to be less than 200KB, this be fine
             moni_buffer.write(moni_chr.read())
@@ -1650,7 +1648,7 @@ init 200 python in mas_dockstat:
             moni_buffer.close()
         
         ### Now to verify that we output the file correctly
-        moni_pkg = dockstat.getPackage("monika")
+        moni_pkg = dockstat.getPackage("моника")
         if moni_pkg is None:
             # ALERT ALERT HOW DID WE FAIL
             cr_log.error("monika not found.")
@@ -1714,7 +1712,7 @@ init 200 python in mas_dockstat:
         ret_code = 0
         
         status, first_line = dockstat.smartUnpack(
-            "monika",
+            "моника",
             store.persistent._mas_moni_chksum,
             lines=-1,
             bs=b64_blocksize,
@@ -2075,7 +2073,7 @@ init 205 python in mas_dockstat:
         
         # promise is done! lets abort
         monikagen_promise.end()
-        store.mas_docking_station.destroyPackage("monika")
+        store.mas_docking_station.destroyPackage("моника")
         abort_gen_promise = False
 
 
@@ -2289,7 +2287,7 @@ label mas_dockstat_different_monika:
     if moni_data is None:
         # bad data means we actually have a corrupted monika. Let's delete her
         # and return to empty desk
-        $ store.mas_utils.trydel(mas_docking_station._trackPackage("monika"))
+        $ store.mas_utils.trydel(mas_docking_station._trackPackage("моника"))
         $ mas_dockstat.different_moni_flow = False
         jump mas_dockstat_empty_desk
 
@@ -2355,7 +2353,7 @@ label mas_dockstat_found_monika:
         persistent._mas_greeting_type = None
 
         # removee the monika
-        mas_docking_station.destroyPackage("monika")
+        mas_docking_station.destroyPackage("моника")
 
         # reenabel a bunch of things
         mas_OVLShow()
@@ -2556,8 +2554,9 @@ label mas_dockstat_generic_cancelled_still_going_ask:
             if mas_isMoniNormal(higher=True):
                 m 2eka "Всё в порядке. Я буду ждать тебя здесь, как обычно..."
                 m 2hub "Так что возвращайся скорее! Люблю тебя, [player]!"
-            else:
 
+            else:
+                # otherwise, upset and below
                 m 2tfd "Хорошо..."
 
             return "quit"
@@ -2569,7 +2568,7 @@ label mas_dockstat_generic_cancelled_still_going_ask:
                 m 3ekb "Пожалуйста, просто занимайся своими делами, когда тебе это нужно. Я бы не хотела, чтобы ты опоздал!"
 
             else:
-                
+                # otherwise, upset and below
                 m 2lud "Хорошо..."
             return True
 
