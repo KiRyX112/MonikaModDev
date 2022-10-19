@@ -1271,11 +1271,11 @@ label bye_going_somewhere_normalplus_flow_aff_check:
         m 1hua "Ура!"
         m 1ekbsa "Интересно, куда ты меня сегодня поведёшь..."
 
-        jump bye_going_somewhere_post_aff_check
+    jump bye_going_somewhere_post_aff_check
 
 label bye_going_somewhere_nothanks:
     m 2lksdlc "...Нет, спасибо."
-    m 2ekd "Я ценю твое предложение, но думаю, что сейчас мне нужно немного времени для себя."
+    m 2ekd "Я ценю твоё предложение, но думаю, что сейчас мне нужно немного времени для себя."
     m 2eka "Ты ведь понимаешь, да?"
     m 3eka "Так что давай, веселись без меня..."
     return
