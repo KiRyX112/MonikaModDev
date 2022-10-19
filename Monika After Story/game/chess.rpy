@@ -3402,9 +3402,10 @@ init python:
                     path - filepath to the stockfish application
                     startupinfo - startup flags
                 """
+                chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
                 try:
                     return subprocess.Popen(
-                        os.path.join(renpy.config.gamedir, path).replace('\\', '/'),
+                        os.path.join(chess_game_dir, path).replace('\\', '/'),
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
                         startupinfo=startupinfo
@@ -3412,7 +3413,6 @@ init python:
                 
                 #Catch the permission error
                 except OSError as os_err:
-                    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
                     if not renpy.windows:
                         renpy.show("monika 1etsdlc", at_list=[t11])
                         renpy.say(m, "Хм, это странно. Похоже, некоторые права доступа были изменены, и я не могу запустить шахматы на вашей системе.")
@@ -3421,7 +3421,7 @@ init python:
                         
                         store.mas_ptod.rst_cn()
                         local_ctx = {
-                            "basedir": user_dir
+                            "basedir": chess_game_dir
                         }
                         renpy.show("monika", at_list=[t22])
                         renpy.show_screen("mas_py_console_teaching")
@@ -3431,7 +3431,7 @@ init python:
                         store.mas_ptod.wx_cmd("import os", local_ctx)
                         renpy.pause(1.0)
                         store.mas_ptod.wx_cmd(
-                            "subprocess.call(['chmod','+x', os.path.normcase(basedir + '/game/mod_assets/games/chess/stockfish_8_{0}_x64')])".format(
+                            "subprocess.call(['chmod','+x', os.path.normcase(basedir + '/mod_assets/games/chess/stockfish_8_{0}_x64')])".format(
                                 "linux" if renpy.linux else "macosx"
                             ),
                             local_ctx
@@ -3442,7 +3442,7 @@ init python:
                         #Try again
                         try:
                             stockfish_proc = subprocess.Popen(
-                                os.path.join(renpy.config.gamedir, path).replace('\\', '/'),
+                                os.path.join(chess_game_dir, path).replace('\\', '/'),
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 startupinfo=startupinfo

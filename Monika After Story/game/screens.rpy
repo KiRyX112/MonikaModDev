@@ -935,20 +935,20 @@ screen navigation():
             textbutton _("События") action [ShowMenu("notif_settings"), SensitiveIf(renpy.get_screen("notif_settings") == None)]
 
         if store.mas_api_keys.has_features():
-            textbutton _("API ключи") action [ShowMenu("mas_apikeys"), SensitiveIf(renpy.get_screen("mas_apikeys") == None)]
-
-        textbutton _("Гор. клавиши") action [ShowMenu("hot_keys"), SensitiveIf(renpy.get_screen("hot_keys") == None)]
+            textbutton _("API-ключи") action [ShowMenu("mas_apikeys"), SensitiveIf(renpy.get_screen("mas_apikeys") == None)]
 
         #textbutton _("About") action ShowMenu("about")
 
         if renpy.variant("pc"):
+
+            textbutton _("Гор. клавиши") action [ShowMenu("hot_keys"), SensitiveIf(renpy.get_screen("hot_keys") == None)]
 
             ## Help isn't necessary or relevant to mobile devices.
             textbutton _("Помощь") action Help("README.html")
 
             ## The quit button is banned on iOS and unnecessary on Android.
             #If we're on the main menu, we don't want to confirm quit as Monika isn't back yet
-            textbutton _("Выход") action Quit(confirm=(None if main_menu else _confirm_quit))
+        textbutton _("Выход") action Quit(confirm=(None if main_menu else _confirm_quit))
 
 style navigation_button is gui_button:
     properties gui.button_properties("navigation_button")
