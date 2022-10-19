@@ -708,7 +708,7 @@ label mas_pong_dlg_winner:
 
 
     elif powerup_value_this_game == PONG_DIFFICULTY_POWERUP:
-        m 1hua "Хехе~"
+        m 1hua "Э-хе-хе~"
 
         if persistent._mas_pong_difficulty_change_next_game_date == datetime.date.today():
             m 2tsb "Я же говорила, что выиграю на этот раз."
@@ -753,7 +753,7 @@ label mas_pong_dlg_winner:
 
 
     elif pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_AFTER_PLAYER_WON_MIN_THREE_TIMES:
-        m 1hua "Хехе~"
+        m 1hua "Э-хе-хе~~"
         m 1tub "Продолжай в том же духе, [player]!{w=0.3} {nw}"
         extend 2tfu "Похоже, твоя серия закончилась!"
 
@@ -776,7 +776,7 @@ label mas_pong_dlg_winner:
         if pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_SHORT_GAME:
             m 3hub "Ещё одна быстрая победа~"
         else:
-            m 4huu "Хехе,{w=0.1} {nw}"
+            m 4huu "Э-хе-хе~,{w=0.1} {nw}"
             extend 4hub "Я поймала тебя на этом!"
 
         $ pong_monika_last_response_id = PONG_MONIKA_RESPONSE_WIN_SHORT_GAME
@@ -935,7 +935,7 @@ label mas_pong_dlg_loser:
 
 
     elif powerup_value_this_game == PONG_DIFFICULTY_POWERDOWN:
-        m 1hua "Хехе~"
+        m 1hua "Э-хе-хе~"
         m 2hub "Очень хорошо, [player]!"
 
 
@@ -1106,5 +1106,5 @@ label mas_pong_dlg_winner_end:
     m 4tku "Не могу радоваться победе в такой простой игре..."
     m 1eua "Но в неё всё ещё интересно играть."
     m 1ekbsa "Особенно с тобой, [player]."
-    m 1hubfa "Хехе~"
+    m 1hubfa "Э-хе-хе~"
     return
