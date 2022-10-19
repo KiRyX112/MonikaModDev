@@ -2825,7 +2825,6 @@ screen twopane_scrollable_menu(prev_items, main_items, left_area, left_align, ri
                     textbutton _("Не важно.") action [Return(False), Function(store.prev_adj.change, 0)]
 
 
-
     # Search bar
     # The constants are hardcoded, but the menu looks good so just don't change them
     frame:
@@ -2862,7 +2861,7 @@ screen twopane_scrollable_menu(prev_items, main_items, left_area, left_align, ri
                 line_leading 1
                 outlines []
 
-# the regular scrollabe menu
+# the regular scrollable menu
 screen scrollable_menu(items, display_area, scroll_align, nvm_text, remove=None):
     style_prefix "scrollable_menu"
 
