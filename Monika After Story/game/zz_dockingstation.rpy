@@ -20,7 +20,7 @@ init -900 python in mas_ics:
     ########################## ISLANDS ########################################
     # islands folder
     ISLANDS_FOLDER = os.path.normcase(
-        os.path.join(renpy.config.gamedir, "mod_assets/location/special/")
+        os.path.join(user_dir, "mod_assets/location/special/")
     )
 
     # NOTE: these checksums are BEFORE b64 encoding
@@ -1503,7 +1503,7 @@ init 200 python in mas_dockstat:
                 moni_chr.close()
         
         ### now we must do the streamlined write system to file
-        moni_path = dockstat._trackPackage("monika")
+        moni_path = dockstat._trackPackage("моника")
         moni_fbuffer = None
         moni_tbuffer = None
         moni_sum = None
@@ -2434,7 +2434,7 @@ label mas_dockstat_generic_iowait:
     # 4 seconds seems decent enough for waiting.
     show screen mas_background_timed_jump(4, "mas_dockstat_generic_iowait")
     menu:
-        "Подожди секунду":
+        "Подожди секунду.":
             hide screen mas_background_timed_jump
             $ persistent._mas_dockstat_cm_wait_count += 1
 
