@@ -2842,15 +2842,16 @@ screen twopane_scrollable_menu(prev_items, main_items, left_area, left_align, ri
             ysize 38
             xadjustment ui.adjustment(ranged=store.mas_ui.twopane_menu_adj_ranged_callback)
 
-            input:
-                id "search_input"
-                style_prefix "input"
-                length 50
-                xalign 0.0
-                layout "nobreak"
-                first_indent (0 if flt_evs is None else 10)
-                # allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 _#"
-                changed store.mas_ui.twopane_menu_search_callback
+            # Не раскомментировать до выхода 0.13.0
+            # input:
+            #     id "search_input"
+            #     style_prefix "input"
+            #     length 50
+            #     xalign 0.0
+            #     layout "nobreak"
+            #     first_indent (0 if flt_evs is None else 10)
+            #     # allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 _#"
+            #     changed store.mas_ui.twopane_menu_search_callback
 
         if flt_evs is None:
             text "Найти тему разговора...":

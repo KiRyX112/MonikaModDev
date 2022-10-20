@@ -3415,15 +3415,16 @@ screen mas_selector_sidebar(items, mailbox, confirm, cancel, restore, remover=No
             ysize 38
             xadjustment ui.adjustment(ranged=store.mas_selspr.selector_adj_ranged_callback)
 
-            input:
-                id "search_input"
-                style_prefix "input"
-                length 50
-                xalign 0.0
-                layout "nobreak"
-                first_indent (0 if not mailbox.search_text else 10)
-                # allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 _"
-                changed store.mas_selspr.selector_search_callback
+            # Не раскомментировать до выхода 0.13.0
+            # input:
+            #     id "search_input"
+            #     style_prefix "input"
+            #     length 50
+            #     xalign 0.0
+            #     layout "nobreak"
+            #     first_indent (0 if not mailbox.search_text else 10)
+            #     # allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 _"
+            #     changed store.mas_selspr.selector_search_callback
 
         if not mailbox.search_text:
             text "Поиск...":
