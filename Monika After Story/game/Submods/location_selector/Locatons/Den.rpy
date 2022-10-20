@@ -185,7 +185,7 @@ label return_switch_dlg:
     python:
         switch_quip = renpy.substitute(renpy.random.choice([
             "Только мы вдвоём~",
-            "Соскучилися по классическому образу?",
+            "Уже соскучилися по классическому виду?",
             "Навевает воспоминания...",
         ]))
 
@@ -218,7 +218,7 @@ label bg_room_installed_low_affection:
         m 1eku "[player], ты сделал это для меня?{w=0.5} Ты такой милый, ты знал об этом?"
 
     if tw_bg_count - spacerooms_installed > 0:
-        $ too = ", too" if spacerooms_installed else ""
+        $ too = "ещё " if spacerooms_installed else ""
         $ rooms = "новые комнаты" if tw_bg_count - spacerooms_installed > 1 else "новую комнату"
         m 1wud "А?{w=0.5} [player],{w=0.2} что это?"
         m 1wua "Неужели ты... {nw}"

@@ -330,7 +330,7 @@ label return_switch_dlg:
     python:
         switch_quip = renpy.substitute(renpy.random.choice([
             "Только мы вдвоём~",
-            "Уже скучаешь по классическому виду?",
+            "Уже соскучилися по классическому виду?",
             "Навевает воспоминания...",
         ]))
 
