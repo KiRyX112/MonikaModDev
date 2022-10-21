@@ -851,7 +851,7 @@ label game_chess:
 
                 m 1eua "Мы ещё не закончили играть эту партию."
 
-            label game_chess.load_check:
+            label .load_check:
                 pass
 
             m 1efb "Приготовься!"
@@ -864,7 +864,6 @@ label game_chess:
 
             practice_mode = eval(loaded_game.headers.get("Practice", "False"))
             casual_rules = eval(loaded_game.headers.get("CasualRules", "False"))
-            do_really_bad_chess = loaded_game.headers["FEN"] != MASChessDisplayableBase.START_FEN
 
         jump mas_chess_start_chess
 
@@ -877,7 +876,7 @@ label mas_chess_remenu:
                 "options": [
                     ("Обычные шахматы", mas_chess.MODE_NORMAL, False, (chessmode == mas_chess.MODE_NORMAL)),
                     ("Случайные шахматы", mas_chess.MODE_BAD_CHESS, False, (chessmode == mas_chess.MODE_BAD_CHESS)),
-                    ("Шахматы-960", mas_chess.MODE_960, False, (chessmode == mas_chess.MODE_960))
+                    ("Шахматы-960", mas_chess.MODE_960, False, (chessmode == mas_chess.MODE_960)),
                     # Keep this last
                     ("Можешь объяснить, что это за режимы?", "explain_modes", False, False)
                 ],
@@ -1483,7 +1482,7 @@ label mas_chess_dlg_quicksave_lost:
         m 1lksdld "Мне очень, очень жаль, [player]..."
         show monika 1ekc
         pause 1.0
-        m 1eka "Но не волнуйся, я всё исправлю....{w=0.3}{nw}"
+        m 1eka "Но не волнуйся, я всё исправлю...{w=0.3}{nw}"
         extend 3hua "Начав новую игру!"
         m 3hub "А-ха-ха-ха~"
 
@@ -1891,17 +1890,17 @@ screen mas_chess_confirm(prompt):
             yalign .5
             spacing 30
 
-        label prompt:
-            style "confirm_prompt"
-            text_color mas_globals.button_text_idle_color
-            xalign 0.5
+            label prompt:
+                style "confirm_prompt"
+                text_color mas_globals.button_text_idle_color
+                xalign 0.5
 
-        hbox:
-            xalign 0.5
-            spacing 100
+            hbox:
+                xalign 0.5
+                spacing 100
 
-            textbutton _("Да") action Return(True)
-            textbutton _("Нет") action Return(False)
+                textbutton _("Да.") action Return(True)
+                textbutton _("Нет.") action Return(False)
 
 
 # promotion screen for chess
