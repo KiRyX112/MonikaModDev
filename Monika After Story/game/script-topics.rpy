@@ -6141,10 +6141,10 @@ label monika_japanese:
         m "Ты знаешь какие-нибудь языки, кроме русского?{fast}"
         "Да.":
             $ persistent._mas_pm_lang_other = True
-            m "Правда? Do you know Japanese?{nw}"
+            m "Правда? А, может, ты знаешь ещё и японский?{nw}"
             $ _history_list.pop()
             menu:
-                m "Really? А, может, ты знаешь ещё и японский?{fast}"
+                m "Правда? А, может, ты знаешь ещё и японский?{fast}"
                 "Да.":
                     $ persistent._mas_pm_lang_jpn = True
                     m 3eub "Это здорово!"
@@ -6570,240 +6570,169 @@ label monika_sayhappybirthday:
         take_counter = 1 # how many takes
         take_threshold = 5 # multiple of takes that will make monika annoyed
         max_age = 121 # like who the hell is this old and playing ddlc?
-        age_prompt = "Сколько [gender_name] лет?" # prompt for age question
-
-        def ask_bday_name(msg, _allow="АБВГДЕЁЖЗИЙКЛМНОПРСТУФЧЦЧГЩЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя-", _length=20):
-            result = ""
-            while len(result) <= 0:
-                result = renpy.input(msg, allow=_allow, length=_length).strip()
-            
-            return result
+        age_prompt = "Сколько лет исполнилось?" # prompt for age question
 
     #TODO: temporary m_name reset for this
     # TODO: someone on the writing team make the following dialogue better
     # also make the expressions more approriate and add support for standing
     m 3hub "Конечно, [player]!"
-    $ gender_name_start = True
-    
-    m "Поздравить нужно именинника или именинницу."
-    menu:
-        "Именинника.":
-            $ gender_name_start = True
-        "Именинницу.":
-            $ gender_name_start = False
-    if gender_name_start:
-        $ gender_name = 'его'
-    else:
-        $ gender_name = 'её'
-    
-    m 1eub "Кстати..."
+    m 3hub "Напиши имя человека, которого я должна поздравить."
     while not done:
-
-        $ persistent.bday_name = ask_bday_name("Как [gender_name] зовут?")
-
-        $ same_name = persistent.bday_name.upper() == player.upper()
-        if persistent.bday_name == "":
-            
+        show monika 1eua
+        # arbitary max name limit
+        $ bday_name = renpy.input("",allow=letters_only,length=40).strip()
+        # ensuring proper name checks
+        $ same_name = bday_name.upper() == player.upper()
+        if bday_name == "":
             m 1hksdlb "..."
-            
             m 1lksdlb "Я не думаю, что это имя."
-            
             m 1hub "Попробуй ещё раз!"
         elif same_name:
-            
-            m 1wud "Ого, это имя такое же как и у тебя."
+            m 1wuo "О, ничего себе, кто-то с таким же именем, как у тебя!"
             $ same_name = True
             $ done = True
         else:
             $ done = True
-    
-    m 1hua "Хорошо! Хочешь, я скажу [gender_name] возраст?{nw}"
+
+    m 1hua "Хорошо! Хочешь, чтобы я назвала возраст?{nw}"
     $ _history_list.pop()
     menu:
-        m "Хорошо! Хочешь, я скажу [gender_name] возраст?{fast}"
+        m "Хорошо! Хочешь, чтобы я назвала возраст?{fast}"
         "Да.":
-            
             m "Тогда..."
-            if gender_name_start:
-                $ gender_name = 'ему'
-            else:
-                $ gender_name = 'ей'
-            $ done = False
-            $ age_modifier = ""
-            while not done:
-                $ age = int(renpy.input(age_prompt.format(age_modifier),allow=numbers_only,length=3))
-                if age == 0:
-                    
-                    m 1esc "..."
-                    
-                    m 1dsc "Я просто проигнорирую это."
-                    $ age_modifier = "на самом деле"
-                elif age > max_age:
-                    
-                    m 1lsc "..."
-                    
-                    m 1tkc "Я не думаю, что есть кто-то настолько старый..."
-                    $ age_modifier = "на самом деле"
-                else:
 
+            while max_age <= age or age <= 0:
+                $ age = store.mas_utils.tryparseint(
+                    renpy.input(
+                        age_prompt,
+                        allow=numbers_only,
+                        length=3
+                    ).strip(),
+                    0
+                )
 
-                    $ done = True
-            
             m "Хорошо."
         "Нет.":
-            
             m "Ладно."
-    $ persistent.bday_name = persistent.bday_name.title()
-    $ mas_bday_name_whom = mas_bday_name_whom.title()
-    
-    m 1eua "[persistent.bday_name] рядом с тобой?{nw}"
+    $ bday_name = bday_name.title() # ensure proper title case
+
+    m 1eua "Итак, [bday_name] сейчас рядом с тобой?{nw}"
     $ _history_list.pop()
     menu:
-        m "[persistent.bday_name] рядом с тобой?{fast}"
+        m "Итак, [bday_name] сейчас рядом с тобой?{fast}"
         "Да.":
             $ is_here = True
         "Нет.":
-            if gender_name_start:
-                $ gender_name = 'его'
-            else:
-                $ gender_name = 'её'
-            
-            m 1tkc "Что? И как тогда я смогу поздравить, если человека здесь нет?{nw}"
-            if gender_name_start:
-                $ gender_name = 'ним'
-            else:
-                $ gender_name = 'ней'
+            m 1tkc "Что? Как мне тогда поздравить человека?{nw}"
+            $ _history_list.pop()
             menu:
-                m "Что? И как тогда я смогу поздравить, если человека здесь нет?{fast}"
-                "Мы с [gender_name] на связи через видеочат.":
-                    
-                    m 1eua "Ой, ладно."
+                m "Что? Как мне тогда поздравить человека?{fast}"
+
+                "Тебя будет видно через видеочат.":
+                    m 1eua "Ох, хорошо.."
                     $ is_watching = True
                 "Я запишу это и отправлю.":
-                    
                     m 1eua "Ох, хорошо."
                     $ is_recording = True
                 "Всё нормально, просто скажи это.":
-                    
-                    m 1lksdla "Хм, хорошо. Немного неловко просто говорить это никому в пустоту."
+                    m 1lksdla "Ох, хорошо. Немного неловко просто говорить это в пустоту."
 
+    # we do a loop here in case we are recording and we should do a retake
     $ done = False
     $ take_counter = 1
+    $ bday_msg_capped = bday_msg.capitalize()
     while not done:
         if is_here or is_watching or is_recording:
             if is_here:
-                
-                m 1hua "Приятно познакомиться, [persistent.bday_name]!"
+                m 1hua "Приятно познакомиться, [bday_name]!"
             elif is_watching:
-                
-                m 1eua "Скажи когда [persistent.bday_name] начнёт меня слушать.{nw}"
-                if gender_name_start:
-                    $ gender_name = 'Он'
-                else:
-                    $ gender_name = 'Она'
+                m 1eua "Сообщи мне, когда [bday_name] будет смотреть.{nw}"
+                $ _history_list.pop()
                 menu:
-                    m "Скажи когда [persistent.bday_name] начнёт меня слушать.{fast}"
-                    "[gender_name] смотрит.":
-                        
-                        m 1hua "Привет, [persistent.bday_name]!"
-            else:
-                
+                    m "Сообщи мне, когда [bday_name] будет смотреть.{fast}"
+                    "Всё хорошо, тебя видно.":
+                        m 1hua "Привет, [bday_name]!"
+            else: # must be recording
                 m 1eua "Скажи когда начать.{nw}"
+                $ _history_list.pop()
                 menu:
                     m "Скажи когда начать.{fast}"
                     "Давай!":
-                        
-                        m 1hua "Привет, [persistent.bday_name]!"
+                        m 1hua "Привет, [bday_name]!"
 
             if age:
-                
-                m 1hub "[player] сказал мне, что у тебя сегодня день рождения, и мне хотелось бы пожелать тебе счастливого [age]-го дня рождения, [persistent.bday_name]!"
-            else:
-                
-                m 1hub "[player] сказал мне, что у тебя сегодня день рождения, и мне хотелось бы пожелать тебе счастливого дня рождения, [persistent.bday_name]!"
-
+            # the actual birthday msg
+                m 1hub "[player] сказал мне, что у тебя сегодня день рождения, и мне хотелось бы пожелать тебе счастливого [age]-го дня рождения[bday_msg]!"
+                # TODO: this seems too short. maybe add additional dialogue?
+            else: 
+                m 1hub "[player] сказал мне, что у тебя сегодня день рождения, и мне хотелось бы пожелать тебе счастливого дня рождения!"
             
             m 3eua "Я надеюсь, что у тебя сегодня отличный день!"
 
             if is_recording:
-                
                 m 1hua "Пока-пока!"
-                
                 m 1eka "Хорошо получилось?{nw}"
                 $ _history_list.pop()
                 menu:
                     m "Хорошо получилось?{fast}"
                     "Да.":
-                        
                         m 1hua "Ура!"
                         $ done = True
                     "Нет.":
                         call monika_sayhappybirthday_takecounter (take_threshold, take_counter) from _call_monika_sayhappybirthday_takecounter
                         if take_counter % take_threshold != 0:
-                            
-                            m 1wud "Ах?!"
+                            m 1wud "А?!"
                             if take_counter > 1:
-                                
-                                m 1lksdla "Прости ещё раз, [player]."
+                                m 1lksdla "Прости меня снова, [player]."
                             else:
-                                
                                 m 1lksdla "Прости, [mas_get_player_nickname()]."
-                                
                                 m 2lksdlb "Я уже говорила, я стесняюсь камеры, э-хе-хе..."
-                        
-                        m 1rksdlc "Попробуем ещё раз?{nw}"
+
+                        m "Попробуем ещё раз?{nw}"
                         $ _history_list.pop()
                         menu:
                             m "Попробуем ещё раз?{fast}"
                             "Да.":
                                 $ take_counter += 1
-                                
                                 m 1eua "Хорошо."
                             "Нет.":
-                                
                                 m 1eka "Хорошо, [player]. Прости, что не смогла сделать того, чего ты хотел."
-                                
-                                m 1hua "В следующий раз я буду стараться лучше для тебя."
+                                m 1hua "В следующий раз я буду стараться лучше."
                                 $ done = True
-            else:
+            else:  # if we aint recording, we should be done now
                 $ done = True
-        else:
-            
+
+        else: # not recording, watching, nor is person here
             m 1duu "..."
-            
+            m 1hub "Привет, [bday_name]!"
             if age:
-                m 1hub "Счастливого [age]-го дня рождения, [persistent.bday_name]!"
-            else:
-                m 1hub "Счастливого дня рождения, [persistent.bday_name]!"
-            
+                m 1hub "[player] сказал мне, что у тебя сегодня день рождения, и мне хотелось бы пожелать тебе счастливого [age]-го дня рождения[bday_msg]!"
+            else: 
+                m 1hub "[player] сказал мне, что у тебя сегодня день рождения, и мне хотелось бы пожелать тебе счастливого дня рождения!"
+
+            m 3eua "Я надеюсь, что у тебя сегодня отличный день!"
             m 1hksdlb "..."
-            
-            m 1lksdlb "Хорошо получилось?{nw}"
+            m 1lksdlb "Хорошо вышло?{nw}"
             $ _history_list.pop()
             menu:
-                m "Хорошо получилось?{fast}"
+                m "Хорошо вышло?{fast}"
                 "Да.":
-                    
                     m 1lksdla "...Я рада, что тебе понравилось, [player]..."
                     $ done = True
                 "Нет.":
                     call monika_sayhappybirthday_takecounter (take_threshold, take_counter) from _call_monika_sayhappybirthday_takecounter_1
                     if take_counter % take_threshold != 0:
-                        
                         m 1wud "А?!"
-                        
                         m 1lksdlc "Я не уверена, чего ты от меня хочешь, [player]..."
-                    
+
                     m 1ekc "Мне стоит попробовать ещё раз?{nw}"
                     $ _history_list.pop()
                     menu:
                         m "Мне стоит попробовать ещё раз?{fast}"
                         "Да.":
                             $ take_counter += 1
-                            
-                            m 1euc "Хорошо."
+                            m 1eua "Хорошо."
                         "Нет.":
-                            
                             m 1eka "Ладно, [player]. Прости, что не смогла."
                             m 1hua "В следующий раз я сделаю лучше."
                             $ done = True
@@ -17536,7 +17465,7 @@ label monika_tanabata:
     m 2hksdlb "О боже, я надеюсь, что когда я рассказывала историю «Ткачиха и пастух», ты не запутался!"
     m 7eub "Ну, есть фестиваль, посвященный Орихиме и Хикобоси, который называется Танабата."
     m 7eud "В Японии его отмечают 7 июля каждого года, хотя он основан на фестивале Циси в Китае."
-    m 2eud "Оригинальный фестиваль Циси, хотя и является гораздо более древним, гораздо более неизвестен западному миру, чем Танабата."
+    m 2eud "Оригинальный фестиваль Циси, хотя и является гораздо более древним, однако менее известен западному миру, чем Танабата."
     m 2euc "После Второй мировой войны Япония открыла свои границы, в то время как Китай оставался в значительной степени закрытым из-за холодной войны."
     m 7euc "Поэтому большая часть мира знает о Танабате из-за более древней китайской традиции."
     m 3eua "Танабата также известен как фестиваль звёзд, в честь встречи звёзд Вега, которая представляет Орихиме, и Альтаир, который представляет Хикобоси."
