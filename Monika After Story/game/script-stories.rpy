@@ -197,7 +197,7 @@ label monika_short_stories_menu:
         else:
             switch_str = "страшную"
 
-        switch_item = ("Я бы хотел услышать " + switch_str + " историю", "monika_short_stories_menu", False, False, 20)
+        switch_item = ("Я бы хотел услышать " + switch_str + " историю.", "monika_short_stories_menu", False, False, 20)
 
         final_item = (mas_stories.STORY_RETURN, False, False, False, 0)
 
