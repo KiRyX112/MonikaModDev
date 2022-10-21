@@ -1344,7 +1344,7 @@ init -1 python in mas_calendar:
             " ".join([
                 _formatDayFirstSession(_date.day) # day
                 disp_months[_date.strftime("%B")], # month
-                str(_date.year) # year
+                str(_date.year) + " г." # year
             ]),
             datetime.date.today() - _date
         )
