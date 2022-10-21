@@ -236,7 +236,7 @@ label monika_short_stories_menu:
             if story_to_push == mas_stories.UNLOCK_NEW:
                 if not can_unlock_story:
                     show monika at t11
-                    $ _story_type = story_type if story_type != '' else 'короткую'
+                    $ _story_type = story_type if story_type != 'обычную' else 'короткую'
                     m 1ekc "Извини, [player]... я сейчас не могу придумать новую [_story_type] историю прямо сейчас..."
                     m 1eka "Если ты дашь мне немного времени, я, возможно, смогу придумать одну в ближайшее время... а пока я всегда могу рассказать тебе старую!"
                     show monika 1eua
