@@ -29,8 +29,8 @@ init -1 python in mas_stories:
     UNLOCK_NEW = "unlock_new"
 
     # TYPES:
-    TYPE_NORMAL = "normal"
-    TYPE_SCARY = "scary"
+    TYPE_NORMAL = "обычную"
+    TYPE_SCARY = "страшную"
 
 
     STORY_RETURN = "Не важно."
