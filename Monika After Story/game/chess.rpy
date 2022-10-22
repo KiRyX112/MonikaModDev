@@ -1778,7 +1778,7 @@ label mas_chess_dlg_quickfile_edited_no:
         $ mas_loseAffection()
 
         m 1dsc "Хм..."
-        m 1etc "Сохраненный файл выглядит не так, как я его запомнил в последний раз,{w=0.2} {nw}"
+        m 1etc "Сохраненный файл выглядит не так, как я его запомнила в последний раз,{w=0.2} {nw}"
         extend 1rksdlc "{nw}но, может, я что-то забыла..."
         m 1eua "Продолжим игру."
         return store.mas_chess.CHESS_GAME_FILE
@@ -1832,7 +1832,7 @@ label mas_chess_dlg_quickfile_edited_no_quicksave:
 
     m 2dfc "[player]..."
     m 2tfc "Вижу, ты и резервные копии отредактировал."
-    m 2lfd "Если тебе необходимо вести себя так, то лучше сыграем в шахматы в другой раз."
+    m 2lfd "Раз ты себя так ведёшь, то лучше сыграем в шахматы в другой раз."
     return True
 
 # 3rd time no edit, no sorry
