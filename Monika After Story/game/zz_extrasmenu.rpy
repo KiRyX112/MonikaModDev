@@ -204,7 +204,7 @@ label mas_extra_menu_zoom_callback:
 label mas_extra_menu_zoom_out_first_time:
     m 1ttu "Не можешь усидеть на месте?"
     m "Или хочешь увидеть, что у меня на голове?"
-    m 1hua "Хехе~"
+    m 1hua "Э-хе-хе~"
     return
 
 label mas_extra_menu_zoom_in_first_time:

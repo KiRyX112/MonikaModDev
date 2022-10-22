@@ -2896,7 +2896,7 @@ label monika_affection_nickname:
                     if not mas_bad_name_comp.search(inputname) and lowername not in ["yuri", "sayori", "natsuki"]:
                         if lowername == "Моника":
                             $ inputname = inputname.capitalize()
-                            m 3hua "Понятно, значит, вернёмся к классике? Хехе~"
+                            m 3hua "Понятно, значит, вернёмся к классике? Э-хе-хе~"
 
                         elif good_monika_nickname_comp.search(inputname):
                             m 1wuo "Ох! Это замечательное прозвище!"
@@ -2917,7 +2917,7 @@ label monika_affection_nickname:
                         else:
 
                             m 3hua "Отныне можешь звать меня «[m_name]»."
-                            m 1hua "Хехе~"
+                            m 1hua "Э-хе-хе~"
                         $ done = True
 
                     else:
@@ -3631,7 +3631,7 @@ init 20 python:
     MASPoem(
         poem_id="spr_5",
         category="surprise",
-        prompt=_("Хехе~"),
+        prompt=_("Э-хе-хе~"),
         title="",
         text=_("Ты мой солнечный свет, который скрашивает мой день, [player]!")
     )
