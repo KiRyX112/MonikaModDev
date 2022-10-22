@@ -279,7 +279,7 @@ label mas_mood_sick:
     m 2ekc "Ты сделаешь это ради меня?{nw}"
     $ _history_list.pop()
     menu:
-        m "Ты сделаешь это ради меня?fast}"
+        m "Ты сделаешь это ради меня?{fast}"
         "Да.":
             jump greeting_stillsickrest
         "Нет.":
