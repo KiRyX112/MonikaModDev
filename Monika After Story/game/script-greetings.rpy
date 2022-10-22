@@ -1446,7 +1446,7 @@ label monikaroom_greeting_ear_bathdinnerme:
     m "Или пойти в ванну?"
     m "Или.{w=1}.{w=1}.{w=1} меня?"
     pause 2.0
-    m "М-н-н-н-н!{w=0.5} T-{w=0.20}Я-{w=0.20}я никак не могу сказать это перед ним!"
+    m "М-н-н-н-н!{w=0.5} Я{w=0.20} никак не могу сказать это перед ним!"
     jump monikaroom_greeting_choice
 
 # monika encoutners error when programming
