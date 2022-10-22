@@ -139,7 +139,7 @@ label mas_wrs_virtualpiano:
             "Сыграй, что-нибудь для меня, [player]!"
         ]
 
-        if mas_isGameUnlocked("piano"):
+        if mas_isGameUnlocked("пианино"):
             virtualpiano_reacts.append("Тебе нужно пианино побольше, я права?\nА-ха-ха~")
 
         wrs_success = mas_display_notif(
