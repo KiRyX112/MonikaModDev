@@ -160,6 +160,8 @@ init python:
     build.classify("game/**/stockfish_8_linux**", "linux")
     build.classify("game/**/stockfish_8_windows**", "windows")
     build.classify("game/**/stockfish_8_macosx**", "mac")
+    build.classify("game/**.icns", "mac")
+    build.classify("game/**.ico", "windows")
 
     # build.package(build.directory_name + "Mod",'zip',build.name,description='DDLC Compatible Mod')
 

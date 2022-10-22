@@ -3470,28 +3470,28 @@ init python:
                 renpy.jump("mas_chess_cannot_work_embarrassing")
             
             is_64_bit = sys.maxsize > 2**32
-            user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+            chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
 
             if renpy.windows:
                 startupinfo = subprocess.STARTUPINFO()
                 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
                 
                 self.stockfish = open_stockfish(
-                    'mod_assets/games/chess/stockfish_8_windows_x{0}.exe'.format("64" if is_64_bit else "32"),
+                    "mod_assets/games/chess/stockfish_8_windows_x{0}.exe".format("64" if is_64_bit else "32"),
                     startupinfo
                 )
             
             elif is_64_bit and not renpy.android:
                 fp = "mod_assets/games/chess/stockfish_8_{0}_x64".format("linux" if renpy.linux else "macosx")
                 
-                os.chmod(user_dir + "/game/".format(fp), 0755)
+                os.chmod(chess_game_dir + "/" + fp, 0755)
                 self.stockfish = open_stockfish(fp)
             
             elif renpy.android:
-                open(user_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7"), "wb").write(renpy.file("mod_assets/games/chess/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")).read())
-                fp = user_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")
+                open(chess_game_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7"), "wb").write(renpy.file("mod_assets/games/chess/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")).read())
+                fp = "stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")
 
-                os.chmod(fp, 0755)
+                os.chmod(chess_game_dir + "/" + fp, 0755)
                 self.stockfish = open_stockfish(fp)
 
             #Set Monika's parameters
