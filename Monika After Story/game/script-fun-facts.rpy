@@ -200,7 +200,7 @@ init 5 python:
 
 label mas_fun_fact_chess:
     #Chess is unlocked
-    if mas_isGameUnlocked("chess"):
+    if mas_isGameUnlocked("шахматы"):
         m 1eua "Ещё один интересный факт!"
         m 3eub "Однажды человек по имени Клод Шеннон рассчитал количество всевозможных вариантов ходов в шахматах."
         m "Он утверждал, что количество возможных шахматных партий равно 10^120. Это число названо «числом Шеннона»."
@@ -214,7 +214,7 @@ label mas_fun_fact_chess:
         return
 
     #Chess was unlocked, but locked due to cheating
-    elif not mas_isGameUnlocked("chess") and renpy.seen_label("mas_unlock_chess"):
+    elif not mas_isGameUnlocked("шахматы") and renpy.seen_label("mas_unlock_chess"):
         m 1dsc "Шахматы..."
         m 2dfc "..."
         m 2rfd "Забудь, об этом факте [player]. Ты обманщик."
