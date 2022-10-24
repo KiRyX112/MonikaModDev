@@ -2205,7 +2205,7 @@ init 5 python:
             conditional=(
                 "(not renpy.seen_label('bookmark_derand_intro') "
                 "and (len(persistent._mas_player_derandomed) == 0 or len(persistent._mas_player_bookmarked) == 0)) "
-                "or store.mas_windowreacts.can_show_notifs"
+                "or store.mas_windowreacts.can_show_notifs and not renpy.android"
             ),
             action=EV_ACT_QUEUE
         )
@@ -2239,7 +2239,7 @@ label mas_bookmarks_notifs_intro:
                     m 3eua "Также у тебя есть возможность сохранять темы, о которых я говорила, в закладках, достаточно только нажать клавишу «З»."
                     m 1eub "Любая тема, которую ты сохранишь в закладках, будет доступна в любое время в меню «Поговорить»."
 
-        if renpy.variant('pc') and (store.mas_windowreacts.can_show_notifs or renpy.linux):
+        if renpy.variant("pc") and (store.mas_windowreacts.can_show_notifs or renpy.linux):
             m 1hua "И, наконец, нечто совершенно удивительное!"
             call mas_notification_windowreact
 

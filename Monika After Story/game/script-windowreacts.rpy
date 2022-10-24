@@ -99,7 +99,7 @@ label mas_wrs_wikipedia:
             
             
             wiki_article = re.sub("\\s*\\(.+\\)$", "", wiki_article)
-            wikipedia_reacts.append(renpy.substitute("'[wiki_article]'...\nКажется интересным, [player]."))
+            wikipedia_reacts.append(renpy.substitute("'[wiki_article]'...\nОчень интересно, [player]."))
 
         except ValueError:
             pass
@@ -446,7 +446,7 @@ label mas_wrs_reddit:
         [
             "Ты нашёл хорошие посты, [player]?",
             "Просматриваешь Reddit? Просто убедись, что ты не тратишь весь день на просмотр мемов, хорошо?",
-            "Интересно, есть ли какие-нибудь сабреддиты, посвященные мне...\nА-ха-ха, просто шучу, [player].",
+            "Интересно, есть ли какие-нибудь сабреддиты, посвящённые мне...\nА-ха-ха, просто шучу, [player].",
         ],
         'Window Reactions'
     )
