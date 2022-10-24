@@ -2893,8 +2893,8 @@ label monika_affection_nickname:
                     m 1rksdld "Я не ненавижу его, конечно, но мне будет не очень приятно, если ты дашь мне такое прозвище."
                     m 1eka "Можешь выбрать что-нибудь более подходящее, [player]?"
                 else:
-                    if not mas_bad_name_comp.search(inputname) and lowername not in ["yuri", "sayori", "natsuki"]:
-                        if lowername == "Моника":
+                    if not mas_bad_name_comp.search(inputname) and lowername not in ["yuri", "sayori", "natsuki", "юри", "сайори", "нацуки"]:
+                        if lowername == "моника":
                             $ inputname = inputname.capitalize()
                             m 3hua "Понятно, значит, вернёмся к классике? Э-хе-хе~"
 
