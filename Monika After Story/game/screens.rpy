@@ -931,7 +931,7 @@ screen navigation():
         if store.mas_submod_utils.submod_map:
             textbutton _("Надстройки") action [ShowMenu("submods"), SensitiveIf(renpy.get_screen("submods") == None)]
 
-        if store.mas_windowreacts.can_show_notifs and not main_menu:
+        if not renpy.android and store.mas_windowreacts.can_show_notifs and not main_menu:
             textbutton _("События") action [ShowMenu("notif_settings"), SensitiveIf(renpy.get_screen("notif_settings") == None)]
 
         if store.mas_api_keys.has_features():
