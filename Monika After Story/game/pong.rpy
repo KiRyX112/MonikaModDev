@@ -776,8 +776,8 @@ label mas_pong_dlg_winner:
         if pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_SHORT_GAME:
             m 3hub "Ещё одна быстрая победа~"
         else:
-            m 4huu "Э-хе-хе~,{w=0.1} {nw}"
-            extend 4hub "Я поймала тебя на этом!"
+            m 4huu "Э-хе-хе,{w=0.1} {nw}"
+            extend 4hub "я поймала тебя на этом!~"
 
         $ pong_monika_last_response_id = PONG_MONIKA_RESPONSE_WIN_SHORT_GAME
 
