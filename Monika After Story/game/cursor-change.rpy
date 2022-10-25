@@ -2,7 +2,7 @@ init -2 python:
     os_blk = False
     import platform, subprocess
     macos_build = str(platform.mac_ver()[0])
-    ten_platforms = ["10240", "14393", "17763", "19042", "19043", "19044"]
+    ten_platforms = ["10240", "14393", "17763", "19042", "19043", "19044", "19045"]
     user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
     if renpy.windows:
         try:
