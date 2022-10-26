@@ -233,7 +233,7 @@ label mas_monikamovie:
                 emotion, what =  movieInformation.popDescription()
                 updateEmotionMonika(emotion)
                 renpy.say(eval("m"), what)
-        m 3eub "Давайте синхронизируем начало фильма."
+        m 3eub "Давай синхронизируем начало фильма."
         m 1hub "Приготовься начать фильм, я начну обратный отсчёт!"
 
         menu:
