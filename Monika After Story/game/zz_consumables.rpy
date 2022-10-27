@@ -1376,21 +1376,16 @@ label mas_get_food:
 
 #START: Generic consumable labels
 
-default persistent.msr_disp_name = "кофе"
-
-label mas_consumables_generic_get(consumable):
-    if consumable.disp_name == 'coffee':
-        $ persistent.msr_disp_name = 'кофе'
-    elif consumable.disp_name == 'Christmas cookie':
-        $ persistent.msr_disp_name = 'рождественского печенья'
-    elif consumable.disp_name == 'candycane':
-        $ persistent.msr_disp_name = 'сахарную тросточку'
-    else:
-        $ persistent.msr_disp_name = 'горячего шоколада'
-
 label mas_consumables_generic_get(consumable):
     #Get our dlg_props
     python:
+        cons_disp_names = {
+            "coffee":"кофе",
+            "Christmas cookie":"рождественского печенья",
+            "candycane":"сахарную тросточку",
+            "hot chocolate":"горячего шоколада"
+        }
+
         dlg_props = consumable.dlg_props
 
         container = dlg_props.get(mas_consumables.PROP_CONTAINER)
@@ -1398,27 +1393,27 @@ label mas_consumables_generic_get(consumable):
         plur = "s" if dlg_props.get(mas_consumables.PROP_PLUR, False) else ""
 
         #We need to parse the dialogue depending on the given dlg_props
-        if not consumable.disp_name == 'Christmas cookie' and not consumable.disp_name == 'candycane':
+        if not consumable.disp_name in ['Christmas cookie', 'candycane']:
             if container:
-                line_starter = renpy.substitute("Пойду, возьму себе чашку [persistent.msr_disp_name].")
+                line_starter = renpy.substitute("Пойду возьму себе чашку " + cons_disp_names[consumable.disp_name] + ".")
             
             
             elif obj_ref:
-                line_starter = renpy.substitute("Пойду, возьму себе чашку [persistent.msr_disp_name].")
+                line_starter = renpy.substitute("Пойду возьму себе чашку " + cons_disp_names[consumable.disp_name] + ".")
             
             
             else:
                 
                 a_an = "немного" if plur else mas_a_an(consumable.disp_name, ignore_case=True)
-                line_starter = renpy.substitute("Пойду, возьму себе [a_an] [persistent.msr_disp_name].")
+                line_starter = renpy.substitute("Пойду возьму себе [a_an] " + cons_disp_names[consumable.disp_name] + ".")
 
         else:
             
             if consumable.disp_name == 'Christmas cookie':
-                line_starter = renpy.substitute("Пойду, возьму себе тарелку [persistent.msr_disp_name].")
+                line_starter = renpy.substitute("Пойду возьму себе тарелку " + cons_disp_names[consumable.disp_name] + ".")
             
             else:
-                line_starter = renpy.substitute("Пойду, возьму себе [persistent.msr_disp_name].")
+                line_starter = renpy.substitute("Пойду возьму себе " + cons_disp_names[consumable.disp_name] + ".")
 
 
     if store.mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
@@ -1460,6 +1455,13 @@ label mas_consumables_generic_get(consumable):
 label mas_consumables_generic_finish_having(consumable):
     #Some prep
     python:
+        cons_disp_names = {
+            "coffee":"кофе",
+            "Christmas cookie":"рождественское печенье",
+            "candycane":"сахарную тросточку",
+            "hot chocolate":"горячий шоколад"
+        }
+
         get_more = (
             consumable.shouldHave()
             and (consumable.prepable() or (not consumable.prepable() and consumable.hasServing()))
@@ -1473,16 +1475,16 @@ label mas_consumables_generic_finish_having(consumable):
 
         dlg_map = {
             mas_consumables.PROP_CONTAINER: {
-                0: "Я собираюсь убрать эту чашку.",
-                1: "Я собираюсь взять ещё одну чашку."
+                0: "Сейчас уберу эту чашку.",
+                1: "Сейчас возьму ещё одну чашку."
             },
             mas_consumables.PROP_OBJ_REF: {
-                0: "Я собираюсь убрать это подальше.",
-                1: "Я собираюсь взять ещё один кусочек."
+                0: "Сейчас уберу это подальше.",
+                1: "Сейчас возьму ещё один кусочек."
             },
             "else": {
-                0: "Я собираюсь это убрать.",
-                1: "Я собираюсь взять ещё один."
+                0: "Сейчас уберусь за собой.",
+                1: "Сейчас возьму ещё."
             }
         }
 
@@ -1498,32 +1500,25 @@ label mas_consumables_generic_finish_having(consumable):
         else:
             line_starter = renpy.substitute(dlg_map["else"][get_more])
 
-    if consumable.disp_name == 'coffee':
-        $ persistent.msr_disp_name = 'кофе'
-    elif consumable.disp_name == 'hot chocolate':
-        $ persistent.msr_disp_name = 'горячий шоколад'
-    elif consumable.disp_name == 'Christmas cookie':
-        $ persistent.msr_disp_name = 'рождественское печенье'
-    else:
-        $ persistent.msr_disp_name = 'сахарную тросточку'
+        msr_disp_name = cons_disp_names[consumable.disp_name]
 
-    if consumable.disp_name == 'coffee' or consumable.disp_name == 'hot chocolate':
-        $ finished = "допила"
-        $ svoi = "свой"
-    elif consumable.disp_name == 'Christmas cookie' or consumable.disp_name == 'candycane':
-        $ finished = "доела"
-        if consumable.disp_name == 'Christmas cookie':
-            $ svoi = "своё"
-        else:
-            $ svoi = "свою"
+        if msr_disp_name in ["кофе", "горячий шоколад"]:
+            finished = "допила"
+            mine = "свой"
+        elif msr_disp_name in ["рождественское печенье", "сахарную тросточку"]:
+            finished = "доела"
+            if msr_disp_name == "рождественское печенье":
+                mine = "своё"
+            else:
+                mine = "свою"
 
     if (not mas_canCheckActiveWindow() or mas_isFocused()) and not store.mas_globals.in_idle_mode:
-        m 1eud "Всё, я [finished] [svoi] [persistent.msr_disp_name].{w=0.2} {nw}"
+        m 1eud "Всё, я [finished] [mine] [msr_disp_name].{w=0.2} {nw}"
         extend 1eua "[line_starter]"
-        m 3eua "Секундочка."
+        m 3eua "Секундочку."
 
     elif store.mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
-        m 1esd "О, я уже [finished] [svoi] [persistent.msr_disp_name].{w=1} {nw}"
+        m 1esd "О, я уже [finished] [mine] [msr_disp_name].{w=1} {nw}"
         m 1eua "[line_starter] Скоро вернусь.{w=1}{nw}"
 
     #Monika is off screen
@@ -1579,56 +1574,51 @@ label mas_consumables_generic_finish_having(consumable):
 
 
 label mas_consumables_generic_finished_prepping(consumable):
-    
-    if (not mas_canCheckActiveWindow() or mas_isFocused()) and not store.mas_globals.in_idle_mode:
-        if consumable.disp_name == 'coffee':
-            $ persistent.msr_disp_name = 'кофе'
-        elif consumable.disp_name == 'hot chocolate':
-            $ persistent.msr_disp_name = 'горячий шоколад'
-        elif consumable.disp_name == 'Christmas cookie':
-            $ persistent.msr_disp_name = 'рождественское печенье'
-        else:
-            $ persistent.msr_disp_name = 'сахарную тросточку'
 
-        if consumable.disp_name == 'coffee' or consumable.disp_name == 'hot chocolate':
-            $ moi = "мой"
-            $ gotov = "готов"
-        elif consumable.disp_name == 'Christmas cookie' or consumable.disp_name == 'candycane':
-            $ gotov = "теперь тут"
-            if consumable.disp_name == 'Christmas cookie':
-                $ moi = "моё"
+    python:
+        cons_disp_names = {
+            "coffee":"кофе",
+            "Christmas cookie":"рождественское печенье",
+            "candycane":"сахарную тросточку",
+            "hot chocolate":"горячий шоколад"
+        }
+
+        msr_disp_name = cons_disp_names[consumable.disp_name]
+
+        if msr_disp_name in ["кофе", "горячий шоколад"]:
+            mine = "мой"
+            is_ready = "готов"
+        elif msr_disp_name in ["рождественское печенье", "сахарную тросточку"]:
+            is_ready = "уже тут"
+            if msr_disp_name == "рождественское печенье":
+                mine = "моё"
             else:
-                $ moi = "моя"
+                mine = "моя"
 
-        if consumable.disp_name == 'coffee':
-            $ persistent.msr_disp_name = 'кофе'
-        else:
-            $ persistent.msr_disp_name = 'горячий шоколад'
-        m 1esd "О, [moi] [persistent.msr_disp_name] [gotov]."
+    if (not mas_canCheckActiveWindow() or mas_isFocused()) and not store.mas_globals.in_idle_mode:
+
+        m 1esd "О, [mine] [msr_disp_name] [is_ready]."
         m 1eua "Секунду."
     else:
+        python:
+            cons_disp_names = {
+                "coffee":"кофе",
+                "Christmas cookie":"рождественского печенья",
+                "candycane":"сахарную тросточку",
+                "hot chocolate":"горячего шоколада"
+            }
 
+        msr_disp_name = cons_disp_names[consumable.disp_name]
 
-        if consumable.disp_name == 'coffee':
-            $ persistent.msr_disp_name = 'кофе'
-        elif consumable.disp_name == 'hot chocolate':
-            $ persistent.msr_disp_name = 'горячего шоколада'
-        elif consumable.disp_name == 'Christmas cookie':
-            $ persistent.msr_disp_name = 'рождественского печенья'
-        else:
-            $ persistent.msr_disp_name = 'сахарную тросточку'
-
-        if consumable.disp_name == 'coffee' or consumable.disp_name == 'hot chocolate':
-            $ container = "чашку "
-        elif consumable.disp_name == 'Christmas cookie' or consumable.disp_name == 'candycane':
-            if consumable.disp_name == 'Christmas cookie':
-                $ container = "тарелку "
+        if msr_disp_name in ["кофе", "горячего шоколада"]:
+            my_container = "чашку "
+        elif msr_disp_name in ["рождественского печенья", "сахарную тросточку"]:
+            if msr_disp_name == "рождественского печенья":
+                my_container = "тарелку"
             else:
-                $ container = ""
+                my_container = ""
 
-        m 1eua "Пойду, возьму себе [container][persistent.msr_disp_name]. Скоро вернусь.{w=1}{nw}"
-
-
+        m 1eua "Пойду возьму себе [my_container][msr_disp_name]. Скоро вернусь.{w=1}{nw}"
 
 
     #Monika goes offscreen
@@ -1672,82 +1662,87 @@ label mas_consumables_refill_explain:
 label mas_consumables_generic_running_out(consumable):
     $ amt_left = consumable.getStock()
     m 1euc "Между прочим, [player]..."
-    if consumable.disp_name == 'coffee':
-        $ persistent.msr_disp_name = 'кофе'
-    elif consumable.disp_name == 'hot chocolate':
-        $ persistent.msr_disp_name = 'горячего шоколада'
-    elif consumable.disp_name == 'Christmas cookie':
-        $ persistent.msr_disp_name = 'рождественского печенья'
-    else:
-        $ persistent.msr_disp_name = 'сахарную тросточку'
 
-    if consumable.disp_name == 'coffee' or consumable.disp_name == 'hot chocolate':
-        if amt_left == 1:
-            $ container = "чашка "
-        elif amt_left == 2 or amt_left == 3 or amt_left == 4:
-            $ container = "чашки "
-        else:
-            $ container = "чашек "
-    elif consumable.disp_name == 'Christmas cookie' or consumable.disp_name == 'candycane':
-        if consumable.disp_name == 'Christmas cookie':
+    python:
+        cons_disp_names = {
+            "coffee":"кофе",
+            "Christmas cookie":"рождественского печенья",
+            "candycane":"сахарную тросточку",
+            "hot chocolate":"горячего шоколада"
+        }
+
+        msr_disp_name = cons_disp_names[consumable.disp_name]
+
+        if msr_disp_name in ["кофе", "горячего шоколада"]:
             if amt_left == 1:
-                $ container = "тарелка "
-            elif amt_left == 2 or amt_left == 3 or amt_left == 4:
-                $ container = "тарелки "
+                my_container = "чашка "
+            elif amt_left > 1 and amt_left < 5:
+                my_container = "чашки "
             else:
-                $ container = "тарелок "
-        else:
-            $ container = ""
-            if amt_left == 1:
-                $ persistent.msr_disp_name = "сахарная тросточка"
-            elif amt_left == 2 or amt_left == 3 or amt_left == 4:
-                $ persistent.msr_disp_name = "сахарные тросточки"
+                my_container = "чашек "
+        elif msr_disp_name in ["рождественского печенья", "сахарную тросточку"]:
+            if msr_disp_name == "рождественского печенья":
+                if amt_left == 1:
+                    my_container = "тарелка "
+                elif amt_left > 1 and amt_left < 5:
+                    my_container = "тарелки "
+                else:
+                    my_container = "тарелок "
             else:
-                $ persistent.msr_disp_name = "сахарных тросточек"
+                my_container = ""
+                if amt_left == 1:
+                    msr_disp_name = "сахарная тросточка"
+                elif amt_left > 1 and amt_left < 5:
+                    msr_disp_name = "сахарные тросточки"
+                else:
+                    msr_disp_name = "сахарных тросточек"
 
     if amt_left > 0:
 
-        m 3eud "Я просто хотела дать тебе знать, что у меня осталась только [amt_left] [container][persistent.msr_disp_name]."
+        m 3eud "Я просто хотела дать тебе знать, что у меня осталась только [amt_left] [container][msr_disp_name]."
 
         if not renpy.seen_label("mas_consumables_refill_explain"):
             call mas_consumables_refill_explain
     else:
 
-        if consumable.disp_name == 'coffee':
-            $ finished = "кончился"
-            $ persistent.msr_disp_name = 'кофе'
-        elif consumable.disp_name == 'Christmas cookie':
-            $ finished = "кончилось"
-            $ persistent.msr_disp_name = 'рождественское печенье'
-        elif consumable.disp_name == 'candycane':
-            $ finished = "кончились"
-            $ persistent.msr_disp_name = 'сахарные тросточки'
-        else:
-            $ finished = "кончился"
-            $ persistent.msr_disp_name = 'горячий шоколад'
-        m 3eud "Я просто хотела сказать тебе, что у меня [finished] [persistent.msr_disp_name]."
+        python:
+            if msr_disp_name == "кофе":
+                finished = "кончился"
+            elif msr_disp_name == "рождественского печенья":
+                finished = "кончилось"
+                msr_disp_name = "рождественское печенье":
+            elif msr_disp_name == "сахарную тросточку":
+                finished = "кончились"
+                msr_disp_name = "сахарные тросточки"
+            else:
+                finished = "кончился"
+                msr_disp_name = "горячий шоколад"
+
+        m 3eud "Я просто хотела сказать тебе, что у меня [finished] [msr_disp_name]."
 
     m 1eka "Ты ведь не откажешься принести мне ещё, правда?"
     return
 
 label mas_consumables_generic_critical_low(consumable):
-    if consumable.disp_name == 'coffee':
-        $ persistent.msr_disp_name = 'кофе'
-    elif consumable.disp_name == 'Christmas cookie':
-        $ persistent.msr_disp_name = 'рождественского печенья'
-    elif consumable.disp_name == 'candycane':
-        $ persistent.msr_disp_name = 'сахарная тросточка'
-    else:
-        $ persistent.msr_disp_name = 'горячего шоколада'
+    python:
+        cons_disp_names = {
+            "coffee":"кофе",
+            "Christmas cookie":"рождественского печенья",
+            "candycane":"сахарная тросточка",
+            "hot chocolate":"горячего шоколада"
+        }
 
-    if consumable.disp_name == 'coffee' or consumable.disp_name == 'hot chocolate':
-        $ container = "чашка"
-    elif consumable.disp_name == 'Christmas cookie':
-        $ container = "тарелка "
-    else:
-        $ container = ""
+        msr_disp_name = cons_disp_names[consumable.disp_name]
+
+        if msr_disp_name in ["кофе", "горячего шоколада"]:
+            my_container = "чашка "
+        elif msr_disp_name == "рождественского печенья":
+            my_container = "тарелка "
+        else:
+            my_container = ""
+
     m 1euc "Эй, [player]..."
-    m 3eua "У меня осталась только одна [container][persistent.msr_disp_name]."
+    m 3eua "У меня осталась только одна [container][msr_disp_name]."
     if not renpy.seen_label("mas_consumables_refill_explain"):
         call mas_consumables_refill_explain
 
