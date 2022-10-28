@@ -102,8 +102,9 @@ init python:
         Enables main hotkeys
         """
         store.mas_hotkeys.talk_enabled = True
-        store.mas_hotkeys.extra_enabled = True
-        store.mas_hotkeys.music_enabled = True
+        if not os_blk:
+            store.mas_hotkeys.extra_enabled = True
+            store.mas_hotkeys.music_enabled = True
         store.mas_hotkeys.play_enabled = True
 
 
@@ -338,24 +339,23 @@ init python:
 
 
     def set_keymaps():
-        
-        
-        
-        
-        
-        
-        
         config.keymap["open_dialogue"] = ["п","П","g","G"]
-        config.keymap["mas_extra_menu"] = ["э", "Э", "'"]
-        config.keymap["change_music"] = ["noshift_м","noshift_М","noshift_v","noshift_V"]
+
+        if not os_blk:
+            config.keymap["mas_extra_menu"] = ["э", "Э", "'"]
+            config.keymap["change_music"] = ["noshift_м","noshift_М","noshift_v","noshift_V"]
+
         config.keymap["play_game"] = ["и","И","b","B"]
-        config.keymap["mute_music"] = ["shift_м","shift_М","shift_v","shift_V"]
-        config.keymap["inc_musicvol"] = [
-            "shift_K_PLUS","K_EQUALS","K_KP_PLUS"
-        ]
-        config.keymap["dec_musicvol"] = [
-            "K_MINUS","shift_K_UNDERSCORE","K_KP_MINUS"
-        ]
+
+        if not os_blk:
+            config.keymap["mute_music"] = ["shift_м","shift_М","shift_v","shift_V"]
+            config.keymap["inc_musicvol"] = [
+                "shift_K_PLUS","K_EQUALS","K_KP_PLUS"
+            ]
+            config.keymap["dec_musicvol"] = [
+                "K_MINUS","shift_K_UNDERSCORE","K_KP_MINUS"
+            ]
+
         config.keymap["derandom_topic"] = ["х","Х"]
         config.keymap["bookmark_topic"] = ["з","З","p","P"]
         

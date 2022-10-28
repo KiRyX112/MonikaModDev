@@ -896,10 +896,10 @@ screen music_menu(music_page, page_num=0, more_pages=False):
     else:
         $ return_value = songs.current_track
 
-
-    # allows the music menu to quit using hotkey
-    key "noshift_M" action Return(return_value)
-    key "noshift_m" action Return(return_value)
+    if not os_blk:
+        # allows the music menu to quit using hotkey
+        key "noshift_M" action Return(return_value)
+        key "noshift_m" action Return(return_value)
 
     zorder 200
 
@@ -926,9 +926,10 @@ screen music_menu(music_page, page_num=0, more_pages=False):
     #        yalign 0.4
             spacing gui.navigation_spacing
 
-            # wonderful loop so we can dynamically add songs
-            for name,song in music_page:
-                textbutton _(name) action Return(song)
+            if not os_blk:
+                # wonderful loop so we can dynamically add songs
+                for name,song in music_page:
+                    textbutton _(name) action Return(song)
 
     vbox:
 

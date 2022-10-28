@@ -352,7 +352,8 @@ style mas_adjustable_button_text_dark is generic_button_text_dark:
 screen mas_extramenu_area():
     zorder 52
 
-    key ["e", "E", "у", "У"] action Jump("mas_extra_menu_close")
+    if not os_blk:
+        key ["e", "E", "у", "У"] action Jump("mas_extra_menu_close")
 
     frame:
         area (0, 0, 1280, 720)
@@ -371,7 +372,7 @@ screen mas_extramenu_area():
             style "mas_extra_menu_frame"
             vbox:
                 spacing 2
-                label "Масштаб":
+                label _("Масштаб"):
                     text_style "mas_extra_menu_label_text"
                     xalign 0.5
 
