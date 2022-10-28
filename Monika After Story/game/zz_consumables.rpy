@@ -1608,15 +1608,15 @@ label mas_consumables_generic_finished_prepping(consumable):
                 "hot chocolate":"горячего шоколада"
             }
 
-        msr_disp_name = cons_disp_names[consumable.disp_name]
+            msr_disp_name = cons_disp_names[consumable.disp_name]
 
-        if msr_disp_name in ["кофе", "горячего шоколада"]:
-            my_container = "чашку "
-        elif msr_disp_name in ["рождественского печенья", "сахарную тросточку"]:
-            if msr_disp_name == "рождественского печенья":
-                my_container = "тарелку"
-            else:
-                my_container = ""
+            if msr_disp_name in ["кофе", "горячего шоколада"]:
+                my_container = "чашку "
+            elif msr_disp_name in ["рождественского печенья", "сахарную тросточку"]:
+                if msr_disp_name == "рождественского печенья":
+                    my_container = "тарелку"
+                else:
+                    my_container = ""
 
         m 1eua "Пойду возьму себе [my_container][msr_disp_name]. Скоро вернусь.{w=1}{nw}"
 
@@ -1710,7 +1710,7 @@ label mas_consumables_generic_running_out(consumable):
                 finished = "кончился"
             elif msr_disp_name == "рождественского печенья":
                 finished = "кончилось"
-                msr_disp_name = "рождественское печенье":
+                msr_disp_name = "рождественское печенье"
             elif msr_disp_name == "сахарную тросточку":
                 finished = "кончились"
                 msr_disp_name = "сахарные тросточки"
