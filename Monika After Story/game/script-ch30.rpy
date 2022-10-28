@@ -805,15 +805,17 @@ init python:
         Few examples:
             "It is his pen." (if the player's gender is declared as male)
             "It is her pen." (if the player's gender is declared as female)
-            "It is their pen." (if player's gender is not declared)
 
         For all available pronouns/words check the keys in MAS_PRONOUN_GENDER_MAP
 
         IN:
-            key - Optional[Literal["M", "F", "X"]] - key (perhaps current gender) to set the pronouns for
+            key - Optional[Literal["M", "F"]] - key (perhaps current gender) to set the pronouns for
                 If None, uses persistent.gender
         """
         store = renpy.store
+
+        if store.persistent.gender not in ["M", "F"]:
+            store.persistent.gender = "M"
 
         if key is None:
             key = store.persistent.gender
@@ -821,8 +823,6 @@ init python:
         for word, sub_map in store.MAS_PRONOUN_GENDER_MAP.items():
             if key in sub_map:
                 value = sub_map[key]
-            else:
-                value = sub_map["X"]
             setattr(store, word, value)
 
 
