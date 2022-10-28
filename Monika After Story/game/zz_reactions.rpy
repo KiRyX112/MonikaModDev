@@ -1134,17 +1134,16 @@ label mas_reaction_gift_generic_sprite_json:
 
                 # we have a complete description, so use it here
                 if spr_obj.dlg_plur:
-                    sprite_str = "эти " + renpy.substitute(spr_obj.dlg_desc)
-                    item_ref = "их"
+                    sprite_str = "" + renpy.substitute(spr_obj.dlg_desc)
+                    item_ref = ""
 
                 else:
-                    sprite_str = "этот " + renpy.substitute(spr_obj.dlg_desc)
-                    item_ref = "это"
+                    sprite_str = "" + renpy.substitute(spr_obj.dlg_desc)
+                    item_ref = ""
 
                 acs_quip = renpy.substitute(renpy.random.choice(acs_quips))
 
-            m 1hua "Спасибо за [sprite_str], [acs_quip]"
-            m 3hub "Я не могу дождаться, чтобы опробовать [item_ref]!"
+            m 1hua "Спасибо за подарок, [Player], мне очень приятно~"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
