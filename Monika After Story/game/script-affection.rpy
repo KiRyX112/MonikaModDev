@@ -1961,7 +1961,6 @@ init 15 python in mas_affection:
             return quip
         return _("Во что бы ты хотел сыграть?")
 
-
 default persistent._mas_long_absence = False
 default persistent._mas_pctaieibe = None
 default persistent._mas_pctaneibe = None
@@ -2436,7 +2435,6 @@ init python:
         bypass=False,
         current_evlabel=None
     ):
-
         """
         Grants some affection whenever something positive happens
 
@@ -2454,7 +2452,6 @@ init python:
                 You probably DO NOT want to use this
                 (Default: None)
         """
-
         if amount is None:
             amount = _get_current_aff_gain()
         change = amount*modifier
@@ -2724,7 +2721,7 @@ init python:
         # This must be called first
         mas_affection._absence_decay_aff()
 
-        if persistent._mas_long_absence:
+        if persistent._mas_long_absence or persistent._mas_is_backup:
             return
 
         time_difference = persistent._mas_absence_time

@@ -17,10 +17,6 @@ init -10 python in mas_games:
             return platform.system() == 'Windows'
 
 init 1 python in mas_games:
-
-
-    HANGMAN_NAME = _("Виселица")
-
     def _total_games_played(exclude_list=[]):
         """
         Returns the total number of games played by adding up the shown_count of each game

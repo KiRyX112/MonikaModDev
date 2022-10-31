@@ -1,4 +1,3 @@
-
 # Module that defines static classes used to create the rule tuples used in the
 # Event class.
 # The static classes are the ones used to manipulate the rule tuples
@@ -1127,4 +1126,3 @@ init python:
                 ev = mas_getEV(ev_label)
                 if ev is not None and MASStripDatesRule.evaluate_rule(ev):
                     ev.stripDates()
-

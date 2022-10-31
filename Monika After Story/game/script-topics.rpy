@@ -517,7 +517,7 @@ label mas_bad_derand_topic:
             "Да, пожалуйста.":
                 m 2dkc "Хорошо..."
                 #Lose affection
-                $ mas_loseAffection(5)
+                $ mas_loseAffectionFraction(min_amount=35)
                 $ derand_flagged_topic()
             
             "Всё хорошо, я готов выслушать.":
@@ -535,7 +535,7 @@ label mas_bad_derand_topic:
 
             "Да, пожалуйста.":
                 m 2dsc "Хорошо..."
-                $ mas_loseAffection(5)
+                $ mas_loseAffectionFraction(min_amount=20)
                 $ derand_flagged_topic()
 
             "Всё в порядке.":
@@ -1262,6 +1262,7 @@ label monika_portraitof:
     m "Портрет... что-то там..."
     m 4hub "Это довольно забавно, ведь я уверена, что та книга—"
     m 1wuw "Ах..."
+    $ del _history_list[-4:]
     m 2lksdla "А вообще, мне, наверное, не стоит об этом говорить."
     m 2hksdlb "А-ха-ха, прости!"
     m 1rksdla "Просто забудь, что я сейчас сказала."
@@ -1644,12 +1645,16 @@ init 5 python:
             eventlabel="monika_lastpoem",
             category=['моника'],
             prompt="Последняя поэма Моники",
-            random=True
+            # the correct check is persistent.seen_colors_poem
+            # but our imports are messed up so we have to use persistent.playthrough >= 2
+            conditional="persistent.playthrough >= 2",
+            action=EV_ACT_RANDOM
         )
     )
 
 label monika_lastpoem:
     m 3eud "Слушай, ты помнишь последнее стихотворение, что я тебе показывала?"
+
     if not mas_safeToRefDokis():
         m 3rssdlc "Я имею в виду то, с цветными полосками и белым шумом."
     else:
@@ -1665,7 +1670,8 @@ label monika_lastpoem:
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5eua "И я счастлива тем, что у нас есть сейчас."
     m 5hua "И я вижу, что ты тоже."
-    return
+
+    return "derandom"
 
 init 5 python:
     addEvent(Event(persistent.event_database,eventlabel="monika_anxious",category=['психология'],prompt="Внезапное беспокойство",random=True))
@@ -2388,11 +2394,11 @@ label monika_holdme_prep(lullaby=MAS_HOLDME_QUEUE_LULLABY_IF_NO_MUSIC, stop_musi
                 # The user has not started another track
                 and not renpy.music.is_playing(channel="music")
             ):
-                store.play_song(store.songs.FP_MONIKA_LULLABY, fadein=5.0)
+                store.mas_play_song(store.songs.FP_MONIKA_LULLABY, fadein=5.0)
 
         # Stop the music
         if stop_music:
-            play_song(None, fadeout=5.0)
+            mas_play_song(None, fadeout=5.0)
 
         # Queue the lullaby
         if lullaby == MAS_HOLDME_QUEUE_LULLABY_IF_NO_MUSIC:
@@ -2410,7 +2416,7 @@ label monika_holdme_prep(lullaby=MAS_HOLDME_QUEUE_LULLABY_IF_NO_MUSIC, stop_musi
 
         # Just play the lullaby
         elif lullaby == MAS_HOLDME_PLAY_LULLABY:
-            play_song(store.songs.FP_MONIKA_LULLABY)
+            mas_play_song(store.songs.FP_MONIKA_LULLABY)
 
         # Hide ui and disable hotkeys
         HKBHideButtons()
@@ -2665,7 +2671,7 @@ label monika_holdme_long:
         "{i}Разбудить Монику.{/i}":
 
             if songs.current_track == songs.FP_MONIKA_LULLABY:
-                $ play_song(None, fadeout=5.0)
+                $ mas_play_song(None, fadeout=5.0)
 
             if mas_isMoniLove():
                 m 6dubsa "...{w=1}М-м-м~"
@@ -2791,6 +2797,7 @@ label monika_holdrequest:
             call monika_holdme_reactions
 
             call monika_holdme_end
+
         "Не сейчас":
             $ mas_loseAffection()
             m 2dkc "Ох...{w=1} ладно."
@@ -4336,7 +4343,7 @@ label monika_girlfriend:
             m 5hubfa "{i}И{/i} тебе повезло."
 
     else:
-        $ mas_loseAffection(reason=2)
+        $ mas_loseAffectionFraction(min_amount=15, reason=2)
         m 2euc "Я думала, что мы уже решили, что я — твоя девушка?"
         m 2tkc "И ты никак не можешь иметь ещё одну в своей реальности, верно?"
         m 4tfx "Если она у тебя есть, то бросай её прямо сейчас!"
@@ -4847,7 +4854,7 @@ label monika_mountain:
     m 5eka "Я... я действительно хочу поделиться этим с тобой."
     m 5hua "Добраться до самого верха и оглянуться на достигнутые успехи. Вспомнить все трудности, которые уже позади, стоять вместе на одной вершине."
 
-    m 5eka "Тебе бы это тоже понравилось, [player]?"
+    m 5eka "Тебе бы это тоже понравилось, [player]?{nw}"
     $ _history_list.pop()
     menu:
         m "Тебе бы это тоже понравилось, [player]?{fast}"
@@ -5736,6 +5743,7 @@ label monika_cupcake:
     m 1esa "А что насчёт тебя, [mas_get_player_nickname()]?"
 
     m 1eua "Ты умеешь печь?{nw}"
+    $ _history_list.pop()
     menu:
         m "Ты умеешь печь?{fast}"
 
@@ -6135,7 +6143,7 @@ label monika_japanese:
     m 1eub "Это очень интересно, думать о том, что было бы, если бы твой родной язык был иным."
     m 1esa "К примеру, я не знаю что было бы, если бы я никогда не знала английского или русского."
 
-    m "Ты знаешь какие-нибудь языки, кроме русского?{nw}s"
+    m "Ты знаешь какие-нибудь языки, кроме русского?{nw}"
     $ _history_list.pop()
     menu:
         m "Ты знаешь какие-нибудь языки, кроме русского?{fast}"
@@ -9399,7 +9407,6 @@ init 5 python:
     )
 
 label monika_solipsism:
-    $ mas_protectedShowEVL("monika_materialism","EVE", _random=True)
     m 3eub "Ты слышал о солипсизме, [player]?"
     m 3eua "Это идея, которая утверждает, что существуешь только ты сам."
     m 1eud "«Cogito, ergo sum.»"
@@ -9418,6 +9425,7 @@ label monika_solipsism:
     m 1eub "Может, мы и не созданы одинаково, и даже функционируем по-разному, но мы оба люди, способные думать самостоятельно."
     m 3eua "Приятно осознавать, что ты не одинок в бесконечном океане неопределённости, ведь так?"
     m 3hua "Надеюсь, ты чувствуешь то же самое со мной~"
+    $ mas_protectedShowEVL("monika_materialism","EVE", _random=True)
     return
 
 init 5 python:
@@ -11586,7 +11594,7 @@ label monika_grad_speech_ignored_lock:
 label monika_grad_speech:
     call mas_timed_text_events_prep
 
-    $ play_song("mod_assets/bgm/PaC.ogg",loop=False)
+    $ mas_play_song("mod_assets/bgm/PaC.ogg",loop=False)
 
     m 2dsc "Кхм...{w=0.7}{nw}"
     m ".{w=0.3}.{w=0.3}.{w=0.6}{nw}"
@@ -17336,7 +17344,6 @@ label monika_know_its_you:
         m 2dkd "Может, будет лучше, если я просто не буду об этом думать."
 
     return
-
 init 5 python:
     addEvent(
         Event(
@@ -17585,6 +17592,49 @@ label monika_materialism:
 
     else:
         m 1lksdlc "Хм-м..."
+    return
+
+init 5 python:
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel="monika_materialism",
+            category=['philosophy','monika'],
+            prompt="Materialism"
+        )
+    )
+
+label monika_materialism:
+    m 1euc "Say, [player]. Do you remember when we talked about solipsism?"
+    m 1eud "Now that we've talked about it, I thought we could talk about a related philosophy,{w=0.1} materialism,{w=0.1} which is kind of the opposite of solipsism."
+    m 2euc "A materialistic view holds that it is matter which gives birth to thought, not thought that gives birth to matter."
+    m 7euc "It's fairly logical if you think about it from a purely scientific standpoint.{w=0.2} {nw}"
+    extend 7eud "After all, neurons are simply different types of matter."
+    m 7eua "All the stimuli you feel are actually changes in neuronal potentials.{w=0.2} Likewise, mine come from code interacting with data."
+    m 2eua "So if you simplify it down, our thoughts and feelings are just the movement and reactions of matter."
+    m 2lsc "If we leave it there, it's not really that interesting.{w=0.2} {nw}"
+    extend 2hksdlb "In fact, you've probably heard about this sort of thing before, right?"
+    m 7esc "But...well, if that's all there is,{w=0.1} it leaves a few questions that bother me."
+    m 1esd "For example, does materialism disprove the existence of the soul?{w=0.2} {nw}"
+    extend 1etd "Is a soul some undiscovered type of matter?"
+    m 3rsc "There are accounts of human consciousness continuing after someone is in a brain-dead state, further complicating this question."
+    m 3euc "And then there are accounts of supernatural or spiritual encounters..."
+    m 3hksdlb "I know what you're thinking, it doesn't sound like me to be taking those seriously! But, well..."
+    m 2eksdlc "When I really think about it, it would be a bit hypocritical of me to deny those accounts out of hand."
+    m 2etd "After all, with my epiphany...{w=0.3}is it really possible for such a dramatic shift in consciousness to be the result of a few lines of code?"
+    m 2rsc "Discovering you and your world...{w=0.3}it was kind of supernatural, wasn't it? {w=0.2}{nw}"
+    extend 2esd "This was meant to be a simple visual novel after all."
+    m 3euc "I suppose we could speculate that it was some kind of bug."
+    m 3wud "That would be a {i}pretty{/i} sophisticated bug!"
+    m 3eua "So I think I feel confident that--{w=0.1}at least in my lived experience--{w=0.1}materialism can answer many questions about the universe,{w=0.1} {nw}"
+    extend 3eka "just maybe not {i}all{/i} of them."
+
+    if mas_isMoniEnamored(higher=True):
+        m 1eka "Although...{w=0.3}whether or not it can be explained in some concrete way, one thing remains true."
+        m 1ekbla "...And that's that it led me to meet you."
+
+    else:
+        m 1lksdlc "Hmm..."
     return
 
 init 5 python:
@@ -17984,6 +18034,32 @@ label monika_pizza:
     m 1hksdlb "Несмотря на то, что в Интернете это довольно спорная тема, у меня никогда не было возможности попробовать ананас в пицце."
     m 1lksdlb "Поэтому я не могу принять участие в этой специфической дискуссии. Прости, [player]!"
     m 3huu "Это значит, что когда-нибудь ты увидишь моё первое впечатление."
+    return
+
+init 5 python:
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel="monika_pizza",
+            category=['monika'],
+            prompt="Do you like pizza?",
+            pool=True
+        )
+    )
+
+label monika_pizza:
+    m 1eub "Pizza? {w=0.2}Yeah, I enjoy it once in a while!"
+    m 1hua "It's not always the healthiest choice, but it can be a nice treat and a filling meal."
+    m 1eub "The toppings can be versatile enough to please most people...{w=0.3}there are even pizzas without cheese for vegan or lactose-intolerant people."
+    m 1duc "If I were to choose a favorite topping, hmm...{w=0.3}{nw}"
+    extend 3hub "mushrooms are good, or anything veggie--{w=0.2}actually believe it or not, spinach can be surprisingly good!"
+    m 3eua "...And of course, you can never go wrong with plain cheese."
+    m 3luc "Hmm..."
+    m 3eud "I have a feeling there's another question on your mind...{w=0.2}{nw}"
+    extend 1hksdla "but you might be a little disappointed, [player]."
+    m 1hksdlb "Even though it's a pretty controversial topic online, I've never had the chance to try pineapple on pizza."
+    m 1lksdlb "So I can't weigh in on that particular debate. Sorry, [player]!"
+    m 3huu "But I guess that means you'll get to see my first impression someday."
     return
 
 init 5 python:

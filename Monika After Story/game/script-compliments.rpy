@@ -148,7 +148,7 @@ label mas_compliment_beautiful_2:
     m 1ekbfa "Для меня ты самый красивый человек в мире!"
     menu:
         "Ты для меня самая красивая девушка на свете!":
-            $ mas_gainAffection(5,bypass=True)
+            $ mas_gainAffection(5, bypass=True)
             m 1hub "Э-хе-хе~"
             m "Я так сильно тебя люблю, [player]!"
             # manually handle the "love" return key
@@ -322,7 +322,7 @@ label mas_compliment_awesome_2:
         
         "Мне не особо нравятся объятия.":
             $ mas_loseAffection(0.5) # you monster.
-            m 1eft "...серьёзно?"
+            m 1eft "...Cерьёзно?"
             m 1dkc "Ну, каждому своё, я думаю. Но однажды тебе придется это сделать."
     return
 
@@ -371,7 +371,7 @@ label mas_compliment_intelligent_2:
             $ mas_ILY()
         
         "Я всегда буду гордиться тобой.":
-            $ mas_gainAffection(3,bypass=True)
+            $ mas_gainAffection(3, bypass=True)
             m 1ekbfa "[player]..."
         
         "Иногда ты заставляешь меня чувствовать себя глупо.":
@@ -493,7 +493,7 @@ label mas_compliment_fit_2:
         
         "Ничего не обещаю, но постараюсь сделать всё возможное.":
             $ mas_gainAffection(1, bypass=True)
-            m 1tfb "Я так рада!"
+            m 1tfb "Тебе же будет лучше!"
             m 2tub "Не думай, что ты легко отделаешься, если начнёшь оправдываться."
         
         "Я предпочту не напрягаться...":

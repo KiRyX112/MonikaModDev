@@ -4006,6 +4006,11 @@ label monika_change_nou_house_rules:
     label .pre_menu(has_changed_rules=False, from_game=False):
         pass
 
+    # Since renpain is junk and doesn't allow us
+    # jump with args, we have to use this crutch
+    label .pre_menu(has_changed_rules=False, from_game=False):
+        pass
+
     label .menu_loop:
         python:
             menu_items = [
@@ -4572,6 +4577,9 @@ label mas_nou_game_end:
 
         "Не сейчас.":
             m 1hua "Хорошо, дай мне знать, когда ты снова захочешь сыграть~"
+
+
+label mas_nou_game_end_end:
 
 
 label mas_nou_game_end_end:
