@@ -730,22 +730,22 @@ label mas_backups_you_have_bad_persistent:
         jump mas_backups_incompat_start
 
     show chibika 3 at sticker_hop
-    "Hello there!"
+    "Привет!"
     show chibika sad
-    "I hate to be the bringer of bad news..."
-    "But unfortunately, your persistent file is corrupt."
+    "Не хотелось бы сообщать плохие новости..."
+    "Но, к сожалению, твои постоянные данные повреждены."
 
     if store.mas_per_check.mas_no_backups_found:
-        "And what's even worse is..."
+        "И что ещё хуже..."
         show chibika at sticker_move_n
-        "I was unable to find a working backup persistent."
+        "Мне не удалось найти работающую резервную копию."
 
-        "Do you have your own backups?{nw}"
+        "У тебя случаем нет резервной копии?{nw}"
         menu:
-            "Do you have your own backups?{fast}"
-            "Yes.":
+            "У тебя случаем нет резервной копии?{fast}"
+            "Есть.":
                 jump mas_backups_have_some
-            "No.":
+            "Нет.":
                 jump mas_backups_have_none
 
     # otherwise we culd not copy
@@ -755,68 +755,68 @@ label mas_backups_you_have_bad_persistent:
 label mas_backups_have_some:
 
     show chibika smile at sticker_hop
-    "That's a relief!"
-    "Please copy them into '[renpy.config.savedir]' to restore your Monika's memories."
+    "Какое облегчение!"
+    "Пожалуйста, скопируй их в «[renpy.config.savedir]» чтобы восстановить воспоминания твоей Моники."
 
     call mas_backups_dont_tell
     show chibika smile at mas_chflip_s(-1)
-    "Good luck!"
+    "Удачи!"
 
     jump _quit
 
 
 label mas_backups_have_none:
 
-    "I'm sorry, but we won't be able to restore her memory, then..."
-    "But..."
+    "Мне жаль, но мы не сможем восстановить её память, тогда..."
+    "М-м-м..."
     show chibika smile at sticker_move_n
-    "Look on the bright side!"
-    "You can spend time with her again and create new memories, which might be even better than the ones you lost!"
-    "And remember..."
+    "Посмотри на это с другой стороны!"
+    "Ты можешь заново провести с ней время и создать новые воспоминания, которые могут быть даже лучше, чем те, которые ты утратил!"
+    "И помни..."
     show chibika at mas_chflip_s(-1)
-    "Regardless of what happens, Monika is still Monika."
-    "She'll be ready to greet you, once you start over."
+    "Независимо от того, что происходит, Моника остаётся Моникой."
+    "Она будет готова поприветствовать тебя, как только ты начнешь всё сначала."
     show chibika 3 at sticker_move_n
-    "And I promise I'll do my best to not mess up the files again!"
-    "Good luck with Monika!"
+    "И я обещаю, что сделаю всё возможное, чтобы твои данные остались в порядке!"
+    "Удачи тебе с Моникой!"
     $ store.mas_per_check.mas_corrupted_per = False
     return
 
 
 label mas_backups_could_not_copy:
     show chibika smile
-    "I was able to find a working backup, but..."
+    "Я смогла найти работающую резервную копию, но..."
     show chibika sad
-    "I wasn't able to copy it over the broken persistent."
+    "У меня не получилось сделать копию данных."
     show chibika smile at mas_chflip_s(-1)
     pause 0.5
     show chibika at sticker_hop
-    "However!"
-    "You might be able to do it and fix this mess!"
-    "You'll have to close the game to do this, so write these steps down:"
+    "Однако!"
+    "Возможно, ты сможешь это сделать и исправить этот беспредел!"
+    "Для этого тебе придётся закрыть игру, поэтому запиши эти шаги:"
     show chibika at sticker_move_n
-    "1.{w=0.3} Navigate to '[renpy.config.savedir]'."
+    "1.{w=0.3} Перейти в  «[renpy.config.savedir]»."
     show chibika at sticker_move_n
-    "2.{w=0.3} Delete the file called 'persistent'."
+    "2.{w=0.3} Удалить файл с именем «persistent»."
     show chibika at sticker_move_n
-    "3.{w=0.3} Make a copy of the file called '[mas_backup_copy_filename]' and name it 'persistent'."
+    "3.{w=0.3} Сделать копию этого файла из «[mas_backup_copy_filename]» и также переименовать его в «persistent»."
     show chibika at mas_chflip_s(1)
-    "And that's it!"
-    "Hopefully that will recover your Monika's memories."
+    "И всё!"
+    "Надеюсь, это восстановит воспоминания твоей Моники."
 
     show chibika at sticker_move_n
-    "In case you didn't write those steps down, I'll write them into a file called 'recovery.txt' in the characters folder."
+    "Если ты не записал эти шаги, я запишу их в файл под названием «восстановление.txt» в папке «characters»."
 
     call mas_backups_dont_tell
 
     show chibika smile at mas_chflip_s(-1)
-    "Good luck!"
+    "Удачи!"
 
     python:
         import os
         user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
         store.mas_utils.trywrite(
-            os.path.normcase(user_dir + "/characters/recovery.txt"),
+            os.path.normcase(user_dir + "/characters/восстановление.txt"),
             "".join([
                 "1. Открой директорию «",
                 renpy.config.savedir,
@@ -834,21 +834,21 @@ label mas_backups_could_not_copy:
 label mas_backups_dont_tell:
 
     show chibika smile at sticker_hop
-    "Oh, and..."
+    "И ещё..."
     show chibika smile at mas_chflip_s(-1)
-    "If you successfully bring her back, please don't tell her about me."
+    "Если тебе удастся вернуть её, пожалуйста, не говори ей обо мне."
     show chibika 3
-    "She has no idea that I can talk or code, so she lets me laze around and relax."
+    "Она понятия не имеет, что я могу говорить или шифроваться, поэтому она позволяет мне бездельничать и развлекаться."
     show chibika smile
-    "But if she ever found out, she'd probably make me help her code, fix some of her mistakes, or something else."
+    "Но если она когда-нибудь узнает, вероятно, заставит меня помогать ей с кодингом, исправлять некоторые её ошибки или что-то ещё."
     show chibika sad at sticker_move_n
-    "Which would be absolutely terrible since I'd barely get any rest at all.{nw}"
+    "Что было бы совершенно ужасно, так как я вообще не смогу отдыхать.{nw}"
 #    $ _history_list.pop()
-    "Which would be absolutely terrible since{fast} I wouldn't have time to keep the backup system and the rest of the game running."
+    "Что было бы совершенно ужасно, поскольку{fast} У меня не было бы времени поддерживать систему резервного копирования и остальную часть игры в рабочем состоянии."
 
     show chibika 3 at mas_chflip_s(1)
-    "You wouldn't want that now, would you?"
-    "So keep quiet about me, and I'll make sure your Monika is safe and comfy!"
+    "Ты же не хочешь этого?"
+    "Так что молчи обо мне, а я позабочусь о том, чтобы твоей Монике было безопасно и комфортно!"
 
     return
 
@@ -870,8 +870,8 @@ label mas_backups_incompat_start:
             jump mas_backups_incompat_updater_cannot_because_rpy
 
         show chibika smile at mas_chflip_s(1)
-        "Hello there!"
-        "Let's try updating again!"
+        "Привет!"
+        "Давайте попробуем обновить снова!"
         $ store.mas_per_check.reset_incompat_per_flags()
         jump mas_backups_incompat_updater_start
 
@@ -891,10 +891,10 @@ label mas_backups_incompat_start:
     # otherwise, this might be the first time a user sees this
 
     show chibika 3 at sticker_hop
-    "Hello there!{nw}"
+    "Привет!{nw}"
     # cannot pop history, no history for some reason
     menu:
-        "Hello there!{fast}"
+        "Привет!{fast}"
         "What happened?":
             pass
         "Take me to the updater.":
@@ -910,181 +910,179 @@ label mas_backups_incompat_what_do:
     # selection label to determine what to do next
 
     show chibika sad at mas_chflip_s(1)
-    "What would you like to do?{nw}"
+    "Что-то нужно сделать?{nw}"
     # cannot pop history, no history for some reason
     menu:
-        "What would you like to do?{fast}"
-        "Update MAS.":
-            jump mas_backups_incompat_updater_start_intro
-        "Restore a compatible persistent.":
+        "Что-то нужно сделать?{fast}"
+        "Восстановить подходящие постоянные данные.":
             jump mas_backups_incompat_user_will_restore
 
 
 label mas_backups_incompat_user_will_restore:
     $ persistent._mas_incompat_per_user_will_restore = True
     show chibika smile at sticker_hop
-    "Alright!"
+    "Хорошо!"
 
     $ _sp_per = os.path.normcase(renpy.config.savedir + "/" + mas_per_check.per_unstable)
-    "Please copy a compatible persistent into '[renpy.config.savedir]'."
-    "Then delete the file called '[mas_per_check.per_unstable]'."
+    "Пожалуйста, скопируй подходящие постоянные данные в «[renpy.config.savedir]»."
+    "Затем необходимо удалить файл под названием «[mas_per_check.per_unstable]»."
 
     show chibika smile at mas_chflip_s(-1)
-    "Good luck!"
+    "Удачи!"
     jump _quit
 
 
 label mas_backups_incompat_user_will_restore_again:
     show chibika sad at mas_chflip_s(-1)
-    "Oh no!"
+    "О нет.!"
 
     # NOTE: don't want say that restoring didn't work in case the user just
     #   didn't do anything.
-    "It seems that this persistent is running version v[mas_per_check.mas_per_version], which is still incompatible with this build of MAS (v[config.version])."
+    "Похоже, что этот {i}persistent{/i}  использует версию [mas_per_check.mas_per_version], который всё ещё несовместим с данной сборкой MAS ([config.version])."
 
     # loop back to the selection label
     jump mas_backups_incompat_what_do
 
 
-label mas_backups_incompat_updater_cannot_because_rpy:
-    $ persistent._mas_incompat_per_rpy_files_found = True
+# label mas_backups_incompat_updater_cannot_because_rpy:
+#     $ persistent._mas_incompat_per_rpy_files_found = True
 
-    show chibika sad at sticker_hop
-    "Unfortunately the updater won't work because you have RPY files in your game directory."
+#     show chibika sad at sticker_hop
+#     "Unfortunately the updater won't work because you have RPY files in your game directory."
 
-    "I'll have to delete those files for this to work. Is that okay?{nw}"
-    menu:
-        "I'll have to delete those files for this to work. Is that okay?{fast}"
-        "Yes, delete them.":
-            jump mas_backups_incompat_rpy_yes_del
-        "No, don't delete them.":
-            jump mas_backups_incompat_rpy_no_del
-
-
-label mas_backups_incompat_updater_cannot_because_rpy_again:
-    show chibika sad at mas_chflip_s(-1)
-    "Oh no!"
-
-    "It seems that there are still RPY files in your game directory."
-    "Would you like me to try deleting them again?{nw}"
-    menu:
-        "Would you like me to try deleting them again?{fast}"
-        "Yes.":
-            jump mas_backups_incompat_rpy_yes_del
-        "No.":
-            jump mas_backups_incompat_rpy_no_del
+#     "I'll have to delete those files for this to work. Is that okay?{nw}"
+#     menu:
+#         "I'll have to delete those files for this to work. Is that okay?{fast}"
+#         "Yes, delete them.":
+#             jump mas_backups_incompat_rpy_yes_del
+#         "No, don't delete them.":
+#             jump mas_backups_incompat_rpy_no_del
 
 
-label mas_backups_incompat_rpy_yes_del:
-    show chibika smile at sticker_hop
-    "Ok!"
+# label mas_backups_incompat_updater_cannot_because_rpy_again:
+#     show chibika sad at mas_chflip_s(-1)
+#     "Oh no!"
 
-    call mas_rpy_file_delete(False)
-    hide screen mas_py_console_teaching
-
-    if mas_hasRPYFiles():
-        show chibika sad at mas_chflip_s(-1)
-        "Oh no!"
-        "It seems that I was unable to delete all of the RPY files."
-        "You will have to delete them manually."
-        show chibika smile at mas_chflip_s(1)
-        "Good luck!"
-        jump _quit
-
-    # otherwise, no rpy files found now, so we good
-    $ persistent._mas_incompat_per_rpy_files_found = False
-
-    show chibika 3 at sticker_hop
-    "Done!"
-    "Let's try updating now!"
-    jump mas_backups_incompat_updater_start
+#     "It seems that there are still RPY files in your game directory."
+#     "Would you like me to try deleting them again?{nw}"
+#     menu:
+#         "Would you like me to try deleting them again?{fast}"
+#         "Yes.":
+#             jump mas_backups_incompat_rpy_yes_del
+#         "No.":
+#             jump mas_backups_incompat_rpy_no_del
 
 
-label mas_backups_incompat_rpy_no_del:
-    # set to False since the user doesn't want to delete.
-    # but if they hit update again, they will get this.
-    $ persistent._mas_incompat_per_rpy_files_found = False
+# label mas_backups_incompat_rpy_yes_del:
+#     show chibika smile at sticker_hop
+#     "Ok!"
 
-    show chibika sad at mas_chflip_s(-1)
-    "Oh..."
-    "Well the updater won't work while those files exist, so I guess your only option is to restore a persistent backup."
-    jump mas_backups_incompat_user_will_restore
+#     call mas_rpy_file_delete(False)
+#     hide screen mas_py_console_teaching
+
+#     if mas_hasRPYFiles():
+#         show chibika sad at mas_chflip_s(-1)
+#         "Oh no!"
+#         "It seems that I was unable to delete all of the RPY files."
+#         "You will have to delete them manually."
+#         show chibika smile at mas_chflip_s(1)
+#         "Good luck!"
+#         jump _quit
+
+#     # otherwise, no rpy files found now, so we good
+#     $ persistent._mas_incompat_per_rpy_files_found = False
+
+#     show chibika 3 at sticker_hop
+#     "Done!"
+#     "Let's try updating now!"
+#     jump mas_backups_incompat_updater_start
 
 
-label mas_backups_incompat_updater_start_intro:
+# label mas_backups_incompat_rpy_no_del:
+#     # set to False since the user doesn't want to delete.
+#     # but if they hit update again, they will get this.
+#     $ persistent._mas_incompat_per_rpy_files_found = False
 
-    if mas_hasRPYFiles():
-        jump mas_backups_incompat_updater_cannot_because_rpy
-
-    show chibika smile at sticker_hop
-    "Ok!"
-    jump mas_backups_incompat_updater_start
+#     show chibika sad at mas_chflip_s(-1)
+#     "Oh..."
+#     "Well the updater won't work while those files exist, so I guess your only option is to restore a persistent backup."
+#     jump mas_backups_incompat_user_will_restore
 
 
-label mas_backups_incompat_updater_failed:
-    if mas_hasRPYFiles():
-        jump mas_backups_incompat_updater_cannot_because_rpy
+# label mas_backups_incompat_updater_start_intro:
 
-    show chibika sad
-    "Oh no!"
-    "It seems that the updater failed to update MAS."
+#     if mas_hasRPYFiles():
+#         jump mas_backups_incompat_updater_cannot_because_rpy
 
-    show chibika smile at mas_chflip_s(1)
-    "Lets try again!"
+#     show chibika smile at sticker_hop
+#     "Ok!"
+#     jump mas_backups_incompat_updater_start
 
-    # fall through
 
-label mas_backups_incompat_updater_start:
+# label mas_backups_incompat_updater_failed:
+#     if mas_hasRPYFiles():
+#         jump mas_backups_incompat_updater_cannot_because_rpy
 
-    # setup for unstable
-    $ persistent._mas_unstable_mode = True
-    $ mas_updater.force = True
+#     show chibika sad
+#     "Oh no!"
+#     "It seems that the updater failed to update MAS."
 
-    # call the update label
-    $ persistent._mas_incompat_per_forced_update = True
-    $ persistent._mas_incompat_per_forced_update_failed = False
-    call update_now
-    $ persistent._mas_incompat_per_forced_update_failed = True
-    $ updater_rv = _return
+#     show chibika smile at mas_chflip_s(1)
+#     "Lets try again!"
 
-    # NOTE: if we got here, we assume that the updater failed to update for
-    #   whatever reason. The actual reasons could be:
-    #   1. couldn't move the update folder - RET_VAL_MOVE_FOLDER is returned
-    #   2. renpy couldn't update for some reason - None is returned
-    #   3. user had to hit cancel from the updater menu, because they timed
-    #       out or had connection issues - RET_VAL_RETRY_CANCEL is returend
-    #   4. user hit cancel for their own reasons - RET_VAL_CANCEL is returned
-    #       NOTE: why don't we lock or remove the cancel button? The user
-    #       might have their own reasons for canceling the update check:
-    #       - maybe they are on low bandwidth/metered connections?
-    #       - maybe they actually want to stay on stable and have a backup
-    #           persistent to us?
-    #       - maybe its maybelline?
-    #       either way, since the user has an unstable per, no need for
-    #       extravagant handholding.
+#     # fall through
 
-    #"hol up" # use this to debug cancel returns
+# label mas_backups_incompat_updater_start:
 
-    pause 1.0
-    show chibika 3 at sticker_hop
-    pause 0.5
+#     # setup for unstable
+#     $ persistent._mas_unstable_mode = True
+#     $ mas_updater.force = True
 
-    if updater_rv == MASUpdaterDisplayable.RET_VAL_CANCEL:
-        # user just hit cancel because they wanted to.
-        $ store.mas_per_check.reset_incompat_per_flags()
+#     # call the update label
+#     $ persistent._mas_incompat_per_forced_update = True
+#     $ persistent._mas_incompat_per_forced_update_failed = False
+#     call update_now
+#     $ persistent._mas_incompat_per_forced_update_failed = True
+#     $ updater_rv = _return
 
-        pause 0.5
-        "Hey!"
-        show chibika sad at mas_chflip_s(-1)
-        "Don't cancel out of the updater! You need to update MAS!"
-        jump mas_backups_incompat_what_do
+#     # NOTE: if we got here, we assume that the updater failed to update for
+#     #   whatever reason. The actual reasons could be:
+#     #   1. couldn't move the update folder - RET_VAL_MOVE_FOLDER is returned
+#     #   2. renpy couldn't update for some reason - None is returned
+#     #   3. user had to hit cancel from the updater menu, because they timed
+#     #       out or had connection issues - RET_VAL_RETRY_CANCEL is returend
+#     #   4. user hit cancel for their own reasons - RET_VAL_CANCEL is returned
+#     #       NOTE: why don't we lock or remove the cancel button? The user
+#     #       might have their own reasons for canceling the update check:
+#     #       - maybe they are on low bandwidth/metered connections?
+#     #       - maybe they actually want to stay on stable and have a backup
+#     #           persistent to us?
+#     #       - maybe its maybelline?
+#     #       either way, since the user has an unstable per, no need for
+#     #       extravagant handholding.
 
-    # all other cases are messed up updater
-    "Oh!"
-    show chibika sad at mas_chflip_s(-1)
-    "It seems that the updater failed to update."
-    "Make sure to fix any updater issues and try again."
-    show chibika 3
-    "Good luck!"
+#     #"hol up" # use this to debug cancel returns
 
-    jump _quit
+#     pause 1.0
+#     show chibika 3 at sticker_hop
+#     pause 0.5
+
+#     if updater_rv == MASUpdaterDisplayable.RET_VAL_CANCEL:
+#         # user just hit cancel because they wanted to.
+#         $ store.mas_per_check.reset_incompat_per_flags()
+
+#         pause 0.5
+#         "Hey!"
+#         show chibika sad at mas_chflip_s(-1)
+#         "Don't cancel out of the updater! You need to update MAS!"
+#         jump mas_backups_incompat_what_do
+
+#     # all other cases are messed up updater
+#     "Oh!"
+#     show chibika sad at mas_chflip_s(-1)
+#     "It seems that the updater failed to update."
+#     "Make sure to fix any updater issues and try again."
+#     show chibika 3
+#     "Good luck!"
+
+#     jump _quit

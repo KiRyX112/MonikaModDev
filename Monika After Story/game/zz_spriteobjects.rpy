@@ -2925,17 +2925,17 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_nou_shirt)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_nou_shirt,
-        "Shirt (NOU)",
+        "Футболка (НОУ)",
         "nou_shirt",
         "clothes",
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "No U! Ehehe~",
-            "Ready to draw some more cards?~",
-            "Colorful!",
-            "Plus 10 to luck~",
-            "Up for a game, [player]?"
+            "Но У! Э-хе-хе~",
+            "Готов взять ещё несколько карт?~",
+            "Красочная!",
+            "Плюс 10 к удаче~",
+            "Пойдем играть, [player]?"
         ]
     )
 

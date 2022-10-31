@@ -4712,41 +4712,41 @@ label greeting_found_nou_shirt:
     call spaceroom(hide_monika=True, dissolve_all=True, scene_change=True, show_emptydesk=True)
     pause 2.5
 
-    m "There you are! {w=0.2}I was waiting for you~"
-    m "I have to admit, {w=0.1}I don't know how you were able to put this in my wardrobe without me noticing, [player]...{nw}"
+    m "Вот ты где! {w=0.2}Я ждала тебя!"
+    m "Должна признать, {w=0.1}Я не знаю, как ты сумел засунуть это в мой гардероб так, что я не заметила, [player]...{nw}"
     $ _history_list.pop()
     show screen mas_background_timed_jump(5, "greeting_found_nou_shirt.menu_skip")
     menu:
-        m "I have to admit, I don't know how you were able to put this in my wardrobe without me noticing, [player]...{fast}"
+        m "Должна признать, я не знаю, как ты сумел засунуть это в мой гардероб так, что я не заметила, [player]...{fast}"
 
-        "It's a secret.":
+        "Это секрет.":
             hide screen mas_background_timed_jump
             jump greeting_found_nou_shirt.menu_choice_secret
 
-        "It was [glitch_option_text]!":
+        "Это был [glitch_option_text]!":
             hide screen mas_background_timed_jump
             $ persistent._mas_pm_snitched_on_chibika = True
             $ renpy.invoke_in_thread(
                 mas_utils.trywrite,
-                os.path.join(renpy.config.basedir, "characters/for snitch.txt"),
+                user_dir + "/characters/for snitch.txt",
                 ">:("
             )
             jump greeting_found_nou_shirt.menu_choice_other
 
-        "I have no idea...":
+        "Я не знаю...":
             hide screen mas_background_timed_jump
             jump greeting_found_nou_shirt.menu_choice_other
 
     label .post_menu:
         pass
 
-    m 1ekbla "Thanks, [player]."
-    m 1tfu "Don't think I'll go any easier on you, though~"
+    m 1ekbla "Спасибо, [player]."
+    m 1tfu "Но всё равно не жди от меня поблажек в игре~"
 
     if mas_nou.get_wins_for('Player') >= mas_nou.get_wins_for('Monika'):
-        m 1rtsdlb "In fact, {w=0.1}maybe I should try harder, ahaha..."
+        m 1rtsdlb "Мне наверное, {w=0.1}стоит постараться в следующей партии лучше, а-ха-ха..."
 
-    m 3ttb "Are you up for a game, [mas_get_player_nickname()]?"
+    m 3ttb "Ты готов к игре, [mas_get_player_nickname()]?"
 
     python:
         mas_selspr.unlock_clothes(mas_clothes_nou_shirt)
@@ -4766,22 +4766,22 @@ label greeting_found_nou_shirt:
 label greeting_found_nou_shirt.menu_skip:
     hide screen mas_background_timed_jump
     call mas_transition_from_emptydesk("monika 4sub")
-    m "But I love it~"
+    m "Но мне она нравится~"
 
     jump greeting_found_nou_shirt.post_menu
 
 label greeting_found_nou_shirt.menu_choice_secret:
     if mas_isMoniEnamored(higher=True):
         call mas_transition_from_emptydesk("monika 2tublu")
-        m "{cps=*1.5}You don't peek there {i}often{/i}, do you?~{/cps}{w=0.1}{nw}"
+        m "{cps=*1.5}Ты ведь не {i}часто{/i} туда заглядываешь, правда?~{/cps}{w=0.1}{nw}"
         $ _history_list.pop()
-        m 2lusdla "Anyway... {w=0.3}{nw}"
+        m 2lusdla "В любом случае... {w=0.3}{nw}"
 
     else:
         call mas_transition_from_emptydesk("monika 2rtblsdlu")
-        m "Hmm, anyway... {w=0.3}{nw}"
+        m "Хм-м, в общем... {w=0.3}{nw}"
 
-    extend 4sub "I really love this new outfit!"
+    extend 4sub "мне очень нравится эта новая футболка!"
 
     jump greeting_found_nou_shirt.post_menu
 
