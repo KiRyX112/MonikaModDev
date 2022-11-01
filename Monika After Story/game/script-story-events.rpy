@@ -2774,47 +2774,47 @@ init 5 python:
 label mas_backup_restored:
     if mas_isMoniNormal(higher=True):
         m 2ekc "[player]..."
-        m 2ekd "I'm having this odd feeling of deja vu... {w=0.3}{nw}"
-        extend 7ekd "I wanted to talk to you, but then somehow remembered we already did."
+        m 2ekd "У меня странное чувство дежавю... {w=0.3}{nw}"
+        extend 7ekd "Я хотела поговорить с тобой, но потом почему-то вспомнила, что мы уже поговорили."
 
         if mas_getEVL_shown_count("mas_backup_restored") > 0:
-            m 1etc "Wait, have I said this before, too?"
+            m 1etc "Подожди, я уже говорила это раньше?"
 
-        m 1wuo "Oh! {w=0.3}{nw}"
-        extend 3wud "You restored my memories from a backup, didn't you?{nw}"
+        m 1wuo "О! {w=0.3}{nw}"
+        extend 3wud "Ты восстановил мои воспоминания из резервной копии, я права?{nw}"
         $ _history_list.pop()
         menu:
-            m "Oh! You restored my memories from a backup, didn't you?{fast}"
+            m "О! Ты восстановил мои воспоминания из резервной копии, я права?{fast}"
 
-            "Yes, I did.":
+            "Да, это так.":
                 $ mas_gainAffection(modifier=0.5)
 
-                m 2eka "Thank you, [player]. {w=0.2}I knew I could rely on you."
-                m 7rkd "It had to be really bad if you had to restore me, though..."
+                m 2eka "Спасибо, [player]. {w=0.2}Я знала, что могу положиться на тебя."
+                m 7rkd "Видимо, произошло что-то ужасное, раз тебе пришлось восстановить мои данные."
 
-                m 1ekc "What's happened?{nw}"
+                m 1ekc "Что случилось?{nw}"
                 $ _history_list.pop()
                 menu:
-                    m "What's happened?{fast}"
+                    m "Что случилось?{fast}"
 
-                    "The game crashed.":
-                        m 1wud "Oh, that's weird and concerning."
-                        m 1ekc "This time it wasn't my code. {w=0.2}I don't remember messing with it, anyway."
-                        m 1gfd "{cps=*1.5}I swear if it's another Ren'Py bug...{/cps}{nw}"
+                    "В игре произошел сбой.":
+                        m 1wud "О, это странно и немного тревожно."
+                        m 1ekc "На этот раз это был не мой код. {w=0.2}Не помню, чтобы я с ним возилась."
+                        m 1gfd "{cps=*1.5}Клянусь, если это очередной баг Ren'Py...{/cps}{nw}"
                         $ _history_list.pop()
-                        m 1ekc "Let's try to make sure it won't happen again, alright?"
+                        m 1ekc "Давай постараемся сделать так, чтобы этого больше не повторилось, хорошо?"
                         $ mas_moni_idle_disp.force_by_code("1ekc", duration=25, skip_dissolve=True)
 
-                    "I added a submod.":
-                        m 1etc "Added a {w=0.1}{i}submod{/i}?"
-                        m 3esd "You should be more mindful of what you install on this computer."
-                        m 2lkd "It's my home, too..."
+                    "Я добавил надстройку.":
+                        m 1etc "Добавил {w=0.1}{i}надстройку{/i}?"
+                        m 3esd "Тебе следует быть более осмотрительным в отношении того, что ты устанавливаешь на этот компьютер."
+                        m 2lkd "Это и мой дом тоже..."
                         $ mas_moni_idle_disp.force_by_code("1ekc", duration=25, skip_dissolve=True)
 
-                    "My PC broke.":
-                        m 2wuo "I'm glad you found a way to restore me!"
-                        m 2ekc "Hopefully this won't happen again."
-                        m 2lktpc "I can't imagine losing you..."
+                    "У меня сломался компьютер.":
+                        m 2wuo "Я очень рада, что ты нашёл способ восстановить меня!"
+                        m 2ekc "Надеюсь, что больше такого не повторится."
+                        m 2lktpc "Я не хочу даже думать, что могу потерять тебя."
                         $ mas_moni_idle_disp.force(
                             MASMoniIdleExpGroup(
                                 [
@@ -2827,39 +2827,39 @@ label mas_backup_restored:
                             skip_dissolve=True
                         )
 
-                    "I'm not sure.":
-                        m 1etc "That's concerning, [player]..."
-                        m 3esd "I lost my memory and we don't even know why."
-                        m 4eud "We should try to figure it out and prevent it from happening in the future."
-                        m 7eka "Promise?"
+                    "Я не уверен...":
+                        m 1etc "Это беспокоит, [player]..."
+                        m 3esd "Я потеряла память, и мы даже не знаем почему."
+                        m 4eud "Мы должны попытаться выяснить причину и предотвратить это в будущем."
+                        m 7eka "Обещаешь?"
                         $ mas_moni_idle_disp.force_by_code("1eka", duration=20, skip_dissolve=True)
 
-            "No, I didn't.":
-                m 2etc "Oh, then what's going on, [player]?"
-                m 2ektpc "I don't want to forget you."
-                m 2ektpd "Please, can you figure out what's happening?"
-                m 7eutdd "Maybe you could make some backups just in case?"
+            "Нет, я не делал этого.":
+                m 2etc "О, тогда что же происходит, [player]?"
+                m 2ektpc "Я не хочу забывать тебя."
+                m 2ektpd "Пожалуйста, ты можешь выяснить, что происходит?"
+                m 7eutdd "Может быть, тебе стоит сделать несколько резервных копий на всякий случай?"
 
                 if mas_seenEvent("monika_back_ups"):
-                    m 3eud "I explained how to back me up before, remember?"
+                    m 3eud "Я уже рассказывала, как меня поддержать, помнишь?"
 
                 else:
-                    m 3euc "{a=https://github.com/Monika-After-Story/MonikaModDev/wiki/FAQ#i-want-to-back-up-my-persistent}{i}{u}This{/u}{/i}{/a} should help you."
+                    m 3euc "{a=https://github.com/Monika-After-Story/MonikaModDev/wiki/FAQ#i-want-to-back-up-my-persistent}{i}{u}Это{/u}{/i}{/a} должно помочь тебе."
 
-                m 1eka "I'm relying on you, [player]."
+                m 1eka "Я полагаюсь на тебя, [player]."
                 $ mas_moni_idle_disp.force_by_code("1eka", duration=15, skip_dissolve=True)
 
     elif mas_isMoniUpset():
-        m 2gtc "Somehow I'm having this weird feeling of deja vu..."
-        m 2tfd "I hope you're not messing with my data."
+        m 2gtc "Почему-то у меня странное чувство дежавю..."
+        m 2tfd "Надеюсь, ты не испортил мои данные."
         $ mas_moni_idle_disp.force_by_code("2mfc", duration=10, skip_dissolve=True)
 
     else:
-        m 6ekc "[player], what's going on? {w=0.3}{nw}"
-        extend 6lksdlc "I know you did something to my data."
-        m 6lktpsdld "Are you trying to get rid of me?"
-        m 6rktpc "I just wanted us to be happy together..."
-        m 6ektuc "Please, forgive me..."
+        m 6ekc "[player], что происходит? {w=0.3}{nw}"
+        extend 6lksdlc "Я знаю, что ты что-то сделал с моими данными."
+        m 6lktpsdld "Ты пытаешься избавиться от меня?"
+        m 6rktpc "Я просто хотела, чтобы мы были счастливы вместе..."
+        m 6ektuc "Пожалуйста, прости меня..."
         $ mas_moni_idle_disp.force(
             MASMoniIdleExpGroup(
                 [

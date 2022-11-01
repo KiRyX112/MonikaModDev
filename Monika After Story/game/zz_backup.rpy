@@ -852,59 +852,59 @@ label mas_backups_dont_tell:
 
     return
 
-label mas_backups_incompat_start:
-    # "your per wont work with this MAS"
-    $ mas_darkMode(True) # required for the updater
+# label mas_backups_incompat_start:
+#     # "your per wont work with this MAS"
+#     $ mas_darkMode(True) # required for the updater
 
-    if (
-            persistent._mas_incompat_per_rpy_files_found
-            and mas_hasRPYFiles()
-    ):
-        # user said they would delete the RPY files, but we still have them
-        jump mas_backups_incompat_updater_cannot_because_rpy_again
+#     if (
+#             persistent._mas_incompat_per_rpy_files_found
+#             and mas_hasRPYFiles()
+#     ):
+#         # user said they would delete the RPY files, but we still have them
+#         jump mas_backups_incompat_updater_cannot_because_rpy_again
 
-    elif persistent._mas_incompat_per_forced_update_failed:
-        # a forced update failed in the updater.
-        # assume the user did something to fix and try update again
-        if mas_hasRPYFiles():
-            jump mas_backups_incompat_updater_cannot_because_rpy
+#     elif persistent._mas_incompat_per_forced_update_failed:
+#         # a forced update failed in the updater.
+#         # assume the user did something to fix and try update again
+#         if mas_hasRPYFiles():
+#             jump mas_backups_incompat_updater_cannot_because_rpy
 
-        show chibika smile at mas_chflip_s(1)
-        "Привет!"
-        "Давайте попробуем обновить снова!"
-        $ store.mas_per_check.reset_incompat_per_flags()
-        jump mas_backups_incompat_updater_start
+#         show chibika smile at mas_chflip_s(1)
+#         "Привет!"
+#         "Давайте попробуем обновить снова!"
+#         $ store.mas_per_check.reset_incompat_per_flags()
+#         jump mas_backups_incompat_updater_start
 
-    elif persistent._mas_incompat_per_forced_update:
-        # a forced update failed OUTSIDE of the updater.
-        #   - this is because failed will be True if the updater fails.
-        # this is unexpected so we have some dialogue before trying again
-        $ store.mas_per_check.reset_incompat_per_flags()
-        jump mas_backups_incompat_updater_failed
+#     elif persistent._mas_incompat_per_forced_update:
+#         # a forced update failed OUTSIDE of the updater.
+#         #   - this is because failed will be True if the updater fails.
+#         # this is unexpected so we have some dialogue before trying again
+#         $ store.mas_per_check.reset_incompat_per_flags()
+#         jump mas_backups_incompat_updater_failed
 
-    elif persistent._mas_incompat_per_user_will_restore:
-        # user was supposed to restore the persistent, but it didn't work
-        #   or they just didn't do anythig.
-        $ store.mas_per_check.reset_incompat_per_flags()
-        jump mas_backups_incompat_user_will_restore_again
+#     elif persistent._mas_incompat_per_user_will_restore:
+#         # user was supposed to restore the persistent, but it didn't work
+#         #   or they just didn't do anythig.
+#         $ store.mas_per_check.reset_incompat_per_flags()
+#         jump mas_backups_incompat_user_will_restore_again
 
-    # otherwise, this might be the first time a user sees this
+#     # otherwise, this might be the first time a user sees this
 
-    show chibika 3 at sticker_hop
-    "Привет!{nw}"
-    # cannot pop history, no history for some reason
-    menu:
-        "Привет!{fast}"
-        "What happened?":
-            pass
-        "Take me to the updater.":
-            jump mas_backups_incompat_updater_start_intro
+#     show chibika 3 at sticker_hop
+#     "Привет!{nw}"
+#     # cannot pop history, no history for some reason
+#     menu:
+#         "Привет!{fast}"
+#         "What happened?":
+#             pass
+#         "Take me to the updater.":
+#             jump mas_backups_incompat_updater_start_intro
 
-    show chibika sad at mas_chflip_s(-1)
-    "Unfortunately, your persistent is running version v[mas_per_check.mas_per_version], which is incompatible with this build of MAS (v[config.version])."
-    "The only way I can fix this is if you update MAS or you restore with a compatible persistent."
+#     show chibika sad at mas_chflip_s(-1)
+#     "Unfortunately, your persistent is running version v[mas_per_check.mas_per_version], which is incompatible with this build of MAS (v[config.version])."
+#     "The only way I can fix this is if you update MAS or you restore with a compatible persistent."
 
-    # fall through
+#     # fall through
 
 label mas_backups_incompat_what_do:
     # selection label to determine what to do next

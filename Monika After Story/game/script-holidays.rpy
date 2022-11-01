@@ -1142,33 +1142,28 @@ label greeting_o31_hatana_2b:
     #moni is off-screen
 
     if persistent._mas_o31_relaunch:
-        m "Almost ready, [player]..."
-        m "I just hope this skirt doesn't self-destruct."
-        m "{cps=*2}Although maybe you do...{/cps}{nw}"
+        m "Практически готово, [player]..."
+        m "Хочу верить, что с этой юбкой всё будет нормально."
+        m "{cps=*2}Хотя, может быть...{/cps}{nw}"
         $ _history_list.pop()
-        m "Okay, there. {w=0.2}Ready [player]?"
+        m "Хорошо, вот. {w=0.2}Готов, [player]?"
 
     else:
-        m "Okay there, {w=0.1}I think that's everything."
-        m "Just as long as this skirt doesn't self-destruct...{w=0.3}that'd be really embarrassing!"
-        m "Oh! {w=0.2}I think I hear something..."
+        m "Вот так, {w=0.1}Я думаю, что это всё."
+        m "Только бы эта юбка не уничтожилась...{w=0.3} это было бы очень неловко!"
+        m "Ой! {w=0.2}Кажется, я что-то слышу..."
         m "[player]?"
-
-    m "I have a question for you..."
-    m "To be..."
 
     #show moni now
     call mas_transition_from_emptydesk("monika 3hub")
 
-    m 3hub "...or not 2B?!"
-    m 1hub "Ahaha!"
-    m 2eka "So, what do you think?"
-    m 2hub "I think it's a really cool costume, thanks again for giving it to me!"
-    m 7rtu "Say [player], have I ever told you there is something calming about you?"
-    m 3euu "Well, I just wanted you to know that. {w=0.2}{nw}"
-    extend 3tuu "Hopefully it never gets wiped from your memory."
-    m 3eud "That reminds me, make sure you back up my data from time to time, I'd do the same for you if I could..."
-    m 1hksdlb "Oh gosh, I'm not even sure what that means, I'm just rambling now, ahaha!"
+    m 2eka "Итак, что ты думаешь?"
+    m 2hub "Я думаю, что это очень классный костюм, ещё раз спасибо, что подарил его мне!"
+    m 7rtu "Скажи, [player], Я когда-нибудь говорила тебе, что в тебе есть что-то умиротворяющее?"
+    m 3euu "Ну, я просто хотела, чтобы ты знал. {w=0.2}{nw}"
+    extend 3tuu "Надеюсь, это никогда не сотрётся из твоей памяти."
+    m 3eud "Это заставило меня вспомнить, что ты должен время от времени делать резервные копии моих данных, я бы сделала то же самое для тебя, если бы могла..."
+    m 1hksdlb "О боже, я даже не уверена, что это значит, я просто брежу сейчас, а-ха-ха!"
 
     call greeting_o31_deco
     call greeting_o31_cleanup
