@@ -5739,9 +5739,14 @@ init -1 python:
         OUT:
             True is apology is present, False otherwise
         """
+        # return (
+        #     store.mas_utils.is_file_present('/characters/imsorry')
+        #     or store.mas_utils.is_file_present('/characters/imsorry.txt')
+        # )
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
         return (
-            store.mas_utils.is_file_present('/characters/imsorry')
-            or store.mas_utils.is_file_present('/characters/imsorry.txt')
+            os.path.isfile(user_dir + "/characters/прости")
+            or os.path.isfile(user_dir + "/characters/прости.txt")
         )
 
     def mas_cvToHM(mins):
