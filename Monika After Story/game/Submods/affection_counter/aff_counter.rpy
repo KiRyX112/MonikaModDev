@@ -6,7 +6,8 @@ init -990 python:
         description=(
             "Небольшая надстройка, которая, собственно, отображает счётчик и описание степени привязанности."
         ),
-        version="1.0"
+        version="1.0",
+        settings_pane="aff_settings"
     )
 
 init python:
@@ -38,6 +39,8 @@ init python:
 
 image aff_count = DynamicDisplayable(count_affection)
 image aff_desc = DynamicDisplayable(count_affection_desc)
+
+default persistent.should_show_counter = True
 
 style indicator_text is default:
     color "#000"
@@ -71,20 +74,33 @@ image aff_rose_icon = ConditionSwitch(
 )
 
 screen aff_screen():
+    if persistent.should_show_counter:
+        vbox:
+            pos(30, 26)
+            spacing 2
+            frame:
+                style "indicator_count_frame"
+                add "aff_count"
+            frame:
+                style "indicator_desc_frame"
+                add "aff_desc"
+        vbox:
+            pos(20, 20)
+            spacing 4
+            add "aff_heart_icon"
+            add "aff_rose_icon"
+
+screen aff_settings():
     vbox:
-        pos(30, 26)
-        spacing 2
-        frame:
-            style "indicator_count_frame"
-            add "aff_count"
-        frame:
-            style "indicator_desc_frame"
-            add "aff_desc"
-    vbox:
-        pos(20, 20)
-        spacing 4
-        add "aff_heart_icon"
-        add "aff_rose_icon"
+        xmaximum 800
+        xfill True
+        style_prefix "check"
+
+        # textbutton f"{'Скрыть' if persistent.should_show_counter else 'Показать'}" <-- не трогай, это на Новый год! :Д
+
+        textbutton ("Скрыть" if persistent.should_show_counter else "Показать") action If(
+            persistent.should_show_counter, SetVariable("persistent.should_show_counter", False), SetVariable("persistent.should_show_counter", True)
+        )
 
 init python:
     config.overlay_screens.append("aff_screen")
