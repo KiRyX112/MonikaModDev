@@ -737,8 +737,8 @@ label monika_idle_nap_callback:
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(hours=1), "monika_idle_nap"):
             m 1hua "С возвращением, [player]!"
-            m 1eua "Did you have a nice nap?"
-            m 3hua "You were out for some time, so I hope you're feeling rested~"
+            m 1eua "Ты хорошо вздремнул?"
+            m 3hua "Тебя не было какое-то время, поэтому я надеюсь, что ты чувствуешь себя хорошо~"
             m 1eua "[wb_quip]"
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=5), "monika_idle_nap"):

@@ -2152,7 +2152,7 @@ default persistent._mas_pm_is_fast_reader = None
 # True if fast reader, False if not
 
 label mas_text_speed_enabler:
-    m 1eua "Слушай, [mas_get_player_nickname(exclude_names=['my love'])], мне тут было интересно..."
+    m 1eua "Слушай, [mas_get_player_nickname(exclude_names=['мой любимый'])], мне тут было интересно..."
 
     m "Ты быстро читаешь?{nw}"
     $ _history_list.pop()
