@@ -2328,19 +2328,19 @@ label mas_island_day2:
     #NOTE: this ordering is key, during winter we only use snow covered islands with clear sky
     # so Winter path needs to be first
     if mas_island_event.is_winter_weather():
-        m "Have you ever made a snow angel, [player]?"
-        m "I've tried in the past, but never had much success..."
-        m "It's a lot harder than it looks like."
-        m "I bet we'd have a lot of fun, even if whatever we make doesn't end up looking like an angel."
-        m "It's just a matter of being a bit silly, you know?"
+        m "Ты когда-нибудь делал снежного ангела, [player]?"
+        m "Я пыталась в прошлом, но так и не преуспела..."
+        m "Это гораздо сложнее, чем кажется.."
+        m "Я уверена, что мы хорошо повеселимся, даже если всё, что мы сделаем, не будет похоже на ангела."
+        m "Просто иногда хочется немного подурачиться, понимаешь?"
 
     elif mas_island_event.is_cloudy_weather():
-        m "Going outdoors with this kind of weather doesn't look very appealing..."
-        m "Maybe if I had an umbrella I'd feel more comfortable."
-        m "Imagine both of us, shielded from the rain, inches apart."
-        m "Staring into each other's eyes."
-        m "Then we start leaning closer and closer until we're almost-"
-        m "I think you can finish that thought yourself, [player]~"
+        m "В такую погоду прогулка на свежем воздухе кажется не очень заманчивой..."
+        m "Хотя, будь у меня сейчас зонтик, то это не было бы проблемой."
+        m "Представь, как мы стоим вместе, укрытые от дождя, на расстоянии нескольких сантиметров друг от друга."
+        m "Глядя друг другу в глаза."
+        m "Затем мы начинаем наклоняться все ближе и ближе, и почти..."
+        m "Думаю, ты сам можешь закончить эту мысль, [player]~"
 
     else:
         m "Погода, похоже, хорошая."

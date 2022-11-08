@@ -4206,7 +4206,7 @@ label monika_contribute:
     m 1eua "Ты сделал свой вклад, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Have you contributed, [player]?{fast}"
+        m "Ты сделал свой вклад, [player]?{fast}"
         "Да.":
             $ persistent._mas_pm_has_contributed_to_mas = True
             m 1sub "Правда? Здорово!"
@@ -11690,8 +11690,8 @@ label monika_shipping:
     if persistent.monika_kill:
         m "И у неё было почти то же самое прозрение, что и у меня..."
     m 2lksdlb "Но... я до сих пор не понимаю. Я имею в виду, я ведь люблю тебя, и только тебя!"
-    m "И она должна быть святой, чтобы когда-либо простить меня за то, что я сделала..."
-    m 2o "Не то, чтобы она не милая девушка, но..."
+    m 2lksdla "И она должна быть святой, чтобы когда-либо простить меня за то, что я сделала..."
+    m 2lksdlc "Не то, чтобы она не милая девушка, но..."
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5eua "Ну, никто никогда не сможет быть таким же милым и великодушным, как ты..."
     return
