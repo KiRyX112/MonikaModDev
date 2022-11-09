@@ -14,7 +14,7 @@ default persistent._mas_pm_taken_monika_out = False
 
 init -900 python in mas_ics:
     import os
-    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
     # Image CheckSums
 
     ########################## ISLANDS ########################################
@@ -30,7 +30,7 @@ init -900 python in mas_ics:
     #################################### O31 ##################################
     # cg folder
     o31_cg_folder = os.path.normcase(
-        user_dir + "/game/mod_assets/monika/cg/"
+        user_dir + "/mod_assets/monika/cg/"
     )
 
     # marisa cg
@@ -56,7 +56,7 @@ init -900 python in mas_ics:
     #################################### RPY ##################################
     #game folder
     game_folder = os.path.normcase(
-        user_dir + "/game/"
+        user_dir + "/"
     )
     ###########################################################################
 
