@@ -2212,7 +2212,7 @@ label greeting_amnesia:
 
     python:
         if entered_good_name:
-            name_line = renpy.substitute(", [fakename]")
+            name_line = renpy.substitute("[fakename]")
         else:
             name_line = ""
 

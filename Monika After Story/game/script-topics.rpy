@@ -9225,7 +9225,7 @@ label monika_concerts:
             # NOTE: should be think? maybe?
             m 1eua "Любопытно..."
             show monika 3hub
-            $ renpy.say(m, "Я бы с радостью пошла на {0} концерт вместе с тобой!".format(mas_a_an_str(tempmusicgenre)))
+            $ renpy.say(m, "Я бы с радостью пошла на {0}-концерт вместе с тобой!".format(mas_a_an_str(tempmusicgenre)))
 
         "Нет.":
             if (
@@ -14305,7 +14305,7 @@ label monika_relationship_comfort:
     m 2hua "Это просто означает, что вовлечённые люди чувствуют себя в комфорте друг с другом."
     m 2hubsb "...И я считаю, что это очень мило."
     m 1kua "Давай попытаемся не угодить в ту же ловушку, [player].{w=0.2} {nw}"
-    extend 1hub "Ahaha!"
+    extend 1hub "А-ха-ха!"
     return
 
 #NOTE: This was mas_d25_monika_sleigh, but it seems more like a general topic
