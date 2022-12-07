@@ -2327,7 +2327,7 @@ init 810 python:
         KMP_TXT_OVL_W_BGCLR = "#14001E"
         KMP_TXT_OVL_W_FGCLR = "#4D4154"
 
-        KMP_TXT_OVL_FONT = "gui/font/Halogen.ttf"
+        KMP_TXT_OVL_FONT = "gui/font/comic.ttf"
 
         def __init__(self, mode, pnml=None):
             """
