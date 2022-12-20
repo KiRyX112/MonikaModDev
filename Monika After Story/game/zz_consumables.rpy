@@ -1380,10 +1380,10 @@ label mas_consumables_generic_get(consumable):
     #Get our dlg_props
     python:
         cons_disp_names = {
-            "coffee":"кофе",
-            "Christmas cookie":"рождественского печенья",
-            "candycane":"сахарную тросточку",
-            "hot chocolate":"горячего шоколада"
+            "кофе":"кофе",
+            "Рождественское печенье":"Рождественского печенья",
+            "сахарная тросточка":"сахарную тросточку",
+            "горячий шоколад":"горячего шоколада"
         }
 
         dlg_props = consumable.dlg_props
@@ -1393,7 +1393,7 @@ label mas_consumables_generic_get(consumable):
         plur = "s" if dlg_props.get(mas_consumables.PROP_PLUR, False) else ""
 
         #We need to parse the dialogue depending on the given dlg_props
-        if not consumable.disp_name in ['Christmas cookie', 'candycane']:
+        if not consumable.disp_name in ['Рождественское печенье', 'сахарная тросточка']:
             if container:
                 line_starter = renpy.substitute("Пойду возьму себе чашку " + cons_disp_names[consumable.disp_name] + ".")
             
@@ -1409,7 +1409,7 @@ label mas_consumables_generic_get(consumable):
 
         else:
             
-            if consumable.disp_name == 'Christmas cookie':
+            if consumable.disp_name == 'Рождественское печенье':
                 line_starter = renpy.substitute("Пойду возьму себе тарелку " + cons_disp_names[consumable.disp_name] + ".")
             
             else:
@@ -1456,10 +1456,10 @@ label mas_consumables_generic_finish_having(consumable):
     #Some prep
     python:
         cons_disp_names = {
-            "coffee":"кофе",
-            "Christmas cookie":"рождественское печенье",
-            "candycane":"сахарную тросточку",
-            "hot chocolate":"горячий шоколад"
+            "кофе":"кофе",
+            "Рождественское печенье":"Рождественское печенье",
+            "сахарная тросточка":"сахарную тросточку",
+            "горячий шоколад":"горячий шоколад"
         }
 
         get_more = (
@@ -1505,9 +1505,9 @@ label mas_consumables_generic_finish_having(consumable):
         if msr_disp_name in ["кофе", "горячий шоколад"]:
             finished = "допила"
             mine = "свой"
-        elif msr_disp_name in ["рождественское печенье", "сахарную тросточку"]:
+        elif msr_disp_name in ["Рождественское печенье", "сахарную тросточку"]:
             finished = "доела"
-            if msr_disp_name == "рождественское печенье":
+            if msr_disp_name == "Рождественское печенье":
                 mine = "своё"
             else:
                 mine = "свою"
@@ -1577,10 +1577,10 @@ label mas_consumables_generic_finished_prepping(consumable):
 
     python:
         cons_disp_names = {
-            "coffee":"кофе",
-            "Christmas cookie":"рождественское печенье",
-            "candycane":"сахарную тросточку",
-            "hot chocolate":"горячий шоколад"
+            "кофе":"кофе",
+            "Рождественское печенье":"Рождественское печенье",
+            "сахарная тросточка":"сахарную тросточку",
+            "горячий шоколад":"горячий шоколад"
         }
 
         msr_disp_name = cons_disp_names[consumable.disp_name]
@@ -1588,9 +1588,9 @@ label mas_consumables_generic_finished_prepping(consumable):
         if msr_disp_name in ["кофе", "горячий шоколад"]:
             mine = "мой"
             is_ready = "готов"
-        elif msr_disp_name in ["рождественское печенье", "сахарную тросточку"]:
+        elif msr_disp_name in ["Рождественское печенье", "сахарную тросточку"]:
             is_ready = "уже тут"
-            if msr_disp_name == "рождественское печенье":
+            if msr_disp_name == "Рождественское печенье":
                 mine = "моё"
             else:
                 mine = "моя"
@@ -1602,18 +1602,18 @@ label mas_consumables_generic_finished_prepping(consumable):
     else:
         python:
             cons_disp_names = {
-                "coffee":"кофе",
-                "Christmas cookie":"рождественского печенья",
-                "candycane":"сахарную тросточку",
-                "hot chocolate":"горячего шоколада"
+                "кофе":"кофе",
+                "Рождественское печенье":"Рождественского печенья",
+                "сахарная тросточка":"сахарную тросточку",
+                "горячий шоколад":"горячего шоколада"
             }
 
             msr_disp_name = cons_disp_names[consumable.disp_name]
 
             if msr_disp_name in ["кофе", "горячего шоколада"]:
                 my_container = "чашку "
-            elif msr_disp_name in ["рождественского печенья", "сахарную тросточку"]:
-                if msr_disp_name == "рождественского печенья":
+            elif msr_disp_name in ["Рождественского печенья", "сахарную тросточку"]:
+                if msr_disp_name == "Рождественского печенья":
                     my_container = "тарелку"
                 else:
                     my_container = ""
@@ -1665,10 +1665,10 @@ label mas_consumables_generic_running_out(consumable):
 
     python:
         cons_disp_names = {
-            "coffee":"кофе",
-            "Christmas cookie":"рождественского печенья",
-            "candycane":"сахарную тросточку",
-            "hot chocolate":"горячего шоколада"
+            "кофе":"кофе",
+            "Рождественское печенье":"Рождественского печенья",
+            "сахарная тросточка":"сахарную тросточку",
+            "горячий шоколад":"горячего шоколада"
         }
 
         msr_disp_name = cons_disp_names[consumable.disp_name]
@@ -1680,8 +1680,8 @@ label mas_consumables_generic_running_out(consumable):
                 my_container = "чашки "
             else:
                 my_container = "чашек "
-        elif msr_disp_name in ["рождественского печенья", "сахарную тросточку"]:
-            if msr_disp_name == "рождественского печенья":
+        elif msr_disp_name in ["Рождественского печенья", "сахарную тросточку"]:
+            if msr_disp_name == "Рождественского печенья":
                 if amt_left == 1:
                     my_container = "тарелка "
                 elif amt_left > 1 and amt_left < 5:
@@ -1726,17 +1726,17 @@ label mas_consumables_generic_running_out(consumable):
 label mas_consumables_generic_critical_low(consumable):
     python:
         cons_disp_names = {
-            "coffee":"кофе",
-            "Christmas cookie":"рождественского печенья",
-            "candycane":"сахарная тросточка",
-            "hot chocolate":"горячего шоколада"
+            "кофе":"кофе",
+            "Рождественское печенье":"Рождественского печенья",
+            "сахарная тросточка":"сахарная тросточка",
+            "горячий шоколад":"горячего шоколада"
         }
 
         msr_disp_name = cons_disp_names[consumable.disp_name]
 
         if msr_disp_name in ["кофе", "горячего шоколада"]:
             my_container = "чашка "
-        elif msr_disp_name == "рождественского печенья":
+        elif msr_disp_name == "Рождественского печенья":
             my_container = "тарелка "
         else:
             my_container = ""
