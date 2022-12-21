@@ -1455,25 +1455,25 @@ label bye_prompt_eat:
             m "О, а что у тебя сейчас?{fast}"
             
             "Завтрак.":
-                $ food_type = "breakfast"
+                $ food_type = "завтрак"
             
             "Обед.":
-                $ food_type = "lunch"
+                $ food_type = "обед"
             
             "Ужин.":
-                $ food_type = "dinner"
+                $ food_type = "ужин"
             
             "Перекус.":
-                $ food_type = "snack"
+                $ food_type = "перекус"
                 $ persistent._mas_greeting_type_timeout = datetime.timedelta(minutes=30)
 
-        if food_type in ["lunch", "dinner"]:
+        if food_type in ["обед", "ужин"]:
             m 1eua "Хорошо, [player]."
             m 1duu "Я бы с удовольствием сходила с тобой на [food_type], если бы могла быть рядом.{w=0.1} {nw}"
             extend 1eub "Будем надеяться, что когда-нибудь мы сможем сделать это в ближайшее время!"
             m 1hua "Приятного аппетита~"
 
-        elif food_type == "breakfast":
+        elif food_type == "завтрак":
             m 1eua "Хорошо, [player]."
             m 1eub "Наслаждайся завтраком, в конце концов, это самый важный приём пищи за день."
             m 1hua "До скорой встречи~"
