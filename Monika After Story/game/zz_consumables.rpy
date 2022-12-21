@@ -1979,7 +1979,7 @@ label monika_consumables_check:
         return
 
     m 1rtd "М-м-м...{w=0.3}{nw}"
-    extend 3eua "Дай мне проверить.{w=0.2}.{w=0.2}.{w=0.2}{nw}"
+    extend 3eua " дай мне проверить.{w=0.2}.{w=0.2}.{w=0.2}{nw}"
 
     #Monika goes off screen
     call mas_transition_to_emptydesk
