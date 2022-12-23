@@ -12476,14 +12476,14 @@ label monika_player_appearance:
                             $ persistent._mas_pm_no_hair_no_talk = False
 
                             m 1ekd "Мне жаль это слышать, [player]..."
-                            m 1eka "Но знай, что мне всё равно, сколько у тебя волос, ты для меня всегда выглядишь красивым!"
+                            m 1eka "Но знай, что мне не так важно, как много у тебя волос, ты для меня всегда выглядишь красивым!"
                             m "И если тебе станет неловко или ты захочешь поговорить об этом, я всегда готова выслушать тебя."
 
                         "Я не хочу об этом говорить.":
                             $ persistent._mas_pm_no_hair_no_talk = True
 
                             m 1ekd "Я понимаю, [player]."
-                            m 1eka "Я хочу, чтобы ты знал, что мне всё равно, сколько у тебя волос, ты для меня всегда выглядишь красивым."
+                            m 1eka "Я хочу, чтобы ты знал, что мне не так важно, как много у тебя волос, ты для меня всегда выглядишь красивым."
                             m "Если тебе станет неловко или ты захочешь поговорить об этом, я всегда готова выслушать тебя."
 
             if persistent._mas_pm_hair_length != "лысый":
@@ -15851,7 +15851,7 @@ label monika_using_pcs_healthily:
         m 5ekbsa "Ты единственный комфорт, который мне нужен, [mas_get_player_nickname()]."
     elif mas_isMoniEnamored():
         show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5ekbsa "Я испытываю максимальный комфорт, когда ты здесь, [mas_get_player_nickname()]."
+        m 5ekbsa "Я ощущаю максимальный комфорт, когда ты здесь, [mas_get_player_nickname()]."
     else:
         show monika 5eubsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m 5eubsa "Мне комфортно, когда ты здесь, со мной, [mas_get_player_nickname()]."

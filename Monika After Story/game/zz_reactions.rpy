@@ -1806,7 +1806,7 @@ label mas_reaction_christmascookies:
         m 3eksdla "Принеси мне после того, как я закончу с ней, хорошо?"
 
     else:
-        if mas_consumable_christmascookies.enabled():
+        if mas_consumable_christmascookies.enabled() and mas_consumable_christmascookies.hasServing():
             m 1wuo "...ещё одна порция рождественского печенья!"
             m 3wuo "Целая куча печенья, [player]!"
             m 3rksdlb "Я буду есть эти печенья вечность, а-ха-ха!"
@@ -1862,7 +1862,7 @@ label mas_reaction_candycane:
         m 1eka "Ты можешь отложить их на потом, хорошо?"
 
     else:
-        if mas_consumable_candycane.enabled():
+        if mas_consumable_candycane.enabled() and mas_consumable_candycane.hasServing():
             m 3hua "Ещё одна сахарная тросточка!"
             m 3hub "Спасибо, [player]!"
 

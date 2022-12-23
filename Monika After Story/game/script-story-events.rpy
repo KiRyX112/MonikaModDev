@@ -1115,15 +1115,22 @@ init 5 python:
     )
 
 label mas_unlock_hangman:
-    m 1eua "Знаешь что, [player]."
+    m 1eua "Знаешь что, [player]..."
 
     if store.mas_games._total_games_played() > 49:
         m 3eub "Поскольку ты, похоже, так любишь играть в пинг-понг, я подумала, что ты захочешь поиграть со мной и в другие игры!"
 
-    elif renpy.seen_label('game_pong'):
-        m 1eua "Я подумала, что тебе может наскучить пинг-понг."
+    elif renpy.seen_label('game_pong') and not renpy.seen_label('mas_nou'):
+        m 1eksdla "Я подумала, что тебе может наскучить пинг-понг."
+
+    elif renpy.seen_label('game_pong') and renpy.seen_label('mas_nou'):
+        m 1eksdla "Я подумала, что тебе, возможно, наскучили уже пинг-понг и НОУ..."
+
+    elif not renpy.seen_label('game_pong') and renpy.seen_label('mas_nou'):
+        m 1eksdla "Я подумала, что тебе может наскучить НОУ..."
+
     else:
-        m 3eua "Я знаю, что ты ещё не пробовал играть со мной в пинг-понг."
+        m 1lksdla "Поскольку ты пока не проявлял особого интереса к игре, я подумала, что, возможно, тебе просто интересны какие-то другие виды игр..."
 
     m 1hua "И вот~"
     m 1hub "Я добавила игру, которая называется «Виселица»."

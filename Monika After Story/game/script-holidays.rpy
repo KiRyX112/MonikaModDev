@@ -1116,7 +1116,7 @@ label greeting_o31_briaryoung_shuchiin_academy_uniform:
 
     m 2hub "С возвращением!"
     m 2eub "Ну, что скажешь?"
-    m 7tuu "Я подумала, что могу побыть сегодня любовным секретарём~"
+    m 7tuu "Я подумала, что вместо того, чтобы быть президентом, я могла бы на сегодня быть секретарём..."
 
     if mas_isMoniAff(higher=True):
         m 3rtu "А может даже стать детективом в сфере любви, хотя я уже нашла свою любовь~"
@@ -7343,7 +7343,7 @@ image chibi_peek = MASFilterSwitch("mod_assets/other/chibi_peek.png")
 label mas_bday_surprise_party_hint:
     #Set up letters
     python:
-        persistent._mas_bday_hint_filename = "Для тебя.txt"
+        persistent._mas_bday_hint_filename = mas_utils.sanitize_filename("Для тебя.txt")
         if mas_isMoniNormal(higher=True):
             message = """\
 [player],
