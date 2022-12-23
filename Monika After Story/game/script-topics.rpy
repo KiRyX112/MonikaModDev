@@ -8213,7 +8213,7 @@ label monika_urgent:
     return "love"
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_other_girls",category=['участники клуба'],prompt="Ты когда нибудь думала о других девушках?",pool=True))
+    addEvent(Event(persistent.event_database,eventlabel="monika_other_girls",category=['участники клуба'],prompt="Ты когда-нибудь думала о других девушках?",pool=True))
 
 label monika_other_girls:
     if persistent._mas_pm_cares_about_dokis:
