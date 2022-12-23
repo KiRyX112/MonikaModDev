@@ -1066,7 +1066,7 @@ label monika_kissing_motion(
     $ renpy.pause(duration/2)
     play sound "mod_assets/sounds/effects/kissing.ogg"
     window auto
-    "chu~{fast}{w=1}{nw}"
+    "Чмок~{fast}{w=1}{nw}"
     window hide
     $ renpy.pause(duration/2)
     # hide the black scene
