@@ -777,7 +777,7 @@ label mas_pong_dlg_winner:
             m 3hub "Ещё одна быстрая победа~"
         else:
             m 4huu "Э-хе-хе,{w=0.1} {nw}"
-            extend 4hub "я поймала тебя на этом!~"
+            extend 4hub "я поймала тебя на ошибке!~"
 
         $ pong_monika_last_response_id = PONG_MONIKA_RESPONSE_WIN_SHORT_GAME
 
@@ -930,7 +930,7 @@ label mas_pong_dlg_loser:
 
     elif powerup_value_this_game == PONG_DIFFICULTY_POWERUP:
         m 2wuo "Ух ты...{w=0.3}{nw}"
-        extend 7wuo "Я очень старалась в этот раз!"
+        extend 7wuo " Я очень старалась в этот раз!"
         m 3hub "Так держать, [player]!"
 
 
