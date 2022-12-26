@@ -5435,7 +5435,7 @@ init 5 python:
 
 label monika_resource:
     m 1esc "Что по твоему мнению существенно?"
-    m 1eud "Деньги? Золото? Масло?"
+    m 1eud "Деньги? Золото? Нефть?"
     m 1eua "Лично я бы сказала, что это — время."
     m 3eud "Посчитай одну секунду."
     $ start_time = datetime.datetime.now()
