@@ -12626,9 +12626,9 @@ label monika_player_appearance:
 
             #Tuple means heterochromia, so we should filter that out
             if isinstance(persistent._mas_pm_eye_color, tuple):
-                m 3ekbsa "Ну а пока, я буду довольствоваться тем, что сижу здесь и представляю себе, как смотрю в твои красивые глаза, [player]."
+                m 3ekbsa "Ну, а пока, я буду довольствоваться тем, что сижу здесь и представляю себе, как смотрю в твои красивые глаза, [player]."
             else:
-                m 3ekbsa "Ну а пока, я буду довольствоваться тем, что сижу здесь и представляю себе, как смотрю в твои красивые [persistent.msr_color_eyes_name] глаза, [player]."
+                m 3ekbsa "Ну, а пока, я буду довольствоваться тем, что сижу здесь и представляю себе, как смотрю в твои красивые [persistent.msr_color_eyes_name] глаза, [player]."
 
             show monika 5ekbfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5ekbfa "Я не могу передать словами то, как сильно я тебя люблю."
