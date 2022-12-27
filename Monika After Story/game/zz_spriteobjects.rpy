@@ -2535,7 +2535,7 @@ init -1 python:
     store.mas_sprites.init_clothes(mas_clothes_blazerless)
     store.mas_selspr.init_selectable_clothes(
         mas_clothes_blazerless,
-        "кольная форма без пиджака",
+        "Школьная форма без пиджака",
         "schooluniform_blazerless",
         "clothes",
         visible_when_locked=True,
