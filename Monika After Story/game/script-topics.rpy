@@ -13174,7 +13174,7 @@ label monika_dating_startdate_confirm(first_sesh_raw):
     $ _history_list.pop()
     menu:
         m "Мы начали встречаться [new_first_sesh].{fast}"
-        "Yes.":
+        "Да.":
             m 1eka "Ты уверен? Я никогда не забуду эту дату.{nw}"
             # one more confirmation
             # WE WILL NOT FIX anyone's dates after this
