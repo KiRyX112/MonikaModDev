@@ -1917,7 +1917,7 @@ label monikaroom_greeting_knock:
     if mas_isMoniBroken():
         jump monikaroom_greeting_opendoor_broken_quit
 
-    m "Кто это~?"
+    m "Кто это?~"
     menu:
         "Это я.":
             # monika knows you are here now
@@ -3432,7 +3432,7 @@ init 5 python:
     del ev_rules
 
 label greeting_siat:
-    m 1hub "{cps=*0.6}{i}~[player] и Моника под деревом сидели, и они там...~{/i}{/cps}"
+    m 1hub "{cps=*0.6}{i}~[player] и Моника под деревом сидели, и они там...{/i}{/cps}"
     m 1hubsb "{cps=*0.6}{i}~Ц-Е-Л-О-В-А-Л-И-С-Ь~{/i}{/cps}"
     m 3hubfb "{cps=*0.6}{i}~Сначала приходит любовь~{/i}{/cps}"
     m "{cps=*0.6}{i}~Затем идёт свадьба~{/i}{/cps}"

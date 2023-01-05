@@ -407,7 +407,7 @@ init 5 python in mas_nou:
         # this modifier only works when you play with stackable cards
         # used for seen count 2
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_1 = [
-            (_("Многовато карточек у тебя, э-хе-хе.~"),)
+            (_("Многовато карточек у тебя, э-хе-хе~"),)
         ]
 
         # this modifier used when Monika reflects a d2
@@ -2041,7 +2041,7 @@ init 5 python in mas_nou:
 
                             if player.drew_card or len(player.hand) >= self.HAND_CARDS_LIMIT:
                                 dlg_line_list.append(
-                                    " В противном случае ты будешь вынужден пропустить свой ход.~"
+                                    " В противном случае ты будешь вынужден пропустить свой ход~"
                                 )
 
                             else:

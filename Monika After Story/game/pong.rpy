@@ -753,7 +753,7 @@ label mas_pong_dlg_winner:
 
 
     elif pong_monika_last_response_id == PONG_MONIKA_RESPONSE_WIN_AFTER_PLAYER_WON_MIN_THREE_TIMES:
-        m 1hua "Э-хе-хе~~"
+        m 1hua "Э-хе-хе~"
         m 1tub "Продолжай в том же духе, [player]!{w=0.3} {nw}"
         extend 2tfu "Похоже, твоя серия закончилась!"
 

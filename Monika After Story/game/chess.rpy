@@ -1077,7 +1077,7 @@ label mas_chess_start_chess:
 
                 m 1ekc "Сдаёшься, [player]?"
                 m 1eub "Ладно, но будет лучше, если доиграем до конца."
-                m 3eka "В конце концов, я просто хочу подольше побыть с тобой~."
+                m 3eka "В конце концов, я просто хочу подольше побыть с тобой~"
                 m 1eua "В любом случае..."
         else:
 
@@ -1134,7 +1134,7 @@ label mas_chess_start_chess:
                 _("Я так горжусь тобой., [player]!"),
                 _("Я горжусь тобой, [player]!~"),
                 _("Хорошо сыграно, [player]!"),
-                _("Я очень рада, что ты победил.~"),
+                _("Я очень рада, что ты победил~"),
                 _("Я счастлива, что ты победил!"),
                 _("Независимо от результата, мне всегда будет приятно играть с тобой.")
             ]
@@ -1161,7 +1161,7 @@ label mas_chess_start_chess:
                 m 1hua "Ты за всю игру, только [undo_count] раз отменил ход, хорошая работа."
 
             elif undo_count <= 10:
-                m 1eua "[undo_count] раз. Именно столько было отменено ходов. Совсем не плохо. Если мы продолжим тренироваться вместе, я уверена, что мы сможем снизить это число~."
+                m 1eua "[undo_count] раз. Именно столько было отменено ходов. Совсем не плохо. Если мы продолжим тренироваться вместе, я уверена, что мы сможем снизить это число~"
             else:
 
                 m 1eka "Ты [undo_count] раз отменил ход.{w=0.3} {nw}"
@@ -1371,7 +1371,7 @@ label mas_chess_dlg_game_monika_wins_often:
 
 label mas_chess_dlg_game_monika_wins_sometimes:
     m 1hub "Это было очень весело., [player]!"
-    m 3eka "Независимо от результата, мне всегда нравится играть с тобой в шахматы~."
+    m 3eka "Независимо от результата, мне всегда нравится играть с тобой в шахматы~"
     m 3hua "Уверена, если ты продолжишь тренироваться, то однажды станешь ещё лучше меня!"
 
     #If the difficulty is above base level, we'll mention lowering it
@@ -1899,8 +1899,8 @@ screen mas_chess_confirm(prompt):
                 xalign 0.5
                 spacing 100
 
-                textbutton _("Да.") action Return(True)
-                textbutton _("Нет.") action Return(False)
+                textbutton _("Да") action Return(True)
+                textbutton _("Нет") action Return(False)
 
 
 # promotion screen for chess
