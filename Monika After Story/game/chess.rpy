@@ -3480,25 +3480,27 @@ init python:
                     "mod_assets/games/chess/stockfish_8_windows_x{0}.exe".format("64" if is_64_bit else "32"),
                     startupinfo
                 )
-            
+
             elif is_64_bit and not renpy.android:
                 fp = "mod_assets/games/chess/stockfish_8_{0}_x64".format("linux" if renpy.linux else "macosx")
-                
-                os.chmod(chess_game_dir + "/" + fp, 0755)
-                self.stockfish = open_stockfish(fp)
-            
-            elif renpy.android:
-                open(chess_game_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7"), "wb").write(renpy.file("mod_assets/games/chess/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")).read())
-                fp = "stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")
 
                 os.chmod(chess_game_dir + "/" + fp, 0755)
                 self.stockfish = open_stockfish(fp)
+
+            elif renpy.android:
+                renpy.jump("mas_chess_cannot_work_embarrassing")
+                # нерабочий код, выкидывает ошибку Permission denied
+                # open(chess_game_dir + "/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7"), "wb").write(renpy.file("mod_assets/games/chess/stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")).read())
+                # fp = "stockfish_15_android_{0}".format("armv8" if is_64_bit else "armv7")
+
+                # os.chmod(chess_game_dir + "/" + fp, 0755)
+                # self.stockfish = open_stockfish(fp)
 
             #Set Monika's parameters
             self.stockfish.stdin.write("setoption name Skill Level value {0}\n".format(persistent._mas_chess_difficulty[0]))
             self.stockfish.stdin.write("setoption name Contempt value {0}\n".format(self.MONIKA_OPTIMISM))
             self.stockfish.stdin.write("setoption name Ponder value False\n")
-            
+
             #And set up facilities for asynchronous communication
             self.queue = collections.deque()
             self.lock = threading.Lock()

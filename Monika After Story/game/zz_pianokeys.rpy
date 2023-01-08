@@ -2331,7 +2331,7 @@ init 810 python:
 
         def __init__(self, mode, pnml=None):
             """
-            Creates the piano displablable
+            Creates the piano displayable
 
             IN:
                 mode - the mode we want to be in
