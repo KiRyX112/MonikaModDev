@@ -16,8 +16,8 @@ init -2 python:
 """)
             os.startfile(config.basedir+"/test_err.txt")
             subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
-        if "\\u" in os.environ["USERNAME"].encode("unicode-escape") or "\\u" in config.basedir.encode("unicode-escape"):
-            open(config.basedir+"/username_err.txt", "w").write("""В имени пользователя или директории игры обнаружена кириллица.
+        if "\\u" in os.environ["USERNAME"].encode("unicode-escape") or "\\u" in config.basedir.encode("unicode-escape") or "\\u" in config.savedir.encode("unicode-escape"):
+            open(config.basedir+"/username_err.txt", "w").write("""В имени/директории пользователя или директории игры обнаружена кириллица.
 
 Ren'Py на данный момент времени испытывает проблемы с ANSI-кодировкой, используемой ОС Windows для обработки кириллических знаков, из-за чего возникают проблемы с использованием механизма сохранений, в связи с чем запуск игры был прекращён.
 Пожалуйста, создайте вторую учётную запись с именем *на латинице, без специальных символов*, желательно без знаков препинания; и обязательно задайте пароль, сойдёт даже банальщина а-ля 0000; в Контрольных вопросах можно написать всякую несуразицу.
