@@ -915,7 +915,7 @@ init 5 python:
 label bye_enjoyyourafternoon:
     if mas_isMoniNormal(higher=True):
         m 1ekc "Мне очень жаль, что ты так рано уходишь, [player]."
-        m 1eka "Хотя я понимаю, что ты занят"
+        m 1eka "Хотя я понимаю, что ты занят."
         m 1eua "Обещай, что насладишься днём, хорошо?"
         m 1hua "До свидания~"
 
