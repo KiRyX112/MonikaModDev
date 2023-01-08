@@ -484,9 +484,9 @@ python early:
         if self.loop and not self.queue:
             for i in self.loop:
                 if topq is not None:
-                    newq = renpy.audio.audio.QueueEntry(i, 0, topq.tight, True)
+                    newq = renpy.audio.audio.QueueEntry(i, 0, topq.tight, True, 1.0)
                 else:
-                    newq = renpy.audio.audio.QueueEntry(i, 0, False, True)
+                    newq = renpy.audio.audio.QueueEntry(i, 0, False, True, 1.0)
 
                 self.queue.append(newq)
         else:
