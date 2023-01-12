@@ -27,8 +27,8 @@
         "thumb": "briaryoung_button_up_flowered",
         "group": "clothes",
         "select_dlg": [
-            "I love all the flowers!",
-            "Great choice, [player]!"
+            "Мне так нравятся все эти цветочки!",
+            "Отличный выбор, [player]!"
         ]
     },
     "giftname": "рубашка на пуговицах (в цветочек)",
