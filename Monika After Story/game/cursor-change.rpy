@@ -27,6 +27,8 @@ Ren'Py на данный момент времени испытывает про
 """)
             os.startfile(config.basedir+"/username_err.txt")
             subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
+
+    # TODO: Переписать под Get-WmiObject для Windows 10 и Windows 11, т.к. на этих системах могут быть проблемы с использованием wmic
         try:
             import codecs
             pc_model, pc_manufacturer = [
@@ -48,9 +50,9 @@ Ren'Py на данный момент времени испытывает про
                 line.strip()
                 for line in subprocess.check_output(
                     " && ".join((
-                        "wmic os get buildnumber",
-                        "wmic computersystem get model",
-                        "wmic computersystem get manufacturer"
+                        "wmic os get buildnumber", # powershell \"get-wmiobject -class win32_operatingsystem | format-list -property buildnumber\"
+                        "wmic computersystem get model", # powershell \"get-wmiobject -class win32_computersystem | format-list -property model\"
+                        "wmic computersystem get manufacturer" # powershell \"get-wmiobject -class win32_computersystem | format-list -property manufacturer\"
                     )),
                     universal_newlines=True,
                     shell=True
