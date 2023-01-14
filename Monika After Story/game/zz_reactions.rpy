@@ -1439,7 +1439,7 @@ label mas_thermos_mug_handler(thermos_acs, disp_name, giftname, ignore_case=True
         m 1rksdlb "У меня уже есть эта термокружка, а-ха-ха..."
 
     elif persistent._mas_given_thermos_before:
-        m 1wud "О!{w=0.3} Еще одна термокружка!"
+        m 1wud "О!{w=0.3} Ещё одна термокружка!"
         m 1hua "И на этот раз это «[mas_a_an_str(disp_name, ignore_case)]»."
         m 1hub "Большое спасибо, [player], я не могу дождаться, чтобы использовать её!"
 
@@ -2612,7 +2612,7 @@ label mas_reaction_gift_clothes_velius94_shirt_pink:
     m 2sub "Ах, она идеально сидит!"
     m 3hub "Мне тоже очень нравятся цвета! Розовый и черный так хорошо сочетаются."
     m 3eub "Не говоря уже о юбке выглядит очень мило с этими оборками!"
-    m 2tfbsd "И все же по какой-то причине я не могу не чувствовать, что твой взгляд как бы... {w=0.5}кхм... {w=0.5}{i}в другом месте{/i}."
+    m 2tfbsd "И всё же по какой-то причине я не могу не чувствовать, что твой взгляд как бы... {w=0.5}кхм... {w=0.5}{i}в другом месте{/i}."
 
     if mas_selspr.get_sel_clothes(mas_clothes_sundress_white).unlocked:
         m 2lfbsp "Я же говорила тебе, что невежливо пялиться, [player]."
@@ -2651,9 +2651,9 @@ label mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi:
     m 2hua "Итак,{w=0.5} как я выгляжу?"
     m 3eub "Я почти чувствую, что могу сделать всё, что угодно, прежде чем ты успеешь моргнуть."
     m 1eua "...Если только ты не будешь слишком занят со мной, э-хе-хе~"
-    m 1lkbfb "Я всё еще хочу проводить время с тобой, масте—{nw}"
+    m 1lkbfb "Я всё ещё хочу проводить время с тобой, масте—{nw}"
     $ _history_list.pop()
-    m 1ekbfb "Я всё еще хочу проводить время с тобой,{fast} [player]."
+    m 1ekbfb "Я всё ещё хочу проводить время с тобой,{fast} [player]."
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:

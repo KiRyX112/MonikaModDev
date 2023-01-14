@@ -1289,7 +1289,7 @@ label bye_going_somewhere_leavemenu:
         m 1lksdld "Это нормально, я думаю."
 
     elif mas_isMoniHappy(lower=True):
-        m 1ekd "О, {w=0.3} все в порядке. Может быть, в следующий раз?"
+        m 1ekd "О, {w=0.3} всё в порядке. Может быть, в следующий раз?"
     else:
         # otherwise affection and higher:
         m 2ekp "Оу-у..."
