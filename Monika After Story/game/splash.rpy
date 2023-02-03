@@ -215,9 +215,10 @@ label splashscreen:
 #   NOTE: this keeps screwing with my syntax coloring
     python:
         basedir = user_dir.replace("\\", "/")
+        masrun_dir = (basedir + "/game") if renpy.variant("pc") else basedir
 
-        # dump verseion to a firstrun-style file
-        with open(basedir + "/game/masrun", "w") as versfile:
+        # dump version to a firstrun-style file
+        with open(masrun_dir + "/masrun", "a") as versfile:
             versfile.write(config.name + "|" + config.version + "\n")
 
 
