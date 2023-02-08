@@ -1143,7 +1143,7 @@ label mas_reaction_gift_generic_sprite_json:
 
                 acs_quip = renpy.substitute(renpy.random.choice(acs_quips))
 
-            m 1hua "Спасибо за подарок, [Player], мне очень приятно~"
+            m 1hua "Спасибо за подарок, [player], мне очень приятно~"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
