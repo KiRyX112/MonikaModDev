@@ -6971,22 +6971,22 @@ init 20 python:
     mas_poem_vday_6 = MASPoem(
         poem_id="poem_f14_6",
         category="f14",
-        prompt="Forget-me-not",
-        title=" My dearest [player],",
+        prompt="Не забывай меня",
+        title=" Мой дорогой [player],",
         text="""\
- All the flowers know are their vase.
- A few cups of soil, and a pretty case of porcelain.
- They will never leave without help, even if they someday outgrow it.
+ Всем цветам присуща только их ваза.
+ Количество земли и воды, которое им нужно.
+ Они не станут беспомощными, если отобрать вазу.
 
- Flowers need more than their vase.
- Water from the skies, or a helping hand.
- And without sight of the sky above, the world apart, they would someday wither.
+ Цветам нужно нечто большее, чем ваза.
+ Дождь, льющий с неба или рука помощи.
+ И без созерцания неба над землёй, мира вдали, они когда-нибудь зачахнут.
 
- This gardener gives all this and more.
- It's said a flower blooms brighter when spoken to with love.
- Even trapped in this vase, maybe it isn't a curse to know more.
+ Какой-нибудь садовник даст им всё это, и даже больше.
+ Говорят, что цветок расцветает ярче, если проявить заботу.
+ Не так уж и плохо, быть заключённым в этой вазе, если благодаря заботе он расцветает.
 
- Forget-me-not.
+ Не забывай меня.
 """
     )
 
