@@ -15,14 +15,14 @@
     "dlg_desc": "necklace",
     "dlg_plural": false,
     "select_info": {
-        "display_name": "Ожерелье из подсолнуха",
+        "display_name": "Ожерелье с подсолнечником",
         "thumb": "historyvariety_sunflower_necklace",
         "group": "necklace",
         "select_dlg": [
             "Ты моё солнышко!"
         ]
     },
-    "giftname": "ожерелье из подсолнуха",
+    "giftname": "ожерелье с подсолнечником",
     "arm_split": {
         "default": "0",
         "use_reg_for_l": true
