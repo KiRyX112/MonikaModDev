@@ -1641,10 +1641,10 @@ init -1 python:
         "ribbon_black",
         "ribbon",
         hover_dlg=[
-            "That's pretty formal, [player]."
+            "Весьма формально, [player]."
         ],
         select_dlg=[
-            "Are we going somewhere special, [player]?"
+            "Мы собираемся в какое-то особенное место, [player]?"
         ]
     )
 
