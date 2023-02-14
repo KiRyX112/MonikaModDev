@@ -6336,7 +6336,7 @@ label mas_f14_monika_valentines_intro:
             call mas_f14_sun_dress_outro
 
         elif not has_shoulderless:
-            m 2eua "What do you think of my outfit?"
+            m 2eua "Что ты думаешь о моём наряде?"
             call mas_f14_intro_blackpink_dress
 
         else:
