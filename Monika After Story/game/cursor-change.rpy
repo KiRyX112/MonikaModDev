@@ -27,49 +27,61 @@ Ren'Py на данный момент времени испытывает про
 """)
             os.startfile(config.basedir+"/username_err.txt")
             subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
-
-    # TODO: Переписать под Get-WmiObject для Windows 10 и Windows 11, т.к. на этих системах могут быть проблемы с использованием wmic
         try:
-            import codecs
-            pc_model, pc_manufacturer = [
-                line.strip()
-                for line in subprocess.check_output(
-                    " && ".join((
-                        "wmic computersystem get model",
-                        "wmic computersystem get manufacturer"
-                    )),
-                    shell=True
-                ).decode("utf16").strip().split("\n")
-                if line
-            ][1::2]
-            for i in pc_model, pc_manufacturer:
-                i = codecs.decode(i, "utf8")
-            if "wine" in (pc_model.lower(), pc_manufacturer.lower()): subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
-        except ValueError:
-            ten_version, pc_model, pc_manufacturer = [
-                line.strip()
-                for line in subprocess.check_output(
-                    " && ".join((
-                        "wmic os get buildnumber", # powershell \"get-wmiobject -class win32_operatingsystem | format-list -property buildnumber\"
-                        "wmic computersystem get model", # powershell \"get-wmiobject -class win32_computersystem | format-list -property model\"
-                        "wmic computersystem get manufacturer" # powershell \"get-wmiobject -class win32_computersystem | format-list -property manufacturer\"
-                    )),
-                    universal_newlines=True,
-                    shell=True
-                ).split("\n")
-                if line
-            ][1::2]
-            if "virtual" in pc_model.lower() or any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")): subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
-            import codecs
-            activation_status = subprocess.check_output(
-                "cscript /nologo \"C:\Windows\System32\slmgr.vbs\" /dli",
-                shell=True
-            ).decode("cp866").strip().replace("\r","").split("\n")[3]
-            activation_status_ru = codecs.decode(activation_status, "utf8")
-            activation_status_en = subprocess.check_output(
-                "cscript /nologo \"C:\Windows\System32\slmgr.vbs\" /dli",
-                shell=True
-            ).decode("utf8").strip().replace("\r","").split("\n")[3]
+            ten_version = subprocess.check_output(
+                "powershell \"Get-WmiObject -Class Win32_OperatingSystem | Format-List -Property BuildNumber\"",
+                universal_newlines=True, shell=True
+            ).strip().split(": ")[1]
+            pc_manufacturer = subprocess.check_output(
+                "powershell \"Get-WmiObject -Class Win32_ComputerSystem | Format-List -Property Manufacturer\"",
+                universal_newlines=True, shell=True
+            ).strip().split(": ")[1]
+            pc_model = subprocess.check_output(
+                "powershell \"Get-WmiObject -Class Win32_ComputerSystem | Format-List -Property Model\"",
+                universal_newlines=True, shell=True
+            ).strip().split(": ")[1]
+        except (subprocess.CalledProcessError, IndexError):
+            try:
+                import codecs
+                pc_model, pc_manufacturer = [
+                    line.strip()
+                    for line in subprocess.check_output(
+                        " && ".join((
+                            "wmic computersystem get model",
+                            "wmic computersystem get manufacturer"
+                        )),
+                        shell=True
+                    ).decode("utf16").strip().split("\n")
+                    if line
+                ][1::2]
+                for i in pc_model, pc_manufacturer:
+                    i = codecs.decode(i, "utf8")
+                if "wine" in (pc_model.lower(), pc_manufacturer.lower()): subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
+            except ValueError:
+                ten_version, pc_model, pc_manufacturer = [
+                    line.strip()
+                    for line in subprocess.check_output(
+                        " && ".join((
+                            "wmic os get buildnumber",
+                            "wmic computersystem get model",
+                            "wmic computersystem get manufacturer"
+                        )),
+                        universal_newlines=True,
+                        shell=True
+                    ).split("\n")
+                    if line
+                ][1::2]
+        if "virtual" in pc_model.lower() or any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")): subprocess.check_output("taskkill /fi \"WINDOWTITLE eq Моника: Эпилог\" /f", shell=True)
+        import codecs
+        activation_status = subprocess.check_output(
+            "cscript /nologo \"C:\Windows\System32\slmgr.vbs\" /dli",
+            shell=True
+        ).decode("cp866").strip().replace("\r","").split("\n")[3]
+        activation_status_ru = codecs.decode(activation_status, "utf8")
+        activation_status_en = subprocess.check_output(
+            "cscript /nologo \"C:\Windows\System32\slmgr.vbs\" /dli",
+            shell=True
+        ).decode("utf8").strip().replace("\r","").split("\n")[3]
     elif renpy.linux:
         pc_manufacturer = subprocess.check_output("cat /sys/devices/virtual/dmi/id/sys_vendor", universal_newlines=True, shell=True).strip()
         if any(i in pc_manufacturer.lower() for i in ("qemu", "innotek", "oracle", "vmware")):
