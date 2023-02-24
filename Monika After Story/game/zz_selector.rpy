@@ -729,7 +729,8 @@ init -10 python in mas_selspr:
         "ribbon": "Ленточки",
         "mini-ribbon": "Мини-ленточки",
         "bow": "Банты",
-        "bunny-scrunchie": "Кроличьи ушки"
+        "bunny-scrunchie": "Кроличьи ушки",
+        "s-twin-ribbons": "Двойные ленточки"
     }
 
 

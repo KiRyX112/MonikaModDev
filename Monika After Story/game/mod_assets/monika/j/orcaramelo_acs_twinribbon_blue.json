@@ -9,7 +9,7 @@
         "l_default": "5"
     },
     "rec_layer": 3,
-    "acs_type": "twin-ribbons",
+    "acs_type": "s-twin-ribbons",
     "stay_on_start": true,
     "dlg_desc": "blue twin ribbons",
     "dlg_plural": true,
