@@ -37,13 +37,13 @@ init python:
 
 init 5 python:
     addEvent(
-       Event(
-           persistent.event_database,
-           eventlabel='monika_playerapologizes',
-           prompt="Я хочу извиниться...",
-           category=['ты'],
-           pool=True,
-           unlocked=True
+        Event(
+            persistent.event_database,
+            eventlabel='monika_playerapologizes',
+            prompt="Я хочу извиниться...",
+            category=['ты'],
+            pool=True,
+            unlocked=True
         )
     )
 
