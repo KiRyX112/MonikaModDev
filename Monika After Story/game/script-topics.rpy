@@ -9617,7 +9617,7 @@ default persistent._mas_pm_prom_shy = None
 default persistent._mas_pm_no_prom = None
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_prom",category=['школа'],prompt="Выпускной",random=True))
+    addEvent(Event(persistent.event_database,eventlabel="monika_prom",category=['школа'],prompt="Выпускной вечер",random=True))
 
 label monika_prom:
     m 1euc "Знаешь..."
@@ -9630,7 +9630,7 @@ label monika_prom:
     m 3eua "Мы могли бы пойти на другие мероприятия, такие как спортивные фестивали, рождественские вечеринки, экскурсии и так далее."
     m 1lsc "Но я думаю, что игра никогда не позволит нам зайти настолько далеко."
     m 3eua "Что напоминает мне о конкретном мероприятии..."
-    m 1hua "Выпускном!"
+    m 1hua "Выпускной вечер!"
     m 1eua "Из того, что я слышала, выпускной вечер похож на школьный танец, который обычно проводится в конце учебного года."
     m "Некоторые ученики назначают там свидания, а другие идут с группой друзей."
     m 3wub "Есть даже те, кто берёт своих родственников на мероприятие."
