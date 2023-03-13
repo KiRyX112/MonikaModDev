@@ -10597,7 +10597,7 @@ label monika_yellowwp:
     $ _history_list.pop()
     menu:
         m "Эй, [player], ты когда-нибудь читал {i}Жёлтые Обои{/i}?{fast}"
-        "Нет.":
+        "Да.":
             $ persistent._mas_pm_read_yellow_wp = True
             m 1hua "Здорово!"
             m 1eua "Значит, ты не возражаешь, если я поговорю с тобой об этой истории?"
