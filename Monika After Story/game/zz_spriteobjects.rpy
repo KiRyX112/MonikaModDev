@@ -1143,7 +1143,7 @@ init -1 python:
         "hairflower_rose",
         "left-hair-flower",
         hover_dlg=[
-            "TALE AS OLD AS TIME",
+            "ИСТОРИЯ СТАРА КАК МИР",
         ],
         select_dlg=[
             "Меня ведь красит роза, [player]?",
@@ -1416,7 +1416,7 @@ init -1 python:
         "grayhearts_hairclip",
         "left-hair-clip",
         select_dlg=[
-            "Моё сердце бьется только ради тебя, [player]~",
+            "Моё сердце бьётся только ради тебя, [player]~",
             "Полна любви, как и ты~"
         ]
     )
@@ -1888,7 +1888,7 @@ init -1 python:
         "ribbon_gray",
         "ribbon",
         hover_dlg=[
-            "Как в теплый, дождливый день..."
+            "Как в тёплый, дождливый день..."
         ],
         select_dlg=[
             "Это действительно уникальный цвет, [player]."
@@ -2080,7 +2080,7 @@ init -1 python:
         "ribbon_red",
         "ribbon",
         hover_dlg=[
-            "Красный - красивый цвет!"
+            "Красный – красивый цвет!"
         ],
         select_dlg=[
             "Похоже на розы~"
@@ -2435,7 +2435,7 @@ init -1 python:
         visible_when_locked=True,
         hover_dlg=None,
         select_dlg=[
-            "Ready for school!"
+            "Готова к школе!"
         ]
     )
     store.mas_selspr.unlock_clothes(mas_clothes_def)
@@ -2465,7 +2465,7 @@ init -1 python:
         "clothes",
         visible_when_locked=False,
         select_dlg=[
-            "Are we going somewhere special, [player]?"
+            "Мы отправляемся в какое-то особенное место, [player]?"
         ]
     )
 
@@ -2541,7 +2541,7 @@ init -1 python:
         visible_when_locked=True,
         hover_dlg=None,
         select_dlg=[
-            "Ah, feels nice without the blazer!",
+            "Ах, как же хорошо без пиджака!",
         ]
     )
     store.mas_selspr.unlock_clothes(mas_clothes_def)
@@ -2596,7 +2596,7 @@ init -1 python:
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Just an ordinary costume, ~ze."
+            "Обычный костюм, ~хе."
         ]
     )
 
@@ -2632,7 +2632,7 @@ init -1 python:
         visible_when_locked=False,
         hover_dlg=[
             "~ня?",
-            "ня-я..."
+            "Ня-я..."
         ],
         select_dlg=[
             "Ня-я!"
@@ -2721,9 +2721,9 @@ init -1 python:
         visible_when_locked=False,
         hover_dlg=None,
         select_dlg=[
-            "Merry Christmas!",
-            "What kind of {i}presents{/i} do you want?",
-            "Happy holidays!"
+            "С Рождеством!",
+            "Какие {i}подарки{/i} ты хочешь?",
+            "С праздником!"
         ]
     )
 
@@ -2760,7 +2760,7 @@ init -1 python:
             "Хочешь открыть свой подарок?~",
             "Какие {i}подарки{/i} ты хочешь?",
             "Открой свой подарок, э-хе-хе~",
-            "Всё, что я хочу на Рождество - это ты~",
+            "Всё, что я хочу на Рождество – это ты~",
             "Санта, детка~",
             "Что {i}ещё{/i} ты хочешь развернуть?~"
         ]
@@ -2935,7 +2935,7 @@ init -1 python:
             "Готов взять ещё несколько карт?~",
             "Красочная!",
             "Плюс 10 к удаче~",
-            "Пойдем играть, [player]?"
+            "Пойдём играть, [player]?"
         ]
     )
 
