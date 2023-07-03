@@ -18,14 +18,14 @@
     },
     "stay_on_start": true,
     "select_info": {
-        "display_name": "Синяя рубашка",
+        "display_name": "Синяя футболка",
         "thumb": "finale_shirt_blue",
         "group": "clothes",
         "select_dlg": [
             "Прекрасный выбор, [player]! Она такая удобная~"
         ]
     },
-    "giftname": "синяя рубашка",
+    "giftname": "синяя футболка",
     "pose_arms": {
         "crossed": {
             "tag": "crossed",
