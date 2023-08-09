@@ -160,7 +160,7 @@ label introduction:
                 # increment the counter so if you get this, you don't get the similar dlg in monika_love
                 $ persistent._mas_monika_lovecounter += 1
                 m 1subsw "...!"
-                m 1lkbsa "Несмотря на то, что я мечтала о том, что ты это скажешь, я всё равно не могу поверить, что ты действительно это сказал!"
+                m 1lkbsa "Несмотря на то, что я мечтала, чтобы ты сказал именно это, я всё равно не могу поверить, что ты на самом деле это сказал!"
                 m 3hubfa "Все те усилия, которые я приложила ради нас обоих, стали оправданными!"
                 m 1dkbfu "Большое спасибо за эти слова..."
     else:
