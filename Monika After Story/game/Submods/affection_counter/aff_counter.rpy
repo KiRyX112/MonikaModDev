@@ -12,13 +12,8 @@ init -990 python:
 
 init python:
     def count_affection(st, at):
-        my_aff = int(_mas_getAffection())
-        if my_aff < -100:
-            my_aff = -100
-        elif my_aff > 1000:
-            my_aff = 1000
-        # d = Text(f"Очки: {my_aff}", style="indicator_text") <-- не трогай, это на Новый год! :Д
-        d = Text("Очки: " + str(my_aff), style="indicator_text")
+        # d = Text(f"Очки: {int(_mas_getAffection())}", style="indicator_text") <-- не трогай, это на Новый год! :Д
+        d = Text("Очки: " + str(int(_mas_getAffection())), style="indicator_text")
         return d, 0.1
 
     def count_affection_desc(st, at):

@@ -2022,6 +2022,10 @@ init python:
         OUT:
             float
         """
+        if mas_affection._get_aff() < -100:
+            return -100
+        elif mas_affection._get_aff() > 1000:
+            return 1000
         return mas_affection._get_aff()
 
     @mas_utils.deprecated("_get_current_aff_lose")
