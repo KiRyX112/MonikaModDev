@@ -875,7 +875,7 @@ translate None strings:
 
     # renpy/common/00updater.rpy:1031
     old "The update file does not have the correct digest - it may have been corrupted."
-    new "Файл обновления не содержит корректного дайджеста — он может быть повреждён."
+    new "Файл обновления не содержит корректного дайджеста – он может быть повреждён."
 
     # renpy/common/00updater.rpy:1181
     old "While unpacking {}, unknown type {}."
