@@ -15865,7 +15865,7 @@ init 5 python:
             persistent.event_database,
             eventlabel='monika_language_nuances',
             prompt="Языковые нюансы",
-            category=['литература', 'мелочи'],
+            category=['литература'],
             random=True
         )
     )
