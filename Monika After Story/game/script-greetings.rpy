@@ -326,7 +326,7 @@ label greeting_sweetheart:
     m 1hub "Снова здравствуй, милый!"
 
     if persistent._mas_player_nicknames:
-        m 1eka "Рада видеть тебя снова."
+        m 1eka "Рада видеть тебя вновь."
         m 1eua "Что будем делать этим [dlg_var], [player]?"
 
     else:
