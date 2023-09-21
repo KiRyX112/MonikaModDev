@@ -18,6 +18,8 @@ init -1 python in songs:
     import mutagen.oggvorbis as mutaogg
     import store
 
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+
     # MUSICAL CONSTANTS
     # SONG NAMES
     PIANO_COVER = "Your Reality (Piano Cover)"
@@ -729,7 +731,8 @@ init -1 python in songs:
 
     # custom music directory
     custom_music_dir = "custom_bgm"
-    custom_music_reldir = "../" + custom_music_dir + "/"
+    # custom_music_reldir = "../" + custom_music_dir + "/"
+    custom_music_reldir = user_dir + "/" + custom_music_dir
 
     # valid extensions for music
     # NOTE: Renpy also supports WAV, but only uncompressed PCM, so lets not
