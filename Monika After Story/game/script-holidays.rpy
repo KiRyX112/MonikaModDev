@@ -7205,6 +7205,9 @@ image mas_bday_balloons = MASFilterSwitch(
 
 ############### [HOL060]: METHODS
 init -1 python:
+
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+
     def mas_isMonikaBirthday(_date=None):
         """
         checks if the given date is monikas birthday
@@ -7303,12 +7306,14 @@ init -1 python:
             if persistent._mas_bday_confirmed_party:
                 #We should also handle if the player confirmed the party pre-note
                 if persistent._mas_bday_hint_filename:
-                    store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
+                    # store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
+                    os.remove(user_dir + "/characters/Для тебя.txt")
                 return True
 
             #Otherwise, we need to check if the file exists (we're going to make this as foolproof as possible)
             #Step 1, get the characters folder contents
-            char_dir_files = store.mas_docking_station.getPackageList()
+            # char_dir_files = store.mas_docking_station.getPackageList()
+            char_dir_files = os.listdir(user_dir + "/characters")
 
             #Step 2, We need to remove the extensions
             for filename in char_dir_files:
@@ -7318,13 +7323,15 @@ init -1 python:
                 if "оки-доки" == temp_filename:
                     #If we got here: Step 4, file exists so flag and delete. Also get rid of note
                     persistent._mas_bday_confirmed_party = True
-                    store.mas_docking_station.destroyPackage(filename)
+                    # store.mas_docking_station.destroyPackage(filename)
+                    os.remove(user_dir + "/characters/" + filename)
 
                     if persistent._mas_bday_hint_filename:
-                        store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
+                        # store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
+                        os.remove(user_dir + "/characters/Для тебя.txt")
 
                     #We should also return a new file indicating the player has confirmed the party
-                    _write_txt("/characters/будет исполнено!", "")
+                    _write_txt("/characters/будет исполнено", "")
                     #Step 5a, return true since party is confirmed
                     return True
 
