@@ -18,7 +18,7 @@ init -1 python in songs:
     import mutagen.oggvorbis as mutaogg
     import store
 
-    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
     # MUSICAL CONSTANTS
     # SONG NAMES
