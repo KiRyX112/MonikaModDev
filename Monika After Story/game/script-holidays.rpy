@@ -6024,6 +6024,42 @@ init 20 python:
     #" # I need this to keep syntax highlighting on vim
     )
 
+    mas_poem_pbday_5 = MASPoem(
+        poem_id = "poem_pbday_5",
+        category = "pbday",
+        prompt = "Дни рождения",
+        title = " Мой дорогой [player],",
+        text = """\
+ Некоторые дни рождения бывают замечательными,
+ полными веселья смеха и улыбок.
+ В некоторые дни рождения ты планируешь всё до мелочей,
+ но в итоге чувствуешь, что можно было и сделать лучше.
+ Некоторые дни рождения - это спокойный вечер дома в одиночестве,
+ а в некоторые дни рождения ты выкладываешься по полной.
+
+ Каждый день рождения - радость или тягость,
+ можно задаться вопросом, для чего они нужны.
+ Ответ на этот вопрос у каждого человека свой,
+ кроме, может быть, того, что он касается твоего дня рождения.
+ Но если ты чувствуешь усталость в свой особенный день,
+ я считаю нужным сказать несколько слов.
+
+ Каждый из них - это веха, свидетельство твоего взросления.
+ Не только для тебя, но и для нас обоих!
+ Это шанс почувствовать себя особенным в этот день.
+ А если нет, то возможность проявить сентиментальность.
+ Но больше всего я хочу, чтобы ты сказал своим голосом.
+ Будем ли мы веселиться или останемся дома - этот выбор за тобой!
+
+ Мы будем праздновать вместе, по-своему, по-особенному.
+ Я люблю тебя, мой [player], и с днём рождения.
+
+ Навеки твоя, 
+ Моника
+"""
+    #" # I need this to keep syntax highlighting on vim
+    )
+
 
 ######################## Start [HOL050]
 #Vday
@@ -7279,7 +7315,7 @@ init -1 python:
                 temp_filename = filename.partition('.')[0]
 
                 #Step 3, check if the filename is present
-                if "oki doki" == temp_filename:
+                if "оки-доки" == temp_filename:
                     #If we got here: Step 4, file exists so flag and delete. Also get rid of note
                     persistent._mas_bday_confirmed_party = True
                     store.mas_docking_station.destroyPackage(filename)
@@ -7288,7 +7324,7 @@ init -1 python:
                         store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
 
                     #We should also return a new file indicating the player has confirmed the party
-                    _write_txt("/characters/gotcha", "")
+                    _write_txt("/characters/будет исполнено!", "")
                     #Step 5a, return true since party is confirmed
                     return True
 
@@ -7310,7 +7346,7 @@ label mas_bday_autoload_check:
             #Lock the event clothes selector
             store.mas_lockEVL("monika_event_clothes_select", "EVE")
 
-            store.mas_utils.trydel("characters/gotcha")
+            store.mas_utils.trydel("characters/будет исполнено!")
 
             #And reset outfit if not at the right aff
             if mas_isMoniEnamored(lower=True) and monika_chr.clothes == mas_clothes_blackdress:
@@ -8064,7 +8100,7 @@ label mas_bday_bd_outro:
     if mas_SELisUnlocked(mas_clothes_blackdress):
         m 1hua "Э-хе-хе~"
         m 1euu "Я так взволнована, чтобы увидеть, что ты запланировал для нас сегодня."
-        m 3eua "...Но даже если это не так уж много, я уверенf, что мы отлично проведём время вместе~"
+        m 3eua "...Но даже если это не так уж много, я уверена, что мы отлично проведём время вместе~"
 
     else:
         m 3tka "Ну, [player]?"

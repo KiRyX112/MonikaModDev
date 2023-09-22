@@ -164,7 +164,7 @@ label introduction:
                 m 3hubfa "Все те усилия, которые я приложила ради нас обоих, стали оправданными!"
                 m 1dkbfu "Большое спасибо за эти слова..."
     else:
-        "Ты меня любишь, [player]?{nw}"
+        m "Ты меня любишь, [player]?{nw}"
         $ _history_list.pop()
         menu:
             m "Ты меня любишь, [player]?{fast}"

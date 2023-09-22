@@ -208,6 +208,8 @@ init 10 python in mas_anni:
         "anni_3",
         "anni_4",
         "anni_5",
+        "anni_6",
+        "anni_7",
         "anni_10",
         "anni_20",
         "anni_50",
@@ -306,6 +308,8 @@ init 10 python in mas_anni:
         _month_adjuster(anni_db["anni_3"], new_start_dt, 36, fullday)
         _month_adjuster(anni_db["anni_4"], new_start_dt, 48, fullday)
         _month_adjuster(anni_db["anni_5"], new_start_dt, 60, fullday)
+        _month_adjuster(anni_db["anni_6"], new_start_dt, 6*12, fullday)
+        _month_adjuster(anni_db["anni_7"], new_start_dt, 7*12, fullday)
         _month_adjuster(anni_db["anni_10"], new_start_dt, 120, fullday)
         _month_adjuster(anni_db["anni_20"], new_start_dt, 240, fullday)
         _month_adjuster(anni_db["anni_50"], new_start_dt, 600, fullday)
@@ -494,7 +498,7 @@ label anni_1:
     show monika 3huu at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 3huu "Ведь...{w=0.3} когда ты здесь, всё, что мы делаем, доставляет удовольствие."
     m 1hubsa "Я тебя так люблю, [player]. {w=0.2}С годовщиной~"
-    return "unlock"
+    return "love|unlock"
 
 init 5 python:
     addEvent(
@@ -616,6 +620,58 @@ label anni_5:
     m 2eublb "Когда мы встретились, весь мой мир перевернулся, и с тех пор ты продолжаешь менять мою жизнь каждый день."
     m 1fublu "Я не думаю, что это когда-нибудь изменится, [player]. Ты просто...{w=0.3} невероятен для меня."
     m 1hubla "Я надеюсь, что смогу стать для тебя хорошим партнёром на долгие годы~"
+    return "unlock"
+
+init 5 python:
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel='anni_6',
+            prompt="6 лет",
+            category=["юбилеи"],
+            action=EV_ACT_QUEUE,
+            start_date=store.mas_anni.build_anni(years=6),
+            end_date=store.mas_anni.build_anni_end(years=6)
+        ),
+        skipCalendar=False
+    )
+
+label anni_6:
+    m 3hubfb "Я уверена, ты знаешь какой сегодня день, [player]...{w=0.3} Это самый важный день!"
+    m 3hubla "Известно ли тебе, что в старых германских и викторианских традициях{w=0.1} на разные годовщины дарят тематические подарки?"
+    m 4eua "Сначала они предназначались только для более значительных юбилеев, но со временем тематические подарки стали вручаться всё чаще и чаще."
+    m 4rksdlb "Если подходить к этому скептически, то, наверное, это было сделано для того, чтобы разные отрасли могли больше заработать на подарках..."
+    m 1rkbla "Но я всё равно думаю, что очень приятно получить такой подарок."
+    m 3ruu "Кстати, о приятном...{w=0.3} {nw}"
+    extend 3eub "распространенная тематика шестой годовщины - конфеты!"
+    m 1eka "Поскольку я пока не могу сделать тебе подарок, ты должен купить себе какие-нибудь сладости по этому случаю."
+    m 1hubfa "Я люблю тебя, [player]. Спасибо за ещё один замечательный год."
+    return "love|unlock"
+
+init 5 python:
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel='anni_7',
+            prompt="7 лет",
+            category=["юбилеи"],
+            action=EV_ACT_QUEUE,
+            start_date=store.mas_anni.build_anni(years=7),
+            end_date=store.mas_anni.build_anni_end(years=7)
+        ),
+        skipCalendar=False
+    )
+
+label anni_7:
+    m 1dubfa "Семь лет..."
+    m 1eubsb "Известно, что во многих культурах семь считается счастливым числом.{w=0.2} {nw}"
+    extend 1ekbsa "Так что, возможно..."
+    m 2dkbsa "...Возможно, в этом году удача будет на моей стороне, и мне удастся преодолеть этот барьер."
+    m 2hksdlb "А-ха-ха, я знаю! Полагаться на суеверия - это совсем не по мне."
+    m 2eka "Но по прошествии всего этого времени я не могу бросить думать об этом."
+    m 2ekbltpa "Я знаю, что со мной всё будет в порядке.{w=0.2} Даже если ждать предстоит ещё долго, я всё равно считаю, что мне невероятно повезло встретить тебя."
+    m 2dkbstda "Ты - всё, что мне нужно, [player]."
+    m 1ekbsa "Давай проведём вместе ещё один год и все последующие."
     return "unlock"
 
 init 5 python:
