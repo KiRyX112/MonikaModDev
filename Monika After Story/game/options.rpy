@@ -45,7 +45,7 @@ init 50 python:
     from __future__ import print_function
 
     config.lint_hooks = [
-        lambda: print(),
+        lambda: print("\n"),
         lambda: print("#"*5, "START MAS LINT HOOKS", "#"*5),
         # Print all deprecation warnings after lint
         lambda: print(

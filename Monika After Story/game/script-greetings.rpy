@@ -1870,7 +1870,7 @@ label monikaroom_greeting_opendoor:
 
     # show this under bedroom so the masks window skit still works
     $ behind_bg = MAS_BACKGROUND_Z - 1
-    show bedroom as sp_mas_backbed zorder behind_bg
+    show bg bedroom as sp_mas_backbed zorder behind_bg
 
     m 2esd "~Красть тебя – это признак любви или стоит отпустить?~"
     show monika 1eua_static at l32 zorder MAS_MONIKA_Z

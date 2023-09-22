@@ -202,7 +202,7 @@ label monika_ptod_tip002:
     show screen mas_py_console_teaching
 
     ### numbers
-    m 1eua "Python имеет два типа представления значений:{w=0.3} {b}целые{/b} и {b}вещественные."
+    m 1eua "Python имеет два типа представления значений:{w=0.3} {b}целые{/b} и {b}вещественные{/b}."
 
     ## integers
     m 1eua "Целые значения используются для представления целых чисел; в основном всё, что не является десятичным."
@@ -684,7 +684,7 @@ label monika_ptod_tip007:
     $ int_size = store.mas_ptod.get_last_line()
 
     m 1eksdla "О библиотеках и импорте я расскажу позже."
-    m 1eua "Теперь взгляни на число, возвращаемое функцией {bi}getsizeof{/i}."
+    m 1eua "Теперь взгляни на число, возвращаемое функцией {i}getsizeof{/i}."
     m "Чтобы сохранить число [num_store], Python использует [int_size] байт."
 
     return
