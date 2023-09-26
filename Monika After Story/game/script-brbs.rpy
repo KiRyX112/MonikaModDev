@@ -23,7 +23,7 @@ init python:
         # Add idle extra exps
         mas_moni_idle_disp.add_by_tag("idle_mode_exps")
 
-        # Set vars #Сосут хуй разрабы MAS'a, только представьте.
+        # Set vars
         mas_globals.in_idle_mode = True
         persistent._mas_in_idle_mode = True
         # persistent._mas_idle_data[brb_label] = True
