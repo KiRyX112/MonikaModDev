@@ -22,19 +22,19 @@ init -1 python in songs:
 
     # MUSICAL CONSTANTS
     # SONG NAMES
-    PIANO_COVER = "Your Reality (Piano Cover)"
-    JUST_MONIKA = "Just Monika"
-    YOURE_REAL = "Your Reality"
-    STILL_LOVE = "I Still Love You"
-    MY_FEELS = "My Feelings"
-    MY_CONF = "My Confession"
-    OKAY_EV_MON = "Okay, Everyone! (Monika)"
-    DDLC_MT_80 = "Doki Doki Theme (80s ver.)"
-    SAYO_NARA = "Surprise!"
-    SAYO_NARA_SENS = "Sayonara"
-    PLAYWITHME_VAR6 = "Play With Me (Variant 6)"
-    YR_EUROBEAT = "Your Reality (Eurobeat ver.)"
-    MONIKA_LULLABY = "Monika's Lullaby"
+    PIANO_COVER = "Твоя реальность (кавер на пианино)"
+    JUST_MONIKA = "Только Моника"
+    YOURE_REAL = "Твоя реальность"
+    STILL_LOVE = "Я всё ещё люблю тебя"
+    MY_FEELS = "Мои чувства"
+    MY_CONF = "Моё признание"
+    OKAY_EV_MON = "Итак, друзья! (Моника)"
+    DDLC_MT_80 = "Тема главного меню (ремикс под 80-е)"
+    SAYO_NARA = "Сюрприз!"
+    SAYO_NARA_SENS = "Сайонара"
+    PLAYWITHME_VAR6 = "Поиграй со мной (6-й вариант)"
+    YR_EUROBEAT = "Твоя реальность (евробит-ремикс)"
+    MONIKA_LULLABY = "Колыбельная Моники"
     NO_SONG = "Выкл. музыку"
 
     # SONG FILEPATHS
