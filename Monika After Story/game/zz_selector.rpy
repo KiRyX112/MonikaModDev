@@ -3955,15 +3955,15 @@ label mas_selector_generic_sidebar_select_acs(acs_type, use_acs=None, set_compat
             sel_group = acs_type
         if idle_dlg is None:
             if acs_type == "choker":
-                idle_dlg = "Какой чокер ты хочешь, чтобы я надела?"
+                idle_dlg = "Какой чокер мне надеть?"
             elif acs_type == "hat":
-                idle_dlg = "Какой головной убор ты хочешь, чтобы я надела?"
+                idle_dlg = "Какой головной убор мне надеть?"
             elif acs_type == "earrings":
-                idle_dlg = "Какие серьги ты хочешь, чтобы я надела?"
+                idle_dlg = "Какие серьги мне надеть?"
             elif acs_type == "mini-ribbon":
-                idle_dlg = "Какую мини-ленточку ты хочешь, чтобы я надела?"
+                idle_dlg = "Какую мини-ленточку мне надеть?"
             else:
-                idle_dlg = "Какой {0} ты хочешь, чтобы я надела?".format(acs_type)
+                idle_dlg = "Какое ожерелье мне надеть?"
 
         # filter for acs
         if use_acs is None:
