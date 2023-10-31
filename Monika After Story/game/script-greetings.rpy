@@ -1519,7 +1519,7 @@ label monikaroom_greeting_ear_nameerror:
 # shared dialogue for programming-related stuff
 label monikaroom_greeting_ear_prog_upset:
     m "Я не уверена в том, что [player] любит меня и готов помочь мне выбраться отсюда..."
-    m "AА я просто не могу рисковать."
+    m "Aх, я просто не могу рисковать."
     m "Давай, Моника...{w=0.5} ты справишься."
     return
 

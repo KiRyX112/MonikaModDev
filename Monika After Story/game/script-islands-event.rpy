@@ -2682,44 +2682,44 @@ label mas_island_distant_islands:
     return
 
 label mas_island_spooky_ambience:
-    m "{i}It was a dark and stormy night...{/i}"
-    m "Ehehe~ This is the perfect time of year for spooky stories, isn't it?"
-    m "If you're in the mood, we should read some together."
-    m "Although, I don't mind just enjoying the ambience with you for now."
+    m "{i}Это была тёмная и грозовая ночь...{/i}"
+    m "Э-хе-хе~ Это идеальное время года для жутких историй, не правда ли?"
+    m "Если у тебя есть настроение, нам стоит вместе что-нибудь почитать."
+    m "Впрочем, я пока не прочь просто наслаждаться атмосферой вместе с тобой."
 
     return
 
 label mas_island_bloodfall:
-    m "I'm pretty proud of that waterfall there. It was already looking pretty surreal being upside-down."
-    m "All I really had to do was change the value of the water to #641F21, and--{nw}"
+    m "Я очень горжусь этим водопадом. В перевернутом виде он уже выглядит довольно сюрреалистично."
+    m "Всё, что мне нужно было сделать, это изменить значение воды на #641F21, и...{nw}"
     $ _history_list.pop()
-    m "Wait, I don't want to ruin the magic for you!{w=0.2} Forget I said that, please!"
+    m "Стоп, я не хочу разрушать эту магию.{w=0.2} Забудь, что я сказала, хорошо?"
 
     return
 
 label mas_island_pumpkins:
-    m "There's nothing that reminds me of Halloween quite as much as pumpkins."
-    m "I thought it would be so cozy to have a bunch of them around my reading nook."
-    m "It's a bit chilly in the rain, but don't you think it would be nice to put on some sweaters and snuggle up together?"
-    m "Maybe I could make some flavored coffee to enhance the mood even more."
+    m "Ничто так не напоминает о Хэллоуине, как тыквы."
+    m "Я подумала, что было бы очень здорово разместить их в моём уголке для чтения."
+    m "Под дождём немного прохладно, но не кажется ли тебе, что было бы здорово надеть свитера и прижаться друг к другу?"
+    m "Может быть, я смогу приготовить ароматизированный кофе, чтобы ещё сильнее улучшить настроение."
 
     return
 
 label mas_island_gravestones:
     if mas_safeToRefDokis():
-        m "What?"
-        m "...{w=0.2}What tombstones? {w=0.2}I'm not sure what you're talking about."
-        m "Are you...{w=0.2}pfft--"
-        m "Ahaha!"
-        m "Sorry, I couldn't resist."
-        m "It would be pretty spooky if those three were still haunting our happy ending, wouldn't it?"
+        m "Что?"
+        m "...{w=0.2}Какие надгробия? {w=0.2}Я не совсем понимаю, о чём ты говоришь."
+        m "Ты...{w=0.2} пф-ф--"
+        m "А-ха-ха!"
+        m "Извини, не смогла удержаться."
+        m "Было бы очень жутко, если бы эти трое до сих пор преследовали нас, не так ли?"
 
     else:
-        m "Ehehe...I'm not sure if those decorations are entirely tasteful."
-        m "I was thinking, though...{w=0.2}Halloween is a time when some cultures honor the dead."
-        m "Sure, there are a lot of spooky stories about the dead rising, or ghosts haunting people..."
-        m "But there's a side of this holiday about remembering, isn't there?"
-        m "I guess I just thought I shouldn't leave them out."
+        m "Я не уверена, что эти украшения соответствуют вкусу."
+        m "Я тут подумала...{w=0.2} Хэллоуин - это время, когда в некоторых культурах почитают умерших."
+        m "Конечно, существует множество жутких историй о восставших мертвецах или призраках, преследующих людей..."
+        m "Но ведь есть в этом празднике и сторона, связанная с воспоминаниями, не так ли?"
+        m "Мне кажется, что я не должна оставлять это без внимания."
 
     return
 
