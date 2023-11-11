@@ -194,6 +194,7 @@ init python:
     build.documentation('*.md')
 
     build.include_old_themes = False
+    build.include_i686 = False # <- удалить после перехода на Ren'Py 8
 
 
 
