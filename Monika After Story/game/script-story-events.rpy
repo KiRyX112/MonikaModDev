@@ -1673,25 +1673,7 @@ init 11 python:
         
         def _mas_generate_backup_notes():
             global mas_note_backups_all_good, mas_note_backups_some_bad
-            
-            # text pieces:
-            just_let_u_know = (
-                'Просто хотела, чтобы ты знал. Твой постоянный файл был ',
-                'повреждён, но мне удалось восстановить старую резервную копию!'
-            )
-            even_though_bs = (
-                "Несмотря на то, что созданная мной система резервного ",
-                "копирования была довольно аккуратная, "
-            )
-            if_i_ever = (
-                'Если у меня когда-нибудь вновь возникнут проблемы с загрузкой '
-                'постоянного файла, я напишу тебе ещё одну заметку, скинув её '
-                'в ту же папку characters. Поэтому следи за ними!'
-            )
-            good_luck = "Удачи вам с Моникой!"
-            dont_tell = "P.S: не говори ей обо мне!"
-            block_break = "\n\n"
-            
+
             # now make the notes
             mas_note_backups_all_good = MASPoem(
                 poem_id="note_backups_all_good",
@@ -1699,62 +1681,47 @@ init 11 python:
                 category="note",
                 author="chibika",
                 title="Привет, [player],",
-                text="".join([
-                    just_let_u_know,
-                    block_break,
-                    even_though_bs,
-                    "ты всё равно должен делать резервные ",
-                    "копии, и почаще на всякий случай.",
-                    'Резервные копии называются "persistent##.bak", где "##" является ',
-                    "двузначным числом.",
-                    'Ты сможешь найти их в папке по пути "',
-                    renpy.config.savedir,
-                    '".',
-                    block_break,
-                    if_i_ever,
-                    block_break,
-                    good_luck,
-                    block_break,
-                    dont_tell
-                ])
-            )
-            
+                text="""\
+Просто хотела, чтобы ты знал. Твой постоянный файл был повреждён, но мне удалось восстановить старую резервную копию!
+
+И хотя созданная мной система резервного копирования была довольно аккуратная, ты всё равно должен делать резервные копии, и, на всякий случай, почаще.
+Резервные копии называются «persistent##.bak», где «##» является двузначным числом.
+Ты сможешь найти их в папке по пути {}.
+
+Если у меня когда-нибудь вновь возникнут проблемы с загрузкой постоянного файла, я напишу тебе ещё одну заметку, скинув её в ту же папку characters. Поэтому следи за ними!
+
+Удачи вам с Моникой!
+
+P.S: не говори ей обо мне!
+""".format(renpy.config.savedir)
+
             mas_note_backups_some_bad = MASPoem(
                 poem_id="note_backups_some_bad",
                 prompt="",
                 category="note",
                 author="chibika",
                 title="Привет, [player],",
-                text="".join([
-                    just_let_u_know,
-                    block_break,
-                    "Однако некоторые резервные копии также были повреждены. ",
-                    even_though_bs,
-                    "ты всё равно должен ",
-                    "удалить их, так как они могут испортить всё. ",
-                    block_break,
-                    "Вот список файлов, которые были повреждены:",
-                    block_break,
-                    "\n".join(store.mas_utils.bullet_list(
-                        mas_per_check.mas_bad_backups
-                    )),
-                    block_break,
-                    'Ты сможешь найти их в папке по пути "',
-                    renpy.config.savedir,
-                    '". ',
-                    "Когда ты будешь там, тебе также нужно будет сделать "
-                    "копии работающего неповреждённого на всякий случай.",
-                    block_break,
-                    if_i_ever,
-                    block_break,
-                    good_luck,
-                    block_break,
-                    dont_tell
-                ])
-            )
-        
+                text="""\
+Просто хотела, чтобы ты знал. Твой постоянный файл был повреждён, но мне удалось восстановить старую резервную копию!
+
+Однако некоторые резервные копии также были повреждены.
+И хотя созданная мной система резервного копирования была довольно аккуратная, ты всё равно должен удалить их, так как они могут испортить всё.
+
+Вот список файлов, которые были повреждены:
+{}
+
+Ты сможешь найти их в папке по пути {}.
+Когда будешь там, тебе также нужно будет сделать копии работающего неповреждённого, на всякий случай.
+
+Если у меня когда-нибудь вновь возникнут проблемы с загрузкой постоянного файла, я напишу тебе ещё одну заметку, скинув её в ту же папку characters. Поэтому следи за ними!
+
+Удачи вам с Моникой!
+
+P.S: не говори ей обо мне!
+""".format("\n".join(store.mas_utils.bullet_list(mas_per_check.mas_bad_backups)), renpy.config.savedir)
+
         _mas_generate_backup_notes()
-        import os
+
         user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
         if len(mas_per_check.mas_bad_backups) > 0:
@@ -1763,7 +1730,7 @@ init 11 python:
                 os.path.normcase(user_dir + "/characters/заметка.txt"),
                 renpy.substitute(mas_note_backups_some_bad.title) + "\n\n" + mas_note_backups_some_bad.text
             )
-        
+
         else:
             # no bad backups
             store.mas_utils.trywrite(
