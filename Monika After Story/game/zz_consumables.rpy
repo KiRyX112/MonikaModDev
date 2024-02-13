@@ -1614,7 +1614,7 @@ label mas_consumables_generic_finished_prepping(consumable):
                 my_container = "чашку "
             elif msr_disp_name in ["Рождественского печенья", "сахарную тросточку"]:
                 if msr_disp_name == "Рождественского печенья":
-                    my_container = "тарелку"
+                    my_container = "тарелку "
                 else:
                     my_container = ""
 
@@ -1699,7 +1699,7 @@ label mas_consumables_generic_running_out(consumable):
 
     if amt_left > 0:
 
-        m 3eud "Я просто хотела дать тебе знать, что у меня осталась только [amt_left] [container][msr_disp_name]."
+        m 3eud "Я просто хотела дать тебе знать, что у меня осталась только [amt_left] [my_container][msr_disp_name]."
 
         if not renpy.seen_label("mas_consumables_refill_explain"):
             call mas_consumables_refill_explain
@@ -1742,7 +1742,7 @@ label mas_consumables_generic_critical_low(consumable):
             my_container = ""
 
     m 1euc "Эй, [player]..."
-    m 3eua "У меня осталась только одна [container][msr_disp_name]."
+    m 3eua "У меня осталась только одна [my_container][msr_disp_name]."
     if not renpy.seen_label("mas_consumables_refill_explain"):
         call mas_consumables_refill_explain
 
