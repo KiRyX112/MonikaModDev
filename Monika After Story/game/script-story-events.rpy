@@ -1693,7 +1693,7 @@ init 11 python:
 Удачи вам с Моникой!
 
 P.S: не говори ей обо мне!
-""".format(renpy.config.savedir)
+""".format(renpy.config.savedir))
 
             mas_note_backups_some_bad = MASPoem(
                 poem_id="note_backups_some_bad",
@@ -1718,7 +1718,7 @@ P.S: не говори ей обо мне!
 Удачи вам с Моникой!
 
 P.S: не говори ей обо мне!
-""".format("\n".join(store.mas_utils.bullet_list(mas_per_check.mas_bad_backups)), renpy.config.savedir)
+""".format("\n".join(store.mas_utils.bullet_list(mas_per_check.mas_bad_backups)), renpy.config.savedir))
 
         _mas_generate_backup_notes()
 
