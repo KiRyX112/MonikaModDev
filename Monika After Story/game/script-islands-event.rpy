@@ -908,6 +908,8 @@ init -25 python in mas_island_event:
     from zipfile import ZipFile
     import datetime
 
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+
     import store
     from store import (
         persistent,
