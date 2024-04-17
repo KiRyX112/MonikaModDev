@@ -1,7 +1,7 @@
 init -990 python:
     store.mas_submod_utils.Submod(
         author="Amanda Watson",
-        name="Счётчик привязанности",
+        name="Учёт местоимений",
         description=(
             "Небольшая надстройка для учёта местоимений в русской локализации."
         ),
