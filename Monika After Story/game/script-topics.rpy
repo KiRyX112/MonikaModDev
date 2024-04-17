@@ -6165,10 +6165,7 @@ label monika_japanese:
                     # setup suffix
                     $ player_suffix = "кун"
                     if persistent.gender == "F":
-                        $ player_suffix = "чан"
-
-                    elif persistent.gender == "X":
-                        $ player_suffix = "сан"
+                        $ player_suffix = "тян"
 
                     m 1eua "{i}Аишитеру ё, [player]-[player_suffix]{/i}."
                     m 2hubsa "Э-хе-хе~"
