@@ -937,7 +937,7 @@ label mas_chess_remenu:
     $ menu_options = menu_contents[menu_category]["options"]
     $ final_items = menu_contents[menu_category]["final_items"]
 
-    m "Как бы ты хотел сыграть?[('{fast}' if loopback else '')]" nointeract
+    m "Как бы ты {M=хотел}{F=хотела} сыграть?[('{fast}' if loopback else '')]" nointeract
 
     #Now we show menu
     call screen mas_gen_scrollable_menu(menu_options, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, *final_items)
@@ -1118,10 +1118,10 @@ label mas_chess_start_chess:
             $ line_start = "Но с другой стороны"
 
         if not persistent._mas_ever_won["chess"]:
-            m 3hub "[line_start], ты постепенно близишься к тому, чтобы победить меня., [player]~"
+            m 3hub "[line_start], ты постепенно близишься к тому, чтобы победить меня, [player]~"
         else:
 
-            m 1hua "Молодец, с таким исходом, ты хорошо сыграл, [player]~"
+            m 1hua "Молодец, с таким исходом, ты хорошо {M=сыграл}{F=сыграла}, [player]~"
 
         $ persistent._mas_chess_stats["practice_draws" if practice_mode else "draws"] += 1
 
@@ -1134,8 +1134,8 @@ label mas_chess_start_chess:
                 _("Я так горжусь тобой., [player]!"),
                 _("Я горжусь тобой, [player]!~"),
                 _("Хорошо сыграно, [player]!"),
-                _("Я очень рада, что ты победил~"),
-                _("Я счастлива, что ты победил!"),
+                _("Я очень рада, что ты {M=победил}{F=победила}~"),
+                _("Я счастлива, что ты {M=победил}{F=победила}!"),
                 _("Независимо от результата, мне всегда будет приятно играть с тобой.")
             ]
             persistent._mas_chess_stats["practice_wins" if practice_mode else "wins"] += 1
@@ -1146,31 +1146,31 @@ label mas_chess_start_chess:
 
 
         if practice_mode:
-            m 3hub "Поздравляю, ты меня победил!"
+            m 3hub "Поздравляю, ты меня {M=победил}{F=победила}!"
 
             $ undo_count = new_pgn_game.headers.get("UndoCount", 0)
             if not undo_count:
-                m 1wuo "Ты за всю игру ни разу не отменил ход!{w=0.2} {nw}"
+                m 1wuo "Ты за всю игру ни разу не {M=отменил}{F=отменила} ход!{w=0.2} {nw}"
                 extend 3hub "Это удивительно!"
 
             elif undo_count == 1:
-                m 1hua "Ты за всю игру, только один раз отменил ход!. {w=0.2}{nw}"
+                m 1hua "Ты за всю игру, только один раз {M=отменил}{F=отменила} ход!. {w=0.2}{nw}"
                 extend 3hub "Отличная работа!"
 
             elif undo_count <= 5:
-                m 1hua "Ты за всю игру, только [undo_count] раз отменил ход, хорошая работа."
+                m 1hua "Ты за всю игру, только [undo_count] раз {M=отменил}{F=отменила} ход, хорошая работа."
 
             elif undo_count <= 10:
                 m 1eua "[undo_count] раз. Именно столько было отменено ходов. Совсем не плохо. Если мы продолжим тренироваться вместе, я уверена, что мы сможем снизить это число~"
             else:
 
-                m 1eka "Ты [undo_count] раз отменил ход.{w=0.3} {nw}"
+                m 1eka "Ты [undo_count] раз {M=отменил}{F=отменила} ход.{w=0.3} {nw}"
                 extend 3eua "Я уверена, что если мы продолжим тренироваться, то сможем снизить это число."
 
             m 3hua "[renpy.substitute(random.choice(player_win_quips))]"
         else:
 
-            m 3eub "Отличная работа, ты победил!"
+            m 3eub "Отличная работа, ты {M=победил}{F=победила}!"
             m 3hub "[renpy.substitute(random.choice(player_win_quips))]"
 
         m 1eua "В любом случае..."
@@ -1325,12 +1325,12 @@ label mas_chess_savegame(silent=False, allow_return=True):
                 pass
 
             m 1esa "Это формат под названием «Portable Game Notation»{w=0.2} {nw}"
-            extend 1eua "Ты можешь найти в интернете программы, которые работают с форматом «PGN», чтобы открыть его и посмотреть, где ты мог допустить ошибку."
-            m 3eub "Выиграл ты, проиграл, сдался или сыграл вничью, всегда будет что-то, что ты можешь улучшить в своей игре, так что разбор своих партий поможет тебе стать лучше!"
+            extend 1eua "Ты можешь найти в интернете программы, которые работают с форматом «PGN», чтобы открыть его и посмотреть, где ты {M=мог}{F=могла} допустить ошибку."
+            m 3eub "{M=Выиграл}{F=Выиграла} ты, {M=проиграл}{F=проиграла}, {M=сдался}{F=сдалась} или {M=сыграл}{F=сыграла} вничью, всегда будет что-то, что ты можешь улучшить в своей игре, так что разбор своих партий поможет тебе стать лучше!"
 
             if game_result == mas_chess.IS_ONGOING:
                 m 1lksdlb "Можно отредактировать этот файл и изменить исход игры...{w=0.5} {nw}"
-                extend 1tsu "но я уверена, что ты бы этого не сделал."
+                extend 1tsu "но я уверена, что ты бы этого не {M=сделал}{F=сделала}."
 
                 m 1tku "Верно, [player]?{nw}"
                 $ _history_list.pop()
@@ -1361,7 +1361,7 @@ label mas_chess_cannot_work_embarrassing:
     return
 
 label mas_chess_dlg_game_monika_wins_often:
-    m 1eka "Жаль, что на этот раз ты не победил, [player]..."
+    m 1eka "Жаль, что на этот раз ты не {M=победил}{F=победила}, [player]..."
     m 1ekc "Я надеюсь, что ты, по крайней мере, продолжишь пытаться."
     m 1eua "Давай сыграем в другой раз?"
 
@@ -1370,7 +1370,7 @@ label mas_chess_dlg_game_monika_wins_often:
     return
 
 label mas_chess_dlg_game_monika_wins_sometimes:
-    m 1hub "Это было очень весело., [player]!"
+    m 1hub "Это было очень весело, [player]!"
     m 3eka "Независимо от результата, мне всегда нравится играть с тобой в шахматы~"
     m 3hua "Уверена, если ты продолжишь тренироваться, то однажды станешь ещё лучше меня!"
 
@@ -1509,11 +1509,11 @@ label mas_chess_dlg_quickfile_lost:
     m 2lksdla "Что ж, это неловко..."
     m 2ekc "Могу поклясться, что у нас была незаконченная партия, но я не могу найти файл сохранения."
 
-    m 2tkc "Ты что-то напутал с сохранениями?, [player]?{nw}"
+    m 2tkc "Ты что-то {M=напутал}{F=напутала} с сохранениями, [player]?{nw}"
     $ _history_list.pop()
     menu:
-        m "Ты что-то напутал с сохранениями, [player]?{fast}"
-        "Я удалил сохранение.":
+        m "Ты что-то {M=напутал}{F=напутала} с сохранениями, [player]?{fast}"
+        "Я {M=удалил}{F=удалила} сохранение.":
 
             jump mas_chess_dlg_quickfile_lost_deleted
         "Это вышло случайно!":
@@ -1531,10 +1531,10 @@ label mas_chess_dlg_quickfile_lost:
 label mas_chess_dlg_quickfile_lost_deleted:
     m 1eka "Спасибо за честность, [player]."
 
-    m 3ekd "Ты не хотел продолжать ту партию?{nw}"
+    m 3ekd "Ты не {M=хотел}{F=хотела} продолжать ту партию?{nw}"
     $ _history_list.pop()
     menu:
-        m "Ты не хотел продолжать ту партию?{fast}"
+        m "Ты не {M=хотел}{F=хотела} продолжать ту партию?{fast}"
         "Да.":
 
             m 1eka "Поняла, [player]."
@@ -1542,7 +1542,7 @@ label mas_chess_dlg_quickfile_lost_deleted:
         "Нет.":
 
             m 1etc "А?"
-            m 1rsc "Думаю, ты нечаянно удалил его."
+            m 1rsc "Думаю, ты нечаянно {M=удалил}{F=удалила} его."
             m 1eua "Начнём новую игру."
     return
 
@@ -1585,7 +1585,7 @@ label mas_chess_dlg_quickfile_lost_ofcoursenot:
         return True
     else:
 
-        m 1lksdlb "A, да. Ты бы так со мной не поступил."
+        m 1lksdlb "A, да. Ты бы так со мной не {M=поступил}{F=поступила}."
         m "Должно быть, я потеряла файл сохранения."
         m 1lksdlc "Прости, [player]."
         m 1eka "Я заглажу свою вину перед тобой...{w=0.3}{nw}"
@@ -1629,7 +1629,7 @@ label mas_chess_quickfile_lost_filechecker:
     if os.access(game_file, os.F_OK):
         jump mas_chess_dlg_quickfile_lost_maybe_save_found
 
-    m 1eka "Не мог бы ты вернуть сохранение, чтобы мы могли играть?"
+    m 1eka "Не {M=мог}{F=могла} бы ты вернуть сохранение, чтобы мы могли играть?"
 
     show monika 1eua
 
@@ -1657,12 +1657,12 @@ label mas_chess_quickfile_lost_maybe_filechecker_loop:
     show screen mas_background_timed_jump(4, "mas_chess_quickfile_lost_maybe_filechecker_loop")
     $ seconds += 4
     menu:
-        "Я удалил сохранение...":
+        "Я {M=удалил}{F=удалила} сохранение...":
             hide screen mas_background_timed_jump
             jump mas_chess_dlg_quickfile_lost_maybe_filechecker_no_file
 
 label mas_chess_dlg_quickfile_lost_maybe_filechecker_file_found:
-    m 1hua "Ура!{w=0.2} Спасибо, что вернул сохранение, [player]."
+    m 1hua "Ура!{w=0.2} Спасибо, что {M=вернул}{F=вернула} сохранение, [player]."
     m "Теперь продолжим игру."
     show monika 1eua
     return mas_chess.CHESS_GAME_CONT
@@ -1675,7 +1675,7 @@ label mas_chess_dlg_quickfile_lost_maybe_filechecker_no_file:
 # generic maybe monika, found file
 label mas_chess_dlg_quickfile_lost_maybe_save_found:
     m 2eua "Ох!"
-    m 1hua "А вот и сохранение.{w=0.2} Спасибо, что вернул его, [player]."
+    m 1hua "А вот и сохранение.{w=0.2} Спасибо, что {M=вернул}{F=вернула} его, [player]."
     m 1eua "Теперь мы можем продолжить игру."
     return store.mas_chess.CHESS_GAME_CONT
 
@@ -1686,7 +1686,7 @@ label mas_chess_dlg_quickfile_lost_accident:
         qf_gone_count = persistent._mas_chess_dlg_actions[mas_chess.QF_LOST_ACDNT]
 
     if qf_gone_count == 2:
-        m 1eka "Снова? Не будь таким неуклюжим, [player]."
+        m 1eka "Снова? Не будь {M=таким неуклюжим}{F=такой неуклюжей}, [player]."
         m 1hua "Но всё в порядке."
         m 1eua "Мы просто начнём новую игру."
 
@@ -1707,10 +1707,10 @@ label mas_chess_dlg_quickfile_lost_accident:
 label mas_chess_dlg_quickfile_edited:
     m 2lksdlc "[player]..."
 
-    m 2ekc "Ты отредактировал файл сохранения?{nw}"
+    m 2ekc "Ты {M=отредактировал}{F=отредактировала} файл сохранения?{nw}"
     $ _history_list.pop()
     menu:
-        m "Ты отредактировал файл сохранения?{fast}"
+        m "Ты {M=отредактировал}{F=отредактировала} файл сохранения?{fast}"
         "Да.":
 
             jump mas_chess_dlg_quickfile_edited_yes
@@ -1727,7 +1727,7 @@ label mas_chess_dlg_quickfile_edited_yes:
 
     if qf_edit_count == 1:
         m 1dsc "Я разочарована."
-        m 1eka "Но рада, что ты честен со мной."
+        m 1eka "Но рада, что ты {M=честен}{F=честна} со мной."
 
         # we want a timed menu here. Let's give the player 5 seconds to say sorry
         show screen mas_background_timed_jump(5, "mas_chess_dlg_quickfile_edited_yes.game_ruined")
@@ -3314,7 +3314,7 @@ init python:
                     ],
                     "check": [
                         "[mas_quipExp('3tfb')]Шах!",
-                        "[mas_quipExp('3huu')]Теперь ты мой, [player]!",
+                        "[mas_quipExp('3huu')]Хе-хе, теперь я на шаг впереди, [player]!",
                         "[mas_quipExp('3hub')]Похоже, у тебя появились проблемы!"
                     ]
                 },

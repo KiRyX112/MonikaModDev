@@ -3296,7 +3296,7 @@ label prompt_menu:
             unseen_num = len(unseen_event_labels)
             mas_setEVLPropValues(
                 "mas_show_unseen",
-                prompt="Я бы хотел увидеть «Непрочитанное» ([unseen_num]) снова"
+                prompt="Я бы {M=хотел}{F=хотела} увидеть «Непрочитанное» ([unseen_num]) снова"
             )
         else:
             mas_hideEVL('mas_show_unseen','EVE',lock=True)
@@ -3597,7 +3597,7 @@ label mas_bookmarks:
         bookmarks_items.sort()
 
         bk_menu_final_items = (
-            (_("Я хотел бы удалить закладку."), "remove_bookmark", False, False, 20),
+            (_("Я {M=хотел}{F=хотела} бы удалить закладку."), "remove_bookmark", False, False, 20),
             (_("Не важно."), "nevermind", False, False, 0)
         )
 
@@ -3692,7 +3692,7 @@ label mas_bookmarks_unbookmark(bookmarks_items):
         $ renpy.say(m, "Какие закладки нужно удалить?", interact=False)
     else:
 
-        $ renpy.say(m, "Просто выбери закладку, если ты уверен, что хочешь её удалить.", interact=False)
+        $ renpy.say(m, "Просто выбери закладку, если ты {M=уверен}{F=уверена}, что хочешь её удалить.", interact=False)
 
     call screen mas_check_scrollable_menu(bookmarks_items, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, selected_button_prompt="Удалить выбранное")
 
