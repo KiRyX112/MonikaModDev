@@ -96,11 +96,7 @@ screen aff_settings():
         xfill True
         style_prefix "check"
 
-        # textbutton f"{'Скрыть' if persistent.should_show_counter else 'Показать'}" <-- не трогай, это на Новый год! :Д
-
-        textbutton ("Скрыть" if persistent.should_show_counter else "Показать") action If(
-            persistent.should_show_counter, SetVariable("persistent.should_show_counter", False), SetVariable("persistent.should_show_counter", True)
-        )
+        textbutton ("Скрыть" if persistent.should_show_counter else "Показать") action ToggleVariable("persistent.should_show_counter", True, False)
 
 init python:
     config.overlay_screens.append("aff_screen")
