@@ -85,6 +85,9 @@ init python:
         else:
             return (float(height) * (float(config.screen_width) / float(config.screen_height)), height)
 
+    if renpy.android:
+        config.search_prefixes.append(os.environ["ANDROID_PUBLIC"])
+
     #config.adjust_view_size = force_integer_multiplier
 ## Build configuration #########################################################
 ##

@@ -1464,11 +1464,6 @@ screen preferences():
                     style_prefix "generic_fancy_check"
                     label _("Графика")
                     xmaximum 1000
-                    if not renpy.android:
-                    # this is a normal button
-                        textbutton _("Сменить рендерер"):
-                            style "check_button"
-                            action Function(renpy.call_in_new_context, "mas_gmenu_start")
 
                     textbutton _("Выкл. анимации") action ToggleField(persistent, "_mas_disable_animations")
 

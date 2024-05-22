@@ -545,7 +545,7 @@ init python in mas_chess:
 
         Chess960 rules are basically:
         1. One rook must stay on the left side of king, and another one stay on the right side.
-           Due to this, the king can never be placed on a-file or h-file.
+            Due to this, the king can never be placed on a-file or h-file.
         2. Bishops must stay on different color square.
         3. Pawns must stay like the normal chess game.
         4. The position of player A's pieces must be the 'reversed version' of player B's.
