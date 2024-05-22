@@ -3472,12 +3472,21 @@ init python:
             is_64_bit = sys.maxsize > 2**32
             chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
 
+            if not is_64_bit:
+                # постепенно отказываемся от поддержки 32-разрядных систем
+                renpy.jump("mas_chess_cannot_work_embarrassing")
+
             if renpy.windows:
                 startupinfo = subprocess.STARTUPINFO()
                 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
                 
+                # self.stockfish = open_stockfish(
+                #     "mod_assets/games/chess/stockfish_8_windows_x{0}.exe".format("64" if is_64_bit else "32"),
+                #     startupinfo
+                # )
+
                 self.stockfish = open_stockfish(
-                    "mod_assets/games/chess/stockfish_8_windows_x{0}.exe".format("64" if is_64_bit else "32"),
+                    "mod_assets/games/chess/stockfish_8_windows_x64.exe",
                     startupinfo
                 )
 

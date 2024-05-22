@@ -157,9 +157,10 @@ init python:
     build.classify("game/**.chr", "scripts android")
     build.classify("game/**.json", "scripts android")
     # build.classify("game/**/stockfish_15_android**", "android")
-    build.classify("game/**/stockfish_8_linux**", "linux")
-    build.classify("game/**/stockfish_8_windows**", "windows")
-    build.classify("game/**/stockfish_8_macosx**", "mac")
+    build.classify("game/**/stockfish_8_linux_x64", "linux")
+    build.classify("game/**/stockfish_8_windows_x64.exe", "windows")
+    build.classify("game/**/stockfish_8_windows_x32.exe", None)
+    build.classify("game/**/stockfish_8_macosx_x64", "mac")
     build.classify("game/**.icns", "mac")
     build.classify("game/**.ico", "windows")
 
@@ -183,8 +184,8 @@ init python:
     build.classify("**.pem", None)
     build.classify('**/.DS_Store', None)
     build.classify('**/.vscode/**', None)
-    build.classify("game/Submods/Submod Updater Plugin/**", None) # <- не нужна в конечном дистрибутиве
     build.classify("game/**/stockfish_15_android**", None) # <- не у всех работает
+    build.classify("**/log/**", None)
 
     ## Files matching documentation patterns are duplicated in a mac app build,
     ## so they appear in both the app and the zip file.
