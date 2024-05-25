@@ -26,6 +26,9 @@ init -998 python:
 init -890 python in mas_globals:
     import datetime
     import store
+    import os
+
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
     # we set the time travel global here
     tt_detected = (
@@ -40,7 +43,7 @@ init -890 python in mas_globals:
     is_at_least_r7 = renpy.version(True)[0] >= 7
 
     # Check whether or not the user uses a steam install
-    is_steam = "steamapps" in renpy.config.basedir.lower()
+    is_steam = "steamapps" in user_dir.lower()
 
 init -1 python in mas_globals:
     # global that are not actually globals.
@@ -293,17 +296,17 @@ image room_glitch = "images/cg/monika/monika_bg_glitch.png"
 
 # Gender specific word replacement
 define MAS_PRONOUN_GENDER_MAP = {
-    "his": {"M": "his", "F": "her", "X": "their"},
-    "he": {"M": "he", "F": "she", "X": "they"},
-    "hes": {"M": "he's", "F": "she's", "X": "they're"},
-    "heis": {"M": "he is", "F": "she is", "X": "they are"},
-    "bf": {"M": "boyfriend", "F": "girlfriend", "X": "partner"},
-    "man": {"M": "man", "F": "woman", "X": "person"},
-    "boy": {"M": "boy", "F": "girl", "X": "person"},
-    "guy": {"M": "guy", "F": "girl", "X": "person"},
-    "him": {"M": "him", "F": "her", "X": "them"},
-    "himself": {"M": "himself", "F": "herself", "X": "themselves"},
-    "hero": {"M": "hero", "F": "heroine", "X": "hero"}
+    "his": {"M": "his", "F": "her"},
+    "he": {"M": "he", "F": "she"},
+    "hes": {"M": "he's", "F": "she's"},
+    "heis": {"M": "he is", "F": "she is"},
+    "bf": {"M": "boyfriend", "F": "girlfriend"},
+    "man": {"M": "man", "F": "woman"},
+    "boy": {"M": "boy", "F": "girl"},
+    "guy": {"M": "guy", "F": "girl"},
+    "him": {"M": "him", "F": "her"},
+    "himself": {"M": "himself", "F": "herself"},
+    "hero": {"M": "hero", "F": "heroine"}
 }
 
 init 1 python:
@@ -755,12 +758,11 @@ init python:
         Few examples:
             "It is his pen." (if the player's gender is declared as male)
             "It is her pen." (if the player's gender is declared as female)
-            "It is their pen." (if player's gender is not declared)
 
         For all available pronouns/words check the keys in MAS_PRONOUN_GENDER_MAP
 
         IN:
-            key - Optional[Literal["M", "F", "X"]] - key (perhaps current gender) to set the pronouns for
+            key - Optional[Literal["M", "F"]] - key (perhaps current gender) to set the pronouns for
                 If None, uses persistent.gender
         """
         store = renpy.store
@@ -771,8 +773,6 @@ init python:
         for word, sub_map in store.MAS_PRONOUN_GENDER_MAP.items():
             if key in sub_map:
                 value = sub_map[key]
-            else:
-                value = sub_map["X"]
             setattr(store, word, value)
 
 
@@ -1974,7 +1974,7 @@ label ch30_preloop:
         # even when there was no crash, the name is misleading
         persistent._mas_game_crashed = True
         startup_check = False
-        mas_checked_update = False
+        # mas_checked_update = False
         mas_globals.last_minute_dt = datetime.datetime.now()
         mas_globals.last_hour = mas_globals.last_minute_dt.hour
         mas_globals.last_day = mas_globals.last_minute_dt.day
@@ -2041,9 +2041,9 @@ label ch30_loop:
 # TODO: move quick_menu to here
 
     # updater check in here just because
-    if not mas_checked_update:
-        $ mas_backgroundUpdateCheck()
-        $ mas_checked_update = True
+    # if not mas_checked_update:
+    #     $ mas_backgroundUpdateCheck()
+    #     $ mas_checked_update = True
 
 label ch30_visual_skip:
 
@@ -2365,8 +2365,8 @@ label ch30_day:
         mas_affection._withdraw_aff()
 
         # do cert updates if certifi enabled
-        if store.mas_can_import.certifi():
-            store.mas_can_import.certifi.ch30_day_cert_update()
+        # if store.mas_can_import.certifi():
+        #     store.mas_can_import.certifi.ch30_day_cert_update()
 
     return
 

@@ -1,0 +1,30 @@
+{
+    "__author": "HistoryVariety",
+    "version": 3,
+    "type": 0,
+    "name": "historyvariety_animalcrossing_necklace",
+    "img_sit": "historyvariety_animalcrossing_necklace",
+    "pose_map": {
+        "default": "0",
+        "l_default": "5"
+    },
+    "rec_layer": 8,
+    "acs_type": "necklace",
+    "stay_on_start": true,
+    "priority": 8,
+    "dlg_desc": "necklace",
+    "dlg_plural": false,
+    "display_name": "Ожерелье «Animal Crossing»",
+    "select_info": {
+        "thumb": "historyvariety_animalcrossing_necklace",
+        "group": "necklace",
+        "select_dlg": [
+            "Кто твой любимый житель, [player]?"
+        ]
+    },
+    "giftname": "ожерелье animal crossing",
+    "arm_split": {
+        "default": "0",
+        "use_reg_for_l": true
+    }
+}

@@ -3,8 +3,6 @@
 #An event is crated by only adding a label and adding a requirement (see comment below).
 #Requirements must be created/added in script-ch30.rpy under label ch30_autoload.
 
-# pm var for transgender players
-default persistent._mas_pm_is_trans = False
 
 init 5 python:
     addEvent(
@@ -31,29 +29,16 @@ label mas_gender:
         m "So, what's your gender?{fast}"
 
         "Male.":
-            $ persistent._mas_pm_is_trans = False
             $ persistent.gender = "M"
             m 3eua "Okay [player], thanks for confirming that for me."
             m 1hksdlb "Not that I would have been bothered if you answered differently, mind you!"
 
         "Female.":
-            $ persistent._mas_pm_is_trans = False
             $ persistent.gender = "F"
             m 2eud "Oh? So you're a girl?"
             m 2hksdlb "I hope I didn't say anything to offend you before!"
             m 7rksdlb "...I guess that's why they say you shouldn't make assumptions, ahaha!"
             m 3eka "But honestly, it doesn't matter to me at all..."
-
-        "Neither.":
-            $ persistent._mas_pm_is_trans = False
-            $ persistent.gender = "X"
-            call mas_gender_neither
-
-        "I'm transgender.":
-            call mas_gender_trans
-
-            if persistent.gender != "X":
-                m 1eka "Thanks for telling me, and just remember..."
 
     m 1ekbsa "I'll always love you for who you are, [player]~"
 
@@ -102,8 +87,6 @@ label monika_gender_redo:
                     m 2ekd "I understand, I started off assuming you were a guy, after all."
                 elif persistent.gender == "F":
                     m 2ekd "I understand, you might have thought I'd be more comfortable spending time alone with another girl."
-                else:
-                    m 2ekd "I understand, I might not have given you the most accurate options to pick from."
 
                 m 2dkd "...And I probably didn't make it easy for you to tell me otherwise..."
                 m 7eua "But whatever your gender, I love you for who you are."
@@ -113,10 +96,6 @@ label monika_gender_redo:
                 m 2dkd "I hate that I didn't reassure you enough before."
                 m 7eka "But I hope that you're telling me now because you know I'll love you no matter what."
 
-            "I'm genderfluid.":
-                m 1eub "Oh, okay!"
-                m 3hub "Feel free to let me know as often as you'd like when you want me to use different pronouns!"
-
     $ gender_var = None
     m "So, what's your gender?{nw}"
     $ _history_list.pop()
@@ -124,37 +103,19 @@ label monika_gender_redo:
         m "So, what's your gender?{fast}"
 
         "I'm a boy.":
-            if persistent.gender == "M" and not persistent._mas_pm_is_trans:
+            if persistent.gender == "M":
                 $ gender_var = "boy"
                 call mas_gender_redo_same
             else:
                 $ persistent.gender = "M"
                 call mas_gender_redo_react
-            $ persistent._mas_pm_is_trans = False
 
         "I'm a girl.":
-            if persistent.gender == "F" and not persistent._mas_pm_is_trans:
+            if persistent.gender == "F":
                 $ gender_var = "girl"
                 call mas_gender_redo_same
             else:
                 $ persistent.gender = "F"
-                call mas_gender_redo_react
-            $ persistent._mas_pm_is_trans = False
-
-        "I'm neither.":
-            $ persistent._mas_pm_is_trans = False
-            if persistent.gender == "X":
-                call mas_gender_redo_neither_same
-            else:
-                $ persistent.gender = "X"
-                if renpy.seen_label("mas_gender_neither"):
-                    call mas_gender_redo_react
-                else:
-                    call mas_gender_neither
-
-        "I'm transgender.":
-            call mas_gender_trans
-            if persistent.gender != "X":
                 call mas_gender_redo_react
 
     show monika 5hubsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -163,16 +124,6 @@ label monika_gender_redo:
     # set pronouns
     $ mas_set_pronouns()
     return "love"
-
-label mas_gender_neither:
-    m 1euc "You don't see yourself as a guy or a girl?"
-    m 1eua "That's very interesting, but I can sort of relate."
-    m 3esc "Like, I am a girl, but I'm also a character in a computer game..."
-    m 3esd "So in some ways I'm not really a girl at all."
-    m 1hua "But when you treat me like your girlfriend, it makes me really happy!"
-    m 3eua "...So I'll treat you however you want to be treated."
-    m 1ekbsa "Your happiness is the most important thing to me, after all."
-    return
 
 label mas_gender_redo_same:
     m 1hksdlb "...That's the same as before, [player]!"
@@ -184,39 +135,6 @@ label mas_gender_redo_same:
 label mas_gender_redo_react:
     m 1eka "Okay, [player]..."
     m 3ekbsa "Just as long as you're happy, that's all that matters to me."
-    return
-
-label mas_gender_redo_neither_same:
-    m 1hksdlb "...That's the same as before, [player]...{w=0.3}I'm sorry if that's not really the best way for you to describe it."
-    m 1eka "But just know that it doesn't matter to me..."
-    return
-
-label mas_gender_trans:
-    if persistent._mas_pm_is_trans:
-        $ menu_question = "And what gender do you identify as?"
-    else:
-        $ menu_question = "Oh, okay! {w=0.3}And what gender do you identify as?"
-
-    m 3eub "[menu_question]{nw}"
-    $ _history_list.pop()
-    menu:
-        m "[menu_question]{fast}"
-
-        "Male":
-            $ persistent.gender = "M"
-
-        "Female":
-            $ persistent.gender = "F"
-
-        "Neither":
-            if persistent.gender == "X":
-                call mas_gender_redo_neither_same
-
-            else:
-                $ persistent.gender = "X"
-                call mas_gender_neither
-
-    $ persistent._mas_pm_is_trans = True
     return
 
 # good, bad, awkward name stuff
@@ -1613,15 +1531,15 @@ init 11 python:
         if len(mas_per_check.mas_bad_backups) > 0:
             # we had some bad backups
             store.mas_utils.trywrite(
-                os.path.normcase(renpy.config.basedir + "/characters/note.txt"),
-                renpy.substitute(mas_note_backups_some_bad.title) + "\n\n" + mas_note_backups_some_bad.text
+                os.path.normcase(f"{user_dir}/characters/note.txt"),
+                renpy.substitute(f"{mas_note_backups_some_bad.title}\n\n{mas_note_backups_some_bad.text}")
             )
 
         else:
             # no bad backups
             store.mas_utils.trywrite(
-                os.path.normcase(renpy.config.basedir + "/characters/note.txt"),
-                renpy.substitute(mas_note_backups_all_good.title) + "\n\n" + mas_note_backups_all_good.text
+                os.path.normcase(f"{user_dir}/characters/note.txt"),
+                renpy.substitute(f"{mas_note_backups_all_good.title}\n\n{mas_note_backups_all_good.text}")
             )
 
 
@@ -1697,7 +1615,7 @@ label mas_new_character_file:
         def moni_exist():
             return os.access(
                 os.path.normcase(
-                    renpy.config.basedir + "/characters/monika.chr"
+                    f"{user_dir}/characters/monika.chr"
                 ),
                 os.F_OK
             )
@@ -1708,7 +1626,7 @@ label mas_new_character_file:
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
@@ -1716,7 +1634,7 @@ label mas_new_character_file:
         m 1esc "I'm going to delete it."
 
         call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
-        call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
+        call mas_wx_cmd("os.remove(os.path.normcase(f'{user_dir}/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
 
 #        "test dialogue - IGNORE"
 
@@ -1870,8 +1788,8 @@ label mas_rpy_file_delete(showing_monika=True):
     python:
         rpy_list = mas_getRPYFiles()
         for rpy_filename in rpy_list:
-            path = '/game/'+rpy_filename
-            store.mas_ptod.wx_cmd("os.remove(os.path.normcase(basedir+'"+path+"'))", local_ctx)
+            path = f'/game/{rpy_filename}'
+            store.mas_ptod.wx_cmd(f"os.remove(os.path.normcase(basedir+'{path}'))", local_ctx)
             renpy.pause(0.1)
     return
 
@@ -2204,8 +2122,8 @@ P.S: Don't tell her about me!
 
         #Write the note in the characters folder
         store.mas_utils.trywrite(
-            os.path.normcase(renpy.config.basedir + "/characters/hint.txt"),
-            player + "\n\n" + gift_instructs
+            os.path.normcase(f"{user_dir}/characters/hint.txt"),
+            f"{player}\n\n{gift_instructs}"
         )
 
     m 1eud "Hey, [player]..."
@@ -2659,8 +2577,8 @@ label mas_gift_hint_noudeck:
         def write_and_hide():
             import time
 
-            note_path = os.path.join(renpy.config.basedir, renpy.substitute("characters/Hey, I have something for you, [player]!.txt"))
-            note_text = renpy.substitute("""\
+            note_path = os.path.join(user_dir, renpy.substitute("characters/Hey, I have something for you, [player]!.txt"))
+            note_text = renpy.substitute(_p("""\
 Hi [player]!
 
 I see you're making Monika really happy and I want to help any way I can!
@@ -2671,7 +2589,7 @@ To give it to her, create a new file 'noudeck.gift' in the 'characters' folder.
 Keep up being a good [boy] and good luck with Monika!
 
 P.S: Don't tell her about me!\
-""")
+"""))
 
             mas_utils.trywrite(note_path, note_text, log=True)
             time.sleep(20)

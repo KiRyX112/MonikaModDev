@@ -122,36 +122,71 @@ init python:
     ## Classify files as None to exclude them from the built distributions.
 
     ##This tells Renpy to build an updater file
-    build.include_update = True
+    build.include_update = False
 
-    ## Define the archives to use
-    build.archive("scripts", "all")
+    ## This is the archive of data for your mod
+    #build.archive(build.name, "all")
 
-    ## These files will be included in the package
-    # Add mod assets
-    build.classify("game/mod_assets/**", "all")
-    build.classify("game/gui/**", "all")
-    # Add scripts in the game folder
-    # build.classify("game/*.rpy", "scripts")# Optional, includes source
-    build.classify("game/*.rpyc", "scripts")
-    # Add python packages
-    build.classify("game/python-packages/**", "all")
-    # Add README
-    build.classify("README.html", "all")
+    build.archive("audio", "renpy")
+    build.archive("fonts", "renpy")
+    build.archive("images", "renpy")
+    build.archive("scripts", "renpy")
 
-    # build.package(build.directory_name + "Mod", "zip", "all", description="DDLC Compatible Mod")
+    #Add the pictures necessary for the scrollable menu
+    # build.classify("game/gui/**",build.name)
 
-    ## These files will be excluded
-    # Remove everything else from the game folder
-    build.classify("game/**", None)
-    # Remove cache
-    # build.classify("game/cache/**", None)
-    # build.classify("game/saves/**", None)
-    # Remove logs
-    build.classify("log/**", None)
-    build.classify("*.log", None)
+    ## These files get put into your data file
+    # build.classify("game/mod_assets/**",build.name)
+    #build.classify("game/**.rpy",build.name) #Optional line to include plaintext scripts
+    # build.classify("game/*.rpyc",build.name) #Serialized scripts must be included
+    # build.classify("game/dev/*.*",None) #But not the dev folder
+    # build.classify("README.html",build.name) #Included help file for mod installation
+    # build.classify("game/python-packages/**",build.name)#Additional python pacakges
+    # build.classify("CustomIcon**.**",build.name)
 
+    build.classify("game/**.wav", "audio android")
+    build.classify("game/**.mp3", "audio android")
+    build.classify("game/**.ogg", "audio android")
+    build.classify("game/**.ttf", "fonts android")
+    build.classify("game/**.otf", "fonts android")
+    build.classify("game/**.jpg", "images android")
+    build.classify("game/**.png", "images android")
+    build.classify("game/**.mp4", "images android")
+    build.classify("game/**.mpg", "images android")
+    build.classify("game/**.webm", "images android")
+    build.classify("game/**.rpyc", "scripts android")
+    build.classify("game/**.rpymc", "scripts android")
+    build.classify("game/**.txt", "scripts android")
+    build.classify("game/**.chr", "scripts android")
+    build.classify("game/**.json", "scripts android")
+    build.classify("game/**/stockfish_8_linux_x64", "linux")
+    build.classify("game/**/stockfish_8_windows_x64.exe", "windows")
+    build.classify("game/**/stockfish_8_macosx_x64", "mac")
+    build.classify("game/**.icns", "mac")
+    build.classify("game/**.ico", "windows")
+
+    # build.package(build.directory_name + "Mod",'zip',build.name,description='DDLC Compatible Mod')
+
+    build.classify('**~', None)
+    build.classify('**.bak', None)
+    build.classify('**/.**', None)
+    build.classify('**/#**', None)
+    build.classify('**/thumbs.db', None)
+    build.classify('**.rpy', None)
+    build.classify('**.rpym', None)
+    build.classify('**.psd', None)
+    build.classify('**.sublime-project', None)
+    build.classify('**.sublime-workspace', None)
+    build.classify('/music/*.*', None)
+    build.classify('script-regex.txt', None)
+    build.classify('game/10', None)
+    build.classify('game/cache/*.*', None)
+    build.classify("game/mod_assets/api_keys.json", None)
+    build.classify("game/masrun", None)
     build.classify("**.pem", None)
+    build.classify('**/.DS_Store', None)
+    build.classify('**/.vscode/**', None)
+    build.classify("**/log/**", None)
 
     ## Files matching documentation patterns are duplicated in a mac app build,
     ## so they appear in both the app and the zip file.
@@ -160,8 +195,8 @@ init python:
     build.documentation('*.txt')
     build.documentation('*.md')
 
+    build.script_version = False
     build.include_old_themes = False
-
 
 
 ## A Google Play license key is required to download expansion files and perform

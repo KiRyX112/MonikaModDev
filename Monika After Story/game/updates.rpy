@@ -718,9 +718,9 @@ label v0_12_3_2(version="v0_12_3_2"):
                 mas_utils.trydel(new_log_path)
                 os.rename(old_log_path, new_log_path)
             except Exception as ex:
-                mas_utils.mas_log.error("Failed to rename log at '{0}'. {1}".format(old_log_path, ex))
+                mas_utils.mas_log.error(f"Failed to rename log at '{old_log_path}'. {ex}")
 
-        log_dir = os.path.join(renpy.config.basedir, "log")
+        log_dir = os.path.join(user_dir, "log")
 
         migrating_logs = [
             mas_utils.mas_log,
@@ -1283,8 +1283,8 @@ label v0_11_3(version="v0_11_3"):
         for fn in filenames_to_rename:
             try:
                 os.rename(
-                    renpy.config.basedir + "/{0}".format(fn),
-                    renpy.config.basedir + "/characters/{0}".format(fn)
+                    f"{user_dir}/{fn}",
+                    f"{user_dir}/characters/{fn}"
                 )
             except:
                 pass
@@ -1292,11 +1292,11 @@ label v0_11_3(version="v0_11_3"):
         #We'll also get rid of hehehe.txt if it's still here
         try:
             os.rename(
-                renpy.config.basedir + "/hehehe.txt",
-                renpy.config.basedir + "/characters/ehehe.txt"
+                f"{user_dir}/hehehe.txt",
+                f"{user_dir}/characters/ehehe.txt"
             )
         except:
-            mas_utils.trydel(renpy.config.basedir + "/hehehe.txt")
+            mas_utils.trydel(f"{user_dir}/hehehe.txt")
 
         # add to the default unlocked pool topics
         pool_unlock_list = [

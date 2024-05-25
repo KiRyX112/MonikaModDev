@@ -37,32 +37,32 @@ python early in mas_overrides:
 
     renpy.savetoken.verify_data = verify_data_override
 
-    
-    def savelocation_init_override():
-        """
-        Run **SOME** of the stuff savelocation.init runs
 
-        basically we trying to keep saves in the AppData/equivalent folder
-        to make backups/restoring easier.
+    # def savelocation_init_override():
+    #     """
+    #     Run **SOME** of the stuff savelocation.init runs
 
-        The only difference here is that this skips over game savedirs and
-        'extra' save dirs (so just omissions)
-        """
-        savelocation.quit()
-        savelocation.quit_scan_thread = False
+    #     basically we trying to keep saves in the AppData/equivalent folder
+    #     to make backups/restoring easier.
 
-        location = savelocation.MultiLocation()
+    #     The only difference here is that this skips over game savedirs and
+    #     'extra' save dirs (so just omissions)
+    #     """
+    #     savelocation.quit()
+    #     savelocation.quit_scan_thread = False
 
-        location.add(savelocation.FileLocation(renpy.config.savedir))
+    #     location = savelocation.MultiLocation()
 
-        location.scan()
+    #     location.add(savelocation.FileLocation(renpy.config.savedir))
 
-        renpy.loadsave.location = location
+    #     location.scan()
 
-        if not renpy.emscripten:
-            savelocation.scan_thread = threading.Thread(target=savelocation.run_scan_thread)
-            savelocation.scan_thread.start()
+    #     renpy.loadsave.location = location
 
-    savelocation.init = savelocation_init_override
+    #     if not renpy.emscripten:
+    #         savelocation.scan_thread = threading.Thread(target=savelocation.run_scan_thread)
+    #         savelocation.scan_thread.start()
+
+    # savelocation.init = savelocation_init_override
 
 

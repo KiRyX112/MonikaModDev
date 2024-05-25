@@ -406,12 +406,15 @@ init -3 python in mas_piano_keys:
         NAME_BAD
     )
 
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+
     # directory setup
     pnml_basedir = os.path.normcase(
-        renpy.config.basedir + "/piano_songs/"
+        f"{user_dir}/piano_songs/"
     )
     stock_pnml_basedir = os.path.normcase(
-        renpy.config.basedir + "/game/mod_assets/games/piano/songs/"
+        f"{game_dir}/mod_assets/games/piano/songs/"
     )
     no_pnml_basedir = False
     try:
@@ -1821,7 +1824,7 @@ init 800 python in mas_piano_keys:
     # CHORUS
     # checkpoint 4
     _pnm_dpco_v4l1 = PianoNoteMatch(
-         renpy.text.text.Text(
+            renpy.text.text.Text(
             "Des-",
             style="monika_credits_text"
         ),
@@ -1834,7 +1837,7 @@ init 800 python in mas_piano_keys:
         posttext=True
     )
     _pnm_dpco_v4l2 = PianoNoteMatch(
-         renpy.text.text.Text(
+            renpy.text.text.Text(
             "-pa-",
             style="monika_credits_text"
         ),
@@ -1847,7 +1850,7 @@ init 800 python in mas_piano_keys:
         verse=12
     )
     _pnm_dpco_v4l3 = PianoNoteMatch(
-         renpy.text.text.Text(
+            renpy.text.text.Text(
             "-cito",
             style="monika_credits_text"
         ),
@@ -1862,7 +1865,7 @@ init 800 python in mas_piano_keys:
         verse=12
     )
     _pnm_dpco_v4l4 = PianoNoteMatch(
-         renpy.text.text.Text(
+            renpy.text.text.Text(
             "Quiero respirar tu cuello despacito",
             style="monika_credits_text"
         ),

@@ -1148,11 +1148,11 @@ init 5 python:
         )
 
         for cons in low_cons_list:
-            MID_TEXT += "- {0}\n".format(cons.disp_name.capitalize())
+            MID_TEXT += f"- {cons.disp_name.capitalize()}\n"
 
         MID_TEXT += "\n"
 
-        with open(renpy.config.basedir + "/characters/shopping_list.txt", "w") as shopping_list:
+        with open(f"{user_dir}/characters/shopping_list.txt", "w") as shopping_list:
             shopping_list.write(
                 renpy.substitute(START_TEXT + MID_TEXT + END_TEXT)
             )

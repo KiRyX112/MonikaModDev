@@ -4364,16 +4364,16 @@ init 11 python:
         prompt=_("Shadows in the Garden"),
         title="",
         text=_("""\
- Alone I ask a solemn question,
- What could grow in an unlit garden?
+Alone I ask a solemn question,
+What could grow in an unlit garden?
 
- When you return, it feels like heaven,
- Within your light, the cold forgotten.
+When you return, it feels like heaven,
+Within your light, the cold forgotten.
 
- I will give everything to feel this way,
- Awaiting the one I hold dearest.
+I will give everything to feel this way,
+Awaiting the one I hold dearest.
 
- Nearest to my heart...
+Nearest to my heart...
 """),
     )
 
@@ -4738,7 +4738,7 @@ label greeting_found_nou_shirt:
             $ persistent._mas_pm_snitched_on_chibika = True
             $ renpy.invoke_in_thread(
                 mas_utils.trywrite,
-                os.path.join(renpy.config.basedir, "characters/for snitch.txt"),
+                os.path.join(user_dir, "characters/for snitch.txt"),
                 ">:("
             )
             jump greeting_found_nou_shirt.menu_choice_other

@@ -134,14 +134,19 @@ screen hkb_overlay():
         else:
             textbutton _("Talk")
 
-        if store.hkb_button.extra_enabled:
-            textbutton _("Extra") action Function(mas_open_extra_menu)
+        if not os_blk:
+            if store.hkb_button.extra_enabled:
+                textbutton _("Extra") action Function(mas_open_extra_menu)
+            else:
+                textbutton _("Extra")
+
+            if store.hkb_button.music_enabled:
+                textbutton _("Music") action Function(select_music)
+            else:
+                textbutton _("Music")
         else:
             textbutton _("Extra")
 
-        if store.hkb_button.music_enabled:
-            textbutton _("Music") action Function(select_music)
-        else:
             textbutton _("Music")
 
         if store.hkb_button.play_enabled:

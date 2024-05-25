@@ -6,26 +6,26 @@ init -1500 python:
     me = singleton.SingleInstance()
 
 
-init -1500 python in mas_utils:
+# init -1500 python in mas_utils:
     # ssl/https usage checks
 
 
-    def can_use_https():
-        """
-        Checks if we can safely use https in general - this combines several
-        checks, mainly:
-            - ssl
-            - a cert
+    # def can_use_https():
+    #     """
+    #     Checks if we can safely use https in general - this combines several
+    #     checks, mainly:
+    #         - ssl
+    #         - a cert
 
-        NOTE: https can still be used with sites that do not require SSL verify
-        even if no cert is found.
+    #     NOTE: https can still be used with sites that do not require SSL verify
+    #     even if no cert is found.
 
-        RETURNS: True if https can be used.
-        """
-        return (
-            store.mas_can_import.ssl()
-            and store.mas_can_import.certifi.cert_available
-        )
+    #     RETURNS: True if https can be used.
+    #     """
+    #     return (
+    #         store.mas_can_import.ssl()
+    #         and store.mas_can_import.certifi.cert_available
+    #     )
 
 
 python early in mas_logging:
@@ -35,6 +35,8 @@ python early in mas_logging:
     import platform
     import store
     import re
+
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
 
     #Thanks python...
     import logging.handlers as loghandlers
@@ -222,8 +224,8 @@ python early in mas_logging:
             super(MASNewlineLogAdapter, self).__init__(logger, extra_props)
 
 
-    #We always log to renpy.config.basedir/log
-    LOG_PATH = os.path.join(renpy.config.basedir, "log")
+    #We always log to user_dir/log
+    LOG_PATH = os.path.join(user_dir, "log")
 
     LOG_MAXSIZE_B = 5242880 #5 mb
 
@@ -275,11 +277,11 @@ python early in mas_logging:
             rotations - Integer representing the amount of log rotations we should have. If 0, no rotations are used.
                 (Default: 5)
 
-        NOTE: ALL LOGS ARE IN renpy.config.basedir/log/
+        NOTE: ALL LOGS ARE IN user_dir/log/
         All logs flush and rotate once they're 5 mb in size.
         """
         _kwargs = {
-            "filename": os.path.join(LOG_PATH, name + '.log'),
+            "filename": os.path.join(LOG_PATH, f'{name}.log'),
             "mode": ("a" if append else "w"),
             "encoding": "utf-8",
             "delay": header is False #We auto delay here if no header to only gen the file once we need to

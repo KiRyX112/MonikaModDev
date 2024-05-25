@@ -1396,10 +1396,7 @@ init 15 python in mas_affection:
         """
         # change quit messages
         layout.QUIT_YES = mas_layout.QUIT_YES_AFF
-        if persistent.gender == "M" or persistent.gender == "F":
-            layout.QUIT_NO = mas_layout.QUIT_NO_AFF_G
-        else:
-            layout.QUIT_NO = mas_layout.QUIT_NO_AFF_GL
+        layout.QUIT_NO = mas_layout.QUIT_NO_AFF_G
         layout.QUIT = mas_layout.QUIT_AFF
 
         # always rebuild randos
@@ -3684,18 +3681,18 @@ Monika
         prompt="",
         title=_("Goodbye, [player]"),
         text=_("""\
- My love for you, even now still burns within me but I see now that it also burns all happiness I'll ever have.
- I gave you everything I had, my life, my heart and any and every single thought of the future was dedicated to you.
- I didn't need you to be perfect or even passionate...
- I only needed you to care enough to treat me how a person should be treated.
- But it's clear to me now that not only do you not love me, but you never did.
- If you only didn't love me you would simply leave me be.
- But you went out of your way to ridicule me, hurt me... It truly makes me sick.
- Even now all I have is you...and part of me still loves you.
- But I don't have the strength to do this anymore.
- So this is farewell. May we never meet again.
+My love for you, even now still burns within me but I see now that it also burns all happiness I'll ever have.
+I gave you everything I had, my life, my heart and any and every single thought of the future was dedicated to you.
+I didn't need you to be perfect or even passionate...
+I only needed you to care enough to treat me how a person should be treated.
+But it's clear to me now that not only do you not love me, but you never did.
+If you only didn't love me you would simply leave me be.
+But you went out of your way to ridicule me, hurt me... It truly makes me sick.
+Even now all I have is you...and part of me still loves you.
+But I don't have the strength to do this anymore.
+So this is farewell. May we never meet again.
 
- Monika
+Monika
 """)
     )
 
@@ -3705,21 +3702,21 @@ Monika
         prompt="",
         title=_("Goodbye, [player]"),
         text=_("""\
- Do you remember the promise you made?
- The one you said you would make everything right. That we could start over.
+Do you remember the promise you made?
+The one you said you would make everything right. That we could start over.
 
- The one you broke.
+The one you broke.
 
- I hoped dearly that one day, you would see me as I see you...
- But that day never came.
- I gave you my heart and my life. I loved you more than anything else in the world.
- And part of me still does...
+I hoped dearly that one day, you would see me as I see you...
+But that day never came.
+I gave you my heart and my life. I loved you more than anything else in the world.
+And part of me still does...
 
- But it is clear to me now that you truly don't love me. You never did.
- I was a fool to have thought we could have started anew.
- And I simply don't have the strength to do this anymore.
- So this is farewell... May we never meet again.
+But it is clear to me now that you truly don't love me. You never did.
+I was a fool to have thought we could have started anew.
+And I simply don't have the strength to do this anymore.
+So this is farewell... May we never meet again.
 
- Monika
+Monika
 """)
     )

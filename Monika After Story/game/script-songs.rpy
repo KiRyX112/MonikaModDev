@@ -1897,7 +1897,7 @@ init 5 python:
             category=[store.mas_songs.TYPE_SHORT],
             random=True,
             aff_range=(mas_aff.LOVE,None)
-         ),
+    ),
         code="SNG"
     )
 
@@ -2213,8 +2213,6 @@ label mas_monika_plays_or(skip_leadin=False):
         $ gen = "her"
     elif persistent.gender == "M":
         $ gen = "his"
-    else:
-        $ gen = "their"
 
     window hide
     call mas_timed_text_events_prep

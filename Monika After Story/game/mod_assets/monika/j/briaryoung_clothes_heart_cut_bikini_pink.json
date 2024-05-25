@@ -1,0 +1,28 @@
+{
+    "__author": "briaryoung",
+    "version": 3,
+    "type": 2,
+    "name": "briaryoung_heart_cut_bikini_pink",
+    "img_sit": "briaryoung_heart_cut_bikini_pink",
+    "pose_map": {
+        "mpm_type": 0,
+        "default": true,
+        "use_reg_for_l": true
+    },
+    "clothes_type": "bikini-cut",
+    "stay_on_start": true,
+    "ex_props": {
+        "compat-downtiedstrand": true,
+        "bare-shoulders": true
+    },
+    "select_info": {
+        "display_name": "Розовое бикини с вырезом в виде сердца",
+        "thumb": "briaryoung_heart_cut_bikini_pink",
+        "group": "clothes",
+        "select_dlg": [
+            "Мне нравится, как оно выглядит!"
+        ]
+    },
+    "giftname": "розовое бикини с вырезом в виде сердца",
+    "pose_arms": {}
+}

@@ -38,7 +38,7 @@ init -10 python in mas_windowreacts:
 
 init python in mas_windowutils:
     import os
-
+    from typing import Optional
     import store
     from store import mas_utils
     #The initial setup
@@ -200,7 +200,7 @@ init python in mas_windowutils:
             mas_utils.mas_log.error("Failed to get MAS window object: {}".format(e))
             return None
 
-    def __getMASWindowHWND_Windows() -> int|None:
+    def __getMASWindowHWND_Windows() -> Optional[int]:
         """
         Gets the hWnd of the MAS window
 
@@ -653,6 +653,8 @@ init python in mas_windowutils:
         # isCursorInMASWindow = return_true
 
 init python:
+    from typing import Optional
+
     #List of notif quips (used for topic alerts)
     #Windows/Linux
     mas_win_notif_quips = [
@@ -700,7 +702,7 @@ init python:
     def mas_display_notif(
         title: str,
         body: list[str],
-        group: str|None = None,
+        group: Optional[str] = None,
         skip_checks: bool = False,
         flash_window: bool = False
     ) -> bool:

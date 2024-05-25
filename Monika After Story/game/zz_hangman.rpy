@@ -245,7 +245,7 @@ init -1 python in mas_hangman:
         easy_list = all_hm_words[EASY_MODE]
 
         # lets start with Non Monika words
-        with open(renpy.config.gamedir + "/" + EASY_LIST, "r") as poemwords:
+        with renpy.open_file(EASY_LIST, encoding="utf-8") as poemwords:
             for line in poemwords:
                 line = line.strip()
 

@@ -15,6 +15,9 @@ python early:
     from collections import defaultdict # this will be availalable anywhere now
     import string
 
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+
     # define the zorders
     MAS_MONIKA_Z = 10
     MAS_BACKGROUND_Z = 3
@@ -73,7 +76,7 @@ python early:
     # clear this so no more traceback. We expect node loops anyway
     renpy.execution.check_infinite_loop = dummy
 
-    class MASFormatter(renpy.substitutions.Formatter):
+    class MASFormatter():
         """
         Our string formatter that uses more
         advanced formatting rules compared to the RenPy one
@@ -3784,9 +3787,9 @@ init -999 python:
     _OVERRIDE_LABEL_TO_BASE_LABEL_MAP = dict()
 
     # create the log folder if not exist
-    if not os.access(os.path.normcase(renpy.config.basedir + "/log"), os.F_OK):
+    if not os.access(os.path.normcase(f"{user_dir}/log"), os.F_OK):
         try:
-            os.mkdir(os.path.normcase(renpy.config.basedir + "/log"))
+            os.mkdir(os.path.normcase(f"{user_dir}/log"))
         except:
             pass
 
@@ -3794,11 +3797,11 @@ init -999 python:
     # NOTE: this is needed since initialzation of pytz will not include find
     #   timezones if they are included locally
     # NOTE: this means that tz info is not guaranteed until this call.
-    pytz.load_resources(os.path.join(
-        renpy.config.gamedir,
-        "python-packages",
-        "pytz",
-    ))
+    # pytz.load_resources(os.path.join(
+    #     renpy.config.gamedir,
+    #     "python-packages",
+    #     "pytz",
+    # ))
 
     def mas_override_label(label_to_override, override_label):
         """
@@ -4192,9 +4195,9 @@ init -995 python in mas_utils:
         Checks if a file is present (exists)
         """
         if not filename.startswith("/"):
-            filename = "/" + filename
+            filename = f"/{filename}"
 
-        filepath = renpy.config.basedir + filename
+        filepath = f"{user_dir}{filename}"
 
         try:
             return os.access(os.path.normcase(filepath), os.F_OK)
@@ -5790,11 +5793,11 @@ init -1 python:
             except:
                 # Check 64 bit
                 try:
-                   keyVal = _winreg.OpenKey(aReg, r"SOFTWARE\Wow6432Node\Valve\Steam")
+                    keyVal = _winreg.OpenKey(aReg, r"SOFTWARE\Wow6432Node\Valve\Steam")
 
                 except:
-                   # No Steam
-                   return None
+                    # No Steam
+                    return None
 
             for i in range(4):
                 # Value Name, Value Data, Value Type
@@ -5899,7 +5902,7 @@ init 2 python:
         """
         Gets a list of rpy files in the gamedir
         """
-        rpyCheckStation = store.MASDockingStation(renpy.config.gamedir)
+        rpyCheckStation = store.MASDockingStation(game_dir)
 
         return rpyCheckStation.getPackageList(".rpy")
 
@@ -7103,7 +7106,7 @@ image natsuki 3 = im.Composite((960, 960), (0, 0), "natsuki/2l.png", (0, 0), "na
 image natsuki 4 = im.Composite((960, 960), (0, 0), "natsuki/2l.png", (0, 0), "natsuki/2r.png", (0, 0), "natsuki/1t.png")
 image natsuki 5 = im.Composite((960, 960), (18, 22), "natsuki/1t.png", (0, 0), "natsuki/3.png")
 
-image natsuki mouth = LiveComposite((960, 960), (0, 0), "natsuki/0.png", (390, 340), "n_rects_mouth", (480, 334), "n_rects_mouth")
+image natsuki mouth = Composite((960, 960), (0, 0), "natsuki/0.png", (390, 340), "n_rects_mouth", (480, 334), "n_rects_mouth")
 
 image n_rects_mouth:
     RectCluster(Solid("#000"), 4, 15, 5).sm
@@ -7398,7 +7401,7 @@ image yuri stab_2 = "yuri/stab/2.png"
 image yuri stab_3 = "yuri/stab/3.png"
 image yuri stab_4 = "yuri/stab/4.png"
 image yuri stab_5 = "yuri/stab/5.png"
-image yuri stab_6 = LiveComposite((960,960), (0, 0), "yuri/stab/6-mask.png", (0, 0), "yuri stab_6_eyes", (0, 0), "yuri/stab/6.png")
+image yuri stab_6 = Composite((960,960), (0, 0), "yuri/stab/6-mask.png", (0, 0), "yuri stab_6_eyes", (0, 0), "yuri/stab/6.png")
 
 image yuri stab_6_eyes:
     "yuri/stab/6-eyes.png"
@@ -7427,7 +7430,7 @@ image yuri stab_6_eyes:
         linear 10 yoffset -15
 
 
-image yuri oneeye = LiveComposite((960, 960), (0, 0), "yuri/1l.png", (0, 0), "yuri/1r.png", (0, 0), "yuri/oneeye.png", (0, 0), "yuri oneeye2")
+image yuri oneeye = Composite((960, 960), (0, 0), "yuri/1l.png", (0, 0), "yuri/1r.png", (0, 0), "yuri/oneeye.png", (0, 0), "yuri oneeye2")
 image yuri oneeye2:
     "yuri/oneeye2.png"
     subpixel True
@@ -7457,7 +7460,7 @@ image yuri glitch2:
     pause 0.3
     "yuri 1"
 
-image yuri eyes = LiveComposite((1280, 720), (0, 0), "yuri/eyes1.png", (0, 0), "yuripupils")
+image yuri eyes = Composite((1280, 720), (0, 0), "yuri/eyes1.png", (0, 0), "yuripupils")
 
 image yuri eyes_base = "yuri/eyes1.png"
 
@@ -7521,22 +7524,22 @@ default persistent.clearall = None
 default persistent.menu_bg_m = None
 default persistent.first_load = None
 default persistent._mas_imported_saves = False
-default persistent._mas_monika_nickname = "Monika"
+default persistent._mas_monika_nickname = _("Monika")
 default in_sayori_kill = None
 default in_yuri_kill = None
 default anticheat = 0
-define config.mouse = None
+# define config.mouse = None
 default allow_skipping = True
-default basedir = config.basedir
+default basedir = user_dir
 default chapter = 0
 default currentpos = 0
 default faint_effect = None
 
 
-default s_name = "Sayori"
+default s_name = _("Sayori")
 default m_name = persistent._mas_monika_nickname
-default n_name = "Natsuki"
-default y_name = "Yuri"
+default n_name = _("Natsuki")
+default y_name = _("Yuri")
 
 # Instantiating variables for poem appeal. This is how much each character likes the poem for each day.
 # -1 = Dislike, 0 = Neutral, 1 = Like
@@ -7675,7 +7678,7 @@ define mas_suntime.modifier = 5 # modifier for chunking the time
 define mas_suntime.sunrise = int(persistent._mas_sunrise / 5)
 define mas_suntime.sunset = int(persistent._mas_sunset / 5)
 
-define mas_checked_update = False
+# define mas_checked_update = False
 #define mas_monika_repeated = False
 define random_seen_limit = 30
 define times.REST_TIME = 6*3600

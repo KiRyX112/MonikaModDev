@@ -3433,6 +3433,9 @@ init python:
 
                 #Catch the permission error
                 except OSError as os_err:
+                    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else config.basedir
+                    game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+
                     if not renpy.windows:
                         renpy.show("monika 1etsdlc", at_list=[t11])
                         renpy.say(m, "Hmm, that's odd. It seems some permissions were changed and I can't get chess running on your system.")
@@ -3441,7 +3444,7 @@ init python:
 
                         store.mas_ptod.rst_cn()
                         local_ctx = {
-                            "basedir": renpy.config.basedir
+                            "basedir": user_dir
                         }
                         renpy.show("monika", at_list=[t22])
                         renpy.show_screen("mas_py_console_teaching")
@@ -3451,7 +3454,7 @@ init python:
                         store.mas_ptod.wx_cmd("import os", local_ctx)
                         renpy.pause(1.0)
                         store.mas_ptod.wx_cmd(
-                            "subprocess.call(['chmod','+x', os.path.normcase(basedir + '/game/mod_assets/games/chess/stockfish_8_{0}_x64')])".format(
+                            "subprocess.call(['chmod','+x', os.path.normcase(f'{game_dir}/mod_assets/games/chess/stockfish_8_{0}_x64')])".format(
                                 "linux" if renpy.linux else "macosx"
                             ),
                             local_ctx

@@ -1683,7 +1683,7 @@ label mas_reaction_candy:
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
@@ -1745,13 +1745,13 @@ label mas_reaction_candycorn:
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
         call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
-        call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/candycorn.gift'))", local_ctx, w_wait=1.0, x_wait=1.0)
+        call mas_wx_cmd(f"os.remove(os.path.normcase('{user_dir}/characters/candycorn.gift'))", local_ctx, w_wait=1.0, x_wait=1.0)
         $ store.mas_ptod.ex_cn()
         hide screen mas_py_console_teaching
         show monika at t11

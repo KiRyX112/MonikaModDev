@@ -338,18 +338,14 @@ init 999 python:
 
         # setup filepath
         _var_data = "/var_dump.log"
-        _var_data_fp = os.path.normcase(renpy.config.basedir + _var_data)
+        _var_data_fp = os.path.normcase(user_dir + _var_data)
 
         with open(_var_data_fp, "w") as _var_data_file:
-            _var_data_file.write(config.version + "\n\n")
+            _var_data_file.write(f"{config.version}\n\n")
 
             # xp and levels
             _var_data_file.write(
-                "LEVELS: {0}\nXPTNL: {1}\nUNLOCKS: {2}\n\n".format(
-                    persistent._mas_xp_lvl,
-                    persistent._mas_xp_tnl,
-                    persistent._mas_pool_unlocks
-                )
+                f"LEVELS: {persistent._mas_xp_lvl}\nXPTNL: {persistent._mas_xp_tnl}\nUNLOCKS: {persistent._mas_pool_unlocks}\n\n"
             )
 
             if mas_isGameUnlocked("NOU"):
@@ -407,7 +403,7 @@ init 999 python:
         """
         try:
             return os.path.isfile(
-                os.path.normcase(renpy.config.basedir + "/givedata.txt")
+                os.path.normcase(f"{user_dir}/givedata.txt")
             )
         except:
             return False

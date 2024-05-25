@@ -11,14 +11,14 @@ python early:
     ## title, and shows up in the interface and error reports.
     ##
     ## The _() surrounding the string marks it as eligible for translation.
-    renpy.config.name = "Monika After Story"
+    renpy.config.name = __("Monika After Story")
 
     ## The version of the game.
     renpy.config.version = "0.13.0"
 
 
     #Triple space suffix to avoid potential issues with same names in window title
-    config.window_title = "Monika After Story   "
+    # config.window_title = "Monika After Story   "
 
     ## Save directory ##############################################################
     ##
@@ -38,7 +38,7 @@ python early:
 
     ### R7+ Config Var adjustments
     ## 7.4.11
-    renpy.config.mouse_focus_clickthrough = True
+    # renpy.config.mouse_focus_clickthrough = True
     ##7.3.3
     #Only devs need this
     renpy.config.report_extraneous_attributes = False
@@ -123,7 +123,7 @@ init -1200 python:
 
 ## The icon displayed on the taskbar or dock.
 
-    renpy.config.window_icon = "mod_assets/mas_icon.ico"
+    renpy.config.window_icon = "mod_assets/menu_new.png"
 
 ## Custom configs ##############################################################
 
@@ -142,8 +142,8 @@ init -1200 python:
     # Remove extra save location (for whatever reason we do this)
     # FIXME: Also, this is unsafe since renpy has a thread that
     # iterates thru this list
-    if len(renpy.loadsave.location.locations) > 1:
-        renpy.loadsave.location.locations.pop()
+    # if len(renpy.loadsave.location.locations) > 1:
+    #     renpy.loadsave.location.locations.pop()
 
 ################START: INIT TIME CONFIGS
 ## Uncomment the following line to set an audio file that will be played while

@@ -1,0 +1,28 @@
+{
+    "__author": "briaryoung",
+    "version": 3,
+    "type": 2,
+    "name": "briaryoung_heart_cut_bikini_black",
+    "img_sit": "briaryoung_heart_cut_bikini_black",
+    "pose_map": {
+        "mpm_type": 0,
+        "default": true,
+        "use_reg_for_l": true
+    },
+    "clothes_type": "bikini-cut",
+    "stay_on_start": true,
+    "ex_props": {
+        "compat-downtiedstrand": true,
+        "bare-shoulders": true
+    },
+    "select_info": {
+        "display_name": "Чёрное бикини с вырезом в виде сердца",
+        "thumb": "briaryoung_heart_cut_bikini_black",
+        "group": "clothes",
+        "select_dlg": [
+            "Мне нравится, как оно выглядит!"
+        ]
+    },
+    "giftname": "чёрное бикини с вырезом в виде сердца",
+    "pose_arms": {}
+}

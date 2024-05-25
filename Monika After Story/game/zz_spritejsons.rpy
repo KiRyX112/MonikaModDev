@@ -401,6 +401,9 @@ init -21 python in mas_sprites_json:
     import traceback
     from collections import defaultdict
     import logging
+    import os
+
+    game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
 
     SP_JSON_VER = 3
     VERSION_TXT = "version"
@@ -469,7 +472,7 @@ init -21 python in mas_sprites_json:
     py_dict = builtins.dict
 
     sprite_station = store.MASDockingStation(
-        renpy.config.basedir + "/game/mod_assets/monika/j/"
+        f"{game_dir}/mod_assets/monika/j/"
     )
     # docking station for custom sprites.
 

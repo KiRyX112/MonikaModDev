@@ -16,20 +16,20 @@
 init python:
     menu_trans_time = 1
     #The default splash message, originally shown in Act 1 and Act 4
-    splash_message_default = _("This game is an unofficial fan work, unaffiliated with Team Salvato.")
+    splash_message_default = __("This game is an unofficial fan work, unaffiliated with Team Salvato.")
     splash_messages = [
-    _("Please support Doki Doki Literature Club & Team Salvato."),
-    _("You are my sunshine,\nMy only sunshine"),
-    _("I missed you."),
-    _("Play with me"),
-    _("It's just a game, mostly."),
-    _("This game is not suitable for children\nor those who are easily disturbed?"),
-    _("sdfasdklfgsdfgsgoinrfoenlvbd"),
-    _("null"),
-    _("I have granted kids to hell"),
-    _("PM died for this."),
-    _("It was only partially your fault."),
-    _("This game is not suitable for children\nor those who are easily dismembered.")
+    __("Please support Doki Doki Literature Club & Team Salvato."),
+    __("You are my sunshine,\nMy only sunshine"),
+    __("I missed you."),
+    __("Play with me"),
+    __("It's just a game, mostly."),
+    __("This game is not suitable for children\nor those who are easily disturbed?"),
+    __("sdfasdklfgsdfgsgoinrfoenlvbd"),
+    __("null"),
+    __("I have granted kids to hell"),
+    __("PM died for this."),
+    __("It was only partially your fault."),
+    __("This game is not suitable for children\nor those who are easily dismembered.")
 #    "Don't forget to backup Monika's character file."
     ]
 
@@ -146,6 +146,15 @@ image intro:
     0.5
     "bg/splash.png" with Dissolve(0.5, alpha=True)
     2.5
+    "black" with Dissolve(0.5, alpha=True)
+    0.5
+
+image intro_rg:
+    truecenter
+    "black"
+    0.5
+    Composite((1280, 720), (0, 0), "mod_assets/splash/wall.png", (0, 0), "mod_assets/splash/sign.png", (0, 0), "mod_assets/splash/mascot.png") with Dissolve(0.5)
+    2.5
     "white" with Dissolve(0.5, alpha=True)
     0.5
 
@@ -162,6 +171,8 @@ image tos2 = "bg/warning2.png"
 
 
 label splashscreen:
+    if renpy.windows and platform.release() != "10":
+        show screen notify(_("Support of the Windows versions {b}lower than{/b} 10 will be suspended after May 2024."))
     python:
         _mas_AffStartup()
 
@@ -188,11 +199,11 @@ label splashscreen:
         scene tos
         with Dissolve(1.0)
         pause 1.0
-        "[config.name] is a Doki Doki Literature Club fan mod that is not affiliated with Team Salvato."
+        "[config.name!t] is a Doki Doki Literature Club fan mod that is not affiliated with Team Salvato."
         "It is designed to be played only after the official game has been completed, and contains spoilers for the official game."
         "Game files for Doki Doki Literature Club are required to play this mod and can be downloaded for free at: http://ddlc.moe"
         menu:
-            "By playing [config.name] you agree that you have completed Doki Doki Literature Club and accept any spoilers contained within."
+            "By playing [config.name!t] you agree that you have completed Doki Doki Literature Club and accept any spoilers contained within."
             "I agree.":
                 pass
         scene tos2
@@ -203,8 +214,8 @@ label splashscreen:
         with Dissolve(1.5)
 
         #Optional, load a copy of DDLC save data
-        if not persistent._mas_imported_saves:
-            call import_ddlc_persistent from _call_import_ddlc_persistent
+        # if not persistent._mas_imported_saves:
+        #     call import_ddlc_persistent from _call_import_ddlc_persistent
 
         $ persistent.first_run = False
 
@@ -214,8 +225,8 @@ label splashscreen:
         basedir = config.basedir.replace("\\", "/")
 
         # dump verseion to a firstrun-style file
-        with open(basedir + "/game/masrun", "w") as versfile:
-            versfile.write(config.name + "|" + config.version + "\n")
+        with open(f"{basedir}/game/masrun", "w") as versfile:
+            versfile.write(f"{config.name}|{config.version}\n")
 
 
     #Check for game updates before loading the game or the splash screen
@@ -236,15 +247,19 @@ label splashscreen:
     $ splash_message = splash_message_default #Default splash message
     $ config.main_menu_music = audio.t1
     $ renpy.music.play(config.main_menu_music)
-    show intro with Dissolve(0.5, alpha=True)
-    pause 2.5
-    hide intro with Dissolve(0.5, alpha=True)
+    show intro with Dissolve(0.5)
+    $ pause(1.5)
+    hide intro
+    show intro_rg
+    with Dissolve(0.5)
+    $ pause(1.5)
+    hide intro_rg with Dissolve(0.5)
     #You can use random splash messages, as well. By default, they are only shown during certain acts.
     if renpy.random.randint(0, 3) == 0:
         $ splash_message = renpy.random.choice(splash_messages)
-    show splash_warning "[splash_message]" with Dissolve(0.5, alpha=True)
+    show splash_warning "[splash_message!t]" with Dissolve(0.5)
     pause 2.0
-    hide splash_warning with Dissolve(0.5, alpha=True)
+    hide splash_warning with Dissolve(0.5)
     $ config.allow_skipping = False
 
     python:
@@ -328,6 +343,8 @@ label before_main_menu:
     return
 
 label quit:
+    if we_have_some_trouble:
+        return
     python:
         store.mas_calendar.saveCalendarDatabase(CustomEncoder)
         persistent.sessions['last_session_end']=datetime.datetime.now()

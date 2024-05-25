@@ -14,12 +14,14 @@ default persistent._mas_pm_taken_monika_out = False
 
 init -900 python in mas_ics:
     import os
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
     # Image CheckSums
 
     ########################## ISLANDS ########################################
     # islands folder
     ISLANDS_FOLDER = os.path.normcase(
-        os.path.join(renpy.config.gamedir, "mod_assets/location/special/")
+        os.path.join(game_dir, "mod_assets/location/special/")
     )
 
     # NOTE: these checksums are BEFORE b64 encoding
@@ -29,7 +31,7 @@ init -900 python in mas_ics:
     #################################### O31 ##################################
     # cg folder
     o31_cg_folder = os.path.normcase(
-        renpy.config.basedir + "/game/mod_assets/monika/cg/"
+        f"{game_dir}/mod_assets/monika/cg/"
     )
 
     # marisa cg
@@ -54,9 +56,7 @@ init -900 python in mas_ics:
 
     #################################### RPY ##################################
     #game folder
-    game_folder = os.path.normcase(
-        renpy.config.basedir + "/game/"
-    )
+    game_folder = os.path.normcase(game_dir)
     ###########################################################################
 
 
@@ -77,7 +77,7 @@ init -45 python:
 
         # The default docking station is the characters folder
         DEF_STATION = "/characters/"
-        DEF_STATION_PATH = os.path.normcase(renpy.config.basedir + DEF_STATION)
+        DEF_STATION_PATH = os.path.normcase(user_dir + DEF_STATION)
 
         # default read size in bytes
         # NOTE: we use 4095 here since 3 divides evenly into 4095
@@ -1484,7 +1484,7 @@ init 200 python in mas_dockstat:
         moni_chr = None
         try:
             moni_chr = open(os.path.normcase(
-                renpy.config.basedir + "/game/mod_assets/monika/mbase"
+                f"{game_dir}/mod_assets/monika/mbase"
             ), "rb")
 
             # NOTE: moin_chr is going to be less than 200KB, this be fine

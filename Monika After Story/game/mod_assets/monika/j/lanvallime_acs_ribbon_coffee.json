@@ -1,0 +1,29 @@
+{
+    "__author": "LanvalLime",
+    "version": 3,
+    "type": 0,
+    "name": "lanvallime_ribbon_coffee",
+    "img_sit": "lanvallime_ribbon_coffee",
+    "pose_map": {
+        "default": "0",
+        "l_default": "5"
+    },
+    "rec_layer": 3,
+    "acs_type": "ribbon",
+    "mux_type": [
+        "ribbon"
+    ],
+    "stay_on_start": true,
+    "select_info": {
+        "display_name": "Лента (Кофе)",
+        "thumb": "lanvallime_ribbon_coffee",
+        "group": "ribbon",
+        "hover_dlg": [
+            "Что-то в этом цвете мне очень нравится..."
+        ],
+        "select_dlg": [
+            "Цвет как у моего кофе!"
+        ]
+    },
+    "giftname": "лента (кофе)"
+}

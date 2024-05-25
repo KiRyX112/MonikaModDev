@@ -98,7 +98,7 @@ label introduction:
         def moni_exist():
             return os.access(
                 os.path.normcase(
-                    renpy.config.basedir + "/characters/monika.chr"
+                    f"{user_dir}/characters/monika.chr"
                 ),
                 os.F_OK
             )
@@ -109,13 +109,13 @@ label introduction:
         python:
             store.mas_ptod.rst_cn()
             local_ctx = {
-                "basedir": renpy.config.basedir
+                "basedir": user_dir
             }
         show monika at t22
         show screen mas_py_console_teaching
 
         call mas_wx_cmd("import os", local_ctx, w_wait=1.0)
-        call mas_wx_cmd("os.remove(os.path.normcase(basedir+'/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
+        call mas_wx_cmd("os.remove(os.path.normcase(f'{basedir}/characters/monika.chr'))", local_ctx, w_wait=1.0, x_wait=1.0)
 
 #        "test dialogue - IGNORE"
 

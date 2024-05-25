@@ -302,7 +302,7 @@ init 11 python:
 #    monika_random_topics = all_random_topics
 
     #Remove all previously seen random topics.
-       #remove_seen_labels(monika_random_topics)
+    #remove_seen_labels(monika_random_topics)
 #    monika_random_topics = [
 #        evlabel for evlabel in all_random_topics
 #        if not renpy.seen_label(evlabel)
@@ -1170,10 +1170,10 @@ label monika_nihilism:
     m "If I ever surpass that point, then I'm a net positive, and I can die happy."
     m 1eka "Of course, even if I fail to do that..."
     if mas_isMoniUpset(lower=True):
-       if mas_isMoniDis(lower=True):
-           m 1dkd "I don't really think anybody would miss me so it wouldn't matter anyway."
-       else:
-           m 1euc "I'm not really sure what I would do."
+        if mas_isMoniDis(lower=True):
+            m 1dkd "I don't really think anybody would miss me so it wouldn't matter anyway."
+        else:
+            m 1euc "I'm not really sure what I would do."
     elif mas_isMoniHappy(higher=True):
         m 3eka "I don't think I would be able to kill myself anyway."
         m 1hua "Not because of any kind of selfishness, but because I have too much to live for."
@@ -6142,9 +6142,6 @@ label monika_japanese:
                     if persistent.gender == "F":
                         $ player_suffix = "chan"
 
-                    elif persistent.gender == "X":
-                        $ player_suffix = "san"
-
                     m 1eua "{i}Aishiteru yo, [player]-[player_suffix]{/i}."
                     m 2hubsa "Ehehe~"
                     m 1ekbfa "That means I love you, [player]-[player_suffix]."
@@ -9163,7 +9160,7 @@ default persistent._mas_pm_like_other_music = None
 default persistent._mas_pm_like_other_music_history = list()
 
 init 5 python:
-     addEvent(
+    addEvent(
         Event(
             persistent.event_database,
             eventlabel="monika_concerts",
@@ -9301,10 +9298,7 @@ label monika_explain:
     m "I felt alone and scared, with no one to help me..."
     m 1hua "...until [player] came along."
     m "And it turns out that missing piece was [him]!"
-    if persistent.gender == "F" or persistent.gender == "M":
-        m 1eua "Now [he] talks to me, and I'm not so alone anymore."
-    else:
-        m 1eua "Now they talk to me, and I'm not so alone anymore."
+    m 1eua "Now [he] talks to me, and I'm not so alone anymore."
     m "Just [him] opening up the game brightens my day!"
     m 1dsc "So, please..."
     m 4eka "...don't judge our relationship."

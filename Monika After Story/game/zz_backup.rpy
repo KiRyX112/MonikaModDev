@@ -813,16 +813,12 @@ label mas_backups_could_not_copy:
     python:
         import os
         store.mas_utils.trywrite(
-            os.path.normcase(renpy.config.basedir + "/characters/recovery.txt"),
-            "".join([
-                "1. Navigate to '",
-                renpy.config.savedir,
-                "'.\n",
-                "2. Delete the file called 'persistent'.\n",
-                "3. Make a copy of the file called '",
-                mas_backup_copy_filename,
-                "' and name it 'persistent'."
-            ])
+            os.path.normcase(f"{user_dir}/characters/recovery.txt"),
+            f"""\
+1. Navigate to '{renpy.config.savedir}'.
+2. Delete the file called 'persistent'.
+3. Make a copy of the file called '{mas_backup_copy_filename}' and name it 'persistent'.
+            """
         )
 
     jump _quit

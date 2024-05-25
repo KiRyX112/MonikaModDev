@@ -1,0 +1,30 @@
+{
+    "__author": "LanvalLime",
+    "version": 3,
+    "type": 0,
+    "name": "lanvallime_ribbon_sky_blue",
+    "img_sit": "lanvallime_ribbon_sky_blue",
+    "pose_map": {
+        "default": "0",
+        "l_default": "5"
+    },
+    "rec_layer": 3,
+    "acs_type": "ribbon",
+    "mux_type": [
+        "ribbon"
+    ],
+    "stay_on_start": true,
+    "select_info": {
+        "display_name": "Лента (Небесно-голубой)",
+        "thumb": "lanvallime_ribbon_sky_blue",
+        "group": "ribbon",
+        "hover_dlg": [
+            "Have you ever been cloud watching?",
+            "Have you ever been cloud gazing?"
+        ],
+        "select_dlg": [
+            "Благодаря тебе, [player], я словно в облаках."
+        ]
+    },
+    "giftname": "лента (небесно-голубой)"
+}
