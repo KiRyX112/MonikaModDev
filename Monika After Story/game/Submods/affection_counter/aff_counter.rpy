@@ -92,10 +92,7 @@ screen aff_screen():
 
 screen aff_settings():
     vbox:
-        xmaximum 800
-        xfill True
         style_prefix "check"
-
         textbutton (_("Показывать") if persistent.should_show_counter else _("Не показывать")) action ToggleVariable("persistent.should_show_counter", True, False)
 
 init python:

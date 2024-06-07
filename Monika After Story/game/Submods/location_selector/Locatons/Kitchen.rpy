@@ -1,9 +1,10 @@
 # Register the submod
 init -990 python:
     store.mas_submod_utils.Submod(
-        author="tw4449 Cdino112 multimokia d3adpan Booplicate",
+        author="tw4449",
+        coauthors=["Cdino112", "multimokia", "d3adpan", "Booplicate"],
         name="Кухня",
-        description="Этот сабмод добавляет современную и стильную кухню для вас и Моники.",
+        description="Эта надстройка добавляет современную и стильную кухню для вас с Моникой.",
         version="1.0.7"
     )
 

@@ -3128,44 +3128,42 @@ screen submods():
 
         default tooltip = Tooltip("")
 
-        viewport id "scrollme":
+        viewport:
             scrollbars "vertical"
             mousewheel True
             draggable True
 
             vbox:
                 style_prefix "check"
-                xfill True
-                xmaximum 1000
+                xmaximum 900
 
-            for submod in sorted(store.mas_submod_utils.submod_map.values(), key=lambda x: x.name):
-                vbox:
-                    xfill True
-                    xmaximum 1000
+                if os_blk:
+                    text "Функционал частично ограничен. Причина: [reason]"
+                else:
+                    for submod in sorted(store.mas_submod_utils.submod_map.values(), key=lambda x: x.name):
+                        label submod.name:
+                            yanchor 0
+                            xalign 0
+                            text_text_align 0.0
 
-                    label submod.name:
-                        yanchor 0
-                        xalign 0
-                        text_text_align 0.0
+                        if submod.coauthors:
+                            $ authors = "вер. {0}, авторы: {1}, {2}".format(submod.version, submod.author, ", ".join(submod.coauthors))
 
-                    if submod.coauthors:
-                        $ authors = "вер. {0}{{space=20}}, авторы: {1}, {2}".format(submod.version, submod.author, ", ".join(submod.coauthors))
+                        else:
+                            $ authors = "вер. {0}, автор: {1}".format(submod.version, submod.author)
 
-                    else:
-                        $ authors = "вер. {0}{{space=20}}, автор: {1}".format(submod.version, submod.author)
+                        text "[authors]":
+                            yanchor 0
+                            xalign 0
+                            text_align 0.0
+                            layout "greedy"
+                            style "main_menu_version"
 
-                    text "[authors]":
-                        yanchor 0
-                        xalign 0
-                        text_align 0.0
-                        layout "greedy"
-                        style "main_menu_version"
+                        if submod.description:
+                            text submod.description text_align 0.0
 
-                    if submod.description:
-                        text submod.description text_align 0.0
-
-                if submod.settings_pane:
-                    $ renpy.display.screen.use_screen(submod.settings_pane, _name="{0}_{1}".format(submod.author, submod.name))
+                        if submod.settings_pane:
+                            use expression submod.settings_pane
 
     text tooltip.value:
         xalign 0 yalign 1.0

@@ -1,9 +1,10 @@
 # Register the submod
 init -990 python:
     store.mas_submod_utils.Submod(
-        author="tw4449 Cdino112 multimokia d3adpan Booplicate",
+        author="tw4449",
+        coauthors=["Cdino112", "multimokia", "d3adpan", "Booplicate"],
         name="Обставленная мебелью классная комната V2",
-        description="Этот сабмод добавляет минималистичный набор мебели в обычную комнату для тебя и Моники.",
+        description="Эта надстройка добавляет минималистичный набор мебели в обычную комнату для вас с Моникой.",
         version="1.0.7"
     )
 
