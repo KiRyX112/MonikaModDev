@@ -386,6 +386,7 @@ init -3 python in mas_piano_keys:
     import pygame # we need this for keymaps
     import os
     user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    # game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
     log = store.mas_logging.init_log(
         "pnm",
         append=False,
@@ -411,9 +412,9 @@ init -3 python in mas_piano_keys:
     pnml_basedir = os.path.normcase(
         user_dir + "/piano_songs/"
     )
-    stock_pnml_basedir = os.path.normcase(
-        user_dir + "/game/mod_assets/games/piano/songs/"
-    )
+    # stock_pnml_basedir = os.path.normcase(
+    #     game_dir + "/mod_assets/games/piano/songs/"
+    # )
     no_pnml_basedir = False
     try:
         if not os.access(pnml_basedir, os.F_OK):
@@ -1471,9 +1472,14 @@ init 790 python in mas_piano_keys:
                 (Default: False)
         """
         # can we read file?
-        with open(filepath, "r") as jsonfile:
-            # load JSON
-            jobj = json.load(jsonfile)
+        try:
+            with open(filepath, "r") as jsonfile:
+                # load JSON
+                jobj = json.load(jsonfile)
+        except:
+            with renpy.file(filepath) as jsonfile:
+                # load JSON
+                jobj = json.load(jsonfile)
 
         # is file a JSON?
         if jobj is None:
@@ -1527,11 +1533,11 @@ init 790 python in mas_piano_keys:
         stock_songs = [
             "happybirthday.json",
             "yourreality.json",
-            "d__p_c__o.json"
+            # "d__p_c__o.json"
         ]
 
         for song in stock_songs:
-            song_path = stock_pnml_basedir + song
+            song_path = "mod_assets/games/piano/songs/" + song
             try:
                 addSong(song_path)
             except:
