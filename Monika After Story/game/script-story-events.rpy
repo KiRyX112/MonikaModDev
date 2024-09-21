@@ -1722,7 +1722,7 @@ P.S: не говори ей обо мне!
 
         _mas_generate_backup_notes()
 
-        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
         if len(mas_per_check.mas_bad_backups) > 0:
             # we had some bad backups
@@ -1807,7 +1807,7 @@ label mas_new_character_file:
 
     python:
         import os
-        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
         def moni_exist():
             return os.access(
@@ -2313,7 +2313,7 @@ label mas_gift_giving_instructs:
         return
 
     python:
-        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
         gift_instructs = """\
 Я хотела рассказать тебе о том, что я сделала для тебя небольшой способ подарить Монике подарки!
 Это довольно простой процесс, и сейчас я расскажу тебе о том, как это работает:
@@ -2697,7 +2697,7 @@ label mas_gift_hint_noudeck:
     python hide:
         def write_and_hide():
             import time
-            user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+            user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
             note_path = os.path.join(user_dir, renpy.substitute("characters/Эй, у меня есть кое-что для тебя, [player]!.txt"))
             note_text = renpy.substitute("""\

@@ -385,8 +385,8 @@ init -3 python in mas_piano_keys:
     import store
     import pygame # we need this for keymaps
     import os
-    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
-    # game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
+    # game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir.replace("\\", "/")
     log = store.mas_logging.init_log(
         "pnm",
         append=False,

@@ -1153,7 +1153,7 @@ init 5 python:
         
         MID_TEXT += "\n"
         
-        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
         with open(user_dir + "/characters/список.txt", "w") as shopping_list:
             shopping_list.write(

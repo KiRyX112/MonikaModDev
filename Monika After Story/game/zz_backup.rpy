@@ -814,7 +814,7 @@ label mas_backups_could_not_copy:
 
     python:
         import os
-        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
         store.mas_utils.trywrite(
             os.path.normcase(user_dir + "/characters/восстановление.txt"),
             "".join([

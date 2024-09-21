@@ -3401,10 +3401,10 @@ init python:
                     path - filepath to the stockfish application
                     startupinfo - startup flags
                 """
-                chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+                chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir.replace("\\", "/")
                 try:
                     return subprocess.Popen(
-                        os.path.join(chess_game_dir, path).replace('\\', '/'),
+                        os.path.join(chess_game_dir, path),
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
                         startupinfo=startupinfo
@@ -3470,7 +3470,7 @@ init python:
                 renpy.jump("mas_chess_cannot_work_embarrassing")
             
             is_64_bit = sys.maxsize > 2**32
-            chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir
+            chess_game_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir.replace("\\", "/")
 
             if not is_64_bit:
                 # постепенно отказываемся от поддержки 32-разрядных систем

@@ -7206,7 +7206,7 @@ image mas_bday_balloons = MASFilterSwitch(
 ############### [HOL060]: METHODS
 init -1 python:
 
-    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
     def mas_isMonikaBirthday(_date=None):
         """
@@ -7307,7 +7307,10 @@ init -1 python:
                 #We should also handle if the player confirmed the party pre-note
                 if persistent._mas_bday_hint_filename:
                     # store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
-                    os.remove(user_dir + "/characters/Для тебя.txt")
+                    try:
+                        os.remove(user_dir + "/characters/Для тебя.txt")
+                    except:
+                        pass
                 return True
 
             #Otherwise, we need to check if the file exists (we're going to make this as foolproof as possible)
@@ -7324,11 +7327,17 @@ init -1 python:
                     #If we got here: Step 4, file exists so flag and delete. Also get rid of note
                     persistent._mas_bday_confirmed_party = True
                     # store.mas_docking_station.destroyPackage(filename)
-                    os.remove(user_dir + "/characters/" + filename)
+                    try:
+                        os.remove(user_dir + "/characters/" + filename)
+                    except:
+                        pass
 
                     if persistent._mas_bday_hint_filename:
                         # store.mas_docking_station.destroyPackage(persistent._mas_bday_hint_filename)
-                        os.remove(user_dir + "/characters/Для тебя.txt")
+                        try:
+                            os.remove(user_dir + "/characters/Для тебя.txt")
+                        except:
+                            pass
 
                     #We should also return a new file indicating the player has confirmed the party
                     _write_txt("/characters/будет исполнено", "")

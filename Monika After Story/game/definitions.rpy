@@ -4327,7 +4327,7 @@ init -1 python in _mas_root:
 init -999 python:
     import os
     import pytz
-    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+    user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
     _OVERRIDE_LABEL_TO_BASE_LABEL_MAP = dict()
 
@@ -4741,7 +4741,7 @@ init -995 python in mas_utils:
         """
         if not filename.startswith("/"):
             filename = "/" + filename
-        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir
+        user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.basedir.replace("\\", "/")
 
         filepath = user_dir + filename
 

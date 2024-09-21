@@ -907,6 +907,7 @@ init -25 python in mas_island_event:
     import io
     from zipfile import ZipFile
     import datetime
+    import os
 
     user_dir = os.environ["ANDROID_PUBLIC"] if renpy.android else renpy.config.gamedir.replace("\\", "/")
 
