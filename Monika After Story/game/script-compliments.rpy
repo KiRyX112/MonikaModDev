@@ -322,7 +322,7 @@ label mas_compliment_awesome_2:
         
         "Мне не особо нравятся объятия.":
             $ mas_loseAffection(0.5) # you monster.
-            m 1eft "...Cерьёзно?"
+            m 1eft "...Серьёзно?"
             m 1dkc "Ну, каждому своё, я думаю. Но однажды тебе придется это сделать."
     return
 

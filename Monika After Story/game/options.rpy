@@ -63,7 +63,7 @@ init 50 python:
 
 init python:
     #Override the choose renderer screen
-    mas_override_label("_choose_renderer", "mas_choose_renderer_override")
+    # mas_override_label("_choose_renderer", "mas_choose_renderer_override")
 
     #The rest
     # if len(renpy.loadsave.location.locations) > 1: del(renpy.loadsave.location.locations[1])

@@ -71,17 +71,13 @@ init -2 python in mas_layout:
     QUIT_NO_UPSET = _("Thanks for being considerate, [player].")
     QUIT_NO_HAPPY = _(":)")
     QUIT_NO_AFF_G = _("Молодец.")
-    QUIT_NO_AFF_GL = _("Хорошо. :)")
     QUIT_NO_LOVE = _("<3 u")
 
 
     QUIT_BROKEN = _("Просто иди.")
     QUIT_AFF = _("Что ты здесь делаешь?\n Нажми на «Нет», а после на кнопку «До свидания», глупышка!")
 
-    if store.persistent.gender == "M" or store.persistent.gender == "F":
-        _usage_quit_aff = QUIT_NO_AFF_G
-    else:
-        _usage_quit_aff = QUIT_NO_AFF_GL
+    _usage_quit_aff = QUIT_NO_AFF_G
 
     # quit message dicts
     # tuple:
@@ -2472,11 +2468,11 @@ screen skip_indicator():
         hbox:
             spacing 6
 
-        text _("Пропуск")
+            text _("Пропуск")
 
-        text "▸" at delayed_blink(0.0, 1.0) style "skip_triangle"
-        text "▸" at delayed_blink(0.2, 1.0) style "skip_triangle"
-        text "▸" at delayed_blink(0.4, 1.0) style "skip_triangle"
+            text "▸" at delayed_blink(0.0, 1.0) style "skip_triangle"
+            text "▸" at delayed_blink(0.2, 1.0) style "skip_triangle"
+            text "▸" at delayed_blink(0.4, 1.0) style "skip_triangle"
 
 
 ## This transform is used to blink the arrows one after another.
