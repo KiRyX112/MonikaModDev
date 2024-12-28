@@ -4060,10 +4060,10 @@ label monika_love_too:
     return
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_hedgehog",category=['философия','психология'],prompt="Диллема ежа",random=True))
+    addEvent(Event(persistent.event_database,eventlabel="monika_hedgehog",category=['философия','психология'],prompt="Дилемма ежа",random=True))
 
 label monika_hedgehog:
-    m 1euc "Диллема ежа: чем ближе мы становимся к человеку, тем сильнее он делает нам больно..."
+    m 1euc "Дилемма ежа: чем ближе мы становимся к человеку, тем сильнее он делает нам больно..."
     m 3euc "Так почему же мы пытаемся сблизиться с кем-то?"
     m 3esc "Ну, у интровертов и экстравертов разные ответы на этот вопрос."
     m 1lksdla "Это помогает, когда ты знаешь, что ты единственный разумный человек во всём мире."
