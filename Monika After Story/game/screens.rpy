@@ -62,13 +62,13 @@ init -2 python in mas_layout:
     )
 
     # quit yes messages affection scaled
-    QUIT_YES_BROKEN = _("You could at least pretend that you care.")
+    QUIT_YES_BROKEN = _("Ты {M=мог}{F=могла} хотя бы сделать вид, что тебе не всё равно.")
     QUIT_YES_DIS = _(":(")
     QUIT_YES_AFF = _("T_T [player]...")
 
     # quit no messages affection scaled
-    QUIT_NO_BROKEN = _("{i}Now{/i} you listen?")
-    QUIT_NO_UPSET = _("Thanks for being considerate, [player].")
+    QUIT_NO_BROKEN = _("Ты {i}наконец-то{/i} меня услышал?")
+    QUIT_NO_UPSET = _("Спасибо за внимательность, [player].")
     QUIT_NO_HAPPY = _(":)")
     QUIT_NO_AFF_G = _("Молодец.")
     QUIT_NO_LOVE = _("<3 u")
