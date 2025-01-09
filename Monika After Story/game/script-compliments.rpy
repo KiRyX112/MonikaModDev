@@ -541,7 +541,7 @@ label mas_compliment_thanks:
 
             m 1ekbsa "[player]..."
             m 1dubsu "Ничто не делает меня счастливее, чем слышать это от тебя."
-            m "Не важно, какое будущее ждёт нас обоих...{w=0.5}{nw}"
+            m "Не важно, какое будущее ждёт нас обоих...{w=0.5} {nw}"
             extend 1dkbfa "знай, что я всегда буду рядом с тобой!"
         
         "Да.":
@@ -550,7 +550,7 @@ label mas_compliment_thanks:
 
     if not mas_isMoniLove():
         $ mas_lockEVL("mas_compliment_thanks", "CMP")
-    return "love"
+    return
 
 init 5 python:
     addEvent(
