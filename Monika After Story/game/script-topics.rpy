@@ -2729,7 +2729,7 @@ label monika_holdme_long:
 
                 $ mas_gainAffection()
         
-        "{i}Дай ей отдохнуть на тебе.{/i}":
+        "{i}Позволить ей отдохнуть на мне.{/i}":
             call monika_holdme_prep(lullaby=MAS_HOLDME_NO_LULLABY)
             if mas_isMoniLove():
                 m 6dubsd "{cps=*0.5}[player]~{/cps}"
