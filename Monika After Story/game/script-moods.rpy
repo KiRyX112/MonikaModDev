@@ -284,7 +284,7 @@ label mas_mood_sick:
             jump greeting_stillsickrest
         "Нет.":
             jump greeting_stillsicknorest
-        "Я уже отдохнул.":
+        "Я уже отдыхаю.":
             jump greeting_stillsickresting
 
 #I'd like this to work similar to the sick persistent where the dialog changes, but maybe make it a little more humorous rather than serious like the sick persistent is intended to be.
@@ -542,7 +542,7 @@ label mas_mood_lazy:
         m 3eub "А это, как правило, умывание, хороший завтрак..."
 
         if mas_isMoniLove():
-            m 1dkbsu "А ещё хороший утренний поцелуй, э-хе-хе..."
+            m 1dkbsu "А ещё утренний поцелуй, э-хе-хе..."
 
         m 1hksdlb "Или ты можешь немного побездельничать."
         m 1eka "Если только ты не забыл сделать что-то важное, хорошо, [player]?"
