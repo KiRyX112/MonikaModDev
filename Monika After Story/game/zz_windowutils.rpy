@@ -73,8 +73,8 @@ init python in mas_windowutils:
 
         except Exception as e:
             #If we fail to import, then we're going to have to make sure nothing can run.
-            store.mas_windowreacts.can_show_notifs = False
-            store.mas_windowreacts.can_do_windowreacts = False
+            #store.mas_windowreacts.can_show_notifs = False
+            #store.mas_windowreacts.can_do_windowreacts = False
             
             #Log this
             store.mas_utils.mas_log.warning(
@@ -344,23 +344,14 @@ init python in mas_windowutils:
 
     #Notif show internals
     def _tryShowNotification_Windows(title, body):
-        """
-        Tries to push a notification to the notification center on Windows.
-        If it can't it should fail silently to the user.
+       from plyer import notification
+       # https://plyer.readthedocs.io/en/latest/api.html#plyer.notification
 
-        IN:
-            title - notification title
-            body - notification body
 
-        OUT:
-            bool. True if the notification was successfully sent, False otherwise
-        """
-        # The Windows way, notif_success is adjusted if need be
-        notif_success = __tip.showWindow(title, body)
-        
-        #We need the IDs of the notifs to delete them from the tray
-        store.destroy_list.append(__tip.hwnd)
-        return notif_success
+       notification.notify(title, body, renpy.config.name, renpy.config.gamedir+"/CustomIconWindows.ico", ticker="Monika After Story")
+
+
+       # https://plyer.readthedocs.io/en/latest/api.html#plyer.facades.Notification
 
     def _tryShowNotification_Linux(title, body):
         """
@@ -426,24 +417,15 @@ init python in mas_windowutils:
 
     #Window position related
     def _getMASWindowPos_Windows():
-        """
-        Gets the window position for MAS as a tuple of (left, top, right, bottom)
+    
+        from ctypes import wintypes, windll, create_unicode_buffer
 
-        OUT:
-            tuple representing window geometry or None if the window's hWnd could not be found
-        """
-        hwnd = __getMASWindowHWND()
-        
-        if hwnd is None:
-            return None
-        
-        rv = win32gui.GetWindowRect(hwnd)
-        
-        # win32gui may return incorrect geometry (-32k seems to be the limit),
-        # in this case we return None
-        if rv[0] <= -32000 and rv[1] <= -32000:
-            return None
-        
+        hwnd = windll.user32.GetForegroundWindow()
+
+        if hwnd is None: return None
+
+        rv = windll.user32.GetWindowRect(hwnd)
+
         return rv
 
     def _getMASWindowPos_Linux():
@@ -472,7 +454,7 @@ init python in mas_windowutils:
         OUT:
             Tuple representing the location of the mouse relative to the MAS window in terms of coordinates
         """
-        pos_tuple = getMASWindowPos()
+        pos_tuple = None
         
         if pos_tuple is None:
             return (0, 0)
@@ -610,7 +592,7 @@ init python:
         "Ты там, [player]?",
         "Можешь подойти на секунду?",
         "[player], у тебя есть секунда?",
-        "Мне есть что тебе сказать, [player]!",
+        "Я хочу тебе кое-что сказать, [player]!",
         "У тебя есть минутка, [player]?",
         "У меня есть о чём поговорить, [player]!",
     ]
@@ -645,9 +627,21 @@ init python:
 
         NOTE: THIS SHOULD NEVER RETURN NONE
         """
+        from ctypes import wintypes, windll, create_unicode_buffer
+
+        # условие важно сохранить, иначе будем получать уведомления с реакциями независимо от того, хотим мы этого или нет
+
         if mas_windowreacts.can_show_notifs and mas_canCheckActiveWindow():
-            return store.mas_windowutils._window_get()
-        return ""
+
+            hWnd = windll.user32.GetForegroundWindow()
+
+            length = windll.user32.GetWindowTextLengthW(hWnd)
+
+            buf = create_unicode_buffer(length + 1)
+
+            windll.user32.GetWindowTextW(hWnd, buf, length + 1)
+
+            return buf.value if buf.value else ""
 
     def mas_display_notif(title, body, group=None, skip_checks=False):
         """

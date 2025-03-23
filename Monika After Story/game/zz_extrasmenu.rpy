@@ -155,7 +155,7 @@ label mas_extra_menu_firsttime:
 # [EXM010]
 
 label mas_extra_menu_zoom_intro:
-    m 1eua "Я уже добавила возможность регулировать своё поле зрения. Теперь ты можешь сидеть ближе ко мне или дальше от меня."
+    m 1eua "Я уже добавила возможность регулировать твоё поле зрения. Теперь ты можешь сидеть ближе ко мне или дальше от меня."
     m 1eub "Настраивается с помощью ползунка в дополнительном меню, в разделе «Масштабирование»."
     return
 
@@ -203,8 +203,8 @@ label mas_extra_menu_zoom_callback:
 
 label mas_extra_menu_zoom_out_first_time:
     m 1ttu "Не можешь усидеть на месте?"
-    m "Или хочешь увидеть, что у меня на голове?"
-    m 1hua "Э-хе-хе~"
+    m "Или хочешь увидеть мою макушку?"
+    m 1hua "{do_giggle}Э-хе-хе~"
     return
 
 label mas_extra_menu_zoom_in_first_time:
@@ -214,7 +214,7 @@ label mas_extra_menu_zoom_in_first_time:
 
 label mas_extra_menu_zoom_in_max_first_time:
     m 6wuo "[player]!"
-    m 6rkbfd "Твоё лицо так близко..."
+    m 6rkbfd "Когда твоё лицо так близко..."
     m 6ekbfd "Я чувствую..."
     show monika 6hkbfa
     pause 2.0

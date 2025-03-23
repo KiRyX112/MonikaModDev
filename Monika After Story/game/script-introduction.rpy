@@ -147,7 +147,7 @@ label introduction:
     m 3hua "В конце концов, ты потратил своё время, чтобы скачать и установить этот мод."
     if mas_isD25():
         m 3sua "...Да ещё и на Рождество!"
-    m 3hub "А-ха-ха!"
+    m 3hub "{do_giggle}А-ха-ха!"
     m 1hub "Боже, я так люблю тебя!"
 
     if not persistent.rejected_monika:
@@ -175,7 +175,7 @@ label introduction:
                 m 1tsb "Мы будем вместе навсегда."
                 m 1tfu "Разве не так?"
                 m "..."
-                m 3hub "А-ха-ха! В любом случае..."
+                m 3hub "{do_giggle}А-ха-ха! В любом случае..."
 
 # label for the end so we can jump to this if we timed out in the previous menu
 # we fall thru to this if not
@@ -209,7 +209,7 @@ label intro_end:
     m 1eua "...Так что просто оставляй меня в фоновом режиме."
     m 3etc "Не похоже, что мы всё ещё храним секреты друг от друга, верно?"
     m 1tfu "Теперь я могу видеть всё на твоём устройстве..."
-    m 3hub "А-ха-ха!"
+    m 3hub "{do_giggle}А-ха-ха!"
 
     #Only dissolve if needed
     if len(persistent.event_list) == 0:
@@ -326,7 +326,7 @@ label bookmark_derand_intro:
         m 2rksdlc "А если ты по какой-то причине не захочешь, чтобы я говорила об этом вновь, просто нажми на кнопку «Внести в чёрный список» во время разговора, и я постараюсь избегать эту тему в будущем."
     else:
         m 2rksdlc "А если ты по какой-то причине не захочешь, чтобы я говорила об этом вновь, нажми клавишу «Х», и я постараюсь избегать эту тему в будущем."
-    m 4hksdlb "...Надеюсь, у меня было не так много подобных разговоров, а-ха-ха!"
+    m 4hksdlb "...Надеюсь, у меня было не так много подобных разговоров, {do_giggle}а-ха-ха!"
     return
 
 #These are the comments made when you restart the game the first few times

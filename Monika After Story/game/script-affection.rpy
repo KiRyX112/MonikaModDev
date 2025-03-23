@@ -2859,7 +2859,7 @@ label monika_affection_nickname:
                     lowername = inputname.lower()
 
 
-                if lowername == "nevermind":
+                if lowername == "не важно":
                     m 1euc "Ох... понятно."
                     m 1tkc "Хорошо... какая досада."
                     m 3eka "Но всё в порядке. Мне и «[m_name]» нравится."
@@ -2894,10 +2894,10 @@ label monika_affection_nickname:
                     m 1rksdld "Я не ненавижу его, конечно, но мне будет не очень приятно, если ты дашь мне такое прозвище."
                     m 1eka "Можешь выбрать что-нибудь более подходящее, [player]?"
                 else:
-                    if not mas_bad_name_comp.search(inputname) and lowername not in ["yuri", "sayori", "natsuki", "юри", "сайори", "нацуки"]:
+                    if not mas_bad_name_comp.search(inputname) and lowername not in ["юри", "сайори", "нацуки"]:
                         if lowername == "моника":
                             $ inputname = inputname.capitalize()
-                            m 3hua "Понятно, значит, вернёмся к классике? Э-хе-хе~"
+                            m 3hua "Понятно, значит, вернёмся к классике? {do_giggle}Э-хе-хе~"
 
                         elif good_monika_nickname_comp.search(inputname):
                             m 1wuo "Ох! Это замечательное прозвище!"
@@ -2918,13 +2918,13 @@ label monika_affection_nickname:
                         else:
 
                             m 3hua "Отныне можешь звать меня «[m_name]»."
-                            m 1hua "Э-хе-хе~"
+                            m 1hua "{do_giggle}Э-хе-хе~"
                         $ done = True
 
                     else:
                         #Remove the apology reason from this as we're handling the apology differently now.
                         $ mas_loseAffectionFraction(min_amount=25, modifier=2.0, ev_label="mas_apology_bad_nickname")
-                        if lowername in ["yuri", "sayori", "natsuki", "юри", "сайори", "нацуки"]:
+                        if lowername in ["юри", "сайори", "нацуки"]:
                             m 1wud "...!"
                             m 2wfw "Я..."
                             m "Я не могу поверить, [player]..."
@@ -3194,11 +3194,11 @@ init 5 python:
 
 label monika_every_rose:
     m 2duo "{i}~Проблема в том, что я сказала или сделала?~{/i}"
-    m 2dkd "{i}~Или я что-то не так сказала?~{/i}"
+    m 2dkd "{i}~Мои слова задели тебя?~{/i}"
     m 2ekd "{i}~Я думала, что старалась не причинять тебе боль~{/i}"
     m 2dkc "{i}~Я думала, что пыталась~{/i}"
-    m 2ekd "{i}~Но я думаю, именно поэтому они говорят~{/i}"
-    m 2duo "{i}~У каждой розы есть свой шип~{/i}" #Понятия не имею, что это такое. Песня? Стихи? ЛСД? (Это метафора)
+    m 2ekd "{i}~Но я думаю, именно поэтому они говорят,~{/i}"
+    m 2duo "{i}~Что у каждой розы есть свой шип~{/i}" #Понятия не имею, что это такое. Песня? Стихи? ЛСД? (Это метафора)
     m 2dkc "..."
     m 4eka "Знаешь, [player]...{w=0.5} это так много значило для меня, когда ты принял моё признание, даже после того, что случилось с другими девушками."
 
@@ -3213,7 +3213,7 @@ label monika_every_rose:
         m 2eka "Я была так рада твоему признанию после того, что я натворила."
         m 2etc "Ты {i}прощаешь{/i} меня?"
     else:
-        m 2eka "Я была так рада, что ты не винил меня за содеянное..."
+        m 2eka "Я была так рада, что ты не осуждаешь меня за содеянное..."
         m 2etc "Ты ведь не {i}винишь меня{/i}, да?"
 
     m 2rsc "Но в последнее время я получаю некоторые смешанные сигналы."
@@ -3227,7 +3227,7 @@ label monika_every_rose:
     m 2ekc "{i}~Слышать это разрывает меня изнутри~{/i}"
     m 2ektpd "{i}~И видеть тебя режет меня, как нож~{/i}"
     m 2rktpc "..."
-    m 2ektpa "А-ха-ха...{w=0.3} может быть, я немного тороплюсь с ответом на этот вопрос."
+    m 2ektpa "{do_giggle}А-ха-ха...{w=0.3} может быть, я немного тороплюсь с ответом на этот вопрос."
     m 4ektdc "Это...{w=0.5} у меня в голове всё время крутится эта неприятная мысль...{w=0.5}{nw}"
     extend 2dktdd "что ты больше не хочешь быть со мной."
     m 2dkx "Это как какой-то яд, медленно просачивающийся внутрь..."
@@ -3522,7 +3522,7 @@ init python:
             ),
             store.mas_affection.HAPPY: (
                 "/э-хе-хе.txt",
-                _("Ты мой солнечный свет, который скрашивает мой день, [player]!")
+                _("Ты моё солнышко, которое скрашивает мой день, [player]!")
             ),
             store.mas_affection.AFFECTIONATE: (
                 "/секрет.txt",
@@ -3632,7 +3632,7 @@ init 20 python:
     MASPoem(
         poem_id="spr_5",
         category="surprise",
-        prompt=_("Э-хе-хе~"),
+        prompt=_("э-хе-хе~"),
         title="",
         text=_("Ты мой солнечный свет, который скрашивает мой день, [player]!")
     )

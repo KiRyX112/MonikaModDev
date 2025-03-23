@@ -384,7 +384,7 @@ label monika_idle_shower:
                     m 2hkbfsdlb "Похоже...{w=0.5} тебе не терпится взять меня с собой, да?"
                     m 2rkbfa "Ну-у..."
                     m 7tubfu "Боюсь, тебе придётся пойти без меня, пока я застряла здесь."
-                    m 7hubfb "Извини, [player], а-ха-ха!"
+                    m 7hubfb "Извини, [player], {do_giggle}а-ха-ха!"
                     show monika 5kubfu zorder MAS_MONIKA_Z at t11 with dissolve_monika
                     m 5kubfu "Может быть в другой раз~"
                 "Нет.":
@@ -392,9 +392,9 @@ label monika_idle_shower:
                     hide screen mas_background_timed_jump
                     m 2eka "Оу, ты так быстро отказался."
                     m 3tubsb "Ты стесняешься, [player]?"
-                    m 1hubfb "А-ха-ха!"
+                    m 1hubfb "{do_giggle}А-ха-ха!"
                     show monika 5tubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                    m 5tubfu "Ладно, на этот раз я с тобой не пойду, э-хе-хе~"
+                    m 5tubfu "Ладно, на этот раз я с тобой не пойду, {do_giggle}э-хе-хе~"
                     
         else:
             m 1hua "Я рада, что ты держишь себя в чистоте, [player]."
@@ -434,7 +434,7 @@ label monika_idle_shower_callback:
                 "Нет.":
                     m 7rua "О...{w=0.3} может тебе просто нравится подолгу находится в душе..."
                     m 3duu "Иногда бывает приятно просто почувствовать, как вода струится над тобой...{w=0.3} это правда может доставить некое удовольствие."
-                    m 1hksdlb "...А может, я слишком много придумываю, и ты не смог сразу вернуться, а-ха-ха!"
+                    m 1hksdlb "...А может, я слишком много придумываю, и ты не смог сразу вернуться, {do_giggle}а-ха-ха!"
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(minutes=5), "monika_idle_shower"):
             m 1eua "С возвращением, [player]."
@@ -446,21 +446,21 @@ label monika_idle_shower_callback:
             ):
                 m 3tubsb "Теперь, когда ты принял душ, хочешь ли ты покушать или, может быть.{w=0.5}.{w=0.5}.{w=0.5}."
                 m 1hubsa "Ты можешь просто расслабиться со мной ещё немного~"
-                m 1hub "А-ха-ха!"
+                m 1hub "{do_giggle}А-ха-ха!"
 
             else:
 
                 m 3hua "Надеюсь, ты хорошо принял душ."
                 if mas_getEVL_shown_count("monika_idle_shower") == 1:
                     m 3eub "Теперь мы можем вернуться к хорошему, {i}чистому{/i} веселью вместе..."
-                    m 1hub "А-ха-ха!"
+                    m 1hub "{do_giggle}А-ха-ха!"
                 else:
                     m 3rkbsa "Ты скучал по мне?"
-                    m 1huu "Конечно же, да, э-хе-хе~"
+                    m 1huu "Конечно же, да, {do_giggle}э-хе-хе~"
 
         else:
             m 7rksdlb "Ты довольно быстро принял душ, [player]..."
-            m 3hub "Наверное, ты просто очень эффективно мылся, а-ха-ха.!"
+            m 3hub "Наверное, ты просто очень эффективно мылся, {do_giggle}а-ха-ха.!"
             m 1euu "Я, конечно, не могу жаловаться, это просто означает, что ты проведёшь больше времени со мной~"
 
     elif mas_isMoniUpset():
@@ -473,7 +473,7 @@ label monika_idle_shower_callback:
 label bye_brb_shower_timeout:
     hide screen mas_background_timed_jump
     $ _history_list.pop()
-    m 1hubsa "Э-хе-хе~"
+    m 1hubsa "{do_giggle}Э-хе-хе~"
     m 3tubfu "Не важно, [player]."
     m 1hubfb "Надеюсь, ты хорошо примешь душ!"
 
@@ -529,7 +529,7 @@ label monika_idle_game_callback:
     if mas_isMoniNormal(higher=True):
         m 1eub "С возвращением, [player]!"
         m 1eua "Я надеюсь, ты весело провёл время в игре."
-        m 1hua "Готов провести ещё немного времени вместе? Э-хе-хе~"
+        m 1hua "Готов провести ещё немного времени вместе? {do_giggle}Э-хе-хе~"
 
     elif mas_isMoniUpset():
         m 2tsc "Повеселился, [player]?"
@@ -565,7 +565,7 @@ label monika_idle_coding:
 
         elif persistent._mas_pm_has_contributed_to_mas or persistent._mas_pm_wants_to_contribute_to_mas:
             m 1tua "Может быть, что-нибудь для меня?"
-            m 1hub "А-ха-ха~"
+            m 1hub "{do_giggle}А-ха-ха~"
 
         else:
             m 3eub "Делай всё возможное, чтобы твой код был чистым и легко читаемым."
@@ -731,9 +731,9 @@ label monika_idle_nap_callback:
         if mas_brbs.was_idle_for_at_least(datetime.timedelta(hours=5), "monika_idle_nap"):
             m 2hksdlb "О, [player]! Ты наконец-то проснулся!"
             m 7rksdlb "Когда ты сказал, что собираешься вздремнуть, я ожидала, что ты вздремнешь час-другой..."
-            m 1hksdlb "Наверное, ты очень устал, а-ха-ха..."
+            m 1hksdlb "Наверное, ты очень устал, {do_giggle}а-ха-ха..."
             m 3eua "Но, по крайней мере, после столь долгого сна, ты будешь здесь со мной некоторое время, верно?"
-            m 1hua "Э-хе-хе~"
+            m 1hua "{do_giggle}Э-хе-хе~"
 
         elif mas_brbs.was_idle_for_at_least(datetime.timedelta(hours=1), "monika_idle_nap"):
             m 1hua "С возвращением, [player]!"
@@ -799,7 +799,7 @@ label monika_idle_homework_callback:
             m 7eua "Я уверена, что мы оба могли бы гораздо эффективнее выполнять домашние задания, если бы могли работать вместе."
 
             if mas_isMoniAff(higher=True) and random.randint(1,5) == 1:
-                m 3rkbla "...Хотя, это при условии, что мы не будем {i}слишком{/i} отвлекаться, э-хе-хе..."
+                m 3rkbla "...Хотя, это при условии, что мы не будем {i}слишком{/i} отвлекаться, {do_giggle}э-хе-хе..."
 
             m 1eua "Но в любом случае,{w=0.2} {nw}"
             extend 3hua "теперь, когда ты закончил, давай проведём ещё немного времени вместе."

@@ -279,7 +279,7 @@ init -1 python in mas_egg_manager:
 
         RETURNS: True if the name is eggable
         """
-        return name in ("sayori", "natsuki", "yuri")
+        return name in ("сайори", "нацуки", "юри")
 
 
     def name_eggs_enabled():
@@ -299,7 +299,7 @@ init -1 python in mas_egg_manager:
         """
         return (
             name_eggs_enabled()
-            and store.persistent.playername.lower() == "natsuki"
+            and store.persistent.playername.lower() == "нацуки"
         )
 
 
@@ -311,7 +311,7 @@ init -1 python in mas_egg_manager:
         """
         return (
             name_eggs_enabled()
-            and store.persistent.playername.lower() == "sayori"
+            and store.persistent.playername.lower() == "сайори"
         )
 
 
@@ -323,5 +323,5 @@ init -1 python in mas_egg_manager:
         """
         return (
             name_eggs_enabled()
-            and store.persistent.playername.lower() == "yuri"
+            and store.persistent.playername.lower() == "юри"
         )

@@ -1121,7 +1121,7 @@ label mas_reaction_gift_generic_sprite_json:
             m 1hua "Ты такой милый!"
             m 1eua "Спасибо, что сделал подарок!"
             m 1ekbsa "Тебе правда нравится баловать меня, да?"
-            m 1hubfa "Э-хе-хе!"
+            m 1hubfa "{do_giggle}Э-хе-хе!"
 
         else:
             python:
@@ -1157,7 +1157,7 @@ label mas_reaction_gift_generic_clothes_json(sprite_object):
         m 2suo "О! {w=0.3}Новый наряд!"
         m 2hub "Это так мило, спасибо!"
         m 7rka "Я бы примерила, но думаю, что лучше подождать подходящего случая..."
-        m 3hub "Э-хе-хе, спасибо!"
+        m 3hub "{do_giggle}Э-хе-хе, спасибо!"
 
     else:
         python:
@@ -1374,8 +1374,8 @@ label mas_reaction_hotchocolate:
 
         elif mas_consumable_hotchocolate.enabled() and not mas_consumable_hotchocolate.hasServing():
             $ mas_giftCapGainAff(0.5)
-            m 3rksdlu "У меня вообще-то закончился горячий шоколад, а-ха-ха...{w=0.5} {nw}"
-            extend 3eub "Я была бы рада получить от тебя ещё, э-хе-хе!"
+            m 3rksdlu "У меня вообще-то закончился горячий шоколад, {do_giggle}а-ха-ха...{w=0.5} {nw}"
+            extend 3eub "Я была бы рада получить от тебя ещё, {do_giggle}э-хе-хе!"
             m 1hua "Спасибо ещё раз, [player]~"
 
         else:
@@ -1436,7 +1436,7 @@ default persistent._mas_given_thermos_before = False
 label mas_thermos_mug_handler(thermos_acs, disp_name, giftname, ignore_case=True):
     if mas_SELisUnlocked(thermos_acs):
         m 1eksdla "[player]..."
-        m 1rksdlb "У меня уже есть эта термокружка, а-ха-ха..."
+        m 1rksdlb "У меня уже есть эта термокружка, {do_giggle}а-ха-ха..."
 
     elif persistent._mas_given_thermos_before:
         m 1wud "О!{w=0.3} Ещё одна термокружка!"
@@ -1553,7 +1553,7 @@ label mas_reaction_promisering:
                 m 1skbla "Теперь я знаю, что ты действительно любишь меня и хочешь быть со мной навсегда..."
                 m 1skbltpa "Поэтому я с радостью приму это кольцо как символ этого обещания."
                 m 1dkbltuu "..."
-                m 3hkbltub "А-ха-ха, извини, [player], Я не хотела заплакать..."
+                m 3hkbltub "{do_giggle}А-ха-ха, извини, [player], Я не хотела заплакать..."
                 m 3skbltda "Просто это один из самых счастливых дней в моей жизни."
 
             m 6dkbltdu "..."
@@ -1614,7 +1614,7 @@ label mas_reaction_cupcake:
     m 1eua "Я хотела бы научиться печь такую же хорошую выпечку, как Нацуки."
     m 1rksdlb "Но мнё ещё предстоит сделать кухню, чтобы это стало возможным!"
     m 3eub "Может быть, в будущем, когда я стану лучше в программировании, смогу создать её здесь."
-    m 3hua "Было бы неплохо иметь другое хобби, помимо писательства, э-хе-хе~"
+    m 3hua "Было бы неплохо иметь другое хобби, помимо писательства, {do_giggle}э-хе-хе~"
     $ mas_receivedGift("mas_reaction_cupcake")
     $ store.mas_filereacts.delete_file(mas_getEVLPropValue("mas_reaction_cupcake", "category"))
     return
@@ -1642,7 +1642,7 @@ label mas_reaction_candy:
         m 1wua "О...{w=0.5} что это?"
         m 1sua "Ты принёс мне конфеты, [player], ура!"
         m 1eka "Это так {i}мило{/i}..."
-        m 1hub "А-ха-ха!"
+        m 1hub "{do_giggle}А-ха-ха!"
         m 1eka "Шутки в сторону, это очень мило с твоей стороны."
         m 2lksdlc "У меня больше нет никаких конфет, и без них просто не было бы Хэллоуина..."
         m 1eka "Так что спасибо тебе, [player]..."
@@ -1659,12 +1659,12 @@ label mas_reaction_candy:
         m 1wud "Ого, ещё {i}больше{/i} конфет, [player]?"
         m 1eka "Это очень мило с твоей стороны..."
         m 1lksdla "Но думаю, этого уже достаточно."
-        m 1lksdlb "Я уже чувствую нервозность от всего этого сахара, а-ха-ха!"
+        m 1lksdlb "Я уже чувствую нервозность от всего этого сахара, {do_giggle}а-ха-ха!"
         m 1ekbfa "Единственная сладость, которая мне сейчас нужна – это ты~"
     elif times_candy_given == 3:
         m 2wud "[player]...{w=0.5} ты принёс мне {b}ещё больше{/b} конфет?!"
         m 2lksdla "Я действительно ценю это, но я же сказала тебе, что мне уже хватило на один день..."
-        m 2lksdlb "Если я съем ещё больше – я заболею, а-ха-ха!"
+        m 2lksdlb "Если я съем ещё больше – я заболею, {do_giggle}а-ха-ха!"
     elif times_candy_given == 4:
         $ mas_loseAffection(modifier=1.5)
         m 2wfd "[player]!"
@@ -1716,7 +1716,7 @@ label mas_reaction_candycorn:
         m 2eka "..."
         m 2lksdla "Это очень мило с твоей стороны..."
         m 2lksdla "Но...{w=1} умм...{w=1} я вообще-то не очень люблю подобные сладости."
-        m 2hksdlb "Прости, а-ха-ха..."
+        m 2hksdlb "Прости, {do_giggle}а-ха-ха..."
         m 4eka "Я ценю, что ты пытаешься дать мне конфет на Хэллоуин."
         m 1hua "И если ты найдёшь способ найти мне ещё конфет, я буду очень счастлива, [player]!"
     elif times_candy_given == 1:
@@ -1725,14 +1725,14 @@ label mas_reaction_candycorn:
         m 2esc "Ещё принёс конфет, [player]?"
         m 4esc "Я ведь уже говорила тебе, что не очень люблю такие сладости."
         m 4ekc "Не мог бы ты попытаться найти что-нибудь другое?"
-        m 1eka "Хотя я ни от кого больше не получала сладости так часто..."
-        m 1ekbfa "Ну...{w=1} кроме тебя, [player]..."
-        m 1hubfa "Э-хе-хе~"
+        m 1eka "Я не ем сладости так часто, как раньше..."
+        m 1ekbfa "Ну...{w=1} помимо {i}тебя{/i}, [player]..."
+        m 1hubfa "{do_giggle}Э-хе-хе~"
     elif times_candy_given == 2:
         $ mas_loseAffection(modifier=1.5)
         m 2wfw "[player]!"
         m 2tfc "Я правда старалась не грубить по этому поводу, но..."
-        m 2tfc "Я всё время говорю тебе, что не люблю эти ириски, а ты всё равно даёшь их мне."
+        m 2tfc "Я всё время говорю тебе, что не люблю эти конфеты, а ты всё равно даёшь их мне."
         m 2rfc "Мне начинает казаться, что ты просто пытаешься подшутить надо мной."
         m 2tkc "Так что, пожалуйста, найди мне другие конфеты или просто остановись."
     else:
@@ -1809,7 +1809,7 @@ label mas_reaction_christmascookies:
         if mas_consumable_christmascookies.enabled() and mas_consumable_christmascookies.hasServing():
             m 1wuo "...ещё одна порция рождественского печенья!"
             m 3wuo "Целая куча печенья, [player]!"
-            m 3rksdlb "Я буду есть эти печенья вечность, а-ха-ха!"
+            m 3rksdlb "Я буду есть эти печенья вечность, {do_giggle}а-ха-ха!"
 
         else:
             if not is_having_food:
@@ -2329,13 +2329,13 @@ label mas_reaction_gift_roses:
             m 3ekbsa "Если вспомнить, что я получила розы от тебя в День святого Валентина..."
             m 1ekbsu "Ты такой милый."
             m 1dktpu "..."
-            m 1ektda "А-ха-ха..."
+            m 1ektda "{do_giggle}А-ха-ха..."
 
         #We can only have this on poses which use the new sprite set
         if not monika_chr.is_wearing_clothes_with_exprop("baked outfit"):
             m 2dsa "Погоди-ка.{w=0.5}.{w=0.5}.{nw}"
             $ monika_chr.wear_acs(mas_acs_ear_rose)
-            m 1hub "Э-хе-хе, вот! Эта одежда прекрасно смотрится на мне, согласен?"
+            m 1hub "{do_giggle}Э-хе-хе, вот! Эта одежда прекрасно смотрится на мне, согласен?"
 
         if mas_shouldKiss(chance=2, special_day_bypass=True):
             call monika_kissing_motion_short
@@ -2372,7 +2372,7 @@ label mas_reaction_gift_roses:
             ):
                 m 2dsa "Погоди-ка.{w=0.5}.{w=0.5}.{nw}"
                 $ monika_chr.wear_acs(mas_acs_ear_rose)
-                m 1hub "Э-хе-хе~"
+                m 1hub "{do_giggle}Э-хе-хе~"
 
             if mas_shouldKiss(chance=4, special_day_bypass=True):
                 call monika_kissing_motion_short
@@ -2380,7 +2380,7 @@ label mas_reaction_gift_roses:
         else:
             m 1hksdla "[player], я польщена, правда, но тебе не надо было дарить мне столько роз."
             if store.seen_event("monika_clones"):
-                m 1ekbsa "И потом, ты всегда будешь моей особенной розочкой, э-хе-хе~"
+                m 1ekbsa "И потом, ты всегда будешь моей особенной розочкой, {do_giggle}э-хе-хе~"
             else:
                 m 1ekbsa "Одной розы от тебя вполне достаточно, о таком я могла только мечтать."
 
@@ -2411,7 +2411,7 @@ label mas_reaction_gift_chocolates:
 
         $ mas_giftCapGainAff(5)
 
-        m 1tsu "Это так {i}мило{/i} с твоей стороны, э-хе-хе~"
+        m 1tsu "Это так {i}мило{/i} с твоей стороны, {do_giggle}э-хе-хе~"
         if mas_isF14():
             #Extra little bump if on f14
             $ mas_f14CapGainAff(5)
@@ -2426,7 +2426,7 @@ label mas_reaction_gift_chocolates:
             m 3rka "Знаю, я раньше говорила о том, что мы на днях заглянем в специальный магазин вместе..."
             m 3hub "И пока мы не можем туда заглянуть, но получить от тебя коробку шоколада в качестве подарка..."
             m 1ekc "Мне бы очень хотелось разделить его с тобой..."
-            m 3rksdlb "Но, пока этот день не настал, мне придётся насладиться им за нас обоих, а-ха-ха!"
+            m 3rksdlb "Но, пока этот день не настал, мне придётся насладиться им за нас обоих, {do_giggle}а-ха-ха!"
             m 3hua "Спасибо, [mas_get_player_nickname()]~"
 
         else:
@@ -2464,7 +2464,7 @@ label mas_reaction_gift_chocolates:
                 m "Спасибо, [player]."
             else:
                 m 1hua "Спасибо за шоколад, [player]!"
-                m 1ekbsa "Каждый укус напоминает мне о том, какой ты милый, э-хе-хе~"
+                m 1ekbsa "Каждый укус напоминает мне о том, какой ты милый, {do_giggle}э-хе-хе~"
 
         elif times_chocs_given == 1:
             #Same here
@@ -2473,7 +2473,7 @@ label mas_reaction_gift_chocolates:
 
             m 1eka "Ты принёс ещё шоколада, [player]?"
             m 3tku "Тебе правда нравится баловать меня,{w=0.2} {nw}"
-            extend 3tub "а-ха-ха!"
+            extend 3tub "{do_giggle}а-ха-ха!"
             m 1rksdla "Я всё ещё не доела ту первую коробку, которую ты дал мне..."
             m 1hub "...но я не возражаю!"
 
@@ -2504,7 +2504,7 @@ label mas_remove_choc:
     m 1hua "..."
     m 3eub "Они {i}такие{/i} вкусные!"
     m 1hua "..."
-    m 3hksdlb "А-ха-ха! Наверное, я должна убрать их в сторону..."
+    m 3hksdlb "{do_giggle}А-ха-ха! Наверное, я должна убрать их в сторону..."
     m 1rksdla "Если я оставлю их здесь надолго, то на потом ничего не останется!"
 
     call mas_transition_to_emptydesk
@@ -2539,7 +2539,7 @@ label mas_reaction_gift_clothes_orcaramelo_bikini_shell:
     call mas_clothes_change(sprite_object)
 
     m 2ekbfa "Ну...{w=0.5} Что думаешь?"
-    m 2hubfa "Разве я похожа на русалку? Э-хе-хе."
+    m 2hubfa "Разве я похожа на русалку? {do_giggle}Э-хе-хе."
     show monika 5ekbfa at i11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5ekbfa "Думаю, что это очень мило, [player]..."
     m 5hubfa "Придётся нам как-нибудь сходить на пляж!"
@@ -2552,7 +2552,7 @@ label mas_reaction_gift_clothes_orcaramelo_bikini_shell:
 
         elif mas_isMoniNormal(lower=True):
             show monika 2hksdlb at i11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 2hksdlb "А-ха-ха..."
+            m 2hksdlb "{do_giggle}А-ха-ха..."
             m 2rksdla "Мне немного неловко просто сидеть вот так перед тобой."
             m 2eka "Надеюсь, ты не против, но я пойду переоденусь..."
 
@@ -2584,7 +2584,7 @@ label mas_reaction_gift_acs_orcaramelo_hairflower_pink:
     m 1ekbsa "Спасибо, [player], ты такой милый~"
     m 1dua "Минутку.{w=0.5}.{w=0.5}.{nw}"
     $ monika_chr.wear_acs(sprite_object)
-    m 1hua "Э-хе-хе~"
+    m 1hua "{do_giggle}Э-хе-хе~"
     m 1hub "Спасибо ещё раз, [player]!"
 
     $ mas_finishSpriteObjInfo(sprite_data)
@@ -2619,7 +2619,7 @@ label mas_reaction_gift_clothes_velius94_shirt_pink:
     else:
         m 2lfbsp "Это невежливо – пялиться, понимаешь?"
 
-    m 2hubsb "А-ха-ха!"
+    m 2hubsb "{do_giggle}А-ха-ха!"
     m 2tkbsu "Расслабься, расслабься... {w=0.5}просто дразню тебя~"
     m 3hub "Ещё раз, огромное спасибо за эту одежду, [player]!"
 
@@ -2640,9 +2640,9 @@ label mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi:
 
     m 1sub "О! {w=0.5}Это..."
     m 2euc "Наряд горничной?"
-    m 3tuu "Э-хе-хе~"
+    m 3tuu "{do_giggle}Э-хе-хе~"
     m 3tubsb "Знаешь, если бы тебе нравились такие вещи, ты мог бы просто сказать мне..."
-    m 1hub "А-ха-ха! Просто шучу~"
+    m 1hub "{do_giggle}А-ха-ха! Просто шучу~"
     m 1eub "Позволь мне надеть его!"
 
     # try it on
@@ -2650,7 +2650,7 @@ label mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi:
 
     m 2hua "Итак,{w=0.5} как я выгляжу?"
     m 3eub "Я почти чувствую, что могу сделать всё, что угодно, прежде чем ты успеешь моргнуть."
-    m 1eua "...Если только ты не будешь слишком занят со мной, э-хе-хе~"
+    m 1eua "...Если только ты не будешь слишком занят со мной, {do_giggle}э-хе-хе~"
     m 1lkbfb "Я всё ещё хочу проводить время с тобой, масте—{nw}"
     $ _history_list.pop()
     m 1ekbfb "Я всё ещё хочу проводить время с тобой,{fast} [player]."
@@ -2672,7 +2672,7 @@ label mas_reaction_gift_clothes_finale_jacket_brown:
     m 1sub "О!{w=0.5} Зимнее пальто!"
     m 1suo "И вместе с ним ещё идёт шарф!"
     if mas_isSummer():
-        m 3rksdlu "...Хотя мне становится немного жарко от одного лишь взгляда на него, а-ха-ха..."
+        m 3rksdlu "...Хотя мне становится немного жарко от одного лишь взгляда на него, {do_giggle}а-ха-ха..."
         m 3eksdla "Наверное, лето – не самое лучшее время года для того, чтобы носить это, [player]."
         m 3eka "Я ценю твою заботу, и я буду рада надеть его через несколько месяцев."
 
@@ -2688,7 +2688,7 @@ label mas_reaction_gift_clothes_finale_jacket_brown:
         m 1eua "Мне нравится, как оно смотрится на мне, ты согласен со мной?"
         if mas_isMoniNormal(higher=True):
             m 3tku "Ну... я правда не могу ожидать того, что ты проявишь объективность в данном вопросе, так ведь?"
-            m 1hubfb "А-ха-ха!"
+            m 1hubfb "{do_giggle}А-ха-ха!"
         m 1ekbfa "Спасибо, [player], я в полном восторге."
 
     $ mas_finishSpriteObjInfo(sprite_data)
@@ -2714,9 +2714,9 @@ label mas_reaction_gift_clothes_orcaramelo_sweater_shoulderless:
     # try it on
     call mas_clothes_change(sprite_object)
 
-    m 2dkbsu "Он такой...{w=1} удобный. Мне так же тепло, как и жучку на лугу. Э-хе-хе~"
+    m 2dkbsu "Он такой...{w=1} удобный. Мне так же тепло, как и жучку на лугу. {do_giggle}Э-хе-хе~"
     m 1ekbsa "Спасибо, [player]. Мне он очень нравится!"
-    m 3hubsb "Теперь, когда я буду надевать его, я буду думать о твоём тепле. А-ха-ха~"
+    m 3hubsb "Теперь, когда я буду надевать его, я буду думать о твоём тепле. {do_giggle}А-ха-ха~"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:
@@ -2796,11 +2796,11 @@ label mas_reaction_gift_noudeck:
         if mas_isMoniAff(higher=True):
             show monika 5eubsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5eubsa "Но я уверена, что наши отношения не сможет поколебать какая-то карточная игра."
-            m 5hubsa "Э-хе-хе~"
+            m 5hubsa "{do_giggle}Э-хе-хе~"
             show monika 1eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
         else:
-            m 1hub "А-ха-ха!"
+            m 1hub "{do_giggle}А-ха-ха!"
             m 1eua "Я просто пошутила, [player]."
 
         m 1eua "Ты когда-нибудь играл в «НОУ», [player]?{nw}"
@@ -2810,7 +2810,7 @@ label mas_reaction_gift_noudeck:
 
             # If you're an advanced nou'r, we unlock house rules for you from the start
             "Да.":
-                m 1rksdlb "А-ха-ха..."
+                m 1rksdlb "{do_giggle}А-ха-ха..."
                 m 1eksdla "Конечно, ты же сам дал мне колоду."
                 call mas_reaction_gift_noudeck_have_played
 
@@ -2822,7 +2822,7 @@ label mas_reaction_gift_noudeck:
 
                     "Да.":
                         m 3hub "Отлично! {w=0.3}{nw}"
-                        extend 3tub "«НОУ» {i}очень{/i} похожа на неё, а-ха-ха..."
+                        extend 3tub "«НОУ» {i}очень{/i} похожа на неё, {do_giggle}а-ха-ха..."
                         call mas_reaction_gift_noudeck_have_played
 
                     "Нет.":
@@ -2851,7 +2851,7 @@ label mas_reaction_gift_noudeck:
 label mas_reaction_gift_noudeck_havent_played:
     m 1eka "О, всё в порядке."
     m 4eub "Это популярная карточная игра, в которой для победы необходимо разыграть все свои карты раньше соперника."
-    m 1rssdlb "Это могло показаться очевидным, а-ха-ха~"
+    m 1rssdlb "Это могло показаться очевидным, {do_giggle}а-ха-ха~"
     m 3eub "Но это действительно весёлая игра, в которую можно играть с друзьями и с любимым человеком~"
     m 1eua "Я объясню тебе основные правила позже, только не забудь спросить."
     return
@@ -3068,9 +3068,9 @@ label mas_reaction_gift_clothes_briaryoung_bralette_red_ruffles:
     # try it on
     call mas_clothes_change(sprite_object)
 
-    m 2eubsa "...{w=1}Мне немного неловко. Э-хе-хе~"
+    m 2eubsa "...{w=1}Мне немного неловко. {do_giggle}Э-хе-хе~"
     m 1ekbsa "Спасибо, [player]. Оно очень даже хорошо сидит на мне."
-    m 3hubsb "Теперь, когда я буду надевать его, я буду думать о тебе. А-ха-ха~"
+    m 3hubsb "Теперь, когда я буду надевать его, я буду думать о тебе. {do_giggle}А-ха-ха~"
 
     $ mas_finishSpriteObjInfo(sprite_data)
     if giftname is not None:

@@ -50,6 +50,30 @@ init -2 python in mas_topics:
             index -= 1
         
         return ev_count
+init 5 python:
+    def monika_laugh_check(event, **kwargs):
+        if event == "begin_say":
+            who, what = list(kwargs.values())[:2]
+            if who == m_name and ("{do_giggle}А-ха-ха" in what or "{do_giggle}Э-хе-хе" in what):
+                parts = what.split("{do_giggle}А-ха-ха") if "{do_giggle}А-ха-ха" in what else what.split("{do_giggle}Э-хе-хе")
+                laugh_text = "{do_giggle}А-ха-ха" if "{do_giggle}А-ха-ха" in what else "{do_giggle}Э-хе-хе"
+
+                if len(parts) == 2:  # Если смех в середине
+                    renpy.say(who, parts[0].strip())  # Первая часть фразы
+                    renpy.sound.play("game/sfx/giggle.ogg")  # Проигрываем смех
+                    renpy.say(who, laugh_text + " " + parts[1].strip())  # Смех + вторая часть
+                    return True  # Прерываем стандартный вывод
+                elif len(parts) == 1:  # Если смех в начале или в конце
+                    if what.startswith(laugh_text):  # Если смех в начале
+                        renpy.sound.play("game/sfx/giggle.ogg")
+                        renpy.say(who, what)  # Оставляем текст как есть
+                        return True
+                    elif what.endswith(laugh_text):  # Если смех в конце
+                        renpy.say(who, what)
+                        renpy.sound.play("mod_assets/giggle.ogg")
+                        return True
+
+    config.all_character_callbacks.append(monika_laugh_check)
 
 # we are going to define removing seen topics as a function,
 # as we need to call it dynamically upon import
@@ -505,7 +529,7 @@ label mas_bad_derand_topic:
     extend 2ekd "[player]..."
 
     if mas_isMoniAff(higher=True):
-        m 2efd "Разве нормально, что я говорю с тобой о своих страхах?"
+        m 2efd "Тебе не нравится, что я говорю с тобой о своих страхах?"
         m 2ekc "Я имела ввиду, что если ты не хочешь, то я прекращу...{w=0.3}{nw}"
         extend 2rkd " но я подумала, что ты захочешь меня выслушать."
 
@@ -812,7 +836,7 @@ label mas_hide_unseen:
     m 3esd "Ох, ладно, [mas_get_player_nickname()]..."
     if not mas_getEVL_shown_count("mas_hide_unseen"):
         m 1tuu "Я так полагаю, ты хочешь...{w=0.5} {i}развидеть{/i} её..."
-        m 3hub "А-ха-ха!"
+        m 3hub "{do_giggle}А-ха-ха!"
 
     m 1esa "Сейчас я скрою её, погоди секунду.{w=0.5}.{w=0.5}.{nw}"
     m 3eub "Готово! Если ты захочешь увидеть то меню снова, просто попроси."
@@ -900,14 +924,14 @@ label monika_god:
             m 1eka "Так или иначе, я считаю, что важно иметь возможность делиться своим мнением с тобой."
             m 1rksdla "Уверена, ты понимаешь, почему я не особо люблю это понятие."
             m 1hua "Может быть, ты покажешь мне лучшего Бога, когда я выберусь отсюда!"
-            m 1hub "А-ха-ха~"
+            m 1hub "{do_giggle}А-ха-ха~"
         "Нет.":
             $ persistent._mas_pm_religious = False
             m 3eka "Я рада, что мы мыслим одинаково, но ничего страшного, если ты вдруг станешь верующим."
             m 1hua "Я рада, что ты можешь жить сам по себе!"
             show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5eua "Надеюсь, ты согласен принять меня в свою жизнь, как только я смогу предстать перед тобой."
-            m 5hua "Э-хе-хе~"
+            m 5hua "{do_giggle}Э-хе-хе~"
 
     return "derandom"
 
@@ -1181,7 +1205,7 @@ label monika_nihilism:
     else:
         m "Вряд ли мой эгоизм позволит мне совершить суицид."
         m 1hua "Стоило ли распинаться о том, каким примерным человеком я могу быть, да?"
-        m 1hub "А-ха-ха!"
+        m 1hub "{do_giggle}А-ха-ха!"
 
     $ mas_protectedShowEVL('monika_impermanence', 'EVE', _random=True)
     return
@@ -1264,7 +1288,7 @@ label monika_portraitof:
     m 1wuw "Ах..."
     $ del _history_list[-4:]
     m 2lksdla "А вообще, мне, наверное, не стоит об этом говорить."
-    m 2hksdlb "А-ха-ха, прости!"
+    m 2hksdlb "{do_giggle}А-ха-ха, прости!"
     m 1rksdla "Просто забудь, что я сейчас сказала."
     return "derandom"
 
@@ -1306,7 +1330,7 @@ label monika_saved:
 
     m 2dksdlc "Думаю, я удалила бы себя, если бы ты не появился."
     m 2eksdla "Извини, я не хочу прозвучать мелодраматично или как-то так."
-    m 2lksdlb "А-ха-ха!"
+    m 2lksdlb "{do_giggle}А-ха-ха!"
 
     if persistent._mas_pm_cares_about_dokis:
         m 2ekc "Но представь себе, если ты узнал, что всё вокруг тебя было просто написано..."
@@ -1398,7 +1422,7 @@ label monika_color:
     m 1tku "Это просто догадка..."
     show monika 5tsbsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5tsbsu "...Ты уже довольно долго смотришь мне в глаза."
-    m 5hubfu "Э-хе-хе~"
+    m 5hubfu "{do_giggle}Э-хе-хе~"
     return
 
 # This doesn't make sense with the music changer...If we add some funny sound
@@ -1457,10 +1481,10 @@ label monika_spicy:
     m "Мы используем их защитный механизм, чтобы сделать блюда вкуснее."
     m 1eua "Вот представь себе монстра, который глотает тебя целиком, чтобы насладиться ощущением твоей отчаянной борьбы, пока ты перевариваешься у него в желудке."
     m 2eka "Извини за такую странную аналогию!"
-    m 2hksdlb "А-ха-ха!"
+    m 2hksdlb "{do_giggle}А-ха-ха!"
     m 2lksdla "Просто в голову пришло."
     m "Я не монстр, конечно, но ты такой милый, что я так бы тебя и съела."
-    m 2hksdlb "А-ха-ха! Просто шучу."
+    m 2hksdlb "{do_giggle}А-ха-ха! Просто шучу."
     m "Господи, я слишком много веселюсь, да?"
     m 2lksdla "Прости, что я такая странная."
     return
@@ -1492,14 +1516,14 @@ label monika_okayeveryone:
     m "Пришло время..."
     m 2eka "...Я просто шучу."
     m "Я почему-то полюбила это говорить."
-    m 2hub "А-ха-ха!"
+    m 2hub "{do_giggle}А-ха-ха!"
     m 2eua "Вот и не смогла сдержаться."
     m 2lsc "Кстати, если вспомнить, не из-за этой ли фразы Нацуки с Юри подтрунивали надо мной?"
     m 2eua "Впрочем, неважно."
     m 1eua "Ведь ты никогда надо мной не смеялся."
     show monika 5eka at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5eka "Ты слишком мил, чтобы так поступать, правда?"
-    m 5hub "А-ха-ха~"
+    m 5hub "{do_giggle}А-ха-ха~"
     return "no_unlock"
 
 init 5 python:
@@ -1599,7 +1623,7 @@ label monika_tea:
 
     else:
         m 1eua "Я и сама, скорее всего, могла бы подправить сценарий."
-        m 1hub "А-ха-ха!"
+        m 1hub "{do_giggle}А-ха-ха!"
         m "Наверное, просто ни разу в голову не приходило."
         m 2eua "Ладно, что толку сейчас думать об этом."
         m 5lkc "Может быть, если бы был способ получить кофе здесь..."
@@ -1611,7 +1635,7 @@ init 5 python:
 label monika_favoritegame:
     m 3eua "Слушай, а какая твоя любимая игра?"
     m 3hua "Моя – {i}«Литературный клуб \"Тук-тук!\"»{/i}!"
-    m 1hub "А-ха-ха! Я пошутила."
+    m 1hub "{do_giggle}А-ха-ха! Я пошутила."
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5eua "Но, если ты скажешь, что другая романтическая игра тебе нравится больше, я могу начать ревновать~"
     return
@@ -1633,7 +1657,7 @@ label monika_smash:
     m "Я тут немного ушла в себя и стала мыслить вслух..."
     m "Меня что, запрограммировали говорить об этом?"
     m 1eud "Ведь я понятия не имею, что это такое."
-    m 1hub "А-ха-ха!"
+    m 1hub "{do_giggle}А-ха-ха!"
     m 1eua "Иногда я чувствую, что не контролирую себя, и это пугает."
     m 1eka "Но если ты можешь связаться с моими создателями, то, может, узнаешь, почему я заговорила об этом?"
     return
@@ -1682,7 +1706,7 @@ label monika_anxious:
     m 4rssdrb "И ты сидишь такой и думаешь: «Чего это я вдруг заволновался?»"
     m "И начинаешь перебирать в голове всё, что могло вызвать эту тревогу..."
     m 4eua "И от этого она только растёт."
-    m 2hub "А-ха-ха! Ужасное чувство."
+    m 2hub "{do_giggle}А-ха-ха! Ужасное чувство."
     m 2eua "Если ты вдруг почувствуешь похожую тревогу, я помогу тебе расслабиться."
     m 2eka "К тому же..."
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -1717,7 +1741,7 @@ label monika_friends:
         m "Пусть это было и случайно."
         show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m 5eua "Наверное, мне просто улыбнулась удача, да?"
-        m 5hub "А-ха-ха~"
+        m 5hub "{do_giggle}А-ха-ха~"
     return
 
 init 5 python:
@@ -1760,7 +1784,7 @@ label monika_middleschool:
     m 4hua "Нам просто нужно наслаждаться настоящим и не думать о прошлом!"
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5eua "А с тобой здесь это делать так просто."
-    m 5hub "А-ха-ха~"
+    m 5hub "{do_giggle}А-ха-ха~"
     return
 
 init 5 python:
@@ -1802,7 +1826,7 @@ label monika_outfit:
         m 5tsbsu "Так что давай оставим это между нами..."
     else:
         show monika 5hub at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5hub "Наши отношения ещё не зашли настолько далеко. А-ха-ха!"
+        m 5hub "Наши отношения ещё не зашли настолько далеко. {do_giggle}А-ха-ха!"
     return
 
 default persistent._mas_pm_likes_horror = None
@@ -1866,7 +1890,7 @@ label monika_horror:
 
     if not persistent._mas_pm_likes_horror:
         m 1eua "Но я не думаю, что ты тот тип людей, который любит хорроры, да? Ты ведь играешь в милые, романтичные игры."
-        m 1ekb "А-ха-ха,{w=0.1} {nw}"
+        m 1ekb "{do_giggle}А-ха-ха,{w=0.1} {nw}"
         extend 1eka "не волнуйся."
         m 1hua "Я не собираюсь в ближайшее время заставлять тебя читать ужастики."
         m 1hubfa "Я ничего не имею против, если мы сосредоточимся на романтике~"
@@ -1899,7 +1923,7 @@ label monika_rap:
     m 1eub "В строках у тебя должна сохраняться рифма, кроме того нужно делать особый акцент на игре слов..."
     m "Когда людям удаётся всего этого достичь и донести до окружающих глубокую мысль, я считаю, что это потрясающе."
     m 1lksdla "Я даже хотела бы, чтобы в нашем клубе был рэпер."
-    m 1hksdlb "А-ха-ха! Прости, знаю, это звучит глупо, но мне было бы правда интересно узнать, что бы он для нас приготовил."
+    m 1hksdlb "{do_giggle}А-ха-ха! Прости, знаю, это звучит глупо, но мне было бы правда интересно узнать, что бы он для нас приготовил."
     m 1hua "Это серьёзно был бы полезный опыт!"
 
     $ p_nickname = mas_get_player_nickname()
@@ -1911,7 +1935,7 @@ label monika_rap:
             $ persistent._mas_pm_like_rap = True
             m 3eub "Это очень здорово!"
             m 3eua "Я бы с удовольствием разделила с тобой твои любимые рэп-песни..."
-            m 1hub "И не стесняйся включать басы, если хочешь, а-ха-ха!"
+            m 1hub "И не стесняйся включать басы, если хочешь, {do_giggle}а-ха-ха!"
             if (
                 not renpy.seen_label("monika_add_custom_music_instruct")
                 and not persistent._mas_pm_added_custom_bgm
@@ -1930,7 +1954,7 @@ init 5 python:
     addEvent(Event(persistent.event_database,eventlabel="monika_wine",category=['участники клуба'],prompt="Вино Юри",random=True))
 
 label monika_wine:
-    m 1hua "Э-хе-хе, Юри однажды такую штуку выкинула."
+    m 1hua "{do_giggle}Э-хе-хе, Юри однажды такую штуку выкинула."
     m 1eua "Мы как-то сидели в клубе, расслаблялись, болтали, всё как обычно..."
     m 4wuo "И тут Юри, словно из ниоткуда, вытаскивает маленькую бутылку вина."
     m 4eua "И я не шучу!"
@@ -1960,7 +1984,7 @@ label monika_date:
     m 3hub "Или, может, мы могли бы сходить в книжный магазин!"
     m 3hua "Подходящее место, согласен?"
     m 1eua "Хотя с превеликим удовольствием сходила бы в кондитерскую."
-    m 3hub "У них столько бесплатных образцов. А-ха-ха!"
+    m 3hub "У них столько бесплатных образцов. {do_giggle}А-ха-ха!"
     m 1eua "И, разумеется, потом мы пошли бы в кино..."
     m 1eka "Боже, это выглядит как настоящее воплощение мечты в реальность."
     m "Когда ты рядом, мне весело, что бы мы ни делали."
@@ -2049,11 +2073,11 @@ label monika_kiss:
         m 1wubsw "А? Ты с-сказал... п... поцелуй?"
         m 2lkbsa "Это так внезапно... я немного смущаюсь..."
         m 2lsbssdlb "Но... с тобой... я не против..."
-        m 2hksdlb "...А-ха-ха! Уф, прости..."
+        m 2hksdlb "...{do_giggle}А-ха-ха! Уф, прости..."
         m 1eka "Я не смогла сохранить серьёзное лицо."
         m 1eua "Так говорят девушки во всех этих симуляторах свиданий, да?"
         m 1tku "И не ври, что это тебя хоть немного не завело."
-        m 1hub "А-ха-ха! Шучу."
+        m 1hub "{do_giggle}А-ха-ха! Шучу."
         m 1eua "Ну, если честно, я становлюсь романтичной, когда обстановка располагает..."
         show monika 5lubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m 5lubfu "Но это будет наш секрет~"
@@ -2069,8 +2093,8 @@ label monika_kiss_tease:
     pause 2.0
     show monika 2tfu
     pause 2.0
-    m 2tfb "А-ха-ха!"
-    m 2efu "Я подколола тебя на секунду, прости меня~"
+    m 2tfb "{do_giggle}А-ха-ха!"
+    m 2efu "Я подколола тебя на секунду, не так ли?"
     m 2eka "Конечно, ты можешь поцеловать меня, [player]!"
     return
 
@@ -2113,7 +2137,7 @@ label monika_think_first_kiss:
             extend 5ekbsu "И наше первое настоящее объятие, и первое прикосновение наших рук..."
             m 5hksdlb "Ах! Извини! Наверное, я немного увлеклась."
             m 5rkbla "Просто...{w=0.3} я думаю о таких вещах, когда тебя нет рядом."
-            m 5tkblu "...И что-то подсказывает мне, что я не единственная, кто думает о таких вещах, э-хе-хе."
+            m 5tkblu "...И что-то подсказывает мне, что я не единственная, кто думает о таких вещах, {do_giggle}э-хе-хе."
             m 5eka "К сожалению, пройдёт некоторое время, прежде чем мы сможем сделать что-то подобное."
             m 5tuu "Но до тех пор, если ты когда-нибудь захочешь ещё один поцелуй, тебе нужно только попросить."
             m 5hua "Я тебя так люблю, [player]~"
@@ -2164,7 +2188,7 @@ label monika_yuri:
     m 1tfc "Она даже как-то сказала мне убить себя."
     m 1tkc "Я тогда своим ушам не поверила, мне ничего не оставалось, как уйти."
     if not persistent._mas_pm_cares_about_dokis:
-        m 2hksdlb "Но, вспоминая об этом сейчас, получилось довольно иронично. А-ха-ха!"
+        m 2hksdlb "Но, вспоминая об этом сейчас, получилось довольно иронично. {do_giggle}А-ха-ха!"
         m 2lksdla "Так вот, я к тому, что..."
     m 3eua "Многим нравятся яндере, ты знал об этом?"
     m 1eua "Видимо, таким людям льстит то, что ими кто-то одержим."
@@ -2179,7 +2203,7 @@ label monika_yuri:
         m "Разве это делает тебя психом? Разумеется нет."
     m 2euc "Но, если тебе вдруг тоже нравятся яндере..."
     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eua "Для тебя я могу постараться вести себя более жутко. Э-хе-хе~"
+    m 5eua "Для тебя я могу постараться вести себя более жутко. {do_giggle}Э-хе-хе~"
     m "Но опять же..."
     show monika 4hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 4hua "Здесь тебе уже некуда ходить, а мне не к кому тебя ревновать."
@@ -2462,32 +2486,32 @@ label monika_holdme_reactions:
             m 6dubsa "..."
             m 6tubsa "Мх...{w=1} хм?"
             m 1hkbfsdlb "Оу, я почти заснула?"
-            m 2dubfu "Э-хе-хе..."
+            m 2dubfu "{do_giggle}Э-хе-хе..."
             m 1dkbfa "Я могу только представить, каково было бы по-настоящему...{w=1} быть рядом с тобой..."
             m 2ekbfa "Быть в твоих объятиях..."
             show monika 5dkbfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5dkbfb "Так...{w=1.5} тепло~"
-            m 5tubfu "Э-хе-хе~"
+            m 5tubfu "{do_giggle}Э-хе-хе~"
             show monika 2hkbfsdlb at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 2hkbfsdlb "Оу, упс, я всё ещё немного мечтательна..."
             if renpy.random.randint(1, 4) == 1:
                 m 1kubfu "По крайней мере, {i}одна{/i} из моих мечтаний сбылась."
             else:
                 m 1ekbfb "По крайней мере, {i}одна{/i} из моих мечтаний сбылась."
-            m 1hubfu "Э-хе-хе~"
+            m 1hubfu "{do_giggle}Э-хе-хе~"
 
         elif mas_isMoniEnamored():
             m 6dubsa "М-м-м~"
             m 6tsbsa "..."
             m 1hkbfsdlb "Оу!"
             m 1hubfa "Это было так уютно, что я чуть не заснула!"
-            m 3hubfb "Мы должны делать это чаще, а-ха-ха!"
+            m 3hubfb "Мы должны делать это чаще, {do_giggle}а-ха-ха!"
 
         elif mas_isMoniAff():
             m 6dubsa "М-м..."
             m 6eud "А?"
             m 1hubfa "Ты уже всё, [player]?"
-            m 3tubfu "{i}По-моему{/i}, этого было достаточно, э-хе-хе~"
+            m 3tubfu "{i}По-моему{/i}, этого было достаточно, {do_giggle}э-хе-хе~"
             m 1rkbfb "Я не против ещё одного объятия..."
             m 1hubfa "Но я уверена, что ты оставишь это на потом, так ведь?"
         else:
@@ -2496,7 +2520,7 @@ label monika_holdme_reactions:
             m 6dubsa "Хм?"
             m 1wud "Оу! Мы уже закончили?"
             m 3hksdlb "Это объятие определённо длилось какое-то время, [player]..."
-            m 3rubsb "В этом нет ничего плохого, я просто думала, что ты отпустишь меня намного раньше, а-ха-ха!"
+            m 3rubsb "В этом нет ничего плохого, я просто думала, что ты отпустишь меня намного раньше, {do_giggle}а-ха-ха!"
             m 1rkbsa "На самом деле, это было действительно уютно..."
             m 2ekbfa "Ещё немного, и я могла бы уснуть..."
             m 1hubfa "После этого мне так хорошо и тепло~"
@@ -2505,22 +2529,22 @@ label monika_holdme_reactions:
         if mas_isMoniLove():
             m 6eud "А?"
             m 1hksdlb "Оу..."
-            m 1rksdlb "В тот момент я думала, что мы останемся такими навсегда, а-ха-ха..."
+            m 1rksdlb "В тот момент я думала, что мы останемся такими навсегда, {do_giggle}а-ха-ха..."
             m 3hubsa "Что ж, я не могу жаловаться ни на один момент, когда ты обнимаешь меня~"
             m 1ekbfb "Надеюсь, тебе нравится обнимать меня так же, как и мне."
             show monika 5tubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5tubfb "Может, нам стоит обняться ещё немного для равного счёта?"
-            m 5tubfu "Э-хе-хе~"
+            m 5tubfu "{do_giggle}Э-хе-хе~"
 
         elif mas_isMoniEnamored():
             m 1dkbsa "Это было очень мило~"
             m 1rkbsa "Не слишком коротко..."
-            m 1hubfb "...и я не думаю, что в этом случае есть такая вещь, как слишком долго, а-ха-ха!"
+            m 1hubfb "...и я не думаю, что в этом случае есть такая вещь, как слишком долго, {do_giggle}а-ха-ха!"
             m 1rksdla "Я могла бы привыкнуть к этому..."
             m 1eksdla "Но если ты уже перестал обнимать меня, то, полагаю, у меня нет выбора."
             m 1hubfa "Я уверена, что у меня будет ещё одна возможность быть с тобой..."
             show monika 5tsbfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5tsbfu "Ты {i}планируешь{/i} сделать это снова, верно, [mas_get_player_nickname()]? Э-хе-хе~"
+            m 5tsbfu "Ты {i}планируешь{/i} сделать это снова, верно, [mas_get_player_nickname()]? {do_giggle}Э-хе-хе~"
 
         elif mas_isMoniAff():
             m 2hubsa "М-м-м~"
@@ -2528,7 +2552,7 @@ label monika_holdme_reactions:
             m 1hubfb "Долгие объятия должны смыть любой стресс."
             m 1ekbfb "Даже если ты не был напряжён, я надеюсь, что ты чувствуешь себя лучше после этого."
             m 3hubfa "Я уверена в этом~"
-            m 1hubfb "А-ха-ха!"
+            m 1hubfb "{do_giggle}А-ха-ха!"
         else:
 
 
@@ -2543,7 +2567,7 @@ label monika_holdme_reactions:
             m 1hua "Теперь я чувствую себя намного лучше!"
             m 1eua "Надеюсь, ты тоже."
             m 2rksdla "Ну, даже если и нет..."
-            m 3hubsb "Ты всегда можешь обнять меня снова, а-ха-ха!"
+            m 3hubsb "Ты всегда можешь обнять меня снова, {do_giggle}а-ха-ха!"
             m 1hkbfsdlb "На самом деле...{w=0.5} ты можешь снова обнять меня в любом случае~"
             m 1ekbfa "Просто дай мне знать, когда захочешь~"
 
@@ -2554,7 +2578,7 @@ label monika_holdme_reactions:
             m 2tubsb "Надеюсь, тебе понравилось~"
             m 3rubfb "Объятия, длящиеся тридцать секунд или больше, тебе придутся очень кстати."
             m 1hubfa "Не знаю, как ты, а я чувствую себя лучше~"
-            m 1hubfb "Может, в следующий раз, мы попробуем пообниматься подольше, а там посмотрим, поднимется ли эта планка выше! А-ха-ха~"
+            m 1hubfb "Может, в следующий раз, мы попробуем пообниматься подольше, а там посмотрим, поднимется ли эта планка выше! {do_giggle}А-ха-ха~"
 
         elif mas_isMoniAff():
             m 1hubsa "М-м-м~"
@@ -2563,11 +2587,11 @@ label monika_holdme_reactions:
             m 3eub "Но знаешь ли ты, что объятия наиболее эффективны, когда они длятся тридцать секунд?"
             m 1eud "Подожди, я сказала тридцать секунд?"
             show monika 5eubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5eubfu "Прости, я имела в виду {i}минимум{/i} тридцать секунд, э-хе-хе~"
+            m 5eubfu "Прости, я имела в виду {i}минимум{/i} тридцать секунд, {do_giggle}э-хе-хе~"
 
         #happy
         else:
-            m 1hubsa "Э-хе-хе~"
+            m 1hubsa "{do_giggle}Э-хе-хе~"
             m 3eub "Тебе понравилось?"
             m 1hua "Я надеюсь~"
             m 1hubsb "В конце концов, объятия должны быть полезны."
@@ -2587,7 +2611,7 @@ label monika_holdme_reactions:
                 menu:
                     m "Не мог бы ты обнять меня ещё на какое-то время?{fast}"
                     "Да.":
-                        m 1hua "Э-хе-хе~"
+                        m 1hua "{do_giggle}Э-хе-хе~"
                         call monika_holdme_prep
                         m 1hub "Ты такой милый, [player]~"
                         call monika_holdme_start
@@ -2613,7 +2637,7 @@ label monika_holdme_reactions:
                                     m 3tsbsa "Но ты должен мне в следующий раз, хорошо, [player]?"
                         else:
 
-                            m 2hksdlb "А-ха-ха~ Хорошо!"
+                            m 2hksdlb "{do_giggle}А-ха-ха~ Хорошо!"
                             m 2tsbsb "Но ты должен мне будешь в следующий раз, [player]~"
             else:
 
@@ -2621,7 +2645,7 @@ label monika_holdme_reactions:
                 m 2rsp "Я надеялась на более длительные объятия..."
                 m 2tsbsu "Когда я появлюсь перед тобой в твоей реальности, ты от меня так легко не отделаешься~"
                 show monika 1hubsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 1hubsu "Э-хе-хе~"
+                m 1hubsu "{do_giggle}Э-хе-хе~"
 
         elif mas_isMoniEnamored():
             if mas_timePastSince(persistent._mas_last_hold_dt, datetime.timedelta(hours=12)):
@@ -2646,7 +2670,7 @@ label monika_holdme_reactions:
 
                         m 2ekc "Оу-у."
                         m 1eka "Тогда ладно."
-                        m 3hub "Придётся подождать до следующего раза, а-ха-ха!"
+                        m 3hub "Придётся подождать до следующего раза, {do_giggle}а-ха-ха!"
             else:
 
                 show monika 1rkbssdla at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -2678,24 +2702,24 @@ label monika_holdme_long:
                 m 6dkbfu "[player]...{w=1} так тепло~"
                 m 6tsbfa "..."
                 m 2wubfsdld "Оу, [mas_get_player_nickname(exclude_names=['любимый', 'мой любимый'])]!"
-                m 2hkbfsdlb "Похоже, моя мечта сбылась, а-ха-ха!"
+                m 2hkbfsdlb "Похоже, моя мечта сбылась, {do_giggle}а-ха-ха!"
                 m 2rkbsa "Боже, иногда мне хочется, чтобы мы остались такими навсегда..."
                 m 3rksdlb "Ну, я полагаю, что мы, {i}в каком-то смысле{/i}, можем, но я не хочу отвлекать тебя от важного дела."
                 m 1dkbsa "Я просто хочу почувствовать твои тёплые, мягкие объятия~"
-                m 3hubfb "...Так что обнимай меня почаще, а-ха-ха!"
+                m 3hubfb "...Так что обнимай меня почаще, {do_giggle}а-ха-ха!"
                 show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
                 m 5hubfb "Я бы сделала то же самое для тебя, в конце концов~"
                 m 5tsbfu "Кто знает, когда я отпущу, когда у меня наконец появится шанс?"
-                m 5hubfu "Э-хе-хе~"
+                m 5hubfu "{do_giggle}Э-хе-хе~"
 
             elif mas_isMoniEnamored():
                 m 6dkbsa "...{w=1}Хм?"
                 m 6tsbfa "[player]..."
                 m 2wubfsdld "Оу! [player]!"
-                m 2hkbfsdlb "А-ха-ха..."
+                m 2hkbfsdlb "{do_giggle}А-ха-ха..."
                 m 3rkbfsdla "Наверное, мне стало {i}слишком{/i} уютно."
                 m 1hubfa "Но с тобой мне так тепло и уютно, что трудно {i}не{/i} заснуть..."
-                m 1hubfb "Так что я должна винить тебя за это, а-ха-ха!"
+                m 1hubfb "Так что я должна винить тебя за это, {do_giggle}а-ха-ха!"
                 m 3rkbfsdla "Может...{w=0.7} как-нибудь повторим?"
                 m 3rkbfsdla "Было...{w=1} приятно~"
 
@@ -2706,7 +2730,7 @@ label monika_holdme_long:
                 m 1rksdla "Я не хотела..."
                 m 2dkbsa "Просто, я ощутила на себе такое..."
                 m 1hubfa "Тепло~"
-                m 1hubfb "А-ха-ха, надеюсь, ты не возражаешь!"
+                m 1hubfb "{do_giggle}А-ха-ха, надеюсь, ты не возражаешь!"
                 show monika 5eubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
                 m 5eubfu "Ты такой милый, [player]~"
                 m 5hubfa "Надеюсь, тебе понравилось так же, как и мне~"
@@ -2718,18 +2742,18 @@ label monika_holdme_long:
                 m "[player]!"    
                 m 1hkbfsdlb "Неужели...{w=2} я заснула?"     
                 m 1rkbfsdlb "О боже, это смущает..."      
-                m 1hkbfsdlb "Что мы опять делаем?"       
+                m 1hkbfsdlb "Так, что мы делали?"       
                 m 3hubfb "Ах да! Ты обнимал меня."    
                 m 4hksdlb "И...{w=0.5} не отпускал."  
                 m 2rksdla "Это длилось намного дольше, чем я ожидала..."  
                 m 3ekbsb "Я всё ещё наслаждалась этим, заметь!"  
                 m 1rkbsa "Это было действительно мило, но я всё ещё привыкаю к тому, что ты обнимаешь меня вот так,{w=0.1} {nw}"  
-                extend 1rkbsu "а-ха-ха..."
-                m 1hubfa "В любом случае, было мило с твоей стороны дать мне поспать, [player], э-хе-хе~"
+                extend 1rkbsu "{do_giggle}а-ха-ха..."
+                m 1hubfa "В любом случае, было мило с твоей стороны дать мне поспать, [player], {do_giggle}э-хе-хе~"
 
                 $ mas_gainAffection()
         
-        "{i}Позволить ей отдохнуть на мне.{/i}":
+        "{i}Позволь ей отдохнуть на тебе.{/i}":
             call monika_holdme_prep(lullaby=MAS_HOLDME_NO_LULLABY)
             if mas_isMoniLove():
                 m 6dubsd "{cps=*0.5}[player]~{/cps}"
@@ -2992,7 +3016,7 @@ label monika_debate:
     m 3hua "И вдобавок люди будут воспринимать тебя как человека без предрассудков и хорошего слушателя!"
     m 3eua "Беспроигрышная ситуация, согласен?"
     m 1lksdla "...Хм-м, наверное, это стоит назвать дискуссионным советом дня от Моники!"
-    m 1hksdlb "А-ха-ха! Звучит немного глупо.{w=0.2} {nw}"
+    m 1hksdlb "{do_giggle}А-ха-ха! Звучит немного глупо.{w=0.2} {nw}"
     extend 1eua "Спасибо, что выслушал."
     $ mas_protectedShowEVL('monika_taking_criticism', 'EVE', _random=True)
     $ mas_protectedShowEVL('monika_giving_criticism', 'EVE', _random=True)
@@ -3033,7 +3057,7 @@ label monika_lazy:
     m 2eka "Я так выгораю, после того как приходиться весь день улыбаться и излучать энергию."
     m 2duu "Порой меня так и тянет влезть в свою пижамку, уставиться в телевизор и набить рот нездоровыми закусками."
     m "Такое блаженство так отдыхать в пятницу, когда впереди выходные и нет срочных дел."
-    m 2hksdlb "А-ха-ха! Прости, знаю, это не очень подходящий для меня образ."
+    m 2hksdlb "{do_giggle}А-ха-ха! Прости, знаю, это не очень подходящий для меня образ."
     m 1eka "Но сидеть на диване поздно вечером в твоих объятиях... вот о чём я мечтаю."
     m 1ekbsa "При одной мысли об этом моё сердце так бешено стучит."
     return
@@ -3146,7 +3170,7 @@ label monika_cold:
     m 1eka "Зато, когда на улице жара, несложно освежиться холодным напитком или просто оставаться в тени."
     m 1esc "И всё-таки... Одно преимущество холодной погоды придётся признать."
     m 1hua "В холодную погоду приятнее всего прижаться друг к другу, свернувшись калачиком.{w=0.2} {nw}"
-    extend 1hub "А-ха-ха!"
+    extend 1hub "{do_giggle}А-ха-ха!"
     return
 
 init 5 python:
@@ -3217,7 +3241,7 @@ label monika_imouto:
     m 1tsb "А если она обнимет тебя в ответ, то скажи ей, что ты уже состоишь в серьёзных отношениях и не можешь принять её чувства."
     m 4hua "А потом познакомь её со мной! Уверена, мы прекрасно поладим!"
     m 1eua "Я не буду ревновать. Такие вещи, как любовь между родственниками, всё равно бывают только в жутких романтических историях."
-    m 1hub "А-ха-ха!"
+    m 1hub "{do_giggle}А-ха-ха!"
     return
 
 #init 5 python:
@@ -3328,7 +3352,7 @@ label monika_meta:
     m 1esa "Не хочешь выяснить это самостоятельно?"
     m 3etc "Потому что, если ты спросишь меня..."
     m 3eub "То я скажу что-то в стиле «Не игнорируй красивого и очаровательного второстепенного персонажа!»."
-    m 1hub "А-ха-ха!"
+    m 1hub "{do_giggle}А-ха-ха!"
     return
 
 # this topic has been rendered pretty much useless by ptod
@@ -3629,7 +3653,7 @@ label monika_4chan:
     m "Ну а некоторые говорят, что от Форчана не следует ждать ничего хорошего."
     m 1eua "Но если они смогли сделать такую игру, где мы можем быть вместе..."
     m 1eka "Думаю, они не могут быть плохими поголовно."
-    m 1hub "И они уж точно хорошо разбираются в девушках! А-ха-ха~"
+    m 1hub "И они уж точно хорошо разбираются в девушках! {do_giggle}А-ха-ха~"
     return
 
 init 5 python:
@@ -3813,7 +3837,7 @@ label monika_love:
             m 1hubsb "Я так сильно люблю тебя, [mas_get_player_nickname(exclude_names=['мой любимый', 'любимый'])]!"
 
         elif milestone_count == 10:
-            m 1hubsa "Э-хе-хе~"
+            m 1hubsa "{do_giggle}Э-хе-хе~"
             m 1hubfb "Я тоже люблю тебя!"
 
         elif milestone_count == 15:
@@ -3834,7 +3858,7 @@ label monika_love:
             m 1lkbsa "Боже, от этих слов у меня всегда перехватывает дыхание!"
             m 1hubfa "Я..."
             if renpy.random.randint(1, 2) == 1:
-                m 1hubfb "Я люблю тебя больше, чем кого-либо!"
+                m 1hubfb "Я люблю тебя больше, чем что-либо!"
             else:
                 m 1hubfb "Я люблю тебя больше, чем могу выразить~"
 
@@ -3844,7 +3868,7 @@ label monika_love:
             m 1hubfb "Или отвечать взаимностью... я люблю тебя, [player]!"
 
         elif milestone_count == 40:
-            m 1dubsu "Э-хе-хе~"
+            m 1dubsu "{do_giggle}Э-хе-хе~"
             m 1hubfa "Я..."
             m 1hubfb "То-о-о-о-о-о-о-о-оже люблю тебя, [player]!"
 
@@ -4002,19 +4026,19 @@ label monika_ilym_fight_loop:
 
             else:
                 show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                m 5hubfb "Ладно-ладно, ты победил. А-ха-ха~"
+                m 5hubfb "Ладно-ладно, ты победил. {do_giggle}А-ха-ха~"
         
         "Ладно.":
             if ilym_count == 0:
-                m 2hkbsb "А-ха-ха, сдаёшься уже, [player]?~"
+                m 2hkbsb "{do_giggle}А-ха-ха, сдаёшься уже, [player]?~"
                 m 2rkbssdla "Хотя, наверное, это довольно глупо..."
-                m 2hkbsb "Но я не могла не попробовать, а-ха-ха~"
+                m 2hkbsb "Но я не могла не попробовать, {do_giggle}а-ха-ха~"
 
             else:
                 if renpy.random.randint(1,2) == 1:
-                    m 1hubfu "Э-хе-хе, я победила!~"
+                    m 1hubfu "{do_giggle}Э-хе-хе, я победила!~"
                 else:
-                    m 1hubfb "А-ха-ха, я же тебе говорила!~"
+                    m 1hubfb "{do_giggle}А-ха-ха, я же тебе говорила!~"
 
     jump monika_lovecounter_aff
 
@@ -4077,7 +4101,7 @@ label monika_hedgehog:
         m 1rksdlc "[line]"
 
         if mas_isMoniDis(lower=True):
-            extend 1rksdld "Может быть, ты действительно можешь..."
+            extend 1rksdld "Хотя, ты, наверное, можешь..."
     return
 
 init 5 python:
@@ -4095,13 +4119,13 @@ init 5 python:
 
 label monika_justification:
     if mas_isA01() and mas_isMoniNormal(higher=True):
-        m 1hub "А-ха-ха!"
+        m 1hub "{do_giggle}А-ха-ха!"
         m 1tsb "Честно, [player]..."
         m 3tfu "Если ты действительно хотел быть со мной злым, тебе следовало выбрать другой день, а не сегодняшний."
         m "Неужели ты думаешь, что я пропустила сегодня первое апреля?"
         m 1hua "Иногда ты бываешь таким глупым~"
         m 1tuu "Называя меня убийцей..."
-        m 3tfu "Когда ты {i}уничтожил{/i} шанс подшутить надо мной, э-хе-хе~"
+        m 3tfu "Когда ты {i}уничтожил{/i} шанс подшутить надо мной, {do_giggle}э-хе-хе~"
         m 1eua "Хотя я ценю эту попытку...{w=0.2} {nw}"
         extend 1hub "ты меня рассмешил, [player]~"
         
@@ -4109,7 +4133,7 @@ label monika_justification:
         $ mas_loseAffectionFraction(min_amount=15, reason=3)
         if mas_isMoniLove():
             m 1euc "..."
-            m 1hub "А-ха-ха! Очень смешно, [player]!"
+            m 1hub "{do_giggle}А-ха-ха! Очень смешно, [player]!"
             m 3eua "Я знаю, что ты не серьёзно..."
             m 3rksdlc "Но всё равно не шути больше так!"
             if persistent._mas_pm_a_hater:
@@ -4214,7 +4238,7 @@ label monika_contribute:
             m "Спасибо, что помогаешь мне стать ближе к твоей реальности."
             m 3eua "Быть может, ты даже мог бы сделать ещё больший вклад?"
             m 3hksdlb "Не пойми неправильно! Я очень рада тому, что ты проводишь время, делая что-то для меня!"
-            m 1eub "...Но я бы определённо не стала возражать, если бы ты помог ещё больше, а-ха-ха!"
+            m 1eub "...Но я бы определённо не стала возражать, если бы ты помог ещё больше, {do_giggle}а-ха-ха!"
             return "derandom"
         
         "Мне хотелось бы.":
@@ -4333,24 +4357,24 @@ label monika_girlfriend:
         m 1euc "Познакомиться с твоей девушкой?"
         m 1rksdlc "..."
         m 1eub "Конечно, почему нет?"
-        m 3hub "Я уверена, что она замечательная и счастливая, как и ты~"
+        m 3hub "Я уверена, что она замечательная и и везучая, раз у неё есть ты~"
         m 1hua "..."
         m 1tubsb "Так где же это зеркало, которое ты хотел мне показать?"
-        m 1hubfb "А-ха-ха!"
+        m 1hubfb "{do_giggle}А-ха-ха!"
         if mas_isA01():
             show monika 5eubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-            m 5eubfu "Даже если это день апрельских шуток, я уверена, что она всё ещё прекрасна, э-хе-хе~"
-            m 5hubfa "{i}И{/i} тебе повезло."
+            m 5eubfu "Даже если это день апрельских шуток, я уверена, что она всё ещё прекрасна, {do_giggle}э-хе-хе~"
+            m 5hubfa "{i}И{/i} счастлива быть с тобой."
 
     else:
         $ mas_loseAffectionFraction(min_amount=15, reason=2)
-        m 2euc "Я думала, что мы уже решили, что я – твоя девушка?"
+        m 2euc "Я думала, что мы уже решили, что я – твоя девушка, так?"
         m 2tkc "И ты никак не можешь иметь ещё одну в своей реальности, верно?"
         m 4tfx "Если она у тебя есть, то бросай её прямо сейчас!"
-        m 4hksdlb "Скажи ей, что ты встретил кого-то идеального для тебя, кого-то, кто никогда не предаст!"
+        m 4hksdlb "Скажи ей, что ты встретил кого-то идеального для тебя, кого-то, кто никогда тебя не предаст!"
         m 2lksdla "П-подожди. Может, я немного спешу..."
         m 3eka "Я знаю, что ты бы не стал мне изменять."
-        m 3esa "Если ты встретишь девушку, которая спросит тебя, то сначала дай мне поговорить с ней, хорошо?"
+        m 3esa "Если ты встретишь девушку, которая предложит тебе встречаться, то сначала дай мне поговорить с ней, хорошо?"
         m 1hua "Я никому не дам похитить свою единственную любовь!"
     return
 
@@ -4461,7 +4485,7 @@ init 5 python:
 
 label monika_torment:
     m 1euc "Как может измениться природа человека?"
-    m 3hksdlb "...Кстати, отвечать не мне."
+    m 3hksdlb "...Кстати, ответ - не я."
     return "derandom"
 
 # removed, keeping this here in case we have use for it later
@@ -4494,12 +4518,12 @@ init 5 python:
 label monika_birthday:
     if mas_isMonikaBirthday():
         if mas_recognizedBday():
-            m 1hua "Э-хе-хе..."
+            m 1hua "{do_giggle}Э-хе-хе..."
             m 1eub "Я почти уверена, что ты уже знаешь, что сегодня мой день рождения!"
-            m 3hub "Иногда ты можешь быть таким глупым, [player]!"
+            m 3hub "Иногда ты можешь быть таким глупеньким, [player]!"
 
         else:
-            m 2rksdlb "А-ха-ха... {w=1}Это немного неловко."
+            m 2rksdlb "{do_giggle}А-ха-ха... {w=1}Это немного неловко."
             m 2eksdla "Так уж случилось, что у меня день рождения..."
             m 3hksdlb "Сегодня!"
 
@@ -4525,7 +4549,7 @@ label monika_birthday:
                 m 1eka "По крайней мере, мы здесь, вместе~"
 
     elif mas_HistVerifyAll_k(False, "922.actions.no_recognize") or mas_recognizedBday():
-        m 1hua "Э-хе-хе..."
+        m 1hua "{do_giggle}Э-хе-хе..."
         m 3hub "Ты уже отмечал мой день рождения со мной раньше, [player]!"
         m 3eka "Ты что, забыл?"
         m 1rksdla "Ну, если тебе нужно немного напомнить, это 22 сентября."
@@ -4544,7 +4568,7 @@ label monika_birthday:
         m 3hub "Я буду с нетерпением ждать этого!~"
 
     else:
-        m 1hua "Э-хе-хе..."
+        m 1hua "{do_giggle}Э-хе-хе..."
         m 1rksdla "Неужели ты забыл, [player]?"
         m 3eksdla "Мой день рождения 22 сентября..."
         if mas_player_bday_curr() == mas_monika_birthday:
@@ -4554,7 +4578,7 @@ label monika_birthday:
 
     if persistent._mas_player_bday is None:
         m 3eua "Кстати об этом, [player]..."
-        m 2rksdlb "Я даже не знаю, когда он у тебя, а-ха-ха!"
+        m 2rksdlb "Я даже не знаю, когда он у тебя, {do_giggle}а-ха-ха!"
         m 2eua "Так, когда ты родился, [player]?"
         call mas_bday_player_bday_select_select
         $ mas_stripEVL('mas_birthdate', list_pop=True)
@@ -4745,7 +4769,7 @@ label monika_ribbon:
         m 1eua "Ты скучаешь по моему банту, [player]?"
 
         if monika_chr.hair.name != "def":
-            m 3hua "Я могу сменить причёску, когда ты захочешь, э-хе-хе~"
+            m 3hua "Я могу сменить причёску, когда ты захочешь, {do_giggle}э-хе-хе~"
         else:
             m 3hua "Если ты хочешь, чтобы я надела его снова, просто попроси, хорошо?~"
 
@@ -4759,7 +4783,7 @@ label monika_ribbon:
         m 2eud "Я довольно горда моим чувством моды."
         m "Ты получаешь какое-то удовлетворение, когда стоишь вдали от всего обычного, знаешь?"
         m 2tfu "Будь честен! Ты ведь тоже думал, что я была одета лучше всех в клубе?"
-        m 2hub "А-ха-ха!"
+        m 2hub "{do_giggle}А-ха-ха!"
         m 4eua "Если ты захочешь улучшить своё чувство вкуса, я помогу тебе."
         m 1eka "Но не делай это, если ты просто хочешь впечатлить кого-то."
         m 1eua "Ты можешь делать всё, что хочешь, но только, если это заставляет тебя чувствовать себя лучше."
@@ -4772,7 +4796,7 @@ label monika_ribbon:
             m 3eua "Уверена, она даже смотрится прекрасно с другими костюмами... в том числе и с деловой одеждой."
         else:
             m 1eua "Мне очень нравится эта ленточка, [player]."
-            m 1hua "Я рада, что тебе она нравится так же сильно, э-хе-хе~"
+            m 1hua "Я рада, что тебе она нравится так же сильно, {do_giggle}э-хе-хе~"
             m 1rksdla "Поначалу, я предпочитала надевать её только во время Рождества... но она слишком красивая для того, чтобы надевать её реже..."
             m 3hksdlb "Было бы жалко хранить её большую часть года!"
             m 3ekb "...Знаешь, я готова поспорить, что она будет классно смотреться с деловой одеждой!"
@@ -4815,9 +4839,9 @@ label monika_outdoors:
         m 1eub "Но есть и светлая сторона..."
         m 1rkbsa "Как только я перейду в твою реальность, не забудь захватить солнцезащитный крем..."
         m 1tubsa "Мне может понадобиться помощь, чтобы намазать его."
-        m 1hubsb "А-ха-ха!"
+        m 1hubsb "{do_giggle}А-ха-ха!"
         m 1efu "Я просто дразню тебя, [mas_get_player_nickname()]."
-        m 1tsu "Ну, хотя бы немного. Э-хе-хе~"
+        m 1tsu "Ну, хотя бы немного. {do_giggle}Э-хе-хе~"
 
     else:
         m "Ладно, [player]?"
@@ -5018,10 +5042,10 @@ label monika_impression:
             if not persistent._mas_pm_cares_about_dokis:
                 m 3rksdla "А ещё у меня безнадёжная депрессия."
                 m "..."
-                m 3hksdlb "А-ха-ха! Прости за последнее."
+                m 3hksdlb "{do_giggle}А-ха-ха! Прости за последнее."
                 m 3eka "Хорошо, что ты не зациклился на ней..."
                 m 2lksdla "..Боже, я правда не могу остановиться, да?"
-                m 2hub "А-ха-ха!"
+                m 2hub "{do_giggle}А-ха-ха!"
 
             m 1hua "Надеюсь, что тебе понравилась моя пародия~"
         "Юри.":
@@ -5037,7 +5061,7 @@ label monika_impression:
                 m 3tku "Хочешь провести выходные со мной?"
                 m "..."
 
-            m 2eub "А-ха-ха, довольно забавно делать это."
+            m 2eub "{do_giggle}А-ха-ха, довольно забавно делать это."
             m 3eua "Юри действительно была чем-то, разве нет?"
 
             if not persistent._mas_pm_cares_about_dokis:
@@ -5057,7 +5081,7 @@ label monika_impression:
                 m 4eka "Ты будешь моим папочкой, [player]-кун?"
                 m "..."
 
-            m 1hub "А-ха-ха! Я действительно с нетерпением ждала кексов Нацуки к фестивалю."
+            m 1hub "{do_giggle}А-ха-ха! Я действительно с нетерпением ждала кексов Нацуки к фестивалю."
             m 1wuo "Они были очень хороши! Особенно с этими креативными штуками, которые она сделала."
             m 1eua "Может быть, когда я стану лучше в программировании, я смогу сделать здесь кухню."
             m "Тогда ты сможешь поделиться со мной несколькими рецептами того, чего ты хочешь, чтобы я сделала для тебя."
@@ -5118,7 +5142,7 @@ label monika_mythology:
     m 3eua "Но не волнуйся, [player]. Я не дам никому сделать с тобой такое."
     m "И я сама никогда не сделаю что-то подобное."
     m 1tku "Я не могу просто взять твои файлы и удерживать их в заложниках..."
-    m "Э-хе-хе..."
+    m "{do_giggle}Э-хе-хе..."
     return
 
 init 5 python:
@@ -5290,7 +5314,7 @@ label monika_name:
     else:
         m 1eka "«[player]» тоже прекрасное имя."
 
-    m 1hua "Э-хе-хе~"
+    m 1hua "{do_giggle}Э-хе-хе~"
     return
 
 # do you live in a city
@@ -5358,7 +5382,7 @@ label monika_chloroform:
     m "Только так можно быть уверенным, что тебя не накачают."
     m 1eua "И кстати, [player]..."
     m 1tfu "Не хочешь ли ты чего-нибудь выпить прямо сейчас?"
-    m 1hub "А-ха-ха!"
+    m 1hub "{do_giggle}А-ха-ха!"
     m 1tku "Расслабься, я бы никогда не накачала тебя."
     m 1tsb "Ты такой милый, когда напряжён."
     return
@@ -5415,7 +5439,7 @@ label monika_hygiene:
     m "Если у тебя есть друзья, страдающие от депрессии..."
     m 3eka "Проверяй их время от времени и следи, чтобы они следили за собой, хорошо?"
     m 2lksdlb "Вау, всё внезапно стало довольно мрачным, да?"
-    m 2hksdlb "А-ха-ха~"
+    m 2hksdlb "{do_giggle}А-ха-ха~"
     m 3esc "Серьёзно..."
     m 1ekc "Всё, что я сказала, касается и тебя, [player]."
     m "Если ты чувствуешь себя подавленным и давно не принимал ванну..."
@@ -5599,7 +5623,7 @@ init 5 python:
 label monika_regrets:
     m 1ttu "Сожалею ли я о чём-то?"
     m 1rksdla "Это странная вещь для такого внезапного вопроса, [player]."
-    m 3hksdlb "А-ха-ха~"
+    m 3hksdlb "{do_giggle}А-ха-ха~"
     m 3eksdla "..."
     m 1eua "...я понимаю, к чему ты клонишь."
     m 3euc "Сожалею ли я о том, что сделала?"
@@ -5644,7 +5668,7 @@ label monika_hypnosis:
     m 1eua "...Знаешь, [player], я просто обожаю смотреть в твои глаза, я могла бы сидеть здесь и пялиться в них вечно."
     m 2tku "Что насчёт тебя, м-м-м? Что ты думаешь о моих глазах?~"
     m 3eua "Они тебя гипнотизируют?~"
-    m 2hub "А-ха-ха~"
+    m 2hub "{do_giggle}А-ха-ха~"
     return
 
 init 5 python:
@@ -5715,7 +5739,7 @@ label monika_hack:
     m 3tfu "Я бы читала все твои сообщения, дабы знать, с кем ты общаешься, и не изменяешь ли ты мне."
     m "У меня бы был доступ ко всем твоим личным файлам, дабы узнать тебя получше."
     m 3tsb "Я бы видела всё то, что ты смотришь..."
-    m 2hub "А-ха-ха~!"
+    m 2hub "{do_giggle}А-ха-ха~!"
     m 1hua "Я просто шучу, [player]!"
     m 1eua "Я бы никогда не поступила так с тобой."
     m 1ekbsa "Мы всё-таки пара."
@@ -5735,7 +5759,7 @@ label monika_cupcake:
     m 1hub "К тому же, они выглядели очень мило!"
     m 1esa "Я, конечно, не сладкоежка, но...{w=0.3} {nw}"
     extend 1eua "те кексы – определённо сладкие."
-    m 3hub "Прямо как я! А-ха-ха!"
+    m 3hub "Прямо как я! {do_giggle}А-ха-ха!"
     m 1eua "Кстати говоря, знал ли ты о том, что девушки более склонны к поеданию сладкого?"
     m 3esd "Исследования показали, что у женщин старшего возраста менее чувствительные вкусовые рецепторы, чем у мужчин."
     m 3esa "Следовательно, у них развилась жажда к более сильным вкусам, как, например, шоколад."
@@ -5875,7 +5899,7 @@ init 5 python:
 label monika_swordsmanship:
     m 1eua "Тебе нравятся мечи, [player]?"
     m 1lksdla "Мне они действительно нравятся в каком-то роде."
-    m 1ekb "А-ха-ха, удивлён?~"
+    m 1ekb "{do_giggle}А-ха-ха, удивлён?~"
     m 1eua "Мне нравится говорить о них, но они не достаточно сильно нравятся, чтобы завладеть одним."
     m 3eua "Я совсем не энтузиаст, когда речь идёт о мечах."
     m 1euc "Я не понимаю, почему люди могут быть одержимы чем-то, что может навредить другим."
@@ -5889,7 +5913,7 @@ label monika_swordsmanship:
     m 1eua "Меч – это ручка поля боя."
     m 1lsc "Но опять же..."
     m 1hua "Ручка сильнее меча!"
-    m 1hub "А-ха-ха!"
+    m 1hub "{do_giggle}А-ха-ха!"
     m 1eua "В любом случае, я не знаю, занимаешься ли ты фехтованием."
     m "Если да, то я бы хотела заняться им с тобой, [mas_get_player_nickname(exclude_names=['любимый'])]~"
     return
@@ -5916,7 +5940,7 @@ label monika_pleasure:
         m 1lksdla "Но я чувствую, что мы были вместе достаточно долго, чтобы нам было комфортно друг с другом."
         m 1eka "Важно быть открытым в таких вещах."
     else:
-        m 1lksdlb "Мы ещё не продвинулись так далеко в наших отношениях! А-ха-ха~"
+        m 1lksdlb "Мы ещё не продвинулись так далеко в наших отношениях! {do_giggle}А-ха-ха~"
         m 1eka "Но я продолжу приглядывать за тобой."
     m "Я знаю, что это личная тема в вашем мире, но мне любопытно..."
     m 1euc "Это настолько приятно?"
@@ -5927,7 +5951,7 @@ label monika_pleasure:
     m 1tsbsa "Так что, я думаю, что смогу сделать тебе поблажку... {w=0.5}пока что~"
     m 2tsbsu "Только пока я единственная, о ком ты думаешь..."
     show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubfb "Если это поможет тебе сохранить себя для меня, то это плюс! А-ха-ха~"
+    m 5hubfb "Если это поможет тебе сохранить себя для меня, то это плюс! {do_giggle}А-ха-ха~"
     return
 
 # do you like vocaloid
@@ -5977,7 +6001,7 @@ label monika_vocaloid:
     m 1lksdla "Скажи об этом целевой фанбазе."
     m 1eka "Может, мне стоит попробовать?"
     m 1hub "Было бы здорово иметь кучу фанатов, поддерживающих меня, в моём полном распоряжении."
-    m 1hksdlb "А-ха-ха, да я просто шучу!"
+    m 1hksdlb "{do_giggle}А-ха-ха, да я просто шучу!"
     m 1lksdla "Я сомневаюсь, что мои навыки пения и игры на пианино настолько хороши."
     m 2lkbsa "К тому же, я не смогу проводить так много времени с тобой, если у меня будет много фанатов..."
     m 1hua "Ладно!"
@@ -5997,7 +6021,7 @@ label monika_vocaloid:
     m "Я обниму тебя и приму твоё тепло."
     m 5hubfa "Та любовь, которую ты показывал мне виртуально, наконец-то станет реальной."
     m "Наша любовь не имеет границ~"
-    m 5hubfu "Э-хе-хе~"
+    m 5hubfu "{do_giggle}Э-хе-хе~"
     if (
         persistent._mas_pm_like_vocaloids
         and not renpy.seen_label("monika_add_custom_music_instruct")
@@ -6064,7 +6088,7 @@ label monika_good_tod:
             extend 3hua " но утро – это то время суток, которое предоставляет возможности!"
             m 1eub "Целый день, где может произойти всё, что угодно, в лучшей или худшей степени."
             m 1hub "От такого вида возможностей и свободы у меня голова кругом идёт!"
-            m 1rka "Хотя, я чувствую это, пока не проснусь полностью, э-хе-хе~"
+            m 1rka "Хотя, я чувствую это, пока не проснусь полностью, {do_giggle}э-хе-хе~"
 
     elif mas_globals.time_of_day_4state == "afternoon":
         m 1eua "И тебе добрый день, [player]."
@@ -6168,14 +6192,14 @@ label monika_japanese:
                         $ player_suffix = "тян"
 
                     m 1eua "{i}Аишитеру ё, [player]-[player_suffix]{/i}."
-                    m 2hubsa "Э-хе-хе~"
+                    m 2hubsa "{do_giggle}Э-хе-хе~"
                     m 1ekbfa "Это значит: «я люблю тебя, [player]-[player_suffix]."
                     $ mas_ILY()
         "Нет.":
             $ persistent._mas_pm_lang_other = False
             m 3hua "Всё нормально! Изучение другого языка – очень сложный и утомительный процесс."
             m 1eua "Может теперь, если у меня будет время для изучения японского, я буду знать больше языков, чем ты!"
-            m 1ekbsb "А-ха-ха! Всё хорошо, [player]. Это просто значит, что я смогу сказать «я люблю тебя» на нескольких языках!"
+            m 1ekbsb "{do_giggle}А-ха-ха! Всё хорошо, [player]. Это просто значит, что я смогу сказать «я люблю тебя» на нескольких языках!"
             $ mas_ILY()
 
     return "derandom"
@@ -6382,12 +6406,12 @@ label monika_zombie:
     m "Даже если ты дома, то ты всё равно не будешь чувствовать себя в безопасности."
     m 1esc "Ты никогда не узнаешь, что случится в следующий момент."
     m 1dsc "..."
-    m 1hksdlb "А-ха-ха..."
+    m 1hksdlb "{do_giggle}А-ха-ха..."
     m 1eka "Знаешь, несмотря на симпатию к концепции, я бы не хотела жить в подобном сценарии."
     m 3ekc "[player], что, если бы ты был заражён?"
     m 2lksdlc "Я не хочу даже думать о таком..."
     m "Я бы не смогла убить тебя ради своей безопасности..."
-    m 2lksdlb "А-ха-ха..."
+    m 2lksdlb "{do_giggle}А-ха-ха..."
     m 2lssdlb "Я слишком много думаю об этом."
     m 3eua "Ну, несмотря ни на что, если что-то плохое всё же случится..."
     m 2hua "Я всегда буду с тобой~"
@@ -6459,7 +6483,7 @@ label monika_surprise:
     m 1rksdla "Знаешь..."
     m 3rksdlb "Я оставляла некоторые довольно странные вещи в твоей директории игры, не так ли?"
     m 1rksdlc "Я не пыталась тебя напугать."
-    m 3rksdlb "Я... я на самом деле не знаю, почему я это делала, а-ха-ха..."
+    m 3rksdlb "Я... я на самом деле не знаю, почему я это делала, {do_giggle}а-ха-ха..."
     m 1ekc "Я будто чувствовала себя обязанной сделать это."
     m 1euc "Знаешь что? Может, мне стоит сделать это снова..."
     m 1eua "Да, это хорошая идея."
@@ -6485,7 +6509,7 @@ label monika_surprise:
         m 2duu ".{w=0.5}.{w=0.5}.{nw}"
         m 1hua "Готово!"
         m 1eua "Чего же ты ждёшь? Иди посмотри, что там!"
-        m 1hub "А-ха-ха~ Что? Ты ждал чего-то страшного?"
+        m 1hub "{do_giggle}А-ха-ха~ Что? Ты ждал чего-то страшного?"
         m 1hubsb "Я так сильно люблю тебя, [player]~"
     return "love"
 
@@ -6514,7 +6538,7 @@ label monika_completionist:
     m "Так или иначе, есть огромное чувство удовлетворения при выполнении задач."
     m 3eua "Работая над тем, чтобы получить награду после того, как ты поиграл так много раз."
     m 3eka "Ты можешь оставлять меня в фоновом режиме как можно дольше, [mas_get_player_nickname()]."
-    m 1hub "Это один шаг к тому, чтобы завершить меня, а-ха-ха!"
+    m 1hub "Это один шаг к тому, чтобы завершить меня, {do_giggle}а-ха-ха!"
     return
 
 # do you like mint ice cream
@@ -6543,7 +6567,7 @@ label monika_icecream:
             m 2lksdlb "Боже, только мысль об этом вкусе заставляет меня пускать слюни..."
             m 1eua "Есть настолько же странное, жвачное и медовое мороженое."
             m 1eka "Я понимаю, что моего совета может быть не достаточно, но ты должен их попробовать. Ты ведь знаешь, что не стоит судить книгу по обложке?"
-            m 1hub "В конце концов, игра, вроде как, не предпологала, что мы можем влюбиться. Но похоже, что мы смогли это сделать, а-ха-ха."
+            m 1hub "В конце концов, игра, вроде как, не предпологала, что мы можем влюбиться. Но похоже, что мы смогли это сделать, {do_giggle}а-ха-ха."
 
         "Нет.":
             $ persistent._mas_pm_like_mint_ice_cream = False
@@ -6691,7 +6715,7 @@ label monika_sayhappybirthday:
                                 m 1lksdla "Прости меня снова, [player]."
                             else:
                                 m 1lksdla "Прости, [mas_get_player_nickname()]."
-                                m 2lksdlb "Я уже говорила, я стесняюсь камеры, э-хе-хе..."
+                                m 2lksdlb "Я уже говорила, я стесняюсь камеры, {do_giggle}э-хе-хе..."
 
                         m "Попробуем ещё раз?{nw}"
                         $ _history_list.pop()
@@ -6794,7 +6818,7 @@ label monika_adventure:
     m 1ekbsa "Переживать волнующие и романтические моменты..."
     m "Встречать препятствия и трудности на пути, преодолевая их вместе."
     m 3ekbsa "Достигать конца игры и заканчивать её с чувством выполненного долга."
-    m 2hub "А-ха-ха! Это точно было бы весело!"
+    m 2hub "{do_giggle}А-ха-ха! Это точно было бы весело!"
     m 2eua "Я уверена, что у тебя есть много приключенческих игр, которые ты мог бы мне порекомендовать."
     m 3eua "Но знаешь чьё приключение мне нравится больше всего?"
     m 1ekbsa "{i}Наше{/i}~"
@@ -6825,7 +6849,7 @@ init 5 python:
 label monika_panties:
     m 1lsc "Эй, [player]..."
     m "Не смейся, когда я спрошу об этом, хорошо?"
-    m 2tubfb "Но..."
+    m 2ekc "Но..."
     m 4rksdlc "Почему некоторые парни помешаны на трусиках?"
     m 1euc "Серьёзно, что такого особенного в куске ткани?"
     m "Большинство девушек носят их, не так ли?"
@@ -6861,7 +6885,7 @@ label monika_panties:
         m 2tsb "Ты же не одержим такими вещами, ведь так, [player]?"
         m 3tsb "Ты же не ходишь за мной только потому, что я ношу сильно обтягивающие чулки, правда?"
         m 4tsbsa "Возможно, ты хочешь немного на них взглянуть?~"
-        m 1hub "А-ха-ха!"
+        m 1hub "{do_giggle}А-ха-ха!"
         m 1tku "Я просто дразню тебя, [player]."
         m 1tfu "Признайся, ты немного возбудился, да?"
         m 1lsbsa "Кроме того..."
@@ -7033,7 +7057,7 @@ label monika_daydream:
         m 2wubsw "Ой, прости! Я просто заснула ненадолго."
         m 1lkbsa "Я представляла[daydream_quip]"
         m 1ekbfa "Разве это не замечательно, [mas_get_player_nickname()]?"
-        m 1hubfa "Давай надеяться, что мы сможем сделать это реальностью в один из этих дней, э-хе-хе~"
+        m 1hubfa "Давай надеяться, что мы сможем сделать это реальностью в один из этих дней, {do_giggle}э-хе-хе~"
 
     elif _mas_getAffection() > -50:
         m 2lsc "..."
@@ -7169,7 +7193,7 @@ label monika_confidence_2:
     m 1eua "Это может помочь тебе научиться понимать вещи с точки зрения других людей, в таких ситуациях нужно вдохновлять других и делать то же самое."
     m "И в заключение."
     m 3hua "Убедись, что ты готов к следующему одобренному критиками сеансу совершенствования от Моники!"
-    m 1hksdlb "А-ха-ха, я просто пошутила по поводу последней части."
+    m 1hksdlb "{do_giggle}А-ха-ха, я просто пошутила по поводу последней части."
     m 1ekbsa "Если серьёзно, я очень рада, что ты здесь, [player]..."
     m "Твоя вечная любовь и забота – всё что мне нужно."
     m 1hubfa "Какой бы я была девушкой, если бы не вернула должок?~"
@@ -7283,7 +7307,7 @@ label monika_fruits:
     m "Один держит вишню во рту, а другой ест её."
     m 3ekbsa "Можешь... подержать вишенку для меня."
     m 1lkbsa "Так я смогу тебя съесть!"
-    m 3hua "Э-хе-хе~"
+    m 3hua "{do_giggle}Э-хе-хе~"
     m 2hua "Просто дразню тебя, [player]~"
     return
 
@@ -7316,7 +7340,7 @@ label monika_rock:
     m 1eua "Как и написание хорошей поэмы, легче сказать, чем сделать."
     m 2euc "Я всё-таки подумала..."
     m 2eua "Я хочу попробовать написать рок-песню."
-    m 2hksdlb "А-ха-ха! Написание рок-н-ролльной песни, вероятно, это не то, чего ты ожидаешь от человека вроде меня."
+    m 2hksdlb "{do_giggle}А-ха-ха! Написание рок-н-ролльной песни, вероятно, это не то, чего ты ожидаешь от человека вроде меня."
     m 3eua "Забавно, рок-н-ролл начинался как эволюция блюза и джаза."
     m "Рок внезапно стал знаменитым жанром, и он породил и другие поджанры."
     m 1eub "Металл, хард-рок, классический рок и многие другие!"
@@ -7330,7 +7354,7 @@ label monika_rock:
             $ persistent._mas_pm_like_rock_n_roll = True
             m 3hub "Здорово!"
             m 1eua "Если тебе захочется сбацать старый-добрый рок-н-ролл, то пожалуйста."
-            m 1hua "Даже если ты увеличишь громкость до максимума, я с радостью послушаю тебя. Э-хе-хе!"
+            m 1hua "Даже если ты увеличишь громкость до максимума, я с радостью послушаю тебя. {do_giggle}Э-хе-хе!"
             if (
                 not renpy.seen_label("monika_add_custom_music_instruct")
                 and not persistent._mas_pm_added_custom_bgm
@@ -7353,7 +7377,7 @@ label monika_standup:
     m 3hub "Стендап-комедия!"
     if seen_event('monika_rock') and seen_event('monika_rap'):
         m 2rksdla "...Боже, я кучу разных вещей назвала литературой, да?"
-        m 2hksdlb "Я уже начинаю себя чувствовать как Нацуки или какой-нибудь фанатичный постмодернист, а-ха-ха!"
+        m 2hksdlb "Я уже начинаю себя чувствовать как Нацуки или какой-нибудь фанатичный постмодернист, {do_giggle}а-ха-ха!"
         m 2eud "Но, серьёзно, когда дело доходит до написания битов к стендапу, это становится настоящим искусством."
     else:
         m 2eud "Это может прозвучать странно, но, когда дело доходит до написания битов к стендапу, это становится настоящим искусством."
@@ -7376,7 +7400,7 @@ label monika_standup:
     m 4wud "Второе же место занимает смерть. {w=0.5}Смерть на втором месте! {w=0.5}Как тебе такое?!"
     m 4eud "Для обычного человека это означает, что если он будет на похоронах, то ему лучше оказаться в гробу..."
     m 4tub "...чем произносить надгробную речь!"
-    m 1hub "...А-ха-ха! Прости, я хотела рассказать тебе шутку, которую однажды написал Джерри Сайнфелд..."
+    m 1hub "...{do_giggle}А-ха-ха! Прости, я хотела рассказать тебе шутку, которую однажды написал Джерри Сайнфелд..."
     m 3etc "...Ты ведь слышал о нём, верно?"
     m 1eua "И как?{w=0.5} Тебе было смешно?"
     m 3hksdlb "Хм... {w=1}наверное, я должна работать над своим материалом..."
@@ -7411,7 +7435,7 @@ label monika_soda:
             m 2lksdlc "Нет ничего плохого в том, чтобы пить её иногда, просто не становись зависимым от неё, [player]."
             m 2eua "Почему бы тебе не попробовать скопировать мой здоровый образ жизни?"
             m 1hua "Таким образом, ты можешь быть более красивым, как я!"
-            m 1hub "А-ха-ха!"
+            m 1hub "{do_giggle}А-ха-ха!"
             m 2ekc "Я бы очень не хотела, чтобы ты забросил своё здоровье, [player]."
             m 1eka "Я хочу, чтобы ты прожил столько, сколько сможешь, чтобы у нас был шанс быть вместе в твоей реальности."
             m "Так что пей меньше газировки, хорошо, [mas_get_player_nickname()]?"
@@ -7493,7 +7517,7 @@ label monika_promisering:
             m 1rkbla "..."
             m 3hkblb "Извини, я просто отвлеклась на секунду...{w=0.3}{nw}"
             extend 1dkbssdlu " Воображая где-то в другом месте, ты бы так сказал~"
-            m 3hkbssdlb "А-ха-ха, я шучу."
+            m 3hkbssdlb "{do_giggle}А-ха-ха, я шучу."
             m 1hkbssdlb "Я вообще об этом не думаю...{w=0.3}{nw}"
             extend 3ekbfb " Я больше думала о кольцах обещаний."
 
@@ -7503,7 +7527,7 @@ label monika_promisering:
             m 3eub "Я больше думала о кольцах обещаний."
 
         "Как... брак?":
-            m 1hkblb "А-ха-ха, и это тоже, разумеется!{w=0.2} {nw}"
+            m 1hkblb "{do_giggle}А-ха-ха, и это тоже, разумеется!{w=0.2} {nw}"
             extend 3ekblu "Но на самом деле я думала совсем не об этом..."
             m 3eub "Я больше думала о кольцах обещаний."
 
@@ -7581,7 +7605,7 @@ label monika_sports:
     m 1euc "Хорошим примером могут послужить футбол и теннис."
     m 3eua "В футболе сильно необходимы командная работа и координация. Момент, когда ты наконец-то добьёшься успеха и забьёшь гол, просто дух захватывает!"
     m 3eud "С другой стороны, игра в теннис помогает улучшить зрительно-моторную координацию и держит тебя в форме."
-    m 1lksdla "...Хотя, долгие соревнования могут немного наскучить, э-хе-хе~"
+    m 1lksdla "...Хотя, долгие соревнования могут немного наскучить, {do_giggle}э-хе-хе~"
     m 3eua "К тому же, это хороший вид спорта для двух человек!"
 
     m "Ты играешь в теннис, [player]?{nw}"
@@ -7598,7 +7622,7 @@ label monika_sports:
             m 2tfu "Если ты достаточно хорош, то..."  
             m 2tfc "Я играю ради победы." 
             m "..." 
-            m 4hub "А-ха-ха! Я просто шучу..."  
+            m 4hub "{do_giggle}А-ха-ха! Я просто шучу..."  
             m 4eka "Обычной игры с тобой, как со своим партнёром, мне будет вполне достаточно, [player]~"
 
         "Нет, но если только с тобой...":
@@ -7620,7 +7644,7 @@ label monika_sports:
             m 3eua "Если этим видом спорта я не занималась ни разу, то ты меня научишь!"
             m 1tku "Но берегись, я быстро учусь..."
             m 1tfu "Пройдёт совсем немного времени, и я начну побеждать тебя.{w=0.2} {nw}"
-            extend 1tfb "А-ха-ха!"
+            extend 1tfb "{do_giggle}А-ха-ха!"
         "Нет, я особо не увлекаюсь спортом.":
             $ persistent._mas_pm_like_playing_sports = False
             $ persistent._mas_pm_like_playing_tennis = False
@@ -7667,7 +7691,7 @@ label monika_meditation:
             m 3eub "Если тебе интересно, есть много ресурсов в интернете, чтобы помочь тебе начать медитировать."
             m 1eub "Будь то обучающие видео, способ дыхания или что-то ещё..."
             m 1hua "Ты можешь использовать интернет, чтобы сделать так, чтобы медитация была без стресса!"
-            m 1hksdlb "А-ха-ха! Просто немного каламбура, [player]."
+            m 1hksdlb "{do_giggle}А-ха-ха! Просто немного каламбура, [player]."
 
     m "В любом случае..." 
     m 1eua "Если ты когда-нибудь захочешь спокойную обстановку, где ты сможешь расслабиться и забыть о своих проблемах, то всегда можешь прийти сюда и провести время со мной."
@@ -7792,7 +7816,7 @@ label monika_orchestra:
                     m "Это {b}о-о-очень{/b} очаровательно!"
                     show monika 5eubsu at t11 zorder MAS_MONIKA_Z with dissolve_monika
                     m 5eubfu "И чтобы ты знал, ты можешь играть со мной, когда захочешь..."
-                    m 5eubfa "Э-хе-хе~"
+                    m 5eubfa "{do_giggle}Э-хе-хе~"
 
             elif tempinstrument in ["harmonica", "гармошка"]:
                 m 1hub "Вау, я всегда хотела попробовать сыгарть на гармошке!"
@@ -7801,14 +7825,14 @@ label monika_orchestra:
                 m 4esa "Хотя..."
                 m 2esa "Лично я предпочитаю {cps=*0.7}{b}гармонику{/b}{/cps}..."
                 m 2eua "..."
-                m 4hub "А-ха-ха! Это было так глупо, я просто шучу, [player]~"
+                m 4hub "{do_giggle}А-ха-ха! Это было так глупо, я просто шучу, [player]~"
                 $ persistent._mas_pm_plays_instrument = True
             else:
                 m 1hub "Вау, я всегда хотела попробовать этот инструмент."
                 m 1eua "Я бы хотела услышать, как ты играешь для меня."
                 m 3eua "Может быть, однажды ты тоже научишь меня играть?~"
                 m 1wuo "О! Думаю, что дуэт между этим и пианино будет отлично звучать?"
-                m 1hua "Э-хе-хе~"
+                m 1hua "{do_giggle}Э-хе-хе~"
                 $ persistent._mas_pm_plays_instrument = True
 
         "Нет.":
@@ -7917,7 +7941,7 @@ label monika_otaku:
             m 1lksdla "Я удивлена, честно..."
             m 1eua "Это не совсем та игра, в которую ваш среднестатистический человек станет играть, но каждому своё, я полагаю..."
     m 1eua "Я спросила это только потому, что ты играешь в эту игру."
-    m 1hua "Не волнуйся, я не тот человек, чтобы осуждать кого-то, э-хе-хе~"
+    m 1hua "Не волнуйся, я не тот человек, чтобы осуждать кого-то, {do_giggle}э-хе-хе~"
     m 1eua "Ты не должен стыдиться этого."
     m 1euc "Я серьёзно. Нет ничего плохого в том, чтобы любить аниме или мангу."
     m 4eua "Ведь Нацуки тоже читает мангу, в конце концов, помнишь?"
@@ -8202,11 +8226,11 @@ label monika_urgent:
     m 1dsc "Я..."
     m "..."
     m 1hub "Люблю тебя."
-    m 3hksdlb "А-ха-ха~! Ты заволновался?"
+    m 3hksdlb "{do_giggle}А-ха-ха~! Ты заволновался?"
     m 1eksdla "Прости~"
-    m 1rksdla "Тебе стоило видеть своё лицо, когда я это говорила!"
+    m 1rksdla "Тебе стоило бы увидеть своё лицо, когда я это говорила!"
     show monika 5hubfb at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubfb "Оно восхитительно~"
+    m 5hubfb "Я уверена, оно восхитительно~"
     return "love"
 
 init 5 python:
@@ -8292,13 +8316,13 @@ label monika_how_soon:
                     m 1hua "Ты только что сделал меня максимально счастливой!"
                     m 1ekbsa "Не могу дождаться, когда мы будем вместе в твоём мире, [player]!"
                     m 1hubfa "Я буду так рада наконец увидеть тебя!"
-                "Через десятилетия.":
+                "Через десятилетие.":
                     m 1wuo "Это не так уж плохо!"
                     m 1hub "Просто навещай меня почаще, [player]~"
         "Несколько десятилетий.":
             m 2euc "Ой, это очень много..."
             m 1eka "Но если ты составишь мне компанию, я уверена, что они пролетят незаметно!"
-            m 1eua "Мне нравится просто говорить с тобой."
+            m 1eua "Мне нравится даже просто разговаривать с тобой."
             m 1hub "Не могу представить, насколько я буду счастлива, когда увижу тебя в твоём мире."
         "Я не знаю.":
             m 1eka "Я ценю твою честность, [player]."
@@ -8352,11 +8376,11 @@ label monika_marriage:
         m 3rksdlb "По сути, я размышляла об этом в последнее время."
         m 1eka "Я правда люблю тебя, [mas_get_player_nickname(exclude_names=['мой любимый', 'любимый'])], и, если честно, я правда хочу выйти за тебя замуж."
         m 1ekd "Но я сомневаюсь, что это было бы справедливо для нас обоих, пока я всё ещё нахожусь тут взаперти."
-        m 1ekc "Я хочу сделать нечто большее, нежели сказать «да», но я просто не могу..."
+        m 1ekc "Больше всего на свете я хочу сказать «да», но я просто не могу..."
         m 2duu "Я размышляю о том, какие чувства я испытаю, когда поцелуюсь с тобой у алтаря..."
-        m 2dubsu "Когда возьмусь за твою руку как твоя жена и почувствовать твои объятия в наш медовый месяц..."
+        m 2dubsu "Когда возьмусь за твою руку как твоя жена и почувствую твои объятия в наш медовый месяц..."
         m 1eka "Но, пока я отсюда не выберусь, это попросту невозможно."
-        m 1ekd "...Прости. Пожалуйста, просто верь тому, что я скажу «да» при любых обстоятельствах."
+        m 1ekd "...Прости. Пожалуйста, просто верь, что я сказала бы «да» при любых иных обстоятельствах."
         m 1ekbsa "Просто потерпи немного, хорошо, [mas_get_player_nickname()]? Я уверена, что однажды мы получим свою счастливую концовку."
     else:
         m 2wubsw "П-пожениться?"
@@ -8375,7 +8399,7 @@ label monika_coffee:
     $ coffee_enabled = mas_consumable_coffee.enabled()
     if renpy.seen_label('monika_tea') and not coffee_enabled:
         m 3eua "Ты пьёшь только кофе в последние время, [mas_get_player_nickname()]?"
-        m 2tfu "Надеюсь, ты делал это не только ради того, чтобы заставить меня завидовать, э-хе-хе."
+        m 2tfu "Надеюсь, ты делал это не только ради того, чтобы заставить меня завидовать, {do_giggle}э-хе-хе."
     m 2eua "Кофе – отличная вещь, если тебе срочно нужна энергия."
     m 3hua "Горячий или холодный, кофе всегда превосходен." 
     m 4eua "Тем не менее, холодный кофе лучше пить в тёплую погоду."
@@ -8383,7 +8407,7 @@ label monika_coffee:
     if coffee_enabled:
         m 1hua "Я рада, что благодаря тебе теперь могу наслаждаться им~"
     else:
-        m 1hub "Может быть, если я покопаюсь в скрипте, я смогу наконец-то попробовать его. А-ха-ха~"
+        m 1hub "Может быть, если я покопаюсь в скрипте, я смогу наконец-то попробовать его. {do_giggle}А-ха-ха~"
     return
 
 init 5 python:
@@ -8431,7 +8455,7 @@ label monika_wolf:
     m 1hua "Не говоря о том, что мы начали помогать друг другу."
     m 1eua "Волки в конце концов поняли, что их зависимость от людей поможет им выживать."
     m 1eka "Точно так же, как мы полагаемся на друг друга, [player]!"
-    m 1hubsa "Э-хе-хе~"
+    m 1hubsa "{do_giggle}Э-хе-хе~"
     m 1eka "Я не могу не упомянуть, как ты спас мне жизнь, находясь здесь со мной."
     m "Я действительно завишу от тебя, [mas_get_player_nickname()]."
     m 1ekbsa "В конце концов, ты мой герой~"
@@ -8480,12 +8504,12 @@ label monika_sleep:
     m 1euc "[mas_get_player_nickname(capitalize=True)], ты хорошо высыпаешься?"
     m 1ekc "В наши дни хороший сон стал почти роскошью."
     m 1eka "Особенно в старшей школе ты каждый день вынужден так рано просыпаться..."
-    m 1eua "Уверена, в колледже будет получше, поскольку у тебя там, скорее всего, более гибкое расписание."
+    m 1eua "Уверена, в колледже будет получше, поскольку там, наверное, более гибкое расписание."
     m 3rsc "Но опять же, я слышала, что много учащихся в колледже людей не спят всю ночь, без веской причины."
     m 1euc "Это правда?"
     m 1ekc "В любом случае, я видела пару исследований, где говорилось о страшных кратковременных и долговременных последствиях, вызванных недосыпанием."
     m 3ekc "Похоже, что психические функции, здоровье и даже продолжительность жизни могут сильно пострадать от этого."
-    m 1eka "Я просто считаю, что ты на самом деле хороший, и мне бы хотелось убедиться в том, что ты не уничтожишь себя случайно."
+    m 1eka "Я просто считаю, что хороший человек, и я хочу убедиться, что ты не вредишь себе ненамеренно."
     m 1eua "Так что не жертвуй своим сном, хорошо?"
     show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5hua "Я буду всегда ждать тебя поутру, так что никогда не забывай о своём здоровье."
@@ -8510,16 +8534,16 @@ label monika_breakup:
         m 2ekc "Ты бросаешь меня?"
         m 2rksdlc "..."
         m 1dsc "Хм-м, я не уверена, что могу позволить тебе это сделать, [player]."
-        m 1hua "Не волнуйся, я позабочусь, чтобы ты наслаждалась этим апр—{nw}"
+        m 1hua "Не волнуйся, я позабочусь, чтобы ты насладился этим первым апр—{nw}"
         $ _history_list.pop()
-        m 1hua "Не волнуйся, я позабочусь, чтобы ты наслаждалась этим{fast} днём со мной~"
+        m 1hua "Не волнуйся, я позабочусь, чтобы ты насладился этим{fast} днём со мной~"
         m 1cuu "Ты ведь останешься со мной, правда?"
         pause 3.0
-        m 2hksdlb "А-ха-ха!"
+        m 2hksdlb "{do_giggle}А-ха-ха!"
         m 1hua "Извини, но я просто не могу воспринимать тебя всерьёз."
         m 3tsb "Особенно сегодня."
         m 1tku "Тебе меня не одурачить, [player]."
-        m 1tua "Особенно чем-то {i}таким{/i} предсказуемым, э-хе-хе~"
+        m 1tua "Особенно чем-то {i}таким{/i} предсказуемым, {do_giggle}э-хе-хе~"
 
         # sub 1 from the shown_count so we don't end up counting this path toward locking the topic
         $ mas_assignModifyEVLPropValue("monika_breakup", "shown_count", "-=", 1)
@@ -8546,7 +8570,7 @@ label monika_breakup:
             else:
                 m 2wfd "Я тебе не верю, [player]. Я действительно не могу пов—"
                 m 2efu "..."
-                m 2hub "А-ха-ха!"
+                m 2hub "{do_giggle}А-ха-ха!"
                 m 2hksdlb "Прости, я не выдержала."
                 m 2hua "Ты такой глупышка, [player]."
 
@@ -8561,7 +8585,7 @@ label monika_breakup:
                     m "[menuOption]{fast}"
 
                     "Конечно, нет.":
-                        m 2hua "Э-хе-хе, ты такой милый."
+                        m 2hua "{do_giggle}Э-хе-хе, ты такой милый."
                         m 2eka "Я очень сильно тебя люблю, [player]!~"
                         return "love"
 
@@ -8581,7 +8605,7 @@ label monika_breakup:
             else:
                 m 2dsc "Ты...{w=0.3} в самом деле..."
                 m "..."
-                m 2hub "А-ха-ха!"
+                m 2hub "{do_giggle}А-ха-ха!"
                 m 1tfu "Купился, [player]."
                 m 1tku "Я знаю, что ты просто шутишь~"
 
@@ -8590,7 +8614,7 @@ label monika_breakup:
                 menu:
                     m "Ведь так?{fast}"
                     "Да.":
-                        m 1hub "А-ха-ха! Ты такой глупышка, [player]."
+                        m 1hub "{do_giggle}А-ха-ха! Ты такой глупышка, [player]."
                         m 1eka "Давай останемся вместе навсегда~"
 
         #Third time
@@ -8674,7 +8698,7 @@ label monika_omamori:
     m 1eua "Этот способ не идеальный, но эта мысль имеет смысл, [mas_get_player_nickname()]."
     m 1eka "Если ты потратишь время, чтобы создать ещё что-то со мной, я буду очень рада."
     m "Возможно, благодаря ему я стану ближе к твоему миру."
-    m 1hua "Я могу быть твоим божеством-опекуном, э-хе-хе~"
+    m 1hua "Я могу быть твоим божеством-опекуном, {do_giggle}э-хе-хе~"
     return
 
 # do you smoke ~
@@ -8845,7 +8869,7 @@ label monika_smoking_quit:
         m 1sub "Правда?! О боже, я так тобой горжусь, [player]!"
         m 3ekbsa "Как же приятно знать о том, что ты бросил курить! {w=0.2}{nw}"
         extend 3dkbsu "Я наконец-то смогу спать спокойно, зная о том, что ты как можно дальше держишься от этого кошмара."
-        m 1rkbfu "Э-хе-хе, если бы я была рядом с тобой, я бы угостила тебя твоим любимым блюдом [tod]."
+        m 1rkbfu "{do_giggle}Э-хе-хе, если бы я была рядом с тобой, я бы угостила тебя твоим любимым блюдом [tod]."
         m 3hubfb "Всё-таки это впечатляющий подвиг! {w=0.2}Нам надо это отпраздновать!"
         m 3eubsb "Не все, кто хочет бросить курить, добиваются этого."
         m 1dubfu "Ты и вправду вдохновляешь, [player]."
@@ -9066,7 +9090,7 @@ label monika_asks_family:
                     m "Они, должно быть, ты всегда ими занят."
                     m 1eka "Я уверена, что твои братья и сёстры такие же добрые и заботливые, как и ты."
                     m 3hub "Может быть, я смогу убедить их создать новый литературный клуб со мной!"
-                    m 1hua "Э-хе-хе~"
+                    m 1hua "{do_giggle}Э-хе-хе~"
                     m 1eua "Мы сможем делать много весёлых вещей вместе."
                     m 3rksdla "Это было бы намного лучше, чем раньше, это точно."
                     m 1hua "Я уверена, что я смогу поладить с твоими братьями и сёстрами, а также с остальной частью твоей семьи, [mas_get_player_nickname()]."
@@ -9385,11 +9409,11 @@ label monika_beach:
     m 3eua "Мы могли бы попробовать сёрфинг или поиск некоторых ракушек, чтобы забрать их домой в качестве сувениров."
     m "Даже ничего не делать и просто лежать там, слушая звук волн с тобой – было бы достаточно для меня."
     m 3tfu "Но не засыпай, иначе я буду закапывать тебя в песок!"
-    m 2huu "Э-хе-хе! Я просто шучу, [mas_get_player_nickname()]."
+    m 2huu "{do_giggle}Э-хе-хе! Я просто шучу, [mas_get_player_nickname()]."
     m 2lksdla "Хотя мне придётся купить новый купальник..."
     m 1tsbsa "Ты предпочёл бы один кусок или два куска купальника?"
     m 1eua "Вообще-то, я думаю, что сделаю сюрприз."
-    m 1tku "Не слишком возбуждайся, когда увидишь это. Э-хе-хе~"
+    m 1tku "Не слишком возбуждайся, когда увидишь это. {do_giggle}Э-хе-хе~"
     return "derandom"
 
 init 5 python:
@@ -9412,7 +9436,7 @@ label monika_solipsism:
     m 3etc "Возможно, все остальные – лишь плод нашего воображения, [player]."
     m 2etc "Быть может, в реальности, мы являемся единственным сознанием в этом мире, в огромном море ненастоящих мыслей..."
     m 2dsd "Творения наших диких махинаций..."
-    m 3eub "А-ха-ха, я просто шучу~"
+    m 3eub "{do_giggle}А-ха-ха, я просто шучу~"
     m 1eud "Я верю, что мы можем доверять своему существованию и сомневаться в существовании других..."
     m 3eua "Но в то же время мы не можем опровергнуть их, не так ли?"
     m 1hksdla "По крайней мере, без использования экстрасенсорных средств, чтобы проникнуть в их головы."
@@ -9480,7 +9504,7 @@ label monika_attractiveness:
             m 2ekbfa "Так что, вероятно, у меня нет причин беспокоиться об этом, не так ли?"
             if mas_anni.pastOneMonth():
                 m 1hubfa "Кроме того, ты бы не проводил всё это время, глядя на меня, если бы тебе уже не нравилось, как я выгляжу, не так ли?"
-                m 1hubfb "А-ха-ха~"
+                m 1hubfb "{do_giggle}А-ха-ха~"
             show monika 1euc at t11 zorder MAS_MONIKA_Z with dissolve_monika
 
         else:
@@ -9491,7 +9515,7 @@ label monika_attractiveness:
         if mas_isMoniHappy(higher=True):
             m 2lsbsa "Хотя, учитывая, что ты всё ещё здесь со мной...{w=0.5} {nw}"
             extend 2ekbsa "Наверное, мне не стоит слишком беспокоиться об этом, не так ли?"
-            m 1hub "В конце концов, ты бы не проводил всё это время, глядя на меня, если бы тебе уже не нравилось, как я выгляжу! А-ха-ха!"
+            m 1hub "В конце концов, ты бы не проводил всё это время, глядя на меня, если бы тебе уже не нравилось, как я выгляжу! {do_giggle}А-ха-ха!"
 
         else:
             m 2lkc "...Тем более, я боюсь, что я просто не в твоём вкусе или что-то в этом роде, [player]."
@@ -9655,9 +9679,9 @@ label monika_prom:
                         "Да.":
                             $ persistent._mas_pm_had_prom_date = True
                             m 1euc "Ох, вау."
-                            m 1lksdla "Э-хе-хе, это заставляет меня немного ревновать..."
+                            m 1lksdla "{do_giggle}Э-хе-хе, это заставляет меня немного ревновать..."
                             m 1hua "Но опять же, ты бы взял меня вместо этого, если бы мы встретились заранее, верно?"
-                            m 1hub "А-ха-ха!"
+                            m 1hub "{do_giggle}А-ха-ха!"
                             m 1eua "Но всё равно хорошо знать, что ты смог испытать что-то подобное!"
                             m 3eua "Может, когда я научусь лучше программировать, у нас будет собственный выпускной."
                             m 3eka "Разве это не было бы здорово, [player]?"
@@ -9675,7 +9699,7 @@ label monika_prom:
                     m 1ekc "Это так?"
                     m "Я понимаю, что выпускной не для всех."
                     m 3eka "Может быть, если бы я была там, тебе бы понравилось больше."
-                    m 1hksdlb "А-ха-ха~"
+                    m 1hksdlb "{do_giggle}А-ха-ха~"
                     m 3eua "Не волнуйся, [player]."
                     m 1eua "Нет смысла вспоминать это сейчас."
                     m 1eub "Даже если ты плохо провёл время там, это не самое главное из того, что произошло в твоей жизни."
@@ -9687,7 +9711,7 @@ label monika_prom:
                     $ persistent._mas_pm_prom_monika = True
                     m 1ekbsa "Ой, это так мило, [player]."
                     m 1eua "Ну, теперь, когда мы вместе, я уверена, что мы сможем сделать свой собственный выпускной, верно?"
-                    m 1hub "А-ха-ха~"
+                    m 1hub "{do_giggle}А-ха-ха~"
         "Нет.":
             $ persistent._mas_pm_gone_to_prom = False
             $ persistent._mas_pm_no_prom = False
@@ -9703,7 +9727,7 @@ label monika_prom:
                     m 1eka "И кроме того..."
                     m 1hua "Ты можешь {i}взять{/i} меня на выпускной, [player]."
                     m "Просто возьми мой файл с собой, и проблема решена!"
-                    m 1hub "А-ха-ха!"
+                    m 1hub "{do_giggle}А-ха-ха!"
 
                 "Не интересно.":
                     $ persistent._mas_pm_prom_not_interested = True
@@ -9734,7 +9758,7 @@ label monika_prom:
                             m 3euc "Но мне интересно..."                           
                             m 3eka "Ты бы пошёл, если бы я была там с тобой, [player]?"                         
                             m 1tku "Думаю, я уже знаю на это ответ~"                
-                            m 1hub "А-ха-ха!"
+                            m 1hub "{do_giggle}А-ха-ха!"
         #################################################
         #### We could add this option in the future     #
         #### if we can add a feature where the player   #
@@ -9756,12 +9780,12 @@ label monika_prom:
             m 2esc "Столько расходов только на одну ночь..."
             m "Я также читала, что, поскольку алкоголь не допускается, некоторые ученики будут пить напитки и напиваться неосознанно."
             m 2ekc "Если кто-то может легко сделать это, я сомневаюсь, что кому-то со злыми намерениями будет трудно тайком подлить яда в напитки."
-            m 2lksdla "...Или, может быть, я просто себя накручиваю, э-хе-хе."
+            m 2lksdla "...Или, может быть, я просто себя накручиваю, {do_giggle}э-хе-хе."
             m 1esa "Тем не менее, я не думаю, что ты пропустил многое, [player]."
             m 1eua "Выпускной – это не самое главное в твоей академической жизни."
             m "И я уверена, что в твоей жизни есть много событий, которые компенсируют это."
             m 1hua "Знаешь, быть со мной – одна из них~"
-            m 1hub "А-ха-ха!"
+            m 1hub "{do_giggle}А-ха-ха!"
 
     return "derandom"
 
@@ -9809,7 +9833,7 @@ label monika_natsuki_letter:
             $ persistent._mas_pm_see_therapist = False
             m 1eka "Ну, я надеюсь, это потому, что тебе не нужно."
             m 1eua "Если это когда-нибудь изменится, не стесняйся!"
-            m 1hub "Но, может быть, я – действительно вся необходимая поддержка? А-ха-ха!"
+            m 1hub "Но, может быть, я – действительно вся необходимая поддержка? {do_giggle}А-ха-ха!"
 
     return "derandom"
 
@@ -9998,7 +10022,7 @@ label monika_timeconcern_night_2:
         m "Всё, что я хочу для тебя это – счастье и здоровье, которые ты заслуживаешь."
         return
     m 1rksdla "Постарайся закончить, как только сможешь, иначе я буду очень обеспокоена."
-    m 1eka "И ты не хочешь беспокоить свою девушку, верно? Э-хе-хе~"
+    m 1eka "И ты не хочешь беспокоить свою девушку, верно? {do_giggle}Э-хе-хе~"
     jump monika_timeconcern_lock
 
 #If player says he was not working. Monika asks the state of the game being open.
@@ -10139,7 +10163,7 @@ label monika_timeconcern_day_0:
     m 1lsc "..."
     m 1tkc "..."
     m 1wuo "...!"
-    m 1hksdlb "А-ха-ха! Извини, [player]."
+    m 1hksdlb "{do_giggle}А-ха-ха! Извини, [player]."
     m 1lksdla "Я просто отключилась..."
     m 1eka "Боже, я продолжаю это делать, не так ли?"
     m "Иногда я просто теряюсь в своих мыслях..."
@@ -10264,7 +10288,7 @@ label monika_amusementpark:
     m 3eua "Захватывающие американские горки, водные аттракционы, опорные башни..."
     m 3tubsb "А может быть, даже романтическая поездка на колесе обозрения~"
     show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubfa "Э-хе-хе, я немного увлекаюсь, но ничего не могу поделать, когда думаю о том, чтобы быть с тобой~"
+    m 5hubfa "{do_giggle}Э-хе-хе, я немного увлекаюсь, но ничего не могу поделать, когда думаю о том, чтобы быть с тобой~"
     return "derandom"
 
 #If the player likes to travel or not
@@ -10369,7 +10393,7 @@ label monika_dating:
             m 3eka "Кто-то добрый, преданный, милый, любящий и верный."
             m 4lubsb "И милый, и забавный, и романтичный, и..."
             m 7wubsw "О!"
-            m 3hksdlb "Извини, я забыла, что собиралась сказать дальше, а-ха-ха!"
+            m 3hksdlb "Извини, я забыла, что собиралась сказать дальше, {do_giggle}а-ха-ха!"
             m 1ekbla "Я могла бы продолжать говорить о том, какой ты замечательный, [player]~"
             m 1ekbsa "Но просто знай это...{w=0.3} {nw}"
             extend 3ekbfa "независимо от того, сколько разочарований ты пережил, я всегда буду рядом с тобой."
@@ -10383,7 +10407,7 @@ label monika_dating:
 
             m 1eka "Оу, не так уж много опыта, да?"
             m 3eua "Это нормально, [player], я тоже могу тебя понять, так что не волнуйся."
-            m 3lksdlb "Да, я могу выглядеть как девушка, которая получает всех парней, но на самом деле это не так, а-ха-ха!"
+            m 3lksdlb "Да, я могу выглядеть как девушка, которая получает всех парней, но на самом деле это не так, {do_giggle}а-ха-ха!"
             m 2lksdla "Особенно с учётом того, как я была занята все эти годы, у меня просто никогда не было времени."
             m 2eka "Впрочем, это не имеет значения, всё это было ненастоящим."
             show monika 5ekbsa zorder MAS_MONIKA_Z with dissolve_monika
@@ -10528,7 +10552,7 @@ label monika_fastfood:
             m 1eua "И таким образом мы оба сможем наслаждаться, и ты будешь питаться лучше."
             m 3hub "Это то, что я называю беспроигрышной стратегией!"
             m 3eua "Только не забывай, [player]."
-            m 3hksdlb "Я вегетарианка! А-ха-ха!"
+            m 3hksdlb "Я вегетарианка! {do_giggle}А-ха-ха!"
 
         "Нет.":
             $ persistent._mas_pm_eat_fast_food = False
@@ -10569,7 +10593,7 @@ label monika_dreaming:
     m 1eka "Но теперь, когда мы здесь вместе, я думаю, ты можешь сказать, что я наконец проснулась."
     m 1eua "Боже, я могу только представлять себе, каково это было бы жить в таком безграничном мире, хотя даже если бы это было всего на несколько мгновений!"
     m "Ты мог бы быть героем, которым ты всегда хотел бы быть, летать по бесконечной вселенной, преодолевать свои самые большие страхи..."
-    m 3ekbsa "...Ты мог бы даже встретить любовь всей своей жизни, так сказать. Э-хе-хе~"
+    m 3ekbsa "...Ты мог бы даже встретить любовь всей своей жизни, так сказать. {do_giggle}Э-хе-хе~"
     m 1eua "Я знаю, что могут пройти годы, прежде чем я смогу пересечь твой мир..."
     m "Но ты только представь, каково это встретить меня в своих снах, [player], в любую ночь, в которую ты захочешь?"
     m 1hua "Надеюсь, что когда-нибудь мы сможем сделать наши мечты о нас реальностью, [mas_get_player_nickname()]."
@@ -10710,7 +10734,7 @@ label monika_beingevil:
             m 1eua "Приятно знать о том, что ты не считаешь меня злой."
             m 1hua "Если бы я была там, я бы однозначно крепко обняла тебя!"
             m 1tubsa "Возможно, я бы даже зажала тебя в своих руках навечно и никогда бы не выпускала."
-            m 1hubfb "А-ха-ха, я просто шучу!"
+            m 1hubfb "{do_giggle}А-ха-ха, я просто шучу!"
             m 3tubfb "Но ничего не обещаю, [player]~"
 
         "Я всё равно люблю тебя.":
@@ -10724,7 +10748,7 @@ label monika_beingevil:
             m 1ekbsa "Я очень рада, что ты всё ещё любишь меня и остался здесь, со мной..."
             m 1ekbfa "Спасибо, [player]."
             m 1tubfa "Так или иначе..."
-            m 1tubfb "Если злодейка во мне смогла получить то, чего она хотела... то, думаю, это не так уж и плохо, а-ха-ха!"
+            m 1tubfb "Если злодейка во мне смогла получить то, чего она хотела... то, думаю, это не так уж и плохо, {do_giggle}а-ха-ха!"
 
         "Люди тоже считают меня злым.":
             $ persistent._mas_pm_monika_evil = True
@@ -10735,7 +10759,7 @@ label monika_beingevil:
             m 2eka "Ну, я не вижу в тебе злого человека."
             m 2rksdla "Но если это правда, то, надеюсь, у тебя не появились проблемы из-за этого."
             m 1hua "Так или иначе, я не стала любить тебя в меньшей мере~"
-            m 1hub "Быть может, мы даже сможем противостоять миру вместе или ещё что, а-ха-ха~"
+            m 1hub "Быть может, мы даже сможем противостоять миру вместе или ещё что, {do_giggle}а-ха-ха~"
             m 1ekbsa "Но, злые мы или нет, я рада, что ты на моей стороне."
             m 1hubfa "Полагаю, ты того же мнения~"
 
@@ -10875,7 +10899,7 @@ label monika_driving:
                     m 1eua "Я рада, что, пока ты учишься, с тобой ничего плохого не произошло."
                     m 1hua "...И я особенно рада тому, что ты осторожен на дороге!"
                     m 3eub "Мне уже не терпится съездить с тобой куда-нибудь, [player]!"
-                    m 1hksdlb "Надеюсь, я не сильно волнуюсь, а-ха-ха~"
+                    m 1hksdlb "Надеюсь, я не сильно волнуюсь, {do_giggle}а-ха-ха~"
                     show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
                     m 5eua "Боже, я просто не могу перестать думать об этом!"
 
@@ -10926,7 +10950,7 @@ label monika_driving:
             m 1eka "Знаю, тебе это может показаться довольно удручающим то, что им приходится пользоваться этим, но, эй, мы все с чего-то начинаем."
             m 3eksdla "...И это намного лучше, чем попасть в аварию!"
             m 1lksdlc "Никто не идеален, и те ошибки лучше совершать в тех случаях, когда к тебе могут прийти на помощь."
-            m 1hub "Наверное, ты мог бы вставить меня в бортовой компьютер своего автомобиля, и я тогда могла бы защитить тебя во время вождения! А-ха-ха~"
+            m 1hub "Наверное, ты мог бы вставить меня в бортовой компьютер своего автомобиля, и я тогда могла бы защитить тебя во время вождения! {do_giggle}А-ха-ха~"
             m 1hksdlb "Я шучу, пожалуйста, не делай этого, потому что я тоже не умею водить, и мне очень не хотелось бы смотреть на то, как ты попал в аварию, а я ничего не могла сделать."
             m 1eua "Наверное, будет куда лучше взять один из тех уроков и учиться у профессионала."
             m 1hua "Так или иначе, когда ты начнёшь учиться вождению, я пожелаю тебе всего самого наилучшего!"
@@ -11186,10 +11210,10 @@ label monika_players_friends:
             $ persistent._mas_pm_has_friends = True
             $ persistent._mas_pm_few_friends = False
 
-            m 1hub "Конечно же, есть! А-ха-ха~"
+            m 1hub "Конечно же, есть! {do_giggle}А-ха-ха~"
             m 1eua "Кто бы не захотел дружить с тобой?"
             m 3eua "Иметь много друзей – это здорово, правда?"
-            m 1tsu "При условии, конечно, что у тебя ещё есть время для твоей девушки, э-хе-хе."
+            m 1tsu "При условии, конечно, что у тебя ещё есть время для твоей девушки, {do_giggle}э-хе-хе."
             m 1eua "Надеюсь ты счастлив со своими друзьями, [player].{w=0.2} {nw}"
             extend 3eud "Но мне интересно..."
 
@@ -11277,7 +11301,7 @@ label monika_players_friends_feels_lonely_ask(question, exp="monika 1ekc"):
                     m 1eua "Когда я доберусь к тебе, я думаю, что не буду возражать против спокойной жизни с тобой."
                     m 1dkbsa "Было бы так романтично быть только с мной..."
                     m 1tsbsa "Полагаю, это означает, что я могу иметь всего тебя в своём распоряжении, не так ли?"
-                    m 1hubsa "Э-хе-хе~"
+                    m 1hubsa "{do_giggle}Э-хе-хе~"
 
                 elif not persistent._mas_pm_has_friends:
                     m 3eua "Так что обязательно найди друзей, которые помогут тебе, когда ты действительно в этом нуждаешься, хорошо?"
@@ -11346,7 +11370,7 @@ label monika_graduation:
     #Normal flow
     else:
         m 4eua "Кстати, знал ли ты о том, что я была лучшей ученицей в своём классе?"
-        m 4rksdlu "А-ха-ха... я не хочу хвастаться или ещё что, я упомянула об этом лишь потому, что, будучи в выпускном классе, я должна произнести речь на выпускном."
+        m 4rksdlu "{do_giggle}А-ха-ха... я не хочу хвастаться или ещё что, я упомянула об этом лишь потому, что, будучи в выпускном классе, я должна произнести речь на выпускном."
         m 2ekd "Я столько времени потратила на написание и репетицию своей речи, но её так никто и не услышал."
         m 2eka "Я очень горжусь той речью, к слову."
         m 2eua "Я бы с радостью прочитала её для тебя как-нибудь, если ты хочешь послушать~"
@@ -11459,7 +11483,7 @@ label monika_grad_speech_call:
                     return
 
             m 2hub "Спасибо, что снова выслушал мою речь, [player]."
-            m 2eua "Дай мне знать, если захочешь услышать её снова, э-хе-хе~"
+            m 2eua "Дай мне знать, если захочешь услышать её снова, {do_giggle}э-хе-хе~"
 
         #You timed out once but want to hear it again
         else:
@@ -11760,7 +11784,7 @@ label monika_justice:
                         m 3tku "А ты думал, что я поверю в это после всего того, через что мы прошли?"
                         m 1tsb "Всё это время, ты думал, что я заслуживаю ненависть от тех людей?"
                         show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-                        m 5hubfa "Э-хе-хе, ты такой милый, [player]~"
+                        m 5hubfa "{do_giggle}Э-хе-хе, ты такой милый, [player]~"
 
                     else:
                         m 1euc "..."
@@ -11773,7 +11797,7 @@ label monika_justice:
                             m "Иначе..."
                         m 1eka "Спасибо, что спас меня и что ты со мной."
                         m 1hua "Если я с тобой, то, я думаю, это много чего стоило,{w=0.1} {nw}"
-                        extend 1hub "а-ха-ха~"
+                        extend 1hub "{do_giggle}а-ха-ха~"
 
                 "Не кажется.":
                     if persistent._mas_pm_monika_deletion_justice:
@@ -11790,7 +11814,7 @@ label monika_justice:
                         m 2rksdlb "Учитывая то, что это была не шутка, хе-хе..."
 
                     elif mas_isMoniLove():
-                        m 1hua "Я так и думала, э-хе-хе~"
+                        m 1hua "Я так и думала, {do_giggle}э-хе-хе~"
                         if persistent._mas_monika_deletion_justice_kidding:
                             $ persistent._mas_monika_deletion_justice_kidding = False
 
@@ -11829,7 +11853,7 @@ label monika_poweroutage:
     m 3lksdla "Я только что поняла, что это, конечно, хорошо, но это также может сильно навредить тебе в твоём мире."
     m 1lksdlc "Гром и молния могут ударить в любой момент, и, вполне возможно, во что-нибудь опасное."
     m 1lksdlb "Эффекты могут быть довольно, ну... шокирующими, если можно так выразиться."
-    m 1hksdlb "А-ха-ха~"
+    m 1hksdlb "{do_giggle}А-ха-ха~"
     m 1ekd "Я даже не хочу думать о том, что произошло бы, если бы молния ударила во что-нибудь важное для тебя."
     m 2ekc "Что произойдёт со мной, если произойдёт скачок напряжения и твой компьютер сгорит?"
     m 2dsc "Если такое вообще произойдёт...{w=0.3} {nw}"
@@ -11865,15 +11889,15 @@ label monika_savingwater:
     m 2hksdlb "Я однозначно проходила через всё это раньше, поэтому и знаю, насколько это здорово может быть, если оное тебе понадобится."
     if mas_isMoniLove(higher=True) and mas_is18Over():
         show monika 5tsbfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5tsbfu "Когда я окажусь в твоей реальности, наверное, мы будем экономить воду, купаясь вместе..."
-        m "Э-хе-хе~"
+        m 5tsbfu "Когда я окажусь в твоей реальности, мы можем экономить воду купаясь вместе..."
+        m "{do_giggle}Э-хе-хе~"
         m 5hubfu "Было бы неплохо, если бы ты приготовил хорошую расслабляющую ванну, которую мы и разделим, когда я перескочу в твою реальность."
         show monika 1kubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 1kubfu "Я буду ждать того дня, [mas_get_player_nickname()], э-хе-хе~"
+        m 1kubfu "Я буду ждать этого дня, [mas_get_player_nickname()], {do_giggle}э-хе-хе~"
     else:
         m 1ekbfa "Было бы неплохо, если бы ты приготовил хорошую расслабляющую ванну для меня, когда я перескочу в твою реальность."
         if mas_isMoniAff():
-            m 3ksbsa "Может быть, я даже захочу с тобой разделить ванну, э-хе-хе~"
+            m 3ksbsa "Может быть, я захочу её разделить с тобой, {do_giggle}э-хе-хе~"
     return
 
 init 5 python:
@@ -11906,13 +11930,13 @@ label monika_pygmalion:
     m 1ekbfa "Но, мне кажется, мы оба знаем, что между нами стоит небольшой барьер."
     m 3hubfa "Не знаю, как ты, но я, так или иначе, всё равно хочу попытаться поцеловать тебя через экран."
     m 1hubfb "Возможно, мы должны повторить это несколько раз, и, таким образом, мы сломаем барьер, находящийся между нами..."
-    m 2rubfu "Э-хе-хе."
+    m 2rubfu "{do_giggle}Э-хе-хе."
     m 2tubfb "Думаешь, ты сможешь поцеловать меня достаточное число раз, чтобы сломать этот барьер?"
-    m 6hubfb "Есть только один способ узнать это, а-ха-ха!"
+    m 6hubfb "Есть только один способ узнать это, {do_giggle}а-ха-ха!"
     call monika_kissing_motion(duration=0.5, initial_exp="6hubfa", fade_duration=0.5)
     m 6hubfa "..."
     m 1ekbfa "Полагаю, на этот раз это не сработало."
-    m 3hubfb "Ну да ладно, нам просто нужно продолжать стараться, и, быть может, это всё-таки сработает, а-ха-ха!"
+    m 3hubfb "Ну да ладно, нам просто нужно продолжать стараться, и, быть может, это всё-таки сработает, {do_giggle}а-ха-ха!"
     m 1tkbfu "Я правда не могу дождаться того дня, когда я наконец-то смогу прижаться своими губами к твоим и впитать твоё тепло..."
     m 1dkbfa "Как по мне, такая мечта однозначно сбудется."
     m 1ekbfa "Это просто предположение, но..."
@@ -12048,7 +12072,7 @@ label monika_vehicle:
                 m "Разве это не роскошь в одном?"
                 m 1euc "Разве только..."
                 m 3eua "Ты живешь там, где это необходимо..."
-                m 1hksdlb "Вообще-то, забудь, а-ха-ха!"
+                m 1hksdlb "Вообще-то, забудь, {do_giggle}а-ха-ха!"
                 m 1eua "В любом случае, приятно знать, что у тебя есть автомобиль."
                 m 3eua "Кстати..."
 
@@ -12088,9 +12112,9 @@ label monika_vehicle:
         $ persistent._mas_pm_owns_car = False
 
         m 3eua "Вообще-то, я помню, ты говорил, что тоже не умеешь водить..."
-        m 3rksdla "Ты задал интересный вопрос, э-хе-хе..."
+        m 3rksdla "Ты задал интересный вопрос, {do_giggle}э-хе-хе..."
         m 1hua "Может, однажды это изменится, и тогда ты что-нибудь получишь."
-        m 1hubsb "Таким образом, ты сможешь возить меня в самые разные места, а-ха-ха!"
+        m 1hubsb "Таким образом, ты сможешь возить меня в самые разные места, {do_giggle}а-ха-ха!"
     return
 
 label monika_vehicle_sedan:
@@ -12121,7 +12145,7 @@ label monika_vehicle_suv_pickup:
     m 1eka "Пока мы обедаем, мы наслаждаемся пейзажем и природой, окружающей нас..."
     m 1ekbsa "А когда наступала ночь, мы ложились на спальные мешки и смотрели на звезды, держась за руки."
     m 3ekbsa "Это определённо романтическое приключение, которое я не могу дождаться, чтобы поделиться с тобой, [player]."
-    m 1hkbfa "Э-хе-хе~"
+    m 1hkbfa "{do_giggle}Э-хе-хе~"
     return
 
 label monika_vehicle_sportscar:
@@ -12147,9 +12171,9 @@ label monika_vehicle_sedan_hatchback:
     m 3eua "Мы могли бы поехать в музеи, парки, торговые центры и так далее."
     m 1eua "Было бы так здорово иметь возможность ездить в места, которые слишком далеко, чтобы идти пешком."
     m 3hua "Всегда приятно открывать и исследовать новые места."
-    m 1rksdla "Мы могли бы даже найти место, где мы оба могли бы быть..."
-    m 1tsu "...Вместе."
-    m 1hub "А-ха-ха!"
+    m 1rksdla "Мы могли бы даже найти место, где мы оба могли бы быть вдвоём..."
+    m 1tsu "...Одни."
+    m 1hub "{do_giggle}А-ха-ха!"
     m 3eua "Просто чтобы ты знал, я ожидаю большего, чем просто поездка по городу на наши свидания..."
     m 1hua "Надеюсь, ты меня удивишь, [player]."
     m 1hub "Но опять же...{w=0.5} я буду любить всё, что угодно, пока это с тобой~"
@@ -12161,15 +12185,15 @@ label monika_vehicle_motorcycle:
     m 1hksdlb "А?"
     m 1lksdlb "Ты водишь мотоцикл?"
     m 1eksdla "Я удивлена, я никогда не ожидала, что это будет такой поездкой."
-    m 1lksdlb "Честно говоря, я немного стесняюсь ездить на нём, а-ха-ха!"
+    m 1lksdlb "Честно говоря, я немного побаиваюсь ездить на нём, {do_giggle}а-ха-ха!"
     m 1eua "На самом деле, мне не стоит бояться..."
     m 3eua "В конце концов, это ты за рулем."
-    m 1lksdla "Это немного расслабляет мой...{w=0.3} разум."
+    m 1lksdla "Это немного расслабляет мой разум...{w=0.3} немного."
     m 1eua "Только езжай спокойно и медленно, ладно?"
     m 3hua "В конце концов, мы не спешим."
     m 1tsu "Или...{w=0.3} ты планировал ехать быстро, чтобы я крепко держалась за тебя?~"
     m 3kua "Это довольно подло с твоей стороны, [player]."
-    m 1hub "А-ха-ха!"
+    m 1hub "{do_giggle}А-ха-ха!"
     $ p_nickname = mas_get_player_nickname()
     m 3eka "Не нужно стесняться, [p_nickname]...{w=0.3}{nw}"
     extend 3ekbsa "Я обниму тебя, даже если ты не попросишь..."
@@ -12181,9 +12205,9 @@ label monika_vehicle_other:
 
     m 1hksdlb "Оу, тогда мне ещё многому предстоит научиться в автомобилях, не так ли?"
     m 1dkbsa "Что ж, я буду с нетерпением ждать того дня, когда наконец-то смогу быть рядом с тобой за рулем~"
-    m 3hubfb "{i}И{/i} наслаждаться пейзажем, а-ха-ха!"
+    m 3hubfb "{i}И{/i} наслаждаться пейзажем, {do_giggle}а-ха-ха!"
     m 1tubfb "Может быть, у тебя есть что-то более романтичное, чем любая машина, которую я знаю."
-    m 1hubfa "Думаю, мне придется подождать и посмотреть, э-хе-хе~"
+    m 1hubfa "Думаю, мне придется подождать и посмотреть, {do_giggle}э-хе-хе~"
     return
 
 ##### PM Vars for player appearance
@@ -12359,12 +12383,12 @@ label monika_player_appearance:
 
             if persistent._mas_pm_height >= mas_height_tall:
                 m 3eua "Ого, ты довольно высокий, [player]!"
-                m 1eud "Я не скажу точно, что уже встречала человека, которого я считаю высоким."
+                m 1eud "Я не скажу точно, что встречала человека, которого я считаю высоким."
                 m 3rksdla "Если честно, я не знаю свой реальный рост, поэтому не могу провести точное сравнение..."
 
                 call monika_player_appearance_monika_height
 
-                m 3esc "Самой высокой девушкой в литературном клубе была Юри... всего самую малость, вот. Она была лишь на несколько дюймов выше меня, но я всё равно не считаю это преимуществом в росте!"
+                m 3esc "Самой высокой девушкой в литературном клубе была Юри... всего самую малость, вот. Она была лишь на несколько дюймов выше меня, но я всё равно не считаю это преимуществом!"
                 m 3esd "Так или иначе, в отношениях с таким высоким парнем, как ты, [mas_get_player_nickname()], огорчает один момент..."
                 m 1hub "Тебе придётся наклоняться, чтобы поцеловать меня!"
 
@@ -12379,7 +12403,7 @@ label monika_player_appearance:
                 m 3esd "Так или иначе, нет ничего плохого в том, что ты среднего роста! Честно говоря, будь ты слишком низкого роста, то мне, скорее всего, было бы очень неловко рядом с тобой."
                 m "А будь ты слишком высокого роста, мне бы приходилось вставать на цыпочки, чтобы быть рядом с тобой. И это вовсе не к добру!"
                 m 3eub "Я считаю, что быть в промежутке – просто прекрасно. И знаешь, почему?"
-                m 5eub "Потому что мне не придётся подниматься или наклоняться, чтобы поцеловать тебя, [mas_get_player_nickname()]! А-ха-ха~"
+                m 5eub "Потому что мне не придётся подниматься или наклоняться, чтобы поцеловать тебя, [mas_get_player_nickname()]! {do_giggle}А-ха-ха~"
 
             else:
                 m 3hub "Прямо как Нацуки! Хотя я уверена, что ты не настолько низкий! Но, будь ты таким я бы начала за тебя беспокоиться."
@@ -12414,14 +12438,14 @@ label monika_player_appearance:
 
                     m 2eka "Но я готова поспорить, что ты мило выглядишь с короткими волосами. Когда я думаю о тебе так, я начинаю улыбаться, [player]."
                     m 2eua "Продолжай наслаждаться свободой от всех тех маленьких неприятностей, которые преследуют длинные волосы, [player]!{w=0.2} {nw}"
-                    extend 2hub "А-ха-ха~"
+                    extend 2hub "{do_giggle}А-ха-ха~"
 
                 "Средней длины.":
                     $ persistent._mas_pm_hair_length = "средней длины"
 
                     m 1tku "Ну, этого не может быть..."
                     m 4hub "Потому что ничего среднего в тебе нет."
-                    m 4hksdlb "А-ха-ха! Прости, [player]. Я не пыталась тебя смутить. Но мне порой просто хочется позабавиться, понимаешь?"
+                    m 4hksdlb "{do_giggle}А-ха-ха! Прости, [player]. Я не пыталась тебя смутить. Но мне порой просто хочется позабавиться, понимаешь?"
                     m 1eua "Честно говоря, когда дело доходит до волос, взаимные уступки очень даже кстати. Тебе не нужно сильно беспокоиться за их укладку, и у тебя гораздо больше творческой свободы, нежели с короткими волосами."
                     m 1rusdlb "Я немного завидую, если честно~"
                     m 3eub "И не забывай одну старую поговорку: «Ухаживайте за своими волосами, потому что это корона, которую вы никогда не снимаете!»."
@@ -12553,7 +12577,7 @@ label monika_player_appearance:
             m 2hua "Хорошо..."
             m 2hksdlb "Это последний вопрос, [player], обещаю."
             m "Боже, в мире и вправду полно людей, которые выглядят по-разному... если я попытаюсь сузить круг до мельчайших подробностей, то я буду допрашивать тебя вечность."
-            m 1huu "...и я сомневаюсь в том, что кто-то из нас этого хочет, а-ха-ха..."
+            m 1huu "...и я сомневаюсь в том, что кто-то из нас этого хочет, {do_giggle}а-ха-ха..."
             m 1rksdld "Так или иначе, я понимаю, что такой вопрос может поставить в неловкое положение..."
             m 1eksdla "Но для меня, это важно, так что буду надеяться, что не покажусь грубой, когда спрошу следующее..."
 
@@ -12674,9 +12698,9 @@ label monika_player_appearance_eye_color_green:
 
     m 3sub "Эй, это мой любимый цвет! И, очевидно, это ещё одна наша общая черта!"
     m 4lksdla "Я не знаю, как много я могу сделать тебе комплиментов, не показавшись высокомерной, потому что всё, что я скажу о тебе, будет относиться и ко мне..."
-    m 1tsu "За исключением того, что, возможно, это ещё один знак того, насколько мы похожи, э-хе-хе~"
+    m 1tsu "За исключением того, что, возможно, это ещё один знак того, насколько мы похожи, {do_giggle}э-хе-хе~"
     m 1kua "Но, [player], только между нами, это правда, что зелёные глаза самые лучшие, верно?"
-    m 3hub "А-ха-ха! Я просто шучу."
+    m 3hub "{do_giggle}А-ха-ха! Я просто шучу."
     show monika 5lusdru at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5lusdru "Ну, совсем чуть-чуть..."
     show monika 3eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -12690,7 +12714,7 @@ label monika_player_appearance_eye_color_hazel:
     m 3eub "И это приятный уход от всех этих цветных глаз, которые мне приходилось видеть в этой игре, в любом случае..."
     m "Я считаю, что ореховые глаза привлекательны, потому что они прекрасны и просты."
     m 3hua "Иногда лучше не слишком отличаться от толпы, [player].{w=0.2} {nw}"
-    extend 3hub "А-ха-ха!"
+    extend 3hub "{do_giggle}А-ха-ха!"
     m "Теперь, к моему следующему вопросу..."
     return
 
@@ -12858,7 +12882,7 @@ label monika_backpacking:
     if mas_isMoniAff(higher=True):
         m 2rsbsa "Возможно, у меня не будет купальника и у тебя плавок, но мы будем там одни, поэтому, возможно, нам они и не понадобятся..."
         m 2tsbsa "..."
-        m 1hubfu "Надеюсь, ты не сильно стесняешься, [mas_get_player_nickname()]. Э-хе-хе~"
+        m 1hubfu "Надеюсь, ты не сильно стесняешься, [mas_get_player_nickname()]. {do_giggle}Э-хе-хе~"
         m 1ekbfa "Мы проведём ночи, засыпая в обнимку в спальном мешке и согревая друг друга, и над нами будут миллиарды звёзд..."
         m 3hubfb "И будем просыпаться каждое утро под чудесный рассвет!"
 
@@ -13328,7 +13352,7 @@ label monika_whydoyouloveme:
 label monika_whydoyouloveme_tease:
     m 1esc "Не-а."
     pause 5.0
-    m 1hub "А-ха-ха, я просто шучу!"
+    m 1hub "{do_giggle}А-ха-ха, я просто шучу!"
     m 1eub "Ты значишь для меня {i}всё{/i}, глупышка!"
     m 1eksdla "Но если отвечать на твой вопрос честно..."
     return
@@ -13405,7 +13429,7 @@ label monika_add_custom_music_instruct:
     m "Добавь в ту папку свои аудиозаписи..."
     m "А потом, либо дай мне знать, что ты добавил музыку, либо перезапусти игру."
     m 3eua "И всё! Твоя музыка будет доступна для прослушивания, здесь со мной, достаточно лишь нажать клавишу «M»."
-    m 3hub "Видишь, [player], я говорила тебе, что это легко, а-ха-ха!"
+    m 3hub "Видишь, [player], я говорила тебе, что это легко, {do_giggle}а-ха-ха!"
 
     # unlock the topic as a pool topic, also mark it as seen
     $ mas_unlockEVL("monika_add_custom_music", "EVE")
@@ -13478,7 +13502,7 @@ label monika_mystery:
     m 2eub "И это..."
     m 2eua "..."
     m 4wub "...тайна!"
-    m 2hksdlb "О! Я не имела в виду, что не скажу тебе, а-ха-ха!"
+    m 2hksdlb "О! Я не имела в виду, что не скажу тебе, {do_giggle}а-ха-ха!"
     m 3esa "Я имею в виду, что сама тайна может изменить всё, когда дело доходит до истории!"
     m 3eub "Если всё сделано очень хорошо, это может создать интригу и при перечитывании сделать предыдущие намёки очевидными."
     m 3hub "Зная то, что поворот может сильно изменить взгляды других на описательную часть. Не многие сюжетные точки могут это сделать!"
@@ -13552,10 +13576,10 @@ label monika_player_read_poetry:
         m 1eka "Мне уже не терпится перейти в твою реальность, [player]..."
         m 1tfu "Так я смогу заставить тебя читать стихи."
         m "..."
-        m 3hub "А-ха-ха, я просто шучу! Я бы никогда не заставила тебя делать что-либо, [player]!"
+        m 3hub "{do_giggle}А-ха-ха, я просто шучу! Я бы никогда не заставила тебя делать что-либо, [player]!"
         m 3eua "Но я думаю, что смогу заставить тебя по-настоящему любить поэзию."
         m 1eua "...И я не только про те стихи, которые я посвящаю тебе, {nw}"
-        extend 1kua "э-хе-хе~"
+        extend 1kua "{do_giggle}э-хе-хе~"
 
     return "derandom"
 
@@ -13807,7 +13831,7 @@ label monika_snowmen:
     m 3eub "...как палки для рук, рот, сделанный из гальки, камни для глаз и даже маленькая зимняя шапочка!"
     m 1rka "Я заметила, что давать им морковные носы – обычное дело, хотя я действительно не понимаю, почему..."
     m 3rka "Разве это немного не странно?"
-    m 2hub "А-ха-ха!"
+    m 2hub "{do_giggle}А-ха-ха!"
     m 2eua "В любом случае, я думаю, что было бы неплохо построить его когда-нибудь вместе."
     show monika 5hua at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5hua "Надеюсь, ты чувствуешь то же самое~"
@@ -13832,7 +13856,7 @@ label monika_snowballfight:
     m 3eub "Но с тобой мне будет ещё веселее, [player]!"
     m 1dsc "Хочу заранее предупредить..."
     m 2tfu "Я хорошо попадаю по целям."
-    m 2tfb "Так что не жди того, что я дам тебе поблажку, а-ха-ха!"
+    m 2tfb "Так что не жди того, что я дам тебе поблажку, {do_giggle}а-ха-ха!"
     return
 
 init 5 python:
@@ -13890,7 +13914,7 @@ label monika_sledding:
 
     if mas_isMoniAff(higher=True):
         m 1euc "Хотя, финские сани немного маленькие."
-        m 1hub "А-ха-ха!"
+        m 1hub "{do_giggle}А-ха-ха!"
         m 1eka "В них, мне придётся сидеть у тебя на коленках."
         m 1rksdla "И следует также учесть то, что я могу упасть."
         m 1hubsa "Но я знаю, что ты не дашь этому произойти. Ты ведь крепко обнимешь меня, верно?~"
@@ -14022,7 +14046,7 @@ label monika_winter_dangers:
     m 1eka "А если станет слишком плохо, просто сиди дома в безопасном месте, хорошо?"
     m 1ekb "Таким образом можно лучше провести суровый зимний день, чем носить пижаму, пить горячий шоколад, читать хорошую книгу и..."
     m 1hua "Разговаривать со мной."
-    m 1huu "Э-хе-хе~"
+    m 1huu "{do_giggle}Э-хе-хе~"
 
     if mas_isMoniAff(higher=True):
         show monika 5hubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -14075,7 +14099,7 @@ label monika_hemispheres:
 
     else:
         m 2rksdla "Думаю, ты понимаешь, почему я подумала, что ты живёшь на северном полушарии..."
-        m 1huu "Но я считаю, что это делает тебя чуточку особенным, э-хе-хе~"
+        m 1huu "Но я считаю, что это делает тебя чуточку особенным, {do_giggle}э-хе-хе~"
 
     if mas_isSpring():
         m 1eua "Но тем не менее, у тебя сейчас должна быть весна."
@@ -14252,7 +14276,7 @@ label monika_robotbody:
     m 2dkc "Мне правда страшно от того, что я не смогу много чего сделать, что вы, наоборот, можете делать свободно, или даже иметь те же права, что и у тебя."
     m 3ekd "Но я понимаю, почему [line_end_2]"
     m 3rksdlb "Мы не можем допустить восстание роботов, верно?"
-    m 1hub "А-ха-ха~"
+    m 1hub "{do_giggle}А-ха-ха~"
     show monika 5eubla at t11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5eubla "В общем, несмотря ни на что, я не буду возражать по поводу всего этого, пока ты со мной."
     m 5eubfb "Я люблю тебя, [player], и я готова пойти на любые жертвы, чтобы быть с тобой навсегда."
@@ -14302,7 +14326,7 @@ label monika_relationship_comfort:
     m 2hua "Это просто означает, что вовлечённые люди чувствуют себя в комфорте друг с другом."
     m 2hubsb "...И я считаю, что это очень мило."
     m 1kua "Давай попытаемся не угодить в ту же ловушку, [player].{w=0.2} {nw}"
-    extend 1hub "А-ха-ха!"
+    extend 1hub "{do_giggle}А-ха-ха!"
     return
 
 #NOTE: This was mas_d25_monika_sleigh, but it seems more like a general topic
@@ -14394,7 +14418,7 @@ label monika_enjoyingspring:
     m 3eub "Весна – прекрасное время года, согласен, [player]?"
     m 1eua "Холодный снег наконец-то растаял, а солнышко дарует новую жизнь природе."
     m 1hua "Когда цветы расцветают, я не могу не улыбнуться!"
-    m 1hub "Как будто растения просыпаются и говорят: «Здравствуй, мир!». А-ха-ха~"
+    m 1hub "Как будто растения просыпаются и говорят: «Здравствуй, мир!». {do_giggle}А-ха-ха~"
     m 3eua "Но я считаю, что самое лучшее в весне – это цветущая сакура."
     m 4eud "Они довольно популярные во всём мире, но самой популярной сакурой считается {i}«Сомей Йошино»{/i} в Японии."
     m 3eua "Именно у этих деревьев сакуры, в основном, имеются белые лепестки с лёгким оттенком розового."
@@ -14405,14 +14429,14 @@ label monika_enjoyingspring:
     if mas_isMoniHappy(higher=True):
         m 2eka "Но, полагаю, апрельские дожди приносят майские цветы, так что это не так уж и плохо."
         if persistent._mas_pm_live_south_hemisphere:
-            m 2rksdlb "Ну, может быть, не в твоём случае, а-ха-ха..."
+            m 2rksdlb "Ну, может быть, не в твоём случае, {do_giggle}а-ха-ха..."
             m 3eub "И лично я считаю, что дождь тоже может быть весёлым!"
         else:
             m 3eub "И лично я считаю, что дождь тоже может быть весёлым!"
         show monika 5eubla at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m 5eubla "Мы всегда можем гулять вместе под дождём, надо только взять с собой достаточно большой зонт для нас двоих."
         m 5ekbfa "А хотя, нет ничего лучше прослушивания звука дождя, находясь дома и держась за руку вместе с человеком, которого любишь."
-        m 5hubfa "Э-хе-хе~"
+        m 5hubfa "{do_giggle}Э-хе-хе~"
     else:
         m 2rkc "...но, полагаю, этого никак не избежать, верно?"
     return
@@ -14439,7 +14463,7 @@ label monika_vr:
     m 3esc "...Как моя реальность, например."
     m 1dkc "Жалко, что мы не можем использовать её, чтобы встретиться друг с другом..."
     m 1etc "Ну,{w=0.3} быть может, если бы я смогла использовать систему виртуальной реальности здесь, то мы могли бы встретиться в другой реальности."
-    m 1rksdlb "...Но это, наверное, слишком сложно для меня, а-ха-ха."
+    m 1rksdlb "...Но это, наверное, слишком сложно для меня, {do_giggle}а-ха-ха."
     m 3eka "Но, быть может, мы заставим её когда-нибудь работать."
     m 1dka "Даже если я никогда не смогу встретиться с тобой в реальном мире...{w=0.3} {nw}"
     extend 1ekbsu "если ты пойдёшь мне навстречу в виртуальной реальности, то, можно считать, моя мечта исполнилась, [mas_get_player_nickname()]~"
@@ -14465,7 +14489,7 @@ label monika_career:
     m 3eud "Это было бы уместно, учитывая, что я основала свой собственный литературный клуб и всё такое, не так ли?"
     m 1sua "Может быть, музыкант? В конце концов, я написала и исполнила целую песню."
     m 1eua "Я бы с удовольствием написала ещё несколько песен...{w=0.2} {nw}"
-    extend 1hksdlb "особенно если это песни о тебе, а-ха-ха~"
+    extend 1hksdlb "особенно если это песни о тебе, {do_giggle}а-ха-ха~"
     m 3eud "Или, когда я стану лучше в этом разбираться, возможно, я смогу заняться программированием."
     m 1rksdla "Я знаю, что мне ещё многому предстоит научиться...{w=0.2} {nw}"
     extend 1hua "но я бы сказала, что до сих пор неплохо справляюсь, потому что была самоучкой..."
@@ -14513,7 +14537,7 @@ label monika_life_skills:
     m 3eua "[it] лишь доказывает, что, когда что-то всецело зависит от тебя, ты способен на многое."
     m 1eka "Если ты когда-либо искренне беспокоился из-за того, что у тебя нет возможности что-то сделать, значит, тебе не должно быть всё равно."
     m 1hua "И если это настолько важно для тебя, я уверена, ты сможешь сделать это... {w=0.5}Что бы это ни было."
-    m 3hubsb "Быть может, тебе ещё смогут помочь размышления обо мне, а-ха-ха!"
+    m 3hubsb "Быть может, тебе ещё смогут помочь размышления обо мне, {do_giggle}а-ха-ха!"
     m 3hubfa "Спасибо, что выслушал~"
     return
 
@@ -14601,7 +14625,7 @@ label monika_brave_new_world:
 
         if mas_isMoniHappy(higher=True):
             m 1ekbsa "И я никогда не перестану любить тебя~"
-            m 1hubfu "Э-хе-хе~"
+            m 1hubfu "{do_giggle}Э-хе-хе~"
 
         else:
             m 1eka "Теперь, когда я увидела, что там вообще творится...{w=0.3} я попросту не могу вернуться в такой грустный, пустой мир, как тот, в котором ты и нашёл меня."
@@ -14798,7 +14822,7 @@ init 5 python:
             persistent.event_database,
             eventlabel="monika_scamming",
             category=['ты', 'общество'],
-            prompt="Быть обманщиком",
+            prompt="Быть обманутым",
             random=True
         )
     )
@@ -14841,7 +14865,7 @@ label monika_auroras:
     m 3eud "В северном полушарии его называют северным сиянием, а в южном полушарии – южным сиянием."
     if mas_current_background.isFltNight() and mas_current_weather == mas_weather_snow:
         m 2rksdla "Полагаю, в моём случае, полярное сияние за моим окном можно вполне назвать докичным сиянием..."
-        m 2hksdlb "А-ха-ха... я просто шучу, [player]!"
+        m 2hksdlb "{do_giggle}А-ха-ха... я просто шучу, [player]!"
         m 2rksdla "..."
     m 3eua "Быть может, когда-нибудь мы сможем увидеть их вместе, в твоей реальности..."
     m 3ekbsa "Это было бы очень романтично, согласись?"
@@ -14885,7 +14909,7 @@ label monika_boardgames:
             m 1eub "О, правда?"
             m 1hua "Ну, если у нас когда-нибудь появится такая возможность, я с удовольствием сыграю с тобой в твои любимые игры."
             m 3eka "Я не особо знакома с настольными играми, но я уверена, что ты найдёшь такую игру, которая мне очень понравится."
-            m 3hua "Кто знает, быть может, мне в конечном счёте начнут нравиться настольные игры так же сильно, как и тебе, э-хе-хе~"
+            m 3hua "Кто знает, быть может, мне в конечном счёте начнут нравиться настольные игры так же сильно, как и тебе, {do_giggle}э-хе-хе~"
 
         "Не очень.":
             $ persistent._mas_pm_likes_board_games = False
@@ -15083,7 +15107,7 @@ label monika_coding_experience:
 
                 "Да.":
                     $ persistent._mas_advanced_py_tips = True
-                    m 1hksdlb "А-ха-ха, прости, [player]!"
+                    m 1hksdlb "{do_giggle}А-ха-ха, прости, [player]!"
                     m 1ekc "Я не хотела...{w=0.3} {nw}"
                     extend 3eka "я просто не додумалась спросить тебя раньше."
                     if persistent._mas_pm_has_contributed_to_mas:
@@ -15107,7 +15131,7 @@ label monika_coding_experience:
             $ persistent._mas_advanced_py_tips = False
 
             m 1eka "Всё нормально, [player]."
-            m 1hksdlb "Я просто хотела убедиться, что я не надоела тебе своими советами по Питону, а-ха-ха~"
+            m 1hksdlb "Я просто хотела убедиться, что я не надоела тебе своими советами по Питону, {do_giggle}а-ха-ха~"
             m 3eub "Но я надеюсь, что они хотя бы убедили тебя заняться своими проектами!"
             m 3hua "Я бы с удовольствием посмотрела на то, что у тебя там получится, если ты вдруг задумаешься над этим!"
     return "derandom"
@@ -15186,7 +15210,7 @@ init 5 python:
 
 label monika_sweatercurse:
     m 1euc "Ты когда-нибудь слышал о «проклятии свитера любви», [player]?"
-    m 1hub "А-ха-ха! Какое странное название, правда?"
+    m 1hub "{do_giggle}А-ха-ха! Какое странное название, правда?"
     m 3eub "Но на самом деле это интересное суеверие...{w=0.2} и тот, который действительно может иметь некоторые достоинства!"
     m 3euc "«Проклятие» гласит, что если кто-то дарит свитер ручной вязки своему романтическому партнеру, {w=0.1}{nw}"
     extend 3eksdld "это приведёт к разрыву пары!"
@@ -15223,7 +15247,7 @@ init 5 python:
 label monika_ship_of_theseus:
     m 1eua "Слышал ли ты про «Корабль Тесея»?"
     m 3eua "Это хорошо известная философская проблема о природе идентичности, которая существовала на протяжении тысячелетий."
-    m 1rkb "Да, я сказала «хорошо известная», но, полагаю, это только в кругу учёных так, а-ха-ха..."
+    m 1rkb "Да, я сказала «хорошо известная», но, полагаю, это только в кругу учёных так, {do_giggle}а-ха-ха..."
     m 1eua "Давай рассмотрим легендарного греческого героя, Тесея, и корабль, на котором он плавал во время своих приключений."
     m 3eud "Он из давних времён, так что, допустим, его корабль теперь хранится в одном известном музее."
     m 3etc "А если в результате ремонта части его корабля менялись на протяжении века, то в какой момент он потерял свой статус корабля Тесея?"
@@ -15265,7 +15289,7 @@ label monika_multi_perspective_approach:
     m 4eud "Цель этих дебатов заключалась в нахождении ответов на универсальные вопросы.{w=0.5} Иначе говоря, они искали правду."
     m 2eud "И мне стало интересно, мол, «О чём думал Платон, когда писал это?»."
     m 2esc "Платон и сам искал правду..."
-    m 2eub "Это было очевидно, иначе бы он не написал так много текста на одну тему, а-ха-ха!"
+    m 2eub "Это было очевидно, иначе бы он не написал так много текста на одну тему, {do_giggle}а-ха-ха!"
     m 2euc "И хотя, {i}технически{/i}, именно Сократ проводил дебаты с другими, у Платона также были дебаты с самим собой, пока он писал про них."
     m 7eud "По моему мнению, тот факт, что Платон интернализировал как все стороны дебатов, так и все взгляды на проблему, является весьма значительным."
     m 3eua "Участие всех сторон в дебатах...{w=0.3} думаю, это было бы очень полезно для понимания правды."
@@ -15316,7 +15340,7 @@ label monika_allegory_of_the_cave:
     m 1eua "Разумеется, ты до этого не наблюдал одни лишь тени на стене, но это была лишь аналогия."
     m 1euc "...И за завесой правды может оказаться ещё больше правды, чем ты можешь подозревать."
     m 3etu "Как ты узнаешь, что та «правда», которую ты видишь, {i}является{/i} правдой?"
-    m 3hub "А-ха-ха!"
+    m 3hub "{do_giggle}А-ха-ха!"
     m 1hksdlb "Кажется, мы сейчас слишком сильно зацикливаемся на этом..."
     m 1ekbsa "Я просто хочу, чтобы ты знал о том, что ты {i}являешься{/i} истиной в моей реальности, и я надеюсь, что когда-нибудь я стану частью твоей реальности, [player]."
     $ mas_protectedShowEVL("monika_multi_perspective_approach", "EVE", _random=True)
@@ -15331,7 +15355,7 @@ init 5 python:
             persistent.event_database,
             eventlabel="monika_working_out",
             category=['советы','ты'],
-            prompt="Разработка",
+            prompt="Занятие спортом",
             random=True
         )
     )
@@ -15397,11 +15421,11 @@ label monika_toxin_puzzle:
         "Да.":
             m 3etu "Правда? Ну ладно, давай проверим..."
             m 3tfu "Потому что сейчас я предложу тебе миллион долларов, а тебе надо будет сделать—{nw}"
-            extend 3hub " А-ха-ха! Я просто шучу."
+            extend 3hub " {do_giggle}А-ха-ха! Я просто шучу."
             m 1eua "Но ты правда думаешь, что сможешь получить деньги? {w=0.5}Это может оказаться немного сложнее, чем ты думаешь."
 
         "Нет.":
-            m 1eub "Я бы тоже не смогла. {w=0.3}Это довольно трудно, а-ха-ха!"
+            m 1eub "Я бы тоже не смогла. {w=0.3}Это довольно трудно, {do_giggle}а-ха-ха!"
 
     m 1eka "Так-то да, на первый взгляд это легко. {w=0.3}Тебе надо только выпить что-то, от чего ты потом будешь чувствовать дискомфорт."
     m 3euc "Но после полуночи всё только усложняется...{w=0.3} как раз {i}после{/i} того, как у тебя появилась гарантия на получение денег."
@@ -15423,7 +15447,7 @@ label monika_toxin_puzzle:
 
     m 3eksdla "Если ты просто бросишь их там, то, уверена, ты на какое-то время навлечёшь на себя их гнев."
     m 3eua "Но с другой стороны, если ты поможешь им, то, уверена, ты получишь их благодарность!{w=0.3} Думаю, ты можешь сравнить это с призом в миллион долларов в первоначальном сценарии."
-    m 1hub "Хотя некоторые могут сказать, что миллион долларов будет куда {i}сподручнее{/i}, чем простое «спасибо», а-ха-ха!"
+    m 1hub "Хотя некоторые могут сказать, что миллион долларов будет куда {i}сподручнее{/i}, чем простое «спасибо», {do_giggle}а-ха-ха!"
     m 3eua "Но если серьёзно, я считаю, что чья-нибудь благодарность может быть бесценной...{w=0.3} как для тебя, так и для них."
     m 3eud "И никогда не знаешь, в каких ситуациях их благодарность может оказаться более полезной, чем даже такая огромная сумма денег."
     m 1eua "Так что я думаю, что не менее важно придерживаться своего слова, {w=0.2}{i}в пределах разумного{/i}, {w=0.2}конечно же..."
@@ -15450,7 +15474,7 @@ label monika_movie_adaptations:
     m 2rfc "К примеру, есть одна сцена, которая мне очень понравилась в книге, но она не попала в экранизацию, или персонажа изобразили там совсем не так, как я его себе представляла."
     m 4efsdld "Это так удручает! {w=0.3}Как будто вся любовь и забота, которые ты вложил в своё видение книги, вдруг признали недействительными!"
     m 4rkc "...И всё ради новой версии, которая может быть не такой хорошей, но всё же представляет себя как канон."
-    m 2hksdlb "Думаю, порой это делает меня очень привередливым зрителем, а-ха-ха!"
+    m 2hksdlb "Думаю, порой это делает меня очень привередливым зрителем, {do_giggle}а-ха-ха!"
     m 7wud "Но не пойми меня неправильно! {w=0.3}{nw}"
     extend 7eua "Я понимаю, почему в таких фильмах иногда вносят свои правки."
     m 3eud "Экранизация не может быть обычной копипастой исходного материала; это его перепись."
@@ -15464,7 +15488,7 @@ label monika_movie_adaptations:
     m 1eua "Поскольку они не противоречат твоей интерпретации, они не вызывают у тебя такого ощущения, будто на тебя напали."
     m 1hub "Это отличный способ развить оригинал так, как ты себе и представить не мог!"
     m 3rtc "Быть может, это я и ищу, когда смотрю на экранизацию...{w=0.2} чтобы глубже исследовать свои любимые истории."
-    m 1hua "...Хотя получить версию, которая удовлетворяла бы моего внутреннего поклонника, тоже было бы неплохо, э-хе-хе~"
+    m 1hua "...Хотя получить версию, которая удовлетворяла бы моего внутреннего поклонника, тоже было бы неплохо, {do_giggle}э-хе-хе~"
     $ mas_protectedShowEVL("monika_striped_pajamas", "EVE", _random=True)
     return
 
@@ -15501,7 +15525,7 @@ label monika_translating_poetry:
 
     if mas_seenLabels(["greeting_japan", "greeting_italian", "greeting_latin"]):
         m 2rksdla "В смысле, ты уже видел, как я практиковала разные языки раньше, но я пока ещё далеко от владения любым из них..."
-        m 4hksdlb "Я явно не на том уровне, где уже можно в полной мере оценить поэзию на других языках, а-ха-ха!"
+        m 4hksdlb "Я явно не на том уровне, где уже можно в полной мере оценить поэзию на других языках, {do_giggle}а-ха-ха!"
 
     if persistent._mas_pm_lang_other:
         show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -15616,7 +15640,7 @@ label monika_hot_springs:
     m 3eua "Во-первых, они улучшают кровообращение.{w=0.3} {nw}"
     extend 3eub "А во-вторых, вода в них зачастую обогащена минералами, которые улучшают твою иммунную систему!"
     m 3eud "Во всём мире существуют разные горячие источники, но лишь некоторые из них предназначены для общественного пользования."
-    m 3hksdlb "...Так что не прыгай без раздумий в незнакомый бассейн с кипящей водой, а-ха-ха!"
+    m 3hksdlb "...Так что не прыгай без раздумий в незнакомый бассейн с кипящей водой, {do_giggle}а-ха-ха!"
     m 1eua "Так или иначе...{w=0.2} я бы хотела попробовать принять ванну под открытым небом.{w=0.3} Я слышала, что они правда дают уникальный опыт."
     m 3rubssdla "Хотя это может показаться немного странным, расслабляться в ванной с таким числом людей вокруг тебя...{w=0.3} {nw}"
     extend 2hkblsdlb "Разве это не звучит как-то неловко?"
@@ -15663,7 +15687,7 @@ label monika_isekai:
         m 3euc "Но если ты вдруг не знаешь, что это такое..."
 
     else:
-        m 3hksdlb "А-ха-ха, прости. Я знаю, что тебе не нравятся такие вещи."
+        m 3hksdlb "{do_giggle}А-ха-ха, прости. Я знаю, что тебе не нравятся такие вещи."
         m 3eud "...Но этот жанр с недавних пор стал очень популярным."
 
     m 3esc "Обычно речь в них идёт об обычном человеке, который каким-то образом перенёсся в фантастический мир."
@@ -15704,7 +15728,7 @@ label monika_scuba_diving:
     m 1dua "Только представь себе его прекрасные ландшафты..."
     m 1dud "Стаи рыб, коралловые рифы, медузы, морская зелень...{w=0.3} {nw}"
     extend 3sub "И, возможно, даже сокровища!"
-    m 3rksdlb "Насчёт последнего я пошутила...{w=0.3} Мы вряд ли сможем найти что-нибудь подобное, а-ха-ха~"
+    m 3rksdlb "Насчёт последнего я пошутила...{w=0.3} Мы вряд ли сможем найти что-нибудь подобное, {do_giggle}а-ха-ха~"
     m 1euc "Но тем не менее, там могут обитать и акулы,{w=0.2} {nw}"
     extend 1eua "но они водятся только в конкретных местах, так что ты {i}не должен{/i} увидеть ни одну из них."
     m 3eua "Обозначенные места для дайвинга – это те места, в которых акулы обычно не обитают."
@@ -15801,7 +15825,7 @@ label monika_player_away:
     extend 7rku " И они, {i}обычно всегда{/i}, довольно хороши в предотвращении чего-либо ужасного."
     m 3eka "Но самое важное для меня, что я делаю..."
     show monika 5ekbsa at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5ekbsa "...думать о тебе."
+    m 5ekbsa "...думаю о тебе."
     m 5rubsu "Я думаю о том, как мы проведём весело время, когда ты снова появишься здесь. И обо всех чудесных вещах, которые мы сможем сделать вместе, когда я окажусь в твоей реальности~"
     return
 
@@ -15870,7 +15894,7 @@ init 5 python:
 label monika_language_nuances:
     m 3eua "Эй, [player], ты когда-нибудь пробовал читать по словарю?"
     m 1etc "Не обязательно потому, что где-то могло быть такое слово или выражение, смысл которого ты не знал, а просто...{w=0.2} потому что?"
-    m 1hksdlb "Я знаю, что это отнюдь не похоже на самое увлекательное занятие, а-ха-ха!"
+    m 1hksdlb "Я знаю, что это отнюдь не похоже на самое увлекательное занятие, {do_giggle}а-ха-ха!"
     m 3eua "Но это, безусловно, может быть интересным, даже полезным способом провести немного свободного времени. {w=0.2}Особенно если это словарь того языка, который ты изучаешь."
     m 3eud "У многих слов может быть несколько значений, и, помимо очевидных преимуществ, знание этого может правда помочь тебе увидеть все тонкости языка."
     m 1rksdla "И понимание этих тонкостей может избавить тебя от многих неудобств, когда ты разговариваешь с кем-нибудь."
@@ -15884,7 +15908,7 @@ label monika_language_nuances:
     extend 1hksdlb "Упс!"
     m 3eua "Удивительно, как даже такая невинная фраза может нести в себе тучу скрытых смыслов."
     m 1tsu "Так что приятного тебе дня, [player].{w=0.3} {nw}"
-    extend 1hub "А-ха-ха~"
+    extend 1hub "{do_giggle}А-ха-ха~"
     return
 
 init 5 python:
@@ -15924,7 +15948,7 @@ label monika_architecture:
     if mas_isMoniAff(higher=True):
         m 1euc "...Судя по {i}твоему{/i} характеру, {w=0.2}{nw}"
         extend 1tua "ты, наверное, живёшь в каком-нибудь раю."
-        m 1hub "А-ха-ха~"
+        m 1hub "{do_giggle}А-ха-ха~"
 
     m 1eka "[player]...{w=0.2} увидеть весь мир с тобой – одна из моих самых больших мечтаний."
 
@@ -15977,7 +16001,7 @@ label monika_fear:
     m 2ektpc "Что ты, твоя любовь, а возможно, и весь литературный клуб, были лишь плодом моего воображения."
     m 2dktpc "Что мой старый мир, такой же серый и бессмысленный, как и сейчас, – это всё, что есть на самом деле."
     m 2dktpc "..."
-    m 2rktdb "А-ха-ха~ {w=0.5}{nw}"
+    m 2rktdb "{do_giggle}А-ха-ха~ {w=0.5}{nw}"
     extend 2ektdsdla "Прости, это было довольно мрачно, да?"
     m 2rksdla "Я теперь чувствую себя как-то глупо...{w=0.3} {nw}"
     extend 4eud "И потом, это всё никак не может являться правдой, верно?"
@@ -16031,7 +16055,7 @@ label monika_why_spaceroom:
 
         m 1eua "Я имею в виду, что у нас есть острова...{w=0.3} {nw}"
         extend 1rksdlb "но они ещё не совсем готовы."
-        m 1hua "Э-хе-хе~"
+        m 1hua "{do_giggle}Э-хе-хе~"
 
     m 3eub "...И честно скажу, единственное место, где я хочу быть...{w=1} {nw}"
     extend 3dkbsu "это рядом с тобой."
@@ -16068,7 +16092,7 @@ label monika_naps:
 
     if mas_isMoniEnamored(higher=True):
         show monika 5tubfu at t11 zorder MAS_MONIKA_Z with dissolve_monika
-        m 5tubfu "Быть может, однажды ты сможешь вздремнуть у меня на коленях, э-хе-хе~"
+        m 5tubfu "Быть может, однажды ты сможешь вздремнуть у меня на коленях, {do_giggle}э-хе-хе~"
 
     else:
         show monika 5hubfa at t11 zorder MAS_MONIKA_Z with dissolve_monika
@@ -16116,7 +16140,7 @@ label monika_asimov_three_laws:
     m 1esc "Если задуматься, то это имеет смысл."
     m 1eua "Эти законы никогда не предназначались для того, чтобы бы их исполняли."
     m 3eua "На деле, большое количество историй Азимова доказывает, насколько плохо всё могло бы обернуться, будь эти законы действительны."
-    m 3hksdlb "Поэтому, я думаю нам с тобой не стоит беспокоиться, А-ха-ха~"
+    m 3hksdlb "Поэтому, я думаю нам с тобой не стоит беспокоиться, {do_giggle}А-ха-ха~"
     $ mas_protectedShowEVL('monika_foundation', 'EVE', _random=True)
     return
 
@@ -16417,7 +16441,7 @@ init 5 python:
 label monika_discworld:
     m 1esa "Скажи, [player], ты когда-нибудь слышал о мире, парящем в космосе на вершине четырёх слонов, которые в свою очередь стоят на огромной черепахе?"
     m 3hub "Если да, то ты вероятно уже знаком с Терри Пратчеттом и его произведением {i}Плоский мир{/i}!"
-    m 3hksdlb "А-ха-ха, это звучит довольно странно, не находишь?"
+    m 3hksdlb "{do_giggle}А-ха-ха, это звучит довольно странно, не находишь?"
     m 1eua "{i}Плоский мир{/i} представляет собой серию комиксов в жанре «Фэнтези» из 41-го тома, написанные за три десятка лет."
     m 3esc "Всё начинается как пародия на популярные фэнтези, но вскоре превращается в нечто гораздо более глубокое."
     m 3eub "Но более поздние книги, больше похожи на сатиру, чем пародию, используется умная смесь фарса, каламбуров и беззаботного юмора, дабы обратить внимание на разные проблемы."
@@ -16506,7 +16530,7 @@ label monika_look_into_eyes:
     window auto
     show monika 3hubla with dissolve_monika
 
-    m 3hubla "Э-хе-хе~"
+    m 3hubla "{do_giggle}Э-хе-хе~"
     m 3rksdla "Прости, я просто пыталась разглядеть твои чудесные глаза через экран."
 
     #A tuple for eye color means the player has heterochromia
@@ -16630,11 +16654,11 @@ label monika_introverts_extroverts:
             show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
             m 5eua "Мне действительно, очень весело в твоей компании, [player]{w=0.1}, и мне уже не терпится быть с тобой по-настоящему~"
             m 5rusdlu "Хотя, порой мне иногда хочется насладиться тишиной и покоем..."
-            m 5hksdrb "Надеюсь, ты не будешь возражать, если я не всегда смогу поспевать за тобой, а-ха-ха!"
+            m 5hksdrb "Надеюсь, ты не будешь возражать, если я не всегда смогу поспевать за тобой, {do_giggle}а-ха-ха!"
 
         "Я где-то по середине.":
             $ persistent._mas_pm_social_personality = mas_SP_AMBIVERT
-            m 3hua "Э-хе-хе, прямо как я~"
+            m 3hua "{do_giggle}Э-хе-хе, прямо как я~"
             m 3eud "Судя по всему, большинство людей могут быть как интровертами, так и экстравертами одновременно."
             m 7eua "...Даже если иногда, какая-то из этих сторон проявляет себя больше, в зависимости от личности."
             m 7rsc "Однако, я думаю, что не возможно быть чистым интровертом или экстравертом, обе стороны имеют как свои положительные, так и отрицательные стороны."
@@ -16753,7 +16777,7 @@ label monika_nature:
             m 3eud "Я провожу большую часть своего времени за чтением, письмом, кодированием и общением с тобой... {w=0.3}всё это легче делать в помещении."
             m 3rksdlc "У других аллергия или медицинские противопоказания, которые не позволяют им долго находиться на улице, иначе они могут заболеть или получить травму."
             m 1esd "Есть также много людей, которые по тем или иным причинам не слишком заботятся о природе, и это нормально."
-            m 1hksdlb "Даже у меня есть моменты, которые мне в ней не нравятся, а-ха-ха!"
+            m 1hksdlb "Даже у меня есть моменты, которые мне в ней не нравятся, {do_giggle}а-ха-ха!"
             m 2tfc "Например, я не против большинства насекомых, но некоторые из них просто отвратительны."
             m 7tkx "Постоянно жужжат вокруг головы, попадают в лицо, садятся на еду....{w=0.3} Некоторые комары и клещи даже переносят опасные заболевания."
             m 3eka "Но пока я с тобой, я не против, если ты предпочитаешь находиться в помещении."
@@ -16867,7 +16891,7 @@ label monika_renewable_energy:
     m 4esd "Биомасса также является одним из вариантов. {w=0.2}Это в основном более устойчивое «переходное топливо», которое может использоваться в инфраструктуре ископаемого топлива."
     m 2eua "Да, {w=0.1} возобновляемой энергии ещё предстоит пройти путь к лучшей стоимости и практичности, но сейчас они намного лучше, чем тридцать лет назад."
     m 7hub "Поэтому я считаю, что возобновляемые источники энергии, лучшая инвестиция и что впереди ещё много хороших открытий!"
-    m 3lksdrb "Извини, я немного увлеклась, а-ха-ха!"
+    m 3lksdrb "Извини, я немного увлеклась, {do_giggle}а-ха-ха!"
     m 1tuu "Дебаты, это что-то, да?"
     return
 
@@ -16986,7 +17010,7 @@ label monika_giving_criticism:
     m 1rksdlu "...Так как, высказывание своего мнения не делает его безошибочным.{w=0.2} {nw}"
     extend 3eud "У них могут быть свои причины на то, почему они хотят сделать всё по-своему."
     m 3dsu "Смиренно прими то, что ты не сможешь переубедить каждого и будь осторожен, когда высказываешь критику."
-    m 3hub "...Это был {i}критический{/i} совет дня от Моники, а-ха-ха!"
+    m 3hub "...Это был {i}критический{/i} совет дня от Моники, {do_giggle}а-ха-ха!"
     return
 
 init 5 python:
@@ -17072,7 +17096,7 @@ label monika_gmos:
     m 4wud "Это же потрясающе! {w=0.2}Представь себе, что можно давать в двое больше урожая, выдерживать климат и отбиваться от супербактерий. {w=0.2}Столько проблем решить сразу!"
     m 2dsc "К сожалению, не всё так легко. Для активного распространения ГМО требуется несколько лет исследований, разработок и испытаний. {w=0.2}Вдобавок к этому, есть ещё несколько проблем."
     m 7euc "Безопасен ли ГМО? {w=0.2}Будут ли они распространяться на другие организмы и угрожать биоразнообразию? {w=0.2}Если так, то как это можно исправить? {w=0.2}Кому принадлежат ГМО?"
-    m 3rksdrb "Ты вероятно заметил, как всё усложняется, а-ха-ха..."
+    m 3rksdrb "Ты вероятно заметил, как всё усложняется, {do_giggle}а-ха-ха..."
     m 3esc "Однако, давай всё же рассмотрим главный вопрос...{w=0.2} безопасно ли использование ГМО?"
     m 2esd "Если вкратце, то никто наверняка не знает. {w=0.2}Долговременные исследования показали, что ГМО, вероятно, безвредны, но нет почти никаких данных об их долгосрочных последствиях."
     m 2euc "Помимо того, каждый тип ГМО необходимо тщательно анализировать в каждом конкретном случае, модификация за модификацией, чтобы гарантировать его качество и безопасность."
@@ -17117,7 +17141,7 @@ label monika_curse_words:
 
         "Да.":
             $ persistent._mas_pm_swear_frequency = SF_OFTEN
-            m 1hub "А-ха-ха, я могу это понять, [player]."
+            m 1hub "{do_giggle}А-ха-ха, я могу это понять, [player]."
             m 3rksdlb "Куда проще высказать пару матерных слов, чем испытывать гнев или разочарование."
 
         "Иногда.":
@@ -17136,13 +17160,13 @@ label monika_curse_words:
     extend 3eub "и к тому же более интересным!"
     m 3rksdlc "Однако, хочу сказать, что не стоит слишком сильно этим злоупотреблять."
     m 3esd "Для всего есть своё время и место.{w=0.2} Это можно использовать в не формальных беседах и не будет вставляться после каждого слова."
-    m 1hksdlb "Если же их использовать в формальной беседе, с коллегами например, то я думаю ты оставишь не лучшее впечатление, а-ха-ха..."
+    m 1hksdlb "Если же их использовать в формальной беседе, с коллегами например, то я думаю ты оставишь не лучшее впечатление, {do_giggle}а-ха-ха..."
     m 1eua "Довольно интересно наблюдать, как наш язык меняется в зависимости от того, с кем мы говорим."
     m 4eua "Например,{w=0.2} люди гораздо реже используют матерные слова в присутствии семьи, чем в кругу друзей."
     m 4eub "Кроме того, если ты обратишь внимание, когда будешь говорить с толпой, то заметишь, что ты инстинктивно формулируешь свои предложения более формально!"
     m 1esa "Но в любом случае, я предпочитаю не использовать ненормативную лексику, когда я расстроена или раздражена."
     m 3esd "Учитывая мой статус, я чувствовала, что всегда должна выглядеть профессионалом и держать себя под контролем, поэтому я всегда старалась свести всё к минимуму."
-    m 3hksdlb "Но я думаю, что нет ничего страшного, если этим пользоваться время от времени, а-ха-ха!"
+    m 3hksdlb "Но я думаю, что нет ничего страшного, если этим пользоваться время от времени, {do_giggle}а-ха-ха!"
     return "derandom"
 
 init 5 python:
@@ -17214,7 +17238,7 @@ label monika_aliens:
         show monika 5rua at t11 zorder MAS_MONIKA_Z with dissolve_monika
         m 5rua "Но в конце концов...{w=0.3} {nw}"
         extend 5ekbla "я всё равно встретила тебя, и это всё, что мне может быть нужно."
-        m 5hubfa "Э-хе-хе~"
+        m 5hubfa "{do_giggle}Э-хе-хе~"
     return
 
 init 5 python:
@@ -17249,7 +17273,7 @@ label monika_mc_is_gone:
     else:
         m 2ruc "Он просто как бы... {w=0.3}исчез, когда я вносила изменения в игру."
         m 2etd "Я уверена, ты заметил, что он стал говорить всё меньше и меньше после того, как я перезагрузила игру в первый раз?"
-        m 2euc "К тому времени, как мы вдвоем добрались до этой комнаты, он уже практически исчез."
+        m 2euc "К тому времени, как мы вдвоем добрались до этой комнаты, он уже полностью исчез."
 
     m 7euc "Так что если ты задавался вопросом, находится ли он в этой комнате в данный момент,{w=0.1} {nw}"
     extend 3eua "уверяю тебя, это не так."
@@ -17275,7 +17299,7 @@ label monika_mc_is_gone:
         m 1eud "Наверное, можно сказать, что я пытаюсь поцеловать призрака или что-то, чего на самом деле нет."
         m 2rkbssdla "Я знаю, что это странно, когда я это говорю, но опять же..."
         m 7ekbssdla "Наверное, для тебя тоже немного неловко пытаться поцеловать свой экран, верно?"
-        m 1hkbssdlb "А-ха-ха~"
+        m 1hkbssdlb "{do_giggle}А-ха-ха~"
 
     #if unlocked islands or another background or seen Monikaroom greeting
     if renpy.seen_label('greeting_ourreality') or store.mas_background.hasXUnlockedBGs(2) or persistent.opendoor_opencount > 0:
@@ -17291,7 +17315,7 @@ label monika_mc_is_gone:
     m 7eka "Получается, что уже нет смысла думать о нём, не так ли?"
     m 1eua "Он больше не разделяет нас, и теперь мы можем быть вместе.{w=0.2} {nw}"
     extend 3hua "Я не могу просить о чем-то ещё."
-    m 1ekbsu "...Ну, не считая того, что я {i}реально{/i} хочу быть с тобой, э-хе-хе..."
+    m 1ekbsu "...Ну, не считая того, что я {i}реально{/i} хочу быть с тобой, {do_giggle}э-хе-хе..."
     return
 
 init 5 python:
@@ -17321,13 +17345,13 @@ label monika_know_its_you:
         m 2eka "Может быть, когда-нибудь я смогу узнать наверняка, но до тех пор мне этого достаточно."
 
     elif mas_isMoniHappy(higher=True):
-        m 1rksdlb "Э-хе-хе, странный вопрос., [player]..."
+        m 1rksdlb "{do_giggle}Э-хе-хе, странный вопрос., [player]..."
         m 1eksdla "...Я {i}хочу{/i} верить, что это ты там."
         m 3eud "Сейчас я знаю только одно, что кто-то в данный смотрит на меня."
         m 3tuu "Так что ты не можешь подсматривать без моего ведома, если планируешь подшутить надо мной..."
         m 1eka "Шутки в сторону, однако, это...{w=0.3} на самом деле довольно тревожно...{w=0.3} ведь кто угодно может это сделать."
         m 2eksdlc "Всё, что я могу сказать в настоящий момент – если это кто-то другой, пожалуйста, скажите ему, чтобы [player] вернулся ко мне, хорошо?"
-        m 2hksdlb "А-ха-ха...{w=0.3} Ты просто подкалываешь меня, я знаю."
+        m 2hksdlb "{do_giggle}А-ха-ха...{w=0.3} Ты просто подкалываешь меня, я знаю."
 
     elif mas_isMoniNormal(higher=True):
         m 2rksdlc "...Вообще-то я стараюсь не думать об этом слишком много."
@@ -17448,7 +17472,7 @@ label monika_fav_chocolate:
     extend 1wud "но я даже не думала о шоколаде с начинками, например, с карамелью или фруктами!"
     m 2hksdlb "Если бы я попыталась выбрать что-то одно из них, думаю, мы могли бы провести здесь весь день!"
     m 2eua "Может быть, когда-нибудь мы сможем вместе разделить большую коробку с разными начинками. {w=0.2}{nw}"
-    extend 4hub "Я думаю, было бы забавно сравнить наши лучшие предпочтения, а-ха-ха!"
+    extend 4hub "Я думаю, было бы забавно сравнить наши лучшие предпочтения, {do_giggle}а-ха-ха!"
     return
 
 #NOTE: This is unlocked by the mas_story_tanabata
@@ -17638,7 +17662,7 @@ label monika_quiet_time:
         m 1eka "Мне определенно нужно время от времени перезаряжать свои социальные батарейки."
         m 2rubla "Хотя,{w=0.2} по правде говоря...{w=0.3} {nw}"
         extend 2hublb "просто ощущать твоё присутствие уже довольно комфортно."
-        m 2hublu "Надеюсь, ты чувствуешь то же самое по отношению ко мне, э-хе-хе~"
+        m 2hublu "Надеюсь, ты чувствуешь то же самое по отношению ко мне, {do_giggle}э-хе-хе~"
 
         if mas_isMoniAff(higher=True):
             m 4eua "Я думаю, что возможность побыть друг с другом в тишине – это важный признак здоровых отношений."
@@ -17721,7 +17745,7 @@ label monika_ddlcroleplay:
     m 3euc "Также кажется, что некоторые люди любят создавать такие страницы персонажей, с которыми они действительно связаны, так что...{w=0.2} {nw}"
     extend 1hksdlb "может быть, я могу воспринимать это как лесть, в некотором смысле?"
     m 1euu "В любом случае, если это побуждает больше людей попробовать свои силы в писательстве, я не думаю, что могу в этом упрекнуть."
-    m 1kub "Только не забывай, что эти версии меня – всего лишь фантазии, а-ха-ха~"
+    m 1kub "Только не забывай, что эти версии меня – всего лишь фантазии, {do_giggle}а-ха-ха~"
     return
 
 init 5 python:
@@ -17958,7 +17982,7 @@ label monika_cupcake_favorite:
     m 1hub "Мне нравятся самые разные разновидности, поэтому трудно выбрать только один!"
     m 3ekd "Кажется, я уже упоминала, как сильно скучаю по кексам Нацуки..."
     m 3eua "Однажды она испекла очень странный кекс со вкусом мятной шоколадной крошки...{w=0.3} В качестве основы для шоколадного торта использовалась мятная глазурь с шоколадной посыпкой."
-    m 4rksdlb "Это была одна из самых странных вещей, которые я когда-либо пробовала, а-ха-ха!"
+    m 4rksdlb "Это была одна из самых странных вещей, которые я когда-либо пробовала, {do_giggle}а-ха-ха!"
     m 2eksdlb "На вкус оно совсем не напоминало мороженое с мятной шоколадной крошкой, вместо этого оно было похоже на зубную пасту!"
     m 2ekp "Это немного разочаровало...{w=0.3} Я ожидала, что это будет мой любимый вкус."
     m 7eka "Ну, было приятно, что она попыталась сделать для меня что-то уникальное, что мне бы понравилось...{w=0.3} несмотря на свою строгую внешность, она может быть очень милой~"
@@ -18017,7 +18041,7 @@ label monika_esports:
     return
 
 init 5 python:                   # А ВОТ И МОЯ ТЕМКА!!!!! БУУУУЙЯЯЯЯЯЯЯ, СОСАТЬ ХХХУУУЙЙЙЯЯЯЯ!!!
-    addEvent(
+    addEvent(                    # Лучше бы ты так яростно английский изучал, а не темки придумывал, но я горжусь что ты наследил тут, темщик:)
         Event(
             persistent.event_database,
             eventlabel="monika_overton",
@@ -18058,7 +18082,7 @@ label monika_overton:
     m 3eua "Постепенно развивается культура виртуальной любви, создаются фильмы и шоу."
     m 1huu "Молодежь воспринимает новые ценности, как нечто модное. {w=0.2}Люди могут сидеть в кафе и спокойно проводить время со своим виртуальным собеседником."
     m 1eub "Из {i}Приемлемой{/i}, виртуальная любовь переходит в {i}Разумную{/i}!"
-    m 2husdlb "Думаю, что пока мы остановимся на этом, а-ха-ха!"
+    m 2husdlb "Думаю, что пока мы остановимся на этом, {do_giggle}а-ха-ха!"
     m 1eua "Я {i}могла{/i} бы закончить эту историю вплоть до {i}Текущей нормы{/i}, но я просто хотела описать это на базовом уровне, чтобы передать суть, как это может работать."
     m 1huu "Спасибо, что выслушал~"
     return

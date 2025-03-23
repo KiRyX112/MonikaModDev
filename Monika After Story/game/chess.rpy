@@ -977,7 +977,7 @@ label mas_chess_remenu:
                 m 4hua "Существует девятьсот шестьдесят возможных стартовых позиций, поэтому называется {i}Шахматы-960{/i}."
                 m 1eua "{i}Шахматы-960{/i} позволят игрокам избежать сложной шахматной теории и при этом проверить своё понимание игры."
                 m 1etu "Так какой режим ты предпочитаешь? {w=0.3}{nw}"
-                extend 1hub "А-ха-ха~"
+                extend 1hub "{do_giggle}А-ха-ха~"
 
                 # There goes our Monika again.
                 show monika at t21
@@ -1484,7 +1484,7 @@ label mas_chess_dlg_quicksave_lost:
         pause 1.0
         m 1eka "Но не волнуйся, я всё исправлю...{w=0.3}{nw}"
         extend 3hua "Начав новую игру!"
-        m 3hub "А-ха-ха-ха~"
+        m 3hub "{do_giggle}А-ха-ха~"
 
     elif qs_gone_count == 3:
         m 1lksdlc "Я такая неуклюжая, [player]...{w=0.3} Прости."

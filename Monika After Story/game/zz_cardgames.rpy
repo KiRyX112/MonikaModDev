@@ -29,7 +29,7 @@ init 5 python in mas_nou:
         Solid,
         Null
     )
-    from store.mas_cardgames import *
+    from store.mas_cardgames import Table, DRAG_TOP, DRAG_CARD
 
 
     ASSETS = "mod_assets/games/nou/"
@@ -83,7 +83,7 @@ init 5 python in mas_nou:
         NUMBER_LABELS = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
         ACTION_LABELS = ("Skip", "Draw Two", "Reverse")
         WILD_LABELS = ("Wild", "Wild Draw Four")
-        COLORS = ("red", "blue", "green", "yellow")
+        COLORS = (_("red"), _("blue"), _("green"), _("yellow"))
 
         # Coordinates
         DRAWPILE_X = 445
@@ -116,32 +116,32 @@ init 5 python in mas_nou:
         QUIPS_MONIKA_RESHUFFLE_DECK = (
             _("О, позволь мне перетасовать всё снова.{w=1.5}{nw}"),
             _("Ой, давай попробуем ещё раз.{w=1.5}{nw}"),
-            _("Я сомневаюсь, что мы хотим плюс четыре в качестве первой карты, а-ха-ха~{w=1.5}{nw}"),
+            _("Я сомневаюсь, что мы хотим плюс четыре в качестве первой карты, {do_giggle}а-ха-ха~{w=1.5}{nw}"),
             _("Нет, нет, нет... давай ещё раз перемешаем...{w=1.5}{nw}")
         )
 
         # Quips that Monika can say at the start of each round
         QUIPS_MONIKA_PLAYS_TURN = (
-            _("О, теперь моя очередь."),
+            _("Теперь моя очередь."),
             _("Мой черёд~"),
             _("Я играю первой!~")
         )
         QUIPS_MONIKA_SKIPS_TURN = (
-            _("Ох, я должна пропустить свой ход."),
+            _("Ох, я должна пропустить ход."),
             _("Повезло тебе, мне придётся пропустить этот ход."),
             _("Бли-и-ин, мне придётся пропустить свой ход.")
         )
         QUIPS_MONIKA_DRAWS_CARDS = (
             _("Ох, я должна взять ещё."),
-            _("Повезло тебе, я дам тебе фору с этими картами."),
+            _("Какой ты везучий, я дам тебе фору с этими картами."),
             _("Боже, ещё карты..."),
-            _("Ох, похоже, мне придётся взять больше карт.")
+            _("Ох, похоже мне придётся взять больше карт.")
         )
         QUIPS_MONIKA_WILL_REFLECT = (
-            _("Я подготовилась! Э-хе-хе~"),
+            _("Я подготовилась! {do_giggle}Э-хе-хе~"),
             _("Нет, нет, нет~ я не собираюсь пропускать этот ход!"),
             _("Нет! На этот раз ты пропустишь ход~"),
-            _("Мне повезло, у меня есть несколько хороших карт! Э-хе-хе~"),
+            _("Мне повезло, у меня есть несколько хороших карт! {do_giggle}Э-хе-хе~"),
             _("Я была готова~")
         )
 
@@ -155,7 +155,7 @@ init 5 python in mas_nou:
             _("Не повезло!")
         )
         QUIPS_PLAYER_DRAWS_CARDS = (
-            _("Давай, бери ещё больше карт, э-хе-хе~"),
+            _("Давай, бери ещё больше карт, {do_giggle}э-хе-хе~"),
             _("Упс, похоже, тебе придется взять ещё.")
         )
 
@@ -183,26 +183,28 @@ init 5 python in mas_nou:
 
         # Quips when you reach the cards limit
         QUIPS_MONIKA_CARDS_LIMIT = (
-            _("[player]...{w=0.2}смотри, я едва могу держать все свои карты!{w=0.5} Я никак не могу взять ещё, э-хе-хе~"),
+            _("[player]...{w=0.2}смотри, я едва могу держать все свои карты!{w=0.5} Я никак не могу взять ещё, {do_giggle}э-хе-хе~"),
         )
         QUIPS_PLAYER_CARDS_LIMIT = (
-            _("У тебя карты уже не помещаются в руке, а-ха-ха.{w=0.5} Тебе необязательно забирать их все, [player]."),
+            _("У тебя карты уже не помещаются в руке, {do_giggle}а-ха-ха.{w=0.5} Тебе необязательно забирать их все, [player]."),
         )
 
         # Quips when Monika chooses a color to set
         # Quips for when she gets a wild card on the first turn
+        # Quips when Monika chooses a color to set
+        # Quips for when she gets a wild card on the first turn
         QUIPS_MONIKA_ANNOUNCE_COLOR_FIRST_TURN = (
-            _("Думаю, я выберу.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color]!"),
-            _("Я хочу [store.mas_nou.game.monika.chosen_color]."),
-            _("Я выбираю [store.mas_nou.game.monika.chosen_color]."),
-            _("Хм-м.{w=0.2}.{w=0.2}.{w=0.2} я возьму [store.mas_nou.game.monika.chosen_color]!")
+            _("Думаю, я выберу.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color!t]!"),
+            _("Я хочу [store.mas_nou.game.monika.chosen_color!t]."),
+            _("Я выбираю [store.mas_nou.game.monika.chosen_color!t]."),
+            _("Хм-м.{w=0.2}.{w=0.2}.{w=0.2} я возьму [store.mas_nou.game.monika.chosen_color!t]!")
         )
         # Quips for when she reflects a wild card
         QUIPS_MONIKA_ANNOUNCE_COLOR_AFTER_REFLECT = (
-            _("Я бы хотела [store.mas_nou.game.monika.chosen_color]~"),
-            _("Я хочу [store.mas_nou.game.monika.chosen_color]~"),
-            _("Я выбираю [store.mas_nou.game.monika.chosen_color]!"),
-            _("Это будет [store.mas_nou.game.monika.chosen_color]!")
+            _("Я бы хотела [store.mas_nou.game.monika.chosen_color!t]~"),
+            _("Я хочу [store.mas_nou.game.monika.chosen_color!t]~"),
+            _("Я выбираю [store.mas_nou.game.monika.chosen_color!t]!"),
+            _("Это будет [store.mas_nou.game.monika.chosen_color!t]!")
         )
 
         # NOU quips
@@ -211,18 +213,18 @@ init 5 python in mas_nou:
             _("НОУ, [player]!"),
             _("У меня осталась только одна карта, [player]! НОУ!"),
             _("НОУ! Не отставай, [player]!~"),
-            _("НОУ, [player], э-хе-хе~"),
+            _("НОУ, [player], {do_giggle}э-хе-хе~"),
             _("НОУ, [player]~"),
             _("НОУ~"),
             _("Осталась одна карта! НОУ, [player]~"),
-            _("Э-хе-хе~ Но.{w=0.2}.{w=0.2}.{w=0.2}У!"),
+            _("{do_giggle}Э-хе-хе~ Но.{w=0.2}.{w=0.2}.{w=0.2}У!"),
             _("НОУ!")
         )
         # Quips when you ask her to yell NOU, but she already did it
         QUIPS_MONIKA_ALREADY_YELLED_NOU = (
             _("Но, [player], Я сказала «НОУ»!"),
             _("Я уже сказала «НОУ», [player]!"),
-            _("Глупый, я уже это сделала!~"),
+            _("Глупенький, я уже это сделала!~"),
             _("[player]... Как ты пропустил это? Я уже сказала «НОУ»!"),
             _("Ух, [player]...{w=0.3} Я уже сказала «НОУ»!")
         )
@@ -230,13 +232,13 @@ init 5 python in mas_nou:
         QUIPS_MONIKA_DONT_NEED_YELL_NOU = (
             _("[player], но у меня в руках больше одной карты!"),
             _("Глупышка, ты можешь сказать «НОУ», когда у тебя будет всего одна карта!"),
-            _("А-ха-ха~ немного рановато, [player]!"),
+            _("{do_giggle}А-ха-ха~ немного рановато, [player]!"),
             _("Ещё не время, [player]!"),
             _("[player], У меня [len(store.mas_nou.game.monika.hand)] больше карт для игры!")
         )
         # Quips when the player tries to remind Monika about nou, but it's too late now
         QUIPS_MONIKA_TIMEDOUT_NOU = (
-            _("Э-хе-хе, слишком поздно, [player]!"),
+            _("{do_giggle}Э-хе-хе, слишком поздно, [player]!"),
             _("Ты опоздал, [player]!"),
             _("Ты должен был сделать это до того, как начать свой ход!~"),
             _("Теперь уже поздно, когда ты начал свой ход!~"),
@@ -247,9 +249,9 @@ init 5 python in mas_nou:
             _("О... Ты прав!"),
             _("Упс, ты меня поймал!"),
             _("Боже, как я могла забыть..."),
-            _("Э-хе-хе, совершенно непреднамеренно~"),
-            _("Э-хе-хе, поймал меня!"),
-            _("Как глупо с моей стороны! А-ха-ха!")
+            _("{do_giggle}Э-хе-хе, совершенно непреднамеренно~"),
+            _("{do_giggle}Э-хе-хе, поймал меня!"),
+            _("Как глупо с моей стороны! {do_giggle}А-ха-ха!")
         )
         # Quips when Monika said NOU, but didn't play a card
         # NOTE: THIS SHOULD NEVER HAPPEN, BUT WE HAVE THIS FALLBACK JUST IN CASE
@@ -266,20 +268,20 @@ init 5 python in mas_nou:
         )
         # Quips when the player repeats nou for no reason
         QUIPS_PLAYER_ALREADY_YELLED_NOU = (
-            _("А-ха-ха, я поняла, [player]!"),
+            _("{do_giggle}А-ха-ха, я поняла, [player]!"),
             _("Ты уже сказал это, глупышка~"),
-            _("Я слышала тебя, [player]!"),
+            _("Я уже услышала тебя, [player]!"),
             _("Нет необходимости повторять это каждый раз, глупышка~")
         )
         # Quips when the player says nou for no reason
         QUIPS_PLAYER_DONT_NEED_YELL_NOU = (
             _("Глупышка, у тебя ещё много карт в запасе!"),
-            _("Глупенький, ты кричишь «НОУ», когда у тебя осталась только одна карта!"),
+            _("Глупенький, ты должен кричать «НОУ» когда у тебя осталась только одна карта!"),
             _("Думаю, у тебя всё ещё больше одной карты, [player]."),
-            _("У вас слишком много карт, чтобы сказать «НОУ» сейчас."),
+            _("У тебя слишком много карт, чтобы сказать «НОУ» сейчас."),
             _("Рановато для крика «НОУ», [player]!"),
             _("Ты должен сказать «НОУ» перед тем, как разыграть свою вторую последнюю карту, [player]."),
-            _("[player], иногда ты бываешь таким глупым~")
+            _("[player], иногда ты бываешь таким глупеньким~")
         )
         # Quips when Monika catches you on not saying NOU
         QUIPS_PLAYER_FORGOT_YELL_NOU = (
@@ -298,7 +300,7 @@ init 5 python in mas_nou:
             _("Эй, [player]? Ты должен разыграть карту после того, как скажешь «НОУ»!"),
             _("Не говори «НОУ», если не собираешься разыгрывать карту."),
             _("[player], не кричи «НОУ» без причины..."),
-            _("[player], иногда ты можешь быть таким глупым~")
+            _("[player], иногда ты можешь быть таким глупеньким~")
         )
 
         ### Reactions maps
@@ -329,12 +331,12 @@ init 5 python in mas_nou:
             ],
             1: [
                 (_("Всё равно нет!"),),
-                (_("Э-хе-хе~ Я была готова!"),),
+                (_("{do_giggle}Э-хе-хе~ Я была готова!"),),
                 (_("Не в этот раз, [player]!"),),
                 (_("Мир это не для меня!"),)
             ],
             2: [
-                (_("Я читаю тебя как открытую книгу."), _("А-ха-ха~")),
+                (_("Я читаю тебя как открытую книгу."), _("{do_giggle}А-ха-ха~")),
                 (_("Я так просто не сдамся~"),)
             ]
         }
@@ -342,17 +344,17 @@ init 5 python in mas_nou:
         # this is for reflecting an action card
         REACTIONS_MAP_MONIKA_REFLECTED_ACT = {
             0: [
-                (_("Думал, что сможешь застать меня врасплох?"), _("Я видела это за километр! Э-хе-хе~")),
+                (_("Думал, что сможешь застать меня врасплох?"), _("Я видела это за километр! {do_giggle}Э-хе-хе~")),
                 (_("Не так быстро, [player]~"),)
             ],
             1: [
-                (_("Э-хе-хе~ Ни за что, [player]~"),),
+                (_("{do_giggle}Э-хе-хе~ Ни за что, [player]~"),),
                 (_("Ты действительно хочешь, чтобы я взяла это, да?~"),),
                 (_("Дай секунду.{w=0.2}.{w=0.2}.{w=0.2}У меня есть ещё кое-что для тебя~"),),
                 (_("А как насчет этого?~"),)
             ],
             2: [
-                (_("Будешь ли ты{w=0.2} всё ещё любить меня после этого?~"), _("А-ха-ха~")),
+                (_("Будешь ли ты{w=0.2} всё ещё любить меня после этого?~"), _("{do_giggle}А-ха-ха~")),
                 (_("У меня есть ещё кое-что для тебя~"),)
             ]
         }
@@ -369,7 +371,7 @@ init 5 python in mas_nou:
                 (_("Дай мне только...{w=0.3} выбрать правильный цвет~"),)
             ],
             2: [
-                (_("Э-хе-хе~"), _("У меня в запасе ещё один!"))
+                (_("{do_giggle}Э-хе-хе~"), _("У меня в запасе ещё один!"))
             ]
         }
 
@@ -395,10 +397,10 @@ init 5 python in mas_nou:
         # It has only one key - 0 - because it doesn't make sense to keep track of series of this
         REACTIONS_MAP_MONIKA_PLAYED_WILD = {
             0: [
-                (_("Думаю, я выберу.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color]!"),),
-                (_("Я хочу [store.mas_nou.game.monika.chosen_color]."),),
-                (_("Я выбираю [store.mas_nou.game.monika.chosen_color]."),),
-                (_("Хм-м.{w=0.1}.{w=0.1}.{w=0.1} я выбираю [store.mas_nou.game.monika.chosen_color]!"),)
+                (_("Думаю, я выберу.{w=0.2}.{w=0.2}.{w=0.2}[store.mas_nou.game.monika.chosen_color!t]!"),),
+                (_("Я хочу [store.mas_nou.game.monika.chosen_color!t]."),),
+                (_("Я выбираю [store.mas_nou.game.monika.chosen_color!t]."),),
+                (_("Хм-м.{w=0.1}.{w=0.1}.{w=0.1} я выбираю [store.mas_nou.game.monika.chosen_color!t]!"),)
             ]
         }
 
@@ -407,13 +409,13 @@ init 5 python in mas_nou:
         # this modifier only works when you play with stackable cards
         # used for seen count 2
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_1 = [
-            (_("Многовато карточек у тебя, э-хе-хе~"),)
+            (_("У тебя довольно много карт в руке, {do_giggle}э-хе-хе~"),)
         ]
 
         # this modifier used when Monika reflects a d2
         # used for seen count 0
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_2 = [
-            (_("Э-хе-хе~ Хорошо, что я не тяну все эти карты!"),),
+            (_("{do_giggle}Э-хе-хе~ Хорошо, что я не тяну все эти карты!"),),
             (_("Такая большая колода тебе идёт~"),)
         ]
 
@@ -421,7 +423,7 @@ init 5 python in mas_nou:
         # used for seen count 0
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_3 = [
             (_("{i}Нет,{w=0.1} ты{/i} пропустишь этот ход~"),),
-            (_("А-ха-ха~"), _("Нет, [player]!")),
+            (_("{do_giggle}А-ха-ха~"), _("Нет, [player]!")),
             (_("Нет, я думаю, ты пропустишь и этот ход~"),)
         ]
 
@@ -445,31 +447,31 @@ init 5 python in mas_nou:
             ],
             1: [
                 (_("Хорошо,{w=0.1} хорошо...{w=0.3} На этот раз ты выиграл."),),
-                (_("Я.{w=0.1}.{w=0.1}.{w=0.1} позволила этому произойти...{w=0.3} но только в этот раз!"),),
+                (_("Я.{w=0.1}.{w=0.1}.{w=0.1} позволила этому случиться...{w=0.3} но только в этот раз!"),),
                 (_("Тебе очень повезло!"),),
                 (_("Не может быть!"),)
             ],
             2: [
-                (_("Ты... бы{w=0.3}{i}мог{/i} быть и по мягче со своей девушкой~"), _("А-ха-ха~")),
+                (_("Ты... бы{w=0.3}{i}мог{/i} быть и по мягче со своей девушкой~"), _("{do_giggle}А-ха-ха~")),
                 (_("[player]!"),),
-                (_("Ты подтасовал колоду?!"),)
+                (_("Ты подтасовал колоду!?"),)
             ]
         }
 
         # map for reflecting action cards
         REACTIONS_MAP_PLAYER_REFLECTED_ACT = {
             0: [
-                (_("Ах, Кккая жалость!"),),
+                (_("Ах, Какая жалость!"),),
                 (_("Это печально..."),)
             ],
             1: [
                 (_("Боже, я не могу поверить, что у тебя была ещё одна карта!"),),
                 (_("Боже, ты действительно пытаешься выиграть!"),),
-                (_("Может отступишь, а?"),)
+                (_("Может уступишь, а?"),)
             ],
             2: [
                 (_("Боже мой!{w=0.2} Сколько их у тебя?!"),),
-                (_("Э-хе-хе~ Я думала, что это простая игра между влюблёнными, а не соревнование..."), _("Похоже, я ошиблась.")),
+                (_("{do_giggle}Э-хе-хе~ Я думала, что это простая игра между влюблёнными, а не соревнование..."), _("Похоже, я ошиблась.")),
                 (_("{color=#d31f1f}{font=gui/font/PTM55F.ttf}Моника запомнит это.{/font}{/color}"),)
             ]
         }
@@ -636,10 +638,10 @@ init 5 python in mas_nou:
                 what - a list/tuple of quips or a single quip to say
             """
             if isinstance(what, (list, tuple)):
-                quip = renpy.random.choice(what)
+                quip = renpy.random.choice(what).replace("red", "красное").replace("blue", "синий").replace("green", "зелёный").replace("yellow", "жёлтый")
 
             else:
-                quip = what
+                quip = what.replace("red", "красное").replace("blue", "синий").replace("green", "зелёный").replace("yellow", "жёлтый")
 
             if new_context:
                 renpy.invoke_in_new_context(renpy.say, m, quip, interact=interact)
@@ -1907,7 +1909,7 @@ init 5 python in mas_nou:
                     (player.hand and len(monika.hand)/len(player.hand) < 0.7)
                     or monika_win_streak > 2
                 ):
-                    return "Может тебе Бог поможет, [player]! А-ха-ха~"
+                    return "Может тебе Бог поможет, [player]! {do_giggle}А-ха-ха~"
 
                 elif (
                     (monika.hand and len(player.hand)/len(monika.hand) < 0.7)
@@ -2541,16 +2543,16 @@ init 5 python in mas_nou:
             # Now fill the dict with the sorted data
             for card in sorted_cards:
                 if card.type == "number":
-                    new_cards_data["num_" + card.color]["amount"] += 1
-                    new_cards_data["num_" + card.color]["value"] += card.value
+                    new_cards_data["num_" + card.color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["amount"] += 1
+                    new_cards_data["num_" + card.color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["value"] += card.value
                     # we sorted it, and have to use the ids from the hand
-                    new_cards_data["num_" + card.color]["ids"].append(cards.index(card))
+                    new_cards_data["num_" + card.color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["ids"].append(cards.index(card))
 
                 elif card.type == "action":
-                    new_cards_data["act_" + card.color]["amount"] += 1
+                    new_cards_data["act_" + card.color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["amount"] += 1
                     # NOTE: We don't sum up values for action and wild cards
-                    # new_cards_data["act_" + card.color]["value"] += card.value
-                    new_cards_data["act_" + card.color]["ids"].append(cards.index(card))
+                    # new_cards_data["act_" + card.color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["value"] += card.value
+                    new_cards_data["act_" + card.color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["ids"].append(cards.index(card))
 
                 elif card.label == "Wild Draw Four":
                     new_cards_data["wd4"]["amount"] += 1
@@ -2928,7 +2930,7 @@ init 5 python in mas_nou:
                 action_cards_ids = []
 
                 for color in self.game.COLORS:
-                    action_cards_ids += cards_data["act_" + color]["ids"]
+                    action_cards_ids += cards_data["act_" + color.replace("красный", "red").replace("синий", "blue").replace("зелёный", "green").replace("жёлтый", "yellow")]["ids"]
 
                 action_cards_ids.sort(key=sortKey, reverse=True)
 
@@ -3692,12 +3694,12 @@ init 5 python in mas_nou:
 
                     # choose the one we will use
                     quip = renpy.random.choice(
-                        reaction_quips
-                    )
+                        reaction_quips)
 
                     # say it line by line
                     for line in quip:
-                        renpy.say(m, line, interact=True)
+                        moni_says = line.replace("red", "красный").replace("blue", "синий").replace("green", "зелёный").replace("yellow", "жёлтый")
+                        renpy.say(m, moni_says, interact=True)
 
             # Additional lines so the player always knows which color it is now
             if (
@@ -3719,9 +3721,8 @@ init 5 python in mas_nou:
                 )
                 and len(self.hand) > 1# Don't announce the colour if you won
             ):
-                color_quip = renpy.random.choice(self.game.QUIPS_MONIKA_ANNOUNCE_COLOR_AFTER_REFLECT)
+                color_quip = renpy.random.choice(self.game.QUIPS_MONIKA_ANNOUNCE_COLOR_AFTER_REFLECT).replace("red", "красный").replace("blue", "синий").replace("green", "зелёный").replace("yellow", "жёлтый") 
                 renpy.say(m, color_quip, interact=True)
-
 # END CLASS DEF
 
 # UTIL FUNCTIONS
@@ -4090,7 +4091,7 @@ label monika_change_nou_house_rules:
 
             else:
                 m 1ttu "Боишься, что я заставлю тебя вытянуть все карты?~"
-                m 1hub "А-ха-ха~ Я просто шучу!"
+                m 1hub "{do_giggle}А-ха-ха~ Я просто шучу!"
 
             $ mas_nou.reverse_house_rule("stackable_d2")
 
@@ -4137,7 +4138,7 @@ label monika_change_nou_house_rules:
             extend 3eua "так что мы можем просто игнорировать это правило, если хочешь."
             m 1eud "Правило «Хаотичное отражение» делает игру более {w=0.2}{nw}"
             extend 1tsu "{i}хаотичной{/i}...{w=0.3}{nw}"
-            extend 1hub " как ты уже мог догадаться, а-ха-ха~"
+            extend 1hub " как ты уже мог догадаться, {do_giggle}а-ха-ха~"
             m 3eub "Он позволяет отражать {i}Смену цвета +4{/i} и карту {i}+2{/i} используя ту же карту {i}Смена цвета +4{/i}."
             m 3eua "Также позволяет отражать {i}Пропуск хода{/i} с любым другим {i}Пропуском хода{/i}."
             m 1eua "И всё!"
@@ -4274,7 +4275,7 @@ label .change_starting_cards_loop:
                     m 3eua "Тогда выбери другое значение."
 
         elif starting_cards > 20:
-            m 2hub "А-ха-ха, [player]! Ты правда думаешь, что мы сможем играть с таким большим количеством?"
+            m 2hub "{do_giggle}А-ха-ха, [player]! Ты правда думаешь, что мы сможем играть с таким большим количеством?"
             m 7eua "Может выберем 20?{nw}"
             $ _history_list.pop()
             menu:
@@ -4365,7 +4366,7 @@ label monika_explain_nou_rules:
     m 1ekb "Надеюсь, что всё это даст тебе лучшее понимание игры."
     m 1eku "Но мне кажется, что дело не в победе."
     show monika 5hubla at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5hubla "Э-хе-хе~"
+    m 5hubla "{do_giggle}Э-хе-хе~"
     return
 
 
@@ -4660,7 +4661,7 @@ label mas_nou_reaction_player_wins_round:
 
         else:
             m 1tuu "Тебе сегодня везёт."
-            m 1hub "А-ха-ха~ хорошая работа, [player]!"
+            m 1hub "{do_giggle}А-ха-ха~ хорошая работа, [player]!"
 
     elif store.mas_nou.monika_win_streak > 3:
         $ dlg_choice = renpy.random.randint(1, 3)
@@ -4675,7 +4676,7 @@ label mas_nou_reaction_player_wins_round:
         else:
             if len(store.mas_nou.game.monika.hand) > 2:
                 m 1tuu "Твоя удача, должно быть, вернулась~"
-                m 1hua "Хорошо сыграно! Э-хе-хе~"
+                m 1hua "Хорошо сыграно! {do_giggle}Э-хе-хе~"
 
             else:
                 m 1hub "Ура, ты выиграл!~"
@@ -4685,7 +4686,7 @@ label mas_nou_reaction_player_wins_round:
 
         if dlg_choice == 1:
             m 1tsa "О, ты начал играть серьёзно?"
-            m 1hub "А-ха-ха~"
+            m 1hub "{do_giggle}А-ха-ха~"
 
         elif dlg_choice == 2:
             if len(store.mas_nou.game.monika.hand) < 3:
@@ -4722,7 +4723,7 @@ label mas_nou_reaction_player_wins_round:
             else:
                 if len(store.mas_nou.game.monika.hand) > 3:
                     m 1rka "Может, мне стоит немного постараться?~"
-                    m 1hksdla "Э-хе-хе, ты продолжаешь побеждать, я даже сделать ничего не успеваю~"
+                    m 1hksdla "{do_giggle}Э-хе-хе, ты продолжаешь побеждать, я даже сделать ничего не успеваю~"
 
                 else:
                     m 1hfb "А-а...{w=0.2} было так близко!"
@@ -4767,7 +4768,7 @@ label mas_nou_reaction_player_wins_round:
                     else:
                         m 1hua "И я почти выиграла!"
 
-                    m 1hub "А-ха-ха~ хорошо сыграно!"
+                    m 1hub "{do_giggle}А-ха-ха~ хорошо сыграно!"
 
                 else:
                     m 1hub "Хорошо сыграно!"
@@ -4779,7 +4780,7 @@ label mas_nou_reaction_player_wins_round:
             m 1kuu "Это было напряжённо!"
 
         else:
-            m 1hua "Э-хе-хе~ {w=0.3}{nw}"
+            m 1hua "{do_giggle}Э-хе-хе~ {w=0.3}{nw}"
             extend 1eub "ты просто молодец!"
 
     else:
@@ -4815,11 +4816,11 @@ label mas_nou_reaction_player_wins_game:
         extend 3eub "Ты одержал победу!"
         # 1lua instead?
         m 1ruu "Я не заметила, что ты был настолько близок к победе."
-        m 3hua "Хорошая работа, э-хе-хе~"
+        m 3hua "Хорошая работа, {do_giggle}э-хе-хе~"
 
     elif dlg_choice == 2:
         m 3eub "О, и в этой игре ты тоже выиграл!"
-        m 1hua "Поздравляю! Э-хе-хе~"
+        m 1hua "Поздравляю! {do_giggle}Э-хе-хе~"
 
     elif dlg_choice == 3:
         m 1rsc "Посмотрим..{w=0.2}.{w=0.2}.{w=0.2}{nw}"
@@ -4827,7 +4828,7 @@ label mas_nou_reaction_player_wins_game:
 
         if mas_isMoniEnamored(higher=True) and random.random() < 0.5:
             m 1hub "Я бы нежно обняла тебя, если бы была рядом с тобой~"
-            m 1hua "Э-хе-хе~"
+            m 1hua "{do_giggle}Э-хе-хе~"
         else:
             m 1hua "Это было весело!"
 
@@ -4849,14 +4850,14 @@ label mas_nou_reaction_monika_wins_round:
             if len(store.mas_nou.game.player.hand) > 4:
                 m 1hub "Я победила!"
                 m 1hksdla "..."
-                m 1eka "Не без твоей помощи, я думаю. Э-хе-хе~"
+                m 1eka "Не без твоей помощи, я думаю. {do_giggle}Э-хе-хе~"
 
             else:
                 m 3tsb "Говорила же, что выиграю!"
                 m 1tfu "Теперь настало время разыграть карты."
 
         elif dlg_choice == 2:
-            m 4sub "А-ха-ха! Моя удача снова вернулась!"
+            m 4sub "{do_giggle}А-ха-ха! Моя удача снова вернулась!"
 
         else:
             m 4sub "Вот и всё!"
@@ -4901,7 +4902,7 @@ label mas_nou_reaction_monika_wins_round:
         $ dlg_choice = renpy.random.randint(1, 3)
 
         if dlg_choice == 1:
-            m 1hua "Э-хе-хе, победа моя!~"
+            m 1hua "{do_giggle}Э-хе-хе, победа моя!~"
 
         elif dlg_choice == 2:
             if len(store.mas_nou.game.player.hand) < 3:
@@ -4909,7 +4910,7 @@ label mas_nou_reaction_monika_wins_round:
 
             else:
                 m 2tuu "Может, мне быть с тобой помягче?"
-                m 7hub "А-ха-ха, просто шучу, [player]~"
+                m 7hub "{do_giggle}А-ха-ха, просто шучу, [player]~"
 
         else:
             m 4hub "Я снова выиграла!"
@@ -4949,7 +4950,7 @@ label mas_nou_reaction_monika_wins_round:
                 else:
                     m 3eua "Ты почти выиграл."
 
-                m 3hub "Э-хе-хе~ хорошо сыграно!"
+                m 3hub "{do_giggle}Э-хе-хе~ хорошо сыграно!"
 
             else:
                 m 3hub "Хорошо сыграли!"
@@ -4962,7 +4963,7 @@ label mas_nou_reaction_monika_wins_round:
                 m 1tsb "Неплохо, [player]."
                 m 3tub "Я думаю, что у тебя были шансы на победу, {w=0.5}{nw}"
                 extend 1tuu "если бы не те карты, которые ты вытянул."
-                m 1hub "А-ха-ха~"
+                m 1hub "{do_giggle}А-ха-ха~"
 
             else:
                 m 1wub "О, я выиграла!"
@@ -4990,7 +4991,7 @@ label mas_nou_reaction_monika_wins_game:
 
             else:
                 m 7ttu "Ты специально дал мне победить?"
-                m 1huu "Э-хе-хе~"
+                m 1huu "{do_giggle}Э-хе-хе~"
 
         else:
             # m "It really is interesting to play against you, [player]."
@@ -5014,7 +5015,7 @@ label mas_nou_reaction_monika_wins_game:
 
     elif dlg_choice == 3:
         m 2wub "Ура! Победа!"
-        m 2hua "Э-хе-хе~"
+        m 2hua "{do_giggle}Э-хе-хе~"
         m 1hub "Спасибо за игру, [player]~"
 
     else:
@@ -5330,8 +5331,7 @@ transform nou_pen_rotate_right:
 # included in all copies or substantial portions of the Software.
 
 # NOTE: This can be used in other games in the future
-image bg cardgames desk = mas_cardgames.DeskSpriteSwitch()
-
+image bg cardgames desk = "mod_assets/games/nou/desks/spaceroom.png"
 init 500 python in mas_cardgames:
     # All bgs should be defined at init 1, but we give some more time
     # just in case
@@ -5428,7 +5428,7 @@ init -10 python in mas_cardgames:
                 self._last_bg = bg
                 renpy.redraw(self, 0.0)
 
-        def visit(self):
+        def visit_all(self):
             """
             Returns imgs for prediction
 
@@ -6610,3 +6610,16 @@ init -10 python in mas_cardgames:
 
         def rotate_limit(self):
             return self.end_rotate
+
+translate None strings:
+    old "red"
+    new "красный"
+
+    old "blue"
+    new "синий"
+
+    old "green"
+    new "зелёный"
+
+    old "yellow"
+    new "жёлтый"

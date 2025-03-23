@@ -1966,10 +1966,14 @@ screen history():
                         if "color" in h.who_args:
                             text_color h.who_args["color"]
 
-                text h.what.replace("[","[[")  # ]" fix syntax highlight issue
+                $ what = renpy.filter_text_tags(h.what.replace("[","[["), allow=gui.history_allow_tags)
+                text what:
+                    substitute False
 
         if not _history_list:
             label _("История диалогов пуста.")
+define gui.history_allow_tags = {"M", "F"}
+
 
 
 style history_window is empty:

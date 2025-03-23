@@ -1,0 +1,22 @@
+{
+    "__author": "Florissssst",
+    "version": 3,
+    "type": 1,
+    "name": "florissssst_bun_kudri",
+    "img_sit": "florissssst_bun_kudri",
+    "pose_map": {
+        "mpm_type": 0,
+        "default": true,
+        "use_reg_for_l": true
+    },
+    "stay_on_start": true,
+    "ex_props": {
+        "ribbon": true
+    },
+    "select_info": {
+        "display_name": "Кудряшки с пучком",
+        "thumb": "florissssst_kudryaski",
+        "group": "hair"
+    },
+    "unlock": true
+}
