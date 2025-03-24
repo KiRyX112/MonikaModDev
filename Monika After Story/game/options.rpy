@@ -156,7 +156,7 @@ init python:
     build.classify("game/**.webm", "images android")
     build.classify("game/**.rpyc", "scripts android")
     build.classify("game/**.rpymc", "scripts android")
-    build.classify("game/**.txt", "scripts android")
+    build.classify("game/poemwords.txt", "scripts android")
     build.classify("game/**.chr", "scripts android")
     build.classify("game/**.json", "scripts android")
     # build.classify("game/**/stockfish_15_android**", "android")
