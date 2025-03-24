@@ -50,30 +50,6 @@ init -2 python in mas_topics:
             index -= 1
         
         return ev_count
-init 5 python:
-    def monika_laugh_check(event, **kwargs):
-        if event == "begin_say":
-            who, what = list(kwargs.values())[:2]
-            if who == m_name and ("{do_giggle}А-ха-ха" in what or "{do_giggle}Э-хе-хе" in what):
-                parts = what.split("{do_giggle}А-ха-ха") if "{do_giggle}А-ха-ха" in what else what.split("{do_giggle}Э-хе-хе")
-                laugh_text = "{do_giggle}А-ха-ха" if "{do_giggle}А-ха-ха" in what else "{do_giggle}Э-хе-хе"
-
-                if len(parts) == 2:  # Если смех в середине
-                    renpy.say(who, parts[0].strip())  # Первая часть фразы
-                    renpy.sound.play("game/sfx/giggle.ogg")  # Проигрываем смех
-                    renpy.say(who, laugh_text + " " + parts[1].strip())  # Смех + вторая часть
-                    return True  # Прерываем стандартный вывод
-                elif len(parts) == 1:  # Если смех в начале или в конце
-                    if what.startswith(laugh_text):  # Если смех в начале
-                        renpy.sound.play("game/sfx/giggle.ogg")
-                        renpy.say(who, what)  # Оставляем текст как есть
-                        return True
-                    elif what.endswith(laugh_text):  # Если смех в конце
-                        renpy.say(who, what)
-                        renpy.sound.play("mod_assets/giggle.ogg")
-                        return True
-
-    config.all_character_callbacks.append(monika_laugh_check)
 
 # we are going to define removing seen topics as a function,
 # as we need to call it dynamically upon import
