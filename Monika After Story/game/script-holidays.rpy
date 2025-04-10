@@ -7177,7 +7177,7 @@ define mas_bday_cake_lit = False
 
 # NOTE: maybe the cakes should be ACS
 
-image mas_bday_cake_monika = LiveComposite(
+image mas_bday_cake_monika = Composite(
     (1280, 850),
     (0, 0), MASFilterSwitch("mod_assets/location/spaceroom/bday/monika_birthday_cake.png"),
     (0, 0), ConditionSwitch(
@@ -7186,7 +7186,7 @@ image mas_bday_cake_monika = LiveComposite(
         )
 )
 
-image mas_bday_cake_player = LiveComposite(
+image mas_bday_cake_player = Composite(
     (1280, 850),
     (0, 0), MASFilterSwitch("mod_assets/location/spaceroom/bday/player_birthday_cake.png"),
     (0, 0), ConditionSwitch(

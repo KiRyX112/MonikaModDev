@@ -145,7 +145,7 @@ image n_rects_ghost3_instant:
 #modified hungry natsuki image animation
 define ns.NATSUKI_SCALE = 0.15
 #image ns2_n_win = im.FactorScale("images/cg/n_cg1b.png", ns.NATSUKI_SCALE)(882,325)
-image n_cg1bs = LiveComposite((1280,720), (10, 300), im.FactorScale(im.Flip("images/cg/n_cg1b.png",horizontal=True), ns.NATSUKI_SCALE), (64,347), "n_rects1", (85,360), "n_rects2", (71,370), "n_rects3")
+image n_cg1bs = Composite((1280,720), (10, 300), im.FactorScale(im.Flip("images/cg/n_cg1b.png",horizontal=True), ns.NATSUKI_SCALE), (64,347), "n_rects1", (85,360), "n_rects2", (71,370), "n_rects3")
 # regular
 
 #modified rectangles for Natsuki's eyes and mouth

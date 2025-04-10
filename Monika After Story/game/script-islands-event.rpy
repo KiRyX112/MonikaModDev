@@ -916,7 +916,7 @@ init -25 python in mas_island_event:
         mas_sprites,
         mas_ics,
         Transform,
-        LiveComposite,
+        Composite,
         MASWeatherMap,
         MASFilterWeatherDisplayableCustom,
         MASFilterWeatherDisplayable
