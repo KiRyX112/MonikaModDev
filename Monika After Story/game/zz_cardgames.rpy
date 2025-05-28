@@ -234,7 +234,7 @@ init 5 python in mas_nou:
             _("Глупышка, ты можешь сказать «НОУ», когда у тебя будет всего одна карта!"),
             _("{do_giggle}А-ха-ха~ немного рановато, [player]!"),
             _("Ещё не время, [player]!"),
-            _("[player], У меня [len(store.mas_nou.game.monika.hand)] больше карт для игры!")
+            _("[player], у меня куда больше карт, [len(store.mas_nou.game.monika.hand)]!")
         )
         # Quips when the player tries to remind Monika about nou, but it's too late now
         QUIPS_MONIKA_TIMEDOUT_NOU = (
@@ -344,7 +344,7 @@ init 5 python in mas_nou:
         # this is for reflecting an action card
         REACTIONS_MAP_MONIKA_REFLECTED_ACT = {
             0: [
-                (_("Думал, что сможешь застать меня врасплох?"), _("Я видела это за километр! {do_giggle}Э-хе-хе~")),
+                (_("Думал, что сможешь застать меня врасплох?"), _("Я предвидела это! {do_giggle}Э-хе-хе~")),
                 (_("Не так быстро, [player]~"),)
             ],
             1: [
@@ -364,7 +364,7 @@ init 5 python in mas_nou:
             0: [
                 (_("Хм-м...{w=0.5}Мне не нравится этот цвет~"),),
                 (_("Прости, [player] но..."), _("Это не тот цвет, который я хочу сейчас~")),
-                (_("[store.mas_nou.game.discardpile[-1].color!tc] это не то, чего я хотела бы сейчас~"),)
+                (_("[store.mas_nou.game.discardpile[-1].color!tc] – не тот цвет, который мне нужен сейчас~"),)
             ],
             1: [
                 (_("Нет-нет-нет!"),),
@@ -416,7 +416,7 @@ init 5 python in mas_nou:
         # used for seen count 0
         REACTIONS_MAP_MONIKA_REFLECTED_ACT_MODIFIER_2 = [
             (_("{do_giggle}Э-хе-хе~ Хорошо, что я не тяну все эти карты!"),),
-            (_("Такая большая колода тебе идёт~"),)
+            (_("Такая большая рука тебе идёт~"),)
         ]
 
         # this modifier used when Monika reflects a skip turn/reverse
@@ -454,7 +454,7 @@ init 5 python in mas_nou:
             2: [
                 (_("Ты... бы{w=0.3}{i}мог{/i} быть и по мягче со своей девушкой~"), _("{do_giggle}А-ха-ха~")),
                 (_("[player]!"),),
-                (_("Ты подтасовал колоду!?"),)
+                (_("Ты подтасовал колоду?!"),)
             ]
         }
 
@@ -496,7 +496,7 @@ init 5 python in mas_nou:
             ],
             1: list(REACTIONS_MAP_PLAYER_REFLECTED_ACT[1]) + list(REACTIONS_MAP_PLAYER_REFLECTED_WCC[1]) + [
                 (_("Я запомню это~"), _("Осторожно, [player]!~")),
-                (_("Блин, у тебя чтоли много карт +2?"),),
+                (_("Блин, неужели у тебя много карт +2?"),),
                 (_("Боже!{w=0.2} Сколько их у тебя?!"),)
             ],
             2: list(REACTIONS_MAP_PLAYER_REFLECTED_ACT[2]) + list(REACTIONS_MAP_PLAYER_REFLECTED_WCC[2]) + [
@@ -1893,7 +1893,7 @@ init 5 python in mas_nou:
 
             if get_total_games() > 15 and random.random() < 0.2:
                 if player.should_skip_turn:
-                    return "Кнопка «сдаться» находится прямо под ним~"
+                    return "Кнопка «Сдаться» находится чуть ниже~"
 
                 elif (
                     # If Moni has drawn more than 10 cards in the last 10 turns...
@@ -1903,19 +1903,19 @@ init 5 python in mas_nou:
                         if log_data["drew_card"]
                     ) > 10
                 ):
-                    return "Давай другую колоду, эта похоже подтасована"
+                    return "Давай другую колоду, эта, похоже, подтасована."
 
                 elif (
                     (player.hand and len(monika.hand)/len(player.hand) < 0.7)
                     or monika_win_streak > 2
                 ):
-                    return "Может тебе Бог поможет, [player]! {do_giggle}А-ха-ха~"
+                    return "Бог в помощь, [player]! {do_giggle}А-ха-ха~"
 
                 elif (
                     (monika.hand and len(player.hand)/len(monika.hand) < 0.7)
                     or player_win_streak > 2
                 ):
-                    return "Играй чем-нибудь ещё, кроме {i}+2{/i} и {i}+4{/i}, дорогой. Мне не чем уже ответить~"
+                    return "Разыгрывай другие карты, а не только {i}+2{/i} и {i}+4{/i}, дорогой. Мне нечем уже ответить~"
 
                 else:
                     return "Просто разыграй побольше карт, это всегда помогает~"
@@ -1925,8 +1925,7 @@ init 5 python in mas_nou:
 
             if card.type == "number":
                 dlg_line_list.append(
-                    "Тебе нужно сыграть{} «{}» или любую другую {} карту.".format(
-                        "n" if card.label == "8" else "",
+                    "Тебе нужно разыграть «{}» или любую другую {} карту.".format(
                         card.label,
                         card.color
                     )
@@ -1934,7 +1933,7 @@ init 5 python in mas_nou:
 
                 if player.drew_card:
                     dlg_line_list.append(
-                        " Поскольку ты вытянул карту, ты можешь попытаться сыграть её или пропустить свой ход."
+                        " Поскольку ты вытянул карту, ты можешь попытаться разыграть её или пропустить свой ход."
                     )
 
                 elif len(player.hand) >= self.HAND_CARDS_LIMIT:
@@ -1944,7 +1943,7 @@ init 5 python in mas_nou:
 
                 else:
                     dlg_line_list.append(
-                        " Если у тебя нет соответствующей карты, ты должен вытянуть карту, а затем либо сыграть её, либо пропустить свой ход."
+                        " Если у тебя нет соответствующей карты, ты должен вытянуть карту, а затем либо разыграть её, либо пропустить свой ход."
                     )
 
             else:
@@ -1958,21 +1957,27 @@ init 5 python in mas_nou:
                     )
 
                     if insert_line:
-                        dlg_line_list.append("--как и в прошлый раз--")
+                        dlg_line_list.append(" – как и в прошлый раз – ")
 
                     if player.should_draw_cards and len(player.hand) < self.HAND_CARDS_LIMIT:
                         dlg_line_list.append(
-                            "{}и взять {}".format(
-                                "" if insert_line else " ",
-                                player.should_draw_cards
+                            "{}и взять ".format(
+                                "" if insert_line else " "
                             )
                         )
+
                         if player.drew_card:
-                            dlg_line_list.append(" more")
+                            dlg_line_list.append("ещё ")
 
                         dlg_line_list.append(
-                            " карту{}".format(
-                                "s" if player.should_draw_cards != 1 else ""
+                            str(player.should_draw_cards)
+                        )
+
+                        dlg_line_list.append(
+                            " карт{}".format(
+                                "у" if player.should_draw_cards == 1
+                                else "ы" if player.should_draw_cards < 5
+                                else ""
                             )
                         )
 
@@ -2010,7 +2015,7 @@ init 5 python in mas_nou:
                                 color_for_reflect,
                                 "" if not color_for_reflect else " ",
                                 card_for_reflect,
-                                "мою" if self.monika.played_card else "the top"
+                                "мою" if self.monika.played_card else "верхнюю"
                             )
                         )
                         if random.random() < 0.33:
@@ -2024,7 +2029,7 @@ init 5 python in mas_nou:
                 else:
                     if card.type == "action":
                         dlg_line_list.append(
-                            "Тебе нужно сыграть {{i}}{}{{/i}} или любую другую {} карту.".format(
+                            "Тебе нужно разыграть {{i}}{}{{/i}} или любую другую {} карту.".format(
                                 card.label,
                                 card.color
                             )
@@ -2038,7 +2043,7 @@ init 5 python in mas_nou:
 
                         else:
                             dlg_line_list.append(
-                                "Тебе нужно сыграть любой {} картой.".format(card.color)
+                                "Тебе нужно разыграть любую {} карту.".format(card.color)
                             )
 
                             if player.drew_card or len(player.hand) >= self.HAND_CARDS_LIMIT:
@@ -2048,7 +2053,7 @@ init 5 python in mas_nou:
 
                             else:
                                 dlg_line_list.append(
-                                    " В противном случае вытяни карту и попытайся сыграть её."
+                                    " В противном случае вытяни карту и попытайся разыграть её."
                                 )
 
             if dlg_line_list:
