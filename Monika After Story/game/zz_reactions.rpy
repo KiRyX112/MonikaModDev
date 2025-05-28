@@ -2779,7 +2779,7 @@ label mas_reaction_gift_clothes_mocca_bun_blackandwhitestripedpullover:
 init 5 python:
     # TODO: Add a way to generalize this
     if not mas_seenEvent("mas_reaction_gift_noudeck"):
-        addReaction("mas_reaction_gift_noudeck", "неработаетговно221", is_good=True)
+        addReaction("mas_reaction_gift_noudeck", "колода карт", is_good=True)
 
 label mas_reaction_gift_noudeck:
     python:
