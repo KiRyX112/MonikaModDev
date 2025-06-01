@@ -59,7 +59,7 @@ init -18 python:
     await_weatherProgress = store.mas_threading.MASAsyncWrapper(
         store.awc_weatherProgress
     )
-# Разобраться в сути работы с multimokia
+# Разобраться в сути работы с multimokia ** А что такое суть? 0_о
 init -10 python in awc_utils:
     import store
     def toggleAST():
