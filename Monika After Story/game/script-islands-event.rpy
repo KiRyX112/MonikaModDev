@@ -916,7 +916,7 @@ init -25 python in mas_island_event:
         mas_sprites,
         mas_ics,
         Transform,
-        Composite,
+        LiveComposite,
         MASWeatherMap,
         MASFilterWeatherDisplayableCustom,
         MASFilterWeatherDisplayable
@@ -1098,8 +1098,7 @@ init -25 python in mas_island_event:
         """
         err_msg = "Failed to decode isld data: {}."
 
-        # pkg = islands_station.getPackage("our_reality")
-        pkg = renpy.file("mod_assets/location/special/our_reality")
+        pkg = islands_station.getPackage("our_reality")
         
         if not pkg:
             mas_utils.mas_log.error(err_msg.format("Missing package"))

@@ -550,7 +550,7 @@ label mas_compliment_thanks:
 
     if not mas_isMoniLove():
         $ mas_lockEVL("mas_compliment_thanks", "CMP")
-    return
+    return "love"
 
 init 5 python:
     addEvent(

@@ -3121,7 +3121,7 @@ label mas_player_nickname_loop(check_scrollable_text, nickname_pool):
 
                 elif lowername == lowerplayer:
                     m 2hua "..."
-                    m 4hksdlb "Это же твоё нынешнее имя, глупый!"
+                    m 4hksdlb "Это же твоё нынешнее имя, глупыш!"
                     m 1eua "Попробуй снова~"
                     jump .name_enter_skip_loop
 

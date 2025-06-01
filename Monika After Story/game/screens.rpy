@@ -74,7 +74,7 @@ init -2 python in mas_layout:
     QUIT_NO_LOVE = _("<3 тебя")
 
 
-    QUIT_BROKEN = _("Просто иди.")
+    QUIT_BROKEN = _("Просто уходи.")
     QUIT_AFF = _("Что ты здесь делаешь?\n Нажми на «Нет», а после на кнопку «До свидания», глупышка!")
 
     _usage_quit_aff = QUIT_NO_AFF_G
@@ -821,10 +821,10 @@ label mas_bad_name_input:
             "Но если ты называешь себя такими именами...{w=0.5}{nw}"
 
             show chibika at sticker_hop onlayer screens zorder 10
-            extend "ты не завоюешь её сердце!"
+            extend "то не завоюешь её сердце!"
 
             show chibika smile at mas_chmove(x=300, y=405, travel_time=1) onlayer screens zorder 10
-            "...Но вместо этого ты просто поставил её в неловкое положение."
+            "...И вместо этого ты просто поставил её в неловкое положение."
 
             show chibika at mas_chlongjump(x=190, y=552, ymax=375, travel_time=0.8) onlayer screens zorder 10
             "Почему бы тебе не выбрать что-нибудь более подходящее?"

@@ -11,6 +11,7 @@ python early:
     import datetime
     import random
     import traceback
+    import re
     from collections import defaultdict # this will be availalable anywhere now
 
     # define the zorders
@@ -8072,8 +8073,13 @@ default faint_effect = None
 
 default s_name = "Сайори"
 default m_name = persistent._mas_monika_nickname
+define m_name2 = re.sub(r"мо[я|ё]", "", persistent._mas_monika_nickname, flags=re.IGNORECASE)
 default n_name = "Нацуки"
 default y_name = "Юри"
+# Гендер раз
+define his_her1 = {"F": "Её", "M": "Его"}
+# Гендер два
+define his_her2 = {"F": "ней", "M": "ним"}
 
 # Instantiating variables for poem appeal. This is how much each character likes the poem for each day.
 # -1 = Dislike, 0 = Neutral, 1 = Like
@@ -8302,11 +8308,11 @@ init -1 python in mas_randchat:
     SLIDER_MAP_DISP = {
         NEVER: "Никогда",
         RARELY: "Редко",
-        OCCASIONALLY: "Периодически",
-        LESS_OFTEN: "Иногда",
-        NORMAL: "Регулярно",
+        OCCASIONALLY: "Иногда",
+        LESS_OFTEN: "Реже",
+        NORMAL: "Обычно",
         OFTEN: "Часто",
-        VERY_OFTEN: "Очень часто"
+        VERY_OFTEN: "Всегда"
     }
 
     # current frequency times

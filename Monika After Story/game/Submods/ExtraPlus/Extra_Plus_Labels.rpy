@@ -521,9 +521,9 @@ label plus_tools:
         tools_menu = [
            #("Уровень привязанности", 'aff_log'),
            #("Редактор подарков", 'plus_make_gift'), #Предать анафеме эту кнопочку
-            ("Поменять имя окна", 'extra_window_title'),
+           #("Поменять имя окна", 'extra_window_title'),
            #("[m_name], я хочу сделать сохранение", 'mas_backup'),
-            ("[m_name], можешь подкинуть монетку?", 'coinflip')
+            ("[m_name], можешь подкинуть монетку?", 'coinflipbeta')
             
         ]
         if renpy.has_screen("chibika_chill") and os.path.exists(renpy.config.basedir + "/game/submods/ExtraPlus/submod_assets/sprites/accessories/0/"):

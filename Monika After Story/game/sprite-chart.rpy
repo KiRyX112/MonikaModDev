@@ -719,7 +719,7 @@ init -5 python in mas_sprites:
 
     # composite stuff
     I_COMP = "im.Composite"
-    L_COMP = "Composite"
+    L_COMP = "LiveComposite"
     TRAN = "Transform"
 
     # zoom

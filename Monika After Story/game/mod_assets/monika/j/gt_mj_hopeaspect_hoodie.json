@@ -1,0 +1,82 @@
+{
+    "__author": "MayJay - u/mayday-mayjay - GT",
+    "version": 3,
+    "type": 2,
+    "name": "gt_mj_hopeaspect_hoodie",
+    "img_sit": "gt_mj_hopeaspect_hoodie",
+    "pose_map": {
+        "mpm_type": 0,
+        "default": false,
+        "use_reg_for_l": true,
+        "p1": true,
+        "p2": true,
+        "p3": true,
+        "p4": true,
+        "p5": true,
+        "p6": true,
+        "p7": true
+    },
+    "highhope": {
+        "mapping": {
+            "0": {
+                "night": "0"
+            },
+            "def|0": {
+                "night": "def0"
+            },
+            "def|1": {
+                "night": "def1"
+            }
+        }
+    },
+    "stay_on_start": true,
+    "select_info": {
+        "display_name": "Худи с знаком Надежды",
+        "thumb": "gt_mj_hopeaspect_hoodie",
+        "group": "clothes",
+        "select_dlg": [
+            "Я верю в наше будущее благодаря тебе, [player].",
+            "Ты единственный, на кого я надеюсь~",
+            "Такое удобное худи, мне оно очень нравится!"
+        ]
+    },
+    "giftname": "gt_mj_hopeaspect_hoodie",
+    "pose_arms": {
+        "crossed": {
+            "tag": "crossed",
+            "layers": "5^10"
+        },
+        "left-down": {
+            "tag": "down",
+            "layers": "0"
+        },
+        "left-rest": {
+            "tag": "rest",
+            "layers": "10"
+        },
+        "right-down": {
+            "tag": "down",
+            "layers": "0"
+        },
+        "right-point": {
+            "tag": "point",
+            "layers": "0"
+        },
+        "right-restpoint": {
+            "tag": "restpoint",
+            "layers": "10"
+        },
+        "steepling": {
+            "tag": "steepling",
+            "layers": "10"
+        },
+        "def|left-def": {
+            "tag": "def",
+            "layers": "10"
+        },
+        "def|right-def": {
+            "tag": "def",
+            "layers": "5^10"
+        }
+    }
+}

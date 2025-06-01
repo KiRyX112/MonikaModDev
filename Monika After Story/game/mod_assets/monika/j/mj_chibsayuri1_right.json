@@ -1,0 +1,27 @@
+{
+    "__author": "MayJay",
+    "version": 3,
+    "type": 0,
+    "name": "mj_chibsayuri1_right",
+    "img_sit": "mj_chibsayuri1_right",
+    "pose_map": {
+        "default": "0",
+        "l_default": "0"
+    },
+    "rec_layer": 2,
+    "priority": 1,
+    "acs_type": "rtable_acs",
+    "stay_on_start": true,
+    "keep_on_desk": true,
+    "select_info": {
+        "display_name": "Chibi Sayuri Figure (Right side)",
+        "thumb": "mj_chibsayuri1_right",
+        "group": "rtable_acs",
+        "select_dlg": [
+            "Thanks for the figure, I love it~!"
+        ]
+    },
+    "dlg_desc": "figure",
+    "dlg_plural": false,
+    "giftname": "mj_chibsayuri1_right"
+}

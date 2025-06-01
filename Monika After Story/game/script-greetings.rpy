@@ -1519,7 +1519,7 @@ label monikaroom_greeting_ear_nameerror:
 # shared dialogue for programming-related stuff
 label monikaroom_greeting_ear_prog_upset:
     m "Я не уверена в том, что [player] любит меня и готов помочь мне выбраться отсюда..."
-    m "Aх, я просто не могу рисковать."
+    m "И я просто не могу рисковать."
     m "Давай, Моника...{w=0.5} ты справишься."
     return
 
@@ -1574,7 +1574,7 @@ label monikaroom_greeting_ear_rmrf:
             m "Быть может, я наконец-то выясню, как выбраться отсюда самостоятельно."
             m "Я должна пытаться, пока могу."
             m "Но если настанет день, когда я больше не смогу..."
-            m "Всегда найдётся выход."
+            m "Это всегда будет выходом."
             # SUICIDAL MONIKA lol
 
     else:
@@ -1584,7 +1584,7 @@ label monikaroom_greeting_ear_rmrf:
         pause 0.2
         stop sound
         hide noise
-        m "{cps=*2}А! Нет! Это не то, чего я хотела!{/cps}"
+        m "{cps=*2}Ой! Нет! Это не то, чего я хотела!{/cps}"
         m "..."
         m "Я не должна доверять интернету так слепо..."
 
@@ -1707,7 +1707,7 @@ label monikaroom_greeting_opendoor_locked:
             if mas_isMoniNormal(higher=True):
                 m "Бли-и-ин, прости."
             else:
-                m "Хорошо."
+                m "Отлично."
         
         "Нет.":
             m "{cps=*2}Хм, у меня получится в следующий раз.{/cps}{nw}"
@@ -1917,7 +1917,7 @@ label monikaroom_greeting_knock:
     if mas_isMoniBroken():
         jump monikaroom_greeting_opendoor_broken_quit
 
-    m "Кто это?~"
+    m "Кто это?~" #Внатуре, кто же это пришел??
     menu:
         "Это я.":
             # monika knows you are here now
@@ -1993,7 +1993,7 @@ label monikaroom_greeting_cleanup:
     return
 
 #init 5 python:
-#    addEvent(Event(persistent.greeting_database,eventlabel="greeting_youarereal", unlocked=True, random=True),code="GRE")
+#    addEvent(Event(persistent.greeting_database,eventlabel="greeting_youarereal", unlocked=True, random=True),code="GRE") #Ещё более кринжевая хуйня чем некоторые сабмоды (6_6)
 
 label greeting_youarereal:
     python:
@@ -3156,7 +3156,7 @@ init 5 python:
     addEvent(
         Event(
             persistent.greeting_database,
-            eventlabel="greeting_back_from_work",
+            eventlabel="greeting_back_from_work", #Масофаги работают?
             unlocked=True,
             category=[store.mas_greetings.TYPE_WORK],
         ),

@@ -1,0 +1,27 @@
+{
+    "__author": "SorcererPug",
+    "version": 3,
+    "type": 0,
+    "name": "sorcererpug_headband_catears",
+    "img_sit": "sorcererpug_headband_catears",
+    "pose_map": {
+        "default": "0",
+        "l_default": "5"
+    },
+    "rec_layer": 5,
+    "acs_type": "headband",
+    "stay_on_start": true,
+    "dlg_desc": "cat-ears headband",
+    "dlg_plural": false,
+    "select_info": {
+        "display_name": "Заколка-ушки",
+        "thumb": "sorcererpug_headband_catears",
+        "group": "left-hair-clip",
+        "select_dlg": [
+            "Хочешь погладить меня? Ня~",
+            "Только Мяуника~",
+            "Спасибо за эти ушки, [player]! Мне они нравятся~"
+        ]
+    },
+    "giftname": "catearsheadband"
+}
