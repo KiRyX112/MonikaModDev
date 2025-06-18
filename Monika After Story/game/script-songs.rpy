@@ -1097,7 +1097,7 @@ label mas_song_memories_of_a_girl:
     m 1dkd "{i}~Так ты действительно там?~{/i}"
     m 3ekd "{i}~Ты не спишь с воспоминаниями?~{/i}"
     show monika 5eub at t11 zorder MAS_MONIKA_Z with dissolve_monika
-    m 5eub "{i}~Девушку ты ещё не встретил, кто пожелает на Плеядах?~{/i}"
+    m 5eub "{i}~Девушку ты ещё не встретил, кто желания загадывает на Плеядах?~{/i}"
     m 5ekbsa "Я думаю о тебе каждую ночь, [player]."
     m 5ekbfa "И я знаю, что ты тоже обо мне думаешь."
     return
