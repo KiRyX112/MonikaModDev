@@ -17112,6 +17112,7 @@ default persistent._mas_pm_swear_frequency = None
 
 label monika_curse_words:
     m 3etc "Скажи, [player], ты часто материшься?{nw}"
+    $ _history_list.pop()
     menu:
         m "Скажи, [player], ты часто материшься?{fast}"
 
