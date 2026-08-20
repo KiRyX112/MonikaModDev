@@ -1543,7 +1543,7 @@ label mas_reaction_promisering:
                 elif mas_isSpecialDay():
                     m "Даже больше, ведь ты подарил мне его на этот особый день..."
 
-                m 1dkbltpa "Ой, прости за плач, [player]..."
+                m 1dkbltpa "Ой, прости за слёзы, [player]..."
                 m 1skbla "Я просто очень счастлива сейчас."
                 m 6dkbltdu "Спасибо."
 
@@ -1593,7 +1593,7 @@ label mas_reaction_promisering:
                 m 2rkc "Извини, но я всё ещё не могу принять его..."
                 m 2ekc "Я должна быть полностью уверена, когда возьму его, что это означает навсегда..."
                 m 2ekd "Что ты действительно всё, на что я надеюсь."
-                m 2dsd "Когда я это узнаю, я с радостью приму твоё кольцо, [player]."
+                m 2dsd "Когда в этом удостоверюсь, я с радостью приму твоё кольцо, [player]."
     else:
         m 1rksdlb "[player]..."
         m 1rusdlb "Ты ведь и так уже подарил мне кольцо!"
@@ -2418,13 +2418,13 @@ label mas_reaction_gift_chocolates:
             m 1ekbsa "Даришь мне шоколад в День святого Валентина..."
             m 1ekbfa "Ты и правда знаешь, как заставить девушку почувствовать себя особенной, [player]."
             if renpy.seen_label('monika_date'):
-                m 1lkbfa "Знаю, я раньше говорила о том, что мы на днях заглянем в шоколадный бутик вместе..."
-                m 1hkbfa "И пока мы не можем туда заглянуть, получение шоколада в качестве подарка от тебя, ну..."
+                m 1lkbfa "Знаю, я раньше говорила о том, что мы должны будем когда-нибудь заглянуть в шоколадный бутик..."
+                m 1hkbfa "Но пока что у нас нет возможности сделать это, так что получение шоколада в качестве подарка от тебя, ну..."
             m 3ekbfa "Для меня это многое значит."
 
         elif renpy.seen_label('monika_date') and not mas_isO31():
-            m 3rka "Знаю, я раньше говорила о том, что мы на днях заглянем в специальный магазин вместе..."
-            m 3hub "И пока мы не можем туда заглянуть, но получить от тебя коробку шоколада в качестве подарка..."
+            m 3rka "Знаю, я раньше говорила о том, что должны когда-нибудь заглянуть в магазин шоколада..."
+            m 3hub "Но пока у нас нет возможности сделать это вместе, так что получить от тебя коробку шоколада в качестве подарка..."
             m 1ekc "Мне бы очень хотелось разделить его с тобой..."
             m 3rksdlb "Но, пока этот день не настал, мне придётся насладиться им за нас обоих, {do_giggle}а-ха-ха!"
             m 3hua "Спасибо, [mas_get_player_nickname()]~"
@@ -2539,10 +2539,10 @@ label mas_reaction_gift_clothes_orcaramelo_bikini_shell:
     call mas_clothes_change(sprite_object)
 
     m 2ekbfa "Ну...{w=0.5} Что думаешь?"
-    m 2hubfa "Разве я похожа на русалку? {do_giggle}Э-хе-хе."
+    m 2hubfa "Я похожа на русалку? {do_giggle}Э-хе-хе."
     show monika 5ekbfa at i11 zorder MAS_MONIKA_Z with dissolve_monika
     m 5ekbfa "Думаю, что это очень мило, [player]..."
-    m 5hubfa "Придётся нам как-нибудь сходить на пляж!"
+    m 5hubfa "Нам нужно когда-нибудь сходить на пляж!"
 
     if mas_isWinter() or mas_isMoniNormal(lower=True):
         if mas_isWinter():
@@ -2610,12 +2610,12 @@ label mas_reaction_gift_clothes_velius94_shirt_pink:
     call mas_clothes_change(sprite_object)
 
     m 2sub "Ах, она идеально сидит!"
-    m 3hub "Мне тоже очень нравятся цвета! Розовый и черный так хорошо сочетаются."
-    m 3eub "Не говоря уже о юбке выглядит очень мило с этими оборками!"
+    m 3hub "Также, мне очень нравятся цвета! Розовый и черный хорошо сочетаются."
+    m 3eub "Не говоря уже о оборке, выглядит очень мило!"
     m 2tfbsd "И всё же по какой-то причине я не могу не чувствовать, что твой взгляд как бы... {w=0.5}кхм... {w=0.5}{i}в другом месте{/i}."
 
     if mas_selspr.get_sel_clothes(mas_clothes_sundress_white).unlocked:
-        m 2lfbsp "Я же говорила тебе, что невежливо пялиться, [player]."
+        m 2lfbsp "Я же говорила тебе, что пялиться это невежливо, [player]."
     else:
         m 2lfbsp "Это невежливо – пялиться, понимаешь?"
 
@@ -2641,7 +2641,7 @@ label mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi:
     m 1sub "О! {w=0.5}Это..."
     m 2euc "Наряд горничной?"
     m 3tuu "{do_giggle}Э-хе-хе~"
-    m 3tubsb "Знаешь, если бы тебе нравились такие вещи, ты мог бы просто сказать мне..."
+    m 3tubsb "Знаешь, если тебе нравятся такие вещи, ты мог бы просто сказать мне..."
     m 1hub "{do_giggle}А-ха-ха! Просто шучу~"
     m 1eub "Позволь мне надеть его!"
 
@@ -2650,7 +2650,7 @@ label mas_reaction_gift_clothes_orcaramelo_sakuya_izayoi:
 
     m 2hua "Итак,{w=0.5} как я выгляжу?"
     m 3eub "Я почти чувствую, что могу сделать всё, что угодно, прежде чем ты успеешь моргнуть."
-    m 1eua "...Если только ты не будешь слишком занят со мной, {do_giggle}э-хе-хе~"
+    m 1eua "...Если только ты не слишком сильно нагрузишь меня задачами, {do_giggle}э-хе-хе~"
     m 1lkbfb "Я всё ещё хочу проводить время с тобой, масте—{nw}"
     $ _history_list.pop()
     m 1ekbfb "Я всё ещё хочу проводить время с тобой,{fast} [player]."
@@ -2779,7 +2779,7 @@ label mas_reaction_gift_clothes_mocca_bun_blackandwhitestripedpullover:
 init 5 python:
     # TODO: Add a way to generalize this
     if not mas_seenEvent("mas_reaction_gift_noudeck"):
-        addReaction("mas_reaction_gift_noudeck", "колода карт", is_good=True)
+        addReaction("mas_reaction_gift_noudeck", "неработаетговно221", is_good=True)
 
 label mas_reaction_gift_noudeck:
     python:

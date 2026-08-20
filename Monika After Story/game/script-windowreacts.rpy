@@ -637,7 +637,7 @@ init 5 python:
 
 label mas_wrs_vkgroup:
     $ wrs_success = display_notif(
-        monika_name,
+        m_name,
         [
             "О, это же те самые ребята!",
             "Интересно, когда новая версия?",

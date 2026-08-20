@@ -328,7 +328,7 @@ init 5 python:
         chibi_sprites_0_max = chibi_sprites_0[min(persistent.chibi_accessory_layer_1, len(chibi_sprites_0) - 1)]
         chibi_sprites_1_max = chibi_sprites_1[min(persistent.chibi_accessory_layer_2, len(chibi_sprites_1) - 1)]
 
-        objects = Composite(
+        objects = LiveComposite(
             (119, 188),
             (0, 0), MASFilterSwitch("submods/ExtraPlus/submod_assets/sprites/accessories/0/{0}.png".format(chibi_sprites_0_max)),
             (0, 0), MASFilterSwitch("submods/ExtraPlus/submod_assets/sprites/accessories/1/{0}.png".format(chibi_sprites_1_max))
@@ -601,13 +601,13 @@ image chibika_blink_effect:
         repeat
 
 
-image chibika_base = Composite(
+image chibika_base = LiveComposite(
     (119, 188),
     (0, 40), "chibika_blink_effect",
     (0, 0), DynamicDisplayable(draw_sprites)
     )
 
-image hover_sticker = Composite(
+image hover_sticker = LiveComposite(
     (119, 188),
     (0, 40), ConditionSwitch(
         "blanket_chibi == persistent.chibika_current_costume", MASFilterSwitch("submods/ExtraPlus/submod_assets/sprites/sticker_baka.png"),

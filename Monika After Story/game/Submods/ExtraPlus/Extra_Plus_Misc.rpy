@@ -54,6 +54,13 @@ label monika_boopbeta:
             m 2hublb "Эй, мне щекотно! {do_giggle}А-ха-ха~"
         elif rng_global == 5:
             m 1hubsb "*Буп*"
+        elif rng_global == 6:
+            m 1eublc "Ты такой неугомонный, [player]~"
+        elif rng_global == 7:
+            m 2eubla "Это щекотно, но мне нравится!"
+        elif rng_global == 8:
+            m 2hubsb "Ты правда знаешь, как заставить меня улыбаться, [mas_get_player_nickname()]~"
+
     jump show_boop_screen
     return
 

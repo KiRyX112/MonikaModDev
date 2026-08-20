@@ -13,7 +13,7 @@ init python:
     def giggle_tag(tag, argument):
         if persistent.monika_should_giggle:
             renpy.music.play(audio.moni_giggle, "sound")
-        return [(renpy.TEXT_TEXT, "")]
+        return []
 
     config.self_closing_custom_text_tags["do_giggle"] = giggle_tag
 

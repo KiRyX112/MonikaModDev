@@ -1,7 +1,7 @@
 init -990 python in mas_submod_utils:
     ahc_submod = Submod(
         author="multimokia and Legendkiller21",
-        name="Auto Outfit Change",
+        name="Автоматическая смена облика",
         description="Сабмод, позволяющий Монике менять причёски днём и ночью.",
         version="3.0.3",
         version_updates={},
@@ -26,7 +26,7 @@ init -989 python in ahc_utils:
 
 init -1 python:
     tt_when_to_update = (
-        "Just updated or reinstalled your hair spritepacks? Use this to get them working with AHC again."
+        "Только что обновил или переустановил спрайтпаки? Используй это, чтобы совместить их с этим сабмодом."
     )
 
 #START: Settings pane
@@ -41,7 +41,7 @@ screen auto_hair_change_settings_screen():
             style_prefix "check"
             box_wrap False
 
-            textbutton _("Update Jsons"):
+            textbutton _("Обновить Jsons"):
                 action Function(store.ahc_utils.__updateJsons)
                 hovered SetField(submods_screen_tt, "value", tt_when_to_update)
                 unhovered SetField(submods_screen_tt, "value", submods_screen_tt.default)
@@ -1630,10 +1630,10 @@ label monika_sethair_down:
         window hide
 
         if store.mas_globals.in_idle_mode or (mas_canCheckActiveWindow() and not mas_isFocused()):
-            m 1eua "Гораздо лучше.{w=1}{nw}"
+            m 1eua "Теперь гораздо лучше.{w=1}{nw}"
 
         else:
-            m 1eua "Намного лучше."
+            m 1eua "Теперь намного лучше."
             if not renpy.has_label('monika_welcome_home'):
                 show monika 5eua at t11 zorder MAS_MONIKA_Z with dissolve_monika
                 m 5eua "Давай хорошо проведём вечер вместе, [mas_get_player_nickname()]."

@@ -4826,7 +4826,7 @@ label mas_nye_monika_nye_dress_intro:
             m 2fkbsa "И ты сделал меня счастливее, чем я когда-либо была."
 
         m 3dkbsu "В общем, я бы хотела надеть этот наряд, когда начнётся Новый год."
-        m 1ekbsa "Думаю, он может помочь сделать Новый год ещё лучше."
+        m 1ekbsa "Думаю, он может помочь сделать его ещё лучше."
 
     $ mas_addClothesToHolidayMapRange(mas_clothes_dress_newyears, start_date=curr_date, end_date=curr_date+datetime.timedelta(days=2))
     return "no_unlock"
@@ -4858,7 +4858,7 @@ init 5 python:
 
 label mas_d25_monika_d25_mode_exit:
     m 3eka "Ты набрался достаточно праздничного настроения, [player]?"
-    m 3eua "Я вовсе не против влиться в атмосферу нового года."
+    m 3eua "Я вовсе не против влится в атмосферу нового года."
     m 1hua "Пока я его провожу вместе с тобой, конечно же~"
     m 3hub "{do_giggle}А-ха-ха!"
     m 2dsa "Дай мне секундочку, сейчас я сниму эти декорации.{w=0.3}.{w=0.3}.{w=0.3}{nw}"
@@ -5350,7 +5350,7 @@ label mas_player_bday_opendoor:
 
 # closed door greet option for knocking without listening
 label mas_player_bday_knock_no_listen:
-    m "Кто там?"
+    m "Кто это?"
     menu:
         "Это я.":
             $ mas_disable_quit()
@@ -5377,7 +5377,7 @@ label mas_player_bday_surprise:
             m 1tsu "Жаль, что я не могу увидеть твоё выражение лица, {do_giggle}э-хе-хе."
 
         "Нет.":
-            m 2lfp "Хм-м. Ну, это нормально."
+            m 2lfp "Хм-м. Ну ладно."
             m 2tsu "Наверное, ты сказал это, потому что не хочешь признавать, что я застала тебя врасплох..."
             if renpy.seen_label("mas_player_bday_listen"):
                 if renpy.seen_label("monikaroom_greeting_ear_narration"):
@@ -5501,7 +5501,7 @@ label mas_player_bday_cake:
         m 6ekbsa "И знаешь, что? {w=0.5}Я готова поспорить, что мы загадали одно и то же~"
     m 6hkbsu "..."
     if mas_isMonikaBirthday():
-        m 6eksdla "Ну, учитывая, что ты не можешь съесть этот торт, и я не хочу быть грубой и съесть его перед тобой..."
+        m 6eksdla "Ну, учитывая, что ты не можешь съесть этот торт, и я не хочу казаться грубой, кушая его перед тобой..."
     elif not mas_HistVerify("player_bday.spent_time",True)[0]:
         m 6rksdla "О боже, выходит, ты даже тортик не скушаешь, да, [player]?"
         m 6eksdla "Это всё довольно глупо, не так ли?"
@@ -5521,11 +5521,11 @@ label mas_player_bday_card:
     m 6dkbsu "..."
     if mas_isMonikaBirthday():
         m 6sub "О!"
-        m 6ekbsu "Я для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
+        m 6ekbsu "Я для тебя ещё написала стих, [player]. Надеюсь, тебе оно понравится..."
     elif not mas_HistVerify("player_bday.spent_time",True)[0]:
-        m 6ekbsu "Я... я так же для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
+        m 6ekbsu "Я... я так же для тебя ещё написала стих, [player]. Надеюсь, тебе оно понравится..."
     else:
-        m 6ekbsu "Я для тебя ещё написала письмо, [player]. Надеюсь, тебе оно понравится..."
+        m 6ekbsu "Я для тебя ещё написала стих, [player]. Надеюсь, тебе оно понравится..."
 
     call mas_showpoem(mas_poems.getRandomPoem("pbday"))
 
@@ -5538,7 +5538,7 @@ label mas_player_bday_card:
             m 6dkbfa "О таком я могла только мечтать~"
             m 6ekbfa "Я так долго ждала того момента, когда наконец-то смогу поцеловать тебя..."
             m 6dkbsu "Я никогда это не забуду..."
-            m 6ekbsu "...Тот наш первый поцелуй~"
+            m 6ekbsu "...Наш первый поцелуй~"
             if mas_isMonikaBirthday():
                 m 6ekbsu "И я не могу придумать более идеального времени, чем в этот особый день, который мы разделяем вместе~"
         else:
@@ -7177,7 +7177,7 @@ define mas_bday_cake_lit = False
 
 # NOTE: maybe the cakes should be ACS
 
-image mas_bday_cake_monika = Composite(
+image mas_bday_cake_monika = LiveComposite(
     (1280, 850),
     (0, 0), MASFilterSwitch("mod_assets/location/spaceroom/bday/monika_birthday_cake.png"),
     (0, 0), ConditionSwitch(
@@ -7186,7 +7186,7 @@ image mas_bday_cake_monika = Composite(
         )
 )
 
-image mas_bday_cake_player = Composite(
+image mas_bday_cake_player = LiveComposite(
     (1280, 850),
     (0, 0), MASFilterSwitch("mod_assets/location/spaceroom/bday/player_birthday_cake.png"),
     (0, 0), ConditionSwitch(

@@ -1,0 +1,30 @@
+{
+    "__author": "Orca",
+    "version": 3,
+    "type": 2,
+    "name": "sundress_orange",
+    "img_sit": "sundress_orange",
+    "pose_map": {
+        "mpm_type": 0,
+        "default": true,
+        "use_reg_for_l": true
+    },
+    "stay_on_start": true,
+    "ex_props": {
+        "bare-right-shoulder": true
+    },
+    "select_info": {
+        "display_name": "Оранджевый сарафан",
+        "thumb": "sundress_orange",
+        "group": "Одежда",
+        "select_dlg": [
+            "Мне очень нравится этот сарафан...",
+            "Мы куда-то идем сегодня, [player]?"
+        ]
+    },
+    "giftname": "orangesundress",
+    "pose_arms": {
+        "default": null,
+        "use_reg_for_l": true
+    }
+}

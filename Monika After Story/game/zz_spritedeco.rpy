@@ -1159,7 +1159,7 @@ init -19 python:
 #                times - dictionary of suffix's for differnet times
 #                time_of_day - key from times
 #
-#            RETURNS: Composite
+#            RETURNS: LiveComposite
 #            """
 #
 #            if mode == "sub":
@@ -1178,7 +1178,7 @@ init -19 python:
 #                weather - weather key from weather_map
 #                time_of_day - key from times
 #
-#            RETURNS: Composite
+#            RETURNS: LiveComposite
 #            """
 #
 #            value = self.composite_map.get("{0}_{1}_{2}".format(comp_key_str, weather, time_of_day))
@@ -1252,7 +1252,7 @@ init -19 python:
 #                weather - string for weather of the current composite img
 #                night_suffix - string for time of dat of the current composite img
 #
-#            RETURNS: Composite
+#            RETURNS: LiveComposite
 #            """
 #            #Init vars
 #            keys = sub_objects.keys()
@@ -1271,16 +1271,16 @@ init -19 python:
 #                sub_objects - LiveCompsite of desired sub_objects to be added to full comp_key_str
 #                weather - string for weather of main full composite img
 #                night_suffix - string for time of dat of the current composite img
-#            RETURNS: Composite
+#            RETURNS: LiveComposite
 #            """
 #            #Init Vars
 #            sprite_str_list = [self.init_str]
 #
 #
 #            if sub_objects:
-#               full_composite = renpy.display.layout.Composite(self.size, self.loc, '{}{}{}{}{}{}'.format(self.path, self.img_sit, mas_sprites.ART_DLM, weather, night_suffix, self.file_ext_str), self.loc, sub_objects)
+#               full_composite = renpy.display.layout.LiveComposite(self.size, self.loc, '{}{}{}{}{}{}'.format(self.path, self.img_sit, mas_sprites.ART_DLM, weather, night_suffix, self.file_ext_str), self.loc, sub_objects)
 #            else:
-#               full_composite = renpy.display.layout.Composite(self.size, self.loc, '{}{}{}{}{}{}'.format(self.path, self.img_sit, mas_sprites.ART_DLM, weather, night_suffix, self.file_ext_str))
+#               full_composite = renpy.display.layout.LiveComposite(self.size, self.loc, '{}{}{}{}{}{}'.format(self.path, self.img_sit, mas_sprites.ART_DLM, weather, night_suffix, self.file_ext_str))
 #
 #            return full_composite
 #
@@ -1465,7 +1465,7 @@ init -19 python:
 #    def get_full_comp_str(drag_loc_str, current_key, mas_weather_suffix):
 #        """
 #        IN:
-#            drag_loc_str - location str for Composite
+#            drag_loc_str - location str for LiveComposite
 #            current_key - key of current MASSelectableDecoration object
 #            mas_weather_suffix - suffix to add to regular key to get proper time and weather key
 #
@@ -1478,11 +1478,11 @@ init -19 python:
 #        """
 #        IN:
 #            st, at - Stuff required for DynamicDisplayable
-#        RETURN Composite
+#        RETURN LiveComposite
 #        """
 #
 #        size = (1280,720)
-#        l_comp_str = "renpy.display.layout.Composite("
+#        l_comp_str = "renpy.display.layout.LiveComposite("
 #        init = "{}{}".format(l_comp_str, size)
 #        path = '"mod_assets/location/spaceroom/decoration/'
 #        sprite_str_list = [init]

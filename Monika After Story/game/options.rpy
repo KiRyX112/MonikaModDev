@@ -156,7 +156,7 @@ init python:
     build.classify("game/**.webm", "images android")
     build.classify("game/**.rpyc", "scripts android")
     build.classify("game/**.rpymc", "scripts android")
-    build.classify("game/poemwords.txt", "scripts android")
+    build.classify("game/**.txt", "scripts android")
     build.classify("game/**.chr", "scripts android")
     build.classify("game/**.json", "scripts android")
     # build.classify("game/**/stockfish_15_android**", "android")
@@ -189,19 +189,17 @@ init python:
     build.classify('**/.vscode/**', None)
     build.classify("game/**/stockfish_15_android**", None) # <- не у всех работает
     build.classify("**/log/**", None)
-    build.classify("**.md", None)
-    build.classify("**.txt", None)
 
     ## Files matching documentation patterns are duplicated in a mac app build,
     ## so they appear in both the app and the zip file.
 
-    # build.documentation('*.html')
-    # build.documentation('*.txt')
-    # build.documentation('*.md')
+    build.documentation('*.html')
+    build.documentation('*.txt')
+    build.documentation('*.md')
 
     build.include_old_themes = False
     build.include_i686 = False # <- удалить после перехода на Ren'Py 8
-    build.script_version = False
+
 
 
 ## A Google Play license key is required to download expansion files and perform

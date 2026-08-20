@@ -904,7 +904,7 @@ image mas_lightning:
     3.0
     Null()
 
-image mas_lightning_s_bg = Composite(
+image mas_lightning_s_bg = LiveComposite(
     (1280, 720),
     (0, 0), "mod_assets/other/thunder.png",
     (30, 200), "mod_assets/other/tree_sil.png"
